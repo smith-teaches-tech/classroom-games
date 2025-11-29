@@ -479,20 +479,57 @@
         let remaining = 25;
         let draggedElement = null;
 
-        // Initialize
-        const wordItems = document.querySelectorAll('.word-item');
-        const dropZones = document.querySelectorAll('.drop-zone');
+        // Shuffle function
+        function shuffleArray(array) {
+            const newArray = Array.from(array);
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
 
-        wordItems.forEach(item => {
-            item.addEventListener('dragstart', handleDragStart);
-            item.addEventListener('dragend', handleDragEnd);
-        });
+        // Randomize words and descriptions
+        function randomizeGame() {
+            // Randomize word bank
+            const wordContainer = document.getElementById('word-container');
+            const words = Array.from(wordContainer.children);
+            const shuffledWords = shuffleArray(words);
+            wordContainer.innerHTML = '';
+            shuffledWords.forEach(word => wordContainer.appendChild(word));
 
-        dropZones.forEach(zone => {
-            zone.addEventListener('dragover', handleDragOver);
-            zone.addEventListener('dragleave', handleDragLeave);
-            zone.addEventListener('drop', handleDrop);
-        });
+            // Randomize descriptions
+            const descriptionsGrid = document.getElementById('descriptions-grid');
+            const descriptions = Array.from(descriptionsGrid.children).filter(child => 
+                child.classList.contains('description-card')
+            );
+            const shuffledDescriptions = shuffleArray(descriptions);
+            descriptionsGrid.innerHTML = '';
+            shuffledDescriptions.forEach(desc => descriptionsGrid.appendChild(desc));
+
+            // Re-attach event listeners
+            attachEventListeners();
+        }
+
+        // Attach event listeners
+        function attachEventListeners() {
+            const wordItems = document.querySelectorAll('.word-item');
+            const dropZones = document.querySelectorAll('.drop-zone');
+
+            wordItems.forEach(item => {
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragend', handleDragEnd);
+            });
+
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', handleDragOver);
+                zone.addEventListener('dragleave', handleDragLeave);
+                zone.addEventListener('drop', handleDrop);
+            });
+        }
+
+        // Initialize on page load
+        randomizeGame();
 
         function handleDragStart(e) {
             draggedElement = this;
@@ -571,6 +608,9 @@
             document.getElementById('remaining').textContent = remaining;
             document.getElementById('message-area').innerHTML = '';
 
+            const dropZones = document.querySelectorAll('.drop-zone');
+            const wordItems = document.querySelectorAll('.word-item');
+
             dropZones.forEach(zone => {
                 zone.textContent = 'Drop here';
                 zone.classList.remove('filled', 'drag-over', 'wrong');
@@ -581,6 +621,13 @@
                 item.classList.remove('matched');
                 item.setAttribute('draggable', 'true');
             });
+
+            // Randomize again for new game
+            randomizeGame();
+        }
+    </script>
+</body>
+</html>
         }
     </script>
 </body>
