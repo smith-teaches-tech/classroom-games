@@ -1,32 +1,177 @@
-classroom-games/
-  index.html  ← (the file above)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Smith Teaches Tech – Classroom Games</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #f5f5f7;
+      --card-bg: #ffffff;
+      --accent: #2563eb;
+      --text-main: #111827;
+      --text-muted: #4b5563;
+      --border-soft: #e5e7eb;
+    }
 
-  ap-lang/
-    transitions-game/
-      index.html   ← your actual game file
-    syntax-builder/
-      index.html
-    rhetoric-simulator/
-      index.html
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
 
-  tok/
-    knowledge-claims/
-      index.html
-    bias-perspectives/
-      index.html
-    language-and-power/
-      index.html
+    header {
+      padding: 2.5rem 1.5rem 1rem;
+      text-align: center;
+    }
 
-  extended-essay/
-    research-question-lab/
-      index.html
-    line-of-reasoning/
-      index.html
+    header h1 {
+      margin: 0 0 0.5rem;
+      font-size: clamp(2rem, 3vw, 2.4rem);
+    }
 
-  learning-english/
-    vocab-quiz-1/
-      index.html
-    grammar-maze/
-      index.html
-    listening-companion/
-      index.html
+    header p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.98rem;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto 3rem;
+      padding: 0 1.5rem 2rem;
+    }
+
+    .courses {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .course-card {
+      background: var(--card-bg);
+      border-radius: 0.9rem;
+      padding: 1.25rem 1.25rem 1.25rem;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.07);
+      border: 1px solid var(--border-soft);
+      min-height: 180px;
+    }
+
+    .course-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .course-tagline {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    ul.game-list {
+      list-style: none;
+      padding-left: 0;
+      margin: 0.25rem 0 0.25rem;
+    }
+
+    ul.game-list li {
+      margin: 0.2rem 0;
+      font-size: 0.92rem;
+    }
+
+    ul.game-list a {
+      text-decoration: none;
+      color: var(--accent);
+    }
+
+    ul.game-list a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      padding: 1.5rem 0;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Smith Teaches Tech – Classroom Games</h1>
+    <p>Interactive tools and browser-based games for my students.<br>Choose your course to get started.</p>
+  </header>
+
+  <main>
+    <section class="courses">
+
+      <!-- AP Language -->
+      <article class="course-card">
+        <div class="course-title">AP Language & Composition</div>
+        <div class="course-tagline">Rhetoric, syntax, argument, and style.</div>
+        <ul class="game-list">
+          <li><a href="ap-lang/transitions-game/">Transitions Game</a></li>
+          <li><a href="ap-lang/syntax-builder/">Syntax Builder</a></li>
+          <li><a href="ap-lang/rhetoric-simulator/">Rhetoric Simulator</a></li>
+        </ul>
+      </article>
+
+      <!-- AP Research -->
+      <article class="course-card">
+        <div class="course-title">AP Research</div>
+        <div class="course-tagline">Methods, reliability, sources, and claims.</div>
+        <ul class="game-list">
+          <li><a href="ap-research/reliability-demo/">Reliability Demo</a></li>
+          <li><a href="ap-research/bias-checker/">Source Bias Checker</a></li>
+        </ul>
+      </article>
+
+      <!-- TOK -->
+      <article class="course-card">
+        <div class="course-title">Theory of Knowledge (TOK)</div>
+        <div class="course-tagline">Knowledge, perspectives, meaning, and language.</div>
+        <ul class="game-list">
+          <li><a href="tok/knowledge-claims/">Knowledge Claims Game</a></li>
+          <li><a href="tok/bias-perspectives/">Bias & Perspectives</a></li>
+          <li><a href="tok/language-and-power/">Language & Power Explorer</a></li>
+        </ul>
+      </article>
+
+      <!-- Extended Essay -->
+      <article class="course-card">
+        <div class="course-title">Extended Essay (EE)</div>
+        <div class="course-tagline">RQ design, structure, and line of reasoning.</div>
+        <ul class="game-list">
+          <li><a href="extended-essay/research-question-lab/">Research Question Lab</a></li>
+          <li><a href="extended-essay/line-of-reasoning/">Line of Reasoning Builder</a></li>
+        </ul>
+      </article>
+
+      <!-- Learning English -->
+      <article class="course-card">
+        <div class="course-title">Learning English</div>
+        <div class="course-tagline">Vocabulary, grammar, and communication.</div>
+        <ul class="game-list">
+          <li><a href="learning-english/vocab-quiz-1/">Vocabulary Quiz</a></li>
+          <li><a href="learning-english/grammar-maze/">Grammar Maze</a></li>
+          <li><a href="learning-english/listening-companion/">Listening Companion</a></li>
+        </ul>
+      </article>
+
+    </section>
+  </main>
+
+  <footer>
+    © <span id="year"></span> Smith Teaches Tech
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
