@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love & Language Challenge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 700px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.9em;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .hearts {
+            font-size: 1.5em;
+        }
+
+        .heart {
+            display: inline-block;
+            margin: 0 2px;
+        }
+
+        .heart.lost {
+            opacity: 0.2;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+        }
+
+        .question-card {
+            display: none;
+        }
+
+        .question-card.active {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .difficulty {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .difficulty.easy { background: #d4edda; color: #155724; }
+        .difficulty.medium { background: #fff3cd; color: #856404; }
+        .difficulty.hard { background: #f8d7da; color: #721c24; }
+
+        .question-text {
+            font-size: 1.1em;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .context {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            color: #333;
+            line-height: 1.6;
+            border-left: 4px solid #667eea;
+        }
+
+        .blank {
+            display: inline-block;
+            background: #fff3cd;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: #856404;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+            font-size: 1em;
+        }
+
+        .option:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+            transform: translateX(5px);
+        }
+
+        .option.selected {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .option.correct {
+            border-color: #28a745;
+            background: #28a745;
+            color: white;
+        }
+
+        .option.incorrect {
+            border-color: #dc3545;
+            background: #dc3545;
+            color: white;
+        }
+
+        .option.disabled {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #d0d0d0;
+        }
+
+        .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #28a745;
+        }
+
+        .feedback.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #dc3545;
+        }
+
+        .results {
+            display: none;
+            text-align: center;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .final-score {
+            font-size: 3em;
+            color: #667eea;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        .performance {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .summary {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+
+        .start-screen {
+            text-align: center;
+        }
+
+        .start-screen h2 {
+            color: #333;
+            margin: 20px 0;
+        }
+
+        .start-screen ul {
+            text-align: left;
+            margin: 20px 0;
+            padding-left: 40px;
+        }
+
+        .start-screen li {
+            margin: 10px 0;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .btn-large {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+
+        .skipped-notice {
+            background: #fff3cd;
+            color: #856404;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+            display: none;
+        }
+
+        .skipped-notice.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💝 Love & Language Challenge 💝</h1>
+        <p class="subtitle">Dating & Relationships Vocabulary Game</p>
+
+        <!-- Start Screen -->
+        <div id="start-screen" class="start-screen">
+            <h2>Welcome!</h2>
+            <p>Test your knowledge of dating and relationship vocabulary.</p>
+            <ul>
+                <li>20 questions (progressively harder)</li>
+                <li>You have 5 hearts ❤️</li>
+                <li>Lose a heart for each wrong answer</li>
+                <li>You can skip questions and come back</li>
+                <li>Try to get the highest score!</li>
+            </ul>
+            <button class="btn-primary btn-large" onclick="startGame()">Start Challenge</button>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game-screen" style="display: none;">
+            <div class="stats">
+                <div>
+                    <strong>Question:</strong> <span id="question-number">1</span> / 20
+                </div>
+                <div class="hearts" id="hearts">
+                    ❤️❤️❤️❤️❤️
+                </div>
+                <div>
+                    <strong>Score:</strong> <span id="score">0</span>
+                </div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+
+            <div class="skipped-notice" id="skipped-notice">
+                ⚠️ You have skipped questions. Remember to answer them!
+            </div>
+
+            <div id="questions-container"></div>
+
+            <div class="buttons">
+                <button class="btn-secondary" id="skip-btn" onclick="skipQuestion()">Skip ⏭️</button>
+                <button class="btn-primary" id="submit-btn" onclick="submitAnswer()" disabled>Submit Answer</button>
+            </div>
+
+            <div class="feedback" id="feedback"></div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="results-screen" class="results">
+            <h2>🎉 Challenge Complete! 🎉</h2>
+            <div class="final-score" id="final-score">0/20</div>
+            <div class="performance" id="performance-text"></div>
+            <div class="summary">
+                <div class="summary-item">
+                    <span>Correct Answers:</span>
+                    <span id="correct-count">0</span>
+                </div>
+                <div class="summary-item">
+                    <span>Wrong Answers:</span>
+                    <span id="wrong-count">0</span>
+                </div>
+                <div class="summary-item">
+                    <span>Hearts Remaining:</span>
+                    <span id="hearts-remaining">5</span>
+                </div>
+                <div class="summary-item">
+                    <span>Final Score:</span>
+                    <span id="percentage">100%</span>
+                </div>
+            </div>
+            <button class="btn-primary btn-large" onclick="location.reload()">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            // ROUND 1: Easy - Basic Cloze (Q1-5)
+            {
+                id: 1,
+                difficulty: "easy",
+                context: "Sarah: \"I met my boyfriend on Tinder.\"\nAhmed: \"Really? I've never used a _____ before.\"",
+                question: "What word completes the conversation?",
+                options: [
+                    "dating app",
+                    "spouse",
+                    "arranged marriage",
+                    "freedom"
+                ],
+                correct: 0
+            },
+            {
+                id: 2,
+                difficulty: "easy",
+                context: "Khalid downloaded Bumble yesterday. When he sees a profile he likes, he _____ right. When he doesn't like someone, he _____ left.",
+                question: "What word goes in both blanks?",
+                options: [
+                    "matches",
+                    "swipes",
+                    "arranges",
+                    "engages"
+                ],
+                correct: 1
+            },
+            {
+                id: 3,
+                difficulty: "easy",
+                context: "Fatima and Mohammed both liked each other's profiles on the app. Now they can start chatting because they _____.",
+                question: "Fill in the blank:",
+                options: [
+                    "arranged",
+                    "engaged",
+                    "matched",
+                    "respected"
+                ],
+                correct: 2
+            },
+            {
+                id: 4,
+                difficulty: "easy",
+                context: "In traditional Saudi culture, parents choose who their children will marry. This is called an _____ _____.",
+                question: "Complete the expression:",
+                options: [
+                    "dating app",
+                    "arranged marriage",
+                    "online relationship",
+                    "secret meeting"
+                ],
+                correct: 1
+            },
+            {
+                id: 5,
+                difficulty: "easy",
+                context: "Ali's girlfriend doesn't want her parents to know about their relationship, so they _____ it _____.",
+                question: "Complete the expression:",
+                options: [
+                    "keep ... secret",
+                    "meet ... online",
+                    "swipe ... right",
+                    "arrange ... together"
+                ],
+                correct: 0
+            },
+
+            // ROUND 2: Medium-Easy - Contextual Usage (Q6-10)
+            {
+                id: 6,
+                difficulty: "medium",
+                context: "Nora: \"My parents found a nice man for me. They want me to marry him.\"\nLaila: \"So they want to _____ your marriage?\"",
+                question: "What verb fits best?",
+                options: [
+                    "swipe",
+                    "match",
+                    "arrange",
+                    "lie about"
+                ],
+                correct: 2
+            },
+            {
+                id: 7,
+                difficulty: "medium",
+                context: "Ahmed wants to respect his father's wishes, but he also wants to choose his own wife. He feels _____ between tradition and modernity.",
+                question: "Fill in the blank:",
+                options: [
+                    "fake",
+                    "compatible",
+                    "caught",
+                    "judgmental"
+                ],
+                correct: 2
+            },
+            {
+                id: 8,
+                difficulty: "medium",
+                context: "Sara and Omar have similar interests, they both want children, and they share the same values. They are very _____ with each other.",
+                question: "Which word describes their relationship?",
+                options: [
+                    "traditional",
+                    "fake",
+                    "compatible",
+                    "judgmental"
+                ],
+                correct: 2
+            },
+            {
+                id: 9,
+                difficulty: "medium",
+                context: "Mohammed proposed to his girlfriend last week. They are planning to get married next year. They just got _____.",
+                question: "Fill in the blank:",
+                options: [
+                    "engaged",
+                    "matched",
+                    "swiped",
+                    "arranged"
+                ],
+                correct: 0
+            },
+            {
+                id: 10,
+                difficulty: "medium",
+                context: "Khalid's profile says he's 25, single, and works as a doctor. But really he's 35, married, and unemployed. His profile is _____.",
+                question: "What word describes his profile?",
+                options: [
+                    "traditional",
+                    "compatible",
+                    "fake",
+                    "judgmental"
+                ],
+                correct: 2
+            },
+
+            // ROUND 3: Medium - Longer Context (Q11-15)
+            {
+                id: 11,
+                difficulty: "medium",
+                context: "Laila: \"I want to choose my own husband.\"\nHer mother: \"But this is not our tradition. You should _____ your family's way of doing things.\"",
+                question: "What verb fits the mother's response?",
+                options: [
+                    "swipe",
+                    "respect",
+                    "match",
+                    "lie about"
+                ],
+                correct: 1
+            },
+            {
+                id: 12,
+                difficulty: "medium",
+                context: "In the past, young Saudis couldn't date openly. Now things are changing and young people have more _____ to make their own choices about relationships.",
+                question: "Fill in the blank:",
+                options: [
+                    "fraud",
+                    "spouse",
+                    "freedom",
+                    "match"
+                ],
+                correct: 2
+            },
+            {
+                id: 13,
+                difficulty: "medium",
+                context: "Ahmed's profile says he's a businessman, but he's actually a student. He _____ his job on the app to seem more impressive.",
+                question: "What phrase completes the sentence?",
+                options: [
+                    "matched with",
+                    "lied about",
+                    "arranged",
+                    "engaged with"
+                ],
+                correct: 1
+            },
+            {
+                id: 14,
+                difficulty: "medium",
+                context: "Fatima doesn't date because her family follows traditional Islamic values. She prefers the _____ way of getting married through family introductions.",
+                question: "What adjective fits?",
+                options: [
+                    "fake",
+                    "compatible",
+                    "traditional",
+                    "judgmental"
+                ],
+                correct: 2
+            },
+            {
+                id: 15,
+                difficulty: "medium",
+                context: "Sara met her fiancé on a dating website two years ago. They didn't _____ in person - they _____ _____.",
+                question: "Complete the sentence:",
+                options: [
+                    "meet ... met online",
+                    "arrange ... arranged marriage",
+                    "swipe ... swiped left",
+                    "respect ... kept secret"
+                ],
+                correct: 0
+            },
+
+            // ROUND 4: Hard - Complex Contexts (Q16-20)
+            {
+                id: 16,
+                difficulty: "hard",
+                context: "After a traditional wedding ceremony, the man and woman are officially married. The man is now her husband, and the woman is his wife. Another word for husband or wife is _____.",
+                question: "What's the formal word?",
+                options: [
+                    "match",
+                    "spouse",
+                    "relationship",
+                    "engagement"
+                ],
+                correct: 1
+            },
+            {
+                id: 17,
+                difficulty: "hard",
+                context: "Nora's father: \"Why do young people always criticize our traditions? They are too _____ about everything we do.\"\n(He means: they judge and criticize too quickly)",
+                question: "What adjective describes the young people according to the father?",
+                options: [
+                    "compatible",
+                    "traditional",
+                    "judgmental",
+                    "fake"
+                ],
+                correct: 2
+            },
+            {
+                id: 18,
+                difficulty: "hard",
+                context: "Someone sent Laila a message asking for money, claiming to be in love with her. But it wasn't real - it was a _____ to steal her money.",
+                question: "What word describes this dishonest situation?",
+                options: [
+                    "match",
+                    "arranged marriage",
+                    "fraud / scam",
+                    "relationship"
+                ],
+                correct: 2
+            },
+            {
+                id: 19,
+                difficulty: "hard",
+                context: "Ahmed: \"Do you think we have a good _____?\"\nSara: \"Yes, I think we work well together. We're very _____, and I hope one day you'll be my _____.\"\n(She means: we're well-matched, and she hopes to marry him)",
+                question: "What words complete the dialogue in order?",
+                options: [
+                    "match ... fake ... dating app",
+                    "relationship ... compatible ... spouse",
+                    "freedom ... traditional ... fraud",
+                    "choice ... judgmental ... engagement"
+                ],
+                correct: 1
+            },
+            {
+                id: 20,
+                difficulty: "hard",
+                context: "Ali's parents want to _____ his marriage to his cousin. But Ali has been secretly dating Fatima, whom he _____ on Snapchat. He wants the _____ to choose his own wife, but he also wants to _____ his family's traditions. He feels _____ between two worlds.",
+                question: "Choose the words that complete ALL blanks correctly in order:",
+                options: [
+                    "swipe / engaged / spouse / lie about / fake",
+                    "arrange / met online / freedom / respect / caught",
+                    "match / swiped / relationship / keep secret / compatible",
+                    "engage / arranged / choice / match / judgmental"
+                ],
+                correct: 1
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let hearts = 5;
+        let answeredQuestions = new Set();
+        let skippedQuestions = new Set();
+        let wrongAnswers = 0;
+
+        function startGame() {
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('game-screen').style.display = 'block';
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+            
+            const q = questions[currentQuestion];
+            const card = document.createElement('div');
+            card.className = 'question-card active';
+            
+            let html = `
+                <span class="difficulty ${q.difficulty}">${q.difficulty.toUpperCase()}</span>
+                <div class="context">${q.context}</div>
+                <div class="question-text">${q.question}</div>
+                <div class="options">
+            `;
+            
+            q.options.forEach((option, index) => {
+                html += `<div class="option" onclick="selectOption(${index})">${option}</div>`;
+            });
+            
+            html += '</div>';
+            card.innerHTML = html;
+            container.appendChild(card);
+            
+            updateUI();
+        }
+
+        function selectOption(index) {
+            const options = document.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            options[index].classList.add('selected');
+            document.getElementById('submit-btn').disabled = false;
+        }
+
+        function submitAnswer() {
+            const selected = document.querySelector('.option.selected');
+            if (!selected) return;
+            
+            const selectedIndex = Array.from(document.querySelectorAll('.option')).indexOf(selected);
+            const q = questions[currentQuestion];
+            const correct = selectedIndex === q.correct;
+            
+            const options = document.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.add('disabled'));
+            
+            if (correct) {
+                selected.classList.add('correct');
+                score++;
+                showFeedback(true, "✅ Correct! Well done!");
+            } else {
+                selected.classList.add('incorrect');
+                options[q.correct].classList.add('correct');
+                hearts--;
+                wrongAnswers++;
+                updateHearts();
+                showFeedback(false, "❌ Incorrect. The correct answer is highlighted in green.");
+                
+                if (hearts === 0) {
+                    setTimeout(() => endGame(), 2000);
+                    return;
+                }
+            }
+            
+            answeredQuestions.add(currentQuestion);
+            skippedQuestions.delete(currentQuestion);
+            
+            document.getElementById('submit-btn').disabled = true;
+            document.getElementById('skip-btn').disabled = true;
+            
+            setTimeout(() => {
+                if (currentQuestion < questions.length - 1 || skippedQuestions.size > 0) {
+                    nextQuestion();
+                } else {
+                    endGame();
+                }
+            }, 2000);
+        }
+
+        function skipQuestion() {
+            if (!answeredQuestions.has(currentQuestion)) {
+                skippedQuestions.add(currentQuestion);
+            }
+            nextQuestion();
+        }
+
+        function nextQuestion() {
+            document.getElementById('feedback').classList.remove('show');
+            
+            let next = currentQuestion + 1;
+            while (next < questions.length && answeredQuestions.has(next)) {
+                next++;
+            }
+            
+            if (next >= questions.length) {
+                if (skippedQuestions.size > 0) {
+                    currentQuestion = Math.min(...skippedQuestions);
+                } else {
+                    endGame();
+                    return;
+                }
+            } else {
+                currentQuestion = next;
+            }
+            
+            renderQuestion();
+            document.getElementById('skip-btn').disabled = false;
+        }
+
+        function showFeedback(correct, message) {
+            const feedback = document.getElementById('feedback');
+            feedback.className = 'feedback show ' + (correct ? 'correct' : 'incorrect');
+            feedback.textContent = message;
+        }
+
+        function updateHearts() {
+            const heartsDisplay = document.getElementById('hearts');
+            let html = '';
+            for (let i = 0; i < 5; i++) {
+                html += `<span class="heart ${i >= hearts ? 'lost' : ''}">❤️</span>`;
+            }
+            heartsDisplay.innerHTML = html;
+        }
+
+        function updateUI() {
+            document.getElementById('question-number').textContent = currentQuestion + 1;
+            document.getElementById('score').textContent = score;
+            document.getElementById('progress').style.width = ((answeredQuestions.size / questions.length) * 100) + '%';
+            
+            if (skippedQuestions.size > 0) {
+                document.getElementById('skipped-notice').classList.add('show');
+            } else {
+                document.getElementById('skipped-notice').classList.remove('show');
+            }
+        }
+
+        function endGame() {
+            document.getElementById('game-screen').style.display = 'none';
+            document.getElementById('results-screen').classList.add('show');
+            
+            const percentage = Math.round((score / questions.length) * 100);
+            
+            document.getElementById('final-score').textContent = `${score}/20`;
+            document.getElementById('correct-count').textContent = score;
+            document.getElementById('wrong-count').textContent = wrongAnswers;
+            document.getElementById('hearts-remaining').textContent = hearts;
+            document.getElementById('percentage').textContent = percentage + '%';
+            
+            let performance = '';
+            if (percentage >= 90) performance = '🌟 Outstanding! You\'re a vocabulary master!';
+            else if (percentage >= 75) performance = '🎉 Great job! You know this topic well!';
+            else if (percentage >= 60) performance = '👍 Good effort! Keep practicing!';
+            else if (percentage >= 50) performance = '📚 Not bad! Review and try again!';
+            else performance = '💪 Keep studying! You\'ll improve with practice!';
+            
+            document.getElementById('performance-text').textContent = performance;
+        }
+    </script>
+</body>
+</html>
