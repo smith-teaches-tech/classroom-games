@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Social Media Commentary Builder</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
+    h2 { text-align: center; }
+    .container { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px; }
+    .tile {
+      background: white;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 30%;
+      min-height: 80px;
+      user-select: none;
+    }
+    .tile.selected { background: #d0e8ff; }
+    .dropzone-container { display: flex; align-items: center; margin-bottom: 20px; }
+    .dropzone {
+      background: #e8e8e8;
+      border: 2px dashed #aaa;
+      border-radius: 5px;
+      min-height: 80px;
+      padding: 10px;
+      flex-grow: 1;
+    }
+    .return-btn {
+      margin-left: 10px;
+      padding: 5px 10px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .paragraph-box {
+      background: #fff;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      margin-bottom: 30px;
+    }
+    .label { font-weight: bold; margin-bottom: 5px; display: block; }
+    .correct { background-color: #d4edda !important; border-color: #28a745 !important; }
+    .incorrect { background-color: #f8d7da !important; border-color: #dc3545 !important; }
+    button { display: block; margin: 20px auto; padding: 10px 20px; font-size: 16px; cursor: pointer; }
+  </style>
+</head>
+<body>
+<h2>Social Media & Public Discourse: Build Your Paragraph</h2>
+<div class="container" id="tiles"></div>
+<div id="paragraphs"></div>
+<button onclick="checkWork()">Check Work</button>
+<script>
+let selectedTile = null;
+
+const tilesText = [
+  { id: "c1", text: "Social media platforms encourage reactive communication rather than thoughtful deliberation." },
+  { id: "e1a", text: "In a recent town hall discussion posted to Facebook, users quickly derailed a conversation about local education by launching personal attacks, many of which seemed based on assumptions rather than facts." },
+  { id: "cmt1a", text: "This illustrates how quickly digital discussions devolve into reactionary exchanges that favor speed and emotion over reflection and reasoned thought." },
+  { id: "e1b", text: "A student recalled posting a nuanced opinion on a controversial topic, only to be bombarded with angry replies that clearly misread her point—discouraging her from ever participating again." },
+  { id: "cmt1b", text: "This shows how online responses often prioritize outrage over nuance, making it difficult for thoughtful voices to be heard." },
+  { id: "sw1", text: "Over time, this kind of emotional discourse weakens the public’s ability to engage in civil disagreement—a cornerstone of any functioning democracy." },
+
+  { id: "c2", text: "Social media has eroded trust in expertise by making all voices appear equally credible." },
+  { id: "e2a", text: "During the early days of the pandemic, social media feeds were flooded with conflicting advice—from homemade 'cures' to self-proclaimed experts—making it difficult to know whom to trust." },
+  { id: "cmt2a", text: "This example shows how the flattening effect of the internet—where expert voices appear next to amateurs—can make misinformation seem equally credible." },
+  { id: "e2b", text: "In many YouTube comment sections, advice from credentialed experts is often ignored in favor of influencers who offer confident opinions but lack any formal knowledge." },
+  { id: "cmt2b", text: "This reveals how visual confidence and charisma can often outweigh knowledge, leading viewers to trust style over substance." },
+  { id: "sw2", text: "A culture that dismisses expertise undermines the ability to make sound, evidence-based decisions, especially in times of crisis." },
+
+  { id: "c3", text: "Online environments often isolate individuals in ideological echo chambers." },
+  { id: "e3a", text: "A high school student mentioned that his social media feed rarely shows posts that challenge his political views." },
+  { id: "cmt3a", text: "This highlights how digital spaces can foster a false sense of consensus." },
+  { id: "e3b", text: "Another student described how her relatives' social media feeds became so different that basic facts like election results were disputed, highlighting how algorithms can create isolated realities even within families." },
+  { id: "cmt3b", text: "This shows how even within families, differing online realities can prevent meaningful dialogue, deepening divisions rather than fostering understanding." },
+  { id: "sw3", text: "When people are trapped in ideological bubbles, it becomes nearly impossible to engage in productive dialogue, threatening democratic processes that depend on shared facts and mutual understanding." }
+];
+
+
+const tileContainer = document.getElementById("tiles");
+const paragraphContainer = document.getElementById("paragraphs");
+
+tilesText.sort(() => Math.random() - 0.5);
+tilesText.forEach(({ id, text }) => {
+  const div = document.createElement("div");
+  div.className = "tile";
+  div.textContent = text;
+  div.id = id;
+  div.onclick = function () {
+    if (selectedTile) selectedTile.classList.remove("selected");
+    if (selectedTile === div) {
+      selectedTile = null;
+    } else {
+      selectedTile = div;
+      div.classList.add("selected");
+    }
+  };
+  tileContainer.appendChild(div);
+});
+
+function createDropzone(id) {
+  const container = document.createElement("div");
+  container.className = "dropzone-container";
+
+  const dropzone = document.createElement("div");
+  dropzone.className = "dropzone";
+  dropzone.id = id;
+
+  dropzone.onclick = function () {
+    if (selectedTile) {
+      if (dropzone.children.length) {
+        tileContainer.appendChild(dropzone.children[0]);
+      }
+      dropzone.appendChild(selectedTile);
+      selectedTile.classList.remove("selected");
+      selectedTile = null;
+    } else if (dropzone.children.length) {
+      tileContainer.appendChild(dropzone.children[0]);
+    }
+  };
+
+  const returnButton = document.createElement("button");
+  returnButton.textContent = "Return Tile";
+  returnButton.className = "return-btn";
+  returnButton.onclick = function () {
+    if (dropzone.children.length) {
+      tileContainer.appendChild(dropzone.children[0]);
+    }
+  };
+
+  container.appendChild(dropzone);
+  container.appendChild(returnButton);
+  return container;
+}
+
+const sections = ["p1", "p2", "p3"];
+const parts = ["claim", "e1", "c1", "e2", "c2", "sw"];
+
+sections.forEach(section => {
+  const box = document.createElement("div");
+  box.className = "paragraph-box";
+
+  parts.forEach(part => {
+    const label = document.createElement("div");
+    label.className = "label";
+    label.textContent =
+      part === "claim" ? "Claim" :
+      part.includes("e") ? "Evidence" :
+      part.includes("c") ? "Commentary" :
+      part === "sw" ? "So What?" : "";
+    box.appendChild(label);
+    box.appendChild(createDropzone(`${section}-${part}`));
+  });
+
+  paragraphContainer.appendChild(box);
+});
+
+const correctMatches = {
+  "c1": ["e1a", "e1b"],
+  "c2": ["e2a", "e2b"],
+  "c3": ["e3a", "e3b"]
+};
+
+const commentaryMatches = {
+  "e1a": "cmt1a",
+  "e1b": "cmt1b",
+  "e2a": "cmt2a",
+  "e2b": "cmt2b",
+  "e3a": "cmt3a",
+  "e3b": "cmt3b"
+};
+
+const soWhatMatches = {
+  "c1": "sw1",
+  "c2": "sw2",
+  "c3": "sw3"
+};
+
+function checkWork() {
+  sections.forEach(section => {
+    const claim = document.getElementById(`${section}-claim`).children[0];
+    const evi1 = document.getElementById(`${section}-e1`).children[0];
+    const com1 = document.getElementById(`${section}-c1`).children[0];
+    const evi2 = document.getElementById(`${section}-e2`).children[0];
+    const com2 = document.getElementById(`${section}-c2`).children[0];
+    const soWhat = document.getElementById(`${section}-sw`).children[0];
+
+    if (!claim) return;
+    const claimId = claim.id;
+    const correctEvidence = correctMatches[claimId] || [];
+    const correctSoWhat = soWhatMatches[claimId];
+
+    function mark(dropId, isCorrect) {
+      const dz = document.getElementById(dropId);
+      dz.classList.toggle("correct", isCorrect);
+      dz.classList.toggle("incorrect", !isCorrect);
+    }
+
+    mark(`${section}-claim`, true);
+    mark(`${section}-e1`, correctEvidence.includes(evi1?.id));
+    mark(`${section}-c1`, commentaryMatches[evi1?.id] === com1?.id);
+    mark(`${section}-e2`, correctEvidence.includes(evi2?.id));
+    mark(`${section}-c2`, commentaryMatches[evi2?.id] === com2?.id);
+    mark(`${section}-sw`, soWhat?.id === correctSoWhat);
+  });
+}
+</script>
+</body>
+</html>
