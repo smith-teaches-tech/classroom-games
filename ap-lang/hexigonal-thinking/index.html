@@ -1,1 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hexagonal Thinking Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            overflow: hidden;
+        }
+        
+        .header {
+            background-color: #4a4a9c;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .container {
+            display: flex;
+            height: calc(100vh - 180px);
+            overflow: hidden;
+        }
+        
+        #canvas-container {
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            position: relative;
+        }
+        
+        .canvas {
+            position: relative;
+            background-color: white;
+            border: 1px solid #ddd;
+            margin: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 150%;
+            height: 150%;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-top: 1px solid #ddd;
+        }
+        
+        button {
+            padding: 8px 15px;
+            background-color: #4a4a9c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background-color: #3a3a7c;
+        }
 
+        input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .hexagon {
+            position: absolute;
+            width: 120px;
+            height: 69.5px; /* height = width * sin(60°) */
+            background-color: #e0e8ff;
+            border: 2px solid #4a4a9c;
+            cursor: move;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+        
+        .hexagon:before,
+        .hexagon:after {
+            content: "";
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 60px solid transparent;
+            border-right: 60px solid transparent;
+        }
+        
+        .hexagon:before {
+            bottom: 100%;
+            border-bottom: 34.75px solid #e0e8ff;
+            border-bottom-width: 34.75px;
+            border-bottom-color: inherit;
+        }
+        
+        .hexagon:after {
+            top: 100%;
+            border-top: 34.75px solid #e0e8ff;
+            border-top-width: 34.75px;
+            border-top-color: inherit;
+        }
+        
+        .hexagon-content {
+            z-index: 2;
+            width: 100px;
+            height: 60px;
+            overflow: hidden;
+            text-align: center;
+            background: transparent;
+            border: none;
+            resize: none;
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+        }
+        
+        .hexagon-content:focus {
+            outline: none;
+        }
+        
+        .hexagon.selected {
+            background-color: #c0d0ff;
+        }
+
+        .hexagon.central {
+            background-color: #ffe0e0;
+        }
+
+        .tooltip {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background-color: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+
+        .save-load {
+            display: flex;
+            gap: 10px;
+            margin-left: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Hexagonal Thinking Tool</h1>
+        <p>Connect ideas and visualize your arguments</p>
+    </div>
+    
+    <div class="container">
+        <div id="canvas-container">
+            <div id="canvas" class="canvas"></div>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <button id="add-hexagon">Add Hexagon</button>
+        <button id="clear-all">Clear All</button>
+        <button id="change-color">Change Color</button>
+        <button id="zoom-in">Zoom In</button>
+        <button id="zoom-out">Zoom Out</button>
+        <button id="reset-view">Reset View</button>
+        <div class="save-load">
+            <button id="save-btn">Save</button>
+            <button id="load-btn">Load</button>
+            <input type="file" id="load-file" style="display: none;">
+        </div>
+    </div>
+    
+    <div class="tooltip">
+        Click and drag to move hexagons. Double-click to edit text.
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('canvas');
+            const canvasContainer = document.getElementById('canvas-container');
+            const addHexagonBtn = document.getElementById('add-hexagon');
+            const clearAllBtn = document.getElementById('clear-all');
+            const changeColorBtn = document.getElementById('change-color');
+            const zoomInBtn = document.getElementById('zoom-in');
+            const zoomOutBtn = document.getElementById('zoom-out');
+            const resetViewBtn = document.getElementById('reset-view');
+            const saveBtn = document.getElementById('save-btn');
+            const loadBtn = document.getElementById('load-btn');
+            const loadFile = document.getElementById('load-file');
+            
+            let hexagonId = 0;
+            let selectedHexagon = null;
+            let offsetX, offsetY;
+            let isDragging = false;
+            let scale = 1;
+            let panOffsetX = 0;
+            let panOffsetY = 0;
+            
+            const colors = [
+                '#e0e8ff', '#e0ffe0', '#ffe0e0', '#e0ffff', '#ffe0ff', '#ffffe0',
+                '#d0d0ff', '#d0ffd0', '#ffd0d0', '#d0ffff', '#ffd0ff', '#ffffd0'
+            ];
+            
+            // Create initial central hexagon
+            createCentralHexagon();
+            
+            // Add hexagon button event
+            addHexagonBtn.addEventListener('click', function() {
+                createHexagon();
+            });
+            
+            // Clear all button event
+            clearAllBtn.addEventListener('click', function() {
+                if (confirm('Are you sure you want to clear all hexagons?')) {
+                    canvas.innerHTML = '';
+                    hexagonId = 0;
+                    createCentralHexagon();
+                }
+            });
+            
+            // Change color button event
+            changeColorBtn.addEventListener('click', function() {
+                if (selectedHexagon) {
+                    const currentColor = selectedHexagon.style.backgroundColor;
+                    const currentIndex = colors.indexOf(currentColor);
+                    const nextIndex = (currentIndex + 1) % colors.length;
+                    
+                    selectedHexagon.style.backgroundColor = colors[nextIndex];
+                    
+                    // Update pseudo-elements' border colors
+                    const styleTag = document.createElement('style');
+                    styleTag.textContent = `
+                        #${selectedHexagon.id}:before { border-bottom-color: ${colors[nextIndex]}; }
+                        #${selectedHexagon.id}:after { border-top-color: ${colors[nextIndex]}; }
+                    `;
+                    
+                    // Remove any existing style for this hexagon
+                    document.querySelectorAll(`style[data-hexagon="${selectedHexagon.id}"]`).forEach(el => el.remove());
+                    
+                    styleTag.setAttribute('data-hexagon', selectedHexagon.id);
+                    document.head.appendChild(styleTag);
+                }
+            });
+            
+            // Save button event
+            saveBtn.addEventListener('click', function() {
+                const hexagons = Array.from(document.querySelectorAll('.hexagon')).map(hexagon => {
+                    const textarea = hexagon.querySelector('.hexagon-content');
+                    return {
+                        id: hexagon.id,
+                        x: parseInt(hexagon.style.left),
+                        y: parseInt(hexagon.style.top),
+                        color: hexagon.style.backgroundColor,
+                        content: textarea.value,
+                        isCentral: hexagon.classList.contains('central')
+                    };
+                });
+                
+                const dataStr = JSON.stringify({ hexagons: hexagons }, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(dataBlob);
+                
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'hexagonal-thinking.json';
+                link.click();
+                
+                URL.revokeObjectURL(url);
+            });
+            
+            // Load button event
+            loadBtn.addEventListener('click', function() {
+                loadFile.click();
+            });
+            
+            loadFile.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            const data = JSON.parse(e.target.result);
+                            loadHexagons(data);
+                        } catch (err) {
+                            alert('Error loading file: ' + err.message);
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            });
+            
+            // Function to create the central hexagon
+            function createCentralHexagon() {
+                const hexagon = document.createElement('div');
+                hexagon.id = `hexagon-${hexagonId++}`;
+                hexagon.className = 'hexagon central';
+                hexagon.style.backgroundColor = '#ffe0e0';
+                
+                // Position at the center of the canvas
+                const centerX = (canvas.offsetWidth / 2) - 60;
+                const centerY = (canvas.offsetHeight / 2) - 60;
+                
+                hexagon.style.left = `${centerX}px`;
+                hexagon.style.top = `${centerY}px`;
+                
+                const textarea = createTextarea();
+                hexagon.appendChild(textarea);
+                
+                addHexagonEventListeners(hexagon);
+                canvas.appendChild(hexagon);
+                
+                // Create style for pseudo-elements
+                const styleTag = document.createElement('style');
+                styleTag.textContent = `
+                    #${hexagon.id}:before { border-bottom-color: #ffe0e0; }
+                    #${hexagon.id}:after { border-top-color: #ffe0e0; }
+                `;
+                styleTag.setAttribute('data-hexagon', hexagon.id);
+                document.head.appendChild(styleTag);
+
+                // Scroll to center the hexagon
+                setTimeout(() => {
+                    canvasContainer.scrollTo(
+                        centerX - canvasContainer.offsetWidth / 2 + 60,
+                        centerY - canvasContainer.offsetHeight / 2 + 60
+                    );
+                }, 100);
+                
+                return hexagon;
+            }
+            
+            // Function to create a regular hexagon
+            function createHexagon(x, y, content = '', color = colors[0], id = null) {
+                const hexagon = document.createElement('div');
+                hexagon.id = id || `hexagon-${hexagonId++}`;
+                hexagon.className = 'hexagon';
+                hexagon.style.backgroundColor = color;
+                
+                if (!x || !y) {
+                    // Default position if not specified - add near the selected hexagon or center
+                    if (selectedHexagon) {
+                        const rect = selectedHexagon.getBoundingClientRect();
+                        const canvasRect = canvas.getBoundingClientRect();
+                        
+                        // Position relative to the selected hexagon
+                        const offsetLeft = selectedHexagon.offsetLeft;
+                        const offsetTop = selectedHexagon.offsetTop;
+                        
+                        // Determine a position in a hexagonal pattern around the selected hexagon
+                        const angle = Math.random() * Math.PI * 2; // Random angle
+                        const distance = 140; // Distance between hexagons
+                        
+                        x = offsetLeft + Math.cos(angle) * distance;
+                        y = offsetTop + Math.sin(angle) * distance;
+                    } else {
+                        // No hexagon selected, place near center
+                        const centerX = canvas.offsetWidth / 2;
+                        const centerY = canvas.offsetHeight / 2;
+                        x = centerX - 60 + Math.random() * 200 - 100;
+                        y = centerY - 60 + Math.random() * 200 - 100;
+                    }
+                }
+                
+                hexagon.style.left = `${x}px`;
+                hexagon.style.top = `${y}px`;
+                
+                const textarea = createTextarea(content);
+                hexagon.appendChild(textarea);
+                
+                addHexagonEventListeners(hexagon);
+                canvas.appendChild(hexagon);
+                
+                // Create style for pseudo-elements
+                const styleTag = document.createElement('style');
+                styleTag.textContent = `
+                    #${hexagon.id}:before { border-bottom-color: ${color}; }
+                    #${hexagon.id}:after { border-top-color: ${color}; }
+                `;
+                styleTag.setAttribute('data-hexagon', hexagon.id);
+                document.head.appendChild(styleTag);
+                
+                return hexagon;
+            }
+            
+            // Function to create textarea inside hexagon
+            function createTextarea(content = '') {
+                const textarea = document.createElement('textarea');
+                textarea.className = 'hexagon-content';
+                textarea.placeholder = 'Type your idea here...';
+                textarea.value = content;
+                
+                // Prevent textarea from capturing mouse events for dragging
+                textarea.addEventListener('mousedown', function(e) {
+                    e.stopPropagation();
+                });
+                
+                return textarea;
+            }
+            
+            // Function to add event listeners to hexagons
+            function addHexagonEventListeners(hexagon) {
+                // Mouse down event for dragging
+                hexagon.addEventListener('mousedown', function(e) {
+                    // Deselect previous hexagon
+                    if (selectedHexagon) {
+                        selectedHexagon.classList.remove('selected');
+                    }
+                    
+                    // Select current hexagon
+                    selectedHexagon = hexagon;
+                    hexagon.classList.add('selected');
+                    
+                    // Calculate offset for dragging - this is the click position within the hexagon
+                    const rect = hexagon.getBoundingClientRect();
+                    offsetX = e.clientX - rect.left;
+                    offsetY = e.clientY - rect.top;
+                    
+                    isDragging = true;
+                    
+                    // Bring to front
+                    hexagon.style.zIndex = '10';
+                    
+                    // Prevent default behavior to avoid text selection
+                    e.preventDefault();
+                });
+                
+                // Double click to focus on textarea
+                hexagon.addEventListener('dblclick', function() {
+                    const textarea = hexagon.querySelector('.hexagon-content');
+                    textarea.focus();
+                });
+            }
+            
+            // Zoom functionality
+            zoomInBtn.addEventListener('click', function() {
+                if (scale < 1.5) { // Limit maximum zoom
+                    scale += 0.1;
+                    applyZoom();
+                }
+            });
+            
+            zoomOutBtn.addEventListener('click', function() {
+                if (scale > 0.5) { // Limit minimum zoom
+                    scale -= 0.1;
+                    applyZoom();
+                }
+            });
+            
+            resetViewBtn.addEventListener('click', function() {
+                scale = 1;
+                applyZoom();
+                
+                // Center on central hexagon if exists
+                const centralHex = document.querySelector('.hexagon.central');
+                if (centralHex) {
+                    const centerX = parseInt(centralHex.style.left) + 60;
+                    const centerY = parseInt(centralHex.style.top) + 60;
+                    
+                    canvasContainer.scrollTo(
+                        centerX - canvasContainer.offsetWidth / 2,
+                        centerY - canvasContainer.offsetHeight / 2
+                    );
+                }
+            });
+            
+            function applyZoom() {
+                // Get current scroll position and center point
+                const containerWidth = canvasContainer.clientWidth;
+                const containerHeight = canvasContainer.clientHeight;
+                const centerX = canvasContainer.scrollLeft + containerWidth / 2;
+                const centerY = canvasContainer.scrollTop + containerHeight / 2;
+                
+                // Apply scale
+                canvas.style.transform = `scale(${scale})`;
+                canvas.style.transformOrigin = '0 0';
+                
+                // Adjust scroll to keep the center point
+                requestAnimationFrame(() => {
+                    const newCenterX = centerX * scale;
+                    const newCenterY = centerY * scale;
+                    canvasContainer.scrollLeft = newCenterX - containerWidth / 2;
+                    canvasContainer.scrollTop = newCenterY - containerHeight / 2;
+                });
+            }
+            
+            // Mouse move event on document for dragging
+            document.addEventListener('mousemove', function(e) {
+                if (isDragging && selectedHexagon) {
+                    e.preventDefault(); // Prevent text selection during drag
+                    
+                    // Get the scroll position of the container
+                    const scrollLeft = canvasContainer.scrollLeft;
+                    const scrollTop = canvasContainer.scrollTop;
+                    
+                    // Calculate the position relative to the canvas
+                    const canvasRect = canvasContainer.getBoundingClientRect();
+                    
+                    // Calculate new position keeping the cursor exactly where the user clicked on the hexagon
+                    const x = e.clientX - canvasRect.left + scrollLeft - offsetX;
+                    const y = e.clientY - canvasRect.top + scrollTop - offsetY;
+                    
+                    selectedHexagon.style.left = `${x}px`;
+                    selectedHexagon.style.top = `${y}px`;
+                    
+                    // Auto-scroll when dragging near the edges
+                    const margin = 50;
+                    const speed = 10;
+                    
+                    if (e.clientX - canvasContainer.getBoundingClientRect().left < margin) {
+                        canvasContainer.scrollLeft -= speed;
+                    } else if (canvasContainer.getBoundingClientRect().right - e.clientX < margin) {
+                        canvasContainer.scrollLeft += speed;
+                    }
+                    
+                    if (e.clientY - canvasContainer.getBoundingClientRect().top < margin) {
+                        canvasContainer.scrollTop -= speed;
+                    } else if (canvasContainer.getBoundingClientRect().bottom - e.clientY < margin) {
+                        canvasContainer.scrollTop += speed;
+                    }
+                }
+            });
+            
+            // Mouse up event on document to stop dragging
+            document.addEventListener('mouseup', function() {
+                if (selectedHexagon) {
+                    selectedHexagon.style.zIndex = '1';
+                }
+                isDragging = false;
+            });
+            
+            // Function to load hexagons from saved data
+            function loadHexagons(data) {
+                if (confirm('Loading will clear the current canvas. Continue?')) {
+                    // Clear canvas
+                    canvas.innerHTML = '';
+                    hexagonId = 0;
+                    
+                    // Find the highest ID to continue from there
+                    let maxId = 0;
+                    data.hexagons.forEach(h => {
+                        const idMatch = h.id.match(/hexagon-(\d+)/);
+                        if (idMatch && parseInt(idMatch[1]) > maxId) {
+                            maxId = parseInt(idMatch[1]);
+                        }
+                    });
+                    hexagonId = maxId + 1;
+                    
+                    // Create loaded hexagons
+                    data.hexagons.forEach(h => {
+                        const hexagon = createHexagon(h.x, h.y, h.content, h.color, h.id);
+                        if (h.isCentral) {
+                            hexagon.classList.add('central');
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
