@@ -1,0 +1,2422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Mastery Quest</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --secondary: #8b5cf6;
+            --accent: #ec4899;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg-dark: #0f172a;
+            --bg-medium: #1e293b;
+            --bg-light: #334155;
+            --text-light: #f1f5f9;
+            --text-muted: #cbd5e1;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-medium) 100%);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .stars-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 4s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            position: relative;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            position: relative;
+        }
+
+        .progress-container {
+            background: var(--bg-medium);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        .progress-bar-container {
+            background: var(--bg-light);
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .level-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .level-badge {
+            background: linear-gradient(135deg, var(--accent), var(--warning));
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+        }
+
+        .score-display {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--warning);
+            text-shadow: 0 2px 10px rgba(245, 158, 11, 0.5);
+        }
+
+        .game-area {
+            background: var(--bg-medium);
+            border-radius: 20px;
+            padding: 40px;
+            min-height: 500px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            position: relative;
+        }
+
+        .activity-title {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        .instructions {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            border-left: 4px solid var(--accent);
+        }
+
+        .question-container {
+            margin-bottom: 30px;
+        }
+
+        .question {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            padding: 20px;
+            background: var(--bg-light);
+            border: 3px solid transparent;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-light);
+            font-family: 'Poppins', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .option-btn:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .option-btn:hover::before {
+            left: 100%;
+        }
+
+        .option-btn.correct {
+            background: linear-gradient(135deg, var(--success), #059669);
+            border-color: var(--success);
+            animation: correctPulse 0.5s;
+        }
+
+        .option-btn.incorrect {
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+            border-color: var(--danger);
+            animation: shake 0.5s;
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .input-answer {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2rem;
+            border: 3px solid var(--bg-light);
+            border-radius: 10px;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .input-answer:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .submit-btn {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            border-radius: 15px;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            box-shadow: 0 5px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.6);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .next-btn {
+            background: linear-gradient(135deg, var(--success), #059669);
+            margin-top: 20px;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .feedback.correct {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.2));
+            border: 2px solid var(--success);
+        }
+
+        .feedback.incorrect {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.2));
+            border: 2px solid var(--danger);
+        }
+
+        .drag-drop-area {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 20px;
+            align-items: center;
+            margin: 30px 0;
+        }
+
+        .sentence-part {
+            background: var(--bg-light);
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .conjunction-slot {
+            background: var(--bg-dark);
+            border: 3px dashed var(--primary);
+            padding: 20px;
+            border-radius: 15px;
+            min-width: 150px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent);
+            transition: all 0.3s ease;
+        }
+
+        .conjunction-slot.filled {
+            border-style: solid;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .conjunction-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+
+        .conjunction-btn {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, var(--accent), var(--warning));
+            border: none;
+            border-radius: 25px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+        }
+
+        .conjunction-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(236, 72, 153, 0.5);
+        }
+
+        .conjunction-btn.used {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: scale(0.95);
+        }
+
+        .matching-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .matching-column h3 {
+            margin-bottom: 15px;
+            color: var(--accent);
+        }
+
+        .match-item {
+            background: var(--bg-light);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+
+        .match-item:hover {
+            transform: translateX(5px);
+            border-color: var(--primary);
+        }
+
+        .match-item.selected {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            transform: scale(1.05);
+        }
+
+        .match-item.matched {
+            background: linear-gradient(135deg, var(--success), #059669);
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .car-diagram {
+            width: 100%;
+            max-width: 800px;
+            margin: 30px auto;
+            position: relative;
+        }
+
+        .car-svg {
+            width: 100%;
+            height: auto;
+        }
+
+        .label-spot {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: var(--accent);
+            border-radius: 50%;
+            border: 3px solid white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(236, 72, 153, 0.5);
+        }
+
+        .label-spot:hover {
+            transform: scale(1.3);
+            background: var(--warning);
+        }
+
+        .label-spot.correct {
+            background: var(--success);
+            animation: correctPulse 0.5s;
+        }
+
+        .label-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .label-btn {
+            padding: 10px 20px;
+            background: var(--bg-light);
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .label-btn:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .label-btn.selected {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .label-btn.used {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .completion-screen {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .completion-screen h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--success), var(--warning));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: celebration 1s ease-in-out;
+        }
+
+        @keyframes celebration {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .stars-earned {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+            font-size: 4rem;
+        }
+
+        .star {
+            animation: starPop 0.5s ease-out;
+        }
+
+        @keyframes starPop {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .final-score {
+            font-size: 2rem;
+            margin: 20px 0;
+            font-weight: 700;
+        }
+
+        .menu-screen {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .level-card {
+            background: var(--bg-light);
+            border-radius: 20px;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .level-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .level-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4);
+        }
+
+        .level-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .level-card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .level-number {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .level-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .level-activities {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .level-card.completed {
+            border-color: var(--success);
+        }
+
+        .level-card.completed::after {
+            content: '✓';
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .paragraph-exercise {
+            background: var(--bg-light);
+            padding: 25px;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            line-height: 2;
+            margin: 20px 0;
+        }
+
+        .verb-input {
+            display: inline-block;
+            min-width: 150px;
+            padding: 8px 15px;
+            background: var(--bg-dark);
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            color: var(--text-light);
+            font-size: 1.1rem;
+            font-family: 'Space Mono', monospace;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .verb-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(236, 72, 153, 0.3);
+        }
+
+        .verb-input.correct {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .verb-input.incorrect {
+            border-color: var(--danger);
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .game-area {
+                padding: 20px;
+            }
+
+            .activity-title {
+                font-size: 1.5rem;
+            }
+
+            .drag-drop-area {
+                grid-template-columns: 1fr;
+            }
+
+            .matching-container {
+                grid-template-columns: 1fr;
+            }
+
+            .options {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            position: absolute;
+            animation: confetti-fall 3s linear forwards;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars-bg" id="starsBg"></div>
+    
+    <div class="container">
+        <header>
+            <h1>🎮 English Mastery Quest</h1>
+            <p class="subtitle">Master vocabulary and grammar through exciting challenges!</p>
+        </header>
+
+        <div class="progress-container">
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar">0%</div>
+            </div>
+            <div class="level-info">
+                <div class="level-badge">
+                    <span>📍</span>
+                    <span id="currentLevelDisplay">Level 1</span>
+                </div>
+                <div class="score-display">
+                    ⭐ Score: <span id="scoreDisplay">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-area" id="gameArea">
+            <!-- Dynamic content will be loaded here -->
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        const gameState = {
+            currentLevel: 0,
+            currentActivity: 0,
+            score: 0,
+            completedLevels: [],
+            showingMenu: true
+        };
+
+        // Create starry background
+        function createStars() {
+            const starsBg = document.getElementById('starsBg');
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 3 + 'px';
+                star.style.height = star.style.width;
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsBg.appendChild(star);
+            }
+        }
+
+        // Vocabulary Data
+        const vocabularyData = {
+            carParts: [
+                { word: 'windshield', definition: 'the front window of a car' },
+                { word: 'accelerator', definition: 'the pedal you press to make the car go faster' },
+                { word: 'brake', definition: 'the pedal you press to slow down or stop' },
+                { word: 'turn signal', definition: 'lights that show you are turning left or right' },
+                { word: 'trunk', definition: 'the storage area at the back of a car' },
+                { word: 'hood', definition: "the cover over the car's engine" },
+                { word: 'steering wheel', definition: "the wheel you turn to control the car's direction" },
+                { word: 'headlights', definition: 'the bright lights at the front of a car' },
+                { word: 'taillights', definition: 'the red lights at the back of a car' },
+                { word: 'rearview mirror', definition: 'the mirror inside the car to see behind you' },
+                { word: 'side mirror', definition: 'mirrors on the sides of the car' },
+                { word: 'tire', definition: 'the rubber wheel that touches the road' },
+                { word: 'seat belt', definition: 'the safety strap that holds you in your seat' },
+                { word: 'engine', definition: 'the motor that makes the car run' },
+                { word: 'bumper', definition: 'the protective bar on the front and back of a car' }
+            ],
+            socialMedia: {
+                words: [
+                    { word: 'addiction', definition: 'a strong need to do something regularly, difficult to stop' },
+                    { word: 'device', definition: 'electronic equipment like a phone, tablet, or computer' },
+                    { word: 'statistic', definition: 'a number that shows a fact or information' },
+                    { word: 'screen time', definition: 'time spent looking at electronic screens' },
+                    { word: 'trend', definition: 'a general direction something is changing or developing' },
+                    { word: 'notification', definition: 'a message that appears on your phone' },
+                    { word: 'stare at', definition: 'to look at something for a long time' },
+                    { word: 'check', definition: 'to look at something to get information' },
+                    { word: 'scroll', definition: 'to move text or images up/down on a screen' },
+                    { word: 'trigger', definition: 'to cause something to start or happen' },
+                    { word: 'maintain', definition: 'to make something continue' },
+                    { word: 'respond', definition: 'to react or answer' },
+                    { word: 'excessive', definition: 'too much; more than normal' },
+                    { word: 'harmful', definition: 'causing damage or injury' },
+                    { word: 'present', definition: 'giving full attention; mentally "there"' }
+                ],
+                expressions: [
+                    { phrase: "grab someone's attention", meaning: 'make someone notice something' },
+                    { phrase: 'stay connected', meaning: 'remain in contact with others' },
+                    { phrase: 'be immune to', meaning: 'not be affected by something' },
+                    { phrase: 'put down', meaning: 'stop holding or using something' },
+                    { phrase: 'take priority', meaning: 'be more important than other things' }
+                ]
+            },
+            dating: {
+                words: [
+                    { word: 'dating app', definition: 'a phone app to help people find romantic partners' },
+                    { word: 'match', definition: 'when two people like each other; a compatible person' },
+                    { word: 'relationship', definition: 'a romantic connection between two people' },
+                    { word: 'spouse', definition: 'a husband or wife' },
+                    { word: 'fraud', definition: 'when someone tricks you to steal money' },
+                    { word: 'choice', definition: 'the ability to pick or decide' },
+                    { word: 'freedom', definition: 'the power to do what you want' },
+                    { word: 'swipe', definition: 'move your finger across the screen (right = yes, left = no)' },
+                    { word: 'engage', definition: 'promise to marry someone' },
+                    { word: 'arrange', definition: 'to plan or organize' },
+                    { word: 'lie about', definition: 'not tell the truth about something' },
+                    { word: 'respect', definition: 'show honor for someone/something' },
+                    { word: 'traditional', definition: 'following old customs' },
+                    { word: 'fake', definition: 'not real; false or dishonest' },
+                    { word: 'compatible', definition: 'able to have a good relationship' },
+                    { word: 'judgmental', definition: 'quick to criticize others' }
+                ],
+                expressions: [
+                    { phrase: 'meet someone online', meaning: 'first encounter someone through the internet' },
+                    { phrase: 'arranged marriage', meaning: 'when families choose the spouse' },
+                    { phrase: 'keep something secret', meaning: 'hide information from others' },
+                    { phrase: 'caught between', meaning: 'stuck between two different choices' },
+                    { phrase: 'be embarrassed to', meaning: 'feel shame about something' }
+                ]
+            }
+        };
+
+        // Subordinating Conjunctions
+        const conjunctions = [
+            { word: 'when', meaning: 'at the time that' },
+            { word: 'while', meaning: 'during the time that' },
+            { word: 'until', meaning: 'up to the time that' },
+            { word: 'after', meaning: 'following the time that' },
+            { word: 'as soon as', meaning: 'immediately when' },
+            { word: 'because', meaning: 'for the reason that' },
+            { word: 'as long as', meaning: 'on the condition that; if' },
+            { word: 'although', meaning: 'despite the fact that' },
+            { word: 'even though', meaning: 'despite the fact that (stronger)' },
+            { word: 'if', meaning: 'on the condition that' },
+            { word: 'unless', meaning: 'except if; if not' }
+        ];
+
+        // Level Structure
+        const levels = [
+            {
+                name: 'Level 1: Car Parts',
+                activities: [
+                    { type: 'fillBlank', title: 'Fill in the Blanks', topic: 'carParts' },
+                    { type: 'matching', title: 'Match Definitions', topic: 'carParts' },
+                    { type: 'multipleChoice', title: 'Choose Correct Answer', topic: 'carParts' },
+                    { type: 'trueFalse', title: 'True or False', topic: 'carParts' }
+                ]
+            },
+            {
+                name: 'Level 2: Social Media',
+                activities: [
+                    { type: 'matching', title: 'Match Definitions', topic: 'socialMedia' },
+                    { type: 'scenarios', title: 'Real Life Scenarios', topic: 'socialMedia' },
+                    { type: 'fillBlank', title: 'Complete the Sentences', topic: 'socialMedia' },
+                    { type: 'expressionMatch', title: 'Match Expressions', topic: 'socialMedia' },
+                    { type: 'trueFalse', title: 'True or False', topic: 'socialMedia' }
+                ]
+            },
+            {
+                name: 'Level 3: Dating & Relationships',
+                activities: [
+                    { type: 'matching', title: 'Match Definitions', topic: 'dating' },
+                    { type: 'scenarios', title: 'Cultural Scenarios', topic: 'dating' },
+                    { type: 'fillBlank', title: 'Complete the Sentences', topic: 'dating' },
+                    { type: 'expressionMatch', title: 'Match Expressions', topic: 'dating' },
+                    { type: 'trueFalse', title: 'True or False', topic: 'dating' }
+                ]
+            },
+            {
+                name: 'Level 4: Conjunctions',
+                activities: [
+                    { type: 'conjunctionConnect', title: 'Connect Sentences', topic: 'conjunctions' },
+                    { type: 'conjunctionChoice', title: 'Choose Correct Conjunction', topic: 'conjunctions' },
+                    { type: 'commaRules', title: 'Comma or No Comma?', topic: 'conjunctions' },
+                    { type: 'fixSentence', title: 'Fix the Sentence', topic: 'conjunctions' }
+                ]
+            },
+            {
+                name: 'Level 5: Present Simple',
+                activities: [
+                    { type: 'addS', title: 'Add the S', topic: 'presentSimple' },
+                    { type: 'fixErrors', title: 'Fix the Errors', topic: 'presentSimple' },
+                    { type: 'correctForm', title: 'Choose Correct Form', topic: 'presentSimple' }
+                ]
+            }
+        ];
+
+        // Shuffle array helper
+        function shuffle(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        // Update progress
+        function updateProgress() {
+            const totalActivities = levels.reduce((sum, level) => sum + level.activities.length, 0);
+            const completedActivities = levels.slice(0, gameState.currentLevel).reduce((sum, level) => sum + level.activities.length, 0) + gameState.currentActivity;
+            const percentage = Math.round((completedActivities / totalActivities) * 100);
+            
+            document.getElementById('progressBar').style.width = percentage + '%';
+            document.getElementById('progressBar').textContent = percentage + '%';
+            document.getElementById('currentLevelDisplay').textContent = levels[gameState.currentLevel]?.name || 'Complete!';
+            document.getElementById('scoreDisplay').textContent = gameState.score;
+        }
+
+        // Show level menu
+        function showLevelMenu() {
+            gameState.showingMenu = true;
+            const gameArea = document.getElementById('gameArea');
+            
+            let html = '<div class="activity-title">🎯 Choose Your Level</div>';
+            html += '<div class="instructions">Select a level to begin your quest!</div>';
+            html += '<div class="menu-screen">';
+            
+            levels.forEach((level, index) => {
+                const completed = gameState.completedLevels.includes(index);
+                html += `
+                    <div class="level-card ${completed ? 'completed' : ''}" onclick="startLevel(${index})">
+                        <div class="level-card-content">
+                            <div class="level-number">Level ${index + 1}</div>
+                            <div class="level-title">${level.name.split(': ')[1]}</div>
+                            <div class="level-activities">${level.activities.length} Activities</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            gameArea.innerHTML = html;
+        }
+
+        // Start a specific level
+        function startLevel(levelIndex) {
+            gameState.currentLevel = levelIndex;
+            gameState.currentActivity = 0;
+            gameState.showingMenu = false;
+            updateProgress();
+            loadActivity();
+        }
+
+        // Load current activity
+        function loadActivity() {
+            const level = levels[gameState.currentLevel];
+            const activity = level.activities[gameState.currentActivity];
+            
+            updateProgress();
+            
+            switch(activity.type) {
+                case 'fillBlank':
+                    loadFillBlankActivity(activity);
+                    break;
+                case 'matching':
+                    loadMatchingActivity(activity);
+                    break;
+                case 'multipleChoice':
+                    loadMultipleChoiceActivity(activity);
+                    break;
+                case 'trueFalse':
+                    loadTrueFalseActivity(activity);
+                    break;
+                case 'scenarios':
+                    loadScenariosActivity(activity);
+                    break;
+                case 'expressionMatch':
+                    loadExpressionMatchActivity(activity);
+                    break;
+                case 'conjunctionConnect':
+                    loadConjunctionConnectActivity(activity);
+                    break;
+                case 'conjunctionChoice':
+                    loadConjunctionChoiceActivity(activity);
+                    break;
+                case 'commaRules':
+                    loadCommaRulesActivity(activity);
+                    break;
+                case 'fixSentence':
+                    loadFixSentenceActivity(activity);
+                    break;
+                case 'addS':
+                    loadAddSActivity(activity);
+                    break;
+                case 'fixErrors':
+                    loadFixErrorsActivity(activity);
+                    break;
+                case 'correctForm':
+                    loadCorrectFormActivity(activity);
+                    break;
+            }
+        }
+
+        // Fill in the Blank Activity
+        function loadFillBlankActivity(activity) {
+            const gameArea = document.getElementById('gameArea');
+            let vocab;
+            
+            if (activity.topic === 'carParts') {
+                vocab = shuffle(vocabularyData.carParts).slice(0, 5);
+            } else if (activity.topic === 'socialMedia') {
+                vocab = shuffle(vocabularyData.socialMedia.words).slice(0, 5);
+            } else if (activity.topic === 'dating') {
+                vocab = shuffle(vocabularyData.dating.words).slice(0, 5);
+            }
+            
+            const sentences = vocab.map(item => {
+                if (activity.topic === 'carParts') {
+                    return {
+                        sentence: getSentenceForCarPart(item.word),
+                        answer: item.word
+                    };
+                } else if (activity.topic === 'socialMedia') {
+                    return {
+                        sentence: getSentenceForSocialMedia(item.word),
+                        answer: item.word
+                    };
+                } else if (activity.topic === 'dating') {
+                    return {
+                        sentence: getSentenceForDating(item.word),
+                        answer: item.word
+                    };
+                }
+            });
+            
+            let html = `
+                <div class="activity-title">${activity.title}</div>
+                <div class="instructions">Complete each sentence with the correct word from the word bank.</div>
+            `;
+            
+            // Word bank
+            html += '<div class="conjunction-options">';
+            shuffle(vocab).forEach(item => {
+                html += `<div class="conjunction-btn" onclick="selectWord(this)">${item.word}</div>`;
+            });
+            html += '</div>';
+            
+            // Questions
+            sentences.forEach((item, index) => {
+                html += `
+                    <div class="question-container">
+                        <div class="question">${index + 1}. ${item.sentence}</div>
+                        <input type="text" class="input-answer" id="answer${index}" data-correct="${item.answer}" readonly placeholder="Click a word above">
+                    </div>
+                `;
+            });
+            
+            html += '<button class="submit-btn" onclick="checkFillBlank()">Check Answers</button>';
+            gameArea.innerHTML = html;
+        }
+
+        // Helper to get sentences for car parts
+        function getSentenceForCarPart(word) {
+            const sentences = {
+                'windshield': 'I clean the _______ so I can see the road clearly.',
+                'accelerator': 'Press the _______ to make the car go faster.',
+                'brake': 'Use the _______ to stop the car.',
+                'turn signal': 'Turn on your _______ before you change lanes.',
+                'trunk': 'I put my luggage in the _______ of the car.',
+                'hood': 'Open the _______ to check the engine.',
+                'steering wheel': 'Hold the _______ with both hands while driving.',
+                'headlights': 'Turn on the _______ when it gets dark.',
+                'taillights': 'The _______ at the back are red.',
+                'rearview mirror': 'Look in the _______ to see cars behind you.',
+                'side mirror': 'Check your _______ before changing lanes.',
+                'tire': 'One _______ is flat. I need to change it.',
+                'seat belt': 'Always wear your _______ for safety.',
+                'engine': 'The _______ makes the car run.',
+                'bumper': 'The _______ protects the car in small accidents.'
+            };
+            return sentences[word] || `The _______ is an important part of the car.`;
+        }
+
+        // Helper to get sentences for social media
+        function getSentenceForSocialMedia(word) {
+            const sentences = {
+                'addiction': 'Ahmed checks his phone 200 times per day. He has a phone _______.',
+                'device': 'My phone, tablet, and laptop are all electronic _______s.',
+                'statistic': 'According to the _______, 79% of Saudis use social media.',
+                'screen time': 'I have 6 hours of _______ every day.',
+                'trend': 'Phone addiction is a growing _______ in Saudi Arabia.',
+                'notification': 'Every time I get a _______, I check my phone immediately.',
+                'stare at': 'People _______ their screens for hours without looking up.',
+                'check': 'I _______ my phone as soon as I wake up.',
+                'scroll': 'I _______ through Instagram for 30 minutes before bed.',
+                'trigger': 'Notifications _______ me to check my phone constantly.',
+                'maintain': 'Social media helps me _______ friendships with people far away.',
+                'respond': 'I always _______ to messages within 5 minutes.',
+                'excessive': 'Using your phone 8 hours per day is _______.',
+                'harmful': 'Too much screen time can be _______ to your health.',
+                'present': 'Put your phone down and be _______ with your family.'
+            };
+            return sentences[word] || `The word _______ is important for this topic.`;
+        }
+
+        // Helper to get sentences for dating
+        function getSentenceForDating(word) {
+            const sentences = {
+                'dating app': 'Tinder is a popular _______ in many countries.',
+                'match': 'When two people both swipe right, they _______.',
+                'relationship': 'They have been in a _______ for two years.',
+                'spouse': 'My parents want me to find a good _______.',
+                'fraud': 'Be careful of _______ on dating apps.',
+                'choice': 'Young people want the _______ to pick their own partner.',
+                'freedom': 'Some people want _______ to date, but parents want tradition.',
+                'swipe': 'On Tinder, you _______ right if you like someone.',
+                'engage': 'They will _______ next month and marry next year.',
+                'arrange': 'In Saudi culture, parents often _______ marriages.',
+                'lie about': 'Some people _______ their age on dating apps.',
+                'respect': 'It is important to _______ your family\'s traditions.',
+                'traditional': 'Arranged marriage is a _______ custom in many cultures.',
+                'fake': 'Many profiles on dating apps are _______.',
+                'compatible': 'Parents look for someone who is _______ with their child.',
+                'judgmental': 'Some people are too _______ about relationships.'
+            };
+            return sentences[word] || `The word _______ is important in relationships.`;
+        }
+
+        // Select word function
+        let selectedWord = null;
+        function selectWord(btn) {
+            // Remove previous selection
+            document.querySelectorAll('.conjunction-btn').forEach(b => b.classList.remove('selected'));
+            
+            // Select this word
+            btn.classList.add('selected');
+            selectedWord = btn.textContent;
+            
+            // Find first empty input
+            const inputs = document.querySelectorAll('.input-answer');
+            for (let input of inputs) {
+                if (!input.value) {
+                    input.value = selectedWord;
+                    btn.classList.add('used');
+                    btn.style.opacity = '0.3';
+                    selectedWord = null;
+                    btn.classList.remove('selected');
+                    break;
+                }
+            }
+        }
+
+        // Check fill in the blank answers
+        function checkFillBlank() {
+            const inputs = document.querySelectorAll('.input-answer');
+            let correct = 0;
+            
+            inputs.forEach(input => {
+                const userAnswer = input.value.toLowerCase().trim();
+                const correctAnswer = input.dataset.correct.toLowerCase();
+                
+                if (userAnswer === correctAnswer) {
+                    input.classList.add('correct');
+                    input.classList.remove('incorrect');
+                    correct++;
+                } else {
+                    input.classList.add('incorrect');
+                    input.classList.remove('correct');
+                }
+            });
+            
+            gameState.score += correct * 10;
+            
+            showFeedback(correct === inputs.length, 
+                correct === inputs.length ? 
+                `Perfect! All ${correct} answers correct! 🎉` : 
+                `Good try! ${correct} out of ${inputs.length} correct.`);
+        }
+
+        // Matching Activity
+        function loadMatchingActivity(activity) {
+            const gameArea = document.getElementById('gameArea');
+            let vocab;
+            
+            if (activity.topic === 'carParts') {
+                vocab = shuffle(vocabularyData.carParts).slice(0, 6);
+            } else if (activity.topic === 'socialMedia') {
+                vocab = shuffle(vocabularyData.socialMedia.words).slice(0, 6);
+            } else if (activity.topic === 'dating') {
+                vocab = shuffle(vocabularyData.dating.words).slice(0, 6);
+            }
+            
+            const words = vocab.map(v => v.word);
+            const definitions = shuffle(vocab.map(v => ({ word: v.word, def: v.definition })));
+            
+            let html = `
+                <div class="activity-title">${activity.title}</div>
+                <div class="instructions">Click a word, then click its matching definition.</div>
+                <div class="matching-container">
+                    <div class="matching-column">
+                        <h3>Words</h3>
+                        <div id="wordsColumn">
+            `;
+            
+            words.forEach((word, index) => {
+                html += `<div class="match-item" data-id="${word}" onclick="selectMatchItem(this, 'word')">${word}</div>`;
+            });
+            
+            html += `
+                        </div>
+                    </div>
+                    <div class="matching-column">
+                        <h3>Definitions</h3>
+                        <div id="defsColumn">
+            `;
+            
+            definitions.forEach((item, index) => {
+                html += `<div class="match-item" data-id="${item.word}" onclick="selectMatchItem(this, 'def')">${item.def}</div>`;
+            });
+            
+            html += `
+                        </div>
+                    </div>
+                </div>
+                <div id="matchFeedback"></div>
+            `;
+            
+            gameArea.innerHTML = html;
+        }
+
+        let selectedMatchWord = null;
+        let selectedMatchDef = null;
+        let matchesCorrect = 0;
+        let totalMatches = 0;
+
+        function selectMatchItem(element, type) {
+            if (element.classList.contains('matched')) return;
+            
+            if (type === 'word') {
+                // Deselect previous word
+                document.querySelectorAll('#wordsColumn .match-item').forEach(el => el.classList.remove('selected'));
+                element.classList.add('selected');
+                selectedMatchWord = element.dataset.id;
+            } else {
+                // Deselect previous def
+                document.querySelectorAll('#defsColumn .match-item').forEach(el => el.classList.remove('selected'));
+                element.classList.add('selected');
+                selectedMatchDef = element.dataset.id;
+            }
+            
+            // Check if both are selected
+            if (selectedMatchWord && selectedMatchDef) {
+                checkMatch();
+            }
+        }
+
+        function checkMatch() {
+            totalMatches++;
+            const wordElements = document.querySelectorAll(`[data-id="${selectedMatchWord}"]`);
+            
+            if (selectedMatchWord === selectedMatchDef) {
+                // Correct match
+                wordElements.forEach(el => {
+                    el.classList.add('matched');
+                    el.classList.remove('selected');
+                });
+                matchesCorrect++;
+                gameState.score += 10;
+                
+                const feedbackDiv = document.getElementById('matchFeedback');
+                feedbackDiv.innerHTML = '<div class="feedback correct">✓ Correct match!</div>';
+                
+                // Check if all matched
+                setTimeout(() => {
+                    const allMatched = document.querySelectorAll('.match-item.matched').length === totalMatches * 2;
+                    if (allMatched) {
+                        showFeedback(true, `Perfect! All ${matchesCorrect} matches correct! 🎉`);
+                    } else {
+                        feedbackDiv.innerHTML = '';
+                    }
+                }, 1000);
+            } else {
+                // Incorrect match
+                const feedbackDiv = document.getElementById('matchFeedback');
+                feedbackDiv.innerHTML = '<div class="feedback incorrect">✗ Try again!</div>';
+                
+                setTimeout(() => {
+                    wordElements.forEach(el => el.classList.remove('selected'));
+                    feedbackDiv.innerHTML = '';
+                }, 1000);
+            }
+            
+            selectedMatchWord = null;
+            selectedMatchDef = null;
+        }
+
+        // Multiple Choice Activity
+        function loadMultipleChoiceActivity(activity) {
+            const gameArea = document.getElementById('gameArea');
+            let vocab;
+            
+            if (activity.topic === 'carParts') {
+                vocab = shuffle(vocabularyData.carParts).slice(0, 5);
+            } else if (activity.topic === 'socialMedia') {
+                vocab = shuffle(vocabularyData.socialMedia.words).slice(0, 5);
+            } else if (activity.topic === 'dating') {
+                vocab = shuffle(vocabularyData.dating.words).slice(0, 5);
+            }
+            
+            currentQuestions = vocab.map(item => {
+                const wrongAnswers = getWrongAnswers(item.word, activity.topic);
+                const allOptions = shuffle([item.word, ...wrongAnswers]);
+                
+                return {
+                    question: item.definition,
+                    options: allOptions,
+                    correct: item.word
+                };
+            });
+            
+            currentQuestionIndex = 0;
+            displayMultipleChoiceQuestion();
+        }
+
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+
+        function displayMultipleChoiceQuestion() {
+            const gameArea = document.getElementById('gameArea');
+            const question = currentQuestions[currentQuestionIndex];
+            
+            let html = `
+                <div class="activity-title">Multiple Choice</div>
+                <div class="instructions">Choose the word that matches the definition.</div>
+                <div class="question-container">
+                    <div class="question">Question ${currentQuestionIndex + 1} of ${currentQuestions.length}</div>
+                    <div class="question" style="font-size: 1.5rem; margin-top: 20px;">${question.question}</div>
+                    <div class="options">
+            `;
+            
+            question.options.forEach(option => {
+                html += `<button class="option-btn" onclick="checkMultipleChoice('${option}', '${question.correct}')">${option}</button>`;
+            });
+            
+            html += `
+                    </div>
+                    <div id="questionFeedback"></div>
+                </div>
+            `;
+            
+            gameArea.innerHTML = html;
+        }
+
+        function checkMultipleChoice(selected, correct) {
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === correct) {
+                    btn.classList.add('correct');
+                } else if (btn.textContent === selected && selected !== correct) {
+                    btn.classList.add('incorrect');
+                }
+            });
+            
+            const feedbackDiv = document.getElementById('questionFeedback');
+            if (selected === correct) {
+                gameState.score += 10;
+                feedbackDiv.innerHTML = '<div class="feedback correct">✓ Correct! Well done! 🎉</div>';
+            } else {
+                feedbackDiv.innerHTML = `<div class="feedback incorrect">✗ The correct answer is: ${correct}</div>`;
+            }
+            
+            setTimeout(() => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < currentQuestions.length) {
+                    displayMultipleChoiceQuestion();
+                } else {
+                    showFeedback(true, 'Activity complete! Moving to next challenge...');
+                }
+            }, 2000);
+        }
+
+        function getWrongAnswers(correctWord, topic) {
+            let allWords;
+            if (topic === 'carParts') {
+                allWords = vocabularyData.carParts.map(v => v.word);
+            } else if (topic === 'socialMedia') {
+                allWords = vocabularyData.socialMedia.words.map(v => v.word);
+            } else if (topic === 'dating') {
+                allWords = vocabularyData.dating.words.map(v => v.word);
+            }
+            
+            const wrong = allWords.filter(w => w !== correctWord);
+            return shuffle(wrong).slice(0, 3);
+        }
+
+        // True/False Activity
+        function loadTrueFalseActivity(activity) {
+            const gameArea = document.getElementById('gameArea');
+            let statements;
+            
+            if (activity.topic === 'carParts') {
+                statements = getTrueFalseStatements('carParts');
+            } else if (activity.topic === 'socialMedia') {
+                statements = getTrueFalseStatements('socialMedia');
+            } else if (activity.topic === 'dating') {
+                statements = getTrueFalseStatements('dating');
+            }
+            
+            currentQuestions = shuffle(statements).slice(0, 5);
+            currentQuestionIndex = 0;
+            displayTrueFalseQuestion();
+        }
+
+        function displayTrueFalseQuestion() {
+            const gameArea = document.getElementById('gameArea');
+            const question = currentQuestions[currentQuestionIndex];
+            
+            let html = `
+                <div class="activity-title">True or False</div>
+                <div class="instructions">Read the statement and decide if it's true or false.</div>
+                <div class="question-container">
+                    <div class="question">Question ${currentQuestionIndex + 1} of ${currentQuestions.length}</div>
+                    <div class="question" style="font-size: 1.5rem; margin-top: 20px;">${question.statement}</div>
+                    <div class="options">
+                        <button class="option-btn" onclick="checkTrueFalse(true, ${question.answer})">TRUE</button>
+                        <button class="option-btn" onclick="checkTrueFalse(false, ${question.answer})">FALSE</button>
+                    </div>
+                    <div id="questionFeedback"></div>
+                </div>
+            `;
+            
+            gameArea.innerHTML = html;
+        }
+
+        function checkTrueFalse(selected, correct) {
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(btn => btn.disabled = true);
+            
+            const feedbackDiv = document.getElementById('questionFeedback');
+            if (selected === correct) {
+                gameState.score += 10;
+                buttons[selected ? 0 : 1].classList.add('correct');
+                feedbackDiv.innerHTML = '<div class="feedback correct">✓ Correct! 🎉</div>';
+            } else {
+                buttons[selected ? 0 : 1].classList.add('incorrect');
+                buttons[correct ? 0 : 1].classList.add('correct');
+                feedbackDiv.innerHTML = `<div class="feedback incorrect">✗ That's ${selected ? 'true' : 'false'}, but the answer is ${correct ? 'TRUE' : 'FALSE'}</div>`;
+            }
+            
+            setTimeout(() => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < currentQuestions.length) {
+                    displayTrueFalseQuestion();
+                } else {
+                    showFeedback(true, 'Activity complete! Great work! 🎉');
+                }
+            }, 2000);
+        }
+
+        function getTrueFalseStatements(topic) {
+            if (topic === 'carParts') {
+                return [
+                    { statement: 'The windshield is at the back of the car.', answer: false },
+                    { statement: 'The accelerator makes the car go faster.', answer: true },
+                    { statement: 'The trunk is where you store luggage.', answer: true },
+                    { statement: 'The hood covers the tires.', answer: false },
+                    { statement: 'The rearview mirror helps you see behind the car.', answer: true },
+                    { statement: 'The brake pedal makes the car go faster.', answer: false },
+                    { statement: 'Taillights are at the front of the car.', answer: false },
+                    { statement: 'The seat belt keeps you safe in the car.', answer: true }
+                ];
+            } else if (topic === 'socialMedia') {
+                return [
+                    { statement: 'Addiction means it is easy to stop doing something.', answer: false },
+                    { statement: 'Screen time is the time you spend looking at electronic screens.', answer: true },
+                    { statement: 'Excessive means the right amount, not too much.', answer: false },
+                    { statement: 'To maintain something means to make it continue.', answer: true },
+                    { statement: 'Being present means looking at your phone while talking to family.', answer: false },
+                    { statement: 'A notification is a message that appears on your phone.', answer: true },
+                    { statement: 'To scroll means to turn off your phone.', answer: false },
+                    { statement: 'Statistics are numbers that show facts or information.', answer: true }
+                ];
+            } else if (topic === 'dating') {
+                return [
+                    { statement: 'A spouse is a boyfriend or girlfriend.', answer: false },
+                    { statement: 'To swipe right means you like someone on a dating app.', answer: true },
+                    { statement: 'An arranged marriage is when you choose your own partner.', answer: false },
+                    { statement: 'Compatible means able to have a good relationship.', answer: true },
+                    { statement: 'Fraud means telling the truth.', answer: false },
+                    { statement: 'To engage means to promise to marry someone.', answer: true },
+                    { statement: 'Being judgmental means accepting everyone\'s choices.', answer: false },
+                    { statement: 'Traditional means following old customs and ways.', answer: true }
+                ];
+            }
+        }
+
+        // Scenarios Activity
+        function loadScenariosActivity(activity) {
+            const gameArea = document.getElementById('gameArea');
+            let scenarios;
+            
+            if (activity.topic === 'socialMedia') {
+                scenarios = [
+                    {
+                        scenario: 'Ahmed checks his phone 200 times per day. He feels anxious without it. He has a phone _______.',
+                        options: ['addiction', 'device', 'notification', 'trend'],
+                        correct: 'addiction'
+                    },
+                    {
+                        scenario: 'Sarah spends 8 hours per day on her phone. This is too much. Her phone use is _______.',
+                        options: ['present', 'excessive', 'harmful', 'immune'],
+                        correct: 'excessive'
+                    },
+                    {
+                        scenario: 'Bright colors and sounds on apps _______ the reward centers in our brains.',
+                        options: ['trigger', 'maintain', 'respond', 'check'],
+                        correct: 'trigger'
+                    },
+                    {
+                        scenario: 'When everyone is looking at their phones during dinner, they are not _______.',
+                        options: ['present', 'excessive', 'harmful', 'immune'],
+                        correct: 'present'
+                    },
+                    {
+                        scenario: 'According to the _______, 79% of Saudis use social media daily.',
+                        options: ['statistics', 'notifications', 'devices', 'trends'],
+                        correct: 'statistics'
+                    }
+                ];
+            } else if (activity.topic === 'dating') {
+                scenarios = [
+                    {
+                        scenario: 'In Saudi culture, parents often _______ marriages for their children.',
+                        options: ['arrange', 'engage', 'swipe', 'match'],
+                        correct: 'arrange'
+                    },
+                    {
+                        scenario: 'Young Saudis feel _______ traditional values and modern freedom.',
+                        options: ['caught between', 'compatible with', 'embarrassed to', 'immune to'],
+                        correct: 'caught between'
+                    },
+                    {
+                        scenario: 'Many young people _______ their relationships from their families.',
+                        options: ['keep secret', 'meet online', 'arrange marriages', 'be embarrassed to'],
+                        correct: 'keep secret'
+                    },
+                    {
+                        scenario: 'Some people _______ their age on dating apps.',
+                        options: ['lie about', 'respect', 'arrange', 'match'],
+                        correct: 'lie about'
+                    },
+                    {
+                        scenario: 'Parents look for someone who is _______ with their child.',
+                        options: ['compatible', 'fake', 'judgmental', 'traditional'],
+                        correct: 'compatible'
+                    }
+                ];
+            }
+            
+            currentQuestions = scenarios;
+            currentQuestionIndex = 0;
+            displayScenarioQuestion();
+        }
+
+        function displayScenarioQuestion() {
+            const gameArea = document.getElementById('gameArea');
+            const question = currentQuestions[currentQuestionIndex];
+            
+            let html = `
+                <div class="activity-title">Real Life Scenarios</div>
+                <div class="instructions">Choose the best word to complete each scenario.</div>
+                <div class="question-container">
+                    <div class="question">Scenario ${currentQuestionIndex + 1} of ${currentQuestions.length}</div>
+                    <div class="question" style="font-size: 1.4rem; margin-top: 20px;">${question.scenario}</div>
+                    <div class="options">
+            `;
+            
+            question.options.forEach(option => {
+                html += `<button class="option-btn" onclick="checkScenario('${option}', '${question.correct}')">${option}</button>`;
+            });
+            
+            html += `
+                    </div>
+                    <div id="questionFeedback"></div>
+                </div>
+            `;
+            
+            gameArea.innerHTML = html;
+        }
+
+        function checkScenario(selected, correct) {
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === correct) {
+                    btn.classList.add('correct');
+                } else if (btn.textContent === selected && selected !== correct) {
+                    btn.classList.add('incorrect');
+                }
+            });
+            
+            const feedbackDiv = document.getElementById('questionFeedback');
+            if (selected === correct) {
+                gameState.score += 10;
+                feedbackDiv.innerHTML = '<div class="feedback correct">✓ Perfect! That fits perfectly! 🎉</div>';
+            } else {
+                feedbackDiv.innerHTML = `<div class="feedback incorrect">✗ The best answer is: ${correct}</div>`;
+            }
+            
+            setTimeout(() => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < currentQuestions.length) {
+                    displayScenarioQuestion();
+                } else {
+                    showFeedback(true, 'Scenarios complete! Excellent work! 🎉');
+                }
+            }, 2500);
+        }
+
+        // Expression Match Activity
+        function loadExpressionMatchActivity(activity) {
+            const gameArea = document.getElementById('gameArea');
+            let expressions;
+            
+            if (activity.topic === 'socialMedia') {
+                expressions = vocabularyData.socialMedia.expressions;
+            } else if (activity.topic === 'dating') {
+                expressions = vocabularyData.dating.expressions;
+            }
+            
+            const shuffledExpressions = shuffle(expressions);
+            const phrases = shuffledExpressions.map(e => e.phrase);
+            const meanings = shuffle(shuffledExpressions.map(e => ({ phrase: e.phrase, meaning: e.meaning })));
+            
+            let html = `
+                <div class="activity-title">Match Expressions</div>
+                <div class="instructions">Match each expression with its meaning.</div>
+                <div class="matching-container">
+                    <div class="matching-column">
+                        <h3>Expressions</h3>
+                        <div id="wordsColumn">
+            `;
+            
+            phrases.forEach(phrase => {
+                html += `<div class="match-item" data-id="${phrase}" onclick="selectMatchItem(this, 'word')">${phrase}</div>`;
+            });
+            
+            html += `
+                        </div>
+                    </div>
+                    <div class="matching-column">
+                        <h3>Meanings</h3>
+                        <div id="defsColumn">
+            `;
+            
+            meanings.forEach(item => {
+                html += `<div class="match-item" data-id="${item.phrase}" onclick="selectMatchItem(this, 'def')">${item.meaning}</div>`;
+            });
+            
+            html += `
+                        </div>
+                    </div>
+                </div>
+                <div id="matchFeedback"></div>
+            `;
+            
+            gameArea.innerHTML = html;
+            
+            // Reset match counters
+            selectedMatchWord = null;
+            selectedMatchDef = null;
+            matchesCorrect = 0;
+            totalMatches = 0;
+        }
+
+        // Conjunction Activities
+        function loadConjunctionConnectActivity(activity) {
+            const gameArea = document.getElementById('gameArea');
+            
+            const sentencePairs = [
+                {
+                    part1: 'I check my phone',
+                    part2: 'I wake up',
+                    conjunction: 'when',
+                    options: ['when', 'because', 'although', 'if']
+                },
+                {
+                    part1: 'He uses dating apps',
+                    part2: 'he is shy',
+                    conjunction: 'although',
+                    options: ['although', 'when', 'because', 'until']
+                },
+                {
+                    part1: 'Parents will be happy',
+                    part2: 'you respect tradition',
+                    conjunction: 'if',
+                    options: ['if', 'when', 'while', 'because']
+                },
+                {
+                    part1: "I can't sleep",
+                    part2: 'I check my notifications',
+                    conjunction: 'until',
+                    options: ['until', 'when', 'if', 'while']
+                },
+                {
+                    part1: 'I use social media',
+                    part2: 'I want to stay connected',
+                    conjunction: 'because',
+                    options: ['because', 'although', 'when', 'unless']
+                }
+            ];
+            
+            currentQuestions = shuffle(sentencePairs);
+            currentQuestionIndex = 0;
+            displayConjunctionConnectQuestion();
+        }
+
+        function displayConjunctionConnectQuestion() {
+            const gameArea = document.getElementById('gameArea');
+            const question = currentQuestions[currentQuestionIndex];
+            
+            let html = `
+                <div class="activity-title">Connect the Sentences</div>
+                <div class="instructions">Choose the best conjunction to connect these two parts.</div>
+                <div class="question-container">
+                    <div class="question">Question ${currentQuestionIndex + 1} of ${currentQuestions.length}</div>
+                    <div class="drag-drop-area" style="grid-template-columns: 1fr;">
+                        <div class="sentence-part">${question.part1}</div>
+                        <div class="conjunction-slot" id="conjSlot">?</div>
+                        <div class="sentence-part">${question.part2}</div>
+                    </div>
+                    <div class="conjunction-options">
+            `;
+            
+            question.options.forEach(conj => {
+                html += `<button class="conjunction-btn" onclick="selectConjunction('${conj}', '${question.conjunction}')">${conj}</button>`;
+            });
+            
+            html += `
+                    </div>
+                    <div id="questionFeedback"></div>
+                </div>
+            `;
+            
+            gameArea.innerHTML = html;
+        }
+
+        function selectConjunction(selected, correct) {
+            const slot = document.getElementById('conjSlot');
+            slot.textContent = selected;
+            slot.classList.add('filled');
+            
+            const buttons = document.querySelectorAll('.conjunction-btn');
+            buttons.forEach(btn => btn.disabled = true);
+            
+            const feedbackDiv = document.getElementById('questionFeedback');
+            if (selected === correct) {
+                gameState.score += 10;
+                slot.style.background = 'linear-gradient(135deg, var(--success), #059669)';
+                feedbackDiv.innerHTML = '<div class="feedback correct">✓ Perfect connection! 🎉</div>';
+            } else {
+                slot.style.background = 'linear-gradient(135deg, var(--danger), #dc2626)';
+                feedbackDiv.innerHTML = `<div class="feedback incorrect">✗ Better choice: ${correct}</div>`;
+            }
+            
+            setTimeout(() => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < currentQuestions.length) {
+                    displayConjunctionConnectQuestion();
+                } else {
+                    showFeedback(true, 'Great job connecting sentences! 🎉');
+                }
+            }, 2500);
+        }
+
+        // Conjunction Choice Activity
+        function loadConjunctionChoiceActivity(activity) {
+            const gameArea = document.getElementById('gameArea');
+            
+            const sentences = [
+                {
+                    sentence: '_______ I see a notification, I check my phone immediately.',
+                    options: ['When', 'Because', 'Although', 'Unless'],
+                    correct: 'When'
+                },
+                {
+                    sentence: 'Young people want freedom _______ parents want tradition.',
+                    options: ['while', 'until', 'because', 'if'],
+                    correct: 'while'
+                },
+                {
+                    sentence: "I won't go to the party _______ you come with me.",
+                    options: ['unless', 'when', 'because', 'although'],
+                    correct: 'unless'
+                },
+                {
+                    sentence: '_______ dating apps are popular, some people prefer traditional ways.',
+                    options: ['Although', 'Because', 'When', 'If'],
+                    correct: 'Although'
+                },
+                {
+                    sentence: 'I will call you _______ I arrive home.',
+                    options: ['as soon as', 'until', 'unless', 'while'],
+                    correct: 'as soon as'
+                }
+            ];
+            
+            currentQuestions = shuffle(sentences);
+            currentQuestionIndex = 0;
+            displayConjunctionChoiceQuestion();
+        }
+
+        function displayConjunctionChoiceQuestion() {
+            const gameArea = document.getElementById('gameArea');
+            const question = currentQuestions[currentQuestionIndex];
+            
+            let html = `
+                <div class="activity-title">Choose the Conjunction</div>
+                <div class="instructions">Select the correct conjunction to complete each sentence.</div>
+                <div class="question-container">
+                    <div class="question">Question ${currentQuestionIndex + 1} of ${currentQuestions.length}</div>
+                    <div class="question" style="font-size: 1.4rem; margin-top: 20px;">${question.sentence}</div>
+                    <div class="options">
+            `;
+            
+            question.options.forEach(option => {
+                html += `<button class="option-btn" onclick="checkConjunctionChoice('${option}', '${question.correct}')">${option}</button>`;
+            });
+            
+            html += `
+                    </div>
+                    <div id="questionFeedback"></div>
+                </div>
+            `;
+            
+            gameArea.innerHTML = html;
+        }
+
+        function checkConjunctionChoice(selected, correct) {
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === correct) {
+                    btn.classList.add('correct');
+                } else if (btn.textContent === selected && selected !== correct) {
+                    btn.classList.add('incorrect');
+                }
+            });
+            
+            const feedbackDiv = document.getElementById('questionFeedback');
+            if (selected === correct) {
+                gameState.score += 10;
+                feedbackDiv.innerHTML = '<div class="feedback correct">✓ Excellent choice! 🎉</div>';
+            } else {
+                feedbackDiv.innerHTML = `<div class="feedback incorrect">✗ The correct answer is: ${correct}</div>`;
+            }
+            
+            setTimeout(() => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < currentQuestions.length) {
+                    displayConjunctionChoiceQuestion();
+                } else {
+                    showFeedback(true, 'Conjunction mastery achieved! 🎉');
+                }
+            }, 2500);
+        }
+
+        // Comma Rules Activity
+        function loadCommaRulesActivity(activity) {
+            const gameArea = document.getElementById('gameArea');
+            
+            const sentences = [
+                {
+                    sentence: 'When I wake up, I check my phone.',
+                    needsComma: true,
+                    explanation: 'When the conjunction is at the START, use a comma.'
+                },
+                {
+                    sentence: 'I check my phone when I wake up.',
+                    needsComma: false,
+                    explanation: 'When the conjunction is in the MIDDLE, NO comma.'
+                },
+                {
+                    sentence: 'Although he is shy, he uses dating apps.',
+                    needsComma: true,
+                    explanation: 'Conjunction at the START needs a comma.'
+                },
+                {
+                    sentence: 'Parents will be happy if you respect tradition.',
+                    needsComma: false,
+                    explanation: 'Conjunction in the MIDDLE needs NO comma.'
+                },
+                {
+                    sentence: 'Because screen time is excessive, it can be harmful.',
+                    needsComma: true,
+                    explanation: 'Conjunction at the START needs a comma.'
+                }
+            ];
+            
+            currentQuestions = shuffle(sentences);
+            currentQuestionIndex = 0;
+            displayCommaRulesQuestion();
+        }
+
+        function displayCommaRulesQuestion() {
+            const gameArea = document.getElementById('gameArea');
+            const question = currentQuestions[currentQuestionIndex];
+            
+            let html = `
+                <div class="activity-title">Comma or No Comma?</div>
+                <div class="instructions">Decide if this sentence is correct as written.</div>
+                <div class="question-container">
+                    <div class="question">Question ${currentQuestionIndex + 1} of ${currentQuestions.length}</div>
+                    <div class="question" style="font-size: 1.5rem; margin-top: 20px; padding: 25px; background: var(--bg-light); border-radius: 15px;">${question.sentence}</div>
+                    <div class="options">
+                        <button class="option-btn" onclick="checkCommaRule(true, ${question.needsComma}, '${question.explanation}')">CORRECT ✓</button>
+                        <button class="option-btn" onclick="checkCommaRule(false, ${question.needsComma}, '${question.explanation}')">INCORRECT ✗</button>
+                    </div>
+                    <div id="questionFeedback"></div>
+                </div>
+            `;
+            
+            gameArea.innerHTML = html;
+        }
+
+        function checkCommaRule(userSaysCorrect, actuallyCorrect, explanation) {
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(btn => btn.disabled = true);
+            
+            const feedbackDiv = document.getElementById('questionFeedback');
+            const isCorrect = (userSaysCorrect === actuallyCorrect);
+            
+            if (isCorrect) {
+                gameState.score += 10;
+                buttons[0].classList.add('correct');
+                feedbackDiv.innerHTML = `<div class="feedback correct">✓ Correct! ${explanation}</div>`;
+            } else {
+                buttons[1].classList.add('correct');
+                buttons[0].classList.add('incorrect');
+                feedbackDiv.innerHTML = `<div class="feedback incorrect">✗ ${explanation}</div>`;
+            }
+            
+            setTimeout(() => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < currentQuestions.length) {
+                    displayCommaRulesQuestion();
+                } else {
+                    showFeedback(true, 'Comma rules mastered! 🎉');
+                }
+            }, 3000);
+        }
+
+        // Fix Sentence Activity
+        function loadFixSentenceActivity(activity) {
+            const gameArea = document.getElementById('gameArea');
+            
+            const sentences = [
+                {
+                    wrong: 'Because I am addicted to my phone I check it constantly.',
+                    correct: 'Because I am addicted to my phone, I check it constantly.',
+                    error: 'Missing comma after conjunction at the start'
+                },
+                {
+                    wrong: 'I use dating apps, because I want to meet new people.',
+                    correct: 'I use dating apps because I want to meet new people.',
+                    error: 'No comma needed when conjunction is in the middle'
+                },
+                {
+                    wrong: 'Although my parents is traditional I want freedom.',
+                    correct: 'Although my parents are traditional, I want freedom.',
+                    error: 'Wrong verb form (is → are) and missing comma'
+                },
+                {
+                    wrong: 'When he finish work he will call you.',
+                    correct: 'When he finishes work, he will call you.',
+                    error: 'Missing "s" on verb and missing comma'
+                },
+                {
+                    wrong: 'Unless you study hard, you will not pass.',
+                    correct: 'Unless you study hard, you will not pass.',
+                    error: 'This sentence is actually CORRECT!'
+                }
+            ];
+            
+            currentQuestions = shuffle(sentences).slice(0, 4);
+            currentQuestionIndex = 0;
+            displayFixSentenceQuestion();
+        }
+
+        function displayFixSentenceQuestion() {
+            const gameArea = document.getElementById('gameArea');
+            const question = currentQuestions[currentQuestionIndex];
+            
+            let html = `
+                <div class="activity-title">Fix the Sentence</div>
+                <div class="instructions">Find and fix the error in this sentence. Type the correct version.</div>
+                <div class="question-container">
+                    <div class="question">Question ${currentQuestionIndex + 1} of ${currentQuestions.length}</div>
+                    <div class="question" style="font-size: 1.3rem; margin-top: 20px; padding: 25px; background: rgba(239, 68, 68, 0.1); border-radius: 15px; border: 2px solid var(--danger);">${question.wrong}</div>
+                    <textarea class="input-answer" id="fixedSentence" placeholder="Type the corrected sentence here..." style="height: 100px; margin-top: 20px;"></textarea>
+                    <button class="submit-btn" style="margin-top: 20px;" onclick="checkFixedSentence('${question.correct}', '${question.error}')">Check Answer</button>
+                    <div id="questionFeedback"></div>
+                </div>
+            `;
+            
+            gameArea.innerHTML = html;
+        }
+
+        function checkFixedSentence(correct, errorExplanation) {
+            const userAnswer = document.getElementById('fixedSentence').value.trim();
+            const feedbackDiv = document.getElementById('questionFeedback');
+            
+            // Normalize for comparison (remove extra spaces, standardize punctuation)
+            const normalizedUser = userAnswer.toLowerCase().replace(/\s+/g, ' ').trim();
+            const normalizedCorrect = correct.toLowerCase().replace(/\s+/g, ' ').trim();
+            
+            if (normalizedUser === normalizedCorrect) {
+                gameState.score += 15;
+                feedbackDiv.innerHTML = `<div class="feedback correct">✓ Perfect! You found and fixed the error! <br><strong>Error was:</strong> ${errorExplanation}</div>`;
+            } else {
+                feedbackDiv.innerHTML = `<div class="feedback incorrect">✗ Not quite right. <br><strong>Correct answer:</strong> ${correct}<br><strong>Error was:</strong> ${errorExplanation}</div>`;
+            }
+            
+            setTimeout(() => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < currentQuestions.length) {
+                    displayFixSentenceQuestion();
+                } else {
+                    showFeedback(true, 'Sentence fixing complete! Well done! 🎉');
+                }
+            }, 4000);
+        }
+
+        // Present Simple Activities
+        function loadAddSActivity(activity) {
+            const gameArea = document.getElementById('gameArea');
+            
+            const paragraph = `
+                My friend Ahmed (live) _______ in Riyadh. Every morning, he (wake) _______ up at 6 AM and (check) _______ his phone. 
+                His sister Fatima (work) _______ at a bank. She (drive) _______ to work every day. 
+                Ahmed (study) _______ English because he (want) _______ to get a better job. 
+                His phone always (notify) _______ him when he (receive) _______ a message.
+            `;
+            
+            const answers = {
+                'live': 'lives',
+                'wake': 'wakes',
+                'check': 'checks',
+                'work': 'works',
+                'drive': 'drives',
+                'study': 'studies',
+                'want': 'wants',
+                'notify': 'notifies',
+                'receive': 'receives'
+            };
+            
+            let html = `
+                <div class="activity-title">Add the "S"</div>
+                <div class="instructions">Fill in the correct form of each verb. Remember: he/she/it needs "s"!</div>
+                <div class="paragraph-exercise">
+            `;
+            
+            // Split paragraph and create inputs
+            let processedText = paragraph;
+            Object.keys(answers).forEach((verb, index) => {
+                processedText = processedText.replace(`(${verb}) _______`, 
+                    `<input type="text" class="verb-input" id="verb${index}" data-correct="${answers[verb]}" placeholder="...">`);
+            });
+            
+            html += processedText;
+            html += `
+                </div>
+                <button class="submit-btn" onclick="checkAddS()">Check Answers</button>
+                <div id="paragraphFeedback"></div>
+            `;
+            
+            gameArea.innerHTML = html;
+        }
+
+        function checkAddS() {
+            const inputs = document.querySelectorAll('.verb-input');
+            let correct = 0;
+            
+            inputs.forEach(input => {
+                const userAnswer = input.value.toLowerCase().trim();
+                const correctAnswer = input.dataset.correct.toLowerCase();
+                
+                if (userAnswer === correctAnswer) {
+                    input.classList.add('correct');
+                    input.classList.remove('incorrect');
+                    correct++;
+                } else {
+                    input.classList.add('incorrect');
+                    input.classList.remove('correct');
+                }
+            });
+            
+            const feedbackDiv = document.getElementById('paragraphFeedback');
+            gameState.score += correct * 10;
+            
+            if (correct === inputs.length) {
+                feedbackDiv.innerHTML = `<div class="feedback correct">🎉 Perfect! All ${correct} verbs correct!</div>`;
+            } else {
+                feedbackDiv.innerHTML = `<div class="feedback incorrect">Good try! ${correct} out of ${inputs.length} correct. Check the incorrect ones.</div>`;
+            }
+            
+            setTimeout(() => {
+                if (correct === inputs.length) {
+                    showFeedback(true, 'Excellent verb work! 🎉');
+                }
+            }, 2000);
+        }
+
+        // Fix Errors Activity
+        function loadFixErrorsActivity(activity) {
+            const gameArea = document.getElementById('gameArea');
+            
+            const sentences = [
+                {
+                    sentence: 'She check her phone every morning.',
+                    correct: 'checks',
+                    word: 'check'
+                },
+                {
+                    sentence: 'My brother use dating apps.',
+                    correct: 'uses',
+                    word: 'use'
+                },
+                {
+                    sentence: 'Ahmed study English every day.',
+                    correct: 'studies',
+                    word: 'study'
+                },
+                {
+                    sentence: 'The phone notify me when I receive a message.',
+                    correct: 'notifies',
+                    word: 'notify'
+                },
+                {
+                    sentence: 'She go to work at 8 AM.',
+                    correct: 'goes',
+                    word: 'go'
+                }
+            ];
+            
+            currentQuestions = shuffle(sentences);
+            currentQuestionIndex = 0;
+            displayFixErrorsQuestion();
+        }
+
+        function displayFixErrorsQuestion() {
+            const gameArea = document.getElementById('gameArea');
+            const question = currentQuestions[currentQuestionIndex];
+            
+            const highlightedSentence = question.sentence.replace(
+                question.word, 
+                `<span style="color: var(--danger); font-weight: 700; text-decoration: underline;">${question.word}</span>`
+            );
+            
+            let html = `
+                <div class="activity-title">Fix the Error</div>
+                <div class="instructions">Find the verb error and type the correct form.</div>
+                <div class="question-container">
+                    <div class="question">Question ${currentQuestionIndex + 1} of ${currentQuestions.length}</div>
+                    <div class="question" style="font-size: 1.4rem; margin-top: 20px; padding: 25px; background: rgba(239, 68, 68, 0.1); border-radius: 15px;">${highlightedSentence}</div>
+                    <input type="text" class="input-answer" id="correctedVerb" placeholder="Type the correct verb form...">
+                    <button class="submit-btn" style="margin-top: 20px;" onclick="checkFixedVerb('${question.correct}')">Check Answer</button>
+                    <div id="questionFeedback"></div>
+                </div>
+            `;
+            
+            gameArea.innerHTML = html;
+        }
+
+        function checkFixedVerb(correct) {
+            const userAnswer = document.getElementById('correctedVerb').value.toLowerCase().trim();
+            const feedbackDiv = document.getElementById('questionFeedback');
+            
+            if (userAnswer === correct) {
+                gameState.score += 10;
+                feedbackDiv.innerHTML = `<div class="feedback correct">✓ Perfect! The correct form is "${correct}"</div>`;
+                
+                setTimeout(() => {
+                    currentQuestionIndex++;
+                    if (currentQuestionIndex < currentQuestions.length) {
+                        displayFixErrorsQuestion();
+                    } else {
+                        showFeedback(true, 'Error fixing complete! Great job! 🎉');
+                    }
+                }, 2000);
+            } else {
+                feedbackDiv.innerHTML = `<div class="feedback incorrect">✗ Try again! Think about he/she/it + verb...</div>`;
+            }
+        }
+
+        // Correct Form Activity
+        function loadCorrectFormActivity(activity) {
+            const gameArea = document.getElementById('gameArea');
+            
+            const questions = [
+                {
+                    sentence: 'He _______ dating apps every day.',
+                    options: ['use', 'uses', 'using', 'to use'],
+                    correct: 'uses'
+                },
+                {
+                    sentence: 'They _______ their phones during dinner.',
+                    options: ['checks', 'check', 'checking', 'to check'],
+                    correct: 'check'
+                },
+                {
+                    sentence: 'She _______ to work at 8 AM.',
+                    options: ['go', 'goes', 'going', 'to go'],
+                    correct: 'goes'
+                },
+                {
+                    sentence: 'My friends _______ English very well.',
+                    options: ['speaks', 'speak', 'speaking', 'to speak'],
+                    correct: 'speak'
+                },
+                {
+                    sentence: 'Ahmed _______ his parents every Friday.',
+                    options: ['visit', 'visits', 'visiting', 'to visit'],
+                    correct: 'visits'
+                }
+            ];
+            
+            currentQuestions = shuffle(questions);
+            currentQuestionIndex = 0;
+            displayCorrectFormQuestion();
+        }
+
+        function displayCorrectFormQuestion() {
+            const gameArea = document.getElementById('gameArea');
+            const question = currentQuestions[currentQuestionIndex];
+            
+            let html = `
+                <div class="activity-title">Choose Correct Form</div>
+                <div class="instructions">Select the correct verb form to complete the sentence.</div>
+                <div class="question-container">
+                    <div class="question">Question ${currentQuestionIndex + 1} of ${currentQuestions.length}</div>
+                    <div class="question" style="font-size: 1.4rem; margin-top: 20px;">${question.sentence}</div>
+                    <div class="options">
+            `;
+            
+            question.options.forEach(option => {
+                html += `<button class="option-btn" onclick="checkCorrectForm('${option}', '${question.correct}')">${option}</button>`;
+            });
+            
+            html += `
+                    </div>
+                    <div id="questionFeedback"></div>
+                </div>
+            `;
+            
+            gameArea.innerHTML = html;
+        }
+
+        function checkCorrectForm(selected, correct) {
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === correct) {
+                    btn.classList.add('correct');
+                } else if (btn.textContent === selected && selected !== correct) {
+                    btn.classList.add('incorrect');
+                }
+            });
+            
+            const feedbackDiv = document.getElementById('questionFeedback');
+            if (selected === correct) {
+                gameState.score += 10;
+                feedbackDiv.innerHTML = '<div class="feedback correct">✓ Perfect! Correct verb form! 🎉</div>';
+            } else {
+                feedbackDiv.innerHTML = `<div class="feedback incorrect">✗ The correct form is: ${correct}</div>`;
+            }
+            
+            setTimeout(() => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < currentQuestions.length) {
+                    displayCorrectFormQuestion();
+                } else {
+                    showFeedback(true, 'Verb forms mastered! Excellent! 🎉');
+                }
+            }, 2000);
+        }
+
+        // Show feedback and move to next activity
+        function showFeedback(success, message) {
+            const gameArea = document.getElementById('gameArea');
+            
+            let html = `
+                <div class="completion-screen">
+                    <h2>${success ? '🎉 Activity Complete!' : '⚠️ Keep Trying!'}</h2>
+                    <p style="font-size: 1.3rem; margin: 20px 0;">${message}</p>
+                    <div class="final-score">Current Score: ${gameState.score} points</div>
+            `;
+            
+            if (success) {
+                html += '<button class="submit-btn next-btn" onclick="nextActivity()">Continue to Next Activity →</button>';
+            } else {
+                html += '<button class="submit-btn" onclick="loadActivity()">Try Again</button>';
+            }
+            
+            html += '</div>';
+            gameArea.innerHTML = html;
+            
+            updateProgress();
+        }
+
+        // Move to next activity
+        function nextActivity() {
+            const level = levels[gameState.currentLevel];
+            gameState.currentActivity++;
+            
+            if (gameState.currentActivity >= level.activities.length) {
+                // Level complete!
+                completeLevel();
+            } else {
+                loadActivity();
+            }
+        }
+
+        // Complete current level
+        function completeLevel() {
+            if (!gameState.completedLevels.includes(gameState.currentLevel)) {
+                gameState.completedLevels.push(gameState.currentLevel);
+            }
+            
+            const gameArea = document.getElementById('gameArea');
+            
+            let html = `
+                <div class="completion-screen">
+                    <h2>🏆 Level Complete!</h2>
+                    <div class="stars-earned">
+                        <span class="star" style="animation-delay: 0s;">⭐</span>
+                        <span class="star" style="animation-delay: 0.2s;">⭐</span>
+                        <span class="star" style="animation-delay: 0.4s;">⭐</span>
+                    </div>
+                    <p style="font-size: 1.5rem; margin: 20px 0;">Amazing work on ${levels[gameState.currentLevel].name}!</p>
+                    <div class="final-score">Total Score: ${gameState.score} points</div>
+            `;
+            
+            if (gameState.currentLevel < levels.length - 1) {
+                html += `
+                    <button class="submit-btn next-btn" onclick="startLevel(${gameState.currentLevel + 1})">Next Level →</button>
+                    <button class="submit-btn" style="background: var(--bg-light); margin-top: 15px;" onclick="showLevelMenu()">Back to Menu</button>
+                `;
+            } else {
+                html += `
+                    <h3 style="margin-top: 30px; color: var(--warning);">🎊 You've completed ALL levels! 🎊</h3>
+                    <button class="submit-btn" onclick="showLevelMenu()">Back to Menu</button>
+                `;
+            }
+            
+            html += '</div>';
+            gameArea.innerHTML = html;
+            
+            createConfetti();
+        }
+
+        // Create confetti effect
+        function createConfetti() {
+            const colors = ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b', '#10b981'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 2 + 's';
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 3000);
+            }
+        }
+
+        // Initialize game
+        createStars();
+        showLevelMenu();
+        updateProgress();
+    </script>
+</body>
+</html>
