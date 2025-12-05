@@ -1073,7 +1073,7 @@
             
             let html = `
                 <div class="activity-title">${activity.title}</div>
-                <div class="instructions">Complete each sentence with the correct word from the word bank.</div>
+                <div class="instructions">Complete each sentence with the correct word from the word bank. Click an input to clear it.</div>
             `;
             
             // Word bank
@@ -1088,13 +1088,31 @@
                 html += `
                     <div class="question-container">
                         <div class="question">${index + 1}. ${item.sentence}</div>
-                        <input type="text" class="input-answer" id="answer${index}" data-correct="${item.answer}" readonly placeholder="Click a word above">
+                        <input type="text" class="input-answer" id="answer${index}" data-correct="${item.answer}" readonly placeholder="Click a word above" onclick="clearInput(this)">
                     </div>
                 `;
             });
             
             html += '<button class="submit-btn" onclick="checkFillBlank()">Check Answers</button>';
             gameArea.innerHTML = html;
+        }
+
+        // Clear input function
+        function clearInput(input) {
+            if (!input.classList.contains('correct') && !input.classList.contains('incorrect')) {
+                const word = input.value;
+                if (word) {
+                    // Re-enable the word button
+                    document.querySelectorAll('.conjunction-btn').forEach(btn => {
+                        if (btn.textContent === word) {
+                            btn.classList.remove('used');
+                            btn.style.opacity = '1';
+                            btn.style.cursor = 'pointer';
+                        }
+                    });
+                    input.value = '';
+                }
+            }
         }
 
         // Helper to get sentences for car parts
@@ -1167,6 +1185,9 @@
         // Select word function
         let selectedWord = null;
         function selectWord(btn) {
+            // Don't allow selecting used words
+            if (btn.classList.contains('used')) return;
+            
             // Remove previous selection
             document.querySelectorAll('.conjunction-btn').forEach(b => b.classList.remove('selected'));
             
@@ -1181,6 +1202,7 @@
                     input.value = selectedWord;
                     btn.classList.add('used');
                     btn.style.opacity = '0.3';
+                    btn.style.cursor = 'not-allowed';
                     selectedWord = null;
                     btn.classList.remove('selected');
                     break;
@@ -1228,6 +1250,12 @@
                 vocab = shuffle(vocabularyData.dating.words).slice(0, 6);
             }
             
+            // Reset match counters and set expected
+            selectedMatchWord = null;
+            selectedMatchDef = null;
+            matchesCorrect = 0;
+            expectedMatches = vocab.length;
+            
             const words = vocab.map(v => v.word);
             const definitions = shuffle(vocab.map(v => ({ word: v.word, def: v.definition })));
             
@@ -1269,7 +1297,7 @@
         let selectedMatchWord = null;
         let selectedMatchDef = null;
         let matchesCorrect = 0;
-        let totalMatches = 0;
+        let expectedMatches = 0;
 
         function selectMatchItem(element, type) {
             if (element.classList.contains('matched')) return;
@@ -1293,7 +1321,6 @@
         }
 
         function checkMatch() {
-            totalMatches++;
             const wordElements = document.querySelectorAll(`[data-id="${selectedMatchWord}"]`);
             
             if (selectedMatchWord === selectedMatchDef) {
@@ -1310,7 +1337,8 @@
                 
                 // Check if all matched
                 setTimeout(() => {
-                    const allMatched = document.querySelectorAll('.match-item.matched').length === totalMatches * 2;
+                    const matchedCount = document.querySelectorAll('.match-item.matched').length;
+                    const allMatched = matchedCount === expectedMatches * 2;
                     if (allMatched) {
                         showFeedback(true, `Perfect! All ${matchesCorrect} matches correct! 🎉`);
                     } else {
@@ -1667,6 +1695,12 @@
                 expressions = vocabularyData.dating.expressions;
             }
             
+            // Reset match counters and set expected
+            selectedMatchWord = null;
+            selectedMatchDef = null;
+            matchesCorrect = 0;
+            expectedMatches = expressions.length;
+            
             const shuffledExpressions = shuffle(expressions);
             const phrases = shuffledExpressions.map(e => e.phrase);
             const meanings = shuffle(shuffledExpressions.map(e => ({ phrase: e.phrase, meaning: e.meaning })));
@@ -1704,12 +1738,6 @@
             `;
             
             gameArea.innerHTML = html;
-            
-            // Reset match counters
-            selectedMatchWord = null;
-            selectedMatchDef = null;
-            matchesCorrect = 0;
-            totalMatches = 0;
         }
 
         // Conjunction Activities
@@ -2144,9 +2172,7 @@
             }
             
             setTimeout(() => {
-                if (correct === inputs.length) {
-                    showFeedback(true, 'Excellent verb work! 🎉');
-                }
+                feedbackDiv.innerHTML += '<br><button class="submit-btn next-btn" onclick="nextActivity()">Continue to Next Activity →</button>';
             }, 2000);
         }
 
