@@ -1,1 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unpopular Opinion Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .opinion-display {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 15px;
+            padding: 40px;
+            margin: 30px 0;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .opinion-text {
+            font-size: 1.8em;
+            color: white;
+            font-weight: bold;
+            line-height: 1.4;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .placeholder {
+            font-size: 1.5em;
+            color: rgba(255, 255, 255, 0.8);
+            font-style: italic;
+        }
+
+        .generate-btn {
+            display: block;
+            width: 100%;
+            padding: 20px;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .generate-btn:active {
+            transform: translateY(0);
+        }
+
+        .instructions {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 5px;
+        }
+
+        .instructions h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .instructions ul {
+            margin-left: 20px;
+            color: #555;
+        }
+
+        .instructions li {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+
+        .requirements {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .requirements h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .requirements p {
+            color: #856404;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        .spin-animation {
+            animation: spin 0.5s ease-in-out;
+        }
+
+        @keyframes spin {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.05) rotate(5deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .emoji {
+            font-size: 2em;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔥 Unpopular Opinion Generator 🔥</h1>
+        <p class="subtitle">Defend the indefensible. Argue the unarguable. Prove your point with punctuation!</p>
+
+        <div class="opinion-display" id="opinionDisplay">
+            <p class="placeholder">Click below to reveal your unpopular opinion...</p>
+        </div>
+
+        <button class="generate-btn" id="generateBtn" onclick="generateOpinion()">
+            Generate My Unpopular Opinion
+        </button>
+
+        <div class="requirements">
+            <h3>📝 Your Mission:</h3>
+            <p>✍️ Write approximately 300 words defending (or attacking) this opinion</p>
+            <p>🎯 Use advanced punctuation throughout: colons, semicolons, and dashes</p>
+            <p>💪 Make your argument sophisticated and well-reasoned</p>
+        </div>
+
+        <div class="instructions">
+            <h3>How to Structure Your Writing:</h3>
+            <ul>
+                <li><strong>State your position clearly</strong> — do you agree or disagree with the opinion?</li>
+                <li><strong>Provide at least three reasons or examples</strong> to support your argument</li>
+                <li><strong>Acknowledge complications or counterarguments</strong> — show nuanced thinking</li>
+                <li><strong>Use advanced punctuation naturally:</strong>
+                    <ul>
+                        <li>Colons to introduce lists, examples, or explanations</li>
+                        <li>Semicolons to connect related ideas or separate complex list items</li>
+                        <li>Dashes to add emphasis, interrupt with important info, or set off material with internal punctuation</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const opinions = [
+            "Morning people are lying about enjoying mornings—no one actually likes waking up early.",
+            "Group projects are worse than individual work in every way.",
+            "The school year should be longer with more frequent breaks.",
+            "Lunch periods should be 90 minutes minimum.",
+            "Students should be allowed to grade their teachers.",
+            "Physical Education should be completely optional for all students.",
+            "All classes should allow food and drinks at all times.",
+            "School should start at 10 AM and end at 5 PM.",
+            "School dress codes should be abolished entirely.",
+            "Homework does more harm than good for most students.",
+            "Participation grades punish introverted students unfairly.",
+            "High school athletics receive too much funding compared to academic programs.",
+            "Senior year is essentially a waste of time for college-bound students.",
+            "Required summer reading defeats the purpose of encouraging reading.",
+            "Standardized tests measure wealth and test-taking skills, not intelligence.",
+            "College is a waste of money for most people.",
+            "Social media has done more harm than good for our generation.",
+            "Adults are more addicted to their phones than teenagers are.",
+            "The 'real world' that adults prepare us for doesn't actually exist.",
+            "Teen movies and shows completely misrepresent what high school is actually like.",
+            "The best part of school has absolutely nothing to do with academics.",
+            "Letter grades should be replaced with detailed narrative evaluations.",
+            "Zero-tolerance policies do more harm than good.",
+            "School cafeteria food is intentionally bad to teach us life lessons.",
+            "Collaboration is overrated—most great work is done individually.",
+            "Reading classic literature is less valuable than reading contemporary works.",
+            "School spirit rallies are a waste of instructional time.",
+            "Extra credit is unfair and undermines the grading system.",
+            "Pop quizzes are tools of intimidation, not assessment.",
+            "Colleges should not consider extracurricular activities in admissions.",
+            "The college essay is a terrible way to evaluate applicants.",
+            "Advanced Placement classes create more stress than actual learning.",
+            "Detention doesn't change behavior—it just wastes time.",
+            "School assemblies are exercises in crowd control, not education.",
+            "Yearbooks are expensive nostalgia traps that no one actually looks at.",
+            "Teacher appreciation week is performative and doesn't address real issues.",
+            "School dances are overpriced, overchaperoned, and underwhelming.",
+            "Mandatory volunteer hours defeat the entire purpose of volunteering.",
+            "Grade inflation has made transcripts completely meaningless.",
+            "Taking notes by hand is not actually better than typing them.",
+            "Open-book tests are harder and more useful than closed-book tests.",
+            "Not learning cursive writing was a mistake—we should all be taught it.",
+            "International schools teach global politics and history in a way that's basically indoctrination.",
+            "Model UN is just an excuse for students to travel and pretend they're diplomats.",
+            "CAS/service requirements turn genuine compassion into box-checking exercises.",
+            "International Day celebrations are performative multiculturalism that mean nothing.",
+            "Students at international schools are more privileged than they're willing to admit.",
+            "The IB is just the AP program with better marketing and more paperwork.",
+            "University counselors care more about the school's acceptance rates than individual students.",
+            "Living in compounds creates a bubble that prevents real cultural understanding.",
+            "Required Arabic classes are resented by students who will never use the language.",
+            "International school tuition is robbery disguised as 'global citizenship education.'",
+            "Expat students claiming they're 'from nowhere' is pretentious—you're from somewhere.",
+            "International schools exist to make expat parents feel better about uprooting their kids.",
+            "The hardest part of being a Third Culture Kid is explaining it to people who don't care.",
+            "College recommendation letters are fiction-writing exercises where teachers make students sound amazing.",
+            "Saying 'I'm an international student' is just a humble-brag about having lived abroad.",
+            "Most students only join clubs to pad their college applications, not because they care.",
+            "Rain days are better than regular school days, even when it barely drizzles.",
+            "The college admissions process rewards students who can afford consultants and test prep.",
+            "Studying abroad programs are just expensive vacations with minimal academic value.",
+            "International schools attract families running from something in their home countries.",
+            "'Global citizen' is a meaningless phrase used by people who belong nowhere.",
+            "Students pretend to care about world issues but can't name their own local representatives.",
+            "International school graduations are sad because everyone scatters and friendships die.",
+            "Being multilingual sounds impressive but most 'multilingual' students are barely conversational.",
+            "The college application essay is where students compete to have the most traumatic backstory.",
+            "International schools prioritize diversity in brochures but not in actual practice.",
+            "Parents send kids to international schools to avoid the education system back home.",
+            "Extended Essay and TOK exist solely to make students suffer for no real benefit.",
+            "College 'fit' is a myth—students end up happy wherever they go if they try.",
+            "Compound life is just suburban America transplanted to other countries.",
+            "International students have unfair advantages in college admissions because they seem 'interesting.'",
+            "Most students who claim three nationalities can't explain the politics of any of them.",
+            "The myth that international school students are more mature is just that—a myth.",
+            "Cultural sensitivity training sessions are performative and change nothing about actual behavior.",
+            "Schools care more about avoiding parent complaints than actually educating students.",
+            "The college admissions scandal proved what everyone already knew—money buys acceptance.",
+            "Requiring community service hours creates resentment, not compassion.",
+            "AP courses are designed to make students stressed, not educated.",
+            "Parents choose international schools for status, not quality education.",
+            "Most 'passionate' extracurriculars are manufactured for college applications."
+        ];
+
+        let currentOpinion = null;
+
+        function generateOpinion() {
+            const display = document.getElementById('opinionDisplay');
+            const btn = document.getElementById('generateBtn');
+            
+            // Add animation
+            display.classList.add('spin-animation');
+            
+            // Get random opinion
+            const randomIndex = Math.floor(Math.random() * opinions.length);
+            currentOpinion = opinions[randomIndex];
+            
+            // Update display after animation starts
+            setTimeout(() => {
+                display.innerHTML = `<p class="opinion-text">${currentOpinion}</p>`;
+                display.classList.remove('spin-animation');
+            }, 250);
+            
+            // Update button text
+            btn.textContent = "Generate Another Opinion";
+        }
+
+        // Add keyboard shortcut
+        document.addEventListener('keydown', function(e) {
+            if (e.key === ' ' && e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'INPUT') {
+                e.preventDefault();
+                generateOpinion();
+            }
+        });
+    </script>
+</body>
+</html>
