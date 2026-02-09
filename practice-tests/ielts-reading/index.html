@@ -1,1 +1,118 @@
+/* ===== Passage 1 renderers ===== */
+
+function dottedBlankInput(q, placeholder){
+  return `
+    <span style="display:inline-block;min-width:140px;border-bottom:1px dotted rgba(255,255,255,.35);margin:0 6px;">
+      <input type="text" data-q="${q}" placeholder="${escapeHTML(placeholder||"")}"
+             style="width:100%;background:transparent;border:none;outline:none;color:var(--text);" />
+    </span>
+  `;
+}
+
+if(block.type === "notes_box"){
+  const ul = document.createElement("ul");
+  ul.style.lineHeight = "1.7";
+
+  block.bullets.forEach(b=>{
+    const li = document.createElement("li");
+
+    if(b.q == null){
+      li.textContent = b.text || "";
+    }else{
+      li.innerHTML = `
+        ${escapeHTML(b.before||"")}
+        ${dottedBlankInput(b.q,b.placeholder)}
+        ${escapeHTML(b.after||"")}
+      `;
+    }
+
+    ul.appendChild(li);
+  });
+
+  wrap.appendChild(ul);
+}
+
+if(block.type === "tfng"){
+  block.items.forEach(it=>{
+    const row = document.createElement("div");
+    row.className = "row";
+    row.style.marginTop = "10px";
+
+    row.innerHTML = `
+      <label>Q${it.q}</label>
+      <select data-q="${it.q}">
+        <option value="">—</option>
+        <option value="TRUE">TRUE</option>
+        <option value="FALSE">FALSE</option>
+        <option value="NOT GIVEN">NOT GIVEN</option>
+      </select>
+      <div style="flex:1;min-width:240px;font-size:13px;">${escapeHTML(it.text)}</div>
+    `;
+
+    wrap.appendChild(row);
+  });
+}
+
+if(block.type === "table_box"){
+  const table = document.createElement("table");
+  table.style.width = "100%";
+  table.style.borderCollapse = "collapse";
+  table.style.marginTop = "8px";
+
+  block.table.rows.forEach(r=>{
+    const tr = document.createElement("tr");
+
+    const td1 = document.createElement("td");
+    td1.textContent = r.period;
+    td1.style.verticalAlign = "top";
+    td1.style.padding = "6px";
+    td1.style.borderBottom = "1px solid rgba(255,255,255,.12)";
+
+    const td2 = document.createElement("td");
+    td2.style.padding = "6px";
+    td2.style.borderBottom = "1px solid rgba(255,255,255,.12)";
+
+    r.content.forEach(c=>{
+      const div = document.createElement("div");
+
+      if(c.text){
+        div.textContent = c.text;
+      }
+      else if(c.q != null){
+        div.innerHTML = `
+          ${escapeHTML(c.before||"")}
+          ${dottedBlankInput(c.q,c.placeholder)}
+          ${escapeHTML(c.after||"")}
+        `;
+      }
+      else if(c.subbullets){
+        const ul = document.createElement("ul");
+        c.subbullets.forEach(sb=>{
+          const li = document.createElement("li");
+
+          if(sb.text){
+            li.textContent = sb.text;
+          }else{
+            li.innerHTML = `
+              ${escapeHTML(sb.before||"")}
+              ${dottedBlankInput(sb.q,sb.placeholder)}
+              ${escapeHTML(sb.after||"")}
+            `;
+          }
+
+          ul.appendChild(li);
+        });
+        div.appendChild(ul);
+      }
+
+      td2.appendChild(div);
+    });
+
+    tr.appendChild(td1);
+    tr.appendChild(td2);
+    table.appendChild(tr);
+  });
+
+  wrap.appendChild(table);
+}
 
