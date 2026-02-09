@@ -1,3 +1,761 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>IELTS Reading Split Screen — Full Test</title>
+  <style>
+    :root{
+      --bg:#0b0d10;
+      --text:#e9eef6;
+      --muted:#a7b3c6;
+      --border:rgba(255,255,255,.12);
+      --accent:#66d9ef;
+      --btn:#1b2330;
+      --btn2:#202a3a;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius:14px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--text);
+      background:radial-gradient(1200px 700px at 15% 10%, rgba(102,217,239,.12), transparent 55%),
+                 radial-gradient(1000px 600px at 85% 25%, rgba(110,231,183,.10), transparent 55%),
+                 var(--bg);
+      height:100vh;
+      overflow:hidden;
+    }
+    header{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:12px 14px;
+      border-bottom:1px solid var(--border);
+      background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      position:sticky;
+      top:0;
+      z-index:10;
+    }
+    header .brand{ display:flex; flex-direction:column; line-height:1.1; }
+    header .brand b{ font-size:14px; letter-spacing:.2px; }
+    header .brand span{ font-size:12px; color:var(--muted); }
+
+    .toolbar{
+      margin-left:auto;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .btn{
+      cursor:pointer;
+      border:1px solid var(--border);
+      background:linear-gradient(180deg, var(--btn2), var(--btn));
+      color:var(--text);
+      padding:8px 10px;
+      border-radius:12px;
+      font-size:12px;
+      box-shadow: var(--shadow);
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      user-select:none;
+    }
+    .btn:hover{ border-color:rgba(255,255,255,.20); }
+    .btn:active{ transform: translateY(1px); }
+
+    .pill{
+      font-family:var(--mono);
+      font-size:12px;
+      color:var(--muted);
+      border:1px solid var(--border);
+      padding:6px 10px;
+      border-radius:999px;
+      background:rgba(0,0,0,.2);
+      user-select:none;
+    }
+    .search{
+      display:flex; gap:8px; align-items:center;
+      border:1px solid var(--border);
+      border-radius:999px;
+      background:rgba(0,0,0,.2);
+      padding:6px 10px;
+    }
+    .search input{
+      width:220px;
+      max-width:40vw;
+      border:none;
+      outline:none;
+      background:transparent;
+      color:var(--text);
+      font-size:12px;
+    }
+    select{
+      border:1px solid var(--border);
+      background:rgba(0,0,0,.2);
+      color:var(--text);
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:12px;
+      outline:none;
+    }
+
+    .layout{
+      display:flex;
+      height:calc(100vh - 54px);
+      gap:12px;
+      padding:12px;
+    }
+    .col{
+      flex:1;
+      min-width:320px;
+      display:flex;
+      flex-direction:column;
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      overflow:hidden;
+      background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+    }
+    .col .colhead{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border-bottom:1px solid var(--border);
+      background:rgba(0,0,0,.18);
+      position:sticky;
+      top:0;
+      z-index:2;
+    }
+    .col .colhead b{ font-size:13px; }
+    .col .colhead span{ font-size:12px; color:var(--muted); }
+
+    .scroll{
+      overflow:auto;
+      padding:14px 14px 40px;
+      background:linear-gradient(180deg, rgba(0,0,0,.10), rgba(0,0,0,.20));
+    }
+    .passage h1{ font-size:18px; margin:0 0 10px; letter-spacing:.2px; }
+    .passage p{ margin:0 0 12px; line-height:1.55; color:rgba(233,238,246,.92); }
+    .passage .meta{ color:var(--muted); font-size:12px; margin-bottom:10px; }
+
+    mark{ background:rgba(102,217,239,.25); color:var(--text); padding:0 .15em; border-radius:6px; }
+
+    .qblock{
+      border:1px solid var(--border);
+      border-radius:14px;
+      background:rgba(0,0,0,.22);
+      padding:12px;
+      margin:0 0 12px;
+    }
+    .qblock .qtitle{
+      display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-bottom:6px;
+    }
+    .qblock .qtitle b{ font-size:13px; letter-spacing:.2px; }
+    .qblock .qtitle small{ color:var(--muted); font-size:12px; font-family:var(--mono); }
+    .qprompt{ font-size:13px; color:rgba(233,238,246,.92); margin-bottom:10px; line-height:1.4; white-space:pre-wrap; }
+
+    .status{
+      display:flex; gap:10px; align-items:center;
+      padding:10px 12px;
+      border-top:1px solid var(--border);
+      background:rgba(0,0,0,.18);
+      position:sticky;
+      bottom:0;
+      z-index:2;
+    }
+    .status .left{ display:flex; gap:10px; align-items:center; color:var(--muted); font-size:12px; font-family:var(--mono); }
+    .status .right{ margin-left:auto; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+
+    /* Inputs */
+    input[type="text"]{
+      padding:10px 10px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:rgba(17,21,27,.55);
+      color:var(--text);
+      outline:none;
+      min-width:200px;
+    }
+    input[type="text"]:focus{
+      border-color:rgba(102,217,239,.55);
+      box-shadow:0 0 0 3px rgba(102,217,239,.12);
+    }
+    .row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    .row label{ font-size:12px; color:var(--muted); min-width:70px; font-family:var(--mono); }
+
+    .radios{ display:flex; gap:10px; flex-wrap:wrap; }
+    .chip{
+      border:1px solid var(--border);
+      background:rgba(17,21,27,.55);
+      padding:8px 10px;
+      border-radius:999px;
+      font-size:12px;
+      color:var(--text);
+      cursor:pointer;
+      user-select:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .chip input{ accent-color: var(--accent); }
+
+    .warn{
+      color: var(--muted);
+      font-size:12px;
+      margin-top:8px;
+      padding:8px 10px;
+      border-radius:12px;
+      border:1px dashed rgba(255,255,255,.18);
+      background:rgba(0,0,0,.15);
+    }
+    .warn strong{ color:rgba(251,191,36,.95); }
+
+    .toast{
+      position:fixed;
+      right:14px;
+      bottom:14px;
+      padding:10px 12px;
+      border-radius:14px;
+      background:rgba(0,0,0,.70);
+      border:1px solid var(--border);
+      color:var(--text);
+      box-shadow: var(--shadow);
+      max-width:min(520px, 92vw);
+      display:none;
+      font-size:12px;
+      line-height:1.35;
+      z-index:50;
+    }
+    .toast.show{ display:block; }
+
+    @media (max-width: 980px){
+      body{ overflow:auto; height:auto; }
+      .layout{ flex-direction:column; height:auto; }
+      .col{ min-height:46vh; }
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="brand">
+    <b>IELTS Reading — Split Screen (Full Test)</b>
+    <span>Passage selector • All questions wired • Save/Load/Export</span>
+  </div>
+
+  <div class="toolbar">
+    <select id="passageSelect" title="Switch passage">
+      <option value="p1">Passage 1 (Q1–13)</option>
+      <option value="p2">Passage 2 (Q14–26)</option>
+      <option value="p3">Passage 3 (Q27–40)</option>
+    </select>
+
+    <div class="pill" id="timer">Time: 00:00</div>
+
+    <div class="search" title="Highlight matches in the passage (client-side)">
+      <span style="color:var(--muted);font-size:12px;">Find</span>
+      <input id="findInput" placeholder="type a word/phrase…" />
+      <span style="color:var(--muted);font-size:12px;">Enter</span>
+    </div>
+
+    <div class="btn" id="btnSave">💾 Save</div>
+    <div class="btn" id="btnLoad">📂 Load</div>
+    <div class="btn" id="btnExport">⬇️ Export JSON</div>
+    <div class="btn" id="btnClear">🧹 Clear</div>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- LEFT: Passage -->
+  <section class="col" aria-label="Passage">
+    <div class="colhead">
+      <b id="passageTitle">Passage</b>
+      <span id="passageSub">Scrollable text</span>
+    </div>
+    <div class="scroll passage" id="passagePane"></div>
+    <div class="status">
+      <div class="left" id="passageStatus">Selection: none</div>
+      <div class="right">
+        <div class="btn" id="btnCopySelection">📋 Copy selection</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RIGHT: Questions -->
+  <section class="col" aria-label="Questions">
+    <div class="colhead">
+      <b id="qHeader">Questions</b>
+      <span id="qCount"></span>
+    </div>
+    <div class="scroll" id="questionsPane"></div>
+    <div class="status">
+      <div class="left" id="answerStatus">Answered: 0 / 0</div>
+      <div class="right">
+        <div class="btn" id="btnScrollTop">⬆️ Top</div>
+        <div class="btn" id="btnScrollNext">➡️ Next unanswered</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ========= DATA =========
+   NOTE: Passage 2/3 + Q14–40 wording below comes from OCR of your PDF pages.
+   You can replace `raw` strings with clean text at any time without changing UI code.
+*/
+const DATA = {
+  p1: {
+    passage: {
+      title: "Nutmeg – a valuable spice",
+      subtitle: "Reading Passage 1",
+      raw: `The nutmeg tree, Myristica fragrans, is a large evergreen tree native to Southeast Asia. Until the late 18th century, it only grew in one place in the world: a small group of islands in the Banda Sea, part of the Moluccas – or Spice Islands – in northeastern Indonesia. The tree is thickly branched with dense foliage of tough, dark green oval leaves, and produces small, yellow, bell-shaped flowers and pale yellow pear-shaped fruits. The fruit is encased in a fleshy husk. When the fruit is ripe, this husk splits into two halves along a ridge running the length of the fruit. Inside is a purple-brown shiny seed, 2–3 cm long by about 2 cm across, surrounded by a lacy red or crimson covering called an ‘aril’. These are the sources of the two spices nutmeg and mace, the former being produced from the dried seed and the latter from the aril.
+
+Nutmeg was a highly prized and costly ingredient in European cuisine in the Middle Ages, and was used as a flavouring, medicinal, and preservative agent. Throughout this period, the Arabs were the exclusive importers of the spice to Europe. They sold nutmeg for high prices to merchants based in Venice, but they never revealed the exact location of the source of this extremely valuable commodity. The Arab-Venetian dominance of the trade finally ended in 1512, when the Portuguese reached the Banda Islands and began exploiting its precious resources.
+
+Always in danger of competition from neighbouring Spain, the Portuguese began subcontracting their spice distribution to Dutch traders. Profits began to flow into the Netherlands, and the Dutch commercial fleet swiftly grew into one of the largest in the world. The Dutch quietly gained control of most of the shipping and trading of spices in Northern Europe. Then, in 1580, Portugal fell under Spanish rule, and by the end of the 16th century the Dutch found themselves locked out of the market. As prices for pepper, nutmeg, and other spices soared across Europe, they decided to fight back.
+
+In 1602, Dutch merchants founded the VOC, a trading corporation better known as the Dutch East India Company. By 1617, the VOC was the richest commercial operation in the world. The company had 50,000 employees worldwide, with a private army of 30,000 men and a fleet of 200 ships. At the same time, thousands of people across Europe were dying of the plague, a highly contagious and deadly disease. Doctors were desperate for a way to stop the spread of this disease, and they decided nutmeg held the cure.
+
+Everybody wanted nutmeg, and many were willing to spare no expense to have it. Nutmeg bought for a few pennies in Indonesia could be sold for 68,000 times its original cost on the streets of London. The only problem was the short supply. And that’s where the Dutch found their opportunity.
+
+The Banda Islands were ruled by local sultans who insisted on maintaining a neutral trading policy towards foreign powers... (continue as needed)
+
+Then, in 1770, a Frenchman named Pierre Poivre successfully smuggled nutmeg plants to safety in Mauritius... (continue)
+
+Today, nutmeg is grown in Indonesia, the Caribbean, India, Malaysia, Papua New Guinea and Sri Lanka...`
+    },
+    questions: [
+    {
+      id: "Q1-4",
+      type: "notes_box",
+      title: "Questions 1–4",
+      instructions:
+`Complete the notes below.
+Choose ONE WORD ONLY from the passage for each answer.
+Write your answers in boxes 1–4 on your answer sheet.`,
+      boxTitle: "The nutmeg tree and fruit",
+      bullets: [
+        { q: 1, before: "the leaves of the tree are", after: "in shape", placeholder: "ONE WORD ONLY" },
+        { q: 2, before: "the", after: "surrounds the fruit and breaks open when the fruit is ripe", placeholder: "ONE WORD ONLY" },
+        { q: 3, before: "the", after: "is used to produce the spice nutmeg", placeholder: "ONE WORD ONLY" },
+        { q: 4, before: "the covering known as the aril is used to produce", after: "", placeholder: "ONE WORD ONLY" },
+        { q: null, text: "the tree has yellow flowers and fruit" } // informational bullet, no answer
+      ]
+    },
+
+    {
+      id: "Q5-7",
+      type: "tfng",
+      title: "Questions 5–7",
+      instructions:
+`Do the following statements agree with the information given in the passage?
+Write TRUE, FALSE or NOT GIVEN.`,
+      items: [
+        { q: 5, text: "In the Middle Ages, most Europeans knew where nutmeg was grown." },
+        { q: 6, text: "The VOC was the world’s first major trading company." },
+        { q: 7, text: "Following the Treaty of Breda, the Dutch had control of all the islands where nutmeg grew." }
+      ]
+    },
+
+    {
+      id: "Q8-13",
+      type: "table_box",
+      title: "Questions 8–13",
+      instructions:
+`Complete the table below.
+Choose ONE WORD ONLY from the passage for each answer.
+Write your answers in boxes 8–13 on your answer sheet.`,
+      table: {
+        rows: [
+          {
+            period: "Middle Ages",
+            content: [
+              { q: 8, before: "Nutmeg was brought to Europe by the", after: "", placeholder: "ONE WORD ONLY" }
+            ]
+          },
+          {
+            period: "16th century",
+            content: [
+              { text: "European nations took control of the nutmeg trade" }
+            ]
+          },
+          {
+            period: "17th century",
+            content: [
+              { q: 9, before: "Demand for nutmeg grew, as it was believed to be effective against the disease known as the", after: "", placeholder: "ONE WORD ONLY" },
+              { text: "The Dutch" },
+              {
+                subbullets: [
+                  { text: "took control of the Banda Islands" },
+                  { text: "restricted nutmeg production to a few areas" },
+                  { q: 10, before: "put", after: "on nutmeg to avoid it being cultivated outside the islands", placeholder: "ONE WORD ONLY" },
+                  { q: 11, before: "finally obtained the island of", after: "from the British", placeholder: "ONE WORD ONLY" }
+                ]
+              }
+            ]
+          },
+          {
+            period: "Late 18th century",
+            content: [
+              { q: 12, before: "1770 – nutmeg plants were secretly taken to", after: "", placeholder: "ONE WORD ONLY" },
+              { q: 13, before: "1778 – half the Banda Islands’ nutmeg plantations were destroyed by a", after: "", placeholder: "ONE WORD ONLY" }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+  },
+
+  p2: {
+    passage: {
+      title: "Driverless cars",
+      subtitle: "Reading Passage 2",
+      raw: `A The automotive sector is well used to adapting to automation in manufacturing.
+The implementation of robotic car manufacture from the 1970s onwards led to
+significant cost savings and improvements in the reliability and flexibility of vehicle
+mass production. A new challenge to vehicle production is now on the horizon
+and, again, it comes from automation. However, this time it is not to do with the
+manufacturing process, but with the vehicles themselves.
+
+B Research projects on vehicle automation are not new. Vehicles with limited self-
+driving capabilities have been around for more than 50 years, resulting in significant
+contributions towards driver assistance systems. But since Google announced in
+2010 that it had been trialling self-driving cars on the streets of California, progress
+in this field has quickly gathered pace.
+
+C There are many reasons why technology is advancing so fast. One frequently cited
+motive is safety; indeed, research at the UK’s Transport Research Laboratory has
+demonstrated that more than 90 percent of road collisions involve human error as a
+contributory factor, and it is the primary cause in the vast majority. Automation may
+help to reduce the incidence of this.
+
+D Another aim is to free the time people spend driving for other purposes. If the car
+can do the driving, it may be possible for passengers to work, socialise, read or relax
+on the way to their destination. This has a value in itself. It may also mean fewer
+cars on the road as individuals might be willing to share a vehicle for commuting.
+Automation means that initiatives for car-sharing become much more viable,
+particularly in urban areas with significant travel demand. If a significant proportion
+of the population choose to use shared automated vehicles, mobility demand can
+be met by far fewer vehicles.
+
+E The Massachusetts Institute of Technology investigated automated mobility in
+Singapore, finding that fewer than 30 percent of the vehicles currently used would
+be required if fully automated car sharing could be implemented. If this is the case,
+it might mean that we need to manufacture far fewer vehicles to meet demand.
+However, the number of trips being taken would probably increase, partly because
+empty vehicles would have to be moved from one customer to the next.
+
+F Modelling work by the University of Michigan Transportation Research Institute
+suggests automated vehicles might reduce vehicle ownership by 43 percent, but
+that vehicles’ average annual mileage would double as a result. As a consequence,
+each vehicle would be used more intensively, and might need replacing sooner.
+This faster rate of turnover may mean that vehicle production will not necessarily
+decrease.
+
+G Automation may prompt other changes in vehicle manufacture. If we move to a
+model where consumers are tending not to own a single vehicle but to purchase
+access to a range of vehicles through a mobility provider, drivers will have the
+freedom to select one that best suits their needs for a particular journey, rather than
+making a compromise across all their requirements.
+
+Since, for most of the time, most of the seats in most cars are unoccupied, this may
+boost production of a smaller, more efficient range of vehicles that suit the needs
+of individuals. Specialised vehicles may then be available for exceptional journeys,
+such as going on a family camping trip or helping a son or daughter move to
+university.
+
+There are a number of hurdles to overcome in delivering automated vehicles
+to our roads. These include the technical difficulties in ensuring that the vehicle
+works reliably in the infinite range of traffic, weather and road situations it might
+encounter; the regulatory challenges in understanding how liability and enforcement
+might change when drivers are no longer essential for vehicle operation; and
+the societal changes that may be required for communities to trust and accept
+automated vehicles as being a valuable part of the mobility landscape.
+
+It’s clear that there are many challenges that need to be addressed but, through
+robust and targeted research, these can most probably be conquered within the
+next 10 years. Mobility will change in such potentially significant ways and in
+association with so many other technological developments, such as telepresence
+and virtual reality, that it is hard to make concrete predictions about the future.
+However, one thing is certain: change is coming, and the need to be flexible in
+response to this will be vital for those involved in manufacturing the vehicles that
+will deliver future mobility.`
+    },
+    questions: [
+      {
+        id:"Q14-18",
+        type:"matching_section",
+        title:"Questions 14–18",
+        instructions:`Reading Passage 2 has seven sections, A–G.
+Which section contains the following information?
+Write the correct letter, A–G, in boxes 14–18 on your answer sheet.`,
+        options:["A","B","C","D","E","F","G"],
+        items:[
+          {q:14, text:"reference to the amount of time when a car is not in use"},
+          {q:15, text:"mention of several advantages of driverless vehicles for individual road-users"},
+          {q:16, text:"reference to the opportunity of choosing the most appropriate vehicle for each trip"},
+          {q:17, text:"an estimate of how long it will take to overcome a number of problems"},
+          {q:18, text:"a suggestion that the use of driverless cars may have no effect on the number of vehicles manufactured"}
+        ]
+      },
+      {
+        id:"Q19-22",
+        type:"summary_completion",
+        title:"Questions 19–22",
+        instructions:`Complete the summary below.
+Choose NO MORE THAN TWO WORDS from the passage for each answer.
+Write your answers in boxes 19–22 on your answer sheet.`,
+        prompt:`The impact of driverless cars
+
+Figures from the Transport Research Laboratory indicate that most motor accidents
+are partly due to (19) __________ , so the introduction of driverless vehicles
+will result in greater safety. In addition to the direct benefits of automation, it may bring
+other advantages. For example, schemes for (20) __________ will be more
+workable, especially in towns and cities, resulting in fewer cars on the road.
+
+According to the University of Michigan Transportation Research Institute, there could
+be a 43 percent drop in (21) __________ of cars. However, this would mean
+that the yearly (22) __________ of each car would, on average, be twice as
+high as it currently is.`,
+        items:[
+          {q:19, placeholder:"NO MORE THAN TWO WORDS"},
+          {q:20, placeholder:"NO MORE THAN TWO WORDS"},
+          {q:21, placeholder:"NO MORE THAN TWO WORDS"},
+          {q:22, placeholder:"NO MORE THAN TWO WORDS"}
+        ]
+      },
+      {
+        id:"Q23-24",
+        type:"choose_two",
+        title:"Questions 23 and 24",
+        instructions:`Choose TWO letters, A–E.
+Write the correct letters in boxes 23 and 24 on your answer sheet.`,
+        prompt:"Which TWO benefits of automated vehicles does the writer mention?",
+        max:2,
+        options:[
+          {k:"A", t:"Car travellers could enjoy considerable cost savings."},
+          {k:"B", t:"It would be easier to find parking spaces in urban areas."},
+          {k:"C", t:"Travellers could spend journeys doing something other than driving."},
+          {k:"D", t:"People who find driving physically difficult could travel independently."},
+          {k:"E", t:"A reduction in the number of cars would mean a reduction in pollution."}
+        ],
+        targets:[23,24]
+      },
+      {
+        id:"Q25-26",
+        type:"choose_two",
+        title:"Questions 25 and 26",
+        instructions:`Choose TWO letters, A–E.
+Write the correct letters in boxes 25 and 26 on your answer sheet.`,
+        prompt:"Which TWO challenges to automated vehicle development does the writer mention?",
+        max:2,
+        options:[
+          {k:"A", t:"making sure the general public has confidence in automated vehicles"},
+          {k:"B", t:"managing the pace of transition from conventional to automated vehicles"},
+          {k:"C", t:"deciding how to compensate professional drivers who become redundant"},
+          {k:"D", t:"setting up the infrastructure to make roads suitable for automated vehicles"},
+          {k:"E", t:"getting automated vehicles to adapt to various different driving conditions"}
+        ],
+        targets:[25,26]
+      }
+    ]
+  },
+
+  p3: {
+    passage: {
+      title: "What is exploration?",
+      subtitle: "Reading Passage 3",
+      raw: `We are all explorers. Our desire to discover, and then share that new-found knowledge, is part
+of what makes us human — indeed, this has played an important part in our success as a species.
+Long before the first caveman slumped down beside the fire and grunted news that there were
+plenty of wildebeest over yonder, our ancestors had learnt the value of sending out scouts to
+investigate the unknown. This questing nature of ours undoubtedly helped our species spread
+around the globe, just as it nowadays no doubt helps the last nomadic Penan maintain their
+existence in the depleted forests of Borneo, and a visitor negotiate the subways of New York.
+
+Over the years, I have met a large number of explorers, and a large number of people who
+would probably call themselves explorers. I have also met a large number of people who have
+spent much of their lives travelling and who have had a huge impact on our understanding of
+the world, but who would never call themselves explorers. So what is an explorer?
+
+The word is a tricky one. We tend to associate exploration with a past era — the days of
+ship-based voyages and the discovery of continents. Yet the process of discovery is not on the
+decline. We have named only one and a half million of this planet’s species, and there may be
+more than 10 million — and that’s not including bacteria. We have studied only 5 per cent of the
+species we know. We have scarcely mapped the ocean floors, and know even less about
+ourselves; we fully understand the workings of only 10 per cent of our brains.
+
+Here is how some of today’s ‘explorers’ define the word. Ran Fiennes, dubbed the ‘greatest
+living explorer’, said, ‘An explorer is someone who has done something that no human has done
+before — and also done something scientifically useful.’ Chris Bonington, a leading mountaineer,
+felt exploration was to be found in the act of physically touching the unknown: ‘You have to
+have gone somewhere new.’ Then Robin Hanbury-Tenison, a campaigner on behalf of remote
+so-called ‘tribal’ peoples, said, ‘A traveller simply records information about some far-off world,
+and reports back; but an explorer changes the world.’ Wilfred Thesiger, who crossed Arabia’s
+Empty Quarter in 1946, and belongs to an era of unmechanised travel now lost to the rest of us,
+told me, ‘If I’d gone across by camel when I could have gone by car, it would have been a stunt.’
+To him, exploration meant bringing back information from a remote place regardless of any
+great self-discovery.
+
+Each definition is slightly different — and tends to reflect the field of endeavour of each pioneer.
+It was the same whoever I asked: the prominent historian would say exploration was a thing of
+the past, the cutting-edge scientist would say it was of the present. And so on. They each set
+their own particular criteria; the common factor in their approach being that they all had, unlike
+many of us who simply enjoy travel or discovering new things, both a very definite objective from
+the outset and also a desire to record their findings.
+
+I’d best declare my own bias. As a writer, I’m interested in the exploration of ideas. I’ve done
+a great many expeditions and each one was unique. I’ve lived for months alone with isolated
+people who have never encountered a stranger before. Yet none of that is of the slightest interest
+to anyone unless, through my books, I’ve found a new slant, explored a new idea. Why? Because
+the world has moved on. The time has long passed for the great continental voyages — another
+walk to the poles, another crossing of the Empty Quarter. We know how the land surface of our
+planet lies; exploration of it is now down to the details — the habits of microbes, say, or the
+grazing behaviour of buffalo. Aside from the deep sea and deep underground, it’s the era of
+specialists. However, this is to disregard the role the human mind has in conveying remote
+places; and this is what interests me: how a fresh interpretation, even of a well-travelled route,
+can give its readers new insights.`
+
+    },
+    questions: [
+      {
+        id:"Q27-32",
+        type:"mcq",
+        title:"Questions 27–32",
+        instructions:`Choose the correct letter, A, B, C or D.
+Write the correct letter in boxes 27–32 on your answer sheet.`,
+        items:[
+          {q:27, stem:"The writer refers to visitors to New York to illustrate the point that", opts:{A:"exploration is an intrinsic element of being human.",B:"most people are enthusiastic about exploring.",C:"exploration can lead to surprising results.",D:"most people find exploration daunting."}},
+          {q:28, stem:"According to the second paragraph, what is the writer’s view of explorers?", opts:{A:"Their discoveries have brought both benefits and disadvantages.",B:"Their main value is in teaching others.",C:"They act on an urge that is common to everyone.",D:"They tend to be more attracted to certain professions than to others."}},
+          {q:29, stem:"The writer refers to a description of Egdon Heath to suggest that", opts:{A:"Hardy was writing about his own experience of exploration.",B:"Hardy was mistaken about the nature of exploration.",C:"Hardy’s aim was to investigate people’s emotional states.",D:"Hardy’s aim was to show the attraction of isolation."}},
+          {q:30, stem:"In the fourth paragraph, the writer refers to ‘a golden age’ to suggest that", opts:{A:"the amount of useful information produced by exploration has decreased.",B:"fewer people are interested in exploring than in the 19th century.",C:"recent developments have made exploration less exciting.",D:"we are wrong to think that exploration is no longer necessary."}},
+          {q:31, stem:"In the sixth paragraph, when discussing the definition of exploration, the writer argues that", opts:{A:"people tend to relate exploration to their own professional interests.",B:"certain people are likely to misunderstand the nature of exploration.",C:"the generally accepted definition has changed over time.",D:"historians and scientists have more valid definitions than the general public."}},
+          {q:32, stem:"In the last paragraph, the writer explains that he is interested in", opts:{A:"how someone’s personality is reflected in their choice of places to visit.",B:"the human ability to cast new light on places that may be familiar.",C:"how travel writing has evolved to meet changing demands.",D:"the feelings that writers develop about the places that they explore."}}
+        ]
+      },
+      {
+        id:"Q33-37",
+        type:"matching_people",
+        title:"Questions 33–37",
+        instructions:`Look at the following statements (Questions 33–37) and the list of explorers below.
+Match each statement with the correct explorer, A–E.
+Write the correct letter, A–E, in boxes 33–37 on your answer sheet.
+NB You may use any letter more than once.`,
+        options:[
+          {k:"A", t:"Peter Fleming"},
+          {k:"B", t:"Ran Fiennes"},
+          {k:"C", t:"Chris Bonington"},
+          {k:"D", t:"Robin Hanbury-Tenison"},
+          {k:"E", t:"Wilfred Thesiger"}
+        ],
+        items:[
+          {q:33, text:"He referred to the relevance of the form of transport used."},
+          {q:34, text:"He described feelings on coming back home after a long journey."},
+          {q:35, text:"He worked for the benefit of specific groups of people."},
+          {q:36, text:"He did not consider learning about oneself an essential part of exploration."},
+          {q:37, text:"He defined exploration as being both unique and of value to others."}
+        ]
+      },
+      {
+        id:"Q38-40",
+        type:"summary_completion",
+        title:"Questions 38–40",
+        instructions:`Complete the summary below.
+Choose NO MORE THAN TWO WORDS from the passage for each answer.
+Write your answers in boxes 38–40 on your answer sheet.`,
+        prompt:`The writer’s own bias
+
+The writer has experience of a large number of (38) __________ , and
+was the first stranger that certain previously (39) __________ people
+had encountered. He believes there is no need for further exploration of Earth’s
+(40) __________ , except to answer specific questions such as how buffalo eat.`,
+        items:[
+          {q:38, placeholder:"NO MORE THAN TWO WORDS"},
+          {q:39, placeholder:"NO MORE THAN TWO WORDS"},
+          {q:40, placeholder:"NO MORE THAN TWO WORDS"}
+        ]
+      }
+    ]
+  }
+};
+
+/* ========= STATE ========= */
+const STORAGE_KEY = "ielts_full_test_answers_v1";
+
+const el = (s)=>document.querySelector(s);
+const passagePane = el("#passagePane");
+const questionsPane = el("#questionsPane");
+const answerStatus = el("#answerStatus");
+const qCount = el("#qCount");
+const toast = el("#toast");
+
+let timerSeconds = 0;
+let timerHandle = null;
+let currentKey = "p1";
+
+function showToast(msg){
+  toast.textContent = msg;
+  toast.classList.add("show");
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(()=>toast.classList.remove("show"), 2200);
+}
+function pad2(n){ return String(n).padStart(2,"0"); }
+function startTimer(){
+  if(timerHandle) return;
+  timerHandle = setInterval(()=>{
+    timerSeconds++;
+    const mm = Math.floor(timerSeconds/60);
+    const ss = timerSeconds%60;
+    el("#timer").textContent = `Time: ${pad2(mm)}:${pad2(ss)}`;
+  },1000);
+}
+function escapeHTML(s){
+  return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
+}
+
+function splitToParagraphs(raw){
+  const cleaned = raw.replace(/\r/g,"").trim();
+  return cleaned.split(/\n\s*\n/g).map(p=>p.replace(/\s+\n/g,"\n").replace(/\n/g," ").trim()).filter(Boolean);
+}
+
+function renderPassage(){
+  const p = DATA[currentKey].passage;
+  el("#passageTitle").textContent = p.title;
+  el("#passageSub").textContent = p.subtitle;
+
+  const paras = splitToParagraphs(p.raw);
+  const parts = [];
+  parts.push(`<div class="meta">Tip: select text to copy • Find highlights in-passage • Passage selector swaps content</div>`);
+  parts.push(`<h1>${escapeHTML(p.title)}</h1>`);
+  paras.forEach((txt,i)=>{
+    parts.push(`<p data-p="${i+1}"><span style="color:var(--muted);font-family:var(--mono);font-size:12px;">[P${i+1}]</span> ${escapeHTML(txt)}</p>`);
+  });
+  passagePane.innerHTML = parts.join("\n");
+}
+
+function renderQuestions(){
+  const blocks = DATA[currentKey].questions;
+  questionsPane.innerHTML = "";
+
+  blocks.forEach(block=>{
+    const wrap = document.createElement("div");
+    wrap.className = "qblock";
+    wrap.dataset.block = block.id;
+
+    wrap.innerHTML = `
+      <div class="qtitle"><b>${escapeHTML(block.title)}</b><small>${escapeHTML(block.id)}</small></div>
+      <div class="qprompt">${escapeHTML(block.instructions || "")}</div>
+    `;
+
 /* ===== Passage 1 renderers ===== */
 
 function dottedBlankInput(q, placeholder){
@@ -116,3 +874,384 @@ if(block.type === "table_box"){
   wrap.appendChild(table);
 }
 
+
+    if(block.type === "info"){
+      const note = document.createElement("div");
+      note.className = "warn";
+      note.innerHTML = `<strong>Note:</strong> ${escapeHTML(block.instructions)}`;
+      wrap.appendChild(note);
+    }
+
+    if(block.type === "matching_section" || block.type === "matching_people"){
+      block.items.forEach(it=>{
+        const row = document.createElement("div");
+        row.className = "row";
+        row.style.marginTop = "10px";
+        row.innerHTML = `
+          <label>Q${it.q}</label>
+          <select data-q="${it.q}">
+            <option value="">—</option>
+            ${(block.options || []).map(o=>{
+              const val = (typeof o === "string") ? o : o.k;
+              const label = (typeof o === "string") ? o : `${o.k} — ${o.t}`;
+              return `<option value="${escapeHTML(val)}">${escapeHTML(label)}</option>`;
+            }).join("")}
+          </select>
+          <div style="flex:1;min-width:240px;color:rgba(233,238,246,.92);font-size:13px;line-height:1.35;">${escapeHTML(it.text)}</div>
+        `;
+        wrap.appendChild(row);
+      });
+    }
+
+    if(block.type === "summary_completion"){
+      const prompt = document.createElement("div");
+      prompt.className = "qprompt";
+      prompt.style.marginTop = "8px";
+      prompt.textContent = block.prompt || "";
+      wrap.appendChild(prompt);
+
+      block.items.forEach(it=>{
+        const row = document.createElement("div");
+        row.className = "row";
+        row.style.marginTop = "10px";
+        row.innerHTML = `
+          <label>Q${it.q}</label>
+          <input type="text" data-q="${it.q}" placeholder="${escapeHTML(it.placeholder||"")}" autocomplete="off" />
+        `;
+        wrap.appendChild(row);
+      });
+    }
+
+    if(block.type === "choose_two"){
+      const p = document.createElement("div");
+      p.className = "qprompt";
+      p.textContent = block.prompt || "";
+      wrap.appendChild(p);
+
+      const grid = document.createElement("div");
+      grid.className = "radios";
+      grid.style.marginTop = "8px";
+      grid.style.flexDirection = "column";
+      grid.style.alignItems = "flex-start";
+      grid.style.gap = "10px";
+
+      block.options.forEach(opt=>{
+        const line = document.createElement("label");
+        line.className = "chip";
+        line.style.borderRadius = "14px";
+        line.style.width = "100%";
+        line.style.justifyContent = "flex-start";
+        line.innerHTML = `
+          <input type="checkbox" data-choose="${block.id}" value="${escapeHTML(opt.k)}" />
+          <b style="font-family:var(--mono);width:18px;">${escapeHTML(opt.k)}</b>
+          <span style="opacity:.95">${escapeHTML(opt.t)}</span>
+        `;
+        grid.appendChild(line);
+      });
+
+      const warn = document.createElement("div");
+      warn.className = "warn";
+      warn.innerHTML = `Select <strong>exactly ${block.max}</strong>. Stored as Q${block.targets[0]} and Q${block.targets[1]}.`;
+      grid.appendChild(warn);
+
+      wrap.appendChild(grid);
+    }
+
+    if(block.type === "mcq"){
+      block.items.forEach(it=>{
+        const section = document.createElement("div");
+        section.style.borderTop = "1px solid rgba(255,255,255,.10)";
+        section.style.marginTop = "10px";
+        section.style.paddingTop = "10px";
+
+        const stem = document.createElement("div");
+        stem.className = "qprompt";
+        stem.style.margin = "0 0 8px";
+        stem.textContent = `Q${it.q} ${it.stem}`;
+        section.appendChild(stem);
+
+        const radioRow = document.createElement("div");
+        radioRow.className = "radios";
+        ["A","B","C","D"].forEach(k=>{
+          const lbl = document.createElement("label");
+          lbl.className = "chip";
+          lbl.innerHTML = `<input type="radio" name="q_${it.q}" value="${k}" data-q="${it.q}"> ${k}`;
+          lbl.title = it.opts[k];
+          radioRow.appendChild(lbl);
+        });
+        section.appendChild(radioRow);
+
+        const opts = document.createElement("div");
+        opts.className = "warn";
+        opts.innerHTML = Object.entries(it.opts).map(([k,v])=>`<div><strong>${k}</strong> ${escapeHTML(v)}</div>`).join("");
+        section.appendChild(opts);
+
+        wrap.appendChild(section);
+      });
+    }
+
+    questionsPane.appendChild(wrap);
+  });
+
+  qCount.textContent = `${countQuestionsVisible()} questions in this passage`;
+  updateAnsweredStatus();
+}
+
+function countQuestionsVisible(){
+  const nodes = Array.from(document.querySelectorAll("[data-q]"));
+  const qs = new Set(nodes.map(n=>n.dataset.q));
+  // choose_two blocks store via data-choose; handled separately in status counting
+  // but visible count should include those targets:
+  const chooseBlocks = DATA[currentKey].questions.filter(b=>b.type==="choose_two");
+  chooseBlocks.forEach(b=>b.targets.forEach(q=>qs.add(String(q))));
+  return qs.size;
+}
+
+function getAnswersAll(){
+  const ans = {};
+
+  // text
+  document.querySelectorAll('input[type="text"][data-q]').forEach(inp=>{
+    const q = inp.dataset.q;
+    const v = inp.value.trim();
+    if(v) ans[q]=v;
+  });
+
+  // radios
+  document.querySelectorAll('input[type="radio"][data-q]').forEach(r=>{
+    if(r.checked) ans[r.dataset.q]=r.value;
+  });
+
+  // selects
+  document.querySelectorAll('select[data-q]').forEach(s=>{
+    const v = (s.value||"").trim();
+    if(v) ans[s.dataset.q]=v;
+  });
+
+  // choose_two => store as Qx/Qy in order
+  const chooseBlocks = Object.values(DATA).flatMap(x=>x.questions).filter(b=>b.type==="choose_two");
+  chooseBlocks.forEach(b=>{
+    const checks = Array.from(document.querySelectorAll(`input[type="checkbox"][data-choose="${b.id}"]:checked`)).map(c=>c.value);
+    if(checks.length){
+      // store only first two (enforced elsewhere)
+      ans[String(b.targets[0])] = checks[0] || "";
+      ans[String(b.targets[1])] = checks[1] || "";
+      if(!ans[String(b.targets[0])]) delete ans[String(b.targets[0])];
+      if(!ans[String(b.targets[1])]) delete ans[String(b.targets[1])];
+    }
+  });
+
+  return ans;
+}
+
+function setAnswersAll(ans){
+  // clear
+  document.querySelectorAll('input[type="text"][data-q]').forEach(inp=>inp.value="");
+  document.querySelectorAll('input[type="radio"][data-q]').forEach(r=>r.checked=false);
+  document.querySelectorAll('select[data-q]').forEach(s=>s.value="");
+  document.querySelectorAll('input[type="checkbox"][data-choose]').forEach(c=>c.checked=false);
+
+  // apply
+  Object.entries(ans||{}).forEach(([q,v])=>{
+    const t = document.querySelector(`input[type="text"][data-q="${q}"]`);
+    if(t){ t.value=v; return; }
+    const s = document.querySelector(`select[data-q="${q}"]`);
+    if(s){ s.value=v; return; }
+    const radios = document.querySelectorAll(`input[type="radio"][data-q="${q}"]`);
+    if(radios.length){ radios.forEach(r=>r.checked=(r.value===v)); return; }
+  });
+
+  // re-apply choose_two from stored Q targets
+  Object.values(DATA).forEach(p=>{
+    p.questions.filter(b=>b.type==="choose_two").forEach(b=>{
+      const a = ans[String(b.targets[0])] || "";
+      const c = ans[String(b.targets[1])] || "";
+      [a,c].filter(Boolean).forEach(letter=>{
+        const cb = document.querySelector(`input[type="checkbox"][data-choose="${b.id}"][value="${letter}"]`);
+        if(cb) cb.checked = true;
+      });
+    });
+  });
+
+  updateAnsweredStatus();
+}
+
+function updateAnsweredStatus(){
+  const ans = getAnswersAll();
+  const qs = new Set(Array.from(document.querySelectorAll("[data-q]")).map(n=>n.dataset.q));
+  // include choose_two targets for this passage
+  DATA[currentKey].questions.filter(b=>b.type==="choose_two").forEach(b=>b.targets.forEach(q=>qs.add(String(q))));
+  const total = qs.size;
+
+  let answered = 0;
+  qs.forEach(q=>{ if(ans[q]) answered++; });
+  answerStatus.textContent = `Answered: ${answered} / ${total}`;
+}
+
+function save(){
+  const payload = { savedAt: new Date().toISOString(), timerSeconds, answers: getAnswersAll() };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+  showToast("Saved (localStorage).");
+}
+function load(){
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if(!raw){ showToast("No saved data found."); return; }
+  try{
+    const payload = JSON.parse(raw);
+    timerSeconds = payload.timerSeconds || 0;
+    el("#timer").textContent = `Time: ${pad2(Math.floor(timerSeconds/60))}:${pad2(timerSeconds%60)}`;
+    setAnswersAll(payload.answers || {});
+    showToast("Loaded.");
+  }catch(e){
+    showToast("Load failed (corrupt data).");
+  }
+}
+function exportJSON(){
+  const payload = { exportedAt: new Date().toISOString(), timerSeconds, answers: getAnswersAll() };
+  const blob = new Blob([JSON.stringify(payload,null,2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "ielts_full_test_answers.json";
+  document.body.appendChild(a);
+  a.click(); a.remove();
+  URL.revokeObjectURL(url);
+  showToast("Exported JSON.");
+}
+function clearAll(){
+  setAnswersAll({});
+  timerSeconds = 0;
+  el("#timer").textContent = "Time: 00:00";
+  showToast("Cleared.");
+}
+
+function enforceChooseTwo(blockId, max){
+  const checked = Array.from(document.querySelectorAll(`input[type="checkbox"][data-choose="${blockId}"]:checked`));
+  if(checked.length > max){
+    // uncheck the most recent (last toggled)
+    checked[checked.length-1].checked = false;
+    showToast(`Select max ${max}.`);
+  }
+  updateAnsweredStatus();
+}
+
+function highlightInPassage(query){
+  renderPassage();
+  if(!query || !query.trim()) return;
+
+  const q = query.trim();
+  const re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi");
+  const ps = Array.from(passagePane.querySelectorAll("p"));
+  let hits = 0;
+
+  ps.forEach(p=>{
+    const raw = p.textContent;
+    const prefixMatch = raw.match(/^\[P\d+\]\s*/);
+    const prefix = prefixMatch ? prefixMatch[0] : "";
+    const body = raw.slice(prefix.length);
+
+    const marked = body.replace(re, m=>{hits++; return `<mark>${m}</mark>`;});
+    p.innerHTML = `<span style="color:var(--muted);font-family:var(--mono);font-size:12px;">${escapeHTML(prefix.trim())}</span> ${marked}`;
+  });
+
+  showToast(hits ? `Highlighted ${hits} match(es).` : "No matches.");
+}
+
+function scrollTopQuestions(){ questionsPane.scrollTo({top:0, behavior:"smooth"}); }
+function scrollNextUnanswered(){
+  const ans = getAnswersAll();
+  const qs = new Set(Array.from(document.querySelectorAll("[data-q]")).map(n=>n.dataset.q));
+  DATA[currentKey].questions.filter(b=>b.type==="choose_two").forEach(b=>b.targets.forEach(q=>qs.add(String(q))));
+  const sorted = Array.from(qs).map(x=>parseInt(x,10)).sort((a,b)=>a-b);
+
+  let target = null;
+  for(const q of sorted){
+    if(!ans[String(q)]) { target = String(q); break; }
+  }
+  if(!target){ showToast("All answered."); return; }
+  const node = document.querySelector(`[data-q="${target}"]`);
+  if(node){ node.scrollIntoView({behavior:"smooth", block:"center"}); node.focus?.(); showToast(`Jumped to Q${target}.`); }
+  else showToast(`Q${target} is stored via a multi-select block.`);
+}
+
+function initSelectionWatcher(){
+  document.addEventListener("selectionchange", ()=>{
+    const sel = window.getSelection();
+    const text = sel ? sel.toString().trim() : "";
+    el("#passageStatus").textContent = text ? `Selection: ${text.slice(0,60)}${text.length>60?"…":""}` : "Selection: none";
+  });
+}
+function copySelection(){
+  const sel = window.getSelection();
+  const text = sel ? sel.toString().trim() : "";
+  if(!text){ showToast("No text selected."); return; }
+  navigator.clipboard.writeText(text).then(()=>showToast("Copied selection."), ()=>showToast("Copy failed."));
+}
+
+function switchPassage(key){
+  currentKey = key;
+  renderPassage();
+  renderQuestions();
+  // preserve answers from storage (they’re global); re-apply so checkboxes etc sync
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if(raw){
+    try{
+      const payload = JSON.parse(raw);
+      setAnswersAll(payload.answers || {});
+    }catch(e){}
+  }else{
+    updateAnsweredStatus();
+  }
+}
+
+function wire(){
+  // start timer on interaction
+  document.addEventListener("input", (e)=>{
+    if(e.target.matches('input, select')){
+      startTimer();
+      updateAnsweredStatus();
+    }
+  });
+
+  // choose-two enforcement
+  document.addEventListener("change", (e)=>{
+    const cb = e.target;
+    if(cb && cb.matches('input[type="checkbox"][data-choose]')){
+      const id = cb.dataset.choose;
+      const blk = Object.values(DATA).flatMap(p=>p.questions).find(b=>b.id===id);
+      if(blk) enforceChooseTwo(id, blk.max || 2);
+    }
+  });
+
+  el("#btnSave").addEventListener("click", save);
+  el("#btnLoad").addEventListener("click", load);
+  el("#btnExport").addEventListener("click", exportJSON);
+  el("#btnClear").addEventListener("click", clearAll);
+  el("#btnScrollTop").addEventListener("click", scrollTopQuestions);
+  el("#btnScrollNext").addEventListener("click", scrollNextUnanswered);
+  el("#btnCopySelection").addEventListener("click", copySelection);
+
+  el("#findInput").addEventListener("keydown",(e)=>{ if(e.key==="Enter") highlightInPassage(e.target.value); });
+
+  el("#passageSelect").addEventListener("change",(e)=> switchPassage(e.target.value));
+
+  document.addEventListener("keydown",(e)=>{
+    if(e.key==="Escape"){
+      el("#findInput").value="";
+      highlightInPassage("");
+      showToast("Cleared highlights.");
+    }
+    if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==="s"){
+      e.preventDefault();
+      save();
+    }
+  });
+}
+
+/* boot */
+initSelectionWatcher();
+wire();
+switchPassage("p1");
+</script>
+</body>
+</html>
