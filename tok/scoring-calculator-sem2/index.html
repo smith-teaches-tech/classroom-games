@@ -1,1 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TOK Score Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1614;
+    --paper: #f5f0e8;
+    --cream: #ede6d6;
+    --rule: #c8bfaa;
+    --accent: #8b2e12;
+    --accent-light: #c4441a;
+    --gold: #b8922a;
+    --muted: #6b6157;
+    --grade-a: #1a4a2e;
+    --grade-b: #1a3a4a;
+    --grade-c: #3a3a1a;
+    --grade-d: #4a2e1a;
+    --grade-e: #4a1a1a;
+  }
 
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background-color: var(--paper);
+    background-image: 
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 27px,
+        rgba(180,170,150,0.15) 27px,
+        rgba(180,170,150,0.15) 28px
+      );
+    font-family: 'Source Serif 4', Georgia, serif;
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 20px 80px;
+  }
+
+  .masthead {
+    width: 100%;
+    max-width: 680px;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .masthead-rule {
+    border: none;
+    border-top: 3px double var(--ink);
+    margin-bottom: 12px;
+  }
+
+  .masthead-label {
+    font-family: 'Source Serif 4', serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  .masthead-rule-bottom {
+    border: none;
+    border-top: 1px solid var(--ink);
+    margin-top: 14px;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid var(--rule);
+    width: 100%;
+    max-width: 680px;
+    padding: 36px 40px;
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 4px; left: 4px; right: -4px; bottom: -4px;
+    border: 1px solid var(--rule);
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .card-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.8rem;
+    border-bottom: 1px solid var(--cream);
+    padding-bottom: 10px;
+    margin-bottom: 24px;
+  }
+
+  .input-group {
+    margin-bottom: 28px;
+  }
+
+  .input-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 10px;
+  }
+
+  .input-label-text {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--ink);
+  }
+
+  .input-label-hint {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .score-note {
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+
+  .slider-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    flex: 1;
+    height: 4px;
+    background: var(--cream);
+    outline: none;
+    border-radius: 0;
+    cursor: pointer;
+    border: 1px solid var(--rule);
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--accent);
+    cursor: pointer;
+    border: 2px solid white;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    border-radius: 0;
+    transition: background 0.2s;
+  }
+
+  input[type="range"]::-webkit-slider-thumb:hover {
+    background: var(--accent-light);
+  }
+
+  .score-display {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--accent);
+    min-width: 54px;
+    text-align: center;
+    line-height: 1;
+  }
+
+  .score-denom {
+    font-size: 1rem;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px dashed var(--rule);
+    margin: 28px 0;
+  }
+
+  /* Results area */
+  .result-area {
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+
+  .result-area.visible {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .grade-banner {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+    border: 2px solid currentColor;
+    transition: all 0.3s ease;
+  }
+
+  .grade-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 4.5rem;
+    font-weight: 900;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .grade-info {
+    flex: 1;
+  }
+
+  .grade-descriptor {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .grade-score-line {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .grade-score-line strong {
+    color: var(--ink);
+  }
+
+  /* Grade color themes */
+  .grade-a { color: var(--grade-a); background: #f0f7f2; }
+  .grade-b { color: var(--grade-b); background: #f0f4f7; }
+  .grade-c { color: var(--grade-c); background: #f7f7f0; }
+  .grade-d { color: var(--grade-d); background: #f7f2ee; }
+  .grade-e { color: var(--grade-e); background: #f7f0f0; }
+
+  /* Calculation breakdown */
+  .breakdown-heading {
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  .calc-steps {
+    background: var(--cream);
+    padding: 20px 24px;
+    border-left: 3px solid var(--gold);
+    margin-bottom: 24px;
+  }
+
+  .calc-step {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    font-size: 0.92rem;
+    line-height: 1.4;
+  }
+
+  .calc-step:last-child {
+    border-bottom: none;
+    padding-top: 10px;
+    margin-top: 4px;
+    border-top: 2px solid var(--gold);
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  .calc-step-label { color: var(--muted); }
+  .calc-step-value { font-family: 'Playfair Display', serif; color: var(--ink); }
+  .calc-step:last-child .calc-step-value { color: var(--accent); font-size: 1.2rem; font-weight: 900; }
+
+  /* Grade scale */
+  .scale-heading {
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  .scale-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+
+  .scale-table th {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 600;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 6px 10px;
+    border-bottom: 2px solid var(--ink);
+    text-align: left;
+  }
+
+  .scale-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--cream);
+    vertical-align: middle;
+  }
+
+  .scale-table tr.current-grade td {
+    font-weight: 600;
+  }
+
+  .scale-table tr.current-grade {
+    position: relative;
+  }
+
+  .grade-badge {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    line-height: 28px;
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 0.95rem;
+    border: 2px solid currentColor;
+  }
+
+  .badge-a { color: var(--grade-a); }
+  .badge-b { color: var(--grade-b); }
+  .badge-c { color: var(--grade-c); }
+  .badge-d { color: var(--grade-d); }
+  .badge-e { color: var(--grade-e); }
+
+  .highlight-row td {
+    background: rgba(184, 146, 42, 0.1);
+  }
+
+  /* EE connection note */
+  .ib-note {
+    margin-top: 24px;
+    padding: 16px 20px;
+    border: 1px solid var(--rule);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .ib-note strong {
+    color: var(--ink);
+    font-family: 'Playfair Display', serif;
+  }
+
+  .ib-note .matrix-hint {
+    margin-top: 10px;
+    font-style: italic;
+    font-size: 0.8rem;
+  }
+
+  .matrix-grid {
+    display: inline-grid;
+    grid-template-columns: auto repeat(4, 1fr);
+    gap: 2px;
+    margin-top: 12px;
+    font-size: 0.78rem;
+    font-family: 'Source Serif 4', serif;
+  }
+
+  .matrix-grid .cell {
+    padding: 5px 9px;
+    text-align: center;
+    background: var(--cream);
+  }
+
+  .matrix-grid .cell.header {
+    background: var(--ink);
+    color: var(--paper);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .matrix-grid .cell.highlight {
+    background: var(--gold);
+    color: white;
+    font-weight: 700;
+  }
+
+  .matrix-grid .cell.row-header {
+    background: var(--ink);
+    color: var(--paper);
+    font-weight: 600;
+  }
+
+  footer-note {
+    display: block;
+    max-width: 680px;
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-style: italic;
+    margin-top: 16px;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <hr class="masthead-rule">
+  <p class="masthead-label">IB Diploma Programme · Theory of Knowledge</p>
+  <h1>TOK Score Calculator</h1>
+  <p class="subtitle">Understanding how your grade is determined</p>
+  <hr class="masthead-rule-bottom">
+</div>
+
+<div class="card">
+  <div class="card-heading">Enter Your Scores</div>
+
+  <div class="input-group">
+    <div class="input-label">
+      <span class="input-label-text">TOK Exhibition</span>
+      <span class="input-label-hint">Internally assessed, externally moderated</span>
+    </div>
+    <p class="score-note">Your teacher marked your exhibition out of 10. This score counts for <strong>⅓</strong> of your final TOK grade. It is added directly to your total.</p>
+    <div class="slider-row">
+      <input type="range" id="exhibitionSlider" min="0" max="10" value="0" step="1" oninput="update()">
+      <div class="score-display" id="exhibitionVal">0<span class="score-denom">/10</span></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="input-group">
+    <div class="input-label">
+      <span class="input-label-text">TOK Essay</span>
+      <span class="input-label-hint">Externally assessed by IB examiners</span>
+    </div>
+    <p class="score-note">IB examiners mark your essay out of 10. This score counts for <strong>⅔</strong> of your final TOK grade — so your essay score is <strong>doubled</strong> in the calculation.</p>
+    <div class="slider-row">
+      <input type="range" id="essaySlider" min="0" max="10" value="0" step="1" oninput="update()">
+      <div class="score-display" id="essayVal">0<span class="score-denom">/10</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="card result-area" id="resultCard">
+
+  <div class="card-heading">Your Result</div>
+
+  <div class="grade-banner" id="gradeBanner">
+    <div class="grade-letter" id="gradeLetter">—</div>
+    <div class="grade-info">
+      <div class="grade-descriptor" id="gradeDescriptor">—</div>
+      <div class="grade-score-line" id="gradeScoreLine">—</div>
+    </div>
+  </div>
+
+  <div class="breakdown-heading">How Your Score Was Calculated</div>
+
+  <div class="calc-steps">
+    <div class="calc-step">
+      <span class="calc-step-label">Exhibition score (added as-is)</span>
+      <span class="calc-step-value" id="calcExhibition">—</span>
+    </div>
+    <div class="calc-step">
+      <span class="calc-step-label">Essay score × 2 (doubled because it's ⅔ of your grade)</span>
+      <span class="calc-step-value" id="calcEssayDoubled">—</span>
+    </div>
+    <div class="calc-step">
+      <span class="calc-step-label">Total combined score (out of 30)</span>
+      <span class="calc-step-value" id="calcTotal">—</span>
+    </div>
+  </div>
+
+  <div class="scale-heading">Full Grade Scale</div>
+
+  <table class="scale-table">
+    <thead>
+      <tr>
+        <th>Grade</th>
+        <th>Descriptor</th>
+        <th>Points required (out of 30)</th>
+      </tr>
+    </thead>
+    <tbody id="scaleBody">
+      <tr data-grade="A">
+        <td><span class="grade-badge badge-a">A</span></td>
+        <td>Excellent</td>
+        <td>22 – 30</td>
+      </tr>
+      <tr data-grade="B">
+        <td><span class="grade-badge badge-b">B</span></td>
+        <td>Good</td>
+        <td>16 – 21</td>
+      </tr>
+      <tr data-grade="C">
+        <td><span class="grade-badge badge-c">C</span></td>
+        <td>Satisfactory</td>
+        <td>10 – 15</td>
+      </tr>
+      <tr data-grade="D">
+        <td><span class="grade-badge badge-d">D</span></td>
+        <td>Mediocre</td>
+        <td>4 – 9</td>
+      </tr>
+      <tr data-grade="E">
+        <td><span class="grade-badge badge-e">E</span></td>
+        <td>Elementary</td>
+        <td>0 – 3</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="ib-note">
+    <strong>How TOK connects to your IB Diploma total</strong><br>
+    Your final TOK grade (A–E) combines with your Extended Essay (EE) grade in a matrix to award up to <strong>3 bonus points</strong> toward the 45-point diploma. An E in either TOK or EE is an automatic diploma failure.
+    <div style="overflow-x:auto">
+    <div class="matrix-grid" id="matrixGrid">
+      <div class="cell header"></div>
+      <div class="cell header">EE: A</div>
+      <div class="cell header">EE: B</div>
+      <div class="cell header">EE: C</div>
+      <div class="cell header">EE: D</div>
+      <div class="cell row-header">TOK: A</div><div class="cell">3</div><div class="cell">3</div><div class="cell">2</div><div class="cell">2</div>
+      <div class="cell row-header">TOK: B</div><div class="cell">3</div><div class="cell">2</div><div class="cell">2</div><div class="cell">1</div>
+      <div class="cell row-header">TOK: C</div><div class="cell">2</div><div class="cell">2</div><div class="cell">1</div><div class="cell">0</div>
+      <div class="cell row-header">TOK: D</div><div class="cell">2</div><div class="cell">1</div><div class="cell">0</div><div class="cell">0</div>
+    </div>
+    </div>
+    <p class="matrix-hint">Note: grade boundaries shift slightly each session based on global IB moderation. The ranges shown are approximate.</p>
+  </div>
+
+</div>
+
+<footer-note>
+  Built for ASD IB students · Score boundaries are approximate and subject to annual IB moderation
+</footer-note>
+
+<script>
+  const grades = [
+    { letter: 'A', descriptor: 'Excellent',     min: 22, max: 30, cls: 'grade-a' },
+    { letter: 'B', descriptor: 'Good',          min: 16, max: 21, cls: 'grade-b' },
+    { letter: 'C', descriptor: 'Satisfactory',  min: 10, max: 15, cls: 'grade-c' },
+    { letter: 'D', descriptor: 'Mediocre',      min: 4,  max: 9,  cls: 'grade-d' },
+    { letter: 'E', descriptor: 'Elementary',    min: 0,  max: 3,  cls: 'grade-e' },
+  ];
+
+  function getGrade(total) {
+    return grades.find(g => total >= g.min && total <= g.max) || grades[grades.length - 1];
+  }
+
+  function update() {
+    const exhibition = parseInt(document.getElementById('exhibitionSlider').value);
+    const essay      = parseInt(document.getElementById('essaySlider').value);
+    const essayDoubled = essay * 2;
+    const total = exhibition + essayDoubled;
+
+    document.getElementById('exhibitionVal').innerHTML = exhibition + '<span class="score-denom">/10</span>';
+    document.getElementById('essayVal').innerHTML      = essay      + '<span class="score-denom">/10</span>';
+
+    const grade = getGrade(total);
+
+    // Show card
+    const card = document.getElementById('resultCard');
+    card.classList.add('visible');
+
+    // Banner
+    const banner = document.getElementById('gradeBanner');
+    banner.className = 'grade-banner ' + grade.cls;
+    document.getElementById('gradeLetter').textContent     = grade.letter;
+    document.getElementById('gradeDescriptor').textContent = grade.descriptor;
+    document.getElementById('gradeScoreLine').innerHTML    =
+      `Your combined score: <strong>${total} / 30</strong>`;
+
+    // Calc steps
+    document.getElementById('calcExhibition').textContent   = `${exhibition}`;
+    document.getElementById('calcEssayDoubled').textContent = `${essay} × 2 = ${essayDoubled}`;
+    document.getElementById('calcTotal').textContent        = `${exhibition} + ${essayDoubled} = ${total} / 30`;
+
+    // Highlight row in table
+    document.querySelectorAll('.scale-table tr').forEach(tr => {
+      tr.classList.remove('highlight-row');
+      if (tr.dataset.grade === grade.letter) tr.classList.add('highlight-row');
+    });
+
+    // Highlight current TOK grade in matrix
+    const matrixRows = { A: 1, B: 2, C: 3, D: 4 };
+    document.querySelectorAll('.matrix-grid .cell').forEach(c => c.classList.remove('highlight'));
+    const rowIndex = matrixRows[grade.letter];
+    if (rowIndex) {
+      const allCells = document.querySelectorAll('.matrix-grid .cell');
+      // row-header is at position: rowIndex * 5 (0-indexed header = row 0)
+      const startIdx = rowIndex * 5;
+      allCells[startIdx].classList.add('highlight'); // row header
+    }
+  }
+
+  // Initialize with sliders at 0 — show card on first interaction
+  document.getElementById('exhibitionSlider').addEventListener('input', update);
+  document.getElementById('essaySlider').addEventListener('input', update);
+</script>
+</body>
+</html>
