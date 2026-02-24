@@ -1,1 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commentary Workshop: Moving Vertically</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f4ef;
+    --surface: #ffffff;
+    --ink: #1a1a1a;
+    --ink-light: #555;
+    --rule: #e0dbd0;
+    --m-color: #2d6a4f;
+    --m-light: #d8f3dc;
+    --c-color: #1d4e8f;
+    --c-light: #dbeafe;
+    --i-color: #7b2d8b;
+    --i-light: #f3e8ff;
+    --discuss: #92400e;
+    --discuss-light: #fef3c7;
+    --accent: #c0392b;
+  }
 
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--ink);
+    color: white;
+    padding: 2.5rem 3rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  header::after {
+    content: 'MCI';
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'DM Serif Display', serif;
+    font-size: 7rem;
+    opacity: 0.07;
+    letter-spacing: 0.5rem;
+    pointer-events: none;
+  }
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.2rem;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.4rem;
+  }
+  header p {
+    color: #aaa;
+    font-size: 0.95rem;
+    font-weight: 300;
+  }
+
+  /* NAV TABS */
+  nav {
+    background: #111;
+    display: flex;
+    padding: 0 3rem;
+    gap: 0;
+    border-bottom: 3px solid var(--accent);
+  }
+  nav button {
+    background: none;
+    border: none;
+    color: #888;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -3px;
+    transition: all 0.2s;
+  }
+  nav button:hover { color: #ccc; }
+  nav button.active {
+    color: white;
+    border-bottom-color: var(--accent);
+  }
+
+  /* MAIN LAYOUT */
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem;
+  }
+
+  /* SECTION PANELS */
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* TERM INTRO BOX */
+  .term-intro {
+    background: var(--ink);
+    color: white;
+    border-radius: 8px;
+    padding: 2rem 2.5rem;
+    margin-bottom: 2rem;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  .term-badge {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3.5rem;
+    line-height: 1;
+    color: var(--accent);
+  }
+  .term-intro h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+  }
+  .term-intro p {
+    color: #ccc;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+  .term-question {
+    margin-top: 0.8rem;
+    color: white;
+    font-size: 1rem;
+    font-style: italic;
+    border-left: 3px solid var(--accent);
+    padding-left: 1rem;
+  }
+
+  /* TWO COLUMN LAYOUT */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* PARAGRAPH CARDS */
+  .para-card {
+    background: var(--surface);
+    border-radius: 8px;
+    border: 1px solid var(--rule);
+    overflow: hidden;
+  }
+  .para-card-header {
+    padding: 0.8rem 1.2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .card-discuss .para-card-header {
+    background: var(--discuss-light);
+    color: var(--discuss);
+    border-bottom: 1px solid #fde68a;
+  }
+  .card-student .para-card-header {
+    background: #f0f9ff;
+    color: #1e40af;
+    border-bottom: 1px solid #bae6fd;
+  }
+  .para-card-body {
+    padding: 1.2rem 1.4rem;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--ink);
+  }
+
+  /* SENTENCE LABELS */
+  .sentence { display: inline; }
+  .label {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    vertical-align: middle;
+    margin: 0 2px;
+    line-height: 1;
+  }
+  .label-claim { background: #fee2e2; color: #991b1b; }
+  .label-ev { background: #fef9c3; color: #854d0e; }
+  .label-m { background: var(--m-light); color: var(--m-color); }
+  .label-c { background: var(--c-light); color: var(--c-color); }
+  .label-i { background: var(--i-light); color: var(--i-color); }
+
+  .sentence-m { background: var(--m-light); border-left: 3px solid var(--m-color); padding: 0.3rem 0.6rem; border-radius: 0 4px 4px 0; display: inline; }
+  .sentence-c { background: var(--c-light); border-left: 3px solid var(--c-color); padding: 0.3rem 0.6rem; border-radius: 0 4px 4px 0; display: inline; }
+  .sentence-i { background: var(--i-light); border-left: 3px solid var(--i-color); padding: 0.3rem 0.6rem; border-radius: 0 4px 4px 0; display: inline; }
+
+  /* HIDDEN SENTENCES */
+  .hidden-sentence {
+    display: none;
+  }
+
+  /* REVEAL BUTTON */
+  .reveal-wrap {
+    padding: 0.8rem 1.4rem 1.2rem;
+  }
+  .reveal-btn {
+    background: none;
+    border: 2px solid var(--rule);
+    border-radius: 6px;
+    padding: 0.5rem 1.1rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: var(--ink-light);
+    transition: all 0.2s;
+  }
+  .reveal-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .reveal-btn.revealed {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  /* DISCUSSION PROMPT */
+  .discuss-box {
+    background: var(--discuss-light);
+    border: 1px solid #fde68a;
+    border-radius: 8px;
+    padding: 1rem 1.4rem;
+    margin-top: 1rem;
+  }
+  .discuss-box p {
+    font-size: 0.9rem;
+    color: var(--discuss);
+    font-weight: 500;
+  }
+  .discuss-box ul {
+    margin-top: 0.5rem;
+    padding-left: 1.2rem;
+  }
+  .discuss-box ul li {
+    font-size: 0.88rem;
+    color: #78350f;
+    margin-bottom: 0.2rem;
+    line-height: 1.5;
+  }
+
+  /* WRITING PROMPT */
+  .write-box {
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 8px;
+    padding: 1rem 1.4rem;
+    margin-top: 1rem;
+  }
+  .write-box p {
+    font-size: 0.9rem;
+    color: #1e40af;
+    font-weight: 500;
+  }
+  .write-box .prompt-text {
+    font-size: 0.88rem;
+    color: #1e3a8a;
+    margin-top: 0.4rem;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+  .write-box .starter {
+    margin-top: 0.6rem;
+    font-style: italic;
+    color: #2563eb;
+    font-size: 0.85rem;
+  }
+
+  /* STARTERS BOX */
+  .starters {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 1rem 1.4rem;
+    margin-top: 1.5rem;
+  }
+  .starters h4 {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-light);
+    margin-bottom: 0.6rem;
+  }
+  .starter-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .pill {
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    border-radius: 20px;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.82rem;
+    font-style: italic;
+    color: var(--ink-light);
+  }
+
+  /* OVERVIEW PANEL */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+    margin-bottom: 2rem;
+  }
+  .overview-card {
+    border-radius: 8px;
+    padding: 1.5rem;
+    border: 1px solid var(--rule);
+  }
+  .overview-card.m { background: var(--m-light); border-color: var(--m-color); }
+  .overview-card.c { background: var(--c-light); border-color: var(--c-color); }
+  .overview-card.i { background: var(--i-light); border-color: var(--i-color); }
+  .overview-card .letter {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.5rem;
+    margin-bottom: 0.3rem;
+  }
+  .overview-card.m .letter { color: var(--m-color); }
+  .overview-card.c .letter { color: var(--c-color); }
+  .overview-card.i .letter { color: var(--i-color); }
+  .overview-card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .overview-card p {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: #333;
+  }
+  .overview-card .question {
+    margin-top: 0.7rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+    font-style: italic;
+  }
+
+  .rule-box {
+    background: var(--ink);
+    color: white;
+    border-radius: 8px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  .rule-box p {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.3rem;
+    font-style: italic;
+    color: #ddd;
+  }
+  .rule-box span { color: var(--accent); }
+
+  .diagram {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+  }
+  .diag-step {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-align: center;
+  }
+  .diag-arrow {
+    font-size: 1.2rem;
+    color: var(--ink-light);
+    margin: 0 0.4rem;
+  }
+  .diag-step.active-step {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 700px) {
+    .two-col { grid-template-columns: 1fr; }
+    .overview-grid { grid-template-columns: 1fr; }
+    header { padding: 1.5rem; }
+    nav { padding: 0 1rem; }
+    main { padding: 1.5rem 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Commentary Workshop: Moving Vertically</h1>
+  <p>AP Language · Argument Writing · Developing the Line of Reasoning</p>
+</header>
+
+<nav>
+  <button class="active" onclick="showPanel('overview')">Overview</button>
+  <button onclick="showPanel('mechanism')">M — Mechanism</button>
+  <button onclick="showPanel('consequence')">C — Consequence</button>
+  <button onclick="showPanel('implication')">I — Implication</button>
+</nav>
+
+<main>
+
+  <!-- OVERVIEW -->
+  <div class="panel active" id="panel-overview">
+
+    <div class="rule-box">
+      <p>Commentary in argument moves <span>down</span>, not sideways.<br>Your job today: push the claim <span>deeper</span> — not in a new direction.</p>
+    </div>
+
+    <div class="overview-grid">
+      <div class="overview-card m">
+        <div class="letter">M</div>
+        <h3>Mechanism</h3>
+        <p>Explain the logic underneath the claim. Why does this happen? How does it actually work? Don't just restate — dig into the cause.</p>
+        <p class="question">"Why or how does this lead to the outcome?"</p>
+      </div>
+      <div class="overview-card c">
+        <div class="letter">C</div>
+        <h3>Consequence</h3>
+        <p>Tell us what follows. If the claim is true, what happens next? A consequence is a prediction or result — not another example of the same thing.</p>
+        <p class="question">"If this is true, what happens as a result?"</p>
+      </div>
+      <div class="overview-card i">
+        <div class="letter">I</div>
+        <h3>Implication</h3>
+        <p>Zoom out. Why does this matter beyond the paragraph? What does this reveal about something bigger — society, fairness, human nature, systems?</p>
+        <p class="question">"So what? Why should anyone outside this situation care?"</p>
+      </div>
+    </div>
+
+    <div class="diagram">
+      <div class="diag-step">Claim</div>
+      <div class="diag-arrow">↓</div>
+      <div class="diag-step">Evidence</div>
+      <div class="diag-arrow">↓</div>
+      <div class="diag-step active-step">Mechanism</div>
+      <div class="diag-arrow">↓</div>
+      <div class="diag-step active-step">Consequence</div>
+      <div class="diag-arrow">↓</div>
+      <div class="diag-step active-step">Implication</div>
+    </div>
+
+    <div class="para-card" style="max-width:680px; margin: 0 auto;">
+      <div class="para-card-header" style="background:#f4f4f4; color:#555; border-bottom: 1px solid #e0e0e0;">
+        ⚠ The problem we're fixing
+      </div>
+      <div class="para-card-body" style="font-size:0.92rem; color:#444;">
+        Most students write commentary that moves <strong>horizontally</strong> — piling on new examples, new claims, or unconnected ideas. A scorer reading your paragraph tracks every transition. If your commentary signals "new point," your line of reasoning looks broken — even if you were actually going deeper.<br><br>
+        Today you'll practice the three moves that keep your paragraph on the rail.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MECHANISM -->
+  <div class="panel" id="panel-mechanism">
+
+    <div class="term-intro">
+      <div class="term-badge">M</div>
+      <div>
+        <h2>Mechanism</h2>
+        <p>Evidence doesn't prove a claim on its own — there's always a logical gap between what the evidence shows and what you're arguing. The mechanism closes that gap. It explains <em>why your evidence actually supports your claim</em>. Without it, the reader has to make the connection themselves — and they might not make it the way you intend.</p>
+        <p class="term-question">"Why does this evidence prove my claim? What is the logical bridge between the two?"</p>
+      </div>
+    </div>
+
+    <div class="diagram">
+      <div class="diag-step">Claim</div>
+      <div class="diag-arrow">↓</div>
+      <div class="diag-step">Evidence</div>
+      <div class="diag-arrow">↓</div>
+      <div class="diag-step active-step">Mechanism ← you are here</div>
+      <div class="diag-arrow" style="opacity:0.3">↓</div>
+      <div class="diag-step" style="opacity:0.3">Consequence</div>
+      <div class="diag-arrow" style="opacity:0.3">↓</div>
+      <div class="diag-step" style="opacity:0.3">Implication</div>
+    </div>
+
+    <div class="two-col">
+
+      <!-- CLASS DISCUSSION CARD -->
+      <div class="para-card card-discuss">
+        <div class="para-card-header">
+          💬 Class Discussion
+        </div>
+        <div class="para-card-body">
+          <span class="label label-claim">Claim</span> Schools that start before 8 a.m. are setting students up to fail before the day even begins. <span class="label label-ev">Evidence</span> Studies show that teenagers who sleep fewer than eight hours score significantly worse on memory and concentration tasks than those who get a full night's rest.
+          <span id="m-discuss-hidden" class="hidden-sentence">
+            <br><br><span class="sentence-m"><span class="label label-m">M</span> This evidence supports the claim because everything school asks students to do — absorb information, think through problems, retain what they've been taught — depends entirely on memory and concentration. If sleep deprivation measurably damages both of those functions, then the evidence isn't just showing that tired students struggle; it's showing that early start times directly remove the cognitive tools learning requires.</span>
+          </span>
+        </div>
+        <div class="reveal-wrap">
+          <button class="reveal-btn" id="reveal-m-discuss" onclick="reveal('m-discuss-hidden', 'reveal-m-discuss')">Reveal mechanism</button>
+        </div>
+        <div class="discuss-box">
+          <p>🗣 Discuss before revealing:</p>
+          <ul>
+            <li>The claim says early start times set students up to fail. The evidence says sleep-deprived students score worse. Why does one prove the other? What's the logical bridge?</li>
+            <li>What would a skeptic say is missing between that evidence and that claim? Your mechanism answers them.</li>
+            <li>Try writing the bridge together before revealing. Does your sentence close the gap, or does it just restate one side?</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- STUDENT PRACTICE CARD -->
+      <div class="para-card card-student">
+        <div class="para-card-header">
+          ✏️ Your Paragraph
+        </div>
+        <div class="para-card-body">
+          <span class="label label-claim">Claim</span> Standardized tests like the SAT don't measure how smart a student is — they measure how much money their family was able to spend on preparation. <span class="label label-ev">Evidence</span> Students who go through private tutoring programs score an average of 200 points higher than students who prepare on their own, regardless of their GPA or class performance.
+        </div>
+        <div class="write-box">
+          <p>✏️ Now you write the mechanism:</p>
+          <p class="prompt-text">The claim says the SAT measures money, not intelligence. The evidence shows tutored students outscore non-tutored students — even when their grades are the same. Why does that gap prove the claim? What is the logical connection between those two things?</p>
+          <p class="starter">Try starting with: <em>"This proves the claim because..."</em> or <em>"The reason this evidence matters is that..."</em> or <em>"What this gap reveals is..."</em></p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="starters">
+      <h4>Sentence starters for mechanism</h4>
+      <div class="starter-pills">
+        <span class="pill">This proves the claim because...</span>
+        <span class="pill">The reason this evidence matters is that...</span>
+        <span class="pill">What this gap reveals is...</span>
+        <span class="pill">This supports the argument because...</span>
+        <span class="pill">The connection here is that...</span>
+        <span class="pill">This evidence only makes sense if...</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CONSEQUENCE -->
+  <div class="panel" id="panel-consequence">
+
+    <div class="term-intro">
+      <div class="term-badge">C</div>
+      <div>
+        <h2>Consequence</h2>
+        <p>Once you've explained how something works, you push one level further: what does this lead to? A consequence is a result or outcome that follows logically from your claim and mechanism. Be careful — a consequence is a prediction, not a restatement. It happens <em>because of</em> the mechanism. It doesn't just repeat what you already said in different words.</p>
+        <p class="term-question">"If this is true, what actually happens as a result?"</p>
+      </div>
+    </div>
+
+    <div class="diagram">
+      <div class="diag-step">Claim</div>
+      <div class="diag-arrow">↓</div>
+      <div class="diag-step">Evidence</div>
+      <div class="diag-arrow">↓</div>
+      <div class="diag-step">Mechanism</div>
+      <div class="diag-arrow">↓</div>
+      <div class="diag-step active-step">Consequence ← you are here</div>
+      <div class="diag-arrow" style="opacity:0.3">↓</div>
+      <div class="diag-step" style="opacity:0.3">Implication</div>
+    </div>
+
+    <div class="two-col">
+
+      <!-- CLASS DISCUSSION CARD -->
+      <div class="para-card card-discuss">
+        <div class="para-card-header">
+          💬 Class Discussion
+        </div>
+        <div class="para-card-body">
+          <span class="label label-claim">Claim</span> Schools that start before 8 a.m. are setting students up to fail before the day even begins. <span class="label label-ev">Evidence</span> Studies show that teenagers who sleep fewer than eight hours score significantly worse on memory and concentration tasks than those who get a full night's rest. <span class="sentence-m"><span class="label label-m">M</span> This evidence supports the claim because everything school asks students to do — absorb information, think through problems, retain what they've been taught — depends entirely on memory and concentration. If sleep deprivation measurably damages both of those functions, then the evidence isn't just showing that tired students struggle; it's showing that early start times directly remove the cognitive tools learning requires.</span>
+          <span id="c-discuss-hidden" class="hidden-sentence">
+            <br><br><span class="sentence-c"><span class="label label-c">C</span> This means that early start times don't just make students uncomfortable — they actively work against the biological process that makes learning stick. The school is demanding that students absorb new material during the very hours their brains are least equipped to do it.</span>
+          </span>
+        </div>
+        <div class="reveal-wrap">
+          <button class="reveal-btn" id="reveal-c-discuss" onclick="reveal('c-discuss-hidden', 'reveal-c-discuss')">Reveal consequence</button>
+        </div>
+        <div class="discuss-box">
+          <p>🗣 Discuss before revealing:</p>
+          <ul>
+            <li>We know sleep deprivation hurts memory and concentration. So what actually happens inside a school that starts too early?</li>
+            <li>What is the real-world result of students sitting in class in this state?</li>
+            <li>Watch out: don't just restate the mechanism. A consequence moves one step <em>further</em>.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- STUDENT PRACTICE CARD -->
+      <div class="para-card card-student">
+        <div class="para-card-header">
+          ✏️ Your Paragraph
+        </div>
+        <div class="para-card-body">
+          <span class="label label-claim">Claim</span> Standardized tests like the SAT don't measure how smart a student is — they measure how much money their family was able to spend on preparation. <span class="label label-ev">Evidence</span> Students who go through private tutoring programs score an average of 200 points higher than students who prepare on their own, regardless of their GPA or class performance. <span class="sentence-m"><span class="label label-m">M</span> <em>[Your mechanism sentence from the last section goes here.]</em></span>
+        </div>
+        <div class="write-box">
+          <p>✏️ Now you write the consequence:</p>
+          <p class="prompt-text">If the SAT is really measuring preparation resources rather than ability, what is the result? What actually happens to the students on the wrong side of that gap? Write one sentence that follows logically from your mechanism.</p>
+          <p class="starter">Try starting with: <em>"This means that..."</em> or <em>"As a result..."</em> or <em>"What follows from this is..."</em></p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="starters">
+      <h4>Sentence starters for consequence</h4>
+      <div class="starter-pills">
+        <span class="pill">This means that...</span>
+        <span class="pill">As a result...</span>
+        <span class="pill">What follows from this is...</span>
+        <span class="pill">The effect of this is...</span>
+        <span class="pill">This creates a situation where...</span>
+        <span class="pill">In practice, this leads to...</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- IMPLICATION -->
+  <div class="panel" id="panel-implication">
+
+    <div class="term-intro">
+      <div class="term-badge">I</div>
+      <div>
+        <h2>Implication</h2>
+        <p>This is the deepest move. You've explained the mechanism and the consequence — now you zoom out and answer the "so what?" A strong implication connects your argument to something larger: a principle, a pattern, a question about fairness or society or human nature. It's not a new argument — it's the full weight of the argument you've been building.</p>
+        <p class="term-question">"Why should anyone beyond this situation care about this?"</p>
+      </div>
+    </div>
+
+    <div class="diagram">
+      <div class="diag-step">Claim</div>
+      <div class="diag-arrow">↓</div>
+      <div class="diag-step">Evidence</div>
+      <div class="diag-arrow">↓</div>
+      <div class="diag-step">Mechanism</div>
+      <div class="diag-arrow">↓</div>
+      <div class="diag-step">Consequence</div>
+      <div class="diag-arrow">↓</div>
+      <div class="diag-step active-step">Implication ← you are here</div>
+    </div>
+
+    <div class="two-col">
+
+      <!-- CLASS DISCUSSION CARD -->
+      <div class="para-card card-discuss">
+        <div class="para-card-header">
+          💬 Class Discussion
+        </div>
+        <div class="para-card-body">
+          <span class="label label-claim">Claim</span> Schools that start before 8 a.m. are setting students up to fail before the day even begins. <span class="label label-ev">Evidence</span> Studies show that teenagers who sleep fewer than eight hours score significantly worse on memory and concentration tasks than those who get a full night's rest. <span class="sentence-m"><span class="label label-m">M</span> This evidence supports the claim because everything school asks students to do — absorb information, think through problems, retain what they've been taught — depends entirely on memory and concentration. If sleep deprivation measurably damages both of those functions, then the evidence isn't just showing that tired students struggle; it's showing that early start times directly remove the cognitive tools learning requires.</span> <span class="sentence-c"><span class="label label-c">C</span> This means that early start times don't just make students uncomfortable — they actively work against the biological process that makes learning stick. The school is demanding that students absorb new material during the very hours their brains are least equipped to do it.</span>
+          <span id="i-discuss-hidden" class="hidden-sentence">
+            <br><br><span class="sentence-i"><span class="label label-i">I</span> Schools that insist on early start times despite this evidence aren't just making a scheduling decision — they are choosing tradition and convenience over the actual conditions that allow learning to happen, which raises a larger question about whether school systems are truly designed around students or around everything else.</span>
+          </span>
+        </div>
+        <div class="reveal-wrap">
+          <button class="reveal-btn" id="reveal-i-discuss" onclick="reveal('i-discuss-hidden', 'reveal-i-discuss')">Reveal implication</button>
+        </div>
+        <div class="discuss-box">
+          <p>🗣 Discuss before revealing:</p>
+          <ul>
+            <li>We've shown that early start times hurt learning. Why does this matter beyond just one school's schedule?</li>
+            <li>What does this reveal about how schools make decisions — or whose interests they actually serve?</li>
+            <li>The implication shouldn't feel like a brand new argument. It should feel like the full weight of everything you just said, finally landing.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- STUDENT PRACTICE CARD -->
+      <div class="para-card card-student">
+        <div class="para-card-header">
+          ✏️ Your Paragraph
+        </div>
+        <div class="para-card-body">
+          <span class="label label-claim">Claim</span> Standardized tests like the SAT don't measure how smart a student is — they measure how much money their family was able to spend on preparation. <span class="label label-ev">Evidence</span> Students who go through private tutoring programs score an average of 200 points higher than students who prepare on their own, regardless of their GPA or class performance. <span class="sentence-m"><span class="label label-m">M</span> <em>[Your mechanism sentence.]</em></span> <span class="sentence-c"><span class="label label-c">C</span> <em>[Your consequence sentence.]</em></span>
+        </div>
+        <div class="write-box">
+          <p>✏️ Now you write the implication:</p>
+          <p class="prompt-text">If standardized tests are really measuring wealth rather than ability, why does that matter beyond college admissions? What does it say about fairness, opportunity, or the systems we use to decide who gets ahead? Write one sentence that lands the full weight of your argument.</p>
+          <p class="starter">Try starting with: <em>"Ultimately, this reveals..."</em> or <em>"What this means at a larger level is..."</em> or <em>"This raises a question about..."</em></p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="starters">
+      <h4>Sentence starters for implication</h4>
+      <div class="starter-pills">
+        <span class="pill">Ultimately, this reveals...</span>
+        <span class="pill">What this means at a larger level is...</span>
+        <span class="pill">This raises a question about...</span>
+        <span class="pill">At its core, this is a problem of...</span>
+        <span class="pill">This matters because...</span>
+        <span class="pill">What this suggests about [society / fairness / systems] is...</span>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<script>
+  function showPanel(id) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById('panel-' + id).classList.add('active');
+    const buttons = document.querySelectorAll('nav button');
+    const order = ['overview', 'mechanism', 'consequence', 'implication'];
+    buttons[order.indexOf(id)].classList.add('active');
+  }
+
+  function reveal(hiddenId, btnId) {
+    const el = document.getElementById(hiddenId);
+    const btn = document.getElementById(btnId);
+    if (el && !btn.classList.contains('revealed')) {
+      el.style.display = 'inline';
+      btn.textContent = 'Revealed';
+      btn.classList.add('revealed');
+    }
+  }
+</script>
+
+</body>
+</html>
