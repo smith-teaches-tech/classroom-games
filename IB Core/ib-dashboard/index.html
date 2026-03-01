@@ -58,7 +58,7 @@ MQC4iCfnew3nqvCwUNbjS0iuTLbjaPr+shLnwUGyGimjo8RaKcNTeHbdB/s+uKG9
 gnLIS+gC0SwnB7iuKD5sFVp869K8HT88Ma63SC9PzFdN4n3LDL9mi0aVXKtGG4eL
 mjfmW+0ySoUwh7ulm2bnkQ==`;
 
-const TEACHER_CREDS = { username: 'smith.m.04', password: 'IhateAIcheaters' };
+const TEACHER_CREDS = { username: 'smith.m.04@isg', password: 'IhateAIcheaters' };
 const ADMIN_CREDS   = { username: 'IB Coordinator', password: 'iloveasd' };
 
 // ═══════════════════════════════════════════════════════════
@@ -1341,7 +1341,7 @@ function StudentDashboard({student,tok,cas,ee,onLogout}) {
 // ═══════════════════════════════════════════════════════════
 // APP
 // ═══════════════════════════════════════════════════════════
-export default function App() {
+function App() {
   const [session,setSession]   = useState(()=>{
     try { return JSON.parse(localStorage.getItem('ib_session')||'null'); } catch { return null; }
   });
