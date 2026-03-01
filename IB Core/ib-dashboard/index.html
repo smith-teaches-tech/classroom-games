@@ -16,21 +16,19 @@
     ::-webkit-scrollbar { width: 5px; height: 5px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-    .fade-in { animation: fadeIn 0.2s ease; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+    .fade-in { animation: fadeIn 0.15s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+    .ov-table th, .ov-table td { white-space: nowrap; }
   </style>
 </head>
 <body>
 <div id="root"></div>
 <script type="text/babel">
-const { useState, useEffect, useCallback, useRef, useMemo } = React;
+const { useState, useEffect, useCallback, useRef } = React;
 
-// ═══════════════════════════════════════════════════════════
-// CONFIG — credentials baked in
-// ═══════════════════════════════════════════════════════════
+// ── CONFIG ──────────────────────────────────────────────────
 const SPREADSHEET_ID = '11XMQo-MDxc2cSoMO2qhziz9LTaV9f2ctBbwnhFYYKYE';
 const CLIENT_EMAIL   = 'ib-dashboard-service@amazing-race-app.iam.gserviceaccount.com';
-// 'n' prefix stripped (was tail of \n in JSON file)
 const PRIVATE_KEY_B64 = `MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDSZbv2pRHtLHkN
 twNE1+cqAdvuXueaewFhDTwRoU6Zh0kvBxDqBRWQq6drZc3FNXrQZ3PVwFG2k4Wz
 BzYxyMIt8lnlF/MWPkW7v1dsnhgLbmgp0qt/Nea03DBr8OYnXabW0LNeaQZYY9LK
@@ -57,1408 +55,608 @@ qlY9XPU1XKblvIRpjC6zrcYV4oZPmWB5J7u6TVkCgYBh98itainOxos151YqsqOO
 MQC4iCfnew3nqvCwUNbjS0iuTLbjaPr+shLnwUGyGimjo8RaKcNTeHbdB/s+uKG9
 gnLIS+gC0SwnB7iuKD5sFVp869K8HT88Ma63SC9PzFdN4n3LDL9mi0aVXKtGG4eL
 mjfmW+0ySoUwh7ulm2bnkQ==`;
-
 const TEACHER_CREDS = { username: 'smith.m.04@isg', password: 'IhateAIcheaters' };
 const ADMIN_CREDS   = { username: 'IB Coordinator', password: 'iloveasd' };
 
-// ═══════════════════════════════════════════════════════════
-// GOOGLE AUTH — JWT + service account
-// ═══════════════════════════════════════════════════════════
+// ── GOOGLE AUTH ─────────────────────────────────────────────
 let _token = null, _tokenExp = 0;
-
 function b64url(str) {
-  return btoa(unescape(encodeURIComponent(str)))
-    .replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');
+  return btoa(unescape(encodeURIComponent(str))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');
 }
 function bytesToB64url(buf) {
-  let s = '';
-  new Uint8Array(buf).forEach(b => s += String.fromCharCode(b));
+  let s=''; new Uint8Array(buf).forEach(b=>s+=String.fromCharCode(b));
   return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,'');
 }
-
 async function getToken() {
-  if (_token && Date.now() < _tokenExp - 60000) return _token;
-  const now = Math.floor(Date.now()/1000);
-  const hdr = b64url(JSON.stringify({alg:'RS256',typ:'JWT'}));
-  const pay = b64url(JSON.stringify({
-    iss: CLIENT_EMAIL,
-    scope: 'https://www.googleapis.com/auth/spreadsheets',
-    aud: 'https://oauth2.googleapis.com/token',
-    iat: now, exp: now + 3600,
-  }));
-  const sig_input = `${hdr}.${pay}`;
-
-  const pem = PRIVATE_KEY_B64.replace(/\s/g,'');
-  const der = atob(pem);
-  const derBytes = new Uint8Array(der.length);
-  for (let i=0;i<der.length;i++) derBytes[i]=der.charCodeAt(i);
-
-  const key = await crypto.subtle.importKey(
-    'pkcs8', derBytes.buffer,
-    {name:'RSASSA-PKCS1-v1_5',hash:'SHA-256'},
-    false, ['sign']
-  );
-  const sigBuf = await crypto.subtle.sign('RSASSA-PKCS1-v1_5', key, new TextEncoder().encode(sig_input));
-  const jwt = `${sig_input}.${bytesToB64url(sigBuf)}`;
-
-  const res = await fetch('https://oauth2.googleapis.com/token', {
-    method:'POST',
-    headers:{'Content-Type':'application/x-www-form-urlencoded'},
-    body:`grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=${jwt}`,
-  });
-  const d = await res.json();
-  if (!d.access_token) throw new Error(d.error_description || 'Token fetch failed');
-  _token = d.access_token;
-  _tokenExp = Date.now() + d.expires_in * 1000;
+  if (_token && Date.now() < _tokenExp-60000) return _token;
+  const now=Math.floor(Date.now()/1000);
+  const hdr=b64url(JSON.stringify({alg:'RS256',typ:'JWT'}));
+  const pay=b64url(JSON.stringify({iss:CLIENT_EMAIL,scope:'https://www.googleapis.com/auth/spreadsheets',aud:'https://oauth2.googleapis.com/token',iat:now,exp:now+3600}));
+  const si=`${hdr}.${pay}`;
+  const pem=PRIVATE_KEY_B64.replace(/\s/g,'');
+  const der=atob(pem); const db=new Uint8Array(der.length);
+  for(let i=0;i<der.length;i++) db[i]=der.charCodeAt(i);
+  const key=await crypto.subtle.importKey('pkcs8',db.buffer,{name:'RSASSA-PKCS1-v1_5',hash:'SHA-256'},false,['sign']);
+  const sig=await crypto.subtle.sign('RSASSA-PKCS1-v1_5',key,new TextEncoder().encode(si));
+  const jwt=`${si}.${bytesToB64url(sig)}`;
+  const res=await fetch('https://oauth2.googleapis.com/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:`grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=${jwt}`});
+  const d=await res.json();
+  if (!d.access_token) throw new Error(d.error_description||'Token fetch failed');
+  _token=d.access_token; _tokenExp=Date.now()+d.expires_in*1000;
   return _token;
 }
 
-// ═══════════════════════════════════════════════════════════
-// SHEETS API
-// ═══════════════════════════════════════════════════════════
-const SBASE = `https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}`;
-
+// ── SHEETS API ──────────────────────────────────────────────
+const SBASE=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}`;
 async function sheetsGet(range) {
-  const tok = await getToken();
-  const r = await fetch(`${SBASE}/values/${encodeURIComponent(range)}`,
-    {headers:{Authorization:`Bearer ${tok}`}});
-  const d = await r.json();
-  if (!r.ok) throw new Error(d.error?.message||'Read error');
+  const tok=await getToken();
+  const r=await fetch(`${SBASE}/values/${encodeURIComponent(range)}`,{headers:{Authorization:`Bearer ${tok}`}});
+  const d=await r.json(); if(!r.ok) throw new Error(d.error?.message||'Read error');
   return d.values||[];
 }
-
-async function sheetsPut(range, values) {
-  const tok = await getToken();
-  const r = await fetch(`${SBASE}/values/${encodeURIComponent(range)}?valueInputOption=RAW`,{
-    method:'PUT',
-    headers:{Authorization:`Bearer ${tok}`,'Content-Type':'application/json'},
-    body: JSON.stringify({range, majorDimension:'ROWS', values}),
-  });
-  const d = await r.json();
-  if (!r.ok) throw new Error(d.error?.message||'Write error');
+async function sheetsPut(range,values) {
+  const tok=await getToken();
+  const r=await fetch(`${SBASE}/values/${encodeURIComponent(range)}?valueInputOption=RAW`,{method:'PUT',headers:{Authorization:`Bearer ${tok}`,'Content-Type':'application/json'},body:JSON.stringify({range,majorDimension:'ROWS',values})});
+  const d=await r.json(); if(!r.ok) throw new Error(d.error?.message||'Write error');
+  return d;
+}
+async function sheetsAppend(range,values) {
+  const tok=await getToken();
+  const r=await fetch(`${SBASE}/values/${encodeURIComponent(range)}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,{method:'POST',headers:{Authorization:`Bearer ${tok}`,'Content-Type':'application/json'},body:JSON.stringify({range,majorDimension:'ROWS',values})});
+  const d=await r.json(); if(!r.ok) throw new Error(d.error?.message||'Append error');
   return d;
 }
 
-async function sheetsAppend(range, values) {
-  const tok = await getToken();
-  const r = await fetch(`${SBASE}/values/${encodeURIComponent(range)}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,{
-    method:'POST',
-    headers:{Authorization:`Bearer ${tok}`,'Content-Type':'application/json'},
-    body: JSON.stringify({range, majorDimension:'ROWS', values}),
-  });
-  const d = await r.json();
-  if (!r.ok) throw new Error(d.error?.message||'Append error');
-  return d;
-}
+// ── PARSERS ─────────────────────────────────────────────────
+const B=v=>v==='TRUE'||v===true;
+const BS=v=>v?'TRUE':'FALSE';
+const tryJson=(s,fb=[])=>{try{return JSON.parse(s||'[]');}catch{return fb;}};
 
-// ═══════════════════════════════════════════════════════════
-// DATA PARSERS
-// ═══════════════════════════════════════════════════════════
-const B  = v => v==='TRUE'||v===true;
-const BS = v => v ? 'TRUE' : 'FALSE';
-const tryJson = (s, fallback=[]) => { try { return JSON.parse(s||'[]'); } catch { return fallback; } };
+function parseStudents(rows){return rows.slice(1).map(r=>({student_id:r[0]||'',name:r[1]||'',password:r[2]||'',ee_subject:r[3]||'',ee_rq:r[4]||''})).filter(s=>s.student_id);}
+function parseTOK(rows){return rows.slice(1).map(r=>({
+  student_id:r[0]||'',
+  exhibition_planning_conference:B(r[1]),exhibition_written_feedback:B(r[2]),exhibition_final_draft_in:B(r[3]),
+  exhibition_score:r[4]||'',exhibition_comment:r[5]||'',
+  essay_interaction_1:B(r[6]),essay_interaction_2:B(r[7]),essay_interaction_3:B(r[8]),
+  essay_final_draft_submitted:B(r[9]),essay_score:r[10]||'',essay_comment:r[11]||'',
+  essay_interaction_1_comment:r[12]||'',
+  essay_interaction_2_comment:r[13]||'',
+})).filter(t=>t.student_id);}
+function parseCAS(rows){return rows.slice(1).map(r=>({
+  student_id:r[0]||'',
+  interview_1_date:r[1]||'',interview_1_comment:r[2]||'',
+  interview_2_date:r[3]||'',interview_2_comment:r[4]||'',
+  interview_final_date:r[5]||'',interview_final_comment:r[6]||'',
+  extra_interactions:tryJson(r[7]),
+  cas_project_decided:B(r[8]),cas_project_complete:B(r[9]),
+  strand_creativity:B(r[10]),strand_activity:B(r[11]),strand_service:B(r[12]),
+  outcome_1:B(r[13]),outcome_2:B(r[14]),outcome_3:B(r[15]),outcome_4:B(r[16]),
+  outcome_5:B(r[17]),outcome_6:B(r[18]),outcome_7:B(r[19]),
+})).filter(c=>c.student_id);}
+function parseEE(rows){return rows.slice(1).map(r=>({
+  student_id:r[0]||'',ee_subject:r[1]||'',ee_rq:r[2]||'',
+  annotated_bibliography:B(r[3]),draft_submitted:B(r[4]),final_draft_submitted:B(r[5]),
+  supervisor_interaction_1:B(r[6]),supervisor_interaction_2:B(r[7]),supervisor_interaction_3:B(r[8]),
+  reflection_1:B(r[9]),reflection_2:B(r[10]),reflection_3_final:B(r[11]),
+  supervisor_comments_complete:B(r[12]),hours:r[13]||'',score:r[14]||'',
+})).filter(e=>e.student_id);}
 
-function parseStudents(rows) {
-  return rows.slice(1).map(r=>({
-    student_id:r[0]||'', name:r[1]||'', password:r[2]||'',
-    ee_subject:r[3]||'', ee_rq:r[4]||'',
-  })).filter(s=>s.student_id);
-}
+// ── SERIALIZERS ─────────────────────────────────────────────
+const tokRow=t=>[t.student_id,BS(t.exhibition_planning_conference),BS(t.exhibition_written_feedback),BS(t.exhibition_final_draft_in),t.exhibition_score,t.exhibition_comment,BS(t.essay_interaction_1),BS(t.essay_interaction_2),BS(t.essay_interaction_3),BS(t.essay_final_draft_submitted),t.essay_score,t.essay_comment,t.essay_interaction_1_comment||'',t.essay_interaction_2_comment||''];
+const casRow=c=>[c.student_id,c.interview_1_date,c.interview_1_comment,c.interview_2_date,c.interview_2_comment,c.interview_final_date,c.interview_final_comment,JSON.stringify(c.extra_interactions),BS(c.cas_project_decided),BS(c.cas_project_complete),BS(c.strand_creativity),BS(c.strand_activity),BS(c.strand_service),BS(c.outcome_1),BS(c.outcome_2),BS(c.outcome_3),BS(c.outcome_4),BS(c.outcome_5),BS(c.outcome_6),BS(c.outcome_7)];
+const eeRow=e=>[e.student_id,e.ee_subject,e.ee_rq,BS(e.annotated_bibliography),BS(e.draft_submitted),BS(e.final_draft_submitted),BS(e.supervisor_interaction_1),BS(e.supervisor_interaction_2),BS(e.supervisor_interaction_3),BS(e.reflection_1),BS(e.reflection_2),BS(e.reflection_3_final),BS(e.supervisor_comments_complete),e.hours,e.score];
 
-function parseTOK(rows) {
-  return rows.slice(1).map(r=>({
-    student_id:r[0]||'',
-    exhibition_planning_conference: B(r[1]),
-    exhibition_written_feedback: B(r[2]),
-    exhibition_final_draft_in: B(r[3]),
-    exhibition_score: r[4]||'',
-    exhibition_comment: r[5]||'',
-    essay_interaction_1: B(r[6]),
-    essay_interaction_2: B(r[7]),
-    essay_interaction_3: B(r[8]),
-    essay_final_draft_submitted: B(r[9]),
-    essay_score: r[10]||'',
-    essay_comment: r[11]||'',
-  })).filter(t=>t.student_id);
-}
+const saveTOK=(tok,i)=>sheetsPut(`TOK!A${i+2}:N${i+2}`,[tokRow(tok)]);
+const saveCAS=(cas,i)=>sheetsPut(`CAS!A${i+2}:T${i+2}`,[casRow(cas)]);
+const saveEE =(ee,i) =>sheetsPut(`EE!A${i+2}:O${i+2}`, [eeRow(ee)]);
 
-function parseCAS(rows) {
-  return rows.slice(1).map(r=>({
-    student_id:r[0]||'',
-    interview_1_date:r[1]||'', interview_1_comment:r[2]||'',
-    interview_2_date:r[3]||'', interview_2_comment:r[4]||'',
-    interview_final_date:r[5]||'', interview_final_comment:r[6]||'',
-    extra_interactions: tryJson(r[7]),
-    cas_project_decided: B(r[8]),
-    cas_project_complete: B(r[9]),
-    strand_creativity: B(r[10]),
-    strand_activity: B(r[11]),
-    strand_service: B(r[12]),
-    outcome_1: B(r[13]), outcome_2: B(r[14]), outcome_3: B(r[15]),
-    outcome_4: B(r[16]), outcome_5: B(r[17]), outcome_6: B(r[18]), outcome_7: B(r[19]),
-  })).filter(c=>c.student_id);
-}
+// ── COMMON UI ───────────────────────────────────────────────
+function Spinner({size='sm'}){const cl=size==='lg'?'w-8 h-8':'w-4 h-4';return <svg className={`${cl} animate-spin text-indigo-500`} fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>;}
+function SaveBadge({status}){if(!status)return null;return <span className={`text-xs font-medium ${status==='saving'?'text-slate-400':'text-emerald-600'}`}>{status==='saving'?'Saving…':'✓ Saved'}</span>;}
+function PBadge({done,total}){const pct=total===0?0:done/total;const cl=pct===1?'bg-emerald-100 text-emerald-700':pct>0?'bg-amber-100 text-amber-700':'bg-slate-100 text-slate-400';return <span className={`ml-2 text-xs font-bold px-2 py-0.5 rounded-full ${cl}`}>{done}/{total}</span>;}
+function CopyBtn({text}){const[c,setC]=useState(false);const go=()=>{navigator.clipboard.writeText(text||'').then(()=>{setC(true);setTimeout(()=>setC(false),2000);}).catch(()=>{});};return <button onClick={go} className="flex items-center gap-1 text-xs font-medium text-slate-400 hover:text-indigo-600 px-2 py-1 rounded hover:bg-indigo-50"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" strokeWidth="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" strokeWidth="2"/></svg>{c?'Copied!':'Copy'}</button>;}
+function IBCheckbox({label,checked,onChange,readOnly=false}){return <label className={`flex items-start gap-3 ${readOnly?'':'cursor-pointer group'}`} onClick={readOnly?undefined:()=>onChange(!checked)}><div className={`mt-0.5 flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${checked?'bg-indigo-600 border-indigo-600':`border-slate-300 bg-white ${readOnly?'':'group-hover:border-indigo-400'}`} ${readOnly?'opacity-80':''}`}>{checked&&<svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 12 12" stroke="currentColor" strokeWidth="2.5"><path d="M2 6l3 3 5-5"/></svg>}</div><span className={`text-sm leading-snug select-none ${checked?'text-slate-800 font-medium':'text-slate-500'}`}>{label}</span></label>;}
+function SectionTitle({children,action}){return <div className="flex items-center justify-between mb-3"><h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">{children}</h3>{action}</div>;}
+function Card({children,className=''}){return <div className={`bg-white rounded-xl border border-slate-100 shadow-sm ${className}`}>{children}</div>;}
+function ScoreInput({label,value,onChange,onBlur,readOnly=false}){return <div className="flex items-center gap-3"><label className="text-sm font-medium text-slate-600 w-32">{label}</label>{readOnly?<span className={`text-sm font-bold ${value?'text-indigo-600':'text-slate-300'}`}>{value||'—'}</span>:<input type="text" value={value} onChange={e=>onChange(e.target.value)} onBlur={onBlur} placeholder="—" className="w-24 px-2.5 py-1.5 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"/>}</div>;}
+function Textarea({value,onChange,onBlur,readOnly=false,placeholder='Add comment…',rows=3}){return <textarea value={value} onChange={e=>onChange(e.target.value)} onBlur={onBlur} readOnly={readOnly} placeholder={placeholder} rows={rows} className={`w-full text-sm px-3 py-2 border rounded-lg resize-none leading-relaxed ${readOnly?'border-transparent bg-slate-50 text-slate-700 cursor-default':'border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-400'}`}/>;}
+function ErrorBanner({msg,onDismiss}){if(!msg)return null;return <div className="fixed top-4 right-4 z-50 flex items-center gap-3 bg-rose-50 border border-rose-200 text-rose-700 text-sm font-medium rounded-xl px-4 py-3 shadow-lg max-w-sm"><svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span className="flex-1">{msg}</span><button onClick={onDismiss} className="text-rose-400 hover:text-rose-600 text-lg leading-none">×</button></div>;}
 
-function parseEE(rows) {
-  return rows.slice(1).map(r=>({
-    student_id:r[0]||'',
-    ee_subject:r[1]||'', ee_rq:r[2]||'',
-    annotated_bibliography: B(r[3]),
-    draft_submitted: B(r[4]),
-    final_draft_submitted: B(r[5]),
-    supervisor_interaction_1: B(r[6]),
-    supervisor_interaction_2: B(r[7]),
-    supervisor_interaction_3: B(r[8]),
-    reflection_1: B(r[9]),
-    reflection_2: B(r[10]),
-    reflection_3_final: B(r[11]),
-    supervisor_comments_complete: B(r[12]),
-    hours: r[13]||'',
-    score: r[14]||'',
-  })).filter(e=>e.student_id);
-}
-
-// ═══════════════════════════════════════════════════════════
-// ROW SERIALIZERS
-// ═══════════════════════════════════════════════════════════
-const tokRow = t=>[
-  t.student_id, BS(t.exhibition_planning_conference), BS(t.exhibition_written_feedback),
-  BS(t.exhibition_final_draft_in), t.exhibition_score, t.exhibition_comment,
-  BS(t.essay_interaction_1), BS(t.essay_interaction_2), BS(t.essay_interaction_3),
-  BS(t.essay_final_draft_submitted), t.essay_score, t.essay_comment,
-];
-const casRow = c=>[
-  c.student_id, c.interview_1_date, c.interview_1_comment,
-  c.interview_2_date, c.interview_2_comment,
-  c.interview_final_date, c.interview_final_comment,
-  JSON.stringify(c.extra_interactions),
-  BS(c.cas_project_decided), BS(c.cas_project_complete),
-  BS(c.strand_creativity), BS(c.strand_activity), BS(c.strand_service),
-  BS(c.outcome_1), BS(c.outcome_2), BS(c.outcome_3), BS(c.outcome_4),
-  BS(c.outcome_5), BS(c.outcome_6), BS(c.outcome_7),
-];
-const eeRow = e=>[
-  e.student_id, e.ee_subject, e.ee_rq,
-  BS(e.annotated_bibliography), BS(e.draft_submitted), BS(e.final_draft_submitted),
-  BS(e.supervisor_interaction_1), BS(e.supervisor_interaction_2), BS(e.supervisor_interaction_3),
-  BS(e.reflection_1), BS(e.reflection_2), BS(e.reflection_3_final),
-  BS(e.supervisor_comments_complete), e.hours, e.score,
-];
-
-// ═══════════════════════════════════════════════════════════
-// SAVE HELPERS
-// ═══════════════════════════════════════════════════════════
-const saveTOK = (tok,i) => sheetsPut(`TOK!A${i+2}:L${i+2}`, [tokRow(tok)]);
-const saveCAS = (cas,i) => sheetsPut(`CAS!A${i+2}:T${i+2}`, [casRow(cas)]);
-const saveEE  = (ee,i)  => sheetsPut(`EE!A${i+2}:O${i+2}`,  [eeRow(ee)]);
-
-// ═══════════════════════════════════════════════════════════
-// COMMON UI
-// ═══════════════════════════════════════════════════════════
-function Spinner({size='sm'}) {
-  const cl = size==='lg' ? 'w-8 h-8' : 'w-4 h-4';
-  return (
-    <svg className={`${cl} animate-spin text-indigo-500`} fill="none" viewBox="0 0 24 24">
-      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
-      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
-    </svg>
-  );
-}
-
-function SaveBadge({status}) {
-  if (!status) return null;
-  return (
-    <span className={`text-xs font-medium transition-all ${status==='saving'?'text-slate-400':'text-emerald-600'}`}>
-      {status==='saving' ? 'Saving…' : '✓ Saved'}
-    </span>
-  );
-}
-
-function PBadge({done,total}) {
-  const pct = total===0?0:done/total;
-  const cl = pct===1 ? 'bg-emerald-100 text-emerald-700'
-           : pct>0   ? 'bg-amber-100 text-amber-700'
-                     : 'bg-slate-100 text-slate-400';
-  return <span className={`ml-2 text-xs font-bold px-2 py-0.5 rounded-full ${cl}`}>{done}/{total}</span>;
-}
-
-function Chip({label,on,color='indigo'}) {
-  const colors = {
-    indigo: on ? 'bg-indigo-100 text-indigo-700 border-indigo-200' : 'bg-slate-50 text-slate-400 border-slate-200',
-    emerald: on ? 'bg-emerald-100 text-emerald-700 border-emerald-200' : 'bg-slate-50 text-slate-400 border-slate-200',
-    amber: on ? 'bg-amber-100 text-amber-700 border-amber-200' : 'bg-slate-50 text-slate-400 border-slate-200',
-  };
-  return <span className={`text-xs font-semibold px-2.5 py-1 rounded-full border ${colors[color]||colors.indigo}`}>{label}</span>;
-}
-
-function CopyBtn({text}) {
-  const [copied,setCopied] = useState(false);
-  const go = () => {
-    navigator.clipboard.writeText(text||'').then(()=>{
-      setCopied(true);
-      setTimeout(()=>setCopied(false),2000);
-    }).catch(()=>{});
-  };
-  return (
-    <button onClick={go}
-      className="flex items-center gap-1 text-xs font-medium text-slate-400 hover:text-indigo-600 transition-colors px-2 py-1 rounded hover:bg-indigo-50">
-      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <rect x="9" y="9" width="13" height="13" rx="2" strokeWidth="2"/>
-        <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" strokeWidth="2"/>
-      </svg>
-      {copied ? 'Copied!' : 'Copy'}
-    </button>
-  );
-}
-
-function IBCheckbox({label,checked,onChange,readOnly=false}) {
-  return (
-    <label className={`flex items-start gap-3 ${readOnly?'':'cursor-pointer group'}`}
-           onClick={readOnly?undefined:()=>onChange(!checked)}>
-      <div className={`mt-0.5 flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center transition-all
-        ${checked ? 'bg-indigo-600 border-indigo-600' : `border-slate-300 bg-white ${readOnly?'':'group-hover:border-indigo-400'}`}
-        ${readOnly?'opacity-80':'cursor-pointer'}`}>
-        {checked && <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 12 12" stroke="currentColor" strokeWidth="2.5"><path d="M2 6l3 3 5-5"/></svg>}
-      </div>
-      <span className={`text-sm leading-snug select-none ${checked?'text-slate-800 font-medium':'text-slate-500'}`}>{label}</span>
-    </label>
-  );
-}
-
-function SectionTitle({children,action}) {
-  return (
-    <div className="flex items-center justify-between mb-3">
-      <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">{children}</h3>
-      {action}
-    </div>
-  );
-}
-
-function Card({children,className=''}) {
-  return <div className={`bg-white rounded-xl border border-slate-100 shadow-sm ${className}`}>{children}</div>;
-}
-
-function ScoreInput({label,value,onChange,onBlur,readOnly=false}) {
-  return (
-    <div className="flex items-center gap-3">
-      <label className="text-sm font-medium text-slate-600 w-32">{label}</label>
-      {readOnly
-        ? <span className={`text-sm font-bold ${value?'text-indigo-600':'text-slate-300'}`}>{value||'—'}</span>
-        : <input
-            type="text"
-            value={value}
-            onChange={e=>onChange(e.target.value)}
-            onBlur={onBlur}
-            placeholder="—"
-            className="w-24 px-2.5 py-1.5 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"
-          />
-      }
-    </div>
-  );
-}
-
-function Textarea({value,onChange,onBlur,readOnly=false,placeholder='Add comment…'}) {
-  return (
-    <textarea
-      value={value}
-      onChange={e=>onChange(e.target.value)}
-      onBlur={onBlur}
-      readOnly={readOnly}
-      placeholder={placeholder}
-      rows={3}
-      className={`w-full text-sm px-3 py-2 border rounded-lg resize-none leading-relaxed
-        ${readOnly
-          ? 'border-transparent bg-slate-50 text-slate-700 cursor-default'
-          : 'border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent'
-        }`}
-    />
-  );
-}
-
-function ErrorBanner({msg,onDismiss}) {
-  if (!msg) return null;
-  return (
-    <div className="fixed top-4 right-4 z-50 flex items-center gap-3 bg-rose-50 border border-rose-200 text-rose-700 text-sm font-medium rounded-xl px-4 py-3 shadow-lg max-w-sm">
-      <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-      <span className="flex-1">{msg}</span>
-      <button onClick={onDismiss} className="text-rose-400 hover:text-rose-600 text-lg leading-none">×</button>
-    </div>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════
-// LOGIN SCREEN
-// ═══════════════════════════════════════════════════════════
-function LoginScreen({onLogin}) {
-  const [role,setRole]     = useState('teacher');
-  const [user,setUser]     = useState('');
-  const [pass,setPass]     = useState('');
-  const [loading,setLoading] = useState(false);
-  const [error,setError]   = useState('');
-
-  const submit = async e => {
-    e.preventDefault();
-    setError(''); setLoading(true);
-    try {
-      if (role==='teacher') {
-        if (user===TEACHER_CREDS.username && pass===TEACHER_CREDS.password)
-          onLogin({role:'teacher',name:'Teacher'});
-        else setError('Incorrect credentials.');
-      } else if (role==='admin') {
-        if (user===ADMIN_CREDS.username && pass===ADMIN_CREDS.password)
-          onLogin({role:'admin',name:'IB Coordinator'});
-        else setError('Incorrect credentials.');
-      } else {
-        const rows = await sheetsGet('Students!A:E');
-        const students = parseStudents(rows);
-        const m = students.find(s=>
-          (s.student_id===user || s.name.toLowerCase()===user.toLowerCase()) && s.password===pass
-        );
-        if (m) onLogin({role:'student',name:m.name,student_id:m.student_id});
-        else setError('Student not found or wrong password.');
-      }
-    } catch(err) {
-      setError(err.message||'Login failed. Check your internet connection.');
-    }
+// ── LOGIN ───────────────────────────────────────────────────
+function LoginScreen({onLogin}){
+  const [role,setRole]=useState('teacher');
+  const [user,setUser]=useState('');
+  const [pass,setPass]=useState('');
+  const [loading,setLoading]=useState(false);
+  const [error,setError]=useState('');
+  const submit=async e=>{
+    e.preventDefault();setError('');setLoading(true);
+    try{
+      if(role==='teacher'){if(user===TEACHER_CREDS.username&&pass===TEACHER_CREDS.password)onLogin({role:'teacher',name:'Teacher'});else setError('Incorrect credentials.');}
+      else if(role==='admin'){if(user===ADMIN_CREDS.username&&pass===ADMIN_CREDS.password)onLogin({role:'admin',name:'IB Coordinator'});else setError('Incorrect credentials.');}
+      else{const rows=await sheetsGet('Students!A:E');const students=parseStudents(rows);const m=students.find(s=>(s.student_id===user||s.name.toLowerCase()===user.toLowerCase())&&s.password===pass);if(m)onLogin({role:'student',name:m.name,student_id:m.student_id});else setError('Student not found or wrong password.');}
+    }catch(err){setError(err.message||'Login failed.');}
     setLoading(false);
   };
-
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 flex items-center justify-center p-4">
-      <div className="w-full max-w-sm fade-in">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-indigo-500/20 border border-indigo-500/30 mb-4">
-            <svg className="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"
-                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-            </svg>
-          </div>
-          <h1 className="text-2xl font-extrabold text-white tracking-tight">IB Core Dashboard</h1>
-          <p className="text-slate-400 text-sm mt-1">Sign in to continue</p>
-        </div>
-
-        <div className="bg-white rounded-2xl shadow-2xl p-6">
-          <form onSubmit={submit} className="space-y-4">
-            <div className="grid grid-cols-3 gap-1 p-1 bg-slate-100 rounded-xl">
-              {['teacher','admin','student'].map(r=>(
-                <button key={r} type="button" onClick={()=>{setRole(r);setError('');}}
-                  className={`py-2 text-sm font-semibold rounded-lg transition-all capitalize
-                    ${role===r ? 'bg-white shadow-sm text-indigo-600' : 'text-slate-500 hover:text-slate-700'}`}>
-                  {r==='admin'?'Admin':r.charAt(0).toUpperCase()+r.slice(1)}
-                </button>
-              ))}
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">
-                {role==='student' ? 'Student ID or Name' : 'Username'}
-              </label>
-              <input type="text" value={user} onChange={e=>setUser(e.target.value)} required
-                placeholder={role==='student'?'S001 or Full Name':''}
-                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"/>
-            </div>
-            <div>
-              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Password</label>
-              <input type="password" value={pass} onChange={e=>setPass(e.target.value)} required
-                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"/>
-            </div>
-
-            {error && (
-              <div className="text-sm text-rose-600 bg-rose-50 border border-rose-100 rounded-xl px-3.5 py-2.5">{error}</div>
-            )}
-
-            <button type="submit" disabled={loading}
-              className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-60 text-sm">
-              {loading ? <><Spinner/>Signing in…</> : 'Sign in'}
-            </button>
-          </form>
-        </div>
+  return <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 flex items-center justify-center p-4">
+    <div className="w-full max-w-sm fade-in">
+      <div className="text-center mb-8">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-indigo-500/20 border border-indigo-500/30 mb-4"><svg className="w-8 h-8 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></div>
+        <h1 className="text-2xl font-extrabold text-white tracking-tight">IB Core Dashboard</h1>
+        <p className="text-slate-400 text-sm mt-1">Sign in to continue</p>
       </div>
-    </div>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════
-// TOK TAB
-// ═══════════════════════════════════════════════════════════
-function TOKTab({tok,onChange,onSave}) {
-  const [sub,setSub] = useState('exhibition');
-  if (!tok) return <div className="text-slate-400 text-sm">No TOK data.</div>;
-
-  const exDone = [tok.exhibition_planning_conference,tok.exhibition_written_feedback,tok.exhibition_final_draft_in].filter(Boolean).length;
-  const essDone = [tok.essay_interaction_1,tok.essay_interaction_2,tok.essay_interaction_3,tok.essay_final_draft_submitted].filter(Boolean).length;
-
-  const upd = (key,val) => { const n={...tok,[key]:val}; onChange(n); };
-  const updAndSave = (key,val) => { const n={...tok,[key]:val}; onChange(n); onSave(n); };
-  const blur = () => onSave(tok);
-
-  return (
-    <div className="fade-in">
-      {/* Pill nav */}
-      <div className="flex gap-2 mb-6">
-        {[['exhibition',exDone,3],['essay',essDone,4]].map(([t,done,total])=>(
-          <button key={t} onClick={()=>setSub(t)}
-            className={`flex items-center px-4 py-1.5 rounded-full text-sm font-semibold transition-all capitalize
-              ${sub===t ? 'bg-indigo-600 text-white shadow' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}>
-            {t}<PBadge done={done} total={total}/>
-          </button>
-        ))}
-      </div>
-
-      {sub==='exhibition' && (
-        <div className="space-y-5 fade-in">
-          <Card className="p-5">
-            <SectionTitle>Checkpoints</SectionTitle>
-            <div className="space-y-3">
-              <IBCheckbox label="Planning Conference" checked={tok.exhibition_planning_conference}
-                onChange={v=>updAndSave('exhibition_planning_conference',v)}/>
-              <IBCheckbox label="Written Feedback" checked={tok.exhibition_written_feedback}
-                onChange={v=>updAndSave('exhibition_written_feedback',v)}/>
-              <IBCheckbox label="Final Draft In" checked={tok.exhibition_final_draft_in}
-                onChange={v=>updAndSave('exhibition_final_draft_in',v)}/>
-            </div>
-          </Card>
-          <Card className="p-5">
-            <SectionTitle>Assessment</SectionTitle>
-            <div className="space-y-3">
-              <ScoreInput label="Exhibition Score" value={tok.exhibition_score}
-                onChange={v=>upd('exhibition_score',v)} onBlur={blur}/>
-            </div>
-          </Card>
-          <Card className="p-5">
-            <SectionTitle children="Teacher Comment" action={<CopyBtn text={tok.exhibition_comment}/>}/>
-            <Textarea value={tok.exhibition_comment} onChange={v=>upd('exhibition_comment',v)} onBlur={blur}/>
-          </Card>
-        </div>
-      )}
-
-      {sub==='essay' && (
-        <div className="space-y-5 fade-in">
-          <Card className="p-5">
-            <SectionTitle>Checkpoints</SectionTitle>
-            <div className="space-y-3">
-              <IBCheckbox label="Interaction 1" checked={tok.essay_interaction_1}
-                onChange={v=>updAndSave('essay_interaction_1',v)}/>
-              <IBCheckbox label="Interaction 2" checked={tok.essay_interaction_2}
-                onChange={v=>updAndSave('essay_interaction_2',v)}/>
-              <IBCheckbox label="Interaction 3" checked={tok.essay_interaction_3}
-                onChange={v=>updAndSave('essay_interaction_3',v)}/>
-              <IBCheckbox label="Final Draft Submitted" checked={tok.essay_final_draft_submitted}
-                onChange={v=>updAndSave('essay_final_draft_submitted',v)}/>
-            </div>
-          </Card>
-          <Card className="p-5">
-            <SectionTitle>Assessment</SectionTitle>
-            <ScoreInput label="Essay Score" value={tok.essay_score}
-              onChange={v=>upd('essay_score',v)} onBlur={blur}/>
-          </Card>
-          <Card className="p-5">
-            <SectionTitle children="Teacher Comment" action={<CopyBtn text={tok.essay_comment}/>}/>
-            <Textarea value={tok.essay_comment} onChange={v=>upd('essay_comment',v)} onBlur={blur}/>
-          </Card>
-        </div>
-      )}
-    </div>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════
-// CAS TAB
-// ═══════════════════════════════════════════════════════════
-const OUTCOMES = [
-  'Identify own strengths and develop areas for growth',
-  'Demonstrate that challenges have been undertaken, developing new skills in the process',
-  'Demonstrate how to initiate and plan a CAS experience',
-  'Show commitment to and perseverance in their CAS experiences',
-  'Demonstrate the skills and recognise the benefits of working collaboratively',
-  'Demonstrate engagement with issues of global significance',
-  'Recognise and consider the ethics of choices and actions',
-];
-
-function InterviewCard({label,date,comment,onDateChange,onCommentChange,onBlur,onDelete}) {
-  return (
-    <div className="border border-slate-100 rounded-xl p-4 space-y-3">
-      <div className="flex items-center justify-between">
-        <span className="text-sm font-bold text-slate-700">{label}</span>
-        {onDelete && (
-          <button onClick={onDelete}
-            className="text-xs text-rose-400 hover:text-rose-600 font-medium">Remove</button>
-        )}
-      </div>
-      <div className="flex items-center gap-3">
-        <label className="text-xs font-semibold text-slate-400 uppercase tracking-wide w-12">Date</label>
-        <input type="date" value={date} onChange={e=>onDateChange(e.target.value)} onBlur={onBlur}
-          className="text-sm border border-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"/>
-      </div>
-      <div>
-        <div className="flex items-center justify-between mb-1">
-          <label className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Comment</label>
-          <CopyBtn text={comment}/>
-        </div>
-        <Textarea value={comment} onChange={onCommentChange} onBlur={onBlur}/>
-      </div>
-    </div>
-  );
-}
-
-function CASTab({cas,onChange,onSave}) {
-  if (!cas) return <div className="text-slate-400 text-sm">No CAS data.</div>;
-
-  const upd = (key,val) => { const n={...cas,[key]:val}; onChange(n); return n; };
-  const updSave = (key,val) => { const n=upd(key,val); onSave(n); };
-  const blur = () => onSave(cas);
-
-  const outDone = [1,2,3,4,5,6,7].filter(i=>cas[`outcome_${i}`]).length;
-
-  const addExtra = () => {
-    const n={...cas, extra_interactions:[...cas.extra_interactions,{date:'',comment:''}]};
-    onChange(n); onSave(n);
-  };
-  const updExtra = (i,key,val) => {
-    const extras = cas.extra_interactions.map((x,xi)=>xi===i?{...x,[key]:val}:x);
-    const n={...cas,extra_interactions:extras};
-    onChange(n);
-    return n;
-  };
-  const delExtra = i => {
-    const extras = cas.extra_interactions.filter((_,xi)=>xi!==i);
-    const n={...cas,extra_interactions:extras};
-    onChange(n); onSave(n);
-  };
-
-  return (
-    <div className="space-y-5 fade-in">
-      {/* Interviews */}
-      <Card className="p-5">
-        <SectionTitle children="Interviews"
-          action={<button onClick={addExtra}
-            className="flex items-center gap-1 text-xs font-bold text-indigo-600 hover:text-indigo-700">
-            <span className="text-lg leading-none">+</span> Add Interaction
-          </button>}
-        />
-        <div className="space-y-4">
-          {[['First Interview','interview_1_date','interview_1_comment'],
-            ['Second Interview','interview_2_date','interview_2_comment'],
-            ['Final Interview','interview_final_date','interview_final_comment']].map(([label,dk,ck])=>(
-            <InterviewCard key={label} label={label}
-              date={cas[dk]} comment={cas[ck]}
-              onDateChange={v=>upd(dk,v)}
-              onCommentChange={v=>upd(ck,v)}
-              onBlur={blur}/>
-          ))}
-          {cas.extra_interactions.map((ex,i)=>(
-            <InterviewCard key={i} label={`Extra Interaction ${i+1}`}
-              date={ex.date} comment={ex.comment}
-              onDateChange={v=>{const n=updExtra(i,'date',v);/*no save yet*/}}
-              onCommentChange={v=>{updExtra(i,'comment',v);}}
-              onBlur={()=>onSave(cas)}
-              onDelete={()=>delExtra(i)}/>
-          ))}
-        </div>
-      </Card>
-
-      {/* Project + Strands */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Card className="p-5">
-          <SectionTitle>CAS Project</SectionTitle>
-          <div className="space-y-3">
-            <IBCheckbox label="Project Decided" checked={cas.cas_project_decided}
-              onChange={v=>updSave('cas_project_decided',v)}/>
-            <IBCheckbox label="Project Complete" checked={cas.cas_project_complete}
-              onChange={v=>updSave('cas_project_complete',v)}/>
+      <div className="bg-white rounded-2xl shadow-2xl p-6">
+        <form onSubmit={submit} className="space-y-4">
+          <div className="grid grid-cols-3 gap-1 p-1 bg-slate-100 rounded-xl">
+            {['teacher','admin','student'].map(r=><button key={r} type="button" onClick={()=>{setRole(r);setError('');}} className={`py-2 text-sm font-semibold rounded-lg transition-all capitalize ${role===r?'bg-white shadow-sm text-indigo-600':'text-slate-500 hover:text-slate-700'}`}>{r==='admin'?'Admin':r.charAt(0).toUpperCase()+r.slice(1)}</button>)}
           </div>
-        </Card>
-        <Card className="p-5">
-          <SectionTitle>Strands</SectionTitle>
-          <div className="space-y-3">
-            <IBCheckbox label="Creativity" checked={cas.strand_creativity}
-              onChange={v=>updSave('strand_creativity',v)}/>
-            <IBCheckbox label="Activity" checked={cas.strand_activity}
-              onChange={v=>updSave('strand_activity',v)}/>
-            <IBCheckbox label="Service" checked={cas.strand_service}
-              onChange={v=>updSave('strand_service',v)}/>
-          </div>
-        </Card>
-      </div>
-
-      {/* Outcomes */}
-      <Card className="p-5">
-        <SectionTitle children="CAS Outcomes"
-          action={<PBadge done={outDone} total={7}/>}/>
-        <div className="space-y-3">
-          {OUTCOMES.map((label,i)=>(
-            <IBCheckbox key={i} label={label} checked={cas[`outcome_${i+1}`]}
-              onChange={v=>updSave(`outcome_${i+1}`,v)}/>
-          ))}
-        </div>
-      </Card>
-    </div>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════
-// EE TAB
-// ═══════════════════════════════════════════════════════════
-function EETab({ee,onChange,onSave}) {
-  if (!ee) return <div className="text-slate-400 text-sm">No EE data.</div>;
-
-  const upd = (key,val) => { const n={...ee,[key]:val}; onChange(n); };
-  const updSave = (key,val) => { const n={...ee,[key]:val}; onChange(n); onSave(n); };
-  const blur = () => onSave(ee);
-
-  const progDone = [ee.annotated_bibliography,ee.draft_submitted,ee.final_draft_submitted].filter(Boolean).length;
-  const intDone  = [ee.supervisor_interaction_1,ee.supervisor_interaction_2,ee.supervisor_interaction_3].filter(Boolean).length;
-  const refDone  = [ee.reflection_1,ee.reflection_2,ee.reflection_3_final].filter(Boolean).length;
-
-  return (
-    <div className="space-y-5 fade-in">
-      {/* Student info */}
-      <Card className="p-5">
-        <SectionTitle>Extended Essay Details</SectionTitle>
-        <div className="space-y-3">
-          <div>
-            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wide mb-1.5">Subject</label>
-            <input type="text" value={ee.ee_subject} onChange={e=>upd('ee_subject',e.target.value)} onBlur={blur}
-              className="w-full px-3.5 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"/>
-          </div>
-          <div>
-            <label className="block text-xs font-bold text-slate-400 uppercase tracking-wide mb-1.5">Research Question</label>
-            <Textarea value={ee.ee_rq} onChange={v=>upd('ee_rq',v)} onBlur={blur} placeholder="Research question…"/>
-          </div>
-        </div>
-      </Card>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {/* Progress */}
-        <Card className="p-5">
-          <SectionTitle children="Progress" action={<PBadge done={progDone} total={3}/>}/>
-          <div className="space-y-3">
-            <IBCheckbox label="Annotated Bibliography" checked={ee.annotated_bibliography}
-              onChange={v=>updSave('annotated_bibliography',v)}/>
-            <IBCheckbox label="Draft Submitted" checked={ee.draft_submitted}
-              onChange={v=>updSave('draft_submitted',v)}/>
-            <IBCheckbox label="Final Draft Submitted" checked={ee.final_draft_submitted}
-              onChange={v=>updSave('final_draft_submitted',v)}/>
-          </div>
-        </Card>
-
-        {/* Supervisor interactions */}
-        <Card className="p-5">
-          <SectionTitle children="Supervisor Interactions" action={<PBadge done={intDone} total={3}/>}/>
-          <div className="space-y-3">
-            <IBCheckbox label="Interaction 1" checked={ee.supervisor_interaction_1}
-              onChange={v=>updSave('supervisor_interaction_1',v)}/>
-            <IBCheckbox label="Interaction 2" checked={ee.supervisor_interaction_2}
-              onChange={v=>updSave('supervisor_interaction_2',v)}/>
-            <IBCheckbox label="Interaction 3" checked={ee.supervisor_interaction_3}
-              onChange={v=>updSave('supervisor_interaction_3',v)}/>
-          </div>
-        </Card>
-
-        {/* Reflections */}
-        <Card className="p-5">
-          <SectionTitle children="Reflections" action={<PBadge done={refDone} total={3}/>}/>
-          <div className="space-y-3">
-            <IBCheckbox label="Reflection 1" checked={ee.reflection_1}
-              onChange={v=>updSave('reflection_1',v)}/>
-            <IBCheckbox label="Reflection 2" checked={ee.reflection_2}
-              onChange={v=>updSave('reflection_2',v)}/>
-            <IBCheckbox label="Final Reflection" checked={ee.reflection_3_final}
-              onChange={v=>updSave('reflection_3_final',v)}/>
-          </div>
-        </Card>
-
-        {/* Additional */}
-        <Card className="p-5">
-          <SectionTitle>Additional</SectionTitle>
-          <div className="space-y-4">
-            <IBCheckbox label="Supervisor Comments Complete" checked={ee.supervisor_comments_complete}
-              onChange={v=>updSave('supervisor_comments_complete',v)}/>
-            <div className="flex items-center gap-3">
-              <label className="text-sm font-medium text-slate-600 w-16">Hours</label>
-              <input type="number" value={ee.hours} onChange={e=>upd('hours',e.target.value)} onBlur={blur}
-                className="w-24 px-2.5 py-1.5 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"/>
-            </div>
-            <ScoreInput label="Score" value={ee.score} onChange={v=>upd('score',v)} onBlur={blur}/>
-          </div>
-        </Card>
-      </div>
-    </div>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════
-// ADD STUDENT MODAL
-// ═══════════════════════════════════════════════════════════
-function AddStudentModal({onClose,onAdd}) {
-  const [form,setForm] = useState({name:'',student_id:'',password:'',ee_subject:'',ee_rq:''});
-  const [loading,setLoading] = useState(false);
-  const [error,setError] = useState('');
-  const f = key => e => setForm(p=>({...p,[key]:e.target.value}));
-
-  const submit = async e => {
-    e.preventDefault();
-    if (!form.student_id||!form.name) { setError('Name and Student ID are required.'); return; }
-    setLoading(true); setError('');
-    try { await onAdd(form); onClose(); }
-    catch(err) { setError(err.message); }
-    setLoading(false);
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md fade-in">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
-          <h2 className="font-bold text-slate-800">Add Student</h2>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 text-2xl leading-none">×</button>
-        </div>
-        <form onSubmit={submit} className="p-6 space-y-4">
-          {[['Full Name','name','text',true],['Student ID','student_id','text',true],
-            ['Password','password','text',false],['EE Subject','ee_subject','text',false]].map(([label,key,type,req])=>(
-            <div key={key}>
-              <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">{label}{req&&' *'}</label>
-              <input type={type} value={form[key]} onChange={f(key)} required={req}
-                className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent"/>
-            </div>
-          ))}
-          <div>
-            <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Research Question</label>
-            <Textarea value={form.ee_rq} onChange={v=>setForm(p=>({...p,ee_rq:v}))} placeholder="EE research question…"/>
-          </div>
-          {error && <div className="text-sm text-rose-600 bg-rose-50 border border-rose-100 rounded-xl px-3.5 py-2.5">{error}</div>}
-          <div className="flex gap-3 pt-1">
-            <button type="button" onClick={onClose}
-              className="flex-1 py-2.5 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 text-sm">Cancel</button>
-            <button type="submit" disabled={loading}
-              className="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-sm flex items-center justify-center gap-2 disabled:opacity-60">
-              {loading ? <><Spinner/>Adding…</> : 'Add Student'}
-            </button>
-          </div>
+          <div><label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">{role==='student'?'Student ID or Name':'Username'}</label><input type="text" value={user} onChange={e=>setUser(e.target.value)} required placeholder={role==='student'?'S001 or Full Name':''} className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"/></div>
+          <div><label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">Password</label><input type="password" value={pass} onChange={e=>setPass(e.target.value)} required className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"/></div>
+          {error&&<div className="text-sm text-rose-600 bg-rose-50 border border-rose-100 rounded-xl px-3.5 py-2.5">{error}</div>}
+          <button type="submit" disabled={loading} className="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl flex items-center justify-center gap-2 disabled:opacity-60 text-sm">{loading?<><Spinner/>Signing in…</>:'Sign in'}</button>
         </form>
       </div>
     </div>
-  );
+  </div>;
 }
 
-// ═══════════════════════════════════════════════════════════
-// TEACHER DASHBOARD
-// ═══════════════════════════════════════════════════════════
-function TeacherDashboard({session,students,tokData,casData,eeData,onUpdate,onAddStudent,onLogout,saveStatus,error,onDismissError}) {
-  const [selectedId,setSelectedId] = useState(null);
-  const [tab,setTab]               = useState('tok');
-  const [search,setSearch]         = useState('');
-  const [showAdd,setShowAdd]       = useState(false);
-  const [mobileSidebar,setMobileSidebar] = useState(false);
-
-  const filtered = students.filter(s=>s.name.toLowerCase().includes(search.toLowerCase())||s.student_id.toLowerCase().includes(search.toLowerCase()));
-  const selStudent = students.find(s=>s.student_id===selectedId);
-  const selTOK = tokData.find(t=>t.student_id===selectedId);
-  const selCAS = casData.find(c=>c.student_id===selectedId);
-  const selEE  = eeData.find(e=>e.student_id===selectedId);
-  const tokIdx = tokData.findIndex(t=>t.student_id===selectedId);
-  const casIdx = casData.findIndex(c=>c.student_id===selectedId);
-  const eeIdx  = eeData.findIndex(e=>e.student_id===selectedId);
-
-  const selectStudent = id => { setSelectedId(id); setMobileSidebar(false); };
-
-  return (
-    <div className="flex flex-col h-screen bg-slate-50">
-      {/* Header */}
-      <header className="flex-shrink-0 bg-white border-b border-slate-100 px-4 sm:px-6 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <button onClick={()=>setMobileSidebar(!mobileSidebar)} className="sm:hidden p-2 rounded-lg hover:bg-slate-100">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-          </button>
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
-              <svg className="w-4.5 h-4.5 text-white w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-              </svg>
-            </div>
-            <span className="font-extrabold text-slate-800 tracking-tight">IB Core</span>
+// ── TOK TAB ─────────────────────────────────────────────────
+function TOKTab({tok,onChange,onSave}){
+  const [sub,setSub]=useState('exhibition');
+  if(!tok)return <div className="text-slate-400 text-sm">No TOK data.</div>;
+  const exDone=[tok.exhibition_planning_conference,tok.exhibition_written_feedback,tok.exhibition_final_draft_in].filter(Boolean).length;
+  const essDone=[tok.essay_interaction_1,tok.essay_interaction_2,tok.essay_interaction_3,tok.essay_final_draft_submitted].filter(Boolean).length;
+  const upd=(key,val)=>{const n={...tok,[key]:val};onChange(n);};
+  const updAndSave=(key,val)=>{const n={...tok,[key]:val};onChange(n);onSave(n);};
+  const blur=()=>onSave(tok);
+  return <div className="fade-in">
+    <div className="flex gap-2 mb-6">
+      {[['exhibition',exDone,3],['essay',essDone,4]].map(([t,done,total])=><button key={t} onClick={()=>setSub(t)} className={`flex items-center px-4 py-1.5 rounded-full text-sm font-semibold transition-all capitalize ${sub===t?'bg-indigo-600 text-white shadow':'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}>{t}<PBadge done={done} total={total}/></button>)}
+    </div>
+    {sub==='exhibition'&&<div className="space-y-5 fade-in">
+      <Card className="p-5"><SectionTitle>Checkpoints</SectionTitle><div className="space-y-3"><IBCheckbox label="Planning Conference" checked={tok.exhibition_planning_conference} onChange={v=>updAndSave('exhibition_planning_conference',v)}/><IBCheckbox label="Written Feedback" checked={tok.exhibition_written_feedback} onChange={v=>updAndSave('exhibition_written_feedback',v)}/><IBCheckbox label="Final Draft In" checked={tok.exhibition_final_draft_in} onChange={v=>updAndSave('exhibition_final_draft_in',v)}/></div></Card>
+      <Card className="p-5"><SectionTitle>Assessment</SectionTitle><ScoreInput label="Exhibition Score" value={tok.exhibition_score} onChange={v=>upd('exhibition_score',v)} onBlur={blur}/></Card>
+      <Card className="p-5"><SectionTitle action={<CopyBtn text={tok.exhibition_comment}/>}>Teacher Comment</SectionTitle><Textarea value={tok.exhibition_comment} onChange={v=>upd('exhibition_comment',v)} onBlur={blur}/></Card>
+    </div>}
+    {sub==='essay'&&<div className="space-y-5 fade-in">
+      <Card className="p-5">
+        <SectionTitle>Checkpoints &amp; Interaction Notes</SectionTitle>
+        <div className="space-y-4">
+          <IBCheckbox label="Interaction 1" checked={tok.essay_interaction_1} onChange={v=>updAndSave('essay_interaction_1',v)}/>
+          <div className="ml-8 -mt-1">
+            <div className="flex items-center justify-between mb-1"><span className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Interaction 1 notes</span><CopyBtn text={tok.essay_interaction_1_comment}/></div>
+            <Textarea rows={2} value={tok.essay_interaction_1_comment} onChange={v=>upd('essay_interaction_1_comment',v)} onBlur={blur} placeholder="Notes for interaction 1…"/>
           </div>
+          <IBCheckbox label="Interaction 2" checked={tok.essay_interaction_2} onChange={v=>updAndSave('essay_interaction_2',v)}/>
+          <div className="ml-8 -mt-1">
+            <div className="flex items-center justify-between mb-1"><span className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Interaction 2 notes</span><CopyBtn text={tok.essay_interaction_2_comment}/></div>
+            <Textarea rows={2} value={tok.essay_interaction_2_comment} onChange={v=>upd('essay_interaction_2_comment',v)} onBlur={blur} placeholder="Notes for interaction 2…"/>
+          </div>
+          <IBCheckbox label="Interaction 3" checked={tok.essay_interaction_3} onChange={v=>updAndSave('essay_interaction_3',v)}/>
+          <IBCheckbox label="Final Draft Submitted" checked={tok.essay_final_draft_submitted} onChange={v=>updAndSave('essay_final_draft_submitted',v)}/>
         </div>
-        <div className="flex items-center gap-3">
-          <SaveBadge status={saveStatus}/>
-          <span className="hidden sm:block text-xs text-slate-400 font-medium bg-slate-100 px-2.5 py-1 rounded-full">Teacher</span>
-          <button onClick={onLogout} className="text-sm text-slate-500 hover:text-slate-700 font-medium">Log out</button>
-        </div>
-      </header>
+      </Card>
+      <Card className="p-5"><SectionTitle>Assessment</SectionTitle><ScoreInput label="Essay Score" value={tok.essay_score} onChange={v=>upd('essay_score',v)} onBlur={blur}/></Card>
+      <Card className="p-5"><SectionTitle action={<CopyBtn text={tok.essay_comment}/>}>Overall Essay Comment</SectionTitle><Textarea value={tok.essay_comment} onChange={v=>upd('essay_comment',v)} onBlur={blur}/></Card>
+    </div>}
+  </div>;
+}
 
-      <div className="flex flex-1 overflow-hidden">
+// ── CAS TAB ─────────────────────────────────────────────────
+const OUTCOMES=['Identify own strengths and develop areas for growth','Demonstrate that challenges have been undertaken, developing new skills in the process','Demonstrate how to initiate and plan a CAS experience','Show commitment to and perseverance in their CAS experiences','Demonstrate the skills and recognise the benefits of working collaboratively','Demonstrate engagement with issues of global significance','Recognise and consider the ethics of choices and actions'];
+
+function InterviewCard({label,date,comment,onDateChange,onCommentChange,onBlur,onDelete}){
+  return <div className="border border-slate-100 rounded-xl p-4 space-y-3">
+    <div className="flex items-center justify-between"><span className="text-sm font-bold text-slate-700">{label}</span>{onDelete&&<button onClick={onDelete} className="text-xs text-rose-400 hover:text-rose-600 font-medium">Remove</button>}</div>
+    <div className="flex items-center gap-3"><label className="text-xs font-semibold text-slate-400 uppercase tracking-wide w-12">Date</label><input type="date" value={date} onChange={e=>onDateChange(e.target.value)} onBlur={onBlur} className="text-sm border border-slate-200 rounded-lg px-2.5 py-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-400"/></div>
+    <div><div className="flex items-center justify-between mb-1"><label className="text-xs font-semibold text-slate-400 uppercase tracking-wide">Comment</label><CopyBtn text={comment}/></div><Textarea value={comment} onChange={onCommentChange} onBlur={onBlur}/></div>
+  </div>;
+}
+
+function CASTab({cas,onChange,onSave}){
+  if(!cas)return <div className="text-slate-400 text-sm">No CAS data.</div>;
+  const upd=(key,val)=>{const n={...cas,[key]:val};onChange(n);return n;};
+  const updSave=(key,val)=>{const n={...cas,[key]:val};onChange(n);onSave(n);};
+  const blur=()=>onSave(cas);
+  const outDone=[1,2,3,4,5,6,7].filter(i=>cas[`outcome_${i}`]).length;
+  const addExtra=()=>{const n={...cas,extra_interactions:[...cas.extra_interactions,{date:'',comment:''}]};onChange(n);onSave(n);};
+  const updExtra=(i,key,val)=>{const extras=cas.extra_interactions.map((x,xi)=>xi===i?{...x,[key]:val}:x);const n={...cas,extra_interactions:extras};onChange(n);return n;};
+  const delExtra=i=>{const extras=cas.extra_interactions.filter((_,xi)=>xi!==i);const n={...cas,extra_interactions:extras};onChange(n);onSave(n);};
+  return <div className="space-y-5 fade-in">
+    <Card className="p-5">
+      <SectionTitle action={<button onClick={addExtra} className="flex items-center gap-1 text-xs font-bold text-indigo-600 hover:text-indigo-700"><span className="text-lg leading-none">+</span> Add Interaction</button>}>Interviews</SectionTitle>
+      <div className="space-y-4">
+        {[['First Interview','interview_1_date','interview_1_comment'],['Second Interview','interview_2_date','interview_2_comment'],['Final Interview','interview_final_date','interview_final_comment']].map(([label,dk,ck])=><InterviewCard key={label} label={label} date={cas[dk]} comment={cas[ck]} onDateChange={v=>upd(dk,v)} onCommentChange={v=>upd(ck,v)} onBlur={blur}/>)}
+        {cas.extra_interactions.map((ex,i)=><InterviewCard key={i} label={`Extra Interaction ${i+1}`} date={ex.date} comment={ex.comment} onDateChange={v=>updExtra(i,'date',v)} onCommentChange={v=>updExtra(i,'comment',v)} onBlur={()=>onSave(cas)} onDelete={()=>delExtra(i)}/>)}
+      </div>
+    </Card>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <Card className="p-5"><SectionTitle>CAS Project</SectionTitle><div className="space-y-3"><IBCheckbox label="Project Decided" checked={cas.cas_project_decided} onChange={v=>updSave('cas_project_decided',v)}/><IBCheckbox label="Project Complete" checked={cas.cas_project_complete} onChange={v=>updSave('cas_project_complete',v)}/></div></Card>
+      <Card className="p-5"><SectionTitle>Strands</SectionTitle><div className="space-y-3"><IBCheckbox label="Creativity" checked={cas.strand_creativity} onChange={v=>updSave('strand_creativity',v)}/><IBCheckbox label="Activity" checked={cas.strand_activity} onChange={v=>updSave('strand_activity',v)}/><IBCheckbox label="Service" checked={cas.strand_service} onChange={v=>updSave('strand_service',v)}/></div></Card>
+    </div>
+    <Card className="p-5"><SectionTitle action={<PBadge done={outDone} total={7}/>}>CAS Outcomes</SectionTitle><div className="space-y-3">{OUTCOMES.map((label,i)=><IBCheckbox key={i} label={label} checked={cas[`outcome_${i+1}`]} onChange={v=>updSave(`outcome_${i+1}`,v)}/>)}</div></Card>
+  </div>;
+}
+
+// ── EE TAB ──────────────────────────────────────────────────
+function EETab({ee,onChange,onSave}){
+  if(!ee)return <div className="text-slate-400 text-sm">No EE data.</div>;
+  const upd=(key,val)=>{const n={...ee,[key]:val};onChange(n);};
+  const updSave=(key,val)=>{const n={...ee,[key]:val};onChange(n);onSave(n);};
+  const blur=()=>onSave(ee);
+  const progDone=[ee.annotated_bibliography,ee.draft_submitted,ee.final_draft_submitted].filter(Boolean).length;
+  const intDone=[ee.supervisor_interaction_1,ee.supervisor_interaction_2,ee.supervisor_interaction_3].filter(Boolean).length;
+  const refDone=[ee.reflection_1,ee.reflection_2,ee.reflection_3_final].filter(Boolean).length;
+  return <div className="space-y-5 fade-in">
+    <Card className="p-5"><SectionTitle>Extended Essay Details</SectionTitle><div className="space-y-3"><div><label className="block text-xs font-bold text-slate-400 uppercase tracking-wide mb-1.5">Subject</label><input type="text" value={ee.ee_subject} onChange={e=>upd('ee_subject',e.target.value)} onBlur={blur} className="w-full px-3.5 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400"/></div><div><label className="block text-xs font-bold text-slate-400 uppercase tracking-wide mb-1.5">Research Question</label><Textarea value={ee.ee_rq} onChange={v=>upd('ee_rq',v)} onBlur={blur} placeholder="Research question…"/></div></div></Card>
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <Card className="p-5"><SectionTitle action={<PBadge done={progDone} total={3}/>}>Progress</SectionTitle><div className="space-y-3"><IBCheckbox label="Annotated Bibliography" checked={ee.annotated_bibliography} onChange={v=>updSave('annotated_bibliography',v)}/><IBCheckbox label="Draft Submitted" checked={ee.draft_submitted} onChange={v=>updSave('draft_submitted',v)}/><IBCheckbox label="Final Draft Submitted" checked={ee.final_draft_submitted} onChange={v=>updSave('final_draft_submitted',v)}/></div></Card>
+      <Card className="p-5"><SectionTitle action={<PBadge done={intDone} total={3}/>}>Supervisor Interactions</SectionTitle><div className="space-y-3"><IBCheckbox label="Interaction 1" checked={ee.supervisor_interaction_1} onChange={v=>updSave('supervisor_interaction_1',v)}/><IBCheckbox label="Interaction 2" checked={ee.supervisor_interaction_2} onChange={v=>updSave('supervisor_interaction_2',v)}/><IBCheckbox label="Interaction 3" checked={ee.supervisor_interaction_3} onChange={v=>updSave('supervisor_interaction_3',v)}/></div></Card>
+      <Card className="p-5"><SectionTitle action={<PBadge done={refDone} total={3}/>}>Reflections</SectionTitle><div className="space-y-3"><IBCheckbox label="Reflection 1" checked={ee.reflection_1} onChange={v=>updSave('reflection_1',v)}/><IBCheckbox label="Reflection 2" checked={ee.reflection_2} onChange={v=>updSave('reflection_2',v)}/><IBCheckbox label="Final Reflection" checked={ee.reflection_3_final} onChange={v=>updSave('reflection_3_final',v)}/></div></Card>
+      <Card className="p-5"><SectionTitle>Additional</SectionTitle><div className="space-y-4"><IBCheckbox label="Supervisor Comments Complete" checked={ee.supervisor_comments_complete} onChange={v=>updSave('supervisor_comments_complete',v)}/><div className="flex items-center gap-3"><label className="text-sm font-medium text-slate-600 w-16">Hours</label><input type="number" value={ee.hours} onChange={e=>upd('hours',e.target.value)} onBlur={blur} className="w-24 px-2.5 py-1.5 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400"/></div><ScoreInput label="Score" value={ee.score} onChange={v=>upd('score',v)} onBlur={blur}/></div></Card>
+    </div>
+  </div>;
+}
+
+// ── CLASS OVERVIEW ──────────────────────────────────────────
+function ClassOverview({students,tokData,casData,eeData}){
+  const [filter,setFilter]=useState('all');
+  const [search,setSearch]=useState('');
+  const getTOK=id=>tokData.find(t=>t.student_id===id)||{};
+  const getCAS=id=>casData.find(c=>c.student_id===id)||{};
+  const getEE =id=>eeData.find(e=>e.student_id===id)||{};
+  const filtered=students.filter(s=>s.name.toLowerCase().includes(search.toLowerCase())||s.student_id.toLowerCase().includes(search.toLowerCase()));
+
+  const Dot=({on})=>on
+    ?<span className="inline-block w-4 h-4 rounded-full bg-emerald-400" title="Complete"/>
+    :<span className="inline-block w-4 h-4 rounded-full bg-rose-200 border border-rose-300" title="Missing"/>;
+  const ScoreCell=({v})=><span className={`text-xs font-bold ${v?'text-indigo-600':'text-slate-200'}`}>{v||'—'}</span>;
+  const thCl="px-2 py-2 text-center text-xs font-bold text-slate-400 uppercase tracking-wide border-b border-slate-100";
+  const tdCl="px-2 py-2.5 text-center border-b border-slate-50";
+  const GH=({label,cols,color})=><th colSpan={cols} className={`px-2 py-1.5 text-xs font-extrabold uppercase tracking-wider border-b border-slate-100 text-center text-${color}-600 bg-${color}-50`}>{label}</th>;
+
+  return <div className="flex flex-col h-full overflow-hidden">
+    <div className="flex flex-wrap items-center gap-3 p-4 pb-3 flex-shrink-0">
+      <div className="relative flex-1 min-w-48">
+        <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Filter students…" className="w-full pl-9 pr-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-slate-50"/>
+      </div>
+      <div className="flex gap-1 p-1 bg-slate-100 rounded-xl">
+        {[['all','All'],['tok','TOK'],['cas','CAS'],['ee','EE']].map(([v,l])=><button key={v} onClick={()=>setFilter(v)} className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${filter===v?'bg-white shadow text-indigo-600':'text-slate-500 hover:text-slate-700'}`}>{l}</button>)}
+      </div>
+      <div className="flex items-center gap-3 text-xs text-slate-400 font-medium">
+        <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 rounded-full bg-emerald-400"/>Done</span>
+        <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 rounded-full bg-rose-200 border border-rose-300"/>Missing</span>
+      </div>
+    </div>
+    <div className="flex-1 overflow-auto px-4 pb-4">
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-x-auto">
+        <table className="ov-table text-sm w-full">
+          <thead>
+            <tr>
+              <th rowSpan={2} className="px-4 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wide border-b border-slate-100 bg-white sticky left-0 z-10 min-w-40">Student</th>
+              {(filter==='all'||filter==='tok')&&<><GH label="TOK Exhibition" cols={4} color="violet"/><GH label="TOK Essay" cols={6} color="violet"/></>}
+              {(filter==='all'||filter==='cas')&&<><GH label="CAS Interviews" cols={3} color="sky"/><GH label="Project" cols={2} color="sky"/><GH label="Strands" cols={3} color="sky"/><GH label="Outcomes" cols={1} color="sky"/></>}
+              {(filter==='all'||filter==='ee')&&<><GH label="EE Progress" cols={3} color="teal"/><GH label="Sup Int" cols={3} color="teal"/><GH label="Reflections" cols={3} color="teal"/><GH label="EE Extra" cols={3} color="teal"/></>}
+            </tr>
+            <tr>
+              {(filter==='all'||filter==='tok')&&<>
+                <th className={thCl}>Plan</th><th className={thCl}>FB</th><th className={thCl}>Draft</th><th className={thCl}>Score</th>
+                <th className={thCl}>Int1</th><th className={thCl}>Int2</th><th className={thCl}>Int3</th><th className={thCl}>Final</th><th className={thCl}>Score</th><th className={thCl}>⬆ MB</th>
+              </>}
+              {(filter==='all'||filter==='cas')&&<>
+                <th className={thCl}>Int1</th><th className={thCl}>Int2</th><th className={thCl}>Final</th>
+                <th className={thCl}>Dec</th><th className={thCl}>Done</th>
+                <th className={thCl}>C</th><th className={thCl}>A</th><th className={thCl}>S</th>
+                <th className={thCl}>Out</th>
+              </>}
+              {(filter==='all'||filter==='ee')&&<>
+                <th className={thCl}>Bib</th><th className={thCl}>Draft</th><th className={thCl}>Final</th>
+                <th className={thCl}>Int1</th><th className={thCl}>Int2</th><th className={thCl}>Int3</th>
+                <th className={thCl}>Ref1</th><th className={thCl}>Ref2</th><th className={thCl}>Final</th>
+                <th className={thCl}>Sup✓</th><th className={thCl}>Hrs</th><th className={thCl}>Score</th>
+              </>}
+            </tr>
+          </thead>
+          <tbody>
+            {filtered.map(s=>{
+              const t=getTOK(s.student_id),c=getCAS(s.student_id),e=getEE(s.student_id);
+              const outDone=[1,2,3,4,5,6,7].filter(i=>c[`outcome_${i}`]).length;
+              const mbReady=!!(t.essay_comment);
+              return <tr key={s.student_id} className="hover:bg-slate-50 transition-colors">
+                <td className="px-4 py-2.5 border-b border-slate-50 sticky left-0 bg-white z-10"><div className="font-semibold text-slate-800 text-sm">{s.name}</div><div className="text-xs text-slate-400">{s.student_id}</div></td>
+                {(filter==='all'||filter==='tok')&&<>
+                  <td className={tdCl}><Dot on={t.exhibition_planning_conference}/></td>
+                  <td className={tdCl}><Dot on={t.exhibition_written_feedback}/></td>
+                  <td className={tdCl}><Dot on={t.exhibition_final_draft_in}/></td>
+                  <td className={tdCl}><ScoreCell v={t.exhibition_score}/></td>
+                  <td className={tdCl}><Dot on={t.essay_interaction_1}/></td>
+                  <td className={tdCl}><Dot on={t.essay_interaction_2}/></td>
+                  <td className={tdCl}><Dot on={t.essay_interaction_3}/></td>
+                  <td className={tdCl}><Dot on={t.essay_final_draft_submitted}/></td>
+                  <td className={tdCl}><ScoreCell v={t.essay_score}/></td>
+                  <td className={tdCl}>{mbReady?<span className="text-xs bg-emerald-100 text-emerald-700 font-bold px-1.5 py-0.5 rounded">Ready</span>:<span className="text-xs text-slate-300">—</span>}</td>
+                </>}
+                {(filter==='all'||filter==='cas')&&<>
+                  <td className={tdCl}><Dot on={!!c.interview_1_date}/></td>
+                  <td className={tdCl}><Dot on={!!c.interview_2_date}/></td>
+                  <td className={tdCl}><Dot on={!!c.interview_final_date}/></td>
+                  <td className={tdCl}><Dot on={c.cas_project_decided}/></td>
+                  <td className={tdCl}><Dot on={c.cas_project_complete}/></td>
+                  <td className={tdCl}><Dot on={c.strand_creativity}/></td>
+                  <td className={tdCl}><Dot on={c.strand_activity}/></td>
+                  <td className={tdCl}><Dot on={c.strand_service}/></td>
+                  <td className={tdCl}><span className={`text-xs font-bold px-1.5 py-0.5 rounded-full ${outDone===7?'bg-emerald-100 text-emerald-700':outDone>0?'bg-amber-100 text-amber-700':'bg-slate-100 text-slate-400'}`}>{outDone}/7</span></td>
+                </>}
+                {(filter==='all'||filter==='ee')&&<>
+                  <td className={tdCl}><Dot on={e.annotated_bibliography}/></td>
+                  <td className={tdCl}><Dot on={e.draft_submitted}/></td>
+                  <td className={tdCl}><Dot on={e.final_draft_submitted}/></td>
+                  <td className={tdCl}><Dot on={e.supervisor_interaction_1}/></td>
+                  <td className={tdCl}><Dot on={e.supervisor_interaction_2}/></td>
+                  <td className={tdCl}><Dot on={e.supervisor_interaction_3}/></td>
+                  <td className={tdCl}><Dot on={e.reflection_1}/></td>
+                  <td className={tdCl}><Dot on={e.reflection_2}/></td>
+                  <td className={tdCl}><Dot on={e.reflection_3_final}/></td>
+                  <td className={tdCl}><Dot on={e.supervisor_comments_complete}/></td>
+                  <td className={tdCl}><span className={`text-xs font-semibold ${e.hours?'text-slate-700':'text-slate-200'}`}>{e.hours||'—'}</span></td>
+                  <td className={tdCl}><ScoreCell v={e.score}/></td>
+                </>}
+              </tr>;
+            })}
+          </tbody>
+        </table>
+        {filtered.length===0&&<div className="py-16 text-center text-slate-400 text-sm">No students match</div>}
+      </div>
+      <p className="text-xs text-slate-400 mt-3 text-center">{filtered.length} of {students.length} students · ⬆ MB = comment ready to copy to Managebac</p>
+    </div>
+  </div>;
+}
+
+// ── ADD STUDENT MODAL ───────────────────────────────────────
+function AddStudentModal({onClose,onAdd}){
+  const [form,setForm]=useState({name:'',student_id:'',password:''});
+  const [loading,setLoading]=useState(false);
+  const [error,setError]=useState('');
+  const f=key=>e=>setForm(p=>({...p,[key]:e.target.value}));
+  const submit=async e=>{
+    e.preventDefault();
+    if(!form.student_id||!form.name){setError('Name and Student ID are required.');return;}
+    setLoading(true);setError('');
+    try{await onAdd(form);onClose();}catch(err){setError(err.message);}
+    setLoading(false);
+  };
+  return <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
+    <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm fade-in">
+      <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100"><h2 className="font-bold text-slate-800">Add Student</h2><button onClick={onClose} className="text-slate-400 hover:text-slate-600 text-2xl leading-none">×</button></div>
+      <form onSubmit={submit} className="p-6 space-y-4">
+        {[['Full Name','name',true],['Student ID','student_id',true],['Password','password',false]].map(([label,key,req])=><div key={key}><label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-1.5">{label}{req&&' *'}</label><input type="text" value={form[key]} onChange={f(key)} required={req} className="w-full px-3.5 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"/></div>)}
+        <p className="text-xs text-slate-400">EE subject and RQ can be filled in from the EE tab after adding.</p>
+        {error&&<div className="text-sm text-rose-600 bg-rose-50 border border-rose-100 rounded-xl px-3.5 py-2.5">{error}</div>}
+        <div className="flex gap-3 pt-1">
+          <button type="button" onClick={onClose} className="flex-1 py-2.5 border border-slate-200 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 text-sm">Cancel</button>
+          <button type="submit" disabled={loading} className="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-sm flex items-center justify-center gap-2 disabled:opacity-60">{loading?<><Spinner/>Adding…</>:'Add Student'}</button>
+        </div>
+      </form>
+    </div>
+  </div>;
+}
+
+// ── TEACHER DASHBOARD ────────────────────────────────────────
+function TeacherDashboard({students,tokData,casData,eeData,onUpdate,onAddStudent,onLogout,saveStatus,error,onDismissError}){
+  const [view,setView]=useState('student');
+  const [selectedId,setSelectedId]=useState(null);
+  const [tab,setTab]=useState('tok');
+  const [search,setSearch]=useState('');
+  const [showAdd,setShowAdd]=useState(false);
+  const [mobileSidebar,setMobileSidebar]=useState(false);
+
+  const filtered=students.filter(s=>s.name.toLowerCase().includes(search.toLowerCase())||s.student_id.toLowerCase().includes(search.toLowerCase()));
+  const selStudent=students.find(s=>s.student_id===selectedId);
+  const selTOK=tokData.find(t=>t.student_id===selectedId);
+  const selCAS=casData.find(c=>c.student_id===selectedId);
+  const selEE =eeData.find(e=>e.student_id===selectedId);
+  const tokIdx=tokData.findIndex(t=>t.student_id===selectedId);
+  const casIdx=casData.findIndex(c=>c.student_id===selectedId);
+  const eeIdx =eeData.findIndex(e=>e.student_id===selectedId);
+
+  return <div className="flex flex-col h-screen bg-slate-50">
+    <header className="flex-shrink-0 bg-white border-b border-slate-100 px-4 sm:px-6 py-3 flex items-center justify-between z-20">
+      <div className="flex items-center gap-2 flex-wrap">
+        {view==='student'&&<button onClick={()=>setMobileSidebar(!mobileSidebar)} className="sm:hidden p-2 rounded-lg hover:bg-slate-100"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"/></svg></button>}
+        <div className="flex items-center gap-2"><div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center"><svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></div><span className="font-extrabold text-slate-800 tracking-tight">IB Core</span></div>
+        <div className="flex gap-0.5 p-0.5 bg-slate-100 rounded-lg">
+          <button onClick={()=>setView('student')} className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-md transition-all ${view==='student'?'bg-white shadow text-indigo-600':'text-slate-500 hover:text-slate-700'}`}><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>Student</button>
+          <button onClick={()=>setView('overview')} className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-md transition-all ${view==='overview'?'bg-white shadow text-indigo-600':'text-slate-500 hover:text-slate-700'}`}><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>Class Overview</button>
+        </div>
+      </div>
+      <div className="flex items-center gap-3"><SaveBadge status={saveStatus}/><span className="hidden sm:block text-xs text-slate-400 font-medium bg-slate-100 px-2.5 py-1 rounded-full">Teacher</span><button onClick={onLogout} className="text-sm text-slate-500 hover:text-slate-700 font-medium">Log out</button></div>
+    </header>
+
+    {view==='overview'
+      ?<div className="flex-1 overflow-hidden flex flex-col"><ClassOverview students={students} tokData={tokData} casData={casData} eeData={eeData}/></div>
+      :<div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
-        <aside className={`
-          ${mobileSidebar ? 'flex' : 'hidden'} sm:flex
-          flex-col w-72 border-r border-slate-100 bg-white flex-shrink-0
-          absolute sm:relative inset-0 z-30 sm:z-auto
-        `}>
+        <aside className={`${mobileSidebar?'flex':'hidden'} sm:flex flex-col w-72 border-r border-slate-100 bg-white flex-shrink-0 absolute sm:relative inset-0 z-30 sm:z-auto`}>
           <div className="p-4 border-b border-slate-50">
-            <div className="relative mb-3">
-              <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-              </svg>
-              <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search students…"
-                className="w-full pl-9 pr-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent bg-slate-50"/>
-            </div>
-            <button onClick={()=>setShowAdd(true)}
-              className="w-full flex items-center justify-center gap-2 py-2 text-sm font-bold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-xl transition-colors">
-              <span className="text-lg leading-none">+</span> Add Student
-            </button>
+            <div className="relative mb-3"><svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg><input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search students…" className="w-full pl-9 pr-3 py-2 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-slate-50"/></div>
+            <button onClick={()=>setShowAdd(true)} className="w-full flex items-center justify-center gap-2 py-2 text-sm font-bold text-indigo-600 bg-indigo-50 hover:bg-indigo-100 rounded-xl transition-colors"><span className="text-lg leading-none">+</span> Add Student</button>
           </div>
           <div className="flex-1 overflow-y-auto">
-            {filtered.length===0 && (
-              <p className="text-sm text-slate-400 text-center py-8">No students found</p>
-            )}
+            {filtered.length===0&&<p className="text-sm text-slate-400 text-center py-8">No students found</p>}
             {filtered.map(s=>{
-              const tok=tokData.find(t=>t.student_id===s.student_id);
-              const eeData_=eeData.find(e=>e.student_id===s.student_id);
-              const exDone=tok?[tok.exhibition_planning_conference,tok.exhibition_written_feedback,tok.exhibition_final_draft_in].filter(Boolean).length:0;
-              const eeDone=eeData_?[eeData_.annotated_bibliography,eeData_.draft_submitted,eeData_.final_draft_submitted].filter(Boolean).length:0;
-              return (
-                <button key={s.student_id} onClick={()=>selectStudent(s.student_id)}
-                  className={`w-full text-left px-4 py-3.5 border-b border-slate-50 transition-all hover:bg-slate-50
-                    ${selectedId===s.student_id ? 'bg-indigo-50 border-l-4 border-l-indigo-600' : 'border-l-4 border-l-transparent'}`}>
-                  <div className="font-semibold text-slate-800 text-sm">{s.name}</div>
-                  <div className="text-xs text-slate-400 mt-0.5 flex items-center gap-3">
-                    <span>{s.student_id}</span>
-                    <span className="text-slate-300">·</span>
-                    <span>TOK {exDone}/3</span>
-                    <span className="text-slate-300">·</span>
-                    <span>EE {eeDone}/3</span>
-                  </div>
-                </button>
-              );
+              const tok_=tokData.find(t=>t.student_id===s.student_id)||{};
+              const ee_=eeData.find(e=>e.student_id===s.student_id)||{};
+              const exDone=[tok_.exhibition_planning_conference,tok_.exhibition_written_feedback,tok_.exhibition_final_draft_in].filter(Boolean).length;
+              const eeDone=[ee_.annotated_bibliography,ee_.draft_submitted,ee_.final_draft_submitted].filter(Boolean).length;
+              return <button key={s.student_id} onClick={()=>{setSelectedId(s.student_id);setMobileSidebar(false);}} className={`w-full text-left px-4 py-3.5 border-b border-slate-50 transition-all hover:bg-slate-50 ${selectedId===s.student_id?'bg-indigo-50 border-l-4 border-l-indigo-600':'border-l-4 border-l-transparent'}`}>
+                <div className="font-semibold text-slate-800 text-sm">{s.name}</div>
+                <div className="text-xs text-slate-400 mt-0.5 flex items-center gap-3"><span>{s.student_id}</span><span className="text-slate-300">·</span><span>TOK {exDone}/3</span><span className="text-slate-300">·</span><span>EE {eeDone}/3</span></div>
+              </button>;
             })}
           </div>
-          <div className="p-3 border-t border-slate-100">
-            <p className="text-xs text-slate-400 text-center">{students.length} students</p>
-          </div>
+          <div className="p-3 border-t border-slate-100"><p className="text-xs text-slate-400 text-center">{students.length} students</p></div>
         </aside>
-
-        {/* Main panel */}
+        {/* Main */}
         <main className="flex-1 overflow-y-auto">
-          {!selStudent ? (
-            <div className="flex flex-col items-center justify-center h-full text-center p-8">
-              <div className="w-20 h-20 rounded-2xl bg-slate-100 flex items-center justify-center mb-4">
-                <svg className="w-10 h-10 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
-                </svg>
-              </div>
+          {!selStudent
+            ?<div className="flex flex-col items-center justify-center h-full text-center p-8">
+              <div className="w-20 h-20 rounded-2xl bg-slate-100 flex items-center justify-center mb-4"><svg className="w-10 h-10 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
               <h3 className="font-bold text-slate-700 text-lg">Select a student</h3>
-              <p className="text-slate-400 text-sm mt-1">Choose a student from the sidebar to view their IB Core progress</p>
+              <p className="text-slate-400 text-sm mt-1">Or switch to Class Overview to see everyone at once</p>
             </div>
-          ) : (
-            <div className="p-5 sm:p-6 max-w-3xl">
-              {/* Student header */}
-              <div className="flex items-start justify-between mb-6">
-                <div>
-                  <h2 className="text-xl font-extrabold text-slate-800">{selStudent.name}</h2>
-                  <p className="text-sm text-slate-400 mt-0.5">{selStudent.student_id} · {selStudent.ee_subject||'EE subject TBC'}</p>
-                </div>
-              </div>
-
-              {/* Tab nav */}
+            :<div className="p-5 sm:p-6 max-w-3xl">
+              <div className="mb-6"><h2 className="text-xl font-extrabold text-slate-800">{selStudent.name}</h2><p className="text-sm text-slate-400 mt-0.5">{selStudent.student_id} · {selStudent.ee_subject||'EE subject TBC'}</p></div>
               <div className="flex gap-1 p-1 bg-slate-100 rounded-xl mb-6 w-fit">
-                {['tok','cas','ee'].map(t=>(
-                  <button key={t} onClick={()=>setTab(t)}
-                    className={`px-5 py-2 text-sm font-bold rounded-lg transition-all uppercase tracking-wide
-                      ${tab===t ? 'bg-white shadow text-indigo-600' : 'text-slate-500 hover:text-slate-700'}`}>
-                    {t}
-                  </button>
-                ))}
+                {['tok','cas','ee'].map(t=><button key={t} onClick={()=>setTab(t)} className={`px-5 py-2 text-sm font-bold rounded-lg transition-all uppercase tracking-wide ${tab===t?'bg-white shadow text-indigo-600':'text-slate-500 hover:text-slate-700'}`}>{t}</button>)}
               </div>
-
-              {tab==='tok' && <TOKTab tok={selTOK} onChange={newTok=>onUpdate('tok',newTok)} onSave={newTok=>onUpdate('tok',newTok,tokIdx,true)}/>}
-              {tab==='cas' && <CASTab cas={selCAS} onChange={newCas=>onUpdate('cas',newCas)} onSave={newCas=>onUpdate('cas',newCas,casIdx,true)}/>}
-              {tab==='ee'  && <EETab  ee={selEE}   onChange={newEe=>onUpdate('ee',newEe)}   onSave={newEe=>onUpdate('ee',newEe,eeIdx,true)}/>}
+              {tab==='tok'&&<TOKTab tok={selTOK} onChange={n=>onUpdate('tok',n,tokIdx,false)} onSave={n=>onUpdate('tok',n,tokIdx,true)}/>}
+              {tab==='cas'&&<CASTab cas={selCAS} onChange={n=>onUpdate('cas',n,casIdx,false)} onSave={n=>onUpdate('cas',n,casIdx,true)}/>}
+              {tab==='ee'&&<EETab ee={selEE} onChange={n=>onUpdate('ee',n,eeIdx,false)} onSave={n=>onUpdate('ee',n,eeIdx,true)}/>}
             </div>
-          )}
+          }
         </main>
       </div>
-
-      {showAdd && <AddStudentModal onClose={()=>setShowAdd(false)} onAdd={onAddStudent}/>}
-      <ErrorBanner msg={error} onDismiss={onDismissError}/>
-    </div>
-  );
+    }
+    {showAdd&&<AddStudentModal onClose={()=>setShowAdd(false)} onAdd={onAddStudent}/>}
+    <ErrorBanner msg={error} onDismiss={onDismissError}/>
+  </div>;
 }
 
-// ═══════════════════════════════════════════════════════════
-// ADMIN DASHBOARD
-// ═══════════════════════════════════════════════════════════
-function AdminDashboard({students,tokData,casData,eeData,onLogout,saveStatus,error,onDismissError}) {
-  const [tab,setTab] = useState('tok');
-
-  const getTOK = id => tokData.find(t=>t.student_id===id)||{};
-  const getCAS = id => casData.find(c=>c.student_id===id)||{};
-  const getEE  = id => eeData.find(e=>e.student_id===id)||{};
-
-  const Tick = ({v}) => v
-    ? <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 text-xs">✓</span>
-    : <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-slate-100 text-slate-300 text-xs">–</span>;
-
-  return (
-    <div className="flex flex-col h-screen bg-slate-50">
-      <header className="flex-shrink-0 bg-white border-b border-slate-100 px-6 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-slate-700 flex items-center justify-center">
-            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-            </svg>
-          </div>
-          <span className="font-extrabold text-slate-800 tracking-tight">IB Core</span>
-          <span className="text-xs text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full font-medium ml-1">IB Coordinator — Read Only</span>
-        </div>
-        <div className="flex items-center gap-3">
-          <SaveBadge status={saveStatus}/>
-          <button onClick={onLogout} className="text-sm text-slate-500 hover:text-slate-700 font-medium">Log out</button>
-        </div>
-      </header>
-
-      <div className="flex-1 overflow-auto p-6">
-        <div className="flex gap-1 p-1 bg-slate-100 rounded-xl mb-6 w-fit">
-          {['tok','cas','ee'].map(t=>(
-            <button key={t} onClick={()=>setTab(t)}
-              className={`px-5 py-2 text-sm font-bold rounded-lg transition-all uppercase tracking-wide
-                ${tab===t ? 'bg-white shadow text-indigo-600' : 'text-slate-500 hover:text-slate-700'}`}>
-              {t}
-            </button>
-          ))}
-        </div>
-
-        <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-x-auto">
-          {tab==='tok' && (
-            <table className="w-full text-sm min-w-max">
-              <thead><tr className="border-b border-slate-100">
-                <th className="text-left px-4 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Student</th>
-                <th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Plan.Conf</th>
-                <th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Written FB</th>
-                <th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Final Draft</th>
-                <th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Exh Score</th>
-                <th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Int 1</th>
-                <th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Int 2</th>
-                <th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Int 3</th>
-                <th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Draft Sub</th>
-                <th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Essay Score</th>
-              </tr></thead>
-              <tbody>{students.map(s=>{const t=getTOK(s.student_id);return(
-                <tr key={s.student_id} className="border-b border-slate-50 hover:bg-slate-50">
-                  <td className="px-4 py-3"><div className="font-semibold text-slate-800">{s.name}</div><div className="text-xs text-slate-400">{s.student_id}</div></td>
-                  {[t.exhibition_planning_conference,t.exhibition_written_feedback,t.exhibition_final_draft_in].map((v,i)=><td key={i} className="px-3 py-3 text-center"><Tick v={v}/></td>)}
-                  <td className="px-3 py-3 text-center font-bold text-indigo-600">{t.exhibition_score||'—'}</td>
-                  {[t.essay_interaction_1,t.essay_interaction_2,t.essay_interaction_3,t.essay_final_draft_submitted].map((v,i)=><td key={i} className="px-3 py-3 text-center"><Tick v={v}/></td>)}
-                  <td className="px-3 py-3 text-center font-bold text-indigo-600">{t.essay_score||'—'}</td>
-                </tr>
-              );})}
-              </tbody>
-            </table>
-          )}
-
-          {tab==='cas' && (
-            <table className="w-full text-sm min-w-max">
-              <thead><tr className="border-b border-slate-100">
-                <th className="text-left px-4 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Student</th>
-                <th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Int 1</th>
-                <th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Int 2</th>
-                <th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Final Int</th>
-                <th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Project</th>
-                <th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Strands</th>
-                <th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Outcomes</th>
-              </tr></thead>
-              <tbody>{students.map(s=>{const c=getCAS(s.student_id);
-                const strands=[c.strand_creativity&&'C',c.strand_activity&&'A',c.strand_service&&'S'].filter(Boolean);
-                const outcomes=[1,2,3,4,5,6,7].filter(i=>c[`outcome_${i}`]).length;
-                return(
-                <tr key={s.student_id} className="border-b border-slate-50 hover:bg-slate-50">
-                  <td className="px-4 py-3"><div className="font-semibold text-slate-800">{s.name}</div><div className="text-xs text-slate-400">{s.student_id}</div></td>
-                  <td className="px-3 py-3 text-center text-xs text-slate-500">{c.interview_1_date||'—'}</td>
-                  <td className="px-3 py-3 text-center text-xs text-slate-500">{c.interview_2_date||'—'}</td>
-                  <td className="px-3 py-3 text-center text-xs text-slate-500">{c.interview_final_date||'—'}</td>
-                  <td className="px-3 py-3 text-center">
-                    <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${c.cas_project_complete?'bg-emerald-100 text-emerald-700':c.cas_project_decided?'bg-amber-100 text-amber-700':'bg-slate-100 text-slate-400'}`}>
-                      {c.cas_project_complete?'Done':c.cas_project_decided?'Planned':'Not started'}
-                    </span>
-                  </td>
-                  <td className="px-3 py-3 text-center">
-                    <span className="text-xs font-bold text-slate-700">{strands.length?strands.join(' '):'—'}</span>
-                  </td>
-                  <td className="px-3 py-3 text-center">
-                    <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${outcomes===7?'bg-emerald-100 text-emerald-700':outcomes>0?'bg-amber-100 text-amber-700':'bg-slate-100 text-slate-400'}`}>
-                      {outcomes}/7
-                    </span>
-                  </td>
-                </tr>
-              );})}
-              </tbody>
-            </table>
-          )}
-
-          {tab==='ee' && (
-            <table className="w-full text-sm min-w-max">
-              <thead><tr className="border-b border-slate-100">
-                <th className="text-left px-4 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Student</th>
-                <th className="text-left px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Subject</th>
-                <th className="text-left px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">RQ</th>
-                <th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Progress</th>
-                <th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Sup Int</th>
-                <th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Reflections</th>
-                <th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Hours</th>
-                <th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Score</th>
-              </tr></thead>
-              <tbody>{students.map(s=>{const e=getEE(s.student_id);
-                const prog=[e.annotated_bibliography,e.draft_submitted,e.final_draft_submitted].filter(Boolean).length;
-                const intDone=[e.supervisor_interaction_1,e.supervisor_interaction_2,e.supervisor_interaction_3].filter(Boolean).length;
-                const refDone=[e.reflection_1,e.reflection_2,e.reflection_3_final].filter(Boolean).length;
-                return(
-                <tr key={s.student_id} className="border-b border-slate-50 hover:bg-slate-50">
-                  <td className="px-4 py-3"><div className="font-semibold text-slate-800">{s.name}</div><div className="text-xs text-slate-400">{s.student_id}</div></td>
-                  <td className="px-3 py-3 text-slate-600">{e.ee_subject||'—'}</td>
-                  <td className="px-3 py-3 max-w-xs"><span className="text-xs text-slate-500 line-clamp-2">{e.ee_rq||'—'}</span></td>
-                  <td className="px-3 py-3 text-center"><span className={`text-xs font-bold px-2 py-0.5 rounded-full ${prog===3?'bg-emerald-100 text-emerald-700':prog>0?'bg-amber-100 text-amber-700':'bg-slate-100 text-slate-400'}`}>{prog}/3</span></td>
-                  <td className="px-3 py-3 text-center"><span className={`text-xs font-bold px-2 py-0.5 rounded-full ${intDone===3?'bg-emerald-100 text-emerald-700':intDone>0?'bg-amber-100 text-amber-700':'bg-slate-100 text-slate-400'}`}>{intDone}/3</span></td>
-                  <td className="px-3 py-3 text-center"><span className={`text-xs font-bold px-2 py-0.5 rounded-full ${refDone===3?'bg-emerald-100 text-emerald-700':refDone>0?'bg-amber-100 text-amber-700':'bg-slate-100 text-slate-400'}`}>{refDone}/3</span></td>
-                  <td className="px-3 py-3 text-center text-slate-600 font-semibold">{e.hours||'—'}</td>
-                  <td className="px-3 py-3 text-center font-bold text-indigo-600">{e.score||'—'}</td>
-                </tr>
-              );})}
-              </tbody>
-            </table>
-          )}
-        </div>
-      </div>
-      <ErrorBanner msg={error} onDismiss={onDismissError}/>
-    </div>
-  );
-}
-
-// ═══════════════════════════════════════════════════════════
-// STUDENT DASHBOARD
-// ═══════════════════════════════════════════════════════════
-function StudentDashboard({student,tok,cas,ee,onLogout}) {
-  if (!student) return null;
-  const exDone  = tok?[tok.exhibition_planning_conference,tok.exhibition_written_feedback,tok.exhibition_final_draft_in].filter(Boolean).length:0;
-  const essDone = tok?[tok.essay_interaction_1,tok.essay_interaction_2,tok.essay_interaction_3,tok.essay_final_draft_submitted].filter(Boolean).length:0;
-  const outDone = cas?[1,2,3,4,5,6,7].filter(i=>cas[`outcome_${i}`]).length:0;
-  const eeProg  = ee?[ee.annotated_bibliography,ee.draft_submitted,ee.final_draft_submitted].filter(Boolean).length:0;
-
-  return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="bg-white border-b border-slate-100 px-4 sm:px-6 py-3 flex items-center justify-between sticky top-0 z-10">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
-            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-            </svg>
-          </div>
-          <div>
-            <span className="font-extrabold text-slate-800 tracking-tight text-sm">IB Core</span>
-            <span className="block text-xs text-slate-400 leading-none mt-0.5">{student.name}</span>
-          </div>
-        </div>
-        <button onClick={onLogout} className="text-sm text-slate-500 hover:text-slate-700 font-medium">Log out</button>
-      </header>
-
-      <div className="max-w-2xl mx-auto p-4 sm:p-6 space-y-5 fade-in">
-        {/* TOK Card */}
-        <Card className="overflow-hidden">
-          <div className="px-5 pt-5 pb-4 border-b border-slate-50 flex items-center justify-between">
-            <div>
-              <h2 className="font-extrabold text-slate-800 text-lg">Theory of Knowledge</h2>
-              <p className="text-xs text-slate-400 mt-0.5">Exhibition · Essay</p>
-            </div>
-            <div className="flex gap-2">
-              <PBadge done={exDone} total={3}/>
-              <PBadge done={essDone} total={4}/>
-            </div>
-          </div>
-          <div className="p-5 space-y-5">
-            {tok ? (
-              <>
-                <div>
-                  <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Exhibition</h3>
-                  <div className="space-y-2.5">
-                    <IBCheckbox readOnly label="Planning Conference" checked={tok.exhibition_planning_conference}/>
-                    <IBCheckbox readOnly label="Written Feedback" checked={tok.exhibition_written_feedback}/>
-                    <IBCheckbox readOnly label="Final Draft In" checked={tok.exhibition_final_draft_in}/>
-                  </div>
-                  {tok.exhibition_score && <div className="mt-3 flex items-center gap-2"><span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Score:</span><span className="text-sm font-bold text-indigo-600">{tok.exhibition_score}</span></div>}
-                  {tok.exhibition_comment && (
-                    <div className="mt-3 p-3 bg-indigo-50 rounded-xl">
-                      <p className="text-xs font-bold text-indigo-400 uppercase tracking-wide mb-1.5">Teacher Comment</p>
-                      <p className="text-sm text-slate-700 leading-relaxed">{tok.exhibition_comment}</p>
-                    </div>
-                  )}
-                </div>
-                <div className="border-t border-slate-50 pt-5">
-                  <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Essay</h3>
-                  <div className="space-y-2.5">
-                    <IBCheckbox readOnly label="Interaction 1" checked={tok.essay_interaction_1}/>
-                    <IBCheckbox readOnly label="Interaction 2" checked={tok.essay_interaction_2}/>
-                    <IBCheckbox readOnly label="Interaction 3" checked={tok.essay_interaction_3}/>
-                    <IBCheckbox readOnly label="Final Draft Submitted" checked={tok.essay_final_draft_submitted}/>
-                  </div>
-                  {tok.essay_score && <div className="mt-3 flex items-center gap-2"><span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Score:</span><span className="text-sm font-bold text-indigo-600">{tok.essay_score}</span></div>}
-                  {tok.essay_comment && (
-                    <div className="mt-3 p-3 bg-indigo-50 rounded-xl">
-                      <p className="text-xs font-bold text-indigo-400 uppercase tracking-wide mb-1.5">Teacher Comment</p>
-                      <p className="text-sm text-slate-700 leading-relaxed">{tok.essay_comment}</p>
-                    </div>
-                  )}
-                </div>
-              </>
-            ) : <p className="text-slate-400 text-sm">No data yet.</p>}
-          </div>
-        </Card>
-
-        {/* CAS Card */}
-        <Card className="overflow-hidden">
-          <div className="px-5 pt-5 pb-4 border-b border-slate-50 flex items-center justify-between">
-            <div>
-              <h2 className="font-extrabold text-slate-800 text-lg">CAS</h2>
-              <p className="text-xs text-slate-400 mt-0.5">Creativity · Activity · Service</p>
-            </div>
-            <PBadge done={outDone} total={7}/>
-          </div>
-          <div className="p-5 space-y-5">
-            {cas ? (
-              <>
-                {/* Interviews */}
-                <div>
-                  <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Interviews</h3>
-                  <div className="space-y-3">
-                    {[['First Interview','interview_1_date','interview_1_comment'],
-                      ['Second Interview','interview_2_date','interview_2_comment'],
-                      ['Final Interview','interview_final_date','interview_final_comment']].map(([label,dk,ck])=>(
-                      cas[dk]||cas[ck] ? (
-                        <div key={label} className="border border-slate-100 rounded-xl p-3">
-                          <div className="flex items-center justify-between mb-1">
-                            <span className="text-sm font-bold text-slate-700">{label}</span>
-                            {cas[dk] && <span className="text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">{cas[dk]}</span>}
-                          </div>
-                          {cas[ck] && <p className="text-sm text-slate-600 leading-relaxed">{cas[ck]}</p>}
-                        </div>
-                      ) : (
-                        <div key={label} className="border border-dashed border-slate-100 rounded-xl p-3">
-                          <span className="text-sm text-slate-300">{label} — not yet scheduled</span>
-                        </div>
-                      )
-                    ))}
-                    {cas.extra_interactions.map((ex,i)=>(
-                      <div key={i} className="border border-slate-100 rounded-xl p-3">
-                        <div className="flex items-center justify-between mb-1">
-                          <span className="text-sm font-bold text-slate-700">Extra Interaction {i+1}</span>
-                          {ex.date && <span className="text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">{ex.date}</span>}
-                        </div>
-                        {ex.comment && <p className="text-sm text-slate-600 leading-relaxed">{ex.comment}</p>}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Project + Strands */}
-                <div className="flex gap-3 flex-wrap">
-                  <span className={`text-xs font-bold px-3 py-1.5 rounded-full border ${cas.cas_project_decided?'bg-amber-50 border-amber-200 text-amber-700':'bg-slate-50 border-slate-200 text-slate-400'}`}>Project Decided</span>
-                  <span className={`text-xs font-bold px-3 py-1.5 rounded-full border ${cas.cas_project_complete?'bg-emerald-50 border-emerald-200 text-emerald-700':'bg-slate-50 border-slate-200 text-slate-400'}`}>Project Complete</span>
-                  {[['Creativity','strand_creativity'],['Activity','strand_activity'],['Service','strand_service']].map(([l,k])=>(
-                    <span key={k} className={`text-xs font-bold px-3 py-1.5 rounded-full border ${cas[k]?'bg-indigo-50 border-indigo-200 text-indigo-700':'bg-slate-50 border-slate-200 text-slate-400'}`}>{l}</span>
-                  ))}
-                </div>
-
-                {/* Outcomes */}
-                <div>
-                  <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Outcomes <span className={`ml-2 px-2 py-0.5 rounded-full text-xs font-bold ${outDone===7?'bg-emerald-100 text-emerald-700':outDone>0?'bg-amber-100 text-amber-700':'bg-slate-100 text-slate-400'}`}>{outDone}/7</span></h3>
-                  <div className="space-y-2.5">
-                    {OUTCOMES.map((label,i)=>(
-                      <IBCheckbox key={i} readOnly label={label} checked={cas[`outcome_${i+1}`]}/>
-                    ))}
-                  </div>
-                </div>
-              </>
-            ) : <p className="text-slate-400 text-sm">No CAS data yet.</p>}
-          </div>
-        </Card>
-
-        {/* EE Card */}
-        <Card className="overflow-hidden">
-          <div className="px-5 pt-5 pb-4 border-b border-slate-50 flex items-center justify-between">
-            <div>
-              <h2 className="font-extrabold text-slate-800 text-lg">Extended Essay</h2>
-              <p className="text-xs text-slate-400 mt-0.5">{ee?.ee_subject||'Subject TBC'}</p>
-            </div>
-            <PBadge done={eeProg} total={3}/>
-          </div>
-          <div className="p-5 space-y-5">
-            {ee ? (
-              <>
-                {ee.ee_rq && (
-                  <div className="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1.5">Research Question</p>
-                    <p className="text-sm text-slate-700 leading-relaxed font-medium italic">{ee.ee_rq}</p>
-                  </div>
-                )}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Progress</h3>
-                    <div className="space-y-2.5">
-                      <IBCheckbox readOnly label="Annotated Bibliography" checked={ee.annotated_bibliography}/>
-                      <IBCheckbox readOnly label="Draft Submitted" checked={ee.draft_submitted}/>
-                      <IBCheckbox readOnly label="Final Draft Submitted" checked={ee.final_draft_submitted}/>
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Supervisor Interactions</h3>
-                    <div className="space-y-2.5">
-                      <IBCheckbox readOnly label="Interaction 1" checked={ee.supervisor_interaction_1}/>
-                      <IBCheckbox readOnly label="Interaction 2" checked={ee.supervisor_interaction_2}/>
-                      <IBCheckbox readOnly label="Interaction 3" checked={ee.supervisor_interaction_3}/>
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Reflections</h3>
-                    <div className="space-y-2.5">
-                      <IBCheckbox readOnly label="Reflection 1" checked={ee.reflection_1}/>
-                      <IBCheckbox readOnly label="Reflection 2" checked={ee.reflection_2}/>
-                      <IBCheckbox readOnly label="Final Reflection" checked={ee.reflection_3_final}/>
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Summary</h3>
-                    <div className="space-y-2">
-                      <IBCheckbox readOnly label="Supervisor Comments Complete" checked={ee.supervisor_comments_complete}/>
-                      {ee.hours && <div className="flex items-center gap-2 mt-2"><span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Hours:</span><span className="text-sm font-bold text-slate-700">{ee.hours}</span></div>}
-                      {ee.score && <div className="flex items-center gap-2"><span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Score:</span><span className="text-sm font-bold text-indigo-600">{ee.score}</span></div>}
-                    </div>
-                  </div>
-                </div>
-              </>
-            ) : <p className="text-slate-400 text-sm">No EE data yet.</p>}
-          </div>
-        </Card>
+// ── ADMIN DASHBOARD ─────────────────────────────────────────
+function AdminDashboard({students,tokData,casData,eeData,onLogout,saveStatus,error,onDismissError}){
+  const [tab,setTab]=useState('tok');
+  const getTOK=id=>tokData.find(t=>t.student_id===id)||{};
+  const getCAS=id=>casData.find(c=>c.student_id===id)||{};
+  const getEE =id=>eeData.find(e=>e.student_id===id)||{};
+  const Tick=({v})=>v?<span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 text-xs">✓</span>:<span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-slate-100 text-slate-300 text-xs">–</span>;
+  return <div className="flex flex-col h-screen bg-slate-50">
+    <header className="flex-shrink-0 bg-white border-b border-slate-100 px-6 py-3 flex items-center justify-between">
+      <div className="flex items-center gap-2"><div className="w-8 h-8 rounded-lg bg-slate-700 flex items-center justify-center"><svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></div><span className="font-extrabold text-slate-800 tracking-tight">IB Core</span><span className="text-xs text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full font-medium ml-1">IB Coordinator — Read Only</span></div>
+      <div className="flex items-center gap-3"><SaveBadge status={saveStatus}/><button onClick={onLogout} className="text-sm text-slate-500 hover:text-slate-700 font-medium">Log out</button></div>
+    </header>
+    <div className="flex-1 overflow-auto p-6">
+      <div className="flex gap-1 p-1 bg-slate-100 rounded-xl mb-6 w-fit">{['tok','cas','ee'].map(t=><button key={t} onClick={()=>setTab(t)} className={`px-5 py-2 text-sm font-bold rounded-lg transition-all uppercase tracking-wide ${tab===t?'bg-white shadow text-indigo-600':'text-slate-500 hover:text-slate-700'}`}>{t}</button>)}</div>
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-x-auto">
+        {tab==='tok'&&<table className="w-full text-sm min-w-max"><thead><tr className="border-b border-slate-100"><th className="text-left px-4 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Student</th><th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Plan.Conf</th><th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Written FB</th><th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Final Draft</th><th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Exh Score</th><th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Int 1</th><th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Int 2</th><th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Int 3</th><th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Draft Sub</th><th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Essay Score</th></tr></thead><tbody>{students.map(s=>{const t=getTOK(s.student_id);return<tr key={s.student_id} className="border-b border-slate-50 hover:bg-slate-50"><td className="px-4 py-3"><div className="font-semibold text-slate-800">{s.name}</div><div className="text-xs text-slate-400">{s.student_id}</div></td>{[t.exhibition_planning_conference,t.exhibition_written_feedback,t.exhibition_final_draft_in].map((v,i)=><td key={i} className="px-3 py-3 text-center"><Tick v={v}/></td>)}<td className="px-3 py-3 text-center font-bold text-indigo-600">{t.exhibition_score||'—'}</td>{[t.essay_interaction_1,t.essay_interaction_2,t.essay_interaction_3,t.essay_final_draft_submitted].map((v,i)=><td key={i} className="px-3 py-3 text-center"><Tick v={v}/></td>)}<td className="px-3 py-3 text-center font-bold text-indigo-600">{t.essay_score||'—'}</td></tr>;})}</tbody></table>}
+        {tab==='cas'&&<table className="w-full text-sm min-w-max"><thead><tr className="border-b border-slate-100"><th className="text-left px-4 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Student</th><th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Int 1</th><th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Int 2</th><th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Final Int</th><th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Project</th><th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Strands</th><th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Outcomes</th></tr></thead><tbody>{students.map(s=>{const c=getCAS(s.student_id);const strands=[c.strand_creativity&&'C',c.strand_activity&&'A',c.strand_service&&'S'].filter(Boolean);const outcomes=[1,2,3,4,5,6,7].filter(i=>c[`outcome_${i}`]).length;return<tr key={s.student_id} className="border-b border-slate-50 hover:bg-slate-50"><td className="px-4 py-3"><div className="font-semibold text-slate-800">{s.name}</div><div className="text-xs text-slate-400">{s.student_id}</div></td><td className="px-3 py-3 text-center text-xs text-slate-500">{c.interview_1_date||'—'}</td><td className="px-3 py-3 text-center text-xs text-slate-500">{c.interview_2_date||'—'}</td><td className="px-3 py-3 text-center text-xs text-slate-500">{c.interview_final_date||'—'}</td><td className="px-3 py-3 text-center"><span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${c.cas_project_complete?'bg-emerald-100 text-emerald-700':c.cas_project_decided?'bg-amber-100 text-amber-700':'bg-slate-100 text-slate-400'}`}>{c.cas_project_complete?'Done':c.cas_project_decided?'Planned':'Not started'}</span></td><td className="px-3 py-3 text-center"><span className="text-xs font-bold text-slate-700">{strands.length?strands.join(' '):'—'}</span></td><td className="px-3 py-3 text-center"><span className={`text-xs font-bold px-2 py-0.5 rounded-full ${outcomes===7?'bg-emerald-100 text-emerald-700':outcomes>0?'bg-amber-100 text-amber-700':'bg-slate-100 text-slate-400'}`}>{outcomes}/7</span></td></tr>;})}</tbody></table>}
+        {tab==='ee'&&<table className="w-full text-sm min-w-max"><thead><tr className="border-b border-slate-100"><th className="text-left px-4 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Student</th><th className="text-left px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Subject</th><th className="text-left px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">RQ</th><th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Progress</th><th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Sup Int</th><th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Reflections</th><th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Hours</th><th className="px-3 py-3 font-bold text-slate-500 text-xs uppercase tracking-wide">Score</th></tr></thead><tbody>{students.map(s=>{const e=getEE(s.student_id);const prog=[e.annotated_bibliography,e.draft_submitted,e.final_draft_submitted].filter(Boolean).length;const intD=[e.supervisor_interaction_1,e.supervisor_interaction_2,e.supervisor_interaction_3].filter(Boolean).length;const refD=[e.reflection_1,e.reflection_2,e.reflection_3_final].filter(Boolean).length;return<tr key={s.student_id} className="border-b border-slate-50 hover:bg-slate-50"><td className="px-4 py-3"><div className="font-semibold text-slate-800">{s.name}</div><div className="text-xs text-slate-400">{s.student_id}</div></td><td className="px-3 py-3 text-slate-600">{e.ee_subject||'—'}</td><td className="px-3 py-3 max-w-xs"><span className="text-xs text-slate-500 line-clamp-2">{e.ee_rq||'—'}</span></td><td className="px-3 py-3 text-center"><span className={`text-xs font-bold px-2 py-0.5 rounded-full ${prog===3?'bg-emerald-100 text-emerald-700':prog>0?'bg-amber-100 text-amber-700':'bg-slate-100 text-slate-400'}`}>{prog}/3</span></td><td className="px-3 py-3 text-center"><span className={`text-xs font-bold px-2 py-0.5 rounded-full ${intD===3?'bg-emerald-100 text-emerald-700':intD>0?'bg-amber-100 text-amber-700':'bg-slate-100 text-slate-400'}`}>{intD}/3</span></td><td className="px-3 py-3 text-center"><span className={`text-xs font-bold px-2 py-0.5 rounded-full ${refD===3?'bg-emerald-100 text-emerald-700':refD>0?'bg-amber-100 text-amber-700':'bg-slate-100 text-slate-400'}`}>{refD}/3</span></td><td className="px-3 py-3 text-center text-slate-600 font-semibold">{e.hours||'—'}</td><td className="px-3 py-3 text-center font-bold text-indigo-600">{e.score||'—'}</td></tr>;})}</tbody></table>}
       </div>
     </div>
-  );
+    <ErrorBanner msg={error} onDismiss={onDismissError}/>
+  </div>;
 }
 
-// ═══════════════════════════════════════════════════════════
-// APP
-// ═══════════════════════════════════════════════════════════
-function App() {
-  const [session,setSession]   = useState(()=>{
-    try { return JSON.parse(localStorage.getItem('ib_session')||'null'); } catch { return null; }
-  });
-  const [students,setStudents] = useState([]);
-  const [tokData,setTokData]   = useState([]);
-  const [casData,setCasData]   = useState([]);
-  const [eeData,setEeData]     = useState([]);
-  const [loading,setLoading]   = useState(false);
-  const [error,setError]       = useState('');
-  const [saveStatus,setSaveStatus] = useState('');
-  const saveTimer = useRef(null);
+// ── STUDENT DASHBOARD ────────────────────────────────────────
+function StudentDashboard({student,tok,cas,ee,onLogout}){
+  if(!student)return null;
+  const exDone=tok?[tok.exhibition_planning_conference,tok.exhibition_written_feedback,tok.exhibition_final_draft_in].filter(Boolean).length:0;
+  const essDone=tok?[tok.essay_interaction_1,tok.essay_interaction_2,tok.essay_interaction_3,tok.essay_final_draft_submitted].filter(Boolean).length:0;
+  const outDone=cas?[1,2,3,4,5,6,7].filter(i=>cas[`outcome_${i}`]).length:0;
+  const eeProg=ee?[ee.annotated_bibliography,ee.draft_submitted,ee.final_draft_submitted].filter(Boolean).length:0;
+  return <div className="min-h-screen bg-slate-50">
+    <header className="bg-white border-b border-slate-100 px-4 sm:px-6 py-3 flex items-center justify-between sticky top-0 z-10">
+      <div className="flex items-center gap-2"><div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center"><svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></div><div><span className="font-extrabold text-slate-800 tracking-tight text-sm">IB Core</span><span className="block text-xs text-slate-400 leading-none mt-0.5">{student.name}</span></div></div>
+      <button onClick={onLogout} className="text-sm text-slate-500 hover:text-slate-700 font-medium">Log out</button>
+    </header>
+    <div className="max-w-2xl mx-auto p-4 sm:p-6 space-y-5 fade-in">
+      {/* TOK */}
+      <Card className="overflow-hidden">
+        <div className="px-5 pt-5 pb-4 border-b border-slate-50 flex items-center justify-between"><div><h2 className="font-extrabold text-slate-800 text-lg">Theory of Knowledge</h2><p className="text-xs text-slate-400 mt-0.5">Exhibition · Essay</p></div><div className="flex gap-2"><PBadge done={exDone} total={3}/><PBadge done={essDone} total={4}/></div></div>
+        <div className="p-5 space-y-5">
+          {tok?<>
+            <div><h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Exhibition</h3><div className="space-y-2.5"><IBCheckbox readOnly label="Planning Conference" checked={tok.exhibition_planning_conference}/><IBCheckbox readOnly label="Written Feedback" checked={tok.exhibition_written_feedback}/><IBCheckbox readOnly label="Final Draft In" checked={tok.exhibition_final_draft_in}/></div>{tok.exhibition_score&&<div className="mt-3 flex items-center gap-2"><span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Score:</span><span className="text-sm font-bold text-indigo-600">{tok.exhibition_score}</span></div>}{tok.exhibition_comment&&<div className="mt-3 p-3 bg-indigo-50 rounded-xl"><p className="text-xs font-bold text-indigo-400 uppercase tracking-wide mb-1.5">Teacher Comment</p><p className="text-sm text-slate-700 leading-relaxed">{tok.exhibition_comment}</p></div>}</div>
+            <div className="border-t border-slate-50 pt-5"><h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Essay</h3><div className="space-y-3"><IBCheckbox readOnly label="Interaction 1" checked={tok.essay_interaction_1}/>{tok.essay_interaction_1_comment&&<div className="ml-8 p-2.5 bg-slate-50 rounded-lg text-xs text-slate-600 leading-relaxed">{tok.essay_interaction_1_comment}</div>}<IBCheckbox readOnly label="Interaction 2" checked={tok.essay_interaction_2}/>{tok.essay_interaction_2_comment&&<div className="ml-8 p-2.5 bg-slate-50 rounded-lg text-xs text-slate-600 leading-relaxed">{tok.essay_interaction_2_comment}</div>}<IBCheckbox readOnly label="Interaction 3" checked={tok.essay_interaction_3}/><IBCheckbox readOnly label="Final Draft Submitted" checked={tok.essay_final_draft_submitted}/></div>{tok.essay_score&&<div className="mt-3 flex items-center gap-2"><span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Score:</span><span className="text-sm font-bold text-indigo-600">{tok.essay_score}</span></div>}{tok.essay_comment&&<div className="mt-3 p-3 bg-indigo-50 rounded-xl"><p className="text-xs font-bold text-indigo-400 uppercase tracking-wide mb-1.5">Teacher Comment</p><p className="text-sm text-slate-700 leading-relaxed">{tok.essay_comment}</p></div>}</div>
+          </>:<p className="text-slate-400 text-sm">No data yet.</p>}
+        </div>
+      </Card>
+      {/* CAS */}
+      <Card className="overflow-hidden">
+        <div className="px-5 pt-5 pb-4 border-b border-slate-50 flex items-center justify-between"><div><h2 className="font-extrabold text-slate-800 text-lg">CAS</h2><p className="text-xs text-slate-400 mt-0.5">Creativity · Activity · Service</p></div><PBadge done={outDone} total={7}/></div>
+        <div className="p-5 space-y-5">
+          {cas?<>
+            <div><h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Interviews</h3><div className="space-y-3">{[['First Interview','interview_1_date','interview_1_comment'],['Second Interview','interview_2_date','interview_2_comment'],['Final Interview','interview_final_date','interview_final_comment']].map(([label,dk,ck])=>cas[dk]||cas[ck]?<div key={label} className="border border-slate-100 rounded-xl p-3"><div className="flex items-center justify-between mb-1"><span className="text-sm font-bold text-slate-700">{label}</span>{cas[dk]&&<span className="text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">{cas[dk]}</span>}</div>{cas[ck]&&<p className="text-sm text-slate-600 leading-relaxed">{cas[ck]}</p>}</div>:<div key={label} className="border border-dashed border-slate-100 rounded-xl p-3"><span className="text-sm text-slate-300">{label} — not yet scheduled</span></div>)}{cas.extra_interactions.map((ex,i)=><div key={i} className="border border-slate-100 rounded-xl p-3"><div className="flex items-center justify-between mb-1"><span className="text-sm font-bold text-slate-700">Extra Interaction {i+1}</span>{ex.date&&<span className="text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">{ex.date}</span>}</div>{ex.comment&&<p className="text-sm text-slate-600 leading-relaxed">{ex.comment}</p>}</div>)}</div></div>
+            <div className="flex gap-2 flex-wrap">{[['Project Decided',cas.cas_project_decided,'amber'],['Project Complete',cas.cas_project_complete,'emerald'],['Creativity',cas.strand_creativity,'indigo'],['Activity',cas.strand_activity,'indigo'],['Service',cas.strand_service,'indigo']].map(([l,on,c])=><span key={l} className={`text-xs font-bold px-3 py-1.5 rounded-full border ${on?`bg-${c}-50 border-${c}-200 text-${c}-700`:'bg-slate-50 border-slate-200 text-slate-400'}`}>{l}</span>)}</div>
+            <div><h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Outcomes <span className={`ml-2 px-2 py-0.5 rounded-full text-xs font-bold ${outDone===7?'bg-emerald-100 text-emerald-700':outDone>0?'bg-amber-100 text-amber-700':'bg-slate-100 text-slate-400'}`}>{outDone}/7</span></h3><div className="space-y-2.5">{OUTCOMES.map((label,i)=><IBCheckbox key={i} readOnly label={label} checked={cas[`outcome_${i+1}`]}/>)}</div></div>
+          </>:<p className="text-slate-400 text-sm">No CAS data yet.</p>}
+        </div>
+      </Card>
+      {/* EE */}
+      <Card className="overflow-hidden">
+        <div className="px-5 pt-5 pb-4 border-b border-slate-50 flex items-center justify-between"><div><h2 className="font-extrabold text-slate-800 text-lg">Extended Essay</h2><p className="text-xs text-slate-400 mt-0.5">{ee?.ee_subject||'Subject TBC'}</p></div><PBadge done={eeProg} total={3}/></div>
+        <div className="p-5 space-y-5">
+          {ee?<>
+            {ee.ee_rq&&<div className="p-3 bg-slate-50 rounded-xl border border-slate-100"><p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1.5">Research Question</p><p className="text-sm text-slate-700 leading-relaxed font-medium italic">{ee.ee_rq}</p></div>}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div><h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Progress</h3><div className="space-y-2.5"><IBCheckbox readOnly label="Annotated Bibliography" checked={ee.annotated_bibliography}/><IBCheckbox readOnly label="Draft Submitted" checked={ee.draft_submitted}/><IBCheckbox readOnly label="Final Draft Submitted" checked={ee.final_draft_submitted}/></div></div>
+              <div><h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Supervisor Interactions</h3><div className="space-y-2.5"><IBCheckbox readOnly label="Interaction 1" checked={ee.supervisor_interaction_1}/><IBCheckbox readOnly label="Interaction 2" checked={ee.supervisor_interaction_2}/><IBCheckbox readOnly label="Interaction 3" checked={ee.supervisor_interaction_3}/></div></div>
+              <div><h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Reflections</h3><div className="space-y-2.5"><IBCheckbox readOnly label="Reflection 1" checked={ee.reflection_1}/><IBCheckbox readOnly label="Reflection 2" checked={ee.reflection_2}/><IBCheckbox readOnly label="Final Reflection" checked={ee.reflection_3_final}/></div></div>
+              <div><h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Summary</h3><div className="space-y-2"><IBCheckbox readOnly label="Supervisor Comments Complete" checked={ee.supervisor_comments_complete}/>{ee.hours&&<div className="flex items-center gap-2 mt-2"><span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Hours:</span><span className="text-sm font-bold text-slate-700">{ee.hours}</span></div>}{ee.score&&<div className="flex items-center gap-2"><span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Score:</span><span className="text-sm font-bold text-indigo-600">{ee.score}</span></div>}</div></div>
+            </div>
+          </>:<p className="text-slate-400 text-sm">No EE data yet.</p>}
+        </div>
+      </Card>
+    </div>
+  </div>;
+}
 
-  const showSaved = () => {
-    setSaveStatus('saving');
-    clearTimeout(saveTimer.current);
-    saveTimer.current = setTimeout(()=>setSaveStatus('saved'),800);
-    setTimeout(()=>setSaveStatus(''),3000);
-  };
+// ── APP ROOT ─────────────────────────────────────────────────
+function App(){
+  const [session,setSession]=useState(()=>{try{return JSON.parse(localStorage.getItem('ib_session')||'null');}catch{return null;}});
+  const [students,setStudents]=useState([]);
+  const [tokData,setTokData]=useState([]);
+  const [casData,setCasData]=useState([]);
+  const [eeData,setEeData]=useState([]);
+  const [loading,setLoading]=useState(false);
+  const [error,setError]=useState('');
+  const [saveStatus,setSaveStatus]=useState('');
+  const saveTimer=useRef(null);
+  const showSaved=()=>{setSaveStatus('saving');clearTimeout(saveTimer.current);saveTimer.current=setTimeout(()=>setSaveStatus('saved'),700);setTimeout(()=>setSaveStatus(''),3000);};
 
-  // Load all data
-  const loadData = useCallback(async () => {
+  const loadData=useCallback(async()=>{
     setLoading(true);
-    try {
-      const [sRows,tRows,cRows,eRows] = await Promise.all([
-        sheetsGet('Students!A:E'),
-        sheetsGet('TOK!A:L'),
-        sheetsGet('CAS!A:T'),
-        sheetsGet('EE!A:O'),
-      ]);
-      setStudents(parseStudents(sRows));
-      setTokData(parseTOK(tRows));
-      setCasData(parseCAS(cRows));
-      setEeData(parseEE(eRows));
-    } catch(err) {
-      setError(err.message||'Failed to load data. Check your connection.');
-    }
+    try{
+      const [sRows,tRows,cRows,eRows]=await Promise.all([sheetsGet('Students!A:E'),sheetsGet('TOK!A:N'),sheetsGet('CAS!A:T'),sheetsGet('EE!A:O')]);
+      setStudents(parseStudents(sRows));setTokData(parseTOK(tRows));setCasData(parseCAS(cRows));setEeData(parseEE(eRows));
+    }catch(err){setError(err.message||'Failed to load data.');}
     setLoading(false);
-  }, []);
+  },[]);
 
-  useEffect(()=>{
-    if (session) loadData();
-  }, [session]);
+  useEffect(()=>{if(session)loadData();},[session]);
 
-  const handleLogin = sess => {
-    localStorage.setItem('ib_session', JSON.stringify(sess));
-    setSession(sess);
-  };
+  const handleLogin=sess=>{localStorage.setItem('ib_session',JSON.stringify(sess));setSession(sess);};
+  const handleLogout=()=>{localStorage.removeItem('ib_session');setSession(null);setStudents([]);setTokData([]);setCasData([]);setEeData([]);};
 
-  const handleLogout = () => {
-    localStorage.removeItem('ib_session');
-    setSession(null);
-    setStudents([]); setTokData([]); setCasData([]); setEeData([]);
-  };
+  const handleUpdate=useCallback(async(type,newData,rowIdx,persist=false)=>{
+    if(type==='tok'){setTokData(prev=>prev.map((t,i)=>i===rowIdx?newData:t));if(persist){showSaved();try{await saveTOK(newData,rowIdx);}catch(e){setError(e.message);}}}
+    else if(type==='cas'){setCasData(prev=>prev.map((c,i)=>i===rowIdx?newData:c));if(persist){showSaved();try{await saveCAS(newData,rowIdx);}catch(e){setError(e.message);}}}
+    else if(type==='ee'){setEeData(prev=>prev.map((e,i)=>i===rowIdx?newData:e));if(persist){showSaved();try{await saveEE(newData,rowIdx);}catch(e){setError(e.message);}}}
+  },[]);
 
-  // Generic update handler for teacher
-  const handleUpdate = useCallback(async (type, newData, rowIdx, persist=false) => {
-    if (type==='tok') {
-      setTokData(prev=>prev.map((t,i)=>i===rowIdx?newData:t));
-      if (persist) { showSaved(); try { await saveTOK(newData,rowIdx); } catch(e){setError(e.message);} }
-    } else if (type==='cas') {
-      setCasData(prev=>prev.map((c,i)=>i===rowIdx?newData:c));
-      if (persist) { showSaved(); try { await saveCAS(newData,rowIdx); } catch(e){setError(e.message);} }
-    } else if (type==='ee') {
-      setEeData(prev=>prev.map((e,i)=>i===rowIdx?newData:e));
-      if (persist) { showSaved(); try { await saveEE(newData,rowIdx); } catch(e){setError(e.message);} }
-    }
-  }, []);
+  const handleAddStudent=useCallback(async(form)=>{
+    const blankTOK=[form.student_id,'FALSE','FALSE','FALSE','','','FALSE','FALSE','FALSE','FALSE','','','',''];
+    const blankCAS=[form.student_id,'','','','','','','[]','FALSE','FALSE','FALSE','FALSE','FALSE','FALSE','FALSE','FALSE','FALSE','FALSE','FALSE','FALSE'];
+    const blankEE =[form.student_id,'','','FALSE','FALSE','FALSE','FALSE','FALSE','FALSE','FALSE','FALSE','FALSE','FALSE','',''];
+    const blankStu=[form.student_id,form.name,form.password||'','',''];
+    await sheetsAppend('Students!A:E',[blankStu]);
+    await sheetsAppend('TOK!A:N',[blankTOK]);
+    await sheetsAppend('CAS!A:T',[blankCAS]);
+    await sheetsAppend('EE!A:O',[blankEE]);
+    setStudents(prev=>[...prev,{student_id:form.student_id,name:form.name,password:form.password,ee_subject:'',ee_rq:''}]);
+    setTokData(prev=>[...prev,parseTOK([['hdr'],blankTOK])[0]]);
+    setCasData(prev=>[...prev,parseCAS([['hdr'],blankCAS])[0]]);
+    setEeData(prev=>[...prev,parseEE([['hdr'],blankEE])[0]]);
+  },[]);
 
-  const handleAddStudent = useCallback(async (form) => {
-    const blankTOK = [form.student_id,'FALSE','FALSE','FALSE','','','FALSE','FALSE','FALSE','FALSE','',''];
-    const blankCAS = [form.student_id,'','','','','','','[]','FALSE','FALSE','FALSE','FALSE','FALSE','FALSE','FALSE','FALSE','FALSE','FALSE','FALSE','FALSE'];
-    const blankEE  = [form.student_id,form.ee_subject||'',form.ee_rq||'','FALSE','FALSE','FALSE','FALSE','FALSE','FALSE','FALSE','FALSE','FALSE','FALSE','',''];
-    const blankStu = [form.student_id,form.name,form.password||'',form.ee_subject||'',form.ee_rq||''];
-
-    await sheetsAppend('Students!A:E', [blankStu]);
-    await sheetsAppend('TOK!A:L',      [blankTOK]);
-    await sheetsAppend('CAS!A:T',      [blankCAS]);
-    await sheetsAppend('EE!A:O',       [blankEE]);
-
-    setStudents(prev=>[...prev,{student_id:form.student_id,name:form.name,password:form.password,ee_subject:form.ee_subject,ee_rq:form.ee_rq}]);
-    setTokData(prev=>[...prev,{...parseTOK([['hdr'],blankTOK])[0]}]);
-    setCasData(prev=>[...prev,{...parseCAS([['hdr'],blankCAS])[0]}]);
-    setEeData(prev=>[...prev,{...parseEE([['hdr'],blankEE])[0]}]);
-  }, []);
-
-  if (!session) return <LoginScreen onLogin={handleLogin}/>;
-
-  if (loading) return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 gap-4">
-      <Spinner size="lg"/>
-      <p className="text-slate-500 font-medium">Loading student data…</p>
-    </div>
-  );
-
-  if (session.role==='admin') {
-    return <AdminDashboard
-      students={students} tokData={tokData} casData={casData} eeData={eeData}
-      onLogout={handleLogout} saveStatus={saveStatus}
-      error={error} onDismissError={()=>setError('')}/>;
-  }
-
-  if (session.role==='student') {
-    const tok = tokData.find(t=>t.student_id===session.student_id);
-    const cas = casData.find(c=>c.student_id===session.student_id);
-    const ee  = eeData.find(e=>e.student_id===session.student_id);
-    const stu = students.find(s=>s.student_id===session.student_id);
-    return <StudentDashboard student={stu||session} tok={tok} cas={cas} ee={ee} onLogout={handleLogout}/>;
-  }
-
-  return <TeacherDashboard
-    session={session} students={students} tokData={tokData} casData={casData} eeData={eeData}
-    onUpdate={handleUpdate} onAddStudent={handleAddStudent} onLogout={handleLogout}
-    saveStatus={saveStatus} error={error} onDismissError={()=>setError('')}/>;
+  if(!session)return <LoginScreen onLogin={handleLogin}/>;
+  if(loading)return <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 gap-4"><Spinner size="lg"/><p className="text-slate-500 font-medium">Loading student data…</p></div>;
+  if(session.role==='admin')return <AdminDashboard students={students} tokData={tokData} casData={casData} eeData={eeData} onLogout={handleLogout} saveStatus={saveStatus} error={error} onDismissError={()=>setError('')}/>;
+  if(session.role==='student'){const tok=tokData.find(t=>t.student_id===session.student_id);const cas=casData.find(c=>c.student_id===session.student_id);const ee=eeData.find(e=>e.student_id===session.student_id);const stu=students.find(s=>s.student_id===session.student_id);return <StudentDashboard student={stu||session} tok={tok} cas={cas} ee={ee} onLogout={handleLogout}/>;}
+  return <TeacherDashboard students={students} tokData={tokData} casData={casData} eeData={eeData} onUpdate={handleUpdate} onAddStudent={handleAddStudent} onLogout={handleLogout} saveStatus={saveStatus} error={error} onDismissError={()=>setError('')}/>;
 }
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root=ReactDOM.createRoot(document.getElementById('root'));
 root.render(<App/>);
-  </script>
+</script>
 </body>
 </html>
