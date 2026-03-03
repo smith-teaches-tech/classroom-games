@@ -964,149 +964,222 @@ function AdminDashboard({students,tokData,casData,eeData,onLogout,error,onDismis
 
 // ── STUDENT DASHBOARD ─────────────────────────────────────────
 function StudentDashboard({student,tok,cas,ee,onLogout}){
-  const [tab,setTab]=useState('tok');
   if(!student)return null;
-
   const tod=tok?.overdue||{};
   const eod=ee?.overdue||{};
   const cod=cas?.overdue||{};
+
+  // ── Next steps builder ──
+  const nextSteps=(items)=>items.filter(i=>!i.done).map(i=>({...i,urgent:!!i.overdue}));
+
+  const tokSteps=nextSteps(tok?[
+    {label:'Schedule Planning Conference',done:tok.exhibition_planning_conference,overdue:!!tod.exhibition_planning_conference},
+    {label:'Complete Written Feedback',done:tok.exhibition_written_feedback,overdue:!!tod.exhibition_written_feedback},
+    {label:'Submit Exhibition Final Draft',done:tok.exhibition_final_draft_in,overdue:!!tod.exhibition_final_draft_in},
+    {label:'Complete Essay Interaction 1',done:tok.essay_interaction_1,overdue:!!tod.essay_interaction_1},
+    {label:'Complete Essay Interaction 2',done:tok.essay_interaction_2,overdue:!!tod.essay_interaction_2},
+    {label:'Complete Essay Interaction 3',done:tok.essay_interaction_3,overdue:!!tod.essay_interaction_3},
+    {label:'Submit Essay Final Draft',done:tok.essay_final_draft_submitted,overdue:!!tod.essay_final_draft_submitted},
+  ]:[]);
+
+  const casSteps=nextSteps(cas?[
+    {label:'Schedule First CAS Interview',done:!!cas.interview_1_date,overdue:false},
+    {label:'Schedule Second CAS Interview',done:!!cas.interview_2_date,overdue:false},
+    {label:'Schedule Final CAS Interview',done:!!cas.interview_final_date,overdue:false},
+    {label:'Decide on CAS Project',done:cas.cas_project_decided,overdue:!!cod.cas_project_decided},
+    {label:'Complete CAS Project',done:cas.cas_project_complete,overdue:!!cod.cas_project_complete},
+    {label:'Complete all CAS Strands (C/A/S)',done:cas.strand_creativity&&cas.strand_activity&&cas.strand_service,overdue:false},
+    {label:'Meet all 7 CAS Outcomes',done:[1,2,3,4,5,6,7].every(i=>cas[`outcome_${i}`]),overdue:false},
+    {label:'Mark CAS as Complete',done:cas.cas_complete,overdue:!!cod.cas_complete},
+  ]:[]);
+
+  const eeSteps=nextSteps(ee?[
+    {label:'Submit Annotated Bibliography',done:ee.annotated_bibliography,overdue:!!eod.annotated_bibliography},
+    {label:'Submit Draft',done:ee.draft_submitted,overdue:!!eod.draft_submitted},
+    {label:'Submit Final Draft',done:ee.final_draft_submitted,overdue:!!eod.final_draft_submitted},
+    {label:'Complete Supervisor Interaction 1',done:ee.supervisor_interaction_1,overdue:!!eod.supervisor_interaction_1},
+    {label:'Complete Supervisor Interaction 2',done:ee.supervisor_interaction_2,overdue:!!eod.supervisor_interaction_2},
+    {label:'Complete Supervisor Interaction 3',done:ee.supervisor_interaction_3,overdue:!!eod.supervisor_interaction_3},
+    {label:'Write Reflection 1',done:ee.reflection_1,overdue:!!eod.reflection_1},
+    {label:'Write Reflection 2',done:ee.reflection_2,overdue:!!eod.reflection_2},
+    {label:'Write Final Reflection',done:ee.reflection_3_final,overdue:!!eod.reflection_3_final},
+    {label:'Supervisor Comments Complete',done:ee.supervisor_comments_complete,overdue:!!eod.supervisor_comments_complete},
+  ]:[]);
+
+  const allDone=(steps)=>steps.length===0;
+
+  // ── Shared sub-components ──
+  const ColHeader=({title,subtitle,color,done,total,steps})=>{
+    const urgent=steps.filter(s=>s.urgent).length;
+    return <div className={`px-4 pt-4 pb-3 border-b-2 ${color.border}`}>
+      <div className="flex items-center justify-between mb-1">
+        <h2 className={`font-extrabold text-base tracking-tight ${color.title}`}>{title}</h2>
+        <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${done===total?'bg-emerald-100 text-emerald-700':done>0?'bg-amber-100 text-amber-700':'bg-slate-100 text-slate-400'}`}>{done}/{total}</span>
+      </div>
+      <p className="text-xs text-slate-400">{subtitle}</p>
+      {urgent>0&&<div className={`mt-2 text-xs font-bold px-2 py-1 rounded-lg ${color.urgentBg} ${color.urgentText}`}>⚑ {urgent} overdue item{urgent>1?'s':''}</div>}
+    </div>;
+  };
+
+  const NextSteps=({steps,color})=>{
+    if(steps.length===0) return <div className="px-4 py-3 border-b border-slate-50">
+      <div className="flex items-center gap-2 text-emerald-600">
+        <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7"/></svg>
+        <span className="text-xs font-bold">All tasks complete!</span>
+      </div>
+    </div>;
+    return <div className="px-4 py-3 border-b border-slate-100 bg-slate-50">
+      <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Next Steps</p>
+      <div className="space-y-1.5">
+        {steps.slice(0,3).map((s,i)=><div key={i} className="flex items-start gap-2">
+          <span className={`flex-shrink-0 mt-0.5 w-4 h-4 rounded-full flex items-center justify-center text-xs font-bold ${s.urgent?'bg-rose-500 text-white':'bg-slate-200 text-slate-500'}`}>{s.urgent?'!':i+1}</span>
+          <span className={`text-xs leading-snug ${s.urgent?'text-rose-700 font-semibold':'text-slate-600'}`}>{s.label}{s.urgent?' — overdue':''}</span>
+        </div>)}
+        {steps.length>3&&<p className="text-xs text-slate-400 pl-6">+{steps.length-3} more</p>}
+      </div>
+    </div>;
+  };
+
+  const SRow=({label,done,overdue=false,indent=false})=><div className={`flex items-center gap-2 py-1 ${indent?'ml-4':''}`}>
+    {done
+      ?<div className="w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center flex-shrink-0"><svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 10 10" stroke="currentColor" strokeWidth="2.5"><path d="M1.5 5l2.5 2.5 4.5-4.5"/></svg></div>
+      :overdue
+        ?<div className="w-4 h-4 rounded-full bg-rose-500 flex items-center justify-center flex-shrink-0"><span className="text-white font-bold" style={{fontSize:'9px'}}>!</span></div>
+        :<div className="w-4 h-4 rounded-full border-2 border-slate-300 flex-shrink-0"/>}
+    <span className={`text-xs leading-snug ${done?'text-slate-500 line-through decoration-slate-300':overdue?'text-rose-700 font-semibold':'text-slate-700'}`}>{label}</span>
+  </div>;
+
+  const CommentBox=({color,children})=><div className={`mt-2 p-2.5 rounded-lg border text-xs leading-relaxed text-slate-700 ${color}`}>{children}</div>;
+  const SubHead=({children})=><p className="text-xs font-bold text-slate-400 uppercase tracking-wider mt-3 mb-1.5">{children}</p>;
+  const Score=({label,value,color})=>value?<div className="flex items-center gap-1.5 mt-2"><span className="text-xs font-bold text-slate-400 uppercase">{label}:</span><span className={`text-sm font-extrabold ${color}`}>{value}</span></div>:null;
+
   const outDone=cas?[1,2,3,4,5,6,7].filter(i=>cas[`outcome_${i}`]).length:0;
-  const eeProg=ee?[ee.annotated_bibliography,ee.draft_submitted,ee.final_draft_submitted].filter(Boolean).length:0;
   const exDone=tok?[tok.exhibition_planning_conference,tok.exhibition_written_feedback,tok.exhibition_final_draft_in].filter(Boolean).length:0;
   const essDone=tok?[tok.essay_interaction_1,tok.essay_interaction_2,tok.essay_interaction_3,tok.essay_final_draft_submitted].filter(Boolean).length:0;
+  const eeDone=ee?[ee.annotated_bibliography,ee.draft_submitted,ee.final_draft_submitted,ee.supervisor_interaction_1,ee.supervisor_interaction_2,ee.supervisor_interaction_3,ee.reflection_1,ee.reflection_2,ee.reflection_3_final,ee.supervisor_comments_complete].filter(Boolean).length:0;
 
-  return <div className="min-h-screen bg-slate-50">
-    <header className="bg-white border-b border-slate-100 px-4 sm:px-6 py-3 flex items-center justify-between sticky top-0 z-10">
-      <div className="flex items-center gap-2"><div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center"><svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg></div><div><span className="font-extrabold text-slate-800 tracking-tight text-sm">IB Core</span><span className="block text-xs text-slate-400 leading-none mt-0.5">{student.name}</span></div></div>
+  const tokColor={border:'border-violet-300',title:'text-violet-800',urgentBg:'bg-rose-50',urgentText:'text-rose-600'};
+  const casColor={border:'border-sky-300',title:'text-sky-800',urgentBg:'bg-rose-50',urgentText:'text-rose-600'};
+  const eeColor={border:'border-teal-300',title:'text-teal-800',urgentBg:'bg-rose-50',urgentText:'text-rose-600'};
+
+  return <div className="min-h-screen bg-slate-100">
+    <header className="bg-white border-b border-slate-100 px-4 sm:px-6 py-3 flex items-center justify-between sticky top-0 z-10 shadow-sm">
+      <div className="flex items-center gap-2.5">
+        <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center flex-shrink-0">
+          <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        </div>
+        <div>
+          <span className="font-extrabold text-slate-800 text-sm tracking-tight block leading-tight">IB Core Dashboard</span>
+          <span className="text-xs text-slate-400 leading-tight">{student.name}</span>
+        </div>
+      </div>
       <button onClick={onLogout} className="text-sm text-slate-500 hover:text-slate-700 font-medium">Log out</button>
     </header>
 
-    <div className="max-w-2xl mx-auto">
-      {/* Tab Nav */}
-      <div className="flex gap-1 p-1 bg-slate-100 rounded-xl my-4 mx-4 sm:mx-6 w-fit">
-        {[['tok','TOK'],['cas','CAS'],['ee','EE']].map(([v,l])=><button key={v} onClick={()=>setTab(v)} className={`px-5 py-2 text-sm font-bold rounded-lg transition-all uppercase tracking-wide ${tab===v?'bg-white shadow text-indigo-600':'text-slate-500 hover:text-slate-700'}`}>{l}</button>)}
+    <div className="p-4 sm:p-6 max-w-7xl mx-auto">
+      {/* Legend */}
+      <div className="flex items-center gap-4 mb-4 text-xs text-slate-500 font-medium">
+        <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 rounded-full bg-emerald-500"/>Done</span>
+        <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 rounded-full bg-rose-500"/>Overdue</span>
+        <span className="flex items-center gap-1.5"><span className="inline-block w-3 h-3 rounded-full border-2 border-slate-300"/>Pending</span>
+        <span className="flex items-center gap-1.5 text-slate-400 line-through decoration-slate-300">Done item style</span>
       </div>
 
-      <div className="px-4 sm:px-6 pb-8 space-y-4 fade-in">
+      {/* Three columns */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
 
-        {/* ── TOK ── */}
-        {tab==='tok'&&<>
-          <Card className="overflow-hidden">
-            <div className="px-5 pt-5 pb-4 border-b border-slate-50 flex items-center justify-between"><div><h2 className="font-extrabold text-slate-800 text-lg">TOK Exhibition</h2></div><PBadge done={exDone} total={3}/></div>
-            <div className="p-5 space-y-1">
-              {tok?<>
-                <StatusRow label="Planning Conference" done={tok.exhibition_planning_conference} overdue={!!tod.exhibition_planning_conference}/>
-                <StatusRow label="Written Feedback" done={tok.exhibition_written_feedback} overdue={!!tod.exhibition_written_feedback}/>
-                <StatusRow label="Final Draft In" done={tok.exhibition_final_draft_in} overdue={!!tod.exhibition_final_draft_in}/>
-                {(tok.exhibition_score!==''&&tok.exhibition_score!==undefined)&&<div className="mt-3 pt-3 border-t border-slate-50 flex items-center gap-2"><span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Score:</span><span className="text-sm font-bold text-indigo-600">{tok.exhibition_score}</span></div>}
-                {tok.exhibition_comment&&<div className="mt-3 p-3 bg-indigo-50 rounded-xl"><p className="text-xs font-bold text-indigo-400 uppercase tracking-wide mb-1.5">Teacher Comment</p><p className="text-sm text-slate-700 leading-relaxed">{tok.exhibition_comment}</p></div>}
-              </>:<p className="text-slate-400 text-sm">No data yet.</p>}
-            </div>
-          </Card>
-          <Card className="overflow-hidden">
-            <div className="px-5 pt-5 pb-4 border-b border-slate-50 flex items-center justify-between"><div><h2 className="font-extrabold text-slate-800 text-lg">TOK Essay</h2></div><PBadge done={essDone} total={4}/></div>
-            <div className="p-5 space-y-1">
-              {tok?<>
-                {[1,2,3].map(n=>{
-                  const ck=`essay_interaction_${n}`;
-                  const nk=`essay_interaction_${n}_comment`;
-                  return <div key={n} className="space-y-1">
-                    <StatusRow label={`Interaction ${n}`} done={tok[ck]} overdue={!!tod[ck]}/>
-                    {tok[nk]&&<div className="ml-8 mb-2 p-2.5 bg-slate-50 rounded-lg text-xs text-slate-600 leading-relaxed">{tok[nk]}</div>}
-                  </div>;
-                })}
-                <StatusRow label="Final Draft Submitted" done={tok.essay_final_draft_submitted} overdue={!!tod.essay_final_draft_submitted}/>
-                {(tok.essay_score!==''&&tok.essay_score!==undefined)&&<div className="mt-3 pt-3 border-t border-slate-50 flex items-center gap-2"><span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Score:</span><span className="text-sm font-bold text-indigo-600">{tok.essay_score}</span></div>}
-                {tok.essay_comment&&<div className="mt-3 p-3 bg-indigo-50 rounded-xl"><p className="text-xs font-bold text-indigo-400 uppercase tracking-wide mb-1.5">Teacher Comment</p><p className="text-sm text-slate-700 leading-relaxed">{tok.essay_comment}</p></div>}
-              </>:<p className="text-slate-400 text-sm">No data yet.</p>}
-            </div>
-          </Card>
-        </>}
+        {/* ── TOK COLUMN ── */}
+        <div className="bg-white rounded-2xl shadow-sm border border-violet-100 overflow-hidden fade-in">
+          <ColHeader title="Theory of Knowledge" subtitle="Exhibition · Essay" color={tokColor} done={exDone+essDone} total={7} steps={tokSteps}/>
+          <NextSteps steps={tokSteps} color={tokColor}/>
+          <div className="p-4 space-y-1">
+            {tok?<>
+              <SubHead>Exhibition</SubHead>
+              <SRow label="Planning Conference" done={tok.exhibition_planning_conference} overdue={!!tod.exhibition_planning_conference}/>
+              <SRow label="Written Feedback" done={tok.exhibition_written_feedback} overdue={!!tod.exhibition_written_feedback}/>
+              <SRow label="Final Draft In" done={tok.exhibition_final_draft_in} overdue={!!tod.exhibition_final_draft_in}/>
+              <Score label="Score" value={tok.exhibition_score} color="text-violet-600"/>
+              {tok.exhibition_comment&&<CommentBox color="bg-violet-50 border-violet-100"><span className="font-bold text-violet-500 uppercase tracking-wide" style={{fontSize:'9px'}}>Teacher Comment · </span>{tok.exhibition_comment}</CommentBox>}
 
-        {/* ── CAS ── */}
-        {tab==='cas'&&<>
-          <Card className="overflow-hidden">
-            <div className="px-5 pt-5 pb-4 border-b border-slate-50 flex items-center justify-between"><div><h2 className="font-extrabold text-slate-800 text-lg">CAS Interviews</h2></div></div>
-            <div className="p-5 space-y-3">
-              {cas?<>
-                {[['First Interview','interview_1_date','interview_1_comment'],['Second Interview','interview_2_date','interview_2_comment'],['Final Interview','interview_final_date','interview_final_comment']].map(([label,dk,ck])=><div key={label} className={`border rounded-xl p-3 ${cas[dk]||cas[ck]?'border-slate-100':'border-dashed border-slate-100'}`}>
-                  <div className="flex items-center justify-between mb-1"><span className="text-sm font-bold text-slate-700">{label}</span>{cas[dk]&&<span className="text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">{cas[dk]}</span>}</div>
-                  {cas[ck]?<p className="text-sm text-slate-600 leading-relaxed">{cas[ck]}</p>:<span className="text-sm text-slate-300">Not yet scheduled</span>}
-                </div>)}
-                {cas.extra_interactions?.map((ex,i)=><div key={i} className="border border-slate-100 rounded-xl p-3">
-                  <div className="flex items-center justify-between mb-1"><span className="text-sm font-bold text-slate-700">Extra Interaction {i+1}</span>{ex.date&&<span className="text-xs text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full">{ex.date}</span>}</div>
-                  {ex.comment&&<p className="text-sm text-slate-600 leading-relaxed">{ex.comment}</p>}
-                </div>)}
-              </>:<p className="text-slate-400 text-sm">No CAS data yet.</p>}
-            </div>
-          </Card>
-          <Card className="overflow-hidden">
-            <div className="px-5 pt-5 pb-4 border-b border-slate-50"><h2 className="font-extrabold text-slate-800 text-lg">CAS Project &amp; Strands</h2></div>
-            <div className="p-5">
-              {cas?<>
-                <div className="space-y-1 mb-4">
-                  <StatusRow label="Project Decided" done={cas.cas_project_decided} overdue={!!cod.cas_project_decided}/>
-                  <StatusRow label="Project Complete" done={cas.cas_project_complete} overdue={!!cod.cas_project_complete}/>
-                  <StatusRow label="CAS Complete" done={cas.cas_complete} overdue={!!cod.cas_complete}/>
-                </div>
-                <div className="flex gap-2 flex-wrap border-t border-slate-50 pt-4">
-                  {[['Creativity',cas.strand_creativity],['Activity',cas.strand_activity],['Service',cas.strand_service]].map(([l,on])=><span key={l} className={`text-xs font-bold px-3 py-1.5 rounded-full border ${on?'bg-indigo-50 border-indigo-200 text-indigo-700':'bg-slate-50 border-slate-200 text-slate-400'}`}>{l}</span>)}
-                </div>
-              </>:<p className="text-slate-400 text-sm">No data yet.</p>}
-            </div>
-          </Card>
-          <Card className="overflow-hidden">
-            <div className="px-5 pt-5 pb-4 border-b border-slate-50 flex items-center justify-between"><h2 className="font-extrabold text-slate-800 text-lg">CAS Outcomes</h2><PBadge done={outDone} total={7}/></div>
-            <div className="p-5 space-y-1">
-              {cas?OUTCOMES.map((label,i)=><StatusRow key={i} label={label} done={cas[`outcome_${i+1}`]}/>):<p className="text-slate-400 text-sm">No data yet.</p>}
-            </div>
-          </Card>
-        </>}
+              <SubHead>Essay</SubHead>
+              {[1,2,3].map(n=>{const ck=`essay_interaction_${n}`;const nk=`essay_interaction_${n}_comment`;return <div key={n}><SRow label={`Interaction ${n}`} done={tok[ck]} overdue={!!tod[ck]}/>{tok[nk]&&<div className="ml-6 mt-0.5 mb-1 px-2 py-1.5 bg-slate-50 rounded text-xs text-slate-500 leading-relaxed border-l-2 border-slate-200">{tok[nk]}</div>}</div>;})}
+              <SRow label="Final Draft Submitted" done={tok.essay_final_draft_submitted} overdue={!!tod.essay_final_draft_submitted}/>
+              <Score label="Score" value={tok.essay_score} color="text-violet-600"/>
+              {tok.essay_comment&&<CommentBox color="bg-violet-50 border-violet-100"><span className="font-bold text-violet-500 uppercase tracking-wide" style={{fontSize:'9px'}}>Teacher Comment · </span>{tok.essay_comment}</CommentBox>}
+            </>:<p className="text-slate-400 text-xs py-2">No TOK data yet.</p>}
+          </div>
+        </div>
 
-        {/* ── EE ── */}
-        {tab==='ee'&&<>
-          {ee?.ee_rq&&<Card className="p-5"><p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1.5">Research Question</p><p className="text-sm text-slate-700 leading-relaxed font-medium italic">{ee.ee_rq}</p></Card>}
-          <Card className="overflow-hidden">
-            <div className="px-5 pt-5 pb-4 border-b border-slate-50 flex items-center justify-between"><h2 className="font-extrabold text-slate-800 text-lg">EE Progress</h2><PBadge done={eeProg} total={3}/></div>
-            <div className="p-5 space-y-1">
-              {ee?<>
-                <StatusRow label="Annotated Bibliography" done={ee.annotated_bibliography} overdue={!!eod.annotated_bibliography}/>
-                <StatusRow label="Draft Submitted" done={ee.draft_submitted} overdue={!!eod.draft_submitted}/>
-                <StatusRow label="Final Draft Submitted" done={ee.final_draft_submitted} overdue={!!eod.final_draft_submitted}/>
-              </>:<p className="text-slate-400 text-sm">No EE data yet.</p>}
-            </div>
-          </Card>
-          <Card className="overflow-hidden">
-            <div className="px-5 pt-5 pb-4 border-b border-slate-50"><h2 className="font-extrabold text-slate-800 text-lg">Supervisor &amp; Reflections</h2></div>
-            <div className="p-5">
-              {ee?<>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-2">Supervisor Interactions</p>
-                <div className="space-y-1 mb-4">
-                  <StatusRow label="Interaction 1" done={ee.supervisor_interaction_1} overdue={!!eod.supervisor_interaction_1}/>
-                  <StatusRow label="Interaction 2" done={ee.supervisor_interaction_2} overdue={!!eod.supervisor_interaction_2}/>
-                  <StatusRow label="Interaction 3" done={ee.supervisor_interaction_3} overdue={!!eod.supervisor_interaction_3}/>
+        {/* ── CAS COLUMN ── */}
+        <div className="bg-white rounded-2xl shadow-sm border border-sky-100 overflow-hidden fade-in">
+          <ColHeader title="CAS" subtitle="Creativity · Activity · Service" color={casColor} done={outDone} total={7} steps={casSteps}/>
+          <NextSteps steps={casSteps} color={casColor}/>
+          <div className="p-4 space-y-1">
+            {cas?<>
+              <SubHead>Interviews</SubHead>
+              {[['First Interview','interview_1_date','interview_1_comment'],['Second Interview','interview_2_date','interview_2_comment'],['Final Interview','interview_final_date','interview_final_comment']].map(([label,dk,ck])=><div key={label} className="py-0.5">
+                <div className="flex items-center justify-between">
+                  <SRow label={label} done={!!cas[dk]}/>
+                  {cas[dk]&&<span className="text-xs text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded-full ml-2 flex-shrink-0">{cas[dk]}</span>}
                 </div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-2 pt-3 border-t border-slate-50">Reflections</p>
-                <div className="space-y-1 mb-4">
-                  <StatusRow label="Reflection 1" done={ee.reflection_1} overdue={!!eod.reflection_1}/>
-                  <StatusRow label="Reflection 2" done={ee.reflection_2} overdue={!!eod.reflection_2}/>
-                  <StatusRow label="Final Reflection" done={ee.reflection_3_final} overdue={!!eod.reflection_3_final}/>
-                </div>
-                <div className="pt-3 border-t border-slate-50 space-y-1">
-                  <StatusRow label="Supervisor Comments Complete" done={ee.supervisor_comments_complete} overdue={!!eod.supervisor_comments_complete}/>
-                  {ee.hours&&<div className="flex items-center gap-2 mt-2 ml-8"><span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Hours:</span><span className="text-sm font-bold text-slate-700">{ee.hours}</span></div>}
-                  {ee.score&&<div className="flex items-center gap-2 ml-8"><span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Score:</span><span className="text-sm font-bold text-indigo-600">{ee.score}</span></div>}
-                </div>
-              </>:<p className="text-slate-400 text-sm">No EE data yet.</p>}
-            </div>
-          </Card>
-        </>}
+                {cas[ck]&&<div className="ml-6 mt-0.5 px-2 py-1.5 bg-slate-50 rounded text-xs text-slate-500 leading-relaxed border-l-2 border-slate-200">{cas[ck]}</div>}
+              </div>)}
+              {cas.extra_interactions?.filter(e=>e.date||e.comment).map((ex,i)=><div key={i} className="py-0.5">
+                <div className="flex items-center justify-between"><SRow label={`Extra Interaction ${i+1}`} done={!!ex.date}/>{ex.date&&<span className="text-xs text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded-full">{ex.date}</span>}</div>
+                {ex.comment&&<div className="ml-6 mt-0.5 px-2 py-1.5 bg-slate-50 rounded text-xs text-slate-500 leading-relaxed border-l-2 border-slate-200">{ex.comment}</div>}
+              </div>)}
+
+              <SubHead>Project &amp; Programme</SubHead>
+              <SRow label="Project Decided" done={cas.cas_project_decided} overdue={!!cod.cas_project_decided}/>
+              <SRow label="Project Complete" done={cas.cas_project_complete} overdue={!!cod.cas_project_complete}/>
+              <SRow label="CAS Complete" done={cas.cas_complete} overdue={!!cod.cas_complete}/>
+
+              <SubHead>Strands</SubHead>
+              <div className="flex gap-2 flex-wrap py-1">
+                {[['Creativity',cas.strand_creativity],['Activity',cas.strand_activity],['Service',cas.strand_service]].map(([l,on])=><span key={l} className={`text-xs font-bold px-2.5 py-1 rounded-full border ${on?'bg-sky-50 border-sky-200 text-sky-700':'bg-slate-50 border-slate-200 text-slate-400'}`}>{l}</span>)}
+              </div>
+
+              <SubHead>Outcomes <span className={`ml-1 px-1.5 py-0.5 rounded-full text-xs font-bold ${outDone===7?'bg-emerald-100 text-emerald-700':outDone>0?'bg-amber-100 text-amber-700':'bg-slate-100 text-slate-400'}`}>{outDone}/7</span></SubHead>
+              {OUTCOMES.map((label,i)=><SRow key={i} label={label} done={cas[`outcome_${i+1}`]}/>)}
+            </>:<p className="text-slate-400 text-xs py-2">No CAS data yet.</p>}
+          </div>
+        </div>
+
+        {/* ── EE COLUMN ── */}
+        <div className="bg-white rounded-2xl shadow-sm border border-teal-100 overflow-hidden fade-in">
+          <ColHeader title="Extended Essay" subtitle={ee?.ee_subject||'Subject TBC'} color={eeColor} done={eeDone} total={10} steps={eeSteps}/>
+          <NextSteps steps={eeSteps} color={eeColor}/>
+          <div className="p-4 space-y-1">
+            {ee?<>
+              {ee.ee_rq&&<div className="mb-2 p-2.5 bg-teal-50 rounded-lg border border-teal-100"><p className="text-xs font-bold text-teal-500 uppercase tracking-wide mb-1">Research Question</p><p className="text-xs text-slate-700 leading-relaxed italic">{ee.ee_rq}</p></div>}
+
+              <SubHead>Progress</SubHead>
+              <SRow label="Annotated Bibliography" done={ee.annotated_bibliography} overdue={!!eod.annotated_bibliography}/>
+              <SRow label="Draft Submitted" done={ee.draft_submitted} overdue={!!eod.draft_submitted}/>
+              <SRow label="Final Draft Submitted" done={ee.final_draft_submitted} overdue={!!eod.final_draft_submitted}/>
+
+              <SubHead>Supervisor Interactions</SubHead>
+              <SRow label="Interaction 1" done={ee.supervisor_interaction_1} overdue={!!eod.supervisor_interaction_1}/>
+              <SRow label="Interaction 2" done={ee.supervisor_interaction_2} overdue={!!eod.supervisor_interaction_2}/>
+              <SRow label="Interaction 3" done={ee.supervisor_interaction_3} overdue={!!eod.supervisor_interaction_3}/>
+
+              <SubHead>Reflections</SubHead>
+              <SRow label="Reflection 1" done={ee.reflection_1} overdue={!!eod.reflection_1}/>
+              <SRow label="Reflection 2" done={ee.reflection_2} overdue={!!eod.reflection_2}/>
+              <SRow label="Final Reflection" done={ee.reflection_3_final} overdue={!!eod.reflection_3_final}/>
+
+              <SubHead>Summary</SubHead>
+              <SRow label="Supervisor Comments Complete" done={ee.supervisor_comments_complete} overdue={!!eod.supervisor_comments_complete}/>
+              {ee.hours&&<div className="flex items-center gap-1.5 mt-1 ml-6"><span className="text-xs font-bold text-slate-400 uppercase">Hours:</span><span className="text-xs font-bold text-slate-700">{ee.hours}</span></div>}
+              <Score label="Score" value={ee.score} color="text-teal-600"/>
+            </>:<p className="text-slate-400 text-xs py-2">No EE data yet.</p>}
+          </div>
+        </div>
 
       </div>
     </div>
   </div>;
 }
-
 
 // ── PRINT REPORT ─────────────────────────────────────────────
 function PrintReport({student, tok, cas, ee}) {
