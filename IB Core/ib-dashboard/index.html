@@ -163,7 +163,13 @@ function ScoreInput({label,value,onChange,onBlur,readOnly=false}){return <div cl
 function Textarea({value,onChange,onBlur,readOnly=false,placeholder='Add comment…',rows=3}){return <textarea value={value} onChange={e=>onChange(e.target.value)} onBlur={onBlur} readOnly={readOnly} placeholder={placeholder} rows={rows} className={`w-full text-sm px-3 py-2 border rounded-lg resize-none leading-relaxed ${readOnly?'border-transparent bg-slate-50 text-slate-700 cursor-default':'border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-400'}`}/>;}
 function ErrorBanner({msg,onDismiss}){if(!msg)return null;return <div className="fixed top-4 right-4 z-50 flex items-center gap-3 bg-rose-50 border border-rose-200 text-rose-700 text-sm font-medium rounded-xl px-4 py-3 shadow-lg max-w-sm"><svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><span className="flex-1">{msg}</span><button onClick={onDismiss} className="text-rose-400 hover:text-rose-600 text-lg leading-none">×</button></div>;}
 
+  
 // ── LOGIN ───────────────────────────────────────────────────
+
+async function hashPassword(plain) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(plain));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
 function LoginScreen({onLogin}){
   const [role,setRole]=useState('teacher');
   const [user,setUser]=useState('');
@@ -173,12 +179,14 @@ function LoginScreen({onLogin}){
   const submit=async e=>{
     e.preventDefault();setError('');setLoading(true);
     try{
-      if(role==='teacher'){if(user===TEACHER_CREDS.username&&pass===TEACHER_CREDS.password)onLogin({role:'teacher',name:'Teacher'});else setError('Incorrect credentials.');}
-      else if(role==='admin'){if(user===ADMIN_CREDS.username&&pass===ADMIN_CREDS.password)onLogin({role:'admin',name:'IB Coordinator'});else setError('Incorrect credentials.');}
+      const hashed=await hashPassword(pass);
+      if(role==='teacher'){if(user===TEACHER_CREDS.username&&hashed===TEACHER_CREDS.password)onLogin({role:'teacher',name:'Teacher'});else setError('Incorrect credentials.');}
+      else if(role==='admin'){if(user===ADMIN_CREDS.username&&hashed===ADMIN_CREDS.password)onLogin({role:'admin',name:'IB Coordinator'});else setError('Incorrect credentials.');}
       else{const rows=await sheetsGet('Students!A:E');const students=parseStudents(rows);const m=students.find(s=>(s.student_id===user||s.name.toLowerCase()===user.toLowerCase())&&s.password===pass);if(m)onLogin({role:'student',name:m.name,student_id:m.student_id});else setError('Student not found or wrong password.');}
     }catch(err){setError(err.message||'Login failed.');}
     setLoading(false);
   };
+  
   return <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 flex items-center justify-center p-4">
     <div className="w-full max-w-sm fade-in">
       <div className="text-center mb-8">
