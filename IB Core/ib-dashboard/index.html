@@ -45,78 +45,48 @@
 const { useState, useEffect, useCallback, useRef } = React;
 
 // ── CONFIG ──────────────────────────────────────────────────
-const SPREADSHEET_ID = '11XMQo-MDxc2cSoMO2qhziz9LTaV9f2ctBbwnhFYYKYE';
-const CLIENT_EMAIL   = 'ib-dashboard-service@amazing-race-app.iam.gserviceaccount.com';
-const PRIVATE_KEY_B64 = `MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDSZbv2pRHtLHkN
-twNE1+cqAdvuXueaewFhDTwRoU6Zh0kvBxDqBRWQq6drZc3FNXrQZ3PVwFG2k4Wz
-BzYxyMIt8lnlF/MWPkW7v1dsnhgLbmgp0qt/Nea03DBr8OYnXabW0LNeaQZYY9LK
-2bHAQXWQvwa9v7uJQ64t3k8Irs++SbYUEHqqFw3BAblH2SPtjnLF+7Hy9R5ofiI1
-Hn587jtJ88UUfpF8G18OzeUQGHnmDVytiFsdwMYMOCnVLAnb2DulED5kGa5uDmVX
-zZQKVtO44eLaKJcNfgl2NcVa7SFG2bnBRwXQPeV45VMHVEE6EPl13/QeSBPzqLnE
-ApQzihG5AgMBAAECggEAW5B13HHbWt4rcqoOrKPPkSsM9XDtF4Bnyb5yQXPzmoJT
-ebl4BXif+X2S130PL7/GCrOzKDfR+AS8v3yoe8MUqt1ZfQfOvYPtYjd0CyvEaBkt
-EOKDy1GAbX6UPi2xZDlwNfXO0gwf/FC5OJnEL1jtmshf3S13ptXDFGg2+h7l/zgX
-/q/zMbJRQf2UjTwM0zRKBk/ynR/z7Y1Ibg64+si3TqN/ofxSh5aq5XwMVIzVO4/f
-jGekEbVimhkSDTkLy7Kr6vZExTLjNBhSU2zGO/gO9AdcHxPB0pgW2gT9TYAxPCjC
-c/aYwfsBH40BA2k7GXSCZBahxvMKTWC06A7w67YNDwKBgQDvuFGFU/6ugFTAC+c2
-7St3cf2FcpNnXAfjkO4vFcQ7GXSuvZRaA3ngUIFHFxUwn/qaMMq0HWRk6M0arOam
-Dw/mHX1I2ZyjW1nEfLzzzHwfASBH1IusFpSfTXgESLv4us3KpI+IkzF5b9LxUPoL
-kQa/Jol1qaac4/rU67P63jrnNwKBgQDgr5/Lu5HYTOpcxYzizq2jspQxsFRHKGIj
-qpdsKTiaddglZFIMGfwmTx4zc/AX+u6wn4dlAlBAIWNdnr/M0Vet4pFgmUdqFv7o
-RwvIOeJqr4E7CDL0zsOq/VKhh9T2Z92dL0KUNODYGQLwPhJPToF3ddtYIz2oXrJW
-vVGJ5xVmjwKBgEBXIlo8vyCrBRQ+naJaac43ZCpLJFEbnGpx3dv5ZZ/PJ0g3TfgS
-8sVIFkq0YVWZurNj4SQSt312FobQXV+4rzW+OIAzGB2oSSG5sSVmfvH7ZWSiIZLg
-xKc1Lb9InlsWGGIJZRTtHNxRLTbj2xj7pensN/zCuhtl/U7krHvq5bhlAoGAcg40
-28LXgilpPra5kdjApDxepeqQnZ6OUvSh8THrndz8X97RF3uJWBkJh6zuz/19dQNG
-Q6ws+KD6Q+f2DQ6np4k/qv2kFuKde2O1Q2q+2NFGlKTQ2RysjvwRGhZNsNeA0+3N
-qlY9XPU1XKblvIRpjC6zrcYV4oZPmWB5J7u6TVkCgYBh98itainOxos151YqsqOO
-MQC4iCfnew3nqvCwUNbjS0iuTLbjaPr+shLnwUGyGimjo8RaKcNTeHbdB/s+uKG9
-gnLIS+gC0SwnB7iuKD5sFVp869K8HT88Ma63SC9PzFdN4n3LDL9mi0aVXKtGG4eL
-mjfmW+0ySoUwh7ulm2bnkQ==`;
-const TEACHER_CREDS = { username: 'smith.m.04@isg', password: '58593ffbd2e16eb5a804c159a531fc1323a897ca7d8c1c558e79b6e862f84b90' };
+// Paste your Apps Script deployment URL here after deploying Code.gs
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzLd2FsYWhwZCF3IO4q2TClKA4vgvFHax3Q4mc6TtL_eIjEdHyDeYq1Ahyx4qgrOagy/exec';
+
+const TEACHER_CREDS = { username: 'smith.m.04', password: '58593ffbd2e16eb5a804c159a531fc1323a897ca7d8c1c558e79b6e862f84b90' };
 const ADMIN_CREDS   = { username: 'IB Coordinator', password: '8d7d03bb38a11f1813b88b0c1d2e112bdfb32beda3854f9defcd26a196b4269c' };
 
-// ── GOOGLE AUTH ─────────────────────────────────────────────
-let _token = null, _tokenExp = 0;
-function b64url(str) { return btoa(unescape(encodeURIComponent(str))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,''); }
-function bytesToB64url(buf) { let s=''; new Uint8Array(buf).forEach(b=>s+=String.fromCharCode(b)); return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=/g,''); }
-async function getToken() {
-  if (_token && Date.now() < _tokenExp-60000) return _token;
-  const now=Math.floor(Date.now()/1000);
-  const hdr=b64url(JSON.stringify({alg:'RS256',typ:'JWT'}));
-  const pay=b64url(JSON.stringify({iss:CLIENT_EMAIL,scope:'https://www.googleapis.com/auth/spreadsheets',aud:'https://oauth2.googleapis.com/token',iat:now,exp:now+3600}));
-  const si=`${hdr}.${pay}`;
-  const pem=PRIVATE_KEY_B64.replace(/\s/g,'');
-  const der=atob(pem); const db=new Uint8Array(der.length);
-  for(let i=0;i<der.length;i++) db[i]=der.charCodeAt(i);
-  const key=await crypto.subtle.importKey('pkcs8',db.buffer,{name:'RSASSA-PKCS1-v1_5',hash:'SHA-256'},false,['sign']);
-  const sig=await crypto.subtle.sign('RSASSA-PKCS1-v1_5',key,new TextEncoder().encode(si));
-  const jwt=`${si}.${bytesToB64url(sig)}`;
-  const res=await fetch('https://oauth2.googleapis.com/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:`grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer&assertion=${jwt}`});
-  const d=await res.json();
-  if (!d.access_token) throw new Error(d.error_description||'Token fetch failed');
-  _token=d.access_token; _tokenExp=Date.now()+d.expires_in*1000;
-  return _token;
+// ── SHEETS API (via Apps Script) ─────────────────────────────
+async function sheetsGet(range) {
+  const url = `${APPS_SCRIPT_URL}?action=read&range=${encodeURIComponent(range)}`;
+  const r = await fetch(url);
+  const d = await r.json();
+  if (d.error) throw new Error(d.error);
+  return d.values || [];
 }
 
-// ── SHEETS API ──────────────────────────────────────────────
-const SBASE=`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}`;
-async function sheetsGet(range) {
-  const tok=await getToken();
-  const r=await fetch(`${SBASE}/values/${encodeURIComponent(range)}`,{headers:{Authorization:`Bearer ${tok}`}});
-  const d=await r.json(); if(!r.ok) throw new Error(d.error?.message||'Read error');
-  return d.values||[];
-}
-async function sheetsPut(range,values) {
-  const tok=await getToken();
-  const r=await fetch(`${SBASE}/values/${encodeURIComponent(range)}?valueInputOption=RAW`,{method:'PUT',headers:{Authorization:`Bearer ${tok}`,'Content-Type':'application/json'},body:JSON.stringify({range,majorDimension:'ROWS',values})});
-  const d=await r.json(); if(!r.ok) throw new Error(d.error?.message||'Write error');
+async function sheetsGetAll() {
+  const url = `${APPS_SCRIPT_URL}?action=readAll`;
+  const r = await fetch(url);
+  const d = await r.json();
+  if (d.error) throw new Error(d.error);
   return d;
 }
-async function sheetsAppend(range,values) {
-  const tok=await getToken();
-  const r=await fetch(`${SBASE}/values/${encodeURIComponent(range)}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,{method:'POST',headers:{Authorization:`Bearer ${tok}`,'Content-Type':'application/json'},body:JSON.stringify({range,majorDimension:'ROWS',values})});
-  const d=await r.json(); if(!r.ok) throw new Error(d.error?.message||'Append error');
+
+async function sheetsPut(range, values) {
+  const r = await fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'write', range, values }),
+  });
+  const d = await r.json();
+  if (d.error) throw new Error(d.error);
+  return d;
+}
+
+async function sheetsAppend(range, values) {
+  const r = await fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'append', range, values }),
+  });
+  const d = await r.json();
+  if (d.error) throw new Error(d.error);
   return d;
 }
 
@@ -1375,14 +1345,11 @@ function App(){
   const loadData=useCallback(async()=>{
     setLoading(true);
     try{
-      // Updated ranges to include new columns
-      const [sRows,tRows,cRows,eRows]=await Promise.all([
-        sheetsGet('Students!A:E'),
-        sheetsGet('TOK!A:P'),   // extended from N to P
-        sheetsGet('CAS!A:V'),   // extended to V
-        sheetsGet('EE!A:P'),    // extended from O to P
-      ]);
-      setStudents(parseStudents(sRows));setTokData(parseTOK(tRows));setCasData(parseCAS(cRows));setEeData(parseEE(eRows));
+      const d = await sheetsGetAll();
+      setStudents(parseStudents(d.students));
+      setTokData(parseTOK(d.tok));
+      setCasData(parseCAS(d.cas));
+      setEeData(parseEE(d.ee));
     }catch(err){setError(err.message||'Failed to load data.');}
     setLoading(false);
   },[]);
