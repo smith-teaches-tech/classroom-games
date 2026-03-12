@@ -63,7 +63,7 @@
   /* ── BODY: 3-column grid ── */
   #app-body {
     display: grid;
-    grid-template-columns: 140px 1fr 320px;
+    grid-template-columns: 140px 1fr 420px;
     overflow: hidden;
     height: 100%;
   }
@@ -247,7 +247,7 @@
     background: var(--surface);
     border-left: 1px solid var(--border);
     display: grid;
-    grid-template-rows: auto auto auto 1fr auto auto auto;
+    grid-template-rows: auto auto 1fr auto auto;
     height: 100%;
     overflow: hidden;
   }
@@ -264,11 +264,9 @@
   .note-tab-btn.active { color:var(--accent); border-bottom-color:var(--accent); }
   .note-tab-btn:hover { color:var(--text); }
 
-  .note-section { display:none; flex-direction:column; overflow:hidden; min-height:0; }
+  .note-sections-container { overflow:hidden; min-height:0; display:flex; flex-direction:column; }
+  .note-section { display:none; flex-direction:column; overflow:hidden; min-height:0; flex:1; }
   .note-section.active { display:flex; }
-
-  /* The textarea wrapper needs to be the flex child that grows */
-  .textarea-wrapper { flex:1; display:flex; flex-direction:column; overflow:hidden; min-height:0; }
 
   .note-area-label { padding:8px 12px 4px; font-size:10px; font-weight:600; color:var(--text-muted); letter-spacing:.08em; text-transform:uppercase; flex-shrink:0; }
 
@@ -576,20 +574,16 @@
         <button class="note-tab-btn" onclick="showNoteTab('evidence',this)">Evidence</button>
         <button class="note-tab-btn" onclick="showNoteTab('draft',this)">Draft</button>
       </div>
-      <div id="note-thesis" class="note-section active">
-        <div class="textarea-wrapper">
+      <div class="note-sections-container">
+        <div id="note-thesis" class="note-section active">
           <div class="note-area-label">My Position / Thesis</div>
           <textarea id="ta-thesis" placeholder="Marc should... because...&#10;&#10;Write a thesis that takes a clear stance on what Marc should do." oninput="saveNotes()"></textarea>
         </div>
-      </div>
-      <div id="note-evidence" class="note-section">
-        <div class="textarea-wrapper">
+        <div id="note-evidence" class="note-section">
           <div class="note-area-label">Evidence &amp; Analysis</div>
           <textarea id="ta-evidence" placeholder="Source A shows...&#10;Source B reveals...&#10;&#10;Note at least 3 sources with analysis." oninput="saveNotes()"></textarea>
         </div>
-      </div>
-      <div id="note-draft" class="note-section">
-        <div class="textarea-wrapper">
+        <div id="note-draft" class="note-section">
           <div class="note-area-label">Full Draft DM</div>
           <textarea id="ta-draft" placeholder="Write your full DM response here..." oninput="saveNotes()"></textarea>
         </div>
