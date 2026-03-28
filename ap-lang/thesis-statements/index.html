@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thesis Statement Models — AP Language</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#1a1a18;--ink-mid:#4a4a44;--ink-light:#8a8a80;
+  --rule:#d4d0c4;--paper:#f7f4ee;--paper-warm:#efe9db;
+  --accent:#8b3a2a;--accent-light:#f5ede9;
+  --full:#1a5c3a;--full-bg:#e8f3ed;
+  --partial:#7a5c1a;--partial-bg:#f5f0e2;
+  --none-c:#6b2a2a;--none-bg:#f5e8e8;
+  --easy-bg:#e8f3ed;--easy:#1a5c3a;
+  --moderate-bg:#f5f0e2;--moderate:#7a5c1a;
+  --hard-bg:#f5e8e8;--hard:#6b2a2a;
+  --found-bg:#edeaf5;--found:#3a2a7a;
+  --prof-bg:#e8f0f5;--prof:#1a3a5c;
+  --adv-bg:#f5e8f0;--adv:#5c1a3a;
+  --serif:'Libre Baskerville',Georgia,serif;
+  --sans:'Barlow',system-ui,sans-serif;
+  --cond:'Barlow Condensed',system-ui,sans-serif;
+}
+html{font-size:16px;}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);min-height:100vh;line-height:1.6;}
+
+/* MASTHEAD */
+.masthead{border-bottom:3px double var(--ink);padding:1.1rem 0 0.85rem;text-align:center;background:var(--paper);position:sticky;top:0;z-index:100;}
+.masthead-kicker{font-family:var(--cond);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-light);margin-bottom:0.2rem;}
+.masthead-title{font-family:var(--serif);font-size:clamp(18px,3vw,28px);font-weight:700;color:var(--ink);line-height:1.1;letter-spacing:-0.02em;}
+.masthead-sub{font-family:var(--sans);font-size:12px;color:var(--ink-mid);margin-top:0.25rem;}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:200px 1fr 240px;max-width:1200px;margin:0 auto;gap:0;min-height:calc(100vh - 100px);}
+
+/* LEFT SIDEBAR */
+.sidebar-left{border-right:1px solid var(--rule);padding:1.5rem 0;position:sticky;top:100px;height:calc(100vh - 100px);overflow-y:auto;}
+.sidebar-section-label{font-family:var(--cond);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-light);padding:0 1rem;margin-bottom:0.5rem;}
+.nav-item{display:flex;align-items:center;gap:8px;padding:0.5rem 1rem;cursor:pointer;border-left:3px solid transparent;transition:all 0.15s;}
+.nav-item:hover{background:var(--paper-warm);}
+.nav-item.active{border-left-color:var(--accent);background:var(--accent-light);}
+.nav-num{font-family:var(--cond);font-size:11px;font-weight:700;color:var(--ink-light);min-width:18px;}
+.nav-item.active .nav-num{color:var(--accent);}
+.nav-name{font-size:12px;font-weight:500;color:var(--ink-mid);line-height:1.2;}
+.nav-item.active .nav-name{color:var(--ink);}
+.nav-divider{height:1px;background:var(--rule);margin:0.6rem 1rem;}
+.nav-summary-btn{display:block;width:calc(100% - 2rem);margin:0.6rem 1rem 0;padding:0.55rem 1rem;background:var(--ink);color:var(--paper);font-family:var(--cond);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;border:none;cursor:pointer;text-align:center;transition:background 0.15s;}
+.nav-summary-btn:hover{background:var(--accent);}
+
+/* MAIN */
+.main{padding:2rem 2.5rem 4rem;max-width:680px;border-right:1px solid var(--rule);}
+
+/* RIGHT SIDEBAR */
+.sidebar-right{padding:1.5rem 1rem 2rem;position:sticky;top:100px;height:calc(100vh - 100px);overflow-y:auto;display:flex;flex-direction:column;gap:1.5rem;}
+
+/* PROMPT SECTION (right sidebar) */
+.right-section-label{font-family:var(--cond);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-light);margin-bottom:0.6rem;padding-bottom:0.4rem;border-bottom:2px solid var(--ink);}
+
+.prompt-full{background:white;border:1px solid var(--rule);border-top:3px solid var(--accent);padding:1rem;}
+.prompt-full-quote{font-family:var(--serif);font-size:12px;color:var(--ink-mid);line-height:1.7;font-style:italic;margin-bottom:0.75rem;}
+.prompt-full-quote strong{font-style:normal;color:var(--ink);}
+.prompt-divider{height:1px;background:var(--rule);margin:0.75rem 0;}
+.prompt-task{font-size:11.5px;color:var(--ink-mid);line-height:1.65;}
+.prompt-task-header{font-family:var(--cond);font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink);margin-bottom:0.4rem;}
+.prompt-req{display:flex;gap:6px;margin-bottom:0.4rem;align-items:flex-start;}
+.prompt-req-num{font-family:var(--cond);font-size:10px;font-weight:700;color:var(--accent);min-width:14px;margin-top:1px;}
+.prompt-req-text{font-size:11px;color:var(--ink-mid);line-height:1.55;}
+
+/* PHILOSOPHERS */
+.phil-card{border:0.5px solid var(--rule);background:white;margin-bottom:6px;cursor:pointer;transition:border-color 0.15s;}
+.phil-card:hover{border-color:var(--ink-mid);}
+.phil-card.open{border-color:var(--ink);}
+.phil-header{display:flex;align-items:center;justify-content:space-between;padding:0.55rem 0.75rem;}
+.phil-name{font-family:var(--cond);font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink);}
+.phil-toggle{font-size:14px;color:var(--ink-light);transition:transform 0.2s;line-height:1;}
+.phil-card.open .phil-toggle{transform:rotate(180deg);}
+.phil-quote{font-family:var(--serif);font-size:12px;color:var(--ink-mid);line-height:1.65;font-style:italic;padding:0 0.75rem 0.75rem;display:none;}
+.phil-card.open .phil-quote{display:block;}
+
+/* PANELS */
+.panel{display:none;animation:fadeIn 0.2s ease;}
+.panel.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+.model-number{font-family:var(--cond);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-light);margin-bottom:0.2rem;}
+.model-title{font-family:var(--serif);font-size:clamp(22px,2.8vw,30px);font-weight:700;color:var(--ink);line-height:1.15;margin-bottom:0.65rem;letter-spacing:-0.02em;}
+.model-lede{font-size:15px;color:var(--ink-mid);line-height:1.7;margin-bottom:1.75rem;border-bottom:1px solid var(--rule);padding-bottom:1.25rem;}
+
+/* TAGS */
+.tags-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1.75rem;align-items:center;}
+.tag{font-family:var(--cond);font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:3px 9px;border-radius:2px;}
+.tag-lor-full{background:var(--full-bg);color:var(--full);}
+.tag-lor-partial{background:var(--partial-bg);color:var(--partial);}
+.tag-lor-none{background:var(--none-bg);color:var(--none-c);}
+.tag-easy{background:var(--easy-bg);color:var(--easy);}
+.tag-moderate{background:var(--moderate-bg);color:var(--moderate);}
+.tag-hard{background:var(--hard-bg);color:var(--hard);}
+.tag-foundational{background:var(--found-bg);color:var(--found);}
+.tag-proficient{background:var(--prof-bg);color:var(--prof);}
+.tag-advanced{background:var(--adv-bg);color:var(--adv);}
+.tag-divider{width:1px;height:14px;background:var(--rule);}
+
+/* EXAMPLE */
+.example-block{background:white;border:1px solid var(--rule);border-left:4px solid var(--accent);padding:1.1rem 1.25rem;margin-bottom:1.5rem;}
+.example-label{font-family:var(--cond);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-light);margin-bottom:0.5rem;}
+.example-text{font-family:var(--serif);font-size:14.5px;color:var(--ink);line-height:1.75;}
+
+/* LOR */
+.lor-block{margin-bottom:1.75rem;}
+.lor-block-title{font-family:var(--cond);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink);font-weight:700;border-bottom:2px solid var(--ink);padding-bottom:0.35rem;margin-bottom:0.85rem;}
+.lor-verdict{display:flex;gap:10px;align-items:flex-start;margin-bottom:0.65rem;}
+.lor-icon{font-size:18px;line-height:1;flex-shrink:0;margin-top:1px;}
+.lor-verdict-text{font-size:13.5px;color:var(--ink-mid);line-height:1.65;}
+.lor-verdict-text strong{color:var(--ink);font-weight:600;}
+
+/* STRUCTURE */
+.structure-block{background:var(--paper-warm);border:1px solid var(--rule);padding:1.1rem 1.25rem;margin-bottom:1.75rem;}
+.structure-title{font-family:var(--cond);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-light);margin-bottom:0.6rem;}
+.structure-formula{font-family:var(--serif);font-size:13.5px;color:var(--ink);line-height:1.7;font-style:italic;}
+.slot{display:inline-block;background:white;border:1px solid var(--rule);padding:0 5px;border-radius:2px;font-style:normal;font-family:var(--sans);font-size:11px;font-weight:600;color:var(--accent);vertical-align:baseline;}
+
+/* ANALYSIS GRID */
+.analysis-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.75rem;}
+.analysis-card{background:white;border:1px solid var(--rule);padding:0.85rem 1rem;}
+.analysis-card-label{font-family:var(--cond);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-light);margin-bottom:0.4rem;}
+.analysis-card-text{font-size:13px;color:var(--ink-mid);line-height:1.6;}
+
+/* NAV BUTTONS */
+.nav-buttons{display:flex;justify-content:space-between;align-items:center;padding-top:1.75rem;border-top:1px solid var(--rule);}
+.nav-btn{font-family:var(--cond);font-size:12px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;padding:0.55rem 1.1rem;border:1.5px solid var(--ink);background:none;color:var(--ink);cursor:pointer;transition:all 0.15s;}
+.nav-btn:hover{background:var(--ink);color:var(--paper);}
+.nav-btn:disabled{opacity:0.25;pointer-events:none;}
+.nav-btn-primary{background:var(--ink);color:var(--paper);}
+.nav-btn-primary:hover{background:var(--accent);border-color:var(--accent);}
+.nav-counter{font-family:var(--cond);font-size:11px;color:var(--ink-light);letter-spacing:0.08em;}
+
+/* SUMMARY */
+.summary-table-wrap{overflow-x:auto;}
+.summary-table{width:100%;border-collapse:collapse;font-size:12.5px;}
+.summary-table th{font-family:var(--cond);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-light);border-bottom:2px solid var(--ink);padding:0.45rem 0.65rem;text-align:left;white-space:nowrap;}
+.summary-table td{padding:0.65rem 0.65rem;border-bottom:1px solid var(--rule);color:var(--ink-mid);vertical-align:top;line-height:1.5;}
+.summary-table td:first-child{font-family:var(--serif);font-weight:700;color:var(--ink);font-size:13px;white-space:nowrap;}
+.summary-table tr:hover td{background:var(--paper-warm);cursor:pointer;}
+
+/* HANDOFF */
+.handoff-block{margin-top:2rem;border:2px solid var(--ink);padding:1.5rem 1.75rem;text-align:center;}
+.handoff-title{font-family:var(--serif);font-size:18px;font-weight:700;margin-bottom:0.4rem;}
+.handoff-sub{font-size:13.5px;color:var(--ink-mid);margin-bottom:1.1rem;line-height:1.6;}
+.handoff-btn{display:inline-block;background:var(--accent);color:white;font-family:var(--cond);font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.7rem 1.75rem;border:none;cursor:pointer;text-decoration:none;transition:background 0.15s;}
+.handoff-btn:hover{background:var(--ink);}
+
+/* PROGRESS */
+.progress-bar{height:2px;background:var(--rule);margin-bottom:1.75rem;}
+.progress-fill{height:100%;background:var(--accent);transition:width 0.3s ease;}
+
+/* MOBILE */
+@media(max-width:800px){
+  .layout{grid-template-columns:1fr;}
+  .sidebar-left,.sidebar-right{position:static;height:auto;border:none;border-bottom:1px solid var(--rule);}
+  .main{padding:1.5rem 1.25rem 3rem;max-width:100%;border:none;}
+  .masthead{position:static;}
+  .analysis-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <p class="masthead-kicker">AP Language &amp; Composition</p>
+  <h1 class="masthead-title">Argumentative Thesis Models</h1>
+  <p class="masthead-sub">How each model shapes your line of reasoning</p>
+</header>
+
+<div class="layout">
+
+  <!-- LEFT NAV -->
+  <nav class="sidebar-left">
+    <p class="sidebar-section-label">Models</p>
+    <div id="nav-list"></div>
+    <div class="nav-divider"></div>
+    <button class="nav-summary-btn" onclick="showSummary()">Summary table →</button>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+    <div id="panels"></div>
+
+    <!-- SUMMARY PANEL -->
+    <div id="summary-panel" class="panel">
+      <p class="model-number">Overview</p>
+      <h2 class="model-title">All nine models at a glance</h2>
+      <p class="model-lede">Compare how each model handles the line of reasoning, its sophistication level, and how demanding it is to produce under timed conditions. Click any row to revisit that model.</p>
+      <div class="summary-table-wrap">
+        <table class="summary-table">
+          <thead><tr><th>Model</th><th>Previews LoR?</th><th>Sophistication</th><th>Timed writing</th></tr></thead>
+          <tbody id="summary-tbody"></tbody>
+        </table>
+      </div>
+      <div class="handoff-block">
+        <p class="handoff-title">Now write your own</p>
+        <p class="handoff-sub">Choose one of the philosopher quotes from the panel on the right. Take a stance — defend, challenge, or qualify — and write a thesis using one of the models above. Aim higher than a direct thesis.</p>
+        <a class="handoff-btn" href="YOUR_GOOGLE_DOC_LINK_HERE" target="_blank">Open the shared Google Doc →</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- RIGHT SIDEBAR -->
+  <aside class="sidebar-right">
+
+    <!-- FULL PROMPT -->
+    <div>
+      <p class="right-section-label">The AP exam prompt</p>
+      <div class="prompt-full">
+        <p class="prompt-full-quote">The late Barbara Jordan, a former United States representative, once warned, <strong>"[T]his is the great danger America faces — that we will cease to be one nation and become instead a collection of interest groups: city against suburb, region against region, individual against individual; each seeking to satisfy private wants."</strong></p>
+        <div class="prompt-divider"></div>
+        <p class="prompt-task-header">The task</p>
+        <p class="prompt-task" style="margin-bottom:0.6rem;">Write an essay that argues your position on Jordan's claim that "private wants" threaten national identity.</p>
+        <p class="prompt-task-header" style="margin-top:0.65rem;">In your response you should:</p>
+        <div class="prompt-req"><span class="prompt-req-num">1</span><span class="prompt-req-text">Respond to the prompt with a thesis that presents a defensible position.</span></div>
+        <div class="prompt-req"><span class="prompt-req-num">2</span><span class="prompt-req-text">Provide evidence to support your line of reasoning.</span></div>
+        <div class="prompt-req"><span class="prompt-req-num">3</span><span class="prompt-req-text">Explain how the evidence supports your line of reasoning.</span></div>
+        <div class="prompt-req"><span class="prompt-req-num">4</span><span class="prompt-req-text">Use appropriate grammar and punctuation in communicating your argument.</span></div>
+      </div>
+    </div>
+
+    <!-- PHILOSOPHER ACTIVITY -->
+    <div>
+      <p class="right-section-label">Your activity — choose a philosopher</p>
+      <div id="phil-list"></div>
+    </div>
+
+  </aside>
+</div>
+
+<script>
+const models=[
+  {name:"Direct",lede:"The simplest move: state your position cleanly and move on. No preview of how you'll argue it — just a clear stake in the ground.",lor:"none",lorExplanation:"A direct thesis takes a position but gives the reader no information about the structure or substance of the argument that follows. The line of reasoning must be inferred from the body paragraphs alone. This is not inherently a weakness — it leaves maximum flexibility — but it places all organizational burden on the essay itself.",lorDetail:"The reader learns <strong>what you think</strong> but not <strong>why</strong> or <strong>how you'll show it</strong>. The argument is a black box until the body paragraphs open it.",timed:"easy",sophistication:"foundational",example:"Private wants do not threaten national identity.",structure:'<span class="slot">Position</span> on the claim.',strength:"Fast to produce under pressure. Gets the point. Leaves the essay fully open.",caution:"Risk of wandering. Without a previewed structure, essays can become list-like or lose focus mid-argument."},
+  {name:"Thesis with reasons",lede:"State your position, then tack on two or three reasons using 'because.' The body paragraphs follow the same order as the reasons. Sometimes called the 'hamburger thesis.'",lor:"full",lorExplanation:"This model fully previews the line of reasoning. The reader can predict the essay's structure before reading a single body paragraph. Each reason in the thesis corresponds directly to a paragraph — the thesis is a compressed outline.",lorDetail:"The reader knows <strong>what you think</strong>, <strong>why you think it</strong>, and <strong>in what order you'll argue it</strong>. The LoR is mapped in the thesis itself.",timed:"moderate",sophistication:"foundational",example:"Private wants do not threaten national identity because the desire for personal success has always driven people to contribute to their communities, and a shared sense of belonging can survive — even grow stronger through — individual ambition.",structure:'<span class="slot">Position</span> because <span class="slot">reason 1</span> and <span class="slot">reason 2</span>.',strength:"Keeps the essay on track. Clear to score. Reader always knows where they are.",caution:"Can feel mechanical. Rarely explores tensions or complications — the argument moves in one direction only."},
+  {name:"Concession–rebuttal",lede:"Acknowledge something true on the other side, then pivot to your actual claim. The concession signals intellectual honesty; the rebuttal is your real argument.",lor:"partial",lorExplanation:"This model previews the tension the essay will navigate — readers know there is a complication — but it does not fully map the argument. The 'since' or 'because' clause gestures toward a reason, but the full line of reasoning still lives in the body.",lorDetail:"The reader knows <strong>what tension you've identified</strong> and <strong>your ultimate position</strong>, but the full argumentative path through that tension is not yet visible.",timed:"moderate",sophistication:"proficient",example:"Although the pursuit of personal goals can make people less focused on those around them, private wants do not ultimately threaten national identity, since what people want for themselves — safety, opportunity, connection — is usually the same thing they want for their country.",structure:'Although <span class="slot">concession</span>, <span class="slot">claim</span> since <span class="slot">reason</span>.',strength:"Shows nuance immediately. Signals to the reader that you've considered the other side.",caution:"The concession must be real — not a strawman. A weak concession undermines the thesis rather than strengthening it."},
+  {name:"Qualified (only if / unless)",lede:"Agree or disagree — but only under specific conditions. The qualifier does the heavy lifting: it defines exactly when your claim holds and when it doesn't.",lor:"partial",lorExplanation:"A qualified thesis reveals the central condition your argument turns on, which is a partial preview of the reasoning. The body must develop what happens when that condition is or isn't met. The logic is implied but not fully mapped.",lorDetail:"The reader knows <strong>the condition</strong> under which your claim is true, but not the full reasoning chain that connects condition → consequence → claim.",timed:"hard",sophistication:"advanced",example:"Private wants threaten national identity only when people stop seeing any connection between their own wellbeing and the wellbeing of others — when personal success becomes something to protect rather than something to share.",structure:'<span class="slot">Claim</span> only if / unless / as long as <span class="slot">condition</span>.',strength:"Sophisticated. Shows the claim is nuanced rather than absolute. Opens a genuinely interesting essay.",caution:"Difficult to construct quickly. The condition must be specific and defensible — vague qualifiers produce vague essays."},
+  {name:"Contrasting qualified",lede:"Explore two scenarios in a single thesis: when the claim holds, and when it doesn't. The semicolon is the pivot point between them.",lor:"full",lorExplanation:"This model fully previews the line of reasoning by establishing both scenarios the essay will develop. The reader can see the essay's two-part structure immediately. It is the most structurally transparent of the sophisticated models.",lorDetail:"The reader can see <strong>both argumentative threads</strong> the essay will develop — the thesis is essentially a two-part outline compressed into one sentence.",timed:"hard",sophistication:"advanced",example:"When private wants lead people to withdraw entirely from shared spaces — schools, neighborhoods, public life — they do erode the sense of common identity that holds a nation together; however, when private wants push people to build better lives within their communities, they can actually strengthen the bonds of national belonging.",structure:'When <span class="slot">scenario A</span>, <span class="slot">consequence A</span>; however, when <span class="slot">scenario B</span>, <span class="slot">consequence B</span>.',strength:"Explores multiple perspectives. Leaves room for counterargument and rebuttal.",caution:"Bulky. Can feel repetitive if both scenarios aren't sufficiently distinct. Difficult to sustain across a timed essay."},
+  {name:"Cause and effect",lede:"Trace a chain: the claim triggers a mechanism, which produces a consequence. The essay develops each link in the chain across its body paragraphs.",lor:"full",lorExplanation:"Cause-and-effect theses fully preview the logical chain the essay will construct. The reader knows the starting point, the mechanism, and the outcome before reading a word of the body.",lorDetail:"The reader sees <strong>the full causal chain</strong>: claim → mechanism → outcome. Each link becomes a body paragraph.",timed:"moderate",sophistication:"proficient",example:"When people focus exclusively on their own wants, they gradually stop paying attention to what is happening around them, which weakens the shared sense of responsibility that national identity depends on.",structure:'<span class="slot">Cause</span> causes <span class="slot">mechanism</span>, which results in <span class="slot">consequence</span>.',strength:"Allows a single complex idea to unfold logically. Each paragraph develops one link in the chain.",caution:"Less room to modify your argument as you write — you've committed to a chain. Counterargument must be handled carefully."},
+  {name:"Tension-first",lede:"Name the central tension inside the claim before you resolve it. Rather than conceding and rebutting, you surface the contradiction the essay must navigate.",lor:"partial",lorExplanation:"A tension-first thesis tells the reader what problem the essay is solving, which is more than a direct thesis but less than a reasons-preview. It orients the reader toward the argument's intellectual territory without mapping the path through it.",lorDetail:"The reader knows <strong>what tension you're wrestling with</strong> and <strong>your resolution</strong>, but not how the body will build toward that resolution.",timed:"hard",sophistication:"advanced",example:"Jordan's warning assumes that wanting things for yourself automatically puts you in conflict with everyone else — but that tension disappears once we recognize that most people's private wants, at their core, are wants they share with millions of others.",structure:'<span class="slot">Claim assumes tension</span> — but <span class="slot">resolution that reframes the issue</span>.',strength:"Signals genuine analytical sophistication. Engages the prompt at a conceptual level rather than simply taking a side.",caution:"The tension must be real and consequential — not manufactured. If the reframe isn't persuasive, the thesis collapses."},
+  {name:"So-what",lede:"State your claim, then push immediately to its larger significance. The 'so what' turns a local argument about the prompt into a broader claim about how the world works.",lor:"partial",lorExplanation:"A so-what thesis previews the stakes of the argument rather than its structure. The reader knows why your claim matters — which can be more compelling than knowing how you'll prove it — but the line of reasoning itself remains to be built in the body.",lorDetail:"The reader understands <strong>the significance of your position</strong> but not the <strong>argumentative structure</strong> that will support it.",timed:"moderate",sophistication:"proficient",example:"Private wants do not weaken national identity — which means the real threat Jordan should have identified is not personal ambition but the absence of shared spaces where people from different backgrounds actually encounter one another.",structure:'<span class="slot">Claim</span> — which means <span class="slot">larger implication or reframe</span>.',strength:"Immediately elevates the essay beyond a simple agree/disagree. The implication becomes the engine of the argument.",caution:"The 'so what' must follow logically from the claim — not just be a dramatic-sounding addition. Loose logic here weakens the whole thesis."},
+  {name:"Counterintuitive",lede:"Open with what readers expect to be true — the conventional wisdom — then subvert it. The thesis earns its sophistication by surprising the reader before the essay even begins.",lor:"partial",lorExplanation:"A counterintuitive thesis previews the essay's argumentative move — the inversion of conventional wisdom — but not its full structure. The reader knows a surprise is coming and roughly what it is, but the reasoning that makes the inversion defensible lives in the body.",lorDetail:"The reader sees <strong>the claim you're overturning</strong> and <strong>your counter-position</strong>, but not the evidence or reasoning that makes the inversion hold.",timed:"hard",sophistication:"advanced",example:"Though most people assume that chasing personal goals pulls a society apart, private wants are actually one of the strongest forces holding nations together — because when people believe their country gives them a real chance at the life they want, they become its most committed defenders.",structure:'Though most assume <span class="slot">conventional wisdom</span>, <span class="slot">counterintuitive claim</span>.',strength:"Grabs the reader immediately. Sets up a genuinely interesting essay that must deliver on its opening promise.",caution:"The counterintuitive claim must be defensible — not merely contrarian. If the body can't support the inversion, the thesis becomes a liability."}
+];
+
+const philosophers=[
+  {name:"Plato",quote:"You can discover more about a person in an hour of play than you can discover in a year of conversation."},
+  {name:"Nietzsche",quote:"He who has a why to live can bear almost any how."},
+  {name:"Sartre",quote:"If you are lonely when you are alone, you are in bad company."},
+  {name:"Descartes",quote:"If you are to be a real seeker after truth, it is necessary that at least once in your life you would doubt, as far as possible, all things."},
+  {name:"Emerson",quote:"What lies behind you and what lies in front of you pales in comparison to what lies inside you."},
+  {name:"Hobbes",quote:"It is not wisdom but authority that makes a law."}
+];
+
+const lorLabels={full:"Fully previews LoR",partial:"Partially previews LoR",none:"Does not preview LoR"};
+const lorIcons={full:"✦",partial:"◈",none:"○"};
+const timedLabels={easy:"Easy in timed writing",moderate:"Moderate in timed writing",hard:"Demanding in timed writing"};
+const sophLabels={foundational:"Foundational",proficient:"Proficient",advanced:"Advanced"};
+
+function buildNav(){
+  const nav=document.getElementById('nav-list');
+  models.forEach((m,i)=>{
+    const el=document.createElement('div');
+    el.className='nav-item'+(i===0?' active':'');
+    el.dataset.index=i;
+    el.innerHTML=`<span class="nav-num">${String(i+1).padStart(2,'0')}</span><span class="nav-name">${m.name}</span>`;
+    el.onclick=()=>showModel(i);
+    nav.appendChild(el);
+  });
+}
+
+function buildPhils(){
+  const list=document.getElementById('phil-list');
+  philosophers.forEach((p,i)=>{
+    const card=document.createElement('div');
+    card.className='phil-card';
+    card.innerHTML=`<div class="phil-header"><span class="phil-name">${p.name}</span><span class="phil-toggle">▾</span></div><p class="phil-quote">"${p.quote}"</p>`;
+    card.onclick=()=>{
+      const isOpen=card.classList.contains('open');
+      document.querySelectorAll('.phil-card').forEach(c=>c.classList.remove('open'));
+      if(!isOpen) card.classList.add('open');
+    };
+    list.appendChild(card);
+  });
+}
+
+function buildPanels(){
+  const container=document.getElementById('panels');
+  const tbody=document.getElementById('summary-tbody');
+  models.forEach((m,i)=>{
+    const panel=document.createElement('div');
+    panel.className='panel'+(i===0?' active':'');
+    panel.id='panel-'+i;
+    panel.innerHTML=`
+      <div class="progress-bar"><div class="progress-fill" style="width:${((i+1)/models.length*100).toFixed(0)}%"></div></div>
+      <p class="model-number">Model ${String(i+1).padStart(2,'0')} of ${models.length}</p>
+      <h2 class="model-title">${m.name}</h2>
+      <p class="model-lede">${m.lede}</p>
+      <div class="tags-row">
+        <span class="tag tag-lor-${m.lor}">${lorLabels[m.lor]}</span>
+        <span class="tag-divider"></span>
+        <span class="tag tag-${m.sophistication}">${sophLabels[m.sophistication]}</span>
+        <span class="tag tag-${m.timed}">${timedLabels[m.timed]}</span>
+      </div>
+      <div class="example-block">
+        <p class="example-label">Example — Barbara Jordan prompt</p>
+        <p class="example-text">"${m.example}"</p>
+      </div>
+      <div class="lor-block">
+        <p class="lor-block-title">Line of reasoning — does this thesis preview it?</p>
+        <div class="lor-verdict">
+          <span class="lor-icon">${lorIcons[m.lor]}</span>
+          <p class="lor-verdict-text"><strong>${lorLabels[m.lor]}.</strong> ${m.lorExplanation}</p>
+        </div>
+        <div class="lor-verdict">
+          <span class="lor-icon" style="opacity:0.25">→</span>
+          <p class="lor-verdict-text">${m.lorDetail}</p>
+        </div>
+      </div>
+      <div class="structure-block">
+        <p class="structure-title">Formula / structure</p>
+        <p class="structure-formula">${m.structure}</p>
+      </div>
+      <div class="analysis-grid">
+        <div class="analysis-card"><p class="analysis-card-label">Strength</p><p class="analysis-card-text">${m.strength}</p></div>
+        <div class="analysis-card"><p class="analysis-card-label">Caution</p><p class="analysis-card-text">${m.caution}</p></div>
+      </div>
+      <div class="nav-buttons">
+        <button class="nav-btn" onclick="showModel(${i-1})" ${i===0?'disabled':''}>← Previous</button>
+        <span class="nav-counter">${i+1} / ${models.length}</span>
+        ${i<models.length-1
+          ?`<button class="nav-btn nav-btn-primary" onclick="showModel(${i+1})">Next →</button>`
+          :`<button class="nav-btn nav-btn-primary" onclick="showSummary()">See summary →</button>`}
+      </div>`;
+    container.appendChild(panel);
+
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${m.name}</td><td><span class="tag tag-lor-${m.lor}" style="font-size:10px">${lorLabels[m.lor]}</span></td><td><span class="tag tag-${m.sophistication}" style="font-size:10px">${sophLabels[m.sophistication]}</span></td><td><span class="tag tag-${m.timed}" style="font-size:10px">${timedLabels[m.timed]}</span></td>`;
+    tr.onclick=()=>showModel(i);
+    tbody.appendChild(tr);
+  });
+}
+
+function showModel(i){
+  if(i<0||i>=models.length)return;
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+i).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',parseInt(n.dataset.index)===i));
+  document.getElementById('summary-panel').classList.remove('active');
+  window.scrollTo(0,0);
+}
+
+function showSummary(){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('summary-panel').classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  window.scrollTo(0,0);
+}
+
+buildNav();buildPhils();buildPanels();
+</script>
+</body>
+</html>
