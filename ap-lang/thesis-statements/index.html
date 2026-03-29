@@ -27,17 +27,29 @@
 html{font-size:16px;}
 body{font-family:var(--sans);background:var(--paper);color:var(--ink);min-height:100vh;line-height:1.6;}
 
-/* MASTHEAD */
-.masthead{border-bottom:3px double var(--ink);padding:1.1rem 0 0.85rem;text-align:center;background:var(--paper);position:sticky;top:0;z-index:100;}
-.masthead-kicker{font-family:var(--cond);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-light);margin-bottom:0.2rem;}
-.masthead-title{font-family:var(--serif);font-size:clamp(18px,3vw,28px);font-weight:700;color:var(--ink);line-height:1.1;letter-spacing:-0.02em;}
-.masthead-sub{font-family:var(--sans);font-size:12px;color:var(--ink-mid);margin-top:0.25rem;}
+/* ── MASTHEAD ── */
+.masthead{border-bottom:3px double var(--ink);padding:1rem 0 0.75rem;text-align:center;background:var(--paper);position:sticky;top:0;z-index:200;}
+.masthead-kicker{font-family:var(--cond);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-light);margin-bottom:0.15rem;}
+.masthead-title{font-family:var(--serif);font-size:clamp(16px,2.5vw,24px);font-weight:700;color:var(--ink);line-height:1.1;letter-spacing:-0.02em;}
 
-/* LAYOUT */
-.layout{display:grid;grid-template-columns:200px 1fr 240px;max-width:1200px;margin:0 auto;gap:0;min-height:calc(100vh - 100px);}
+/* ── TOP TABS ── */
+.top-tabs{display:flex;background:var(--paper);border-bottom:1px solid var(--rule);position:sticky;top:68px;z-index:190;}
+.top-tab{flex:1;padding:0.75rem 1rem;font-family:var(--cond);font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-light);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all 0.15s;text-align:center;}
+.top-tab:hover{color:var(--ink);background:var(--paper-warm);}
+.top-tab.active{color:var(--ink);border-bottom-color:var(--accent);}
+.tab-hint{font-family:var(--sans);font-size:11px;font-weight:400;letter-spacing:0;text-transform:none;display:block;color:var(--ink-light);margin-top:1px;}
+.top-tab.active .tab-hint{color:var(--ink-mid);}
 
-/* LEFT SIDEBAR */
-.sidebar-left{border-right:1px solid var(--rule);padding:1.5rem 0;position:sticky;top:100px;height:calc(100vh - 100px);overflow-y:auto;}
+/* ── TAB PANELS ── */
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* ══════════════════════════════
+   MODELS TAB — two-col layout
+══════════════════════════════ */
+.models-layout{display:grid;grid-template-columns:200px 1fr;max-width:1000px;margin:0 auto;}
+
+.sidebar-left{border-right:1px solid var(--rule);padding:1.5rem 0;position:sticky;top:122px;height:calc(100vh - 122px);overflow-y:auto;}
 .sidebar-section-label{font-family:var(--cond);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-light);padding:0 1rem;margin-bottom:0.5rem;}
 .nav-item{display:flex;align-items:center;gap:8px;padding:0.5rem 1rem;cursor:pointer;border-left:3px solid transparent;transition:all 0.15s;}
 .nav-item:hover{background:var(--paper-warm);}
@@ -50,46 +62,19 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);min-height
 .nav-summary-btn{display:block;width:calc(100% - 2rem);margin:0.6rem 1rem 0;padding:0.55rem 1rem;background:var(--ink);color:var(--paper);font-family:var(--cond);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;border:none;cursor:pointer;text-align:center;transition:background 0.15s;}
 .nav-summary-btn:hover{background:var(--accent);}
 
-/* MAIN */
-.main{padding:2rem 2.5rem 4rem;max-width:680px;border-right:1px solid var(--rule);}
+.models-main{padding:2rem 2.5rem 4rem;max-width:680px;}
 
-/* RIGHT SIDEBAR */
-.sidebar-right{padding:1.5rem 1rem 2rem;position:sticky;top:100px;height:calc(100vh - 100px);overflow-y:auto;display:flex;flex-direction:column;gap:1.5rem;}
-
-/* PROMPT SECTION (right sidebar) */
-.right-section-label{font-family:var(--cond);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-light);margin-bottom:0.6rem;padding-bottom:0.4rem;border-bottom:2px solid var(--ink);}
-
-.prompt-full{background:white;border:1px solid var(--rule);border-top:3px solid var(--accent);padding:1rem;}
-.prompt-full-quote{font-family:var(--serif);font-size:12px;color:var(--ink-mid);line-height:1.7;font-style:italic;margin-bottom:0.75rem;}
-.prompt-full-quote strong{font-style:normal;color:var(--ink);}
-.prompt-divider{height:1px;background:var(--rule);margin:0.75rem 0;}
-.prompt-task{font-size:11.5px;color:var(--ink-mid);line-height:1.65;}
-.prompt-task-header{font-family:var(--cond);font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink);margin-bottom:0.4rem;}
-.prompt-req{display:flex;gap:6px;margin-bottom:0.4rem;align-items:flex-start;}
-.prompt-req-num{font-family:var(--cond);font-size:10px;font-weight:700;color:var(--accent);min-width:14px;margin-top:1px;}
-.prompt-req-text{font-size:11px;color:var(--ink-mid);line-height:1.55;}
-
-/* PHILOSOPHERS */
-.phil-card{border:0.5px solid var(--rule);background:white;margin-bottom:6px;cursor:pointer;transition:border-color 0.15s;}
-.phil-card:hover{border-color:var(--ink-mid);}
-.phil-card.open{border-color:var(--ink);}
-.phil-header{display:flex;align-items:center;justify-content:space-between;padding:0.55rem 0.75rem;}
-.phil-name{font-family:var(--cond);font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink);}
-.phil-toggle{font-size:14px;color:var(--ink-light);transition:transform 0.2s;line-height:1;}
-.phil-card.open .phil-toggle{transform:rotate(180deg);}
-.phil-quote{font-family:var(--serif);font-size:12px;color:var(--ink-mid);line-height:1.65;font-style:italic;padding:0 0.75rem 0.75rem;display:none;}
-.phil-card.open .phil-quote{display:block;}
-
-/* PANELS */
+/* model panels */
 .panel{display:none;animation:fadeIn 0.2s ease;}
 .panel.active{display:block;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:translateY(0);}}
 
+.progress-bar{height:2px;background:var(--rule);margin-bottom:1.75rem;}
+.progress-fill{height:100%;background:var(--accent);transition:width 0.3s ease;}
 .model-number{font-family:var(--cond);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-light);margin-bottom:0.2rem;}
 .model-title{font-family:var(--serif);font-size:clamp(22px,2.8vw,30px);font-weight:700;color:var(--ink);line-height:1.15;margin-bottom:0.65rem;letter-spacing:-0.02em;}
 .model-lede{font-size:15px;color:var(--ink-mid);line-height:1.7;margin-bottom:1.75rem;border-bottom:1px solid var(--rule);padding-bottom:1.25rem;}
 
-/* TAGS */
 .tags-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1.75rem;align-items:center;}
 .tag{font-family:var(--cond);font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;padding:3px 9px;border-radius:2px;}
 .tag-lor-full{background:var(--full-bg);color:var(--full);}
@@ -103,12 +88,10 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);min-height
 .tag-advanced{background:var(--adv-bg);color:var(--adv);}
 .tag-divider{width:1px;height:14px;background:var(--rule);}
 
-/* EXAMPLE */
 .example-block{background:white;border:1px solid var(--rule);border-left:4px solid var(--accent);padding:1.1rem 1.25rem;margin-bottom:1.5rem;}
 .example-label{font-family:var(--cond);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-light);margin-bottom:0.5rem;}
 .example-text{font-family:var(--serif);font-size:14.5px;color:var(--ink);line-height:1.75;}
 
-/* LOR */
 .lor-block{margin-bottom:1.75rem;}
 .lor-block-title{font-family:var(--cond);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink);font-weight:700;border-bottom:2px solid var(--ink);padding-bottom:0.35rem;margin-bottom:0.85rem;}
 .lor-verdict{display:flex;gap:10px;align-items:flex-start;margin-bottom:0.65rem;}
@@ -116,19 +99,22 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);min-height
 .lor-verdict-text{font-size:13.5px;color:var(--ink-mid);line-height:1.65;}
 .lor-verdict-text strong{color:var(--ink);font-weight:600;}
 
-/* STRUCTURE */
 .structure-block{background:var(--paper-warm);border:1px solid var(--rule);padding:1.1rem 1.25rem;margin-bottom:1.75rem;}
 .structure-title{font-family:var(--cond);font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-light);margin-bottom:0.6rem;}
 .structure-formula{font-family:var(--serif);font-size:13.5px;color:var(--ink);line-height:1.7;font-style:italic;}
 .slot{display:inline-block;background:white;border:1px solid var(--rule);padding:0 5px;border-radius:2px;font-style:normal;font-family:var(--sans);font-size:11px;font-weight:600;color:var(--accent);vertical-align:baseline;}
 
-/* ANALYSIS GRID */
 .analysis-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.75rem;}
 .analysis-card{background:white;border:1px solid var(--rule);padding:0.85rem 1rem;}
 .analysis-card-label{font-family:var(--cond);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-light);margin-bottom:0.4rem;}
 .analysis-card-text{font-size:13px;color:var(--ink-mid);line-height:1.6;}
 
-/* NAV BUTTONS */
+/* BJ reference strip */
+.bj-strip{background:var(--paper-warm);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:0.75rem 1.25rem;margin-bottom:1.75rem;display:flex;gap:10px;align-items:flex-start;}
+.bj-strip-label{font-family:var(--cond);font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-light);white-space:nowrap;padding-top:2px;}
+.bj-strip-text{font-family:var(--serif);font-size:12.5px;color:var(--ink-mid);line-height:1.65;font-style:italic;}
+.bj-strip-text strong{font-style:normal;color:var(--ink);}
+
 .nav-buttons{display:flex;justify-content:space-between;align-items:center;padding-top:1.75rem;border-top:1px solid var(--rule);}
 .nav-btn{font-family:var(--cond);font-size:12px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;padding:0.55rem 1.1rem;border:1.5px solid var(--ink);background:none;color:var(--ink);cursor:pointer;transition:all 0.15s;}
 .nav-btn:hover{background:var(--ink);color:var(--paper);}
@@ -137,7 +123,7 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);min-height
 .nav-btn-primary:hover{background:var(--accent);border-color:var(--accent);}
 .nav-counter{font-family:var(--cond);font-size:11px;color:var(--ink-light);letter-spacing:0.08em;}
 
-/* SUMMARY */
+/* summary */
 .summary-table-wrap{overflow-x:auto;}
 .summary-table{width:100%;border-collapse:collapse;font-size:12.5px;}
 .summary-table th{font-family:var(--cond);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-light);border-bottom:2px solid var(--ink);padding:0.45rem 0.65rem;text-align:left;white-space:nowrap;}
@@ -145,24 +131,113 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);min-height
 .summary-table td:first-child{font-family:var(--serif);font-weight:700;color:var(--ink);font-size:13px;white-space:nowrap;}
 .summary-table tr:hover td{background:var(--paper-warm);cursor:pointer;}
 
-/* HANDOFF */
-.handoff-block{margin-top:2rem;border:2px solid var(--ink);padding:1.5rem 1.75rem;text-align:center;}
-.handoff-title{font-family:var(--serif);font-size:18px;font-weight:700;margin-bottom:0.4rem;}
-.handoff-sub{font-size:13.5px;color:var(--ink-mid);margin-bottom:1.1rem;line-height:1.6;}
-.handoff-btn{display:inline-block;background:var(--accent);color:white;font-family:var(--cond);font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.7rem 1.75rem;border:none;cursor:pointer;text-decoration:none;transition:background 0.15s;}
-.handoff-btn:hover{background:var(--ink);}
+/* ══════════════════════════════
+   ASSIGNMENT TAB
+══════════════════════════════ */
+.assignment-wrap{max-width:860px;margin:0 auto;padding:2.5rem 2rem 5rem;}
 
-/* PROGRESS */
-.progress-bar{height:2px;background:var(--rule);margin-bottom:1.75rem;}
-.progress-fill{height:100%;background:var(--accent);transition:width 0.3s ease;}
+/* directions block */
+.directions-block{background:var(--ink);color:var(--paper);padding:2rem 2.5rem;margin-bottom:2.5rem;}
+.dir-eyebrow{font-family:var(--cond);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-bottom:0.4rem;}
+.dir-title{font-family:var(--serif);font-size:clamp(20px,3vw,28px);font-weight:700;line-height:1.15;margin-bottom:1rem;color:white;}
+.dir-steps{list-style:none;display:flex;flex-direction:column;gap:0.65rem;}
+.dir-step{display:flex;gap:12px;align-items:flex-start;}
+.dir-step-num{font-family:var(--cond);font-size:22px;font-weight:700;color:var(--accent-light);line-height:1;min-width:28px;opacity:0.7;}
+.dir-step-text{font-size:14.5px;color:rgba(255,255,255,0.82);line-height:1.6;}
+.dir-step-text strong{color:white;font-weight:600;}
+.dir-doc-btn{display:inline-block;margin-top:1.25rem;background:var(--accent);color:white;font-family:var(--cond);font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.65rem 1.5rem;text-decoration:none;transition:background 0.15s;border:none;cursor:pointer;}
+.dir-doc-btn:hover{background:#6b2a18;}
 
-/* MOBILE */
-@media(max-width:800px){
-  .layout{grid-template-columns:1fr;}
-  .sidebar-left,.sidebar-right{position:static;height:auto;border:none;border-bottom:1px solid var(--rule);}
-  .main{padding:1.5rem 1.25rem 3rem;max-width:100%;border:none;}
-  .masthead{position:static;}
+/* reference prompt */
+.ref-prompt{border:1px solid var(--rule);background:white;padding:1.1rem 1.4rem;margin-bottom:2.5rem;display:flex;gap:12px;align-items:flex-start;}
+.ref-prompt-badge{font-family:var(--cond);font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;background:var(--paper-warm);color:var(--ink-light);padding:3px 7px;white-space:nowrap;border:1px solid var(--rule);margin-top:2px;}
+.ref-prompt-text{font-family:var(--serif);font-size:13px;color:var(--ink-mid);line-height:1.7;font-style:italic;}
+.ref-prompt-text strong{font-style:normal;color:var(--ink);}
+
+/* philosopher cards */
+.phil-section-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1rem;}
+.phil-section-title{font-family:var(--cond);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-light);}
+.phil-section-hint{font-size:12px;color:var(--ink-light);}
+
+.phil-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}
+
+.phil-card{background:white;border:1px solid var(--rule);cursor:pointer;transition:border-color 0.15s,box-shadow 0.15s;}
+.phil-card:hover{border-color:var(--ink-mid);}
+.phil-card.open{border-color:var(--ink);border-top:3px solid var(--accent);}
+
+.phil-header{display:flex;align-items:center;justify-content:space-between;padding:0.85rem 1rem;}
+.phil-name{font-family:var(--cond);font-size:14px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink);}
+.phil-dates{font-family:var(--sans);font-size:11px;color:var(--ink-light);font-weight:400;}
+.phil-toggle{font-size:13px;color:var(--ink-light);transition:transform 0.2s;}
+.phil-card.open .phil-toggle{transform:rotate(180deg);color:var(--accent);}
+
+.phil-body{display:none;padding:0 1rem 1rem;}
+.phil-card.open .phil-body{display:block;}
+.phil-quote-text{font-family:var(--serif);font-size:15px;color:var(--ink);line-height:1.75;font-style:italic;border-left:3px solid var(--accent);padding-left:0.85rem;margin-bottom:1rem;}
+.phil-prompt{font-size:12.5px;color:var(--ink-mid);line-height:1.6;background:var(--paper-warm);padding:0.6rem 0.75rem;border:1px solid var(--rule);}
+.phil-prompt strong{color:var(--ink);font-weight:600;}
+
+
+/* ══════════════════════════════
+   PROMPT TAB
+══════════════════════════════ */
+.prompt-tab-wrap{max-width:860px;margin:0 auto;padding:2.5rem 2rem 5rem;}
+.pt-header{margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:3px double var(--ink);}
+.pt-eyebrow{font-family:var(--cond);font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-light);margin-bottom:0.35rem;}
+.pt-title{font-family:var(--serif);font-size:clamp(24px,3.5vw,36px);font-weight:700;color:var(--ink);line-height:1.1;letter-spacing:-0.02em;margin-bottom:0.5rem;}
+.pt-sub{font-size:15px;color:var(--ink-mid);line-height:1.6;}
+.pt-body{display:flex;flex-direction:column;gap:1.25rem;margin-bottom:2rem;}
+.pt-card{background:white;border:1px solid var(--rule);}
+.pt-card-label{font-family:var(--cond);font-size:10px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:white;background:var(--ink);padding:0.4rem 1.1rem;}
+.pt-quote-block{padding:1.5rem 1.5rem 1.25rem;}
+.pt-speaker{font-family:var(--cond);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-light);margin-bottom:0.75rem;}
+.pt-blockquote{font-family:var(--serif);font-size:clamp(16px,2.2vw,20px);color:var(--ink);line-height:1.75;font-style:italic;border-left:4px solid var(--accent);padding-left:1.25rem;}
+.pt-highlight{font-style:normal;background:var(--accent-light);color:var(--accent);padding:0 3px;}
+.pt-task-lead{font-family:var(--serif);font-size:16px;color:var(--ink);line-height:1.7;padding:1.25rem 1.5rem 0;}
+.pt-reqs{padding:1rem 1.5rem 1.25rem;}
+.pt-reqs-label{font-family:var(--cond);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-light);margin-bottom:0.75rem;}
+.pt-req{display:flex;gap:12px;align-items:flex-start;margin-bottom:0.6rem;}
+.pt-req-n{font-family:var(--cond);font-size:18px;font-weight:700;color:var(--accent);opacity:0.6;line-height:1;min-width:20px;}
+.pt-req-text{font-size:14px;color:var(--ink-mid);line-height:1.6;}
+.pt-req-text strong{color:var(--ink);}
+.pt-unpack-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;padding:0;}
+.pt-unpack-item{padding:1.1rem 1.25rem;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);}
+.pt-unpack-item:nth-child(even){border-right:none;}
+.pt-unpack-item:nth-last-child(-n+2){border-bottom:none;}
+.pt-unpack-term{font-family:var(--serif);font-size:15px;font-weight:700;color:var(--ink);margin-bottom:0.4rem;}
+.pt-unpack-def{font-size:13px;color:var(--ink-mid);line-height:1.65;}
+.pt-stances{display:grid;grid-template-columns:repeat(3,1fr);gap:0;}
+.pt-stance{padding:1.1rem 1.25rem;border-right:1px solid var(--rule);}
+.pt-stance:last-child{border-right:none;}
+.pt-stance-name{font-family:var(--cond);font-size:13px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.5rem;}
+.pt-stance-defend .pt-stance-name{color:var(--full);}
+.pt-stance-challenge .pt-stance-name{color:var(--none-c);}
+.pt-stance-qualify .pt-stance-name{color:var(--partial);}
+.pt-stance-desc{font-size:13px;color:var(--ink-mid);line-height:1.65;}
+.pt-footer{text-align:center;padding:1.5rem;border-top:1px solid var(--rule);}
+.pt-footer-text{font-size:14px;color:var(--ink-mid);margin-bottom:0.75rem;}
+.pt-next-btn{background:var(--ink);color:var(--paper);font-family:var(--cond);font-size:13px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;padding:0.7rem 1.75rem;border:none;cursor:pointer;transition:background 0.15s;}
+.pt-next-btn:hover{background:var(--accent);}
+@media(max-width:700px){
+  .pt-unpack-grid{grid-template-columns:1fr;}
+  .pt-unpack-item{border-right:none;}
+  .pt-unpack-item:nth-last-child(-n+2){border-bottom:1px solid var(--rule);}
+  .pt-unpack-item:last-child{border-bottom:none;}
+  .pt-stances{grid-template-columns:1fr;}
+  .pt-stance{border-right:none;border-bottom:1px solid var(--rule);}
+  .pt-stance:last-child{border-bottom:none;}
+}
+
+/* mobile */
+@media(max-width:700px){
+  .models-layout{grid-template-columns:1fr;}
+  .sidebar-left{position:static;height:auto;border-right:none;border-bottom:1px solid var(--rule);}
+  .models-main{padding:1.5rem 1.25rem 3rem;}
   .analysis-grid{grid-template-columns:1fr;}
+  .masthead,.top-tabs{position:static;}
+  .assignment-wrap{padding:1.5rem 1rem 4rem;}
+  .directions-block{padding:1.5rem;}
+  .phil-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -171,68 +246,178 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);min-height
 <header class="masthead">
   <p class="masthead-kicker">AP Language &amp; Composition</p>
   <h1 class="masthead-title">Argumentative Thesis Models</h1>
-  <p class="masthead-sub">How each model shapes your line of reasoning</p>
 </header>
 
-<div class="layout">
+<!-- TOP TABS -->
+<div class="top-tabs">
+  <button class="top-tab active" id="tab-prompt-btn" onclick="switchTab('prompt')">
+    The Prompt
+    <span class="tab-hint">Full AP exam wording</span>
+  </button>
+  <button class="top-tab" id="tab-models-btn" onclick="switchTab('models')">
+    The Models
+    <span class="tab-hint">Nine thesis structures explained</span>
+  </button>
+  <button class="top-tab" id="tab-assignment-btn" onclick="switchTab('assignment')">
+    Your Assignment
+    <span class="tab-hint">Philosopher quotes + directions</span>
+  </button>
+</div>
 
-  <!-- LEFT NAV -->
-  <nav class="sidebar-left">
-    <p class="sidebar-section-label">Models</p>
-    <div id="nav-list"></div>
-    <div class="nav-divider"></div>
-    <button class="nav-summary-btn" onclick="showSummary()">Summary table →</button>
-  </nav>
+<!-- ══ PROMPT TAB ══ -->
+<div class="tab-panel active" id="tab-prompt">
+  <div class="prompt-tab-wrap">
 
-  <!-- MAIN CONTENT -->
-  <main class="main">
-    <div id="panels"></div>
-
-    <!-- SUMMARY PANEL -->
-    <div id="summary-panel" class="panel">
-      <p class="model-number">Overview</p>
-      <h2 class="model-title">All nine models at a glance</h2>
-      <p class="model-lede">Compare how each model handles the line of reasoning, its sophistication level, and how demanding it is to produce under timed conditions. Click any row to revisit that model.</p>
-      <div class="summary-table-wrap">
-        <table class="summary-table">
-          <thead><tr><th>Model</th><th>Previews LoR?</th><th>Sophistication</th><th>Timed writing</th></tr></thead>
-          <tbody id="summary-tbody"></tbody>
-        </table>
-      </div>
-      <div class="handoff-block">
-        <p class="handoff-title">Now write your own</p>
-        <p class="handoff-sub">Choose one of the philosopher quotes from the panel on the right. Take a stance — defend, challenge, or qualify — and write a thesis using one of the models above. Aim higher than a direct thesis.</p>
-        <a class="handoff-btn" href="YOUR_GOOGLE_DOC_LINK_HERE" target="_blank">Open the shared Google Doc →</a>
-      </div>
-    </div>
-  </main>
-
-  <!-- RIGHT SIDEBAR -->
-  <aside class="sidebar-right">
-
-    <!-- FULL PROMPT -->
-    <div>
-      <p class="right-section-label">The AP exam prompt</p>
-      <div class="prompt-full">
-        <p class="prompt-full-quote">The late Barbara Jordan, a former United States representative, once warned, <strong>"[T]his is the great danger America faces — that we will cease to be one nation and become instead a collection of interest groups: city against suburb, region against region, individual against individual; each seeking to satisfy private wants."</strong></p>
-        <div class="prompt-divider"></div>
-        <p class="prompt-task-header">The task</p>
-        <p class="prompt-task" style="margin-bottom:0.6rem;">Write an essay that argues your position on Jordan's claim that "private wants" threaten national identity.</p>
-        <p class="prompt-task-header" style="margin-top:0.65rem;">In your response you should:</p>
-        <div class="prompt-req"><span class="prompt-req-num">1</span><span class="prompt-req-text">Respond to the prompt with a thesis that presents a defensible position.</span></div>
-        <div class="prompt-req"><span class="prompt-req-num">2</span><span class="prompt-req-text">Provide evidence to support your line of reasoning.</span></div>
-        <div class="prompt-req"><span class="prompt-req-num">3</span><span class="prompt-req-text">Explain how the evidence supports your line of reasoning.</span></div>
-        <div class="prompt-req"><span class="prompt-req-num">4</span><span class="prompt-req-text">Use appropriate grammar and punctuation in communicating your argument.</span></div>
-      </div>
+    <div class="pt-header">
+      <p class="pt-eyebrow">AP Language &amp; Composition — Argumentative FRQ</p>
+      <h2 class="pt-title">The Barbara Jordan Prompt</h2>
+      <p class="pt-sub">Read the full prompt carefully. We'll unpack it together before looking at thesis models.</p>
     </div>
 
-    <!-- PHILOSOPHER ACTIVITY -->
-    <div>
-      <p class="right-section-label">Your activity — choose a philosopher</p>
-      <div id="phil-list"></div>
+    <div class="pt-body">
+
+      <!-- SOURCE -->
+      <div class="pt-card">
+        <p class="pt-card-label">The source text</p>
+        <div class="pt-quote-block">
+          <p class="pt-speaker">Barbara Jordan — U.S. Representative, 1972–1979</p>
+          <blockquote class="pt-blockquote">
+            "[T]his is the great danger America faces — that we will cease to be one nation and become instead a collection of interest groups: city against suburb, region against region, individual against individual; each seeking to satisfy <span class="pt-highlight">private wants</span>."
+          </blockquote>
+        </div>
+      </div>
+
+      <!-- TASK -->
+      <div class="pt-card">
+        <p class="pt-card-label">The task</p>
+        <p class="pt-task-lead">Write an essay that argues your position on Jordan's claim that <strong>"private wants"</strong> threaten national identity.</p>
+        <div class="pt-reqs">
+          <p class="pt-reqs-label">In your response you should do the following:</p>
+          <div class="pt-req"><span class="pt-req-n">1</span><p class="pt-req-text">Respond to the prompt with a <strong>thesis that presents a defensible position.</strong></p></div>
+          <div class="pt-req"><span class="pt-req-n">2</span><p class="pt-req-text">Provide <strong>evidence</strong> to support your line of reasoning.</p></div>
+          <div class="pt-req"><span class="pt-req-n">3</span><p class="pt-req-text"><strong>Explain</strong> how the evidence supports your line of reasoning.</p></div>
+          <div class="pt-req"><span class="pt-req-n">4</span><p class="pt-req-text">Use appropriate <strong>grammar and punctuation</strong> in communicating your argument.</p></div>
+        </div>
+      </div>
+
+      <!-- UNPACK -->
+      <div class="pt-card">
+        <p class="pt-card-label">Let's unpack it</p>
+        <div class="pt-unpack-grid">
+          <div class="pt-unpack-item">
+            <p class="pt-unpack-term">"private wants"</p>
+            <p class="pt-unpack-def">What does Jordan mean by this? What are some examples — personal ambition, consumer choices, individual priorities? Does the phrase carry a negative connotation, or is it neutral?</p>
+          </div>
+          <div class="pt-unpack-item">
+            <p class="pt-unpack-term">"national identity"</p>
+            <p class="pt-unpack-def">What holds a nation together? Shared values, history, language, institutions? Is national identity something fixed, or does it shift over time?</p>
+          </div>
+          <div class="pt-unpack-item">
+            <p class="pt-unpack-term">"threaten"</p>
+            <p class="pt-unpack-def">Jordan says private wants are a <em>danger</em>. Is this a causal claim — that private wants directly cause the erosion of national identity? Or a conditional one?</p>
+          </div>
+          <div class="pt-unpack-item">
+            <p class="pt-unpack-term">"collection of interest groups"</p>
+            <p class="pt-unpack-def">Jordan paints a specific picture: city vs. suburb, region vs. region. What does fragmentation look like in practice? Is this inevitable, or can it be resisted?</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- STANCE -->
+      <div class="pt-card">
+        <p class="pt-card-label">Before you write — three possible stances</p>
+        <div class="pt-stances">
+          <div class="pt-stance pt-stance-defend">
+            <p class="pt-stance-name">Defend</p>
+            <p class="pt-stance-desc">Jordan is right. Private wants do erode national unity. When people prioritize themselves over the common good, the bonds that hold a nation together weaken.</p>
+          </div>
+          <div class="pt-stance pt-stance-challenge">
+            <p class="pt-stance-name">Challenge</p>
+            <p class="pt-stance-desc">Jordan is wrong. Private wants don't threaten national identity — they may even strengthen it, because people invest in a nation that gives them freedom to pursue their own goals.</p>
+          </div>
+          <div class="pt-stance pt-stance-qualify">
+            <p class="pt-stance-name">Qualify</p>
+            <p class="pt-stance-desc">Jordan is partially right. Private wants are only a threat under certain conditions — when they crowd out any sense of shared responsibility, or when institutions fail to connect individual and collective wellbeing.</p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end pt-body -->
+
+    <div class="pt-footer">
+      <p class="pt-footer-text">Ready to see how different thesis models respond to this prompt?</p>
+      <button class="pt-next-btn" onclick="switchTab('models')">Explore the thesis models →</button>
     </div>
 
-  </aside>
+  </div>
+</div>
+
+<!-- ══ MODELS TAB ══ -->
+<div class="tab-panel" id="tab-models">
+  <div class="models-layout">
+    <nav class="sidebar-left">
+      <p class="sidebar-section-label">Models</p>
+      <div id="nav-list"></div>
+      <div class="nav-divider"></div>
+      <button class="nav-summary-btn" onclick="showSummary()">Summary table →</button>
+    </nav>
+    <main class="models-main">
+      <div id="panels"></div>
+      <!-- SUMMARY PANEL -->
+      <div id="summary-panel" class="panel">
+        <p class="model-number">Overview</p>
+        <h2 class="model-title">All nine models at a glance</h2>
+        <p class="model-lede">Compare how each model handles the line of reasoning, its sophistication level, and how demanding it is under timed conditions. Click any row to revisit that model.</p>
+        <div class="summary-table-wrap">
+          <table class="summary-table">
+            <thead><tr><th>Model</th><th>Previews LoR?</th><th>Sophistication</th><th>Timed writing</th></tr></thead>
+            <tbody id="summary-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- ══ ASSIGNMENT TAB ══ -->
+<div class="tab-panel" id="tab-assignment">
+  <div class="assignment-wrap">
+
+    <!-- DIRECTIONS -->
+    <div class="directions-block">
+      <p class="dir-eyebrow">Today's activity</p>
+      <h2 class="dir-title">Unpack a philosopher's claim.<br>Write a thesis statement.</h2>
+      <ol class="dir-steps">
+        <li class="dir-step">
+          <span class="dir-step-num">1</span>
+          <span class="dir-step-text">Choose one of the philosopher quotes below. Read it carefully — what is the claim? Do you agree, disagree, or does it depend?</span>
+        </li>
+        <li class="dir-step">
+          <span class="dir-step-num">2</span>
+          <span class="dir-step-text"><strong>Defend, challenge, or qualify</strong> the claim. Write a thesis statement in response. Aim for one of the more sophisticated models from the Models tab — try a concession–rebuttal, qualified, tension-first, so-what, or counterintuitive thesis.</span>
+        </li>
+        <li class="dir-step">
+          <span class="dir-step-num">3</span>
+          <span class="dir-step-text">Paste your thesis into the <strong>class Google Doc</strong>. Include which philosopher you chose and which model you used.</span>
+        </li>
+      </ol>
+      <a class="dir-doc-btn" href="YOUR_GOOGLE_DOC_LINK_HERE" target="_blank">Open the class Google Doc →</a>
+    </div>
+
+    <!-- BJ REFERENCE -->
+    <div class="ref-prompt">
+      <span class="ref-prompt-badge">Reference prompt<br>used in examples</span>
+      <p class="ref-prompt-text">Barbara Jordan once warned: <strong>"[T]his is the great danger America faces — that we will cease to be one nation and become instead a collection of interest groups: city against suburb, region against region, individual against individual; each seeking to satisfy private wants."</strong> The thesis examples in the Models tab all respond to this prompt — use them as a guide for what your own thesis might look like.</p>
+    </div>
+
+    <!-- PHILOSOPHER CARDS -->
+    <div class="phil-section-header">
+      <p class="phil-section-title">Choose your philosopher</p>
+      <p class="phil-section-hint">Click a card to read the quote</p>
+    </div>
+    <div class="phil-grid" id="phil-grid"></div>
+
+  </div>
 </div>
 
 <script>
@@ -249,18 +434,25 @@ const models=[
 ];
 
 const philosophers=[
-  {name:"Plato",quote:"You can discover more about a person in an hour of play than you can discover in a year of conversation."},
-  {name:"Nietzsche",quote:"He who has a why to live can bear almost any how."},
-  {name:"Sartre",quote:"If you are lonely when you are alone, you are in bad company."},
-  {name:"Descartes",quote:"If you are to be a real seeker after truth, it is necessary that at least once in your life you would doubt, as far as possible, all things."},
-  {name:"Emerson",quote:"What lies behind you and what lies in front of you pales in comparison to what lies inside you."},
-  {name:"Hobbes",quote:"It is not wisdom but authority that makes a law."}
+  {name:"Plato",dates:"428–348 BC",quote:"You can discover more about a person in an hour of play than you can discover in a year of conversation.",prompt:"Does how someone behaves when the stakes are low reveal more about who they really are than how they present themselves in serious situations? Defend, challenge, or qualify Plato's claim."},
+  {name:"Nietzsche",dates:"1844–1900",quote:"He who has a why to live can bear almost any how.",prompt:"Does having a clear sense of purpose allow people to endure almost any hardship? Defend, challenge, or qualify Nietzsche's claim."},
+  {name:"Sartre",dates:"1905–1980",quote:"If you are lonely when you are alone, you are in bad company.",prompt:"Does discomfort with solitude reveal something about a person's relationship with themselves? Defend, challenge, or qualify Sartre's claim."},
+  {name:"Descartes",dates:"1596–1650",quote:"If you are to be a real seeker after truth, it is necessary that at least once in your life you would doubt, as far as possible, all things.",prompt:"Is radical doubt — questioning everything you believe — a necessary step toward genuine understanding? Defend, challenge, or qualify Descartes' claim."},
+  {name:"Emerson",dates:"1803–1882",quote:"What lies behind you and what lies in front of you pales in comparison to what lies inside you.",prompt:"Is inner character more important than a person's past experiences or future circumstances in determining who they are and what they can achieve? Defend, challenge, or qualify Emerson's claim."},
+  {name:"Hobbes",dates:"1588–1679",quote:"It is not wisdom but authority that makes a law.",prompt:"Should laws be followed because they come from a legitimate authority, or only when they reflect genuine wisdom and justice? Defend, challenge, or qualify Hobbes' claim."}
 ];
 
 const lorLabels={full:"Fully previews LoR",partial:"Partially previews LoR",none:"Does not preview LoR"};
 const lorIcons={full:"✦",partial:"◈",none:"○"};
 const timedLabels={easy:"Easy in timed writing",moderate:"Moderate in timed writing",hard:"Demanding in timed writing"};
 const sophLabels={foundational:"Foundational",proficient:"Proficient",advanced:"Advanced"};
+
+function switchTab(tab){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.top-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  document.getElementById('tab-'+tab+'-btn').classList.add('active');
+}
 
 function buildNav(){
   const nav=document.getElementById('nav-list');
@@ -271,21 +463,6 @@ function buildNav(){
     el.innerHTML=`<span class="nav-num">${String(i+1).padStart(2,'0')}</span><span class="nav-name">${m.name}</span>`;
     el.onclick=()=>showModel(i);
     nav.appendChild(el);
-  });
-}
-
-function buildPhils(){
-  const list=document.getElementById('phil-list');
-  philosophers.forEach((p,i)=>{
-    const card=document.createElement('div');
-    card.className='phil-card';
-    card.innerHTML=`<div class="phil-header"><span class="phil-name">${p.name}</span><span class="phil-toggle">▾</span></div><p class="phil-quote">"${p.quote}"</p>`;
-    card.onclick=()=>{
-      const isOpen=card.classList.contains('open');
-      document.querySelectorAll('.phil-card').forEach(c=>c.classList.remove('open'));
-      if(!isOpen) card.classList.add('open');
-    };
-    list.appendChild(card);
   });
 }
 
@@ -346,6 +523,29 @@ function buildPanels(){
   });
 }
 
+function buildPhils(){
+  const grid=document.getElementById('phil-grid');
+  philosophers.forEach((p,i)=>{
+    const card=document.createElement('div');
+    card.className='phil-card';
+    card.innerHTML=`
+      <div class="phil-header">
+        <div><span class="phil-name">${p.name}</span> <span class="phil-dates">${p.dates}</span></div>
+        <span class="phil-toggle">▾</span>
+      </div>
+      <div class="phil-body">
+        <p class="phil-quote-text">"${p.quote}"</p>
+        <p class="phil-prompt"><strong>Your task:</strong> ${p.prompt}</p>
+      </div>`;
+    card.onclick=()=>{
+      const isOpen=card.classList.contains('open');
+      document.querySelectorAll('.phil-card').forEach(c=>c.classList.remove('open'));
+      if(!isOpen) card.classList.add('open');
+    };
+    grid.appendChild(card);
+  });
+}
+
 function showModel(i){
   if(i<0||i>=models.length)return;
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
@@ -362,7 +562,7 @@ function showSummary(){
   window.scrollTo(0,0);
 }
 
-buildNav();buildPhils();buildPanels();
+buildNav();buildPanels();buildPhils();
 </script>
 </body>
 </html>
