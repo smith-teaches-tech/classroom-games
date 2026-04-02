@@ -124,7 +124,7 @@
     padding:28px 28px 24px; margin-bottom:20px;
     position:relative; overflow:hidden;
   }
-  .prompt-hero::before { content:'✍️'; position:absolute; right:24px; top:24px; font-size:48px; opacity:.15; }
+  .prompt-hero::before { content:'✉️'; position:absolute; right:24px; top:24px; font-size:48px; opacity:.15; }
   .prompt-hero h2 { font-family:'Playfair Display',serif; font-size:22px; margin-bottom:12px; color:var(--accent); }
   .prompt-hero p { font-size:14px; line-height:1.8; max-width:580px; }
 
@@ -306,7 +306,7 @@
 <div id="app">
 
   <header id="app-header">
-    <div style="font-size:26px">📱</div>
+    <div style="font-size:26px">✉️</div>
     <div>
       <span class="header-label">AP Lang · Synthesis FRQ</span>
       <span class="header-name">The Marc &amp; Carly Situation</span>
@@ -341,11 +341,11 @@
       <div id="prompt" class="panel active">
         <div class="prompt-hero">
           <h2>The Situation</h2>
-          <p>The other day, Marc Tetreault and his girlfriend of 6 months, Carly McIntosh, got in a rather large fight because he went to a bonfire at his friend Matt's house without her. (Carly and Matt don't get along, so Marc knew she wouldn't have had fun anyway). Now, they seemed to be getting along for the last 2 weeks—but since the fight a lot of information has been revealed—now Marc needs to make a decision about his relationship.</p>
+          <p>The other day, Marc Tetreault and his girlfriend of 6 months, Carly McIntosh, got in a rather large fight because he went to a bonfire at his friend Matt's house without her. (Carly and Matt don't get along, so Marc knew she wouldn't have had fun anyway). Now, they seemed to be getting along for the last 2 weeks—but since the fight a lot of information has been revealed—now they need to make a decision about their relationship.</p>
         </div>
         <div class="task-box">
           <strong>Your Task</strong>
-          <p>Read the following sources carefully. <strong>Write a DM (Direct Message)</strong> that synthesizes material from at least three sources and develops your position about <strong>how Marc should handle his situation with Carly.</strong></p>
+          <p>Read the following sources carefully. <strong>Write a letter to Marc, Carly, or both Marc and Carly</strong> that synthesizes material from at least three sources and develops your position about <strong>how Marc should handle his situation with Carly.</strong></p>
         </div>
         <div class="requirements">
           <div class="req-item"><div class="req-num">1</div><div class="req-text">Respond with a <strong>thesis</strong> that presents a defensible position.</div></div>
@@ -572,20 +572,20 @@
       <div class="notes-tabs">
         <button class="note-tab-btn active" onclick="showNoteTab('thesis',this)">Thesis</button>
         <button class="note-tab-btn" onclick="showNoteTab('evidence',this)">Evidence</button>
-        <button class="note-tab-btn" onclick="showNoteTab('draft',this)">Draft</button>
+        <button class="note-tab-btn" onclick="showNoteTab('draft',this)">Letter</button>
       </div>
       <div class="note-sections-container">
         <div id="note-thesis" class="note-section active">
           <div class="note-area-label">My Position / Thesis</div>
-          <textarea id="ta-thesis" placeholder="Marc should... because...&#10;&#10;Write a thesis that takes a clear stance on what Marc should do." oninput="saveNotes()"></textarea>
+          <textarea id="ta-thesis" placeholder="Marc should... / Carly should... because...&#10;&#10;Write a thesis that takes a clear stance on what Marc and/or Carly should do." oninput="saveNotes()"></textarea>
         </div>
         <div id="note-evidence" class="note-section">
           <div class="note-area-label">Evidence &amp; Analysis</div>
           <textarea id="ta-evidence" placeholder="Source A shows...&#10;Source B reveals...&#10;&#10;Note at least 3 sources with analysis." oninput="saveNotes()"></textarea>
         </div>
         <div id="note-draft" class="note-section">
-          <div class="note-area-label">Full Draft DM</div>
-          <textarea id="ta-draft" placeholder="Write your full DM response here..." oninput="saveNotes()"></textarea>
+          <div class="note-area-label">Full Draft Letter</div>
+          <textarea id="ta-draft" placeholder="Write your full letter here...&#10;&#10;Address it to: Marc, Carly, or both." oninput="saveNotes()"></textarea>
         </div>
       </div>
       <div class="sources-used">
@@ -698,7 +698,7 @@
       line,
       evidence || '(not yet written)',
       '',
-      'FULL DRAFT DM',
+      'FULL DRAFT LETTER',
       line,
       draft || '(not yet written)'
     ].join('\n');
