@@ -1,571 +1,689 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hexagonal Thinking Tool</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
-            overflow: hidden;
-        }
-        
-        .header {
-            background-color: #4a4a9c;
-            color: white;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        
-        .container {
-            display: flex;
-            height: calc(100vh - 180px);
-            overflow: hidden;
-        }
-        
-        #canvas-container {
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            position: relative;
-        }
-        
-        .canvas {
-            position: relative;
-            background-color: white;
-            border: 1px solid #ddd;
-            margin: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            width: 150%;
-            height: 150%;
-        }
-        
-        .controls {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            padding: 10px;
-            background-color: #f0f0f0;
-            border-top: 1px solid #ddd;
-        }
-        
-        button {
-            padding: 8px 15px;
-            background-color: #4a4a9c;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background-color 0.2s;
-        }
-        
-        button:hover {
-            background-color: #3a3a7c;
-        }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AP Synthesis — Hexagonal Thinking</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
-        input {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        
-        .hexagon {
-            position: absolute;
-            width: 120px;
-            height: 69.5px; /* height = width * sin(60°) */
-            background-color: #e0e8ff;
-            border: 2px solid #4a4a9c;
-            cursor: move;
-            user-select: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1;
-        }
-        
-        .hexagon:before,
-        .hexagon:after {
-            content: "";
-            position: absolute;
-            width: 0;
-            height: 0;
-            border-left: 60px solid transparent;
-            border-right: 60px solid transparent;
-        }
-        
-        .hexagon:before {
-            bottom: 100%;
-            border-bottom: 34.75px solid #e0e8ff;
-            border-bottom-width: 34.75px;
-            border-bottom-color: inherit;
-        }
-        
-        .hexagon:after {
-            top: 100%;
-            border-top: 34.75px solid #e0e8ff;
-            border-top-width: 34.75px;
-            border-top-color: inherit;
-        }
-        
-        .hexagon-content {
-            z-index: 2;
-            width: 100px;
-            height: 60px;
-            overflow: hidden;
-            text-align: center;
-            background: transparent;
-            border: none;
-            resize: none;
-            font-family: Arial, sans-serif;
-            font-size: 12px;
-        }
-        
-        .hexagon-content:focus {
-            outline: none;
-        }
-        
-        .hexagon.selected {
-            background-color: #c0d0ff;
-        }
+:root {
+  --thesis-fill:   #1a1a2e;
+  --thesis-text:   #f5f0e8;
+  --thesis-border: #c9a84c;
+  --claim-fill:    #2d1b4e;
+  --claim-text:    #e8d5ff;
+  --claim-border:  #9b59b6;
+  --ev-fill:       #eaf3fb;
+  --ev-text:       #0d2b45;
+  --ev-border:     #2980b9;
+  --note-fill:     #fdf6e3;
+  --note-text:     #3d2b00;
+  --note-border:   #c8962a;
+  --canvas-bg:     #f2f0eb;
+  --dot:           #d4d0c8;
+  --ui-bg:         #1c1c28;
+  --ui-border:     #2e2e44;
+  --ui-text:       #d0cfe8;
+  --ui-muted:      #666680;
+  --gold:          #c9a84c;
+}
 
-        .hexagon.central {
-            background-color: #ffe0e0;
-        }
+body{font-family:'Source Sans 3',sans-serif;background:var(--canvas-bg);height:100vh;display:flex;flex-direction:column;overflow:hidden}
 
-        .tooltip {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-            background-color: rgba(0,0,0,0.7);
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 12px;
-        }
+/* HEADER */
+header{background:var(--ui-bg);border-bottom:2px solid var(--gold);padding:0 20px;height:52px;display:flex;align-items:center;gap:16px;flex-shrink:0}
+header h1{font-family:'Playfair Display',serif;font-size:1.1rem;color:#fff;letter-spacing:.02em}
+header h1 em{color:var(--gold);font-size:.82rem;font-weight:600;font-style:normal;font-family:'Source Sans 3',sans-serif;margin-left:8px;letter-spacing:.07em;text-transform:uppercase}
+.legend{display:flex;gap:18px;margin-left:auto;align-items:center}
+.leg{display:flex;align-items:center;gap:7px;font-size:.67rem;color:var(--ui-muted);text-transform:uppercase;letter-spacing:.07em;font-weight:600}
+.leg-swatch{width:12px;height:12px;border-radius:2px;border:2px solid}
+.sw-thesis{background:var(--thesis-fill);border-color:var(--thesis-border)}
+.sw-claim {background:var(--claim-fill); border-color:var(--claim-border)}
+.sw-ev    {background:var(--ev-fill);    border-color:var(--ev-border)}
+.sw-note  {background:var(--note-fill);  border-color:var(--note-border)}
 
-        .save-load {
-            display: flex;
-            gap: 10px;
-            margin-left: auto;
-        }
-    </style>
+/* TOOLBAR */
+.toolbar{background:#16161f;border-bottom:1px solid var(--ui-border);padding:0 20px;height:46px;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.tb-label{font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ui-muted);font-weight:600;margin-right:2px}
+.tb-sep{width:1px;height:26px;background:var(--ui-border);margin:0 8px}
+button{font-family:'Source Sans 3',sans-serif;font-size:.75rem;font-weight:600;border:none;border-radius:4px;cursor:pointer;padding:5px 12px;letter-spacing:.02em;transition:all .12s;white-space:nowrap}
+button:active{transform:scale(.96)}
+.btn-claim-add{background:var(--claim-fill);color:var(--claim-text);border:1.5px solid var(--claim-border)}
+.btn-claim-add:hover{background:#3d2560}
+.btn-ev-add{background:var(--ev-fill);color:var(--ev-text);border:1.5px solid var(--ev-border)}
+.btn-ev-add:hover{background:#cce4f7}
+.btn-note-add{background:var(--note-fill);color:var(--note-text);border:1.5px solid var(--note-border)}
+.btn-note-add:hover{background:#faecc8}
+.btn-util{background:#222233;color:#aaa;border:1.5px solid var(--ui-border)}
+.btn-util:hover{background:#2e2e48;color:#ddd}
+.btn-danger{background:transparent;color:#c0392b;border:1.5px solid #4a1a1a}
+.btn-danger:hover{background:#2a0f0f}
+.btn-export{background:var(--gold);color:#1a1200;border:1.5px solid #a07830;font-weight:700}
+.btn-export:hover{background:#dbb84a}
+#zoom-val{font-size:.72rem;color:var(--ui-muted);min-width:38px;text-align:center;font-variant-numeric:tabular-nums}
+#sel-info{margin-left:auto;font-size:.7rem;color:var(--ui-muted);font-style:italic}
+
+/* CANVAS */
+#wrap{flex:1;overflow:auto;position:relative}
+#canvas{position:relative;width:3600px;height:2400px;transform-origin:0 0;background-color:var(--canvas-bg);background-image:radial-gradient(circle,var(--dot) 1.2px,transparent 1.2px);background-size:32px 32px}
+
+/* HEX */
+.hex{position:absolute;cursor:move;user-select:none;display:flex;align-items:center;justify-content:center;z-index:2;transition:filter .1s}
+.hex::before,.hex::after{content:'';position:absolute;left:0;height:0;width:0}
+
+/* sizes */
+.hex.thesis  {width:200px;height:115.5px;background:var(--thesis-fill);z-index:5}
+.hex.thesis::before{bottom:100%;border-left:100px solid transparent;border-right:100px solid transparent;border-bottom:57.7px solid var(--thesis-fill)}
+.hex.thesis::after {top:100%;border-left:100px solid transparent;border-right:100px solid transparent;border-top:57.7px solid var(--thesis-fill)}
+
+.hex.claim   {width:160px;height:92.4px;background:var(--claim-fill);z-index:4}
+.hex.claim::before{bottom:100%;border-left:80px solid transparent;border-right:80px solid transparent;border-bottom:46.2px solid var(--claim-fill)}
+.hex.claim::after {top:100%;border-left:80px solid transparent;border-right:80px solid transparent;border-top:46.2px solid var(--claim-fill)}
+
+.hex.evidence{width:120px;height:69.3px;background:var(--ev-fill)}
+.hex.evidence::before{bottom:100%;border-left:60px solid transparent;border-right:60px solid transparent;border-bottom:34.6px solid var(--ev-fill)}
+.hex.evidence::after {top:100%;border-left:60px solid transparent;border-right:60px solid transparent;border-top:34.6px solid var(--ev-fill)}
+
+.hex.note    {width:120px;height:69.3px;background:var(--note-fill)}
+.hex.note::before{bottom:100%;border-left:60px solid transparent;border-right:60px solid transparent;border-bottom:34.6px solid var(--note-fill)}
+.hex.note::after {top:100%;border-left:60px solid transparent;border-right:60px solid transparent;border-top:34.6px solid var(--note-fill)}
+
+/* SVG border */
+.hex-svg{position:absolute;pointer-events:none;z-index:6}
+
+/* badge */
+.hex-badge{position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;padding:2px 8px;border-radius:3px;white-space:nowrap;z-index:7;pointer-events:none}
+.thesis  .hex-badge{background:var(--gold);color:#1a1200;top:-30px}
+.claim   .hex-badge{background:var(--claim-border);color:#fff}
+.evidence .hex-badge{background:var(--ev-border);color:#fff}
+.note    .hex-badge{background:var(--note-border);color:#fff}
+
+/* textarea */
+.hex-text{position:relative;z-index:5;background:transparent;border:none;resize:none;font-family:'Source Sans 3',sans-serif;text-align:center;overflow:hidden;line-height:1.35}
+.hex-text:focus{outline:none}
+.thesis   .hex-text{width:160px;height:100px;font-size:12px;  color:var(--thesis-text);font-weight:500}
+.claim    .hex-text{width:128px;height:78px; font-size:11.5px;color:var(--claim-text);font-weight:500}
+.evidence .hex-text{width:96px; height:58px; font-size:10.5px;color:var(--ev-text)}
+.note     .hex-text{width:96px; height:58px; font-size:10px;  color:var(--note-text)}
+.hex-text::placeholder{font-style:italic;opacity:.45}
+
+/* selected */
+.hex.selected{filter:drop-shadow(0 0 9px rgba(201,168,76,.75));z-index:10!important}
+
+/* delete */
+.hex-del{position:absolute;top:-30px;right:-4px;width:18px;height:18px;border-radius:50%;background:#c0392b;color:#fff;font-size:11px;font-weight:700;line-height:18px;text-align:center;cursor:pointer;border:none;padding:0;display:none;z-index:20}
+.hex.selected .hex-del{display:block}
+.hex.thesis .hex-del{display:none!important}
+
+/* lines */
+#lines-svg{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1}
+
+/* arrow mode */
+body.arrow-mode{cursor:crosshair}
+body.arrow-mode .hex{cursor:pointer}
+body.arrow-mode .hex:hover{filter:drop-shadow(0 0 8px rgba(201,168,76,1))}
+.hex.arrow-from{filter:drop-shadow(0 0 10px rgba(201,168,76,1))!important}
+
+/* arrow draw preview line */
+#arrow-preview{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2}
+
+/* arrow toolbar button */
+.btn-arrow{
+  background:transparent;
+  color:var(--gold);
+  border:2px solid var(--gold);
+  padding:5px 14px;
+  font-size:.78rem;
+  letter-spacing:.04em;
+  box-shadow:0 0 8px rgba(201,168,76,.2);
+}
+.btn-arrow:hover{background:rgba(201,168,76,.12);box-shadow:0 0 12px rgba(201,168,76,.35);}
+.btn-arrow.active{background:var(--gold);color:#1a1200;border-color:#a07830;box-shadow:0 0 14px rgba(201,168,76,.5);}
+
+/* arrow toast */
+#arrow-toast{
+  position:fixed;bottom:44px;left:50%;transform:translateX(-50%);
+  background:#c9a84c;color:#1a1200;
+  font-family:'Source Sans 3',sans-serif;font-size:.78rem;font-weight:700;
+  padding:7px 18px;border-radius:20px;
+  display:none;z-index:9998;
+  box-shadow:0 3px 12px rgba(0,0,0,.35);
+  letter-spacing:.03em;
+  pointer-events:none;
+}
+#arrow-toast.on{display:block}
+
+/* selectable arrows */
+.user-arrow{cursor:pointer;stroke:#555;stroke-width:2.5;fill:none;opacity:.85}
+.user-arrow:hover{stroke:#c9a84c;opacity:1}
+.user-arrow.sel-arrow{stroke:#c9a84c;opacity:1}
+
+/* STATUS */
+.statusbar{background:#12121c;border-top:1px solid var(--ui-border);padding:4px 18px;display:flex;gap:22px;align-items:center;font-size:.67rem;color:var(--ui-muted);flex-shrink:0}
+.statusbar b{color:#bbb;font-weight:600}
+.statusbar .hint{margin-left:auto;font-style:italic}
+
+/* EXPORT OVERLAY */
+#exp-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:9999;align-items:center;justify-content:center;flex-direction:column;gap:14px;font-size:1rem;color:#fff}
+#exp-ov.on{display:flex}
+.spinner{width:38px;height:38px;border:3px solid #333;border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
 </head>
 <body>
-    <div class="header">
-        <h1>Hexagonal Thinking Tool</h1>
-        <p>Connect ideas and visualize your arguments</p>
-    </div>
-    
-    <div class="container">
-        <div id="canvas-container">
-            <div id="canvas" class="canvas"></div>
-        </div>
-    </div>
-    
-    <div class="controls">
-        <button id="add-hexagon">Add Hexagon</button>
-        <button id="clear-all">Clear All</button>
-        <button id="change-color">Change Color</button>
-        <button id="zoom-in">Zoom In</button>
-        <button id="zoom-out">Zoom Out</button>
-        <button id="reset-view">Reset View</button>
-        <div class="save-load">
-            <button id="save-btn">Save</button>
-            <button id="load-btn">Load</button>
-            <input type="file" id="load-file" style="display: none;">
-        </div>
-    </div>
-    
-    <div class="tooltip">
-        Click and drag to move hexagons. Double-click to edit text.
-    </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const canvas = document.getElementById('canvas');
-            const canvasContainer = document.getElementById('canvas-container');
-            const addHexagonBtn = document.getElementById('add-hexagon');
-            const clearAllBtn = document.getElementById('clear-all');
-            const changeColorBtn = document.getElementById('change-color');
-            const zoomInBtn = document.getElementById('zoom-in');
-            const zoomOutBtn = document.getElementById('zoom-out');
-            const resetViewBtn = document.getElementById('reset-view');
-            const saveBtn = document.getElementById('save-btn');
-            const loadBtn = document.getElementById('load-btn');
-            const loadFile = document.getElementById('load-file');
-            
-            let hexagonId = 0;
-            let selectedHexagon = null;
-            let offsetX, offsetY;
-            let isDragging = false;
-            let scale = 1;
-            let panOffsetX = 0;
-            let panOffsetY = 0;
-            
-            const colors = [
-                '#e0e8ff', '#e0ffe0', '#ffe0e0', '#e0ffff', '#ffe0ff', '#ffffe0',
-                '#d0d0ff', '#d0ffd0', '#ffd0d0', '#d0ffff', '#ffd0ff', '#ffffd0'
-            ];
-            
-            // Create initial central hexagon
-            createCentralHexagon();
-            
-            // Add hexagon button event
-            addHexagonBtn.addEventListener('click', function() {
-                createHexagon();
-            });
-            
-            // Clear all button event
-            clearAllBtn.addEventListener('click', function() {
-                if (confirm('Are you sure you want to clear all hexagons?')) {
-                    canvas.innerHTML = '';
-                    hexagonId = 0;
-                    createCentralHexagon();
-                }
-            });
-            
-            // Change color button event
-            changeColorBtn.addEventListener('click', function() {
-                if (selectedHexagon) {
-                    const currentColor = selectedHexagon.style.backgroundColor;
-                    const currentIndex = colors.indexOf(currentColor);
-                    const nextIndex = (currentIndex + 1) % colors.length;
-                    
-                    selectedHexagon.style.backgroundColor = colors[nextIndex];
-                    
-                    // Update pseudo-elements' border colors
-                    const styleTag = document.createElement('style');
-                    styleTag.textContent = `
-                        #${selectedHexagon.id}:before { border-bottom-color: ${colors[nextIndex]}; }
-                        #${selectedHexagon.id}:after { border-top-color: ${colors[nextIndex]}; }
-                    `;
-                    
-                    // Remove any existing style for this hexagon
-                    document.querySelectorAll(`style[data-hexagon="${selectedHexagon.id}"]`).forEach(el => el.remove());
-                    
-                    styleTag.setAttribute('data-hexagon', selectedHexagon.id);
-                    document.head.appendChild(styleTag);
-                }
-            });
-            
-            // Save button event
-            saveBtn.addEventListener('click', function() {
-                const hexagons = Array.from(document.querySelectorAll('.hexagon')).map(hexagon => {
-                    const textarea = hexagon.querySelector('.hexagon-content');
-                    return {
-                        id: hexagon.id,
-                        x: parseInt(hexagon.style.left),
-                        y: parseInt(hexagon.style.top),
-                        color: hexagon.style.backgroundColor,
-                        content: textarea.value,
-                        isCentral: hexagon.classList.contains('central')
-                    };
-                });
-                
-                const dataStr = JSON.stringify({ hexagons: hexagons }, null, 2);
-                const dataBlob = new Blob([dataStr], { type: 'application/json' });
-                const url = URL.createObjectURL(dataBlob);
-                
-                const link = document.createElement('a');
-                link.href = url;
-                link.download = 'hexagonal-thinking.json';
-                link.click();
-                
-                URL.revokeObjectURL(url);
-            });
-            
-            // Load button event
-            loadBtn.addEventListener('click', function() {
-                loadFile.click();
-            });
-            
-            loadFile.addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        try {
-                            const data = JSON.parse(e.target.result);
-                            loadHexagons(data);
-                        } catch (err) {
-                            alert('Error loading file: ' + err.message);
-                        }
-                    };
-                    reader.readAsText(file);
-                }
-            });
-            
-            // Function to create the central hexagon
-            function createCentralHexagon() {
-                const hexagon = document.createElement('div');
-                hexagon.id = `hexagon-${hexagonId++}`;
-                hexagon.className = 'hexagon central';
-                hexagon.style.backgroundColor = '#ffe0e0';
-                
-                // Position at the center of the canvas
-                const centerX = (canvas.offsetWidth / 2) - 60;
-                const centerY = (canvas.offsetHeight / 2) - 60;
-                
-                hexagon.style.left = `${centerX}px`;
-                hexagon.style.top = `${centerY}px`;
-                
-                const textarea = createTextarea();
-                hexagon.appendChild(textarea);
-                
-                addHexagonEventListeners(hexagon);
-                canvas.appendChild(hexagon);
-                
-                // Create style for pseudo-elements
-                const styleTag = document.createElement('style');
-                styleTag.textContent = `
-                    #${hexagon.id}:before { border-bottom-color: #ffe0e0; }
-                    #${hexagon.id}:after { border-top-color: #ffe0e0; }
-                `;
-                styleTag.setAttribute('data-hexagon', hexagon.id);
-                document.head.appendChild(styleTag);
+<header>
+  <h1>Hexagonal Thinking <em>AP Synthesis</em></h1>
+  <div class="legend">
+    <div class="leg"><div class="leg-swatch sw-thesis"></div>Thesis</div>
+    <div class="leg"><div class="leg-swatch sw-claim"></div>Paragraph Claim</div>
+    <div class="leg"><div class="leg-swatch sw-ev"></div>Evidence</div>
+    <div class="leg"><div class="leg-swatch sw-note"></div>How I'll Use It</div>
+  </div>
+</header>
 
-                // Scroll to center the hexagon
-                setTimeout(() => {
-                    canvasContainer.scrollTo(
-                        centerX - canvasContainer.offsetWidth / 2 + 60,
-                        centerY - canvasContainer.offsetHeight / 2 + 60
-                    );
-                }, 100);
-                
-                return hexagon;
-            }
-            
-            // Function to create a regular hexagon
-            function createHexagon(x, y, content = '', color = colors[0], id = null) {
-                const hexagon = document.createElement('div');
-                hexagon.id = id || `hexagon-${hexagonId++}`;
-                hexagon.className = 'hexagon';
-                hexagon.style.backgroundColor = color;
-                
-                if (!x || !y) {
-                    // Default position if not specified - add near the selected hexagon or center
-                    if (selectedHexagon) {
-                        const rect = selectedHexagon.getBoundingClientRect();
-                        const canvasRect = canvas.getBoundingClientRect();
-                        
-                        // Position relative to the selected hexagon
-                        const offsetLeft = selectedHexagon.offsetLeft;
-                        const offsetTop = selectedHexagon.offsetTop;
-                        
-                        // Determine a position in a hexagonal pattern around the selected hexagon
-                        const angle = Math.random() * Math.PI * 2; // Random angle
-                        const distance = 140; // Distance between hexagons
-                        
-                        x = offsetLeft + Math.cos(angle) * distance;
-                        y = offsetTop + Math.sin(angle) * distance;
-                    } else {
-                        // No hexagon selected, place near center
-                        const centerX = canvas.offsetWidth / 2;
-                        const centerY = canvas.offsetHeight / 2;
-                        x = centerX - 60 + Math.random() * 200 - 100;
-                        y = centerY - 60 + Math.random() * 200 - 100;
-                    }
-                }
-                
-                hexagon.style.left = `${x}px`;
-                hexagon.style.top = `${y}px`;
-                
-                const textarea = createTextarea(content);
-                hexagon.appendChild(textarea);
-                
-                addHexagonEventListeners(hexagon);
-                canvas.appendChild(hexagon);
-                
-                // Create style for pseudo-elements
-                const styleTag = document.createElement('style');
-                styleTag.textContent = `
-                    #${hexagon.id}:before { border-bottom-color: ${color}; }
-                    #${hexagon.id}:after { border-top-color: ${color}; }
-                `;
-                styleTag.setAttribute('data-hexagon', hexagon.id);
-                document.head.appendChild(styleTag);
-                
-                return hexagon;
-            }
-            
-            // Function to create textarea inside hexagon
-            function createTextarea(content = '') {
-                const textarea = document.createElement('textarea');
-                textarea.className = 'hexagon-content';
-                textarea.placeholder = 'Type your idea here...';
-                textarea.value = content;
-                
-                // Prevent textarea from capturing mouse events for dragging
-                textarea.addEventListener('mousedown', function(e) {
-                    e.stopPropagation();
-                });
-                
-                return textarea;
-            }
-            
-            // Function to add event listeners to hexagons
-            function addHexagonEventListeners(hexagon) {
-                // Mouse down event for dragging
-                hexagon.addEventListener('mousedown', function(e) {
-                    // Deselect previous hexagon
-                    if (selectedHexagon) {
-                        selectedHexagon.classList.remove('selected');
-                    }
-                    
-                    // Select current hexagon
-                    selectedHexagon = hexagon;
-                    hexagon.classList.add('selected');
-                    
-                    // Calculate offset for dragging - this is the click position within the hexagon
-                    const rect = hexagon.getBoundingClientRect();
-                    offsetX = e.clientX - rect.left;
-                    offsetY = e.clientY - rect.top;
-                    
-                    isDragging = true;
-                    
-                    // Bring to front
-                    hexagon.style.zIndex = '10';
-                    
-                    // Prevent default behavior to avoid text selection
-                    e.preventDefault();
-                });
-                
-                // Double click to focus on textarea
-                hexagon.addEventListener('dblclick', function() {
-                    const textarea = hexagon.querySelector('.hexagon-content');
-                    textarea.focus();
-                });
-            }
-            
-            // Zoom functionality
-            zoomInBtn.addEventListener('click', function() {
-                if (scale < 1.5) { // Limit maximum zoom
-                    scale += 0.1;
-                    applyZoom();
-                }
-            });
-            
-            zoomOutBtn.addEventListener('click', function() {
-                if (scale > 0.5) { // Limit minimum zoom
-                    scale -= 0.1;
-                    applyZoom();
-                }
-            });
-            
-            resetViewBtn.addEventListener('click', function() {
-                scale = 1;
-                applyZoom();
-                
-                // Center on central hexagon if exists
-                const centralHex = document.querySelector('.hexagon.central');
-                if (centralHex) {
-                    const centerX = parseInt(centralHex.style.left) + 60;
-                    const centerY = parseInt(centralHex.style.top) + 60;
-                    
-                    canvasContainer.scrollTo(
-                        centerX - canvasContainer.offsetWidth / 2,
-                        centerY - canvasContainer.offsetHeight / 2
-                    );
-                }
-            });
-            
-            function applyZoom() {
-                // Get current scroll position and center point
-                const containerWidth = canvasContainer.clientWidth;
-                const containerHeight = canvasContainer.clientHeight;
-                const centerX = canvasContainer.scrollLeft + containerWidth / 2;
-                const centerY = canvasContainer.scrollTop + containerHeight / 2;
-                
-                // Apply scale
-                canvas.style.transform = `scale(${scale})`;
-                canvas.style.transformOrigin = '0 0';
-                
-                // Adjust scroll to keep the center point
-                requestAnimationFrame(() => {
-                    const newCenterX = centerX * scale;
-                    const newCenterY = centerY * scale;
-                    canvasContainer.scrollLeft = newCenterX - containerWidth / 2;
-                    canvasContainer.scrollTop = newCenterY - containerHeight / 2;
-                });
-            }
-            
-            // Mouse move event on document for dragging
-            document.addEventListener('mousemove', function(e) {
-                if (isDragging && selectedHexagon) {
-                    e.preventDefault(); // Prevent text selection during drag
-                    
-                    // Get the scroll position of the container
-                    const scrollLeft = canvasContainer.scrollLeft;
-                    const scrollTop = canvasContainer.scrollTop;
-                    
-                    // Calculate the position relative to the canvas
-                    const canvasRect = canvasContainer.getBoundingClientRect();
-                    
-                    // Calculate new position keeping the cursor exactly where the user clicked on the hexagon
-                    const x = e.clientX - canvasRect.left + scrollLeft - offsetX;
-                    const y = e.clientY - canvasRect.top + scrollTop - offsetY;
-                    
-                    selectedHexagon.style.left = `${x}px`;
-                    selectedHexagon.style.top = `${y}px`;
-                    
-                    // Auto-scroll when dragging near the edges
-                    const margin = 50;
-                    const speed = 10;
-                    
-                    if (e.clientX - canvasContainer.getBoundingClientRect().left < margin) {
-                        canvasContainer.scrollLeft -= speed;
-                    } else if (canvasContainer.getBoundingClientRect().right - e.clientX < margin) {
-                        canvasContainer.scrollLeft += speed;
-                    }
-                    
-                    if (e.clientY - canvasContainer.getBoundingClientRect().top < margin) {
-                        canvasContainer.scrollTop -= speed;
-                    } else if (canvasContainer.getBoundingClientRect().bottom - e.clientY < margin) {
-                        canvasContainer.scrollTop += speed;
-                    }
-                }
-            });
-            
-            // Mouse up event on document to stop dragging
-            document.addEventListener('mouseup', function() {
-                if (selectedHexagon) {
-                    selectedHexagon.style.zIndex = '1';
-                }
-                isDragging = false;
-            });
-            
-            // Function to load hexagons from saved data
-            function loadHexagons(data) {
-                if (confirm('Loading will clear the current canvas. Continue?')) {
-                    // Clear canvas
-                    canvas.innerHTML = '';
-                    hexagonId = 0;
-                    
-                    // Find the highest ID to continue from there
-                    let maxId = 0;
-                    data.hexagons.forEach(h => {
-                        const idMatch = h.id.match(/hexagon-(\d+)/);
-                        if (idMatch && parseInt(idMatch[1]) > maxId) {
-                            maxId = parseInt(idMatch[1]);
-                        }
-                    });
-                    hexagonId = maxId + 1;
-                    
-                    // Create loaded hexagons
-                    data.hexagons.forEach(h => {
-                        const hexagon = createHexagon(h.x, h.y, h.content, h.color, h.id);
-                        if (h.isCentral) {
-                            hexagon.classList.add('central');
-                        }
-                    });
-                }
-            }
-        });
-    </script>
+<div class="toolbar">
+  <span class="tb-label">Add</span>
+  <button class="btn-claim-add" onclick="App.add('claim')">+ Paragraph Claim</button>
+  <button class="btn-ev-add"    onclick="App.add('evidence')">+ Evidence</button>
+  <button class="btn-note-add"  onclick="App.add('note')">+ How I'll Use It</button>
+  <div class="tb-sep"></div>
+  <button class="btn-arrow" id="btn-arrow" onclick="App.toggleArrowMode()">↗ Draw Arrow</button>
+  <div class="tb-sep"></div>
+  <span class="tb-label">Zoom</span>
+  <button class="btn-util" onclick="App.zoom(-.1)">−</button>
+  <span id="zoom-val">100%</span>
+  <button class="btn-util" onclick="App.zoom(+.1)">+</button>
+  <button class="btn-util" onclick="App.resetView()">Reset</button>
+  <div class="tb-sep"></div>
+  <button class="btn-danger" onclick="App.clearAll()">Clear All</button>
+  <span id="sel-info">Click a hexagon to select it</span>
+  <div class="tb-sep"></div>
+  <button class="btn-export" onclick="App.exportPNG()">↓ Export PNG</button>
+</div>
+
+<div id="wrap">
+  <div id="canvas">
+    <svg id="lines-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+    <svg id="arrow-preview" xmlns="http://www.w3.org/2000/svg"></svg>
+  </div>
+</div>
+
+<div id="arrow-toast">Click a hexagon to start your arrow — then click another to finish. Press Esc to cancel.</div>
+
+<div class="statusbar">
+  <span>Paragraph Claims: <b id="ct-claim">0</b></span>
+  <span>Evidence: <b id="ct-ev">0</b></span>
+  <span>Usage Notes: <b id="ct-note">0</b></span>
+  <span class="hint">Drag to move · Double-click to edit · Click × to delete</span>
+</div>
+
+<div id="exp-ov"><div class="spinner"></div><div>Rendering…</div></div>
+
+<script>
+const App = (() => {
+  const canvas      = document.getElementById('canvas');
+  const wrap        = document.getElementById('wrap');
+  const linesSvg    = document.getElementById('lines-svg');
+  const arrowPrev   = document.getElementById('arrow-preview');
+  const selInfo     = document.getElementById('sel-info');
+  const toast       = document.getElementById('arrow-toast');
+  const btnArrow    = document.getElementById('btn-arrow');
+
+  const SIZES = {
+    thesis:   {w:200, h:115.5, side:57.7},
+    claim:    {w:160, h:92.4,  side:46.2},
+    evidence: {w:120, h:69.3,  side:34.6},
+    note:     {w:120, h:69.3,  side:34.6},
+  };
+  const LABELS = {
+    thesis:'Thesis', claim:'Paragraph Claim',
+    evidence:'Evidence', note:"How I'll Use It"
+  };
+  const PLACEHOLDERS = {
+    thesis:   'Write your thesis here…',
+    claim:    'Topic sentence / line of reasoning for this paragraph…',
+    evidence: 'Source letter, title, quote, or paraphrase…',
+    note:     'How does this source support the claim? What specifically does it prove?',
+  };
+  const BORDERS = {thesis:'#c9a84c',claim:'#9b59b6',evidence:'#2980b9',note:'#c8962a'};
+
+  let scale=1, selected=null, dragging=false, dox=0, doy=0, idCtr=0;
+
+  // Arrow state
+  let arrowMode = false;
+  let arrowFrom = null;   // hex element that was first-clicked
+  let userArrows = [];    // [{id, from, to}]
+  let arrowIdCtr = 0;
+  let selectedArrow = null;
+
+  /* ── hex geometry ── */
+  function hexPts(w,h,s){
+    const hw=w/2;
+    return [[hw,0],[w,s],[w,s+h],[hw,s*2+h],[0,s+h],[0,s]].map(p=>p.join(',')).join(' ');
+  }
+  function getType(el){return [...el.classList].find(c=>SIZES[c]);}
+  function hexCenter(el){
+    const type=getType(el);
+    const {w,h,side}=SIZES[type];
+    return {
+      x: parseFloat(el.style.left)+w/2,
+      y: parseFloat(el.style.top)+(h+side*2)/2-side
+    };
+  }
+
+  /* ── auto lines (proximity) ── */
+  function drawLines(){
+    // Clear only the auto-lines group; user arrows are in a separate group
+    const autoG = linesSvg.querySelector('#auto-lines');
+    if(autoG) autoG.remove();
+    const ns='http://www.w3.org/2000/svg';
+    const g = document.createElementNS(ns,'g');
+    g.id='auto-lines';
+    linesSvg.prepend(g);
+
+    const thesis=canvas.querySelector('.hex.thesis');
+    if(!thesis) return;
+    const tc=hexCenter(thesis);
+    const claims=[...canvas.querySelectorAll('.hex.claim')];
+
+    claims.forEach(cl=>{
+      const cc=hexCenter(cl);
+      appendLine(g,tc.x,tc.y,cc.x,cc.y,'#9b59b6',2.5,.5);
+    });
+    canvas.querySelectorAll('.hex.evidence,.hex.note').forEach(src=>{
+      if(!claims.length) return;
+      const sc=hexCenter(src);
+      let near=null,minD=Infinity;
+      claims.forEach(cl=>{
+        const cc=hexCenter(cl);
+        const d=Math.hypot(sc.x-cc.x,sc.y-cc.y);
+        if(d<minD){minD=d;near=cl;}
+      });
+      if(near){
+        const isNote=src.classList.contains('note');
+        const cc=hexCenter(near);
+        appendLine(g,sc.x,sc.y,cc.x,cc.y,
+          isNote?'#c8962a':'#2980b9',1.5,.38,
+          isNote?'6,4':null);
+      }
+    });
+  }
+
+  function appendLine(parent,x1,y1,x2,y2,stroke,sw,op,dash){
+    const ns='http://www.w3.org/2000/svg';
+    const l=document.createElementNS(ns,'line');
+    l.setAttribute('x1',x1);l.setAttribute('y1',y1);
+    l.setAttribute('x2',x2);l.setAttribute('y2',y2);
+    l.setAttribute('stroke',stroke);l.setAttribute('stroke-width',sw);
+    l.setAttribute('opacity',op);
+    if(dash) l.setAttribute('stroke-dasharray',dash);
+    parent.appendChild(l);
+  }
+
+  /* ── user arrows ── */
+  function ensureArrowDefs(){
+    const ns='http://www.w3.org/2000/svg';
+    if(!linesSvg.querySelector('defs')){
+      const defs=document.createElementNS(ns,'defs');
+
+      // default arrowhead
+      const marker=document.createElementNS(ns,'marker');
+      marker.setAttribute('id','arrowhead');
+      marker.setAttribute('markerWidth','10');marker.setAttribute('markerHeight','7');
+      marker.setAttribute('refX','9');marker.setAttribute('refY','3.5');
+      marker.setAttribute('orient','auto');
+      const path=document.createElementNS(ns,'polygon');
+      path.setAttribute('points','0 0, 10 3.5, 0 7');
+      path.setAttribute('fill','#444');
+      marker.appendChild(path);
+      defs.appendChild(marker);
+
+      // selected arrowhead (gold)
+      const markerSel=document.createElementNS(ns,'marker');
+      markerSel.setAttribute('id','arrowhead-sel');
+      markerSel.setAttribute('markerWidth','10');markerSel.setAttribute('markerHeight','7');
+      markerSel.setAttribute('refX','9');markerSel.setAttribute('refY','3.5');
+      markerSel.setAttribute('orient','auto');
+      const pathSel=document.createElementNS(ns,'polygon');
+      pathSel.setAttribute('points','0 0, 10 3.5, 0 7');
+      pathSel.setAttribute('fill','#c9a84c');
+      markerSel.appendChild(pathSel);
+      defs.appendChild(markerSel);
+
+      linesSvg.insertBefore(defs,linesSvg.firstChild);
+    }
+    if(!linesSvg.querySelector('#user-arrows')){
+      const ns='http://www.w3.org/2000/svg';
+      const g=document.createElementNS(ns,'g');
+      g.id='user-arrows';
+      linesSvg.appendChild(g);
+    }
+  }
+
+  function renderUserArrows(){
+    ensureArrowDefs();
+    const g=linesSvg.querySelector('#user-arrows');
+    g.innerHTML='';
+    const ns='http://www.w3.org/2000/svg';
+    userArrows.forEach(a=>{
+      const fromEl=canvas.querySelector('#'+a.from);
+      const toEl  =canvas.querySelector('#'+a.to);
+      if(!fromEl||!toEl) return;
+      const fc=hexCenter(fromEl), tc=hexCenter(toEl);
+
+      // shorten the line so arrowhead doesn't overlap the hex body
+      const dx=tc.x-fc.x, dy=tc.y-fc.y;
+      const len=Math.hypot(dx,dy)||1;
+      const SHORTEN=38;
+      const ex=tc.x - (dx/len)*SHORTEN;
+      const ey=tc.y - (dy/len)*SHORTEN;
+
+      const isSel = selectedArrow===a.id;
+      // invisible wide hit-target
+      const hit=document.createElementNS(ns,'line');
+      hit.setAttribute('x1',fc.x);hit.setAttribute('y1',fc.y);
+      hit.setAttribute('x2',ex);hit.setAttribute('y2',ey);
+      hit.setAttribute('stroke','transparent');hit.setAttribute('stroke-width','14');
+      hit.style.cursor='pointer';
+      hit.addEventListener('click',e=>{e.stopPropagation();selectArrow(a.id);});
+      g.appendChild(hit);
+
+      // visible arrow line
+      const line=document.createElementNS(ns,'line');
+      line.setAttribute('x1',fc.x);line.setAttribute('y1',fc.y);
+      line.setAttribute('x2',ex);line.setAttribute('y2',ey);
+      line.setAttribute('class','user-arrow'+(isSel?' sel-arrow':''));
+      line.setAttribute('marker-end',isSel?'url(#arrowhead-sel)':'url(#arrowhead)');
+      line.setAttribute('stroke',isSel?'#c9a84c':'#555');
+      g.appendChild(line);
+    });
+  }
+
+  function selectArrow(id){
+    if(!arrowMode){
+      deselect();
+      selectedArrow=id;
+      renderUserArrows();
+      selInfo.textContent='Arrow selected — press Delete / Backspace to remove';
+    }
+  }
+  function deselectArrow(){selectedArrow=null;renderUserArrows();}
+
+  document.addEventListener('keydown',e=>{
+    if((e.key==='Delete'||e.key==='Backspace')&&selectedArrow&&document.activeElement.tagName!=='TEXTAREA'){
+      userArrows=userArrows.filter(a=>a.id!==selectedArrow);
+      selectedArrow=null;
+      renderUserArrows();
+      selInfo.textContent='Click a hexagon to select it';
+    }
+    if(e.key==='Escape'){ exitArrowMode(); }
+  });
+
+  /* ── arrow mode ── */
+  function toggleArrowMode(){
+    arrowMode=!arrowMode;
+    if(arrowMode){
+      btnArrow.classList.add('active');
+      btnArrow.textContent='✕ Cancel Arrow';
+      document.body.classList.add('arrow-mode');
+      toast.classList.add('on');
+      toast.textContent='Click a hexagon to start your arrow — then click another to finish. Press Esc to cancel.';
+      deselect(); deselectArrow();
+      arrowFrom=null;
+    } else {
+      exitArrowMode();
+    }
+  }
+
+  function exitArrowMode(){
+    arrowMode=false;
+    arrowFrom=null;
+    btnArrow.classList.remove('active');
+    btnArrow.textContent='↗ Draw Arrow';
+    document.body.classList.remove('arrow-mode');
+    toast.classList.remove('on');
+    arrowPrev.innerHTML='';
+    canvas.querySelectorAll('.hex.arrow-from').forEach(h=>h.classList.remove('arrow-from'));
+  }
+
+  /* ── hex click in arrow mode ── */
+  function handleHexArrowClick(el){
+    if(!arrowFrom){
+      arrowFrom=el;
+      el.classList.add('arrow-from');
+      toast.textContent='Now click the destination hexagon. Press Esc to cancel.';
+    } else {
+      if(arrowFrom===el){ return; } // same hex, ignore
+      userArrows.push({id:'a'+(arrowIdCtr++), from:arrowFrom.id, to:el.id});
+      arrowFrom.classList.remove('arrow-from');
+      renderUserArrows();
+      exitArrowMode();
+    }
+  }
+
+  /* ── preview line while in arrow mode ── */
+  function updateArrowPreview(mouseX,mouseY){
+    arrowPrev.innerHTML='';
+    if(!arrowFrom) return;
+    const fc=hexCenter(arrowFrom);
+    const ns='http://www.w3.org/2000/svg';
+    const line=document.createElementNS(ns,'line');
+    line.setAttribute('x1',fc.x);line.setAttribute('y1',fc.y);
+    line.setAttribute('x2',mouseX);line.setAttribute('y2',mouseY);
+    line.setAttribute('stroke','#c9a84c');line.setAttribute('stroke-width','2');
+    line.setAttribute('stroke-dasharray','8,4');line.setAttribute('opacity','.8');
+    arrowPrev.appendChild(line);
+  }
+
+  /* ── make hex ── */
+  function makeHex(type,x,y,text=''){
+    const {w,h,side}=SIZES[type];
+    const el=document.createElement('div');
+    el.className=`hex ${type}`;
+    el.id=`h${idCtr++}`;
+    el.style.left=`${x}px`;
+    el.style.top=`${y}px`;
+
+    const badge=document.createElement('div');
+    badge.className='hex-badge';
+    badge.textContent=LABELS[type];
+    el.appendChild(badge);
+
+    const ns='http://www.w3.org/2000/svg';
+    const totalH=h+side*2;
+    const svg=document.createElementNS(ns,'svg');
+    svg.setAttribute('class','hex-svg');
+    svg.style.cssText=`top:${-side}px;left:0;width:${w}px;height:${totalH}px;`;
+    const poly=document.createElementNS(ns,'polygon');
+    poly.setAttribute('points',hexPts(w,h,side));
+    poly.setAttribute('fill','none');
+    poly.setAttribute('stroke',BORDERS[type]);
+    poly.setAttribute('stroke-width',type==='thesis'?'2.5':'2');
+    svg.appendChild(poly);
+    el.appendChild(svg);
+
+    const ta=document.createElement('textarea');
+    ta.className='hex-text';
+    ta.placeholder=PLACEHOLDERS[type];
+    ta.value=text;
+    ta.addEventListener('mousedown',e=>e.stopPropagation());
+    ta.addEventListener('input',updateCounts);
+    el.appendChild(ta);
+
+    const del=document.createElement('button');
+    del.className='hex-del';
+    del.textContent='×';
+    del.title='Delete';
+    del.addEventListener('mousedown',e=>e.stopPropagation());
+    del.addEventListener('click',()=>{
+      // remove any arrows connected to this hex
+      userArrows=userArrows.filter(a=>a.from!==el.id&&a.to!==el.id);
+      el.remove();deselect();updateCounts();drawLines();renderUserArrows();
+    });
+    el.appendChild(del);
+
+    el.addEventListener('mousedown',e=>{
+      if(e.target===del) return;
+      if(arrowMode){ handleHexArrowClick(el); return; }
+      e.preventDefault();
+      deselect(); deselectArrow();
+      select(el);
+      const r=el.getBoundingClientRect();
+      dox=(e.clientX-r.left)/scale;
+      doy=(e.clientY-r.top)/scale;
+      dragging=true;
+      el.style.zIndex=20;
+    });
+    el.addEventListener('dblclick',()=>{ if(!arrowMode) ta.focus(); });
+
+    canvas.appendChild(el);
+    drawLines();
+    return el;
+  }
+
+  /* ── selection ── */
+  function select(el){
+    selected=el;
+    el.classList.add('selected');
+    selInfo.textContent=`Selected: ${LABELS[getType(el)]}`;
+  }
+  function deselect(){
+    if(selected){selected.classList.remove('selected');selected.style.zIndex='';selected=null;}
+    selInfo.textContent='Click a hexagon to select it';
+  }
+
+  /* ── global mouse ── */
+  document.addEventListener('mousemove',e=>{
+    if(arrowMode){
+      const cr=wrap.getBoundingClientRect();
+      const mx=(e.clientX-cr.left+wrap.scrollLeft)/scale;
+      const my=(e.clientY-cr.top +wrap.scrollTop )/scale;
+      updateArrowPreview(mx,my);
+      return;
+    }
+    if(!dragging||!selected) return;
+    e.preventDefault();
+    const cr=wrap.getBoundingClientRect();
+    const x=(e.clientX-cr.left+wrap.scrollLeft)/scale-dox;
+    const y=(e.clientY-cr.top +wrap.scrollTop )/scale-doy;
+    selected.style.left=`${x}px`;
+    selected.style.top=`${y}px`;
+    drawLines(); renderUserArrows();
+    const M=50,S=10;
+    if(e.clientX-cr.left<M)  wrap.scrollLeft-=S;
+    if(cr.right-e.clientX<M) wrap.scrollLeft+=S;
+    if(e.clientY-cr.top<M)   wrap.scrollTop-=S;
+    if(cr.bottom-e.clientY<M) wrap.scrollTop+=S;
+  });
+  document.addEventListener('mouseup',()=>{dragging=false;});
+  canvas.addEventListener('mousedown',e=>{
+    if(e.target===canvas||e.target===linesSvg||e.target===arrowPrev){
+      if(!arrowMode){ deselect(); deselectArrow(); }
+    }
+  });
+
+  /* ── zoom ── */
+  wrap.addEventListener('wheel',e=>{
+    if(e.ctrlKey||e.metaKey){e.preventDefault();zoom(e.deltaY<0?.05:-.05);}
+  },{passive:false});
+  function zoom(d){
+    scale=Math.min(2,Math.max(0.3,scale+d));
+    canvas.style.transform=`scale(${scale})`;
+    document.getElementById('zoom-val').textContent=Math.round(scale*100)+'%';
+  }
+
+  /* ── counts ── */
+  function updateCounts(){
+    document.getElementById('ct-claim').textContent=canvas.querySelectorAll('.hex.claim').length;
+    document.getElementById('ct-ev').textContent=canvas.querySelectorAll('.hex.evidence').length;
+    document.getElementById('ct-note').textContent=canvas.querySelectorAll('.hex.note').length;
+  }
+
+  /* ── public ── */
+  function add(type){
+    const {w,h,side}=SIZES[type];
+    const vx=wrap.scrollLeft+wrap.clientWidth/2;
+    const vy=wrap.scrollTop +wrap.clientHeight/2;
+    const x=(vx/scale)-w/2+(Math.random()-.5)*180;
+    const y=(vy/scale)-(h+side*2)/2+(Math.random()-.5)*130;
+    const el=makeHex(type,x,y);
+    select(el); updateCounts();
+  }
+
+  function clearAll(){
+    if(!confirm('Clear everything except the thesis?')) return;
+    canvas.querySelectorAll('.hex:not(.thesis)').forEach(h=>h.remove());
+    userArrows=[];selectedArrow=null;
+    deselect();updateCounts();drawLines();renderUserArrows();
+  }
+
+  function resetView(){
+    scale=1;
+    canvas.style.transform='scale(1)';
+    document.getElementById('zoom-val').textContent='100%';
+    const th=canvas.querySelector('.hex.thesis');
+    if(th) wrap.scrollTo(parseFloat(th.style.left)-wrap.clientWidth/2+100,parseFloat(th.style.top)-wrap.clientHeight/2+57);
+  }
+
+  function exportPNG(){
+    const ov=document.getElementById('exp-ov');
+    ov.classList.add('on');
+    const prev=canvas.style.transform;
+    canvas.style.transform='scale(1)';
+    const hexes=canvas.querySelectorAll('.hex');
+    if(!hexes.length){ov.classList.remove('on');canvas.style.transform=prev;alert('Nothing to export.');return;}
+
+    let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
+    hexes.forEach(h=>{
+      const type=getType(h);
+      const {w,h:ht,side}=SIZES[type]||SIZES.evidence;
+      const l=parseFloat(h.style.left),t=parseFloat(h.style.top);
+      minX=Math.min(minX,l);
+      minY=Math.min(minY,t-side-36);
+      maxX=Math.max(maxX,l+w);
+      maxY=Math.max(maxY,t+ht+side);
+    });
+    const PAD=60;minX-=PAD;minY-=PAD;maxX+=PAD;maxY+=PAD;
+
+    document.querySelectorAll('.hex-del').forEach(b=>b.style.display='none');
+    deselectArrow(); deselect();
+
+    setTimeout(()=>{
+      html2canvas(canvas,{
+        backgroundColor:'#f2f0eb',scale:2,
+        x:minX,y:minY,width:maxX-minX,height:maxY-minY,
+        logging:false,useCORS:true,
+      }).then(c=>{
+        canvas.style.transform=prev;
+        document.querySelectorAll('.hex-del').forEach(b=>b.style.display='');
+        ov.classList.remove('on');
+        const a=document.createElement('a');
+        a.download=`synthesis-map-${Date.now()}.png`;
+        a.href=c.toDataURL('image/png');
+        a.click();
+      }).catch(err=>{
+        canvas.style.transform=prev;ov.classList.remove('on');
+        alert('Export error: '+err.message);
+      });
+    },150);
+  }
+
+  /* ── init ── */
+  setTimeout(()=>{
+    ensureArrowDefs();
+    const cx=canvas.offsetWidth/2-100;
+    const cy=canvas.offsetHeight/2-57.7;
+    makeHex('thesis',cx,cy);
+    wrap.scrollTo(cx-wrap.clientWidth/2+100,cy-wrap.clientHeight/2+57);
+    deselect();
+  },80);
+
+  return {add,zoom,resetView,clearAll,exportPNG,toggleArrowMode};
+})();
+</script>
 </body>
 </html>
