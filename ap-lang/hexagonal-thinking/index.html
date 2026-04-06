@@ -120,6 +120,8 @@ button:active{transform:scale(.96)}
 
 /* lines */
 #lines-svg{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1}
+#lines-svg #auto-lines{pointer-events:none}
+#lines-svg #user-arrows{pointer-events:all}
 
 /* arrow mode */
 body.arrow-mode{cursor:crosshair}
@@ -277,13 +279,17 @@ const App = (() => {
 
   /* ── auto lines (proximity) ── */
   function drawLines(){
-    // Clear only the auto-lines group; user arrows are in a separate group
-    const autoG = linesSvg.querySelector('#auto-lines');
-    if(autoG) autoG.remove();
+    // Only clear the auto-lines group — never touch #user-arrows
+    let autoG = linesSvg.querySelector('#auto-lines');
+    if(autoG) autoG.innerHTML='';
+    else {
+      const ns='http://www.w3.org/2000/svg';
+      autoG = document.createElementNS(ns,'g');
+      autoG.id='auto-lines';
+      linesSvg.prepend(autoG);
+    }
+    const g = autoG;
     const ns='http://www.w3.org/2000/svg';
-    const g = document.createElementNS(ns,'g');
-    g.id='auto-lines';
-    linesSvg.prepend(g);
 
     const thesis=canvas.querySelector('.hex.thesis');
     if(!thesis) return;
@@ -368,6 +374,9 @@ const App = (() => {
     ensureArrowDefs();
     const g=linesSvg.querySelector('#user-arrows');
     g.innerHTML='';
+    // also remove any existing arrow-del button
+    document.querySelectorAll('.arrow-del-btn').forEach(b=>b.remove());
+
     const ns='http://www.w3.org/2000/svg';
     userArrows.forEach(a=>{
       const fromEl=canvas.querySelector('#'+a.from);
@@ -375,7 +384,6 @@ const App = (() => {
       if(!fromEl||!toEl) return;
       const fc=hexCenter(fromEl), tc=hexCenter(toEl);
 
-      // shorten the line so arrowhead doesn't overlap the hex body
       const dx=tc.x-fc.x, dy=tc.y-fc.y;
       const len=Math.hypot(dx,dy)||1;
       const SHORTEN=38;
@@ -383,11 +391,12 @@ const App = (() => {
       const ey=tc.y - (dy/len)*SHORTEN;
 
       const isSel = selectedArrow===a.id;
+
       // invisible wide hit-target
       const hit=document.createElementNS(ns,'line');
       hit.setAttribute('x1',fc.x);hit.setAttribute('y1',fc.y);
       hit.setAttribute('x2',ex);hit.setAttribute('y2',ey);
-      hit.setAttribute('stroke','transparent');hit.setAttribute('stroke-width','14');
+      hit.setAttribute('stroke','transparent');hit.setAttribute('stroke-width','18');
       hit.style.cursor='pointer';
       hit.addEventListener('click',e=>{e.stopPropagation();selectArrow(a.id);});
       g.appendChild(hit);
@@ -400,6 +409,24 @@ const App = (() => {
       line.setAttribute('marker-end',isSel?'url(#arrowhead-sel)':'url(#arrowhead)');
       line.setAttribute('stroke',isSel?'#c9a84c':'#555');
       g.appendChild(line);
+
+      // floating ✕ delete button at midpoint when selected
+      if(isSel){
+        const mx=(fc.x+ex)/2, my=(fc.y+ey)/2;
+        const btn=document.createElement('button');
+        btn.className='arrow-del-btn';
+        btn.textContent='✕';
+        btn.title='Delete arrow';
+        btn.style.cssText=`position:absolute;left:${mx-10}px;top:${my-10}px;width:20px;height:20px;border-radius:50%;background:#c0392b;color:#fff;font-size:11px;font-weight:700;border:none;cursor:pointer;z-index:50;padding:0;line-height:20px;text-align:center;`;
+        btn.addEventListener('click',e=>{
+          e.stopPropagation();
+          userArrows=userArrows.filter(x=>x.id!==a.id);
+          selectedArrow=null;
+          renderUserArrows();
+          selInfo.textContent='Click a hexagon to select it';
+        });
+        canvas.appendChild(btn);
+      }
     });
   }
 
@@ -411,7 +438,7 @@ const App = (() => {
       selInfo.textContent='Arrow selected — press Delete / Backspace to remove';
     }
   }
-  function deselectArrow(){selectedArrow=null;renderUserArrows();}
+  function deselectArrow(){selectedArrow=null;document.querySelectorAll('.arrow-del-btn').forEach(b=>b.remove());renderUserArrows();}
 
   document.addEventListener('keydown',e=>{
     if((e.key==='Delete'||e.key==='Backspace')&&selectedArrow&&document.activeElement.tagName!=='TEXTAREA'){
@@ -434,6 +461,7 @@ const App = (() => {
       toast.textContent='Click a hexagon to start your arrow — then click another to finish. Press Esc to cancel.';
       deselect(); deselectArrow();
       arrowFrom=null;
+      document.querySelectorAll('.arrow-overlay').forEach(o=>o.style.display='block');
     } else {
       exitArrowMode();
     }
@@ -448,6 +476,7 @@ const App = (() => {
     toast.classList.remove('on');
     arrowPrev.innerHTML='';
     canvas.querySelectorAll('.hex.arrow-from').forEach(h=>h.classList.remove('arrow-from'));
+    document.querySelectorAll('.arrow-overlay').forEach(o=>o.style.display='none');
   }
 
   /* ── hex click in arrow mode ── */
@@ -526,9 +555,21 @@ const App = (() => {
     });
     el.appendChild(del);
 
+    // Transparent overlay for arrow-mode — sits above all hex children
+    const arrowOverlay = document.createElement('div');
+    arrowOverlay.className = 'arrow-overlay';
+    arrowOverlay.style.cssText = 'position:absolute;inset:-40px;z-index:30;display:none;cursor:crosshair;';
+    arrowOverlay.addEventListener('mousedown', e => { e.stopPropagation(); });
+    arrowOverlay.addEventListener('click', e => {
+      e.stopPropagation();
+      handleHexArrowClick(el);
+    });
+    el.appendChild(arrowOverlay);
+    if(arrowMode) arrowOverlay.style.display='block';
+
     el.addEventListener('mousedown',e=>{
-      if(e.target===del) return;
-      if(arrowMode){ handleHexArrowClick(el); return; }
+      if(e.target===del||e.target===arrowOverlay) return;
+      if(arrowMode) return;
       e.preventDefault();
       deselect(); deselectArrow();
       select(el);
