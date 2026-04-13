@@ -985,18 +985,9 @@ async function submitEvidence() {
       })
     });
 
-    // Optimistically add locally
-    const entry = {
-      timestamp:  new Date().toISOString(),
-      period,
-      group_name: groupName,
-      claim_id:   activeClaimId,
-      category:   selectedCat,
-      evidence:   evText,
-      rationale:  evRat
-    };
-    ingestEntry(entry);
     closeModal();
+    // Fetch immediately so the card appears without waiting for the next poll
+    await fetchAll();
 
   } catch(e) {
     toast("Submission failed — check your connection.");
