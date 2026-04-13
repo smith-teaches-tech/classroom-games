@@ -45,10 +45,10 @@ header h1 em{color:var(--gold);font-size:.82rem;font-weight:600;font-style:norma
 .sw-note  {background:var(--note-fill);  border-color:var(--note-border)}
 
 /* TOOLBAR */
-.toolbar{background:#16161f;border-bottom:1px solid var(--ui-border);padding:0 20px;height:46px;display:flex;align-items:center;gap:8px;flex-shrink:0}
-.tb-label{font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ui-muted);font-weight:600;margin-right:2px}
-.tb-sep{width:1px;height:26px;background:var(--ui-border);margin:0 8px}
-button{font-family:'Source Sans 3',sans-serif;font-size:.75rem;font-weight:600;border:none;border-radius:4px;cursor:pointer;padding:5px 12px;letter-spacing:.02em;transition:all .12s;white-space:nowrap}
+.toolbar{background:#16161f;border-bottom:1px solid var(--ui-border);padding:0 12px;height:42px;display:flex;align-items:center;gap:5px;flex-shrink:0}
+.tb-label{font-size:.6rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ui-muted);font-weight:600;margin-right:1px}
+.tb-sep{width:1px;height:24px;background:var(--ui-border);margin:0 5px}
+button{font-family:'Source Sans 3',sans-serif;font-size:.73rem;font-weight:600;border:none;border-radius:4px;cursor:pointer;padding:4px 10px;letter-spacing:.02em;transition:all .12s;white-space:nowrap}
 button:active{transform:scale(.96)}
 .btn-claim-add{background:var(--claim-fill);color:var(--claim-text);border:1.5px solid var(--claim-border)}
 .btn-claim-add:hover{background:#3d2560}
@@ -58,12 +58,12 @@ button:active{transform:scale(.96)}
 .btn-note-add:hover{background:#faecc8}
 .btn-util{background:#222233;color:#aaa;border:1.5px solid var(--ui-border)}
 .btn-util:hover{background:#2e2e48;color:#ddd}
+.btn-zoom{min-width:28px;padding:5px 6px;font-size:.9rem;}
 .btn-danger{background:transparent;color:#c0392b;border:1.5px solid #4a1a1a}
 .btn-danger:hover{background:#2a0f0f}
 .btn-export{background:var(--gold);color:#1a1200;border:1.5px solid #a07830;font-weight:700}
 .btn-export:hover{background:#dbb84a}
-#zoom-val{font-size:.72rem;color:var(--ui-muted);min-width:38px;text-align:center;font-variant-numeric:tabular-nums}
-#sel-info{margin-left:auto;font-size:.7rem;color:var(--ui-muted);font-style:italic}
+#zoom-val{font-size:.72rem;color:var(--ui-muted);min-width:34px;text-align:center;font-variant-numeric:tabular-nums}
 
 /* CANVAS */
 #wrap{flex:1;overflow:auto;position:relative}
@@ -188,22 +188,20 @@ body.arrow-mode .hex:hover{filter:drop-shadow(0 0 8px rgba(201,168,76,1))}
 
 <div class="toolbar">
   <span class="tb-label">Add</span>
-  <button class="btn-claim-add" onclick="App.add('claim')">+ Paragraph Claim</button>
+  <button class="btn-claim-add" onclick="App.add('claim')">+ Claim</button>
   <button class="btn-ev-add"    onclick="App.add('evidence')">+ Evidence</button>
-  <button class="btn-note-add"  onclick="App.add('note')">+ How I'll Use It</button>
+  <button class="btn-note-add"  onclick="App.add('note')">+ Usage Note</button>
   <div class="tb-sep"></div>
-  <button class="btn-arrow" id="btn-arrow" onclick="App.toggleArrowMode()">↗ Draw Arrow</button>
+  <button class="btn-arrow" id="btn-arrow" onclick="App.toggleArrowMode()">↗ Arrow</button>
   <div class="tb-sep"></div>
-  <span class="tb-label">Zoom</span>
-  <button class="btn-util" onclick="App.zoom(-.1)">−</button>
+  <button class="btn-util btn-zoom" onclick="App.zoom(-.1)" title="Zoom out">−</button>
   <span id="zoom-val">100%</span>
-  <button class="btn-util" onclick="App.zoom(+.1)">+</button>
-  <button class="btn-util" onclick="App.resetView()">Reset</button>
+  <button class="btn-util btn-zoom" onclick="App.zoom(+.1)" title="Zoom in">+</button>
+  <button class="btn-util" onclick="App.resetView()" title="Reset view">⌂</button>
   <div class="tb-sep"></div>
-  <button class="btn-danger" onclick="App.clearAll()">Clear All</button>
-  <span id="sel-info">Click a hexagon to select it</span>
+  <button class="btn-danger" onclick="App.clearAll()">✕ Clear</button>
   <div class="tb-sep"></div>
-  <button class="btn-export" onclick="App.exportPNG()">↓ Export PNG</button>
+  <button class="btn-export" onclick="App.exportPNG()">↓ PNG</button>
 </div>
 
 <div id="wrap">
@@ -216,11 +214,12 @@ body.arrow-mode .hex:hover{filter:drop-shadow(0 0 8px rgba(201,168,76,1))}
 <div id="arrow-toast">Click a hexagon to start your arrow — then click another to finish. Press Esc to cancel.</div>
 
 <div class="statusbar">
-  <span>Paragraph Claims: <b id="ct-claim">0</b></span>
+  <span>Claims: <b id="ct-claim">0</b></span>
   <span>Evidence: <b id="ct-ev">0</b></span>
-  <span>Usage Notes: <b id="ct-note">0</b></span>
+  <span>Notes: <b id="ct-note">0</b></span>
   <span id="save-status">—</span>
-  <span class="hint">Drag to move · Double-click to edit · Click × to delete</span>
+  <span id="sel-info" style="margin-left:auto;font-style:italic;">Click a hexagon to select it</span>
+  <span class="hint">Drag · Dbl-click to edit · × deletes</span>
 </div>
 
 <div id="exp-ov"><div class="spinner"></div><div>Rendering…</div></div>
@@ -635,13 +634,28 @@ const App = (() => {
 
   /* ── zoom ── */
   wrap.addEventListener('wheel',e=>{
-    if(e.ctrlKey||e.metaKey){e.preventDefault();zoom(e.deltaY<0?.05:-.05);}
+    if(e.ctrlKey||e.metaKey){e.preventDefault();zoomAround(e.deltaY<0?.05:-.05);}
   },{passive:false});
-  function zoom(d){
-    scale=Math.min(2,Math.max(0.3,scale+d));
-    canvas.style.transform=`scale(${scale})`;
-    document.getElementById('zoom-val').textContent=Math.round(scale*100)+'%';
+
+  function zoomAround(d, cx, cy){
+    // cx/cy = point in canvas coords to zoom around (default: viewport center)
+    const prevScale = scale;
+    scale = Math.min(2, Math.max(0.3, scale + d));
+    if(scale === prevScale) return;
+
+    // viewport center in canvas coords before zoom
+    if(cx === undefined) cx = (wrap.scrollLeft + wrap.clientWidth/2) / prevScale;
+    if(cy === undefined) cy = (wrap.scrollTop  + wrap.clientHeight/2) / prevScale;
+
+    canvas.style.transform = `scale(${scale})`;
+    document.getElementById('zoom-val').textContent = Math.round(scale*100)+'%';
+
+    // adjust scroll so cx/cy stays at viewport center
+    wrap.scrollLeft = cx * scale - wrap.clientWidth/2;
+    wrap.scrollTop  = cy * scale - wrap.clientHeight/2;
   }
+
+  function zoom(d){ zoomAround(d); }
 
   /* ── localStorage ── */
   const STORAGE_KEY = 'ap-synthesis-hexmap';
