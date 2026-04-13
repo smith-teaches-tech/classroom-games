@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>AP Synthesis — Hexagonal Thinking</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
@@ -765,44 +764,226 @@ const App = (() => {
   function exportPNG(){
     const ov=document.getElementById('exp-ov');
     ov.classList.add('on');
-    const prev=canvas.style.transform;
-    canvas.style.transform='scale(1)';
-    const hexes=canvas.querySelectorAll('.hex');
-    if(!hexes.length){ov.classList.remove('on');canvas.style.transform=prev;alert('Nothing to export.');return;}
 
+    const hexes=canvas.querySelectorAll('.hex');
+    if(!hexes.length){ov.classList.remove('on');alert('Nothing to export.');return;}
+
+    // ── bounding box ──
     let minX=Infinity,minY=Infinity,maxX=-Infinity,maxY=-Infinity;
     hexes.forEach(h=>{
       const type=getType(h);
       const {w,h:ht,side}=SIZES[type]||SIZES.evidence;
       const l=parseFloat(h.style.left),t=parseFloat(h.style.top);
       minX=Math.min(minX,l);
-      minY=Math.min(minY,t-side-36);
+      minY=Math.min(minY,t-side-40);
       maxX=Math.max(maxX,l+w);
       maxY=Math.max(maxY,t+ht+side);
     });
-    const PAD=60;minX-=PAD;minY-=PAD;maxX+=PAD;maxY+=PAD;
+    const PAD=60;
+    minX-=PAD;minY-=PAD;maxX+=PAD;maxY+=PAD;
+    const W=maxX-minX, H=maxY-minY;
 
-    document.querySelectorAll('.hex-del').forEach(b=>b.style.display='none');
-    deselectArrow(); deselect();
+    const DPR=3; // 3× = crisp on any screen
+    const c=document.createElement('canvas');
+    c.width=W*DPR; c.height=H*DPR;
+    const ctx=c.getContext('2d');
+    ctx.scale(DPR,DPR);
 
-    setTimeout(()=>{
-      html2canvas(canvas,{
-        backgroundColor:'#f2f0eb',scale:2,
-        x:minX,y:minY,width:maxX-minX,height:maxY-minY,
-        logging:false,useCORS:true,
-      }).then(c=>{
-        canvas.style.transform=prev;
-        document.querySelectorAll('.hex-del').forEach(b=>b.style.display='');
-        ov.classList.remove('on');
-        const a=document.createElement('a');
-        a.download=`synthesis-map-${Date.now()}.png`;
-        a.href=c.toDataURL('image/png');
-        a.click();
-      }).catch(err=>{
-        canvas.style.transform=prev;ov.classList.remove('on');
-        alert('Export error: '+err.message);
+    // background + dot grid
+    ctx.fillStyle='#f2f0eb';
+    ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='#d4d0c8';
+    for(let gx=0;gx<W;gx+=32)
+      for(let gy=0;gy<H;gy+=32){
+        ctx.beginPath();
+        ctx.arc(gx,gy,1.2,0,Math.PI*2);
+        ctx.fill();
+      }
+
+    const ox=minX, oy=minY; // canvas offset
+
+    // ── helper: draw a hexagon path ──
+    function hexPath(cx,cy,w,h,side){
+      const hw=w/2;
+      ctx.beginPath();
+      ctx.moveTo(cx+hw,     cy);
+      ctx.lineTo(cx+w,      cy+side);
+      ctx.lineTo(cx+w,      cy+side+h);
+      ctx.lineTo(cx+hw,     cy+side*2+h);
+      ctx.lineTo(cx,        cy+side+h);
+      ctx.lineTo(cx,        cy+side);
+      ctx.closePath();
+    }
+
+    const FILLS   ={thesis:'#1a1a2e',claim:'#2d1b4e',evidence:'#eaf3fb',note:'#fdf6e3'};
+    const STROKES ={thesis:'#c9a84c',claim:'#9b59b6',evidence:'#2980b9',note:'#c8962a'};
+    const TXTCOL  ={thesis:'#f5f0e8',claim:'#e8d5ff',evidence:'#0d2b45',note:'#3d2b00'};
+    const BADGEBG ={thesis:'#c9a84c',claim:'#9b59b6',evidence:'#2980b9',note:'#c8962a'};
+    const BADGETX ={thesis:'#1a1200',claim:'#fff',evidence:'#fff',note:'#fff'};
+    const BADGELB ={thesis:'THESIS',claim:'PARAGRAPH CLAIM',evidence:'EVIDENCE',note:"HOW I'LL USE IT"};
+    const SW      ={thesis:2.5,claim:2,evidence:2,note:2};
+
+    // ── draw auto connection lines ──
+    function drawAutoLines(){
+      const thesis=canvas.querySelector('.hex.thesis');
+      if(!thesis) return;
+      const tc=hexCenter(thesis);
+      const claims=[...canvas.querySelectorAll('.hex.claim')];
+
+      claims.forEach(cl=>{
+        const cc=hexCenter(cl);
+        drawLine(tc.x-ox,tc.y-oy,cc.x-ox,cc.y-oy,'#9b59b6',2.5,.5,null);
       });
-    },150);
+
+      canvas.querySelectorAll('.hex.evidence,.hex.note').forEach(src=>{
+        if(!claims.length) return;
+        const sc=hexCenter(src);
+        let near=null,minD=Infinity;
+        claims.forEach(cl=>{const cc=hexCenter(cl);const d=Math.hypot(sc.x-cc.x,sc.y-cc.y);if(d<minD){minD=d;near=cl;}});
+        if(near){
+          const isNote=src.classList.contains('note');
+          const cc=hexCenter(near);
+          drawLine(sc.x-ox,sc.y-oy,cc.x-ox,cc.y-oy,
+            isNote?'#c8962a':'#2980b9',1.5,.38,isNote?[6,4]:null);
+        }
+      });
+    }
+
+    function drawLine(x1,y1,x2,y2,stroke,lw,alpha,dash){
+      ctx.save();
+      ctx.globalAlpha=alpha;
+      ctx.strokeStyle=stroke;
+      ctx.lineWidth=lw;
+      if(dash) ctx.setLineDash(dash); else ctx.setLineDash([]);
+      ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+      ctx.restore();
+    }
+
+    // ── draw user arrows ──
+    function drawUserArrows(){
+      userArrows.forEach(a=>{
+        const fromEl=canvas.querySelector('#'+a.from);
+        const toEl=canvas.querySelector('#'+a.to);
+        if(!fromEl||!toEl) return;
+        const fc=hexCenter(fromEl), tc=hexCenter(toEl);
+        const dx=tc.x-fc.x, dy=tc.y-fc.y;
+        const len=Math.hypot(dx,dy)||1;
+        const SHORTEN=38;
+        const ex=tc.x-(dx/len)*SHORTEN, ey=tc.y-(dy/len)*SHORTEN;
+
+        ctx.save();
+        ctx.globalAlpha=.85;
+        ctx.strokeStyle='#444';
+        ctx.lineWidth=2.5;
+        ctx.setLineDash([]);
+        ctx.beginPath();
+        ctx.moveTo(fc.x-ox,fc.y-oy);
+        ctx.lineTo(ex-ox,ey-oy);
+        ctx.stroke();
+
+        // arrowhead
+        const angle=Math.atan2(ey-fc.y,ex-fc.x);
+        const hs=10;
+        ctx.fillStyle='#444';
+        ctx.beginPath();
+        ctx.moveTo(ex-ox,ey-oy);
+        ctx.lineTo(ex-ox-hs*Math.cos(angle-Math.PI/6),ey-oy-hs*Math.sin(angle-Math.PI/6));
+        ctx.lineTo(ex-ox-hs*Math.cos(angle+Math.PI/6),ey-oy-hs*Math.sin(angle+Math.PI/6));
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      });
+    }
+
+    // ── draw hexes ──
+    function drawHexes(){
+      hexes.forEach(h=>{
+        const type=getType(h);
+        const {w,h:ht,side}=SIZES[type];
+        const lx=parseFloat(h.style.left)-ox;
+        const ly=parseFloat(h.style.top)-oy;
+
+        // fill
+        hexPath(lx,ly,w,ht,side);
+        ctx.fillStyle=FILLS[type];
+        ctx.fill();
+
+        // stroke
+        hexPath(lx,ly,w,ht,side);
+        ctx.strokeStyle=STROKES[type];
+        ctx.lineWidth=SW[type];
+        ctx.stroke();
+
+        // badge
+        const badgeLabel=BADGELB[type];
+        ctx.font='700 8px "Source Sans 3",sans-serif';
+        const bw=ctx.measureText(badgeLabel).width+14;
+        const bh=16;
+        const bx=lx+w/2-bw/2;
+        const by=ly-side-(type==='thesis'?30:26);
+        ctx.fillStyle=BADGEBG[type];
+        roundRect(ctx,bx,by,bw,bh,3);
+        ctx.fill();
+        ctx.fillStyle=BADGETX[type];
+        ctx.textAlign='center';
+        ctx.textBaseline='middle';
+        ctx.fillText(badgeLabel,lx+w/2,by+bh/2);
+
+        // text content
+        const ta=h.querySelector('.hex-text');
+        const txt=(ta&&ta.value)||'';
+        if(txt.trim()){
+          const fontSize=type==='thesis'?12:type==='claim'?11.5:type==='evidence'?10.5:10;
+          ctx.font=`${type==='thesis'||type==='claim'?'500':'400'} ${fontSize}px "Source Sans 3",sans-serif`;
+          ctx.fillStyle=TXTCOL[type];
+          ctx.textAlign='center';
+          ctx.textBaseline='middle';
+          const maxW=type==='thesis'?150:type==='claim'?118:86;
+          const lineH=fontSize*1.4;
+          const lines=wrapText(ctx,txt,maxW);
+          const totalH=lines.length*lineH;
+          const startY=ly+side+ht/2-totalH/2+lineH/2;
+          lines.forEach((line,i)=>{
+            ctx.fillText(line,lx+w/2,startY+i*lineH);
+          });
+        }
+      });
+    }
+
+    function roundRect(ctx,x,y,w,h,r){
+      ctx.beginPath();
+      ctx.moveTo(x+r,y);
+      ctx.lineTo(x+w-r,y);ctx.arcTo(x+w,y,x+w,y+r,r);
+      ctx.lineTo(x+w,y+h-r);ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+      ctx.lineTo(x+r,y+h);ctx.arcTo(x,y+h,x,y+h-r,r);
+      ctx.lineTo(x,y+r);ctx.arcTo(x,y,x+r,y,r);
+      ctx.closePath();
+    }
+
+    function wrapText(ctx,text,maxW){
+      const words=text.split(/\s+/);
+      const lines=[];
+      let cur='';
+      words.forEach(w=>{
+        const test=cur?cur+' '+w:w;
+        if(ctx.measureText(test).width>maxW&&cur){lines.push(cur);cur=w;}
+        else cur=test;
+      });
+      if(cur) lines.push(cur);
+      return lines;
+    }
+
+    // ── render everything ──
+    drawAutoLines();
+    drawUserArrows();
+    drawHexes();
+
+    // ── download ──
+    ov.classList.remove('on');
+    const link=document.createElement('a');
+    link.download=`synthesis-map-${Date.now()}.png`;
+    link.href=c.toDataURL('image/png');
+    link.click();
   }
 
   /* ── init ── */
