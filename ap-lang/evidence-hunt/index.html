@@ -772,6 +772,12 @@ function startApp() {
   if (!period)     { toast("Please select your class period."); return; }
   if (!groupName)  { toast("Please enter your group name.");    return; }
 
+  localStorage.setItem("eh_period", period);
+  localStorage.setItem("eh_group",  groupName);
+  launchApp();
+}
+
+function launchApp() {
   document.getElementById("setup-screen").style.display = "none";
   document.getElementById("app-screen").style.display   = "flex";
   document.getElementById("h-period").textContent = period;
@@ -780,6 +786,19 @@ function startApp() {
   buildBoard();
   startPolling();
 }
+
+// Auto-restore session on page load
+window.addEventListener("DOMContentLoaded", () => {
+  const savedPeriod = localStorage.getItem("eh_period");
+  const savedGroup  = localStorage.getItem("eh_group");
+  if (savedPeriod && savedGroup) {
+    period    = savedPeriod;
+    groupName = savedGroup;
+    document.getElementById("setup-period").value = period;
+    document.getElementById("setup-group").value  = groupName;
+    launchApp();
+  }
+});
 
 // ── BUILD BOARD ───────────────────────────────────────────────────────────────
 function buildBoard() {
@@ -820,10 +839,12 @@ async function fetchAll() {
   try {
     const url = `${APPS_SCRIPT_URL}?action=getAll&period=${encodeURIComponent(period)}`;
     const res  = await fetch(url);
-    const data = await res.json();
+    const text = await res.text();
+    let data;
+    try { data = JSON.parse(text); } catch(e) { return; }
     if (!Array.isArray(data)) return;
     data.forEach(entry => ingestEntry(entry));
-  } catch(e) { /* silent */ }
+  } catch(e) { /* silent — network failure */ }
 }
 
 function ingestEntry(entry) {
@@ -974,6 +995,7 @@ async function submitEvidence() {
   try {
     await fetch(APPS_SCRIPT_URL, {
       method: "POST",
+      mode: "no-cors",
       body: JSON.stringify({
         action:      "submit",
         period,
@@ -986,7 +1008,8 @@ async function submitEvidence() {
     });
 
     closeModal();
-    // Fetch immediately so the card appears without waiting for the next poll
+    // Small delay to let Apps Script write the row, then fetch
+    await new Promise(r => setTimeout(r, 1200));
     await fetchAll();
 
   } catch(e) {
