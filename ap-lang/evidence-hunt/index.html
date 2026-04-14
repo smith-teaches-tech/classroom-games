@@ -670,8 +670,20 @@ html, body {
     </div>
 
     <div class="field">
-      <label>Group Name</label>
-      <input type="text" id="setup-group" placeholder="e.g. The Counterarguments, Group 3…" maxlength="40">
+      <label>Breakout Room / Group Number</label>
+      <select id="setup-group">
+        <option value="">Select your group…</option>
+        <option value="Group 1">Group 1</option>
+        <option value="Group 2">Group 2</option>
+        <option value="Group 3">Group 3</option>
+        <option value="Group 4">Group 4</option>
+        <option value="Group 5">Group 5</option>
+        <option value="Group 6">Group 6</option>
+        <option value="Group 7">Group 7</option>
+        <option value="Group 8">Group 8</option>
+        <option value="Group 9">Group 9</option>
+        <option value="Group 10">Group 10</option>
+      </select>
     </div>
 
     <button class="btn-go" onclick="startApp()">START THE HUNT →</button>
@@ -690,6 +702,7 @@ html, body {
     <button class="btn-download" onclick="downloadReport()">
       ⬇ Download Report
     </button>
+
   </header>
 
   <!-- 4-column board -->
@@ -759,6 +772,7 @@ const CATEGORIES = [
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
 let period = "", groupName = "";
+const TODAY = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
 let activeClaimId = null;
 let selectedCat = null;
 let allEntries = {};   // keyed by claim_id → array
@@ -766,6 +780,20 @@ let knownKeys = new Set();
 let pollTimer = null;
 
 // ── SETUP ─────────────────────────────────────────────────────────────────────
+function switchGroup() {
+  localStorage.removeItem("eh_period");
+  localStorage.removeItem("eh_group");
+  clearInterval(pollTimer);
+  pollTimer = null;
+  period = ""; groupName = "";
+  knownKeys.clear();
+  allEntries = {};
+  document.getElementById("app-screen").style.display  = "none";
+  document.getElementById("setup-screen").style.display = "flex";
+  document.getElementById("setup-period").value = "";
+  document.getElementById("setup-group").value  = "";
+}
+
 function startApp() {
   period    = document.getElementById("setup-period").value;
   groupName = document.getElementById("setup-group").value.trim();
@@ -787,17 +815,12 @@ function launchApp() {
   startPolling();
 }
 
-// Auto-restore session on page load
+// Pre-fill form from last session but always show setup screen
 window.addEventListener("DOMContentLoaded", () => {
   const savedPeriod = localStorage.getItem("eh_period");
   const savedGroup  = localStorage.getItem("eh_group");
-  if (savedPeriod && savedGroup) {
-    period    = savedPeriod;
-    groupName = savedGroup;
-    document.getElementById("setup-period").value = period;
-    document.getElementById("setup-group").value  = groupName;
-    launchApp();
-  }
+  if (savedPeriod) document.getElementById("setup-period").value = savedPeriod;
+  // Don't pre-fill group — students must pick their new breakout room each time
 });
 
 // ── BUILD BOARD ───────────────────────────────────────────────────────────────
@@ -837,7 +860,7 @@ function startPolling() {
 
 async function fetchAll() {
   try {
-    const url = `${APPS_SCRIPT_URL}?action=getAll&period=${encodeURIComponent(period)}`;
+    const url = `${APPS_SCRIPT_URL}?action=getAll&period=${encodeURIComponent(period)}&date=${encodeURIComponent(TODAY)}`;
     const res  = await fetch(url);
     const text = await res.text();
     let data;
@@ -998,6 +1021,7 @@ async function submitEvidence() {
       mode: "no-cors",
       body: JSON.stringify({
         action:      "submit",
+        date:        TODAY,
         period,
         group_name:  groupName,
         claim_id:    activeClaimId,
@@ -1007,10 +1031,15 @@ async function submitEvidence() {
       })
     });
 
+    const keyBefore = knownKeys.size;
     closeModal();
     // Small delay to let Apps Script write the row, then fetch
-    await new Promise(r => setTimeout(r, 1200));
+    await new Promise(r => setTimeout(r, 1500));
     await fetchAll();
+    // If knownKeys didn't grow, the row likely didn't save
+    if (knownKeys.size === keyBefore) {
+      toast("⚠️ Submission may not have saved — please try again.");
+    }
 
   } catch(e) {
     toast("Submission failed — check your connection.");
