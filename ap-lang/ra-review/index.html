@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rhetorical Analysis Sprint — AP Language</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1814;
+    --paper: #faf7f0;
+    --rule: #2a2620;
+    --accent: #8b2e1f;     /* oxblood */
+    --accent-soft: #c9a96e; /* antique gold */
+    --muted: #6b6558;
+    --flag: #b5452c;
+    --ok: #4a7c59;
+    --shade: #ebe6d8;
+    --shade2: #e0d9c4;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'EB Garamond', Georgia, serif;
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 18px;
+    line-height: 1.55;
+    min-height: 100vh;
+    background-image: 
+      radial-gradient(circle at 10% 20%, rgba(201,169,110,0.04) 0%, transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(139,46,31,0.03) 0%, transparent 40%);
+  }
+
+  .masthead {
+    border-bottom: 2px solid var(--rule);
+    padding: 1.5rem 2rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .masthead h1 {
+    font-family: 'EB Garamond', serif;
+    font-weight: 500;
+    font-style: italic;
+    font-size: 1.8rem;
+    margin: 0;
+    letter-spacing: 0.02em;
+  }
+  .masthead h1 strong { font-style: normal; font-weight: 600; }
+  .masthead .dateline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  .shell {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  /* GATE SCREEN */
+  .gate {
+    max-width: 520px;
+    margin: 3rem auto;
+    padding: 2.5rem;
+    background: white;
+    border: 1px solid var(--rule);
+    box-shadow: 6px 6px 0 var(--rule);
+  }
+  .gate h2 {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+  }
+  .gate p.lead { color: var(--muted); margin-top: 0; font-size: 0.95rem; }
+
+  label.field {
+    display: block;
+    margin-bottom: 1.1rem;
+  }
+  label.field > span {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 0.35rem;
+  }
+  input[type=text], select, textarea {
+    width: 100%;
+    padding: 0.65rem 0.8rem;
+    font-family: 'EB Garamond', serif;
+    font-size: 1.05rem;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 0;
+    color: var(--ink);
+  }
+  input[type=text]:focus, select:focus, textarea:focus {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+  }
+  textarea { resize: vertical; min-height: 70px; line-height: 1.5; }
+
+  button, .btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: 0.7rem 1.4rem;
+    background: var(--ink);
+    color: var(--paper);
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  button:hover, .btn:hover { background: var(--accent); }
+  button:disabled { opacity: 0.35; cursor: not-allowed; }
+  button.ghost {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--rule);
+  }
+  button.ghost:hover { background: var(--ink); color: var(--paper); }
+
+  /* STAGE NAV */
+  .stage-nav {
+    display: flex;
+    gap: 0;
+    margin: 1.5rem 0 2rem;
+    border: 1px solid var(--rule);
+  }
+  .stage-nav .step {
+    flex: 1;
+    padding: 0.9rem 1rem;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-right: 1px solid var(--rule);
+    background: white;
+    color: var(--muted);
+    position: relative;
+  }
+  .stage-nav .step:last-child { border-right: none; }
+  .stage-nav .step.active {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .stage-nav .step.done {
+    background: var(--shade2);
+    color: var(--ink);
+  }
+  .stage-nav .step.locked::after {
+    content: '🔒';
+    margin-left: 0.4rem;
+    font-size: 0.7rem;
+  }
+  .stage-nav .num {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    margin-right: 0.4rem;
+  }
+
+  /* STAGE LAYOUT */
+  .stage {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  @media (max-width: 780px) {
+    .stage { grid-template-columns: 1fr; }
+  }
+
+  .passage {
+    background: white;
+    border: 1px solid var(--rule);
+    padding: 1.8rem 2rem;
+    position: relative;
+  }
+  .passage::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--accent-soft) 100%);
+  }
+  .passage h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin: 0 0 0.3rem;
+  }
+  .passage h2 {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 0 0 1rem;
+    font-style: italic;
+  }
+  .passage .citation {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-top: 1rem;
+    padding-top: 0.8rem;
+    border-top: 1px dashed var(--shade2);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .passage p { font-size: 1.05rem; line-height: 1.65; }
+  .passage .lineno {
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    vertical-align: super;
+    margin-right: 0.15em;
+  }
+
+  .work {
+    background: var(--shade);
+    padding: 1.8rem 2rem;
+    border: 1px solid var(--rule);
+  }
+  .work h2 {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0 0 0.4rem;
+  }
+  .work .instruction {
+    color: var(--muted);
+    margin-bottom: 1.3rem;
+    font-style: italic;
+    font-size: 0.95rem;
+  }
+
+  /* Stuck toggle - collapsible fallback */
+  .stuck-toggle {
+    margin: 0.5rem 0 1rem;
+  }
+  .stuck-toggle summary {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 0.4rem 0;
+    border-bottom: 1px dashed var(--muted);
+    display: inline-block;
+    list-style: none;
+    user-select: none;
+  }
+  .stuck-toggle summary::before {
+    content: '+ ';
+    font-weight: 700;
+  }
+  .stuck-toggle[open] summary::before { content: '− '; }
+  .stuck-toggle summary::-webkit-details-marker { display: none; }
+  .stuck-toggle summary:hover { color: var(--ink); border-bottom-color: var(--ink); }
+  .stuck-toggle .stuck-body {
+    margin-top: 0.8rem;
+    padding: 0.9rem 1.1rem;
+    background: white;
+    border: 1px dashed var(--rule);
+    font-size: 0.9rem;
+  }
+  .stuck-toggle .stuck-body em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .verb-bank-inline { line-height: 1.9; }
+  .verb-bank-inline .tag-pill {
+    display: inline-block;
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    padding: 0.15rem 0.5rem;
+    margin: 0.1rem;
+    background: var(--shade);
+    cursor: pointer;
+    transition: background 0.12s;
+  }
+  .verb-bank-inline .tag-pill:hover { background: var(--accent-soft); color: var(--ink); }
+
+  /* Stage 2 verb bank (legacy — kept in case referenced elsewhere) */
+  .verb-bank {
+    background: white;
+    padding: 1rem;
+    border: 1px dashed var(--rule);
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+  }
+  .verb-bank strong {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+  .verb-bank .tag-pill {
+    display: inline-block;
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    padding: 0.15rem 0.5rem;
+    margin: 0.1rem;
+    background: var(--shade);
+    cursor: pointer;
+    transition: background 0.12s;
+  }
+  .verb-bank .tag-pill:hover { background: var(--accent-soft); color: var(--ink); }
+
+  .weak-warning {
+    background: #fdf4e8;
+    border-left: 3px solid var(--flag);
+    padding: 0.6rem 0.8rem;
+    font-size: 0.85rem;
+    color: var(--flag);
+    margin: 0.8rem 0;
+    display: none;
+  }
+  .weak-warning.show { display: block; }
+
+  /* Thesis preview */
+  .thesis-preview {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    line-height: 1.5;
+    padding: 1rem 1.2rem;
+    background: white;
+    border-left: 3px solid var(--accent);
+    margin: 1rem 0;
+    min-height: 3em;
+  }
+  .thesis-preview .blank { color: var(--muted); }
+  .thesis-preview .filled { color: var(--accent); font-weight: 500; }
+
+  /* Stage 3 CEUEL boxes */
+  .ceuel-box { margin-bottom: 0.9rem; }
+  .ceuel-box label.field > span .label-letter {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: none;
+    letter-spacing: 0;
+    margin-right: 0.4rem;
+  }
+
+  .qualify-opt {
+    background: var(--shade2);
+    padding: 0.9rem 1rem;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    border-left: 3px solid var(--accent-soft);
+  }
+  .qualify-opt strong { font-family: 'Inter', sans-serif; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; display: block; margin-bottom: 0.3rem; }
+
+  /* Bridge callout - Stage 1 → argument unit */
+  .bridge {
+    background: white;
+    border-left: 3px solid var(--accent-soft);
+    padding: 0.9rem 1rem;
+    margin-bottom: 1rem;
+    font-size: 0.88rem;
+    color: var(--ink);
+  }
+  .bridge strong {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  /* Success state after submit */
+  .submitted {
+    text-align: center;
+    padding: 2rem;
+  }
+  .submitted .check {
+    font-size: 3rem;
+    color: var(--ok);
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+  }
+
+  /* Stage 1 tag buttons */
+  .tag-group { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
+  .tag-group .tag-btn {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    padding: 0.5rem 0.9rem;
+    background: white;
+    border: 1px solid var(--rule);
+    cursor: pointer;
+    transition: all 0.15s;
+    text-transform: none;
+    color: var(--ink);
+  }
+  .tag-group .tag-btn:hover { background: var(--shade2); }
+  .tag-group .tag-btn.selected {
+    background: var(--accent);
+    color: var(--paper);
+    border-color: var(--accent);
+  }
+
+  /* TEACHER VIEW */
+  .teacher-shell { max-width: 1400px; margin: 0 auto; padding: 1.5rem 2rem; }
+  .teacher-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid var(--rule);
+    margin-bottom: 1.5rem;
+  }
+  .teacher-tabs button {
+    background: transparent;
+    color: var(--ink);
+    padding: 0.8rem 1.4rem;
+    font-size: 0.8rem;
+    border: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+  }
+  .teacher-tabs button.active {
+    border-bottom-color: var(--accent);
+    color: var(--accent);
+  }
+  .teacher-tabs button:hover { background: transparent; color: var(--accent); }
+
+  .filter-bar {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 0.8rem 1rem;
+    background: var(--shade);
+    border: 1px solid var(--rule);
+  }
+  .filter-bar label {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+  }
+  .filter-bar select, .filter-bar input { padding: 0.4rem 0.6rem; font-size: 0.9rem; width: auto; }
+  .filter-bar .count {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1rem;
+  }
+  .sub-card {
+    background: white;
+    border: 1px solid var(--rule);
+    padding: 1rem 1.2rem;
+    position: relative;
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+  .sub-card.weak {
+    border-left: 4px solid var(--flag);
+    background: #fdfaf3;
+  }
+  .sub-card .meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px dashed var(--shade2);
+  }
+  .sub-card .meta .name { color: var(--ink); font-weight: 500; }
+  .sub-card .weak-badge {
+    display: inline-block;
+    background: var(--flag);
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 0.15rem 0.4rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .sub-card .tag-displayed {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 0.2rem 0.5rem;
+    background: var(--shade);
+    margin-bottom: 0.5rem;
+  }
+  .sub-card .thesis-text {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 1.02rem;
+    line-height: 1.5;
+  }
+  .sub-card .ceuel-line { margin-bottom: 0.4rem; }
+  .sub-card .ceuel-line .lab {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    display: block;
+  }
+  .sub-card .spot {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    background: transparent;
+    color: var(--muted);
+    padding: 0.2rem 0.5rem;
+    font-size: 0.7rem;
+    border: 1px solid var(--muted);
+  }
+  .sub-card .spot.on {
+    background: var(--accent-soft);
+    color: var(--ink);
+    border-color: var(--accent-soft);
+  }
+
+  /* Spotlight overlay */
+  .spotlight {
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 24, 20, 0.92);
+    z-index: 100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+  }
+  .spotlight.show { display: flex; }
+  .spotlight .spot-inner {
+    background: var(--paper);
+    max-width: 900px;
+    width: 100%;
+    padding: 3rem 3.5rem;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+  }
+  .spotlight .close {
+    position: absolute;
+    top: 1rem; right: 1rem;
+    font-size: 1.2rem;
+    background: transparent;
+    color: var(--ink);
+    padding: 0.5rem 0.8rem;
+  }
+  .spotlight .spot-content {
+    font-family: 'EB Garamond', serif;
+    font-size: 1.5rem;
+    line-height: 1.55;
+  }
+  .spotlight .spot-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Tallies */
+  .tally-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+  .tally {
+    background: white;
+    border: 1px solid var(--rule);
+    padding: 1rem;
+    text-align: center;
+  }
+  .tally .num {
+    font-family: 'EB Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .tally .lab {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-top: 0.3rem;
+  }
+
+  .toggle-view {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    font-size: 0.65rem;
+    padding: 0.4rem 0.7rem;
+    background: var(--muted);
+    opacity: 0.5;
+  }
+  .toggle-view:hover { opacity: 1; background: var(--ink); }
+
+  .empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== STUDENT VIEW ==================== -->
+<div id="student-view">
+  <header class="masthead">
+    <h1>The <strong>Rhetorical Analysis</strong> <em>Sprint</em></h1>
+    <div class="dateline">AP Lang · Review · 40 min</div>
+  </header>
+
+  <div class="shell">
+
+    <!-- GATE -->
+    <div id="gate" class="gate">
+      <h2>Sign in to begin</h2>
+      <p class="lead">Your submissions will be visible to the class. Bring your A-game.</p>
+      <label class="field">
+        <span>First name</span>
+        <input type="text" id="gate-first" maxlength="30" />
+      </label>
+      <label class="field">
+        <span>Last initial</span>
+        <input type="text" id="gate-last" maxlength="1" />
+      </label>
+      <label class="field">
+        <span>Class period</span>
+        <select id="gate-period">
+          <option value="">— select —</option>
+          <option value="1">Period 1</option>
+          <option value="2">Period 2</option>
+          <option value="3">Period 3</option>
+          <option value="4">Period 4</option>
+          <option value="5">Period 5</option>
+          <option value="6">Period 6</option>
+          <option value="7">Period 7</option>
+        </select>
+      </label>
+      <button id="gate-enter" style="width:100%; margin-top:0.5rem;">Begin sprint</button>
+    </div>
+
+    <!-- MAIN -->
+    <div id="main" style="display:none;">
+
+      <nav class="stage-nav" id="stage-nav">
+        <div class="step active" data-step="1"><span class="num">I.</span>Spot the move</div>
+        <div class="step locked" data-step="2"><span class="num">II.</span>Build the thesis</div>
+        <div class="step locked" data-step="3"><span class="num">III.</span>Write the paragraph</div>
+      </nav>
+
+      <!-- STAGE 1 -->
+      <section class="stage" id="stage-1">
+        <div class="passage">
+          <h3>Passage I · opening</h3>
+          <h2>On the matter of nude statues in public museums</h2>
+          <p>
+            <span class="lineno">1</span>From time to time the question arises whether certain nude statues shall be exhibited in the museums of art where they are to be seen by the general public,—by children from the schools as well as by scholars from the universities. And from time to time the answer to the question is hotly debated, usually without agreement. Those who are concerned about the morals of the public maintain that grave harm is done by such exhibitions. Those who believe that beauty is its own excuse for being have scornful words for spectators who find evil where, most certainly, no evil was intended. Such controversies usually start from <em>a priori</em> assumptions, and seldom lead to any useful end.
+          </p>
+          <p>
+            <span class="lineno">15</span>The question is capable of a practical solution that will be accepted by everyone. It is universally admitted that public libraries must reserve certain books from general circulation. In the same way, it is reasonable to affirm that a public museum of art may be justified in excluding certain statues.
+          </p>
+          <div class="citation">— The Atlantic Monthly, August 1901</div>
+        </div>
+
+        <div class="work">
+          <h2>What is the author doing?</h2>
+          <p class="instruction">Hunt the passage. Find a moment where the author is doing something <em>beyond</em> just stating his argument. Name the move in your own words.</p>
+
+          <div class="bridge">
+            <strong>Remember from argument unit →</strong>
+            Concession, qualification, and rebuttal aren't just tools <em>you</em> use — writers you analyze use them too. Watch for moves that acknowledge the other side, limit a claim, or pivot the argument.
+          </div>
+
+          <label class="field">
+            <span>Name the rhetorical move (1–4 words)</span>
+            <input type="text" id="s1-move" placeholder="e.g., double concession, strategic qualification..." />
+          </label>
+
+          <label class="field">
+            <span>Quote the lines (or paraphrase) where you see it</span>
+            <textarea id="s1-where" rows="2" placeholder='"Those who are concerned..." / lines 7–12'></textarea>
+          </label>
+
+          <label class="field">
+            <span>One sentence: how do you know?</span>
+            <textarea id="s1-just" rows="3" placeholder="The author does X by ... "></textarea>
+          </label>
+
+          <details class="stuck-toggle">
+            <summary>Stuck? See some possibilities</summary>
+            <div class="stuck-body">
+              Moves the author might be making:
+              <em>double concession</em> ·
+              <em>qualification</em> ·
+              <em>pivot / rebuttal</em> ·
+              <em>analogy</em> ·
+              <em>ironic concession</em> ·
+              <em>strategic self-disclosure</em>
+              <p style="margin:0.6rem 0 0; font-size:0.82rem;">These are starting points — use your own words if yours fit better.</p>
+            </div>
+          </details>
+
+          <button id="s1-submit" disabled>Submit & unlock Stage II</button>
+        </div>
+      </section>
+
+      <!-- STAGE 2 -->
+      <section class="stage" id="stage-2" style="display:none;">
+        <div class="passage">
+          <h3>Passage II · Pompeii paragraph</h3>
+          <h2>The author speaks in his own voice</h2>
+          <p>
+            <span class="lineno">42</span>I, personally, find no harm in the statue of —— from Pompeii. It interests me in itself, as a thing of beauty, and as an index of the feeling of the people who produced it. It was, in Pompeii, so placed that only adults saw it, probably. If the citizen of a modern American town, two thousand years later, finds offense in it, for himself or for his children, I will not blame him. His point of view is essentially different from that of the Roman of that earlier day. His child's point of view is utterly different. He, as a citizen, pays the taxes that support his museum.
+          </p>
+          <p>
+            <span class="lineno">53</span>His opinion, therefore, deserves respect, even though he may be, from my point of view, uncultivated, intolerant, and unreasonable. If any considerable number of such citizens are offended, for themselves or for their children, I, for one, will not object if their opinions are respected by the public officer who is their servant as well as mine.
+          </p>
+          <div class="citation">— The Atlantic Monthly, August 1901</div>
+        </div>
+
+        <div class="work">
+          <h2>Build your thesis</h2>
+          <p class="instruction">Identify <em>three</em> rhetorical choices the author makes in this passage. Name each with a strong verb — a verb that names the <em>move</em>, not the fact of writing.</p>
+
+          <label class="field">
+            <span>Rhetorical verb 1</span>
+            <input type="text" id="s2-v1" placeholder="your verb..." />
+          </label>
+          <label class="field">
+            <span>Rhetorical verb 2</span>
+            <input type="text" id="s2-v2" />
+          </label>
+          <label class="field">
+            <span>Rhetorical verb 3</span>
+            <input type="text" id="s2-v3" />
+          </label>
+          <label class="field">
+            <span>Author's purpose (what is he ultimately doing?)</span>
+            <input type="text" id="s2-purp" placeholder="advocates for... / argues that... / urges readers to..." />
+          </label>
+
+          <div class="thesis-preview" id="s2-preview">
+            <span class="blank">By ___, ___, and ___, the author ___.</span>
+          </div>
+
+          <details class="stuck-toggle">
+            <summary>Stuck? See a verb bank</summary>
+            <div class="stuck-body">
+              <div class="verb-bank-inline">
+                <span class="tag-pill" data-v="concedes">concedes</span>
+                <span class="tag-pill" data-v="qualifies">qualifies</span>
+                <span class="tag-pill" data-v="contrasts">contrasts</span>
+                <span class="tag-pill" data-v="appeals to">appeals to</span>
+                <span class="tag-pill" data-v="undercuts">undercuts</span>
+                <span class="tag-pill" data-v="reframes">reframes</span>
+                <span class="tag-pill" data-v="elevates">elevates</span>
+                <span class="tag-pill" data-v="humanizes">humanizes</span>
+                <span class="tag-pill" data-v="dismisses">dismisses</span>
+                <span class="tag-pill" data-v="disarms">disarms</span>
+                <span class="tag-pill" data-v="invokes">invokes</span>
+                <span class="tag-pill" data-v="juxtaposes">juxtaposes</span>
+                <span class="tag-pill" data-v="acknowledges">acknowledges</span>
+                <span class="tag-pill" data-v="positions">positions</span>
+                <span class="tag-pill" data-v="flatters">flatters</span>
+              </div>
+              <p style="margin:0.6rem 0 0; font-size:0.82rem;">Tap a verb to auto-fill the next empty slot. These are possibilities — use your own verb if you have a better one.</p>
+            </div>
+          </details>
+
+          <button id="s2-submit" disabled>Submit & unlock Stage III</button>
+        </div>
+      </section>
+
+      <!-- STAGE 3 -->
+      <section class="stage" id="stage-3" style="display:none;">
+        <div class="passage">
+          <h3>Passage III · closing</h3>
+          <h2>The patient conclusion</h2>
+          <p>
+            <span class="lineno">67</span>I can remember when Balzac's novels were kept on the top shelf, though now they are freely given out in many public libraries. It was, in my opinion, a loss that they were so long reserved. I acquiesced in the reservation, however, since it was demanded by a considerable number of intelligent people. I do not think they are good food for children, even now. The same principle can be, and should be, applied in public museums of art. If the public demands that the Discobolus should be relegated to an attic because it is unclothed, very well, let it go there. Let me have the key to the attic when I wish it. If the statue is really good and pure, as thousands of good people believe, it will, by and by, be brought down to the main hall.
+          </p>
+          <p>
+            <span class="lineno">82</span>In the meantime, let us wait. There is no hurry. Do not let us oppose our canon of taste, however cultivated, to a canon of morals held by a considerable number of sincere persons, however mistaken.
+          </p>
+          <div class="citation">— The Atlantic Monthly, August 1901</div>
+        </div>
+
+        <div class="work">
+          <h2>One body paragraph</h2>
+          <p class="instruction">Pick <em>one</em> rhetorical device from your thesis. Write a full paragraph using Claim → Evidence → Unpack → Effect → Link.</p>
+
+          <label class="field ceuel-box" style="background:white; padding:0.9rem 1rem; border-left:3px solid var(--accent);">
+            <span>Which device from your thesis are you writing about?</span>
+            <input type="text" id="s3-device" placeholder="e.g., the author's strategic concession..." />
+          </label>
+
+          <label class="field ceuel-box">
+            <span><span class="label-letter">C.</span>Claim — what does this device do here?</span>
+            <textarea id="s3-claim" rows="2" placeholder="The author's strategic concession..."></textarea>
+          </label>
+          <label class="field ceuel-box">
+            <span><span class="label-letter">E.</span>Evidence — short quoted phrase from passage III</span>
+            <textarea id="s3-ev" rows="2" placeholder='"..."'></textarea>
+          </label>
+          <label class="field ceuel-box">
+            <span><span class="label-letter">U.</span>Unpack — what is happening in those exact words?</span>
+            <textarea id="s3-un" rows="3"></textarea>
+          </label>
+          <label class="field ceuel-box">
+            <span><span class="label-letter">E.</span>Effect on audience — how does it land?</span>
+            <textarea id="s3-ef" rows="3"></textarea>
+          </label>
+          <label class="field ceuel-box">
+            <span><span class="label-letter">L.</span>Link to purpose — how does this serve what the author is doing?</span>
+            <textarea id="s3-li" rows="3"></textarea>
+          </label>
+
+          <div class="qualify-opt">
+            <strong>optional · bonus</strong>
+            Can you name a <em>qualification</em> in the author's own argument? (What does he NOT claim?)
+            <textarea id="s3-q" rows="2" style="margin-top:0.5rem;" placeholder="The author does not claim that... he only goes as far as..."></textarea>
+          </div>
+
+          <button id="s3-submit" style="margin-top:1rem;">Submit paragraph</button>
+        </div>
+      </section>
+
+      <!-- DONE -->
+      <section id="done" style="display:none;" class="submitted">
+        <div class="check">✦</div>
+        <h2 style="font-family:'EB Garamond',serif; font-style:italic; font-weight:500;">Sprint complete.</h2>
+        <p style="color:var(--muted);">Your work is on the board. Stand by for the class debrief.</p>
+      </section>
+
+    </div>
+  </div>
+
+  <button class="btn toggle-view" onclick="window.location.search='?view=teacher'">Teacher view</button>
+</div>
+
+<!-- ==================== TEACHER VIEW ==================== -->
+<div id="teacher-view" style="display:none;">
+  <header class="masthead">
+    <h1><em>Teacher</em> <strong>Dashboard</strong></h1>
+    <div class="dateline">Live · auto-refresh 8s</div>
+  </header>
+
+  <div class="teacher-shell">
+
+    <nav class="teacher-tabs" id="t-tabs">
+      <button class="active" data-tab="1">I. Spot the move</button>
+      <button data-tab="2">II. Thesis builds</button>
+      <button data-tab="3">III. Paragraphs</button>
+      <button data-tab="tally">Tally</button>
+    </nav>
+
+    <div class="filter-bar">
+      <label>Period</label>
+      <select id="t-period">
+        <option value="">All</option>
+      </select>
+      <label>Only weak verbs</label>
+      <input type="checkbox" id="t-weak-only" />
+      <label>Search</label>
+      <input type="text" id="t-search" placeholder="name or keyword" style="flex:1; max-width:280px;" />
+      <div class="count" id="t-count">—</div>
+    </div>
+
+    <div id="t-body"></div>
+  </div>
+
+  <div class="spotlight" id="spotlight">
+    <div class="spot-inner">
+      <button class="close" onclick="document.getElementById('spotlight').classList.remove('show')">✕</button>
+      <div class="spot-meta" id="spot-meta"></div>
+      <div class="spot-content" id="spot-content"></div>
+    </div>
+  </div>
+
+  <button class="btn toggle-view" onclick="window.location.search=''">Student view</button>
+</div>
+
+<script>
+//==========================================================
+// CONFIG — paste your Apps Script web app URL here
+//==========================================================
+const SCRIPT_URL = 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+
+//==========================================================
+// ROUTE
+//==========================================================
+const urlParams = new URLSearchParams(window.location.search);
+const isTeacher = urlParams.get('view') === 'teacher';
+if (isTeacher) {
+  document.getElementById('student-view').style.display = 'none';
+  document.getElementById('teacher-view').style.display = 'block';
+  initTeacher();
+} else {
+  initStudent();
+}
+
+//==========================================================
+// STUDENT
+//==========================================================
+function initStudent() {
+  // Restore session if they refresh
+  const saved = JSON.parse(localStorage.getItem('rhet_sprint_me') || 'null');
+  if (saved) {
+    document.getElementById('gate-first').value = saved.first || '';
+    document.getElementById('gate-last').value = saved.last || '';
+    document.getElementById('gate-period').value = saved.period || '';
+  }
+
+  document.getElementById('gate-enter').onclick = () => {
+    const first = document.getElementById('gate-first').value.trim();
+    const last = document.getElementById('gate-last').value.trim().toUpperCase();
+    const period = document.getElementById('gate-period').value;
+    if (!first || !last || !period) {
+      alert('All three fields are required.');
+      return;
+    }
+    const me = { first, last, period, name: `${first} ${last}.` };
+    localStorage.setItem('rhet_sprint_me', JSON.stringify(me));
+    window.ME = me;
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('main').style.display = 'block';
+    // Restore stage progress
+    const progress = parseInt(localStorage.getItem('rhet_sprint_stage') || '1');
+    for (let i = 1; i < progress; i++) markStageDone(i);
+    showStage(progress);
+  };
+
+  // ----- Stage 1 -----
+  ['s1-move','s1-where','s1-just'].forEach(id => {
+    document.getElementById(id).addEventListener('input', checkS1);
+  });
+  document.getElementById('s1-submit').onclick = submitS1;
+
+  // ----- Stage 2 -----
+  // Verb bank is inside the stuck-toggle now; still wire clicks
+  document.querySelectorAll('.verb-bank-inline .tag-pill').forEach(p => {
+    p.onclick = () => {
+      const v = p.dataset.v;
+      const v1 = document.getElementById('s2-v1');
+      const v2 = document.getElementById('s2-v2');
+      const v3 = document.getElementById('s2-v3');
+      if (!v1.value) v1.value = v;
+      else if (!v2.value) v2.value = v;
+      else if (!v3.value) v3.value = v;
+      updateThesisPreview();
+      checkS2();
+    };
+  });
+  ['s2-v1','s2-v2','s2-v3','s2-purp'].forEach(id => {
+    document.getElementById(id).addEventListener('input', () => {
+      updateThesisPreview();
+      checkS2();
+    });
+  });
+  document.getElementById('s2-submit').onclick = submitS2;
+
+  // ----- Stage 3 -----
+  ['s3-device','s3-claim','s3-ev','s3-un','s3-ef','s3-li'].forEach(id => {
+    document.getElementById(id).addEventListener('input', checkS3);
+  });
+  document.getElementById('s3-submit').onclick = submitS3;
+}
+
+const WEAK = ['uses','use','shows','show','says','say','talks about','talk about',
+              'tells','tell','describes','describe','writes','write','gives','mentions','mention'];
+
+function checkS1() {
+  const move = document.getElementById('s1-move').value.trim();
+  const where = document.getElementById('s1-where').value.trim();
+  const just = document.getElementById('s1-just').value.trim();
+  document.getElementById('s1-submit').disabled = !(move.length >= 2 && where.length >= 5 && just.length >= 10);
+}
+
+function checkS2() {
+  const v1 = document.getElementById('s2-v1').value.trim();
+  const v2 = document.getElementById('s2-v2').value.trim();
+  const v3 = document.getElementById('s2-v3').value.trim();
+  const purp = document.getElementById('s2-purp').value.trim();
+  const hasAll = v1 && v2 && v3 && purp.length >= 5;
+  document.getElementById('s2-submit').disabled = !hasAll;
+  // Note: weak-verb detection still runs on the server for teacher dashboard
+}
+
+function checkS3() {
+  const fields = ['s3-device','s3-claim','s3-ev','s3-un','s3-ef','s3-li'];
+  const allFilled = fields.every(id => document.getElementById(id).value.trim().length >= 5);
+  document.getElementById('s3-submit').disabled = !allFilled;
+}
+
+function updateThesisPreview() {
+  const v1 = document.getElementById('s2-v1').value.trim();
+  const v2 = document.getElementById('s2-v2').value.trim();
+  const v3 = document.getElementById('s2-v3').value.trim();
+  const purp = document.getElementById('s2-purp').value.trim();
+  const prev = document.getElementById('s2-preview');
+  const blankSpan = s => s ? `<span class="filled">${escapeHtml(s)}</span>` : `<span class="blank">___</span>`;
+  prev.innerHTML = `By ${blankSpan(v1)}, ${blankSpan(v2)}, and ${blankSpan(v3)}, the author ${blankSpan(purp)}.`;
+}
+
+async function submitS1() {
+  const btn = document.getElementById('s1-submit');
+  btn.disabled = true; btn.textContent = 'Sending...';
+  const move = document.getElementById('s1-move').value.trim();
+  const where = document.getElementById('s1-where').value.trim();
+  const justification = document.getElementById('s1-just').value.trim();
+  // Concatenate where + justification into a single justification field for back-compat with sheet columns
+  const combinedJustification = where + ' — ' + justification;
+  const payload = { stage: 1, ...window.ME, period: window.ME.period, name: window.ME.name, tag: move, justification: combinedJustification };
+  const r = await postToSheet(payload);
+  if (r.ok) {
+    markStageDone(1);
+    localStorage.setItem('rhet_sprint_stage', '2');
+    showStage(2);
+  } else {
+    btn.disabled = false; btn.textContent = 'Submit & unlock Stage II';
+    alert('Submission failed: ' + (r.error || 'unknown'));
+  }
+}
+
+async function submitS2() {
+  const btn = document.getElementById('s2-submit');
+  btn.disabled = true; btn.textContent = 'Sending...';
+  const payload = {
+    stage: 2,
+    ...window.ME,
+    period: window.ME.period, name: window.ME.name,
+    verb1: document.getElementById('s2-v1').value.trim(),
+    verb2: document.getElementById('s2-v2').value.trim(),
+    verb3: document.getElementById('s2-v3').value.trim(),
+    author: 'the author',
+    purpose: document.getElementById('s2-purp').value.trim()
+  };
+  const r = await postToSheet(payload);
+  if (r.ok) {
+    markStageDone(2);
+    localStorage.setItem('rhet_sprint_stage', '3');
+    showStage(3);
+  } else {
+    btn.disabled = false; btn.textContent = 'Submit & unlock Stage III';
+    alert('Submission failed: ' + (r.error || 'unknown'));
+  }
+}
+
+async function submitS3() {
+  const btn = document.getElementById('s3-submit');
+  btn.disabled = true; btn.textContent = 'Sending...';
+  const device = document.getElementById('s3-device').value.trim();
+  const payload = {
+    stage: 3,
+    ...window.ME,
+    period: window.ME.period, name: window.ME.name,
+    device,
+    claim: document.getElementById('s3-claim').value.trim(),
+    evidence: document.getElementById('s3-ev').value.trim(),
+    unpack: document.getElementById('s3-un').value.trim(),
+    effect: document.getElementById('s3-ef').value.trim(),
+    link: document.getElementById('s3-li').value.trim(),
+    qualify: document.getElementById('s3-q').value.trim()
+  };
+  const r = await postToSheet(payload);
+  if (r.ok) {
+    markStageDone(3);
+    localStorage.setItem('rhet_sprint_stage', 'done');
+    document.querySelectorAll('.stage').forEach(s => s.style.display = 'none');
+    document.getElementById('done').style.display = 'block';
+  } else {
+    btn.disabled = false; btn.textContent = 'Submit paragraph';
+    alert('Submission failed: ' + (r.error || 'unknown'));
+  }
+}
+
+function showStage(n) {
+  document.querySelectorAll('.stage').forEach(s => s.style.display = 'none');
+  const el = document.getElementById('stage-' + n);
+  if (el) el.style.display = 'grid';
+  // Update nav
+  document.querySelectorAll('.stage-nav .step').forEach(step => {
+    const num = parseInt(step.dataset.step);
+    step.classList.remove('active', 'locked');
+    if (num === n) step.classList.add('active');
+    else if (num > n && !step.classList.contains('done')) step.classList.add('locked');
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function markStageDone(n) {
+  document.querySelectorAll('.stage-nav .step').forEach(step => {
+    if (parseInt(step.dataset.step) === n) {
+      step.classList.add('done');
+      step.classList.remove('active', 'locked');
+    }
+  });
+}
+
+async function postToSheet(payload) {
+  try {
+    const res = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify(payload)
+    });
+    return await res.json();
+  } catch (e) {
+    return { error: e.toString() };
+  }
+}
+
+function escapeHtml(s) {
+  return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+//==========================================================
+// TEACHER
+//==========================================================
+let T_DATA = { stage1:[], stage2:[], stage3:[] };
+let T_CURRENT_TAB = '1';
+let T_SPOTLIGHT = new Set();
+
+function initTeacher() {
+  document.querySelectorAll('#t-tabs button').forEach(b => {
+    b.onclick = () => {
+      document.querySelectorAll('#t-tabs button').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      T_CURRENT_TAB = b.dataset.tab;
+      renderTeacher();
+    };
+  });
+  document.getElementById('t-period').onchange = renderTeacher;
+  document.getElementById('t-weak-only').onchange = renderTeacher;
+  document.getElementById('t-search').oninput = renderTeacher;
+
+  fetchTeacher();
+  setInterval(fetchTeacher, 8000);
+}
+
+async function fetchTeacher() {
+  try {
+    const r = await fetch(SCRIPT_URL + '?action=read');
+    const data = await r.json();
+    T_DATA = data;
+    // Populate periods once
+    const sel = document.getElementById('t-period');
+    if (sel.options.length <= 1 && data.periods) {
+      data.periods.forEach(p => {
+        const o = document.createElement('option');
+        o.value = p; o.textContent = 'Period ' + p;
+        sel.appendChild(o);
+      });
+    }
+    renderTeacher();
+  } catch (e) {
+    document.getElementById('t-body').innerHTML = '<div class="empty">Could not load data. Check SCRIPT_URL.</div>';
+  }
+}
+
+function filterRows(rows) {
+  const period = document.getElementById('t-period').value;
+  const search = document.getElementById('t-search').value.trim().toLowerCase();
+  return rows.filter(r => {
+    if (period && String(r.period) !== String(period)) return false;
+    if (search) {
+      const blob = JSON.stringify(r).toLowerCase();
+      if (!blob.includes(search)) return false;
+    }
+    return true;
+  });
+}
+
+function renderTeacher() {
+  const body = document.getElementById('t-body');
+  const weakOnly = document.getElementById('t-weak-only').checked;
+
+  if (T_CURRENT_TAB === '1') {
+    const rows = filterRows(T_DATA.stage1 || []);
+    document.getElementById('t-count').textContent = rows.length + ' submissions';
+    if (!rows.length) { body.innerHTML = '<div class="empty">No Stage I submissions yet.</div>'; return; }
+    body.innerHTML = '<div class="card-grid">' + rows.map(r => stage1Card(r)).join('') + '</div>';
+  } else if (T_CURRENT_TAB === '2') {
+    let rows = filterRows(T_DATA.stage2 || []);
+    if (weakOnly) rows = rows.filter(r => r.weak_flag === 'WEAK');
+    document.getElementById('t-count').textContent = rows.length + ' submissions';
+    if (!rows.length) { body.innerHTML = '<div class="empty">No Stage II submissions yet.</div>'; return; }
+    body.innerHTML = '<div class="card-grid">' + rows.map(r => stage2Card(r)).join('') + '</div>';
+  } else if (T_CURRENT_TAB === '3') {
+    const rows = filterRows(T_DATA.stage3 || []);
+    document.getElementById('t-count').textContent = rows.length + ' submissions';
+    if (!rows.length) { body.innerHTML = '<div class="empty">No Stage III submissions yet.</div>'; return; }
+    body.innerHTML = '<div class="card-grid">' + rows.map(r => stage3Card(r)).join('') + '</div>';
+  } else if (T_CURRENT_TAB === 'tally') {
+    body.innerHTML = renderTally();
+  }
+
+  // Wire spotlight buttons
+  document.querySelectorAll('.spot').forEach(b => {
+    b.onclick = () => {
+      const content = b.dataset.content;
+      const meta = b.dataset.meta;
+      document.getElementById('spot-content').innerHTML = content;
+      document.getElementById('spot-meta').textContent = meta;
+      document.getElementById('spotlight').classList.add('show');
+    };
+  });
+}
+
+function stage1Card(r) {
+  const meta = `P${r.period} · ${escapeHtml(r.name)}`;
+  const content = `<div class="tag-displayed">${escapeHtml(r.tag)}</div><em>${escapeHtml(r.justification || '')}</em>`;
+  return `
+    <div class="sub-card">
+      <button class="spot" data-content='${attr(content)}' data-meta='${attr(meta)}'>spotlight</button>
+      <div class="meta"><span class="name">${escapeHtml(r.name)}</span><span>P${r.period}</span></div>
+      <div class="tag-displayed">${escapeHtml(r.tag)}</div>
+      <div>${escapeHtml(r.justification || '')}</div>
+    </div>`;
+}
+
+function stage2Card(r) {
+  const isWeak = r.weak_flag === 'WEAK';
+  const thesis = escapeHtml(r.full_thesis || '');
+  const meta = `P${r.period} · ${escapeHtml(r.name)}${isWeak ? ' · WEAK VERB' : ''}`;
+  const content = `<div style="font-style:italic;">${thesis}</div>`;
+  return `
+    <div class="sub-card ${isWeak ? 'weak' : ''}">
+      <button class="spot" data-content='${attr(content)}' data-meta='${attr(meta)}'>spotlight</button>
+      <div class="meta">
+        <span class="name">${escapeHtml(r.name)}</span>
+        <span>P${r.period}${isWeak ? ' <span class="weak-badge">weak</span>' : ''}</span>
+      </div>
+      <div class="thesis-text">${thesis}</div>
+    </div>`;
+}
+
+function stage3Card(r) {
+  const meta = `P${r.period} · ${escapeHtml(r.name)} · device: ${escapeHtml(r.device || '')}`;
+  const content = `
+    <div><strong>Claim.</strong> ${escapeHtml(r.claim)}</div>
+    <div style="margin-top:0.6rem;"><strong>Evidence.</strong> ${escapeHtml(r.evidence)}</div>
+    <div style="margin-top:0.6rem;"><strong>Unpack.</strong> ${escapeHtml(r.unpack)}</div>
+    <div style="margin-top:0.6rem;"><strong>Effect.</strong> ${escapeHtml(r.effect)}</div>
+    <div style="margin-top:0.6rem;"><strong>Link.</strong> ${escapeHtml(r.link)}</div>
+    ${r.qualify ? '<div style="margin-top:0.6rem; color:var(--accent);"><strong>Qualification.</strong> ' + escapeHtml(r.qualify) + '</div>' : ''}
+  `;
+  return `
+    <div class="sub-card">
+      <button class="spot" data-content='${attr(content)}' data-meta='${attr(meta)}'>spotlight</button>
+      <div class="meta">
+        <span class="name">${escapeHtml(r.name)}</span>
+        <span>P${r.period} · ${escapeHtml(r.device || '')}</span>
+      </div>
+      <div class="ceuel-line"><span class="lab">Claim</span>${escapeHtml(r.claim)}</div>
+      <div class="ceuel-line"><span class="lab">Evidence</span>${escapeHtml(r.evidence)}</div>
+      <div class="ceuel-line"><span class="lab">Unpack</span>${escapeHtml(r.unpack)}</div>
+      <div class="ceuel-line"><span class="lab">Effect</span>${escapeHtml(r.effect)}</div>
+      <div class="ceuel-line"><span class="lab">Link</span>${escapeHtml(r.link)}</div>
+      ${r.qualify ? '<div class="ceuel-line"><span class="lab" style="color:var(--accent-soft);">Bonus qualification</span>' + escapeHtml(r.qualify) + '</div>' : ''}
+    </div>`;
+}
+
+function renderTally() {
+  const s1 = T_DATA.stage1 || [];
+  const s2 = T_DATA.stage2 || [];
+  const s3 = T_DATA.stage3 || [];
+  const weak = s2.filter(r => r.weak_flag === 'WEAK').length;
+  const period = document.getElementById('t-period').value;
+  const f = arr => period ? arr.filter(r => String(r.period) === String(period)) : arr;
+
+  const uniqueStudents = new Set(f(s1).map(r => r.name));
+  f(s2).forEach(r => uniqueStudents.add(r.name));
+  f(s3).forEach(r => uniqueStudents.add(r.name));
+
+  const tagCounts = {};
+  f(s1).forEach(r => { tagCounts[r.tag] = (tagCounts[r.tag] || 0) + 1; });
+
+  let tagHtml = '';
+  Object.entries(tagCounts).sort((a,b) => b[1]-a[1]).forEach(([tag, count]) => {
+    tagHtml += `<div class="tally"><div class="num">${count}</div><div class="lab">${escapeHtml(tag)}</div></div>`;
+  });
+
+  return `
+    <div class="tally-grid">
+      <div class="tally"><div class="num">${uniqueStudents.size}</div><div class="lab">Students active</div></div>
+      <div class="tally"><div class="num">${f(s1).length}</div><div class="lab">Stage I submits</div></div>
+      <div class="tally"><div class="num">${f(s2).length}</div><div class="lab">Stage II submits</div></div>
+      <div class="tally"><div class="num">${f(s3).length}</div><div class="lab">Stage III submits</div></div>
+      <div class="tally"><div class="num" style="color:var(--flag);">${f(s2).filter(r=>r.weak_flag==='WEAK').length}</div><div class="lab">Weak verbs</div></div>
+    </div>
+    <h3 style="font-family:'Inter',sans-serif; font-size:0.8rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); margin-top:2rem;">Stage I tag distribution</h3>
+    <div class="tally-grid">${tagHtml || '<div class="empty">No Stage I data yet.</div>'}</div>
+  `;
+}
+
+function attr(s) {
+  return String(s).replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+}
+</script>
+</body>
+</html>
