@@ -743,7 +743,7 @@
 //==========================================================
 // CONFIG
 //==========================================================
-const SCRIPT_URL = 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxGSaKZo4D3KeBajlbIe39h270ulE0ADmWTVQMfmG2GjUc1Cu_CkEdE2ZNjGsFVAIG-/exec';
 
 const WEAK = ['uses','use','shows','show','says','say','talks about','talk about',
               'tells','tell','describes','describe','writes','write','gives','mentions','mention'];
@@ -766,9 +766,19 @@ const DRAFTS = {
   s3: { strategies: [ {}, {}, {} ] }
 };
 
-function init() {
+async function init() {
   // Try restore identity
   const saved = JSON.parse(localStorage.getItem('rhet_sprint_me') || 'null');
+
+  // Fetch periods from Settings FIRST so gate dropdown matches your actual periods.
+  // If fetch fails (offline, bad URL), fall back to hardcoded default and let student sign in anyway.
+  try {
+    const r = await fetch(SCRIPT_URL + '?action=read');
+    const data = await r.json();
+    if (data.periods && data.periods.length) CLASS_PERIODS = data.periods;
+    CLASS_DATA = data;
+  } catch (e) { /* ignore — use default CLASS_PERIODS */ }
+
   if (saved && saved.name) {
     ME = saved;
     showApp();
@@ -799,10 +809,16 @@ function renderGate() {
 }
 
 function doSignIn() {
+  const btn = event.target;
+  if (btn) btn.disabled = true;
   const first = document.getElementById('g-first').value.trim();
   const last = document.getElementById('g-last').value.trim().toUpperCase();
   const period = document.getElementById('g-period').value;
-  if (!first || !last || !period) { alert('All three fields are required.'); return; }
+  if (!first || !last || !period) {
+    alert('All three fields are required.');
+    if (btn) btn.disabled = false;
+    return;
+  }
   ME = { first, last, period, name: `${first} ${last}.` };
   localStorage.setItem('rhet_sprint_me', JSON.stringify(ME));
   showApp();
@@ -826,7 +842,18 @@ async function showApp() {
   if (savedProgress) PROGRESS = savedProgress === 'done' ? 'done' : parseInt(savedProgress);
   const savedDrafts = localStorage.getItem('rhet_sprint_drafts');
   if (savedDrafts) {
-    try { Object.assign(DRAFTS, JSON.parse(savedDrafts)); } catch(e) {}
+    try {
+      const parsed = JSON.parse(savedDrafts);
+      // Only merge fields that are valid shapes — protects against corrupted localStorage
+      if (parsed.s1 && typeof parsed.s1 === 'object') {
+        Object.assign(DRAFTS.s1, parsed.s1);
+        if (!Array.isArray(DRAFTS.s1.notes)) DRAFTS.s1.notes = [];
+      }
+      if (parsed.s2 && typeof parsed.s2 === 'object') Object.assign(DRAFTS.s2, parsed.s2);
+      if (parsed.s3 && Array.isArray(parsed.s3.strategies)) {
+        DRAFTS.s3.strategies = [0,1,2].map(i => parsed.s3.strategies[i] || {});
+      }
+    } catch(e) { /* keep fresh DRAFTS defaults */ }
   }
 
   // Fetch my history + class data
@@ -1011,6 +1038,9 @@ function removeNote(i) {
   DRAFTS.s1.notes.splice(i, 1);
   if (DRAFTS.s1.notes.length === 0) DRAFTS.s1.notes.push({ quote: '', notice: '' });
   saveDrafts();
+  // Full re-render needed because onclick indices must update.
+  // Blur any active input first so focus loss feels intentional rather than jarring.
+  if (document.activeElement) document.activeElement.blur();
   renderNotes();
   checkS1Ready();
 }
@@ -1481,9 +1511,10 @@ function classS3Card(r) {
 // REPORT DOWNLOAD
 //==========================================================
 function downloadMyReport() {
-  const s1 = MY_HISTORY.stage1[0];
-  const s2 = MY_HISTORY.stage2[0];
-  const s3 = MY_HISTORY.stage3[0];
+  // Use the most recent submission (matches what read-only view shows)
+  const s1 = MY_HISTORY.stage1.length ? MY_HISTORY.stage1[MY_HISTORY.stage1.length - 1] : null;
+  const s2 = MY_HISTORY.stage2.length ? MY_HISTORY.stage2[MY_HISTORY.stage2.length - 1] : null;
+  const s3 = MY_HISTORY.stage3.length ? MY_HISTORY.stage3[MY_HISTORY.stage3.length - 1] : null;
   const html = buildReportHTML('My Rhetorical Analysis Sprint — ' + ME.name, [
     { heading: ME.name + ' · Period ' + ME.period, items: [
       s1 ? renderS1ForReport(s1) : '<em>Stage I not submitted</em>',
