@@ -72,10 +72,12 @@
     display: none;
     width: 100%;
     height: 100%;
-    padding: 40px 60px;
+    padding: 24px 48px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+    gap: 12px;
   }
   .slide.active { display: flex; }
 
@@ -85,7 +87,7 @@
     letter-spacing: 0.3em;
     text-transform: uppercase;
     color: var(--accent-red);
-    margin-bottom: 24px;
+    margin-bottom: 8px;
   }
 
   /* TITLE TYPOGRAPHY */
@@ -99,11 +101,11 @@
     color: var(--ink);
   }
   h2 {
-    font-size: clamp(28px, 3.5vw, 46px);
+    font-size: clamp(24px, 3vw, 40px);
     font-weight: 500;
     line-height: 1.15;
     text-align: center;
-    margin-bottom: 24px;
+    margin-bottom: 0;
   }
   h2 em {
     color: var(--accent-red);
@@ -137,8 +139,8 @@
   .pair {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    margin: 24px 0;
+    gap: 28px;
+    margin: 0;
     width: 100%;
     max-width: 1100px;
   }
@@ -163,12 +165,13 @@
   .pair-item svg {
     width: 100%;
     height: auto;
+    max-height: 45vh;
     display: block;
   }
   .pair-item img {
     width: 100%;
     height: auto;
-    max-height: 340px;
+    max-height: 45vh;
     object-fit: contain;
     display: block;
     background: white;
@@ -212,7 +215,7 @@
     display: flex;
     gap: 12px;
     align-items: flex-end;
-    height: 280px;
+    height: clamp(180px, 32vh, 280px);
     padding: 20px 30px;
     background: white;
     border-bottom: 2px solid var(--ink);
@@ -587,7 +590,7 @@
         <div class="meta">Same event, different framings</div>
       </div>
     </div>
-    <p class="subtle" style="margin-top: 40px;">In your group, work <strong style="color: var(--ink); font-style: normal;">one pair only</strong>. Annotate it on the handout. Four columns. The fourth is the one that matters most.</p>
+    <p class="subtle">In your group, work <strong style="color: var(--ink); font-style: normal;">one pair only</strong>. Annotate it on the handout. Four columns. The fourth is the one that matters most.</p>
   </section>
 
   <!-- SLIDE 3 — MERCATOR / PETERS -->
@@ -670,7 +673,7 @@
         </div>
       </div>
     </div>
-    <p class="subtle" style="margin-top: 40px;">The 2022 number drops from <span style="color: var(--ink); font-weight: 500;">95% to 92%</span>. On chart A it looks like collapse. On chart B it almost vanishes. Same data. Same truth. Different knowledge.</p>
+    <p class="subtle">The 2022 number drops from <span style="color: var(--ink); font-weight: 500;">95% to 92%</span>. On chart A it looks like collapse. On chart B it almost vanishes. Same data. Same truth. Different knowledge.</p>
   </section>
 
   <!-- SLIDE 5 — PROTEST PHOTOS -->
@@ -699,7 +702,7 @@
         <div class="photo-caption">Edith Lee-Payne, age 12 · photo: Rowland Scherman for USIA · National Archives · Public domain</div>
       </div>
     </div>
-    <p class="subtle" style="margin-top: 30px;">Both photographs are true. Both were taken that day. Each one shows the protest. <strong style="color: var(--ink); font-style: normal;">They tell completely different stories about what the protest is.</strong></p>
+    <p class="subtle">Both photographs are true. Both were taken that day. Each one shows the protest. <strong style="color: var(--ink); font-style: normal;">They tell completely different stories about what the protest is.</strong></p>
     <p style="font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--ink-faint); letter-spacing: 0.05em; margin-top: 8px; text-align: center; font-style: italic;">
       A footnote worth raising in discussion: Edith Lee-Payne did not know she had been photographed until 2008 — 45 years later. The photograph carried knowledge about her that she did not have about herself.
     </p>
