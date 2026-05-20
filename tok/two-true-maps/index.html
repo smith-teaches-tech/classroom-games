@@ -34,11 +34,12 @@
   .header {
     position: fixed;
     top: 0; left: 0; right: 0;
-    padding: 16px 32px;
+    height: 44px;
+    padding: 0 32px;
     z-index: 10;
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
     letter-spacing: 0.2em;
@@ -46,6 +47,7 @@
     color: var(--ink-faint);
     border-bottom: 1px solid var(--rule);
     background: var(--paper);
+    overflow: hidden;
   }
   .header .phrase {
     font-family: 'Cormorant Garamond', serif;
@@ -63,23 +65,27 @@
   /* SLIDE FRAME */
   .deck {
     position: absolute;
-    top: 50px; left: 0; right: 0; bottom: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    top: 44px; left: 0; right: 0; bottom: 38px;
+    overflow: hidden;
   }
   .slide {
     display: none;
-    width: 100%;
-    height: 100%;
-    padding: 24px 48px;
+    position: absolute;
+    inset: 0;
+    padding: 20px 48px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 10px;
     overflow: hidden;
-    gap: 12px;
+    min-height: 0;
   }
   .slide.active { display: flex; }
+  .slide > * {
+    flex-shrink: 1;
+    min-height: 0;
+    max-width: 100%;
+  }
 
   .eyebrow {
     font-family: 'Inter', sans-serif;
@@ -127,27 +133,35 @@
     font-weight: 600;
   }
   .subtle {
-    font-size: 16px;
+    font-size: 15px;
     color: var(--ink-soft);
     font-style: italic;
     text-align: center;
     max-width: 700px;
-    margin-top: 16px;
+    margin-top: 0;
+    flex: 0 0 auto;
   }
 
   /* TWO MAPS (slide 1) */
   .pair {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 28px;
+    gap: 24px;
     margin: 0;
     width: 100%;
     max-width: 1100px;
+    min-height: 0;
+    flex: 1 1 auto;
+    align-items: stretch;
   }
   .pair-item {
     background: white;
     border: 1px solid var(--rule);
-    padding: 16px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
   }
   .pair-item .pair-label {
     font-family: 'Inter', sans-serif;
@@ -156,22 +170,21 @@
     text-transform: uppercase;
     color: var(--ink-faint);
     margin-bottom: 4px;
+    flex: 0 0 auto;
   }
   .pair-item .pair-title {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 500;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
+    flex: 0 0 auto;
   }
-  .pair-item svg {
-    width: 100%;
-    height: auto;
-    max-height: 45vh;
-    display: block;
-  }
+  .pair-item svg,
   .pair-item img {
     width: 100%;
     height: auto;
-    max-height: 45vh;
+    max-height: 100%;
+    min-height: 0;
+    flex: 1 1 auto;
     object-fit: contain;
     display: block;
     background: white;
@@ -434,7 +447,8 @@
   .nav {
     position: fixed;
     bottom: 0; left: 0; right: 0;
-    padding: 10px 32px;
+    height: 38px;
+    padding: 0 32px;
     z-index: 10;
     display: flex;
     justify-content: space-between;
@@ -446,6 +460,7 @@
     color: var(--ink-faint);
     border-top: 1px solid var(--rule);
     background: var(--paper);
+    overflow: hidden;
   }
   .nav button {
     background: transparent;
@@ -618,7 +633,7 @@
       </div>
     </div>
     <p class="subtle">On Mercator, Greenland looks larger than Africa. <strong style="color: var(--ink); font-style: normal;">Africa is fourteen times larger.</strong> Gall–Peters fixes that — at the cost of recognisable shapes. The small circles on Gall–Peters (Tissot's indicatrices) all have the <em>same area</em> — that's what "equal-area" means.</p>
-    <p style="font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--ink-faint); letter-spacing: 0.05em; margin-top: 8px; text-align: center;">
+    <p style="font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--ink-faint); letter-spacing: 0.05em; text-align: center;">
       Mercator: Strebe / Wikimedia · CC BY-SA 3.0 &nbsp;·&nbsp; Gall–Peters: Eric Gaba (Sting) / Wikimedia · CC BY-SA 4.0
     </p>
   </section>
@@ -703,7 +718,7 @@
       </div>
     </div>
     <p class="subtle">Both photographs are true. Both were taken that day. Each one shows the protest. <strong style="color: var(--ink); font-style: normal;">They tell completely different stories about what the protest is.</strong></p>
-    <p style="font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--ink-faint); letter-spacing: 0.05em; margin-top: 8px; text-align: center; font-style: italic;">
+    <p style="font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--ink-faint); letter-spacing: 0.05em; text-align: center; font-style: italic;">
       A footnote worth raising in discussion: Edith Lee-Payne did not know she had been photographed until 2008 — 45 years later. The photograph carried knowledge about her that she did not have about herself.
     </p>
   </section>
