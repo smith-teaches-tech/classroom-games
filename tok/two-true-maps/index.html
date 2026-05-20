@@ -66,7 +66,6 @@
   .deck {
     position: absolute;
     top: 44px; left: 0; right: 0; bottom: 38px;
-    overflow: hidden;
   }
   .slide {
     display: none;
@@ -75,17 +74,12 @@
     padding: 20px 48px;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 10px;
-    overflow: hidden;
-    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
   .slide.active { display: flex; }
-  .slide > * {
-    flex-shrink: 1;
-    min-height: 0;
-    max-width: 100%;
-  }
 
   .eyebrow {
     font-family: 'Inter', sans-serif;
@@ -150,18 +144,11 @@
     margin: 0;
     width: 100%;
     max-width: 1100px;
-    min-height: 0;
-    flex: 1 1 auto;
-    align-items: stretch;
   }
   .pair-item {
     background: white;
     border: 1px solid var(--rule);
     padding: 14px;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    overflow: hidden;
   }
   .pair-item .pair-label {
     font-family: 'Inter', sans-serif;
@@ -170,22 +157,16 @@
     text-transform: uppercase;
     color: var(--ink-faint);
     margin-bottom: 4px;
-    flex: 0 0 auto;
   }
   .pair-item .pair-title {
     font-size: 18px;
     font-weight: 500;
     margin-bottom: 10px;
-    flex: 0 0 auto;
   }
   .pair-item svg,
   .pair-item img {
     width: 100%;
     height: auto;
-    max-height: 100%;
-    min-height: 0;
-    flex: 1 1 auto;
-    object-fit: contain;
     display: block;
     background: white;
   }
