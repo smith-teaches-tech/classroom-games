@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Earthrise — TOK Lesson 6</title>
+
+<!--
+=================================================================
+TEACHER NOTES — IMAGE SOURCES (all public domain / NASA)
+=================================================================
+
+Primary image — iconic rotated Earthrise (AS08-14-2383):
+  NASA direct: https://www.nasa.gov/wp-content/uploads/2023/03/as08-14-2383.jpg
+  Wikimedia (used here): https://upload.wikimedia.org/wikipedia/commons/a/a8/NASA-Apollo8-Dec24-Earthrise.jpg
+  Internet Archive: https://archive.org/download/as08-14-2383/as08-14-2383.jpg
+
+Original orientation (Anders's frame, horizon vertical):
+  NASA SVS recreation: https://svs.gsfc.nasa.gov/4129/
+
+Whole Earth Catalog 1969 cover:
+  Internet Archive: https://archive.org/details/sim_whole-earth-catalog_whole-earth-catalog_1969-01_supplement
+
+Stewart Brand 1966 button:
+  Reference only — rendered version used here.
+  Source: Robert Poole, Earthrise: How Man First Saw the Earth (Yale, 2008).
+
+RECOMMENDED FOR CLASSROOM USE:
+Download all images locally to an /images/ subfolder and update
+the IMG object in the script below to use relative paths.
+Avoids broken external links during lesson delivery.
+
+Onboard transcript: NASA Apollo 8 onboard tape recorder, Dec 24 1968.
+NASA caption text: official caption from JSC image database (AS08-14-2383).
+=================================================================
+-->
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&family=Special+Elite&display=swap');
+
+  :root {
+    --paper: #f1ebe0;
+    --paper-deep: #e8e0d0;
+    --paper-cream: #fdf9ef;
+    --ink: #1a1814;
+    --ink-soft: #3d3830;
+    --rule: #8a7f6a;
+    --rule-soft: #c4b89e;
+    --nasa-blue: #0a2540;
+    --nasa-red: #b8281f;
+    --movement-green: #4a6831;
+    --movement-cream: #e8d9b0;
+    --highlight: #ffe8a8;
+    --shadow: 0 2px 8px rgba(40, 30, 20, 0.15);
+    --shadow-deep: 0 8px 24px rgba(40, 30, 20, 0.25);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 17px;
+    line-height: 1.55;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ===== KQ HEADER — PINNED ===== */
+  .kq-header {
+    flex: 0 0 auto;
+    padding: 0.7rem 2rem 0.6rem;
+    background: var(--ink);
+    color: var(--paper);
+    border-bottom: 2px solid var(--nasa-red);
+  }
+
+  .kq-header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .lesson-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--movement-cream);
+  }
+
+  .kq-pinned {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--paper);
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .kq-pinned::before { content: "“"; margin-right: 0.1em; color: var(--rule-soft); font-size: 1.3em; }
+  .kq-pinned::after { content: "”"; margin-left: 0.1em; color: var(--rule-soft); font-size: 1.3em; }
+
+  .concept-tags { display: flex; gap: 0.4rem; }
+
+  .concept-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.18rem 0.5rem;
+    border: 1px solid var(--rule-soft);
+    color: var(--paper);
+    border-radius: 1px;
+  }
+
+  /* ===== MAIN STAGE — image top, context bottom ===== */
+  .stage {
+    flex: 1 1 auto;
+    display: grid;
+    grid-template-rows: minmax(280px, 45vh) 1fr;
+    overflow: hidden;
+  }
+
+  /* ===== IMAGE PANEL ===== */
+  .image-stage {
+    background: radial-gradient(ellipse at center, #1a1a1a 0%, #000 70%);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .image-stage-inner {
+    max-width: 100%;
+    max-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    padding: 1.2rem;
+    position: relative;
+  }
+
+  .image-card {
+    height: 100%;
+    max-height: calc(45vh - 50px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .image-wrap {
+    position: relative;
+    height: calc(100% - 28px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .image-wrap img,
+  .image-wrap svg {
+    height: 100%;
+    max-height: calc(45vh - 80px);
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    border: 6px solid #000;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+    background: #000;
+  }
+
+  .image-card-label {
+    margin-top: 0.4rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--paper-deep);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+
+  .nasa-id {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--nasa-red);
+    letter-spacing: 0.08em;
+    text-shadow: 0 0 4px #000;
+    z-index: 5;
+    background: rgba(0,0,0,0.4);
+    padding: 0.15rem 0.4rem;
+  }
+
+  .rotation-arrow {
+    color: var(--paper-deep);
+    font-family: 'JetBrains Mono', monospace;
+    text-align: center;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+  }
+
+  .rotation-arrow .arrow-glyph {
+    font-size: 2.2rem;
+    display: block;
+    color: var(--nasa-red);
+    margin-bottom: 0.2rem;
+  }
+
+  /* ===== CONTEXT PANEL ===== */
+  .context-stage {
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(180, 160, 130, 0.08) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(140, 120, 90, 0.06) 0%, transparent 50%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.4 0 0 0 0 0.35 0 0 0 0 0.25 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+    overflow-y: auto;
+    position: relative;
+  }
+
+  .context-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.5rem 2rem 2rem;
+  }
+
+  .step-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--nasa-red);
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .step-num-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    border: 1px solid var(--nasa-red);
+    border-radius: 50%;
+    font-size: 0.7rem;
+  }
+
+  .step-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.9rem;
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    color: var(--ink);
+  }
+
+  .step-body {
+    font-size: 1.02rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  .step-body p { margin-bottom: 0.8rem; }
+  .step-body strong { color: var(--ink); font-weight: 600; }
+  .step-body em { color: var(--nasa-red); font-style: italic; }
+
+  .ws-prompt {
+    margin-top: 1.2rem;
+    padding: 1rem 1.2rem;
+    background: rgba(184, 40, 31, 0.05);
+    border-left: 4px solid var(--nasa-red);
+    border-radius: 1px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--ink);
+    line-height: 1.55;
+  }
+
+  .ws-prompt::before {
+    content: "ON THE WORKSHEET — ";
+    font-family: 'JetBrains Mono', monospace;
+    font-style: normal;
+    font-size: 0.62rem;
+    letter-spacing: 0.18em;
+    color: var(--nasa-red);
+    margin-right: 0.4rem;
+    font-weight: 700;
+  }
+
+  .ws-prompt strong { color: var(--nasa-red); font-weight: 700; }
+
+  .nasa-caption {
+    background: var(--paper-cream);
+    border: 1px solid var(--rule);
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    font-family: 'Special Elite', monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--nasa-blue);
+    position: relative;
+  }
+
+  .nasa-caption::before {
+    content: "NASA / APOLLO 8 / PRESS RELEASE / 1968";
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.18em;
+    color: var(--nasa-red);
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px dashed var(--rule);
+  }
+
+  .movement-caption {
+    background: linear-gradient(135deg, #f4ecd0 0%, #e8d9b0 100%);
+    border: 1px solid var(--movement-green);
+    padding: 1rem 1.2rem;
+    margin: 1rem 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    line-height: 1.5;
+    font-style: italic;
+    color: var(--ink);
+    position: relative;
+  }
+
+  .movement-caption::before {
+    content: "EARTH DAY / APRIL 22, 1970";
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.58rem;
+    letter-spacing: 0.18em;
+    color: var(--movement-green);
+    font-style: normal;
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px dashed var(--movement-green);
+  }
+
+  .transcript {
+    background: var(--paper-cream);
+    border: 1px solid var(--rule);
+    padding: 1rem 1.2rem;
+    margin: 0.8rem 0;
+    font-family: 'Special Elite', monospace;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .transcript-line { margin: 0.3rem 0; }
+  .transcript-speaker { color: var(--nasa-red); font-weight: 700; letter-spacing: 0.04em; }
+  .transcript-emphasis { background: var(--highlight); padding: 0 0.2em; color: var(--ink); font-weight: 700; }
+
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .comparison > div {
+    padding: 0.8rem 1rem;
+    background: var(--paper-cream);
+    border: 1px solid var(--rule-soft);
+  }
+
+  .signpost {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 1.4rem 1.8rem;
+    margin: 0 0 1rem 0;
+    border-left: 4px solid var(--nasa-red);
+  }
+
+  .signpost-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--movement-cream);
+    margin-bottom: 0.5rem;
+  }
+
+  .signpost-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-style: italic;
+    line-height: 1.35;
+  }
+
+  .brand-button {
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #f4ecd0 0%, #d4c294 60%, #a89668 100%);
+    border: 3px solid var(--ink);
+    box-shadow: var(--shadow-deep);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    position: relative;
+    transform: rotate(-3deg);
+  }
+
+  .brand-button-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    line-height: 1.18;
+    text-align: center;
+    padding: 1.3rem;
+    color: var(--ink);
+    font-style: italic;
+  }
+
+  .model-paragraph {
+    background: var(--paper-cream);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--nasa-blue);
+    padding: 1.4rem 1.8rem;
+    margin: 1rem 0;
+    box-shadow: var(--shadow);
+  }
+
+  .model-paragraph h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--nasa-blue);
+    margin-top: 0.8rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .model-paragraph h4:first-child { margin-top: 0; }
+
+  .model-paragraph p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin-bottom: 0.6rem;
+  }
+
+  /* ===== NAV BAR ===== */
+  .nav-bar {
+    flex: 0 0 auto;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.7rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    border-top: 1px solid var(--rule);
+  }
+
+  .nav-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.6rem 1.4rem;
+    background: transparent;
+    color: var(--paper);
+    border: 1px solid var(--paper-deep);
+    cursor: pointer;
+    border-radius: 1px;
+    transition: all 0.2s ease;
+    min-width: 130px;
+  }
+
+  .nav-btn:hover:not(:disabled) {
+    background: var(--nasa-red);
+    border-color: var(--nasa-red);
+    transform: translateY(-1px);
+  }
+
+  .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  .nav-btn-next { background: var(--nasa-red); border-color: var(--nasa-red); }
+  .nav-btn-next:hover:not(:disabled) { background: #d63329; }
+
+  .progress-track {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .progress-dot {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: transparent;
+    border: 1px solid var(--rule);
+    color: var(--paper-deep);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+
+  .progress-dot.visited { background: var(--ink-soft); border-color: var(--paper-deep); color: var(--paper); }
+  .progress-dot.active {
+    background: var(--nasa-red);
+    border-color: var(--nasa-red);
+    color: var(--paper);
+    transform: scale(1.15);
+    box-shadow: 0 0 0 2px rgba(184, 40, 31, 0.3);
+  }
+  .progress-dot:hover:not(.active) { transform: scale(1.1); }
+
+  .step-counter {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: var(--paper-deep);
+    min-width: 60px;
+    text-align: center;
+  }
+
+  /* ===== TRANSITIONS ===== */
+  .fade-in {
+    animation: fadeIn 0.5s ease-out;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 880px) {
+    .kq-header-inner { grid-template-columns: 1fr; gap: 0.4rem; text-align: center; }
+    .concept-tags { justify-content: center; }
+    .stage { grid-template-rows: minmax(220px, 38vh) 1fr; }
+    .step-title { font-size: 1.4rem; }
+    .image-stage-inner { gap: 0.8rem; padding: 0.6rem; }
+    .comparison { grid-template-columns: 1fr; }
+    .nav-bar { padding: 0.6rem 1rem; gap: 0.6rem; flex-wrap: wrap; }
+    .progress-dot { width: 20px; height: 20px; font-size: 0.55rem; }
+    .nav-btn { padding: 0.5rem 0.9rem; font-size: 0.7rem; min-width: 100px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="kq-header">
+  <div class="kq-header-inner">
+    <div class="lesson-label">TOK · L6 · IA Prompt 35</div>
+    <div class="kq-pinned">In what ways do values affect the production of knowledge?</div>
+    <div class="concept-tags">
+      <span class="concept-tag">Interpretation</span>
+      <span class="concept-tag">Objectivity</span>
+      <span class="concept-tag">Values</span>
+    </div>
+  </div>
+</header>
+
+<main class="stage">
+  <section class="image-stage">
+    <div class="image-stage-inner" id="image-stage-inner"></div>
+  </section>
+  <section class="context-stage">
+    <div class="context-content" id="context-content"></div>
+  </section>
+</main>
+
+<nav class="nav-bar">
+  <button class="nav-btn nav-btn-prev" id="btn-prev" onclick="navigate(-1)">◂ Back</button>
+  <div class="step-counter" id="step-counter">1 / 10</div>
+  <div class="progress-track" id="progress-track"></div>
+  <button class="nav-btn nav-btn-next" id="btn-next" onclick="navigate(1)">Next ▸</button>
+</nav>
+
+<script>
+// =====================================================================
+// IMAGE URLs — public domain NASA / Wikimedia sources
+// Replace with local paths if hosting offline
+// =====================================================================
+const IMG = {
+  iconic: 'https://upload.wikimedia.org/wikipedia/commons/a/a8/NASA-Apollo8-Dec24-Earthrise.jpg',
+  unrotated: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/NASA-Apollo8-Dec24-Earthrise-original-orientation.jpg/600px-NASA-Apollo8-Dec24-Earthrise-original-orientation.jpg',
+  wec: 'https://upload.wikimedia.org/wikipedia/en/c/c3/Whole_Earth_Catalog_first_edition_cover.jpg',
+  earthDay: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Earth_Day_1970_button.jpg/400px-Earth_Day_1970_button.jpg'
+};
+
+// =====================================================================
+// SVG FALLBACKS — used if external images fail
+// =====================================================================
+const SVG_EARTHRISE = `<svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="eg" cx="0.35" cy="0.35" r="0.7"><stop offset="0%" stop-color="#a8d4f0"/><stop offset="35%" stop-color="#4a7fa8"/><stop offset="70%" stop-color="#1f3d5c"/><stop offset="100%" stop-color="#0a1525"/></radialGradient>
+    <radialGradient id="mg" cx="0.5" cy="0.3" r="0.9"><stop offset="0%" stop-color="#8a8074"/><stop offset="50%" stop-color="#5a5145"/><stop offset="100%" stop-color="#2a2520"/></radialGradient>
+  </defs>
+  <rect width="600" height="600" fill="#000"/>
+  <circle cx="80" cy="120" r="0.8" fill="#fff" opacity="0.6"/><circle cx="520" cy="80" r="0.6" fill="#fff" opacity="0.5"/><circle cx="450" cy="200" r="0.5" fill="#fff" opacity="0.4"/>
+  <g transform="translate(290, 220)">
+    <circle r="78" fill="url(#eg)"/>
+    <path d="M 0,-78 A 78,78 0 0,1 0,78 A 50,78 0 0,0 0,-78 Z" fill="#000" opacity="0.55"/>
+    <ellipse cx="-15" cy="-10" rx="22" ry="14" fill="#c4a878" opacity="0.5" transform="rotate(20)"/>
+    <ellipse cx="-25" cy="15" rx="20" ry="6" fill="#fff" opacity="0.4" transform="rotate(-30)"/>
+    <ellipse cx="5" cy="-20" rx="18" ry="5" fill="#fff" opacity="0.35"/>
+  </g>
+  <path d="M 0,380 Q 100,360 200,375 Q 300,385 400,370 Q 500,360 600,378 L 600,600 L 0,600 Z" fill="url(#mg)"/>
+  <circle cx="120" cy="445" r="18" fill="#1a1612" opacity="0.6"/>
+  <circle cx="280" cy="480" r="12" fill="#1a1612" opacity="0.5"/>
+  <circle cx="420" cy="455" r="22" fill="#1a1612" opacity="0.55"/>
+  <circle cx="510" cy="510" r="9" fill="#1a1612" opacity="0.4"/>
+  <circle cx="80" cy="510" r="14" fill="#1a1612" opacity="0.5"/>
+</svg>`;
+
+const SVG_UNROTATED = `<svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="eg2" cx="0.35" cy="0.35" r="0.7"><stop offset="0%" stop-color="#a8d4f0"/><stop offset="35%" stop-color="#4a7fa8"/><stop offset="70%" stop-color="#1f3d5c"/><stop offset="100%" stop-color="#0a1525"/></radialGradient>
+    <radialGradient id="mg2" cx="0.5" cy="0.5" r="0.9"><stop offset="0%" stop-color="#8a8074"/><stop offset="60%" stop-color="#5a5145"/><stop offset="100%" stop-color="#2a2520"/></radialGradient>
+  </defs>
+  <rect width="600" height="600" fill="#000"/>
+  <ellipse cx="-80" cy="300" rx="340" ry="320" fill="url(#mg2)"/>
+  <circle cx="100" cy="180" r="16" fill="#1a1612" opacity="0.5"/>
+  <circle cx="120" cy="380" r="20" fill="#1a1612" opacity="0.5"/>
+  <circle cx="60" cy="500" r="14" fill="#1a1612" opacity="0.4"/>
+  <circle cx="170" cy="120" r="9" fill="#1a1612" opacity="0.4"/>
+  <g transform="translate(430, 280)">
+    <circle r="68" fill="url(#eg2)"/>
+    <path d="M 0,-68 A 68,68 0 0,1 0,68 A 44,68 0 0,0 0,-68 Z" fill="#000" opacity="0.55"/>
+    <ellipse cx="-12" cy="-8" rx="18" ry="10" fill="#c4a878" opacity="0.45" transform="rotate(20)"/>
+    <ellipse cx="-18" cy="12" rx="16" ry="5" fill="#fff" opacity="0.35" transform="rotate(-30)"/>
+  </g>
+</svg>`;
+
+const SVG_WEC = `<svg viewBox="0 0 400 520" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="eg3" cx="0.35" cy="0.35" r="0.7"><stop offset="0%" stop-color="#a8d4f0"/><stop offset="35%" stop-color="#4a7fa8"/><stop offset="70%" stop-color="#1f3d5c"/><stop offset="100%" stop-color="#0a1525"/></radialGradient>
+  </defs>
+  <rect width="400" height="520" fill="#1a1a1a"/>
+  <text x="200" y="48" text-anchor="middle" font-family="Georgia,serif" font-size="22" fill="#f1ebe0" font-style="italic">whole earth catalog</text>
+  <text x="200" y="74" text-anchor="middle" font-family="monospace" font-size="11" fill="#c4b89e" letter-spacing="2">access to tools</text>
+  <g transform="translate(200, 280)">
+    <circle r="130" fill="url(#eg3)"/>
+    <path d="M 0,-130 A 130,130 0 0,1 0,130 A 80,130 0 0,0 0,-130 Z" fill="#000" opacity="0.45"/>
+    <ellipse cx="-25" cy="-15" rx="35" ry="22" fill="#c4a878" opacity="0.5" transform="rotate(20)"/>
+    <ellipse cx="-40" cy="20" rx="30" ry="10" fill="#fff" opacity="0.35" transform="rotate(-30)"/>
+  </g>
+  <text x="200" y="475" text-anchor="middle" font-family="Georgia,serif" font-size="13" fill="#c4b89e">Spring 1969 · Second Issue</text>
+</svg>`;
+
+const SVG_EARTHDAY = `<svg viewBox="0 0 400 520" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0a3a14"/><stop offset="100%" stop-color="#1a5028"/></linearGradient>
+    <radialGradient id="eg4" cx="0.35" cy="0.35" r="0.7"><stop offset="0%" stop-color="#a8d4f0"/><stop offset="35%" stop-color="#4a7fa8"/><stop offset="70%" stop-color="#1f3d5c"/><stop offset="100%" stop-color="#0a1525"/></radialGradient>
+  </defs>
+  <rect width="400" height="520" fill="url(#bg)"/>
+  <text x="200" y="60" text-anchor="middle" font-family="Georgia,serif" font-weight="bold" font-size="32" fill="#f4ecd0">EARTH DAY</text>
+  <text x="200" y="88" text-anchor="middle" font-family="monospace" font-size="14" fill="#e8d9b0" letter-spacing="3">APRIL 22 · 1970</text>
+  <g transform="translate(200, 270)">
+    <circle r="115" fill="url(#eg4)"/>
+    <path d="M 0,-115 A 115,115 0 0,1 0,115 A 70,115 0 0,0 0,-115 Z" fill="#000" opacity="0.4"/>
+    <ellipse cx="-22" cy="-12" rx="32" ry="20" fill="#c4a878" opacity="0.5" transform="rotate(20)"/>
+  </g>
+  <text x="200" y="430" text-anchor="middle" font-family="Georgia,serif" font-size="16" fill="#f4ecd0" font-style="italic">the only home we have</text>
+  <text x="200" y="460" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#e8d9b0" font-style="italic">a planet that needs us</text>
+</svg>`;
+
+// =====================================================================
+// Helper to make an image-card with fallback to inline SVG
+// =====================================================================
+function imgCard(url, alt, label, fallbackSvg, idLabel) {
+  const id = 'img_' + Math.random().toString(36).slice(2, 8);
+  return `<div class="image-card">
+    <div class="image-wrap">
+      <img id="${id}" src="${url}" alt="${alt}" data-fallback='${fallbackSvg.replace(/'/g, "&apos;")}' onerror="useFallback('${id}')"/>
+      <span class="nasa-id">${idLabel}</span>
+    </div>
+    <div class="image-card-label">${label}</div>
+  </div>`;
+}
+
+function useFallback(id) {
+  const img = document.getElementById(id);
+  if (!img) return;
+  const fallback = img.getAttribute('data-fallback').replace(/&apos;/g, "'");
+  const wrap = img.parentElement;
+  // Preserve the nasa-id badge if present
+  const badge = wrap.querySelector('.nasa-id');
+  wrap.innerHTML = fallback;
+  if (badge) wrap.appendChild(badge);
+}
+
+// =====================================================================
+// LESSON STEPS
+// =====================================================================
+const STEPS = [
+  // STEP 1
+  {
+    title: 'The Image',
+    imageHTML: () => imgCard(IMG.iconic, 'Earthrise photograph', '— uncaptioned —', SVG_EARTHRISE, 'AS08-14-2383'),
+    contextHTML: `
+      <div class="step-number"><span class="step-num-circle">1</span> Before you click anything</div>
+      <div class="step-title">The Image</div>
+      <div class="step-body">
+        <p>Look at the photograph. Take your time.</p>
+        <p>You're not being told what it is, when it was taken, who took it, or why. Just the image.</p>
+        <div class="ws-prompt">
+          <strong>Q1.</strong> What is this a picture of? Write one sentence. &nbsp;|&nbsp;
+          <strong>Q2.</strong> Is this image a <em>record</em> of something real, or an <em>interpretation</em> of something real?
+        </div>
+        <p style="margin-top:0.8rem; font-family:'JetBrains Mono', monospace; font-size:0.78rem; color:var(--ink-soft); letter-spacing:0.06em;">
+          ↓ ANSWER Q1 AND Q2 BEFORE CLICKING NEXT.
+        </p>
+      </div>
+    `
+  },
+  // STEP 2
+  {
+    title: 'The Mission',
+    imageHTML: () => imgCard(IMG.iconic, 'Earthrise photograph', 'Anders · Apollo 8 · Dec 24 1968', SVG_EARTHRISE, 'AS08-14-2383'),
+    contextHTML: `
+      <div class="step-number"><span class="step-num-circle">2</span> Who took it, and why</div>
+      <div class="step-title">The Mission</div>
+      <div class="step-body">
+        <p>Apollo 8 was launched on December 21, 1968 — the first crewed spacecraft to leave Earth's orbit and travel to the Moon. The three astronauts on board (Frank Borman, Jim Lovell, and <strong>William Anders</strong>) were tasked with orbiting the Moon ten times and photographing the lunar surface for survey purposes. <strong>Anders was the mission's photographer.</strong> His assignment was lunar geology — craters, ridges, potential landing sites for future Apollo missions.</p>
+        <p>On the fourth orbit, as the spacecraft rotated, Earth appeared unexpectedly above the lunar horizon.</p>
+        <div class="transcript">
+          <div class="transcript-line"><span class="transcript-speaker">ANDERS:</span> Oh my God, look at that picture over there! There's the Earth comin' up. Wow, is that pretty!</div>
+          <div class="transcript-line"><span class="transcript-speaker">BORMAN:</span> Hey <span class="transcript-emphasis">don't take that, it's not scheduled.</span></div>
+          <div class="transcript-line"><span class="transcript-speaker">ANDERS:</span> You got a color film, Jim? Hand me a roll of color, quick, would you?</div>
+        </div>
+        <p style="font-size:0.85rem; font-style:italic; color:var(--ink-soft);">Source: Apollo 8 onboard tape recorder, Dec 24 1968.</p>
+        <div class="ws-prompt">
+          <strong>Q3.</strong> Why was Anders on the mission? What was he there to record?
+        </div>
+      </div>
+    `
+  },
+  // STEP 3
+  {
+    title: 'The Rotation',
+    imageHTML: () => `
+      ${imgCard(IMG.unrotated, 'Original frame · horizon vertical', "Anders's original · horizon vertical", SVG_UNROTATED, 'AS08-14-2383 · ORIGINAL')}
+      <div class="rotation-arrow">
+        <span class="arrow-glyph">↻</span>
+        <span>Rotated 95°<br>clockwise<br>for publication</span>
+      </div>
+      ${imgCard(IMG.iconic, 'Published version · Earth rising', 'Published · Earth "rising"', SVG_EARTHRISE, 'AS08-14-2383 · PUBLISHED')}
+    `,
+    contextHTML: `
+      <div class="step-number"><span class="step-num-circle">3</span> Same photograph. Different orientation.</div>
+      <div class="step-title">The Rotation</div>
+      <div class="step-body">
+        <p>Anders shot the photograph through the spacecraft's right-hand window with a Hasselblad camera. Because the spacecraft was rotating, the lunar horizon was <strong>vertical</strong> in his frame — Earth appeared to the side, not above.</p>
+        <p>The version that became famous — Earth above a horizontal lunar horizon, appearing to "rise" — is <strong>rotated 95° clockwise</strong> from the original frame. The decision to rotate was made by NASA editors before publication. The word <em>"Earthrise"</em> itself was not Anders's title; it was given to the image afterwards.</p>
+        <div class="ws-prompt">
+          <strong>Q4.</strong> Describe Anders's original frame in one sentence. &nbsp;|&nbsp;
+          <strong>Q5.</strong> What does the rotated version make you see that the original doesn't? &nbsp;|&nbsp;
+          <strong>Q6.</strong> Who made the rotation decision? What does the rotation make the image <em>look like it's about</em>?
+        </div>
+      </div>
+    `
+  },
+  // STEP 4
+  {
+    title: 'The 1968 Caption',
+    imageHTML: () => imgCard(IMG.iconic, 'Earthrise photograph', 'NASA press release · 1969', SVG_EARTHRISE, 'AS08-14-2383'),
+    contextHTML: `
+      <div class="step-number"><span class="step-num-circle">4</span> How NASA described it</div>
+      <div class="step-title">The 1968 Caption</div>
+      <div class="step-body">
+        <p>When NASA released the photograph to the public in early 1969, it came with this official caption:</p>
+        <div class="nasa-caption">
+          The rising Earth is about five degrees above the lunar horizon in this telephoto view taken from the Apollo 8 spacecraft near 110 degrees east longitude. The horizon, about 570 kilometers (250 statute miles) from the spacecraft, is near the eastern limb of the Moon as viewed from the Earth. On the earth, the sunset terminator crosses Africa. The south pole is in the white area near the left end of the terminator. North and South America are under the clouds.
+        </div>
+        <div class="ws-prompt">
+          <strong>Q7.</strong> What does NASA's caption say the image is a <em>record of</em>? Pick out the words that tell you. &nbsp;|&nbsp;
+          <strong>Q8.</strong> Write one sentence: How did NASA's <em>values</em> and choices shape what this photograph was understood to be in 1968?
+        </div>
+      </div>
+    `
+  },
+  // STEP 5
+  {
+    title: 'Pivot',
+    imageHTML: () => imgCard(IMG.iconic, 'Earthrise', 'The same photograph — but now look at <em>you</em>', SVG_EARTHRISE, 'AS08-14-2383'),
+    contextHTML: `
+      <div class="signpost">
+        <div class="signpost-label">PIVOT</div>
+        <div class="signpost-text">
+          So far we've looked at the people who <em style="color:var(--movement-cream)">made</em> the photograph.<br>
+          Now let's look at the people who <em style="color:var(--movement-cream)">saw</em> it.
+        </div>
+      </div>
+      <div class="step-number"><span class="step-num-circle">5</span> Look back at your first answer</div>
+      <div class="step-title">Your Q1 Answer</div>
+      <div class="step-body">
+        <p>Before you saw any of this — before the transcript, before the rotation, before NASA's caption — you wrote down what you thought the photograph was a picture of.</p>
+        <p style="font-size:1.1rem; color:var(--nasa-red); font-style:italic; text-align:center; margin:1.2rem 0;">
+          Find that answer on your worksheet now.
+        </p>
+        <div class="ws-prompt">
+          <strong>Q9.</strong> Was your answer closer to NASA's 1968 reading (a telephoto view, 110° east longitude, mission photograph) — or to something else? What were you describing?
+        </div>
+      </div>
+    `
+  },
+  // STEP 6
+  {
+    title: 'Earth Day 1970',
+    imageHTML: () => `
+      ${imgCard(IMG.earthDay, 'Earth Day 1970 button using Earthrise', 'First Earth Day · April 22 1970', SVG_EARTHDAY, 'EARTH DAY · 1970')}
+      ${imgCard(IMG.wec, 'Whole Earth Catalog 1969 cover', 'Whole Earth Catalog · 2nd issue · 1969', SVG_WEC, 'WHOLE EARTH CATALOG')}
+    `,
+    contextHTML: `
+      <div class="step-number"><span class="step-num-circle">6</span> How the image was used in 1970</div>
+      <div class="step-title">Earth Day, 1970</div>
+      <div class="step-body">
+        <p>Eighteen months after Apollo 8, on April 22, 1970, twenty million Americans participated in the first Earth Day — the largest single-day demonstration in U.S. history at the time. <strong>Posters and pamphlets for Earth Day used the Earthrise photograph almost universally.</strong> The image had also already appeared on the cover of the second issue of the <em>Whole Earth Catalog</em> (1969).</p>
+        <p>Here is how the same photograph was described in the environmental-movement materials of 1970:</p>
+        <div class="movement-caption">
+          Earth — a lonely and fragile outpost of life suspended in an endless, inky-black void. The only home we have. The first picture of a planet that needs us to protect it.
+        </div>
+        <div class="ws-prompt">
+          <strong>Q10.</strong> What is the photograph being used to <em>say</em> here? Pick out the words that tell you.
+        </div>
+      </div>
+    `
+  },
+  // STEP 7
+  {
+    title: 'Two Captions',
+    imageHTML: () => imgCard(IMG.iconic, 'Earthrise', 'The same image. Both times.', SVG_EARTHRISE, 'AS08-14-2383 · UNCHANGED'),
+    contextHTML: `
+      <div class="step-number"><span class="step-num-circle">7</span> Same image. Two captions.</div>
+      <div class="step-title">What Changed Between 1968 and 1970?</div>
+      <div class="step-body">
+        <p>The photograph did not change between 1968 and 1970. But the words around it did.</p>
+        <div class="comparison">
+          <div>
+            <div style="font-family:'JetBrains Mono', monospace; font-size:0.65rem; letter-spacing:0.12em; color:var(--nasa-blue); margin-bottom:0.5rem; padding-bottom:0.3rem; border-bottom:1px solid var(--rule-soft);">NASA · 1968</div>
+            <p style="font-family:'Special Elite', monospace; font-size:0.82rem; line-height:1.5; color:var(--nasa-blue);">The rising Earth is about five degrees above the lunar horizon in this telephoto view taken from the Apollo 8 spacecraft near 110 degrees east longitude…</p>
+          </div>
+          <div>
+            <div style="font-family:'JetBrains Mono', monospace; font-size:0.65rem; letter-spacing:0.12em; color:var(--movement-green); margin-bottom:0.5rem; padding-bottom:0.3rem; border-bottom:1px solid var(--rule-soft);">EARTH DAY · 1970</div>
+            <p style="font-family:'Cormorant Garamond', serif; font-style:italic; font-size:0.95rem; line-height:1.5; color:var(--movement-green);">Earth — a lonely and fragile outpost of life suspended in an endless, inky-black void. The only home we have…</p>
+          </div>
+        </div>
+        <div class="ws-prompt">
+          <strong>Q11.</strong> What did the image become <em>about</em> between 1968 and 1970? &nbsp;|&nbsp;
+          <strong>Q12.</strong> The image didn't change. Something else changed. What was it? &nbsp;|&nbsp;
+          <strong>Q13.</strong> Write one sentence: How did the values of 1970 shape what this photograph was understood to be?
+        </div>
+      </div>
+    `
+  },
+  // STEP 8
+  {
+    title: 'The Button',
+    imageHTML: () => `
+      <div class="image-card">
+        <div class="image-wrap" style="background:#000; padding:1.5rem; border:6px solid #000; box-shadow:0 8px 30px rgba(0,0,0,0.6);">
+          <div class="brand-button">
+            <div class="brand-button-text">Why haven't we seen a photograph of the whole Earth yet?</div>
+          </div>
+        </div>
+        <div class="image-card-label">STEWART BRAND · 1966</div>
+      </div>
+    `,
+    contextHTML: `
+      <div class="step-number"><span class="step-num-circle">8</span> Stewart Brand · 1966</div>
+      <div class="step-title">Two Years Earlier</div>
+      <div class="step-body">
+        <p>In 1966 — <em>two years before the Earthrise photograph existed</em> — an environmentalist named Stewart Brand designed a button and started a campaign. He wore it to public lectures. He mailed buttons to NASA officials, members of Congress, and university presidents. He believed that <strong>if NASA released such an image, it would change how humanity valued the planet.</strong></p>
+        <p>The button asked one question:</p>
+        <p style="text-align:center; font-style:italic; font-size:1.15rem; color:var(--ink); margin:1rem 0;">
+          "Why haven't we seen a photograph of the whole Earth yet?"
+        </p>
+        <p>He campaigned for this image <strong>two years before Anders took it.</strong></p>
+        <div class="ws-prompt">
+          <strong>Q14.</strong> What did Brand already believe — in 1966 — an image of Earth would <em>do</em>? &nbsp;|&nbsp;
+          <strong>Q15.</strong> Brand predicted the image would <em>change</em> values. But look at what you wrote in Q11–Q13. <strong>Which came first?</strong> The environmental values, or the environmental interpretation?
+        </div>
+      </div>
+    `
+  },
+  // STEP 9
+  {
+    title: 'Two Producers',
+    imageHTML: () => imgCard(IMG.iconic, 'Earthrise — produced by two sets of knowers', 'Two sides of the same apparatus', SVG_EARTHRISE, 'AS08-14-2383'),
+    contextHTML: `
+      <div class="step-number"><span class="step-num-circle">9</span> Name the Move</div>
+      <div class="step-title">Two Producers</div>
+      <div class="step-body">
+        <p>We started by looking at the people who <em>made</em> the photograph — Anders, NASA, the editors who rotated it. They are <strong>producers of knowledge.</strong> Their values shaped the first interpretation: a technical record of a lunar mission.</p>
+        <p>Then we looked at the people who <em>saw</em> the photograph in 1970 — the Earth Day organizers, Stewart Brand, the environmental movement. Their values shaped a different interpretation: a fragile planet, a call to protect.</p>
+        <p style="margin-top:1.2rem; font-size:1.15rem; color:var(--nasa-blue); font-style:italic; text-align:center; line-height:1.4;">
+          The audience is not just receiving knowledge from the image.<br>
+          The audience is <strong style="color:var(--nasa-red);">producing</strong> it.
+        </p>
+        <div class="ws-prompt">
+          <strong>Q16.</strong> Write one sentence: If the values came first, then <em>who</em> was producing the knowledge — Anders, NASA, or the audience? &nbsp;|&nbsp;
+          <strong>Q17.</strong> Look back one more time at Q1. Were you describing the photograph, or interpreting it through your own values? Write two sentences.
+        </div>
+      </div>
+    `
+  },
+  // STEP 10
+  {
+    title: 'The Model',
+    imageHTML: () => imgCard(IMG.iconic, 'Earthrise', '— for L7 opening —', SVG_EARTHRISE, 'AS08-14-2383'),
+    contextHTML: `
+      <div class="step-number"><span class="step-num-circle">10</span> Held for Lesson 7</div>
+      <div class="step-title">The Model Paragraph</div>
+      <div class="step-body">
+        <p style="font-size:0.9rem; font-style:italic; color:var(--ink-soft); margin-bottom:0.8rem;">— Open at the start of Lesson 7. Compare your sentences from Q8, Q13, Q16, and Q17 to this paragraph. —</p>
+        <div class="model-paragraph">
+          <h4>IA Prompt</h4>
+          <p style="font-style:italic;">In what ways do values affect the production of knowledge?</p>
+          <h4>Object</h4>
+          <p style="font-style:italic;">Earthrise (William Anders, NASA, Apollo 8, December 24, 1968)</p>
+          <h4>Real-world context</h4>
+          <p><em>Earthrise</em> is a photograph of Earth rising above the lunar horizon, taken from lunar orbit during the Apollo 8 mission. Anders captured the image during the mission's fourth lunar orbit. He was not assigned to photograph Earth; he was engaged in photographic survey work of the lunar surface, and Earth came into view unexpectedly as the spacecraft rotated. The version most people recognise — Earth above a horizontal lunar horizon — is rotated ninety-five degrees from how Anders originally framed it. NASA's December 1968 press release described it as a mission photograph. By 1970, the same image had been adopted as the symbol of the emerging environmental movement, appearing on the cover of the <em>Whole Earth Catalog</em> and on posters for the first Earth Day. Years earlier, in 1966, the environmentalist Stewart Brand had campaigned for NASA to release such an image, arguing that seeing Earth from space would change how humanity valued the planet (Poole, 2008).</p>
+          <h4>Link to the IA prompt</h4>
+          <p><em>Earthrise</em> shows that values shape knowledge production by shaping <em>interpretation</em>. The photograph itself claims to be an objective record — a frame of light captured during a mission. But a photograph alone does not produce knowledge; knowledge arrives only through an interpretation of what the image shows. On the producer side, NASA's institutional values shaped the first interpretation: editorial values rotated the image so that Earth would appear to "rise," and NASA's caption decided what the image was a record <em>of</em>. On the audience side, the environmental values of 1970 shaped a different interpretation — the same photograph was now read as a statement about planetary fragility, not about a lunar mission. The image did not change; the interpretation did, because the values reaching it had changed. Brand's 1966 prediction — that an image of Earth from space would change values — was correct in reverse: the values came first, and they shaped the interpretation through which the image became evidence of anything at all. Even a photograph, which appears to record reality directly, becomes knowledge only through the interpretation that values make available.</p>
+        </div>
+        <div class="ws-prompt">
+          <strong>Q18.</strong> Compare your sentences from Q8, Q13, Q16, and Q17 to this paragraph. What did you get? What did the model see that you didn't? Write three sentences.
+        </div>
+      </div>
+    `
+  }
+];
+
+// =====================================================================
+// NAVIGATION
+// =====================================================================
+let currentStep = 0;
+const visited = new Set([0]);
+
+function render() {
+  const step = STEPS[currentStep];
+  const imageStage = document.getElementById('image-stage-inner');
+  const contextContent = document.getElementById('context-content');
+
+  imageStage.innerHTML = typeof step.imageHTML === 'function' ? step.imageHTML() : step.imageHTML;
+  contextContent.innerHTML = step.contextHTML;
+
+  imageStage.classList.remove('fade-in');
+  contextContent.classList.remove('fade-in');
+  void imageStage.offsetWidth;
+  imageStage.classList.add('fade-in');
+  contextContent.classList.add('fade-in');
+
+  document.getElementById('step-counter').textContent = `${currentStep + 1} / ${STEPS.length}`;
+  document.getElementById('btn-prev').disabled = currentStep === 0;
+  document.getElementById('btn-next').disabled = currentStep === STEPS.length - 1;
+  document.getElementById('btn-next').textContent = currentStep === STEPS.length - 1 ? 'End' : 'Next ▸';
+
+  visited.add(currentStep);
+  renderProgressDots();
+
+  document.querySelector('.context-stage').scrollTop = 0;
+}
+
+function navigate(delta) {
+  const next = currentStep + delta;
+  if (next < 0 || next >= STEPS.length) return;
+  currentStep = next;
+  render();
+}
+
+function goToStep(n) {
+  currentStep = n;
+  render();
+}
+
+function renderProgressDots() {
+  const track = document.getElementById('progress-track');
+  track.innerHTML = STEPS.map((s, i) => {
+    const cls = i === currentStep ? 'active' : (visited.has(i) ? 'visited' : '');
+    return `<button class="progress-dot ${cls}" onclick="goToStep(${i})" title="Step ${i+1}: ${s.title}">${i+1}</button>`;
+  }).join('');
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight') navigate(1);
+  if (e.key === 'ArrowLeft') navigate(-1);
+});
+
+render();
+</script>
+
+</body>
+</html>
