@@ -387,68 +387,85 @@
     background: rgba(180, 60, 30, 0.3);
   }
 
-  /* Popover */
-  .popover-backdrop {
-    position: absolute;
-    inset: 0;
-    background: rgba(20, 16, 10, 0.55);
-    display: none;
-    z-index: 50;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-  }
-
-  .popover-backdrop.open {
-    display: flex;
-  }
-
+  /* Popover — anchored tooltip beside clicked phrase */
   .popover {
+    position: absolute;
     background: #fffbf0;
     color: #1a1a1a;
-    max-width: 460px;
-    width: 100%;
-    padding: 28px 32px;
+    width: 320px;
+    padding: 18px 22px 16px;
     border: 1px solid #2a2419;
     font-family: Georgia, 'Times New Roman', serif;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-    position: relative;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+    display: none;
+    z-index: 50;
+  }
+
+  .popover.open {
+    display: block;
+  }
+
+  .popover::before {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: #fffbf0;
+    border-left: 1px solid #2a2419;
+    border-top: 1px solid #2a2419;
+    transform: rotate(-45deg);
+  }
+
+  .popover.arrow-left::before {
+    left: -7px;
+    top: 24px;
+  }
+
+  .popover.arrow-right::before {
+    right: -7px;
+    top: 24px;
+    transform: rotate(135deg);
+  }
+
+  .popover.arrow-top::before {
+    left: 24px;
+    top: -7px;
   }
 
   .popover-label {
-    font-size: 11px;
-    letter-spacing: 0.25em;
+    font-size: 10px;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: #8a6f3a;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
 
   .popover-quote {
     font-style: italic;
-    font-size: 14px;
+    font-size: 12.5px;
     color: #4a3f2a;
     border-left: 2px solid #c4a558;
-    padding-left: 12px;
-    margin-bottom: 16px;
-    line-height: 1.5;
+    padding-left: 10px;
+    margin-bottom: 12px;
+    line-height: 1.45;
   }
 
   .popover-question {
-    font-size: 16.5px;
+    font-size: 14.5px;
     line-height: 1.55;
-    margin-bottom: 6px;
+    margin-bottom: 2px;
   }
 
   .popover-close {
     position: absolute;
-    top: 10px;
-    right: 14px;
+    top: 6px;
+    right: 10px;
     background: transparent;
     border: none;
-    font-size: 22px;
+    font-size: 18px;
     cursor: pointer;
     color: #6b5a3a;
-    padding: 4px 8px;
+    padding: 2px 6px;
     line-height: 1;
   }
 
@@ -700,14 +717,12 @@
     </p>
   </article>
 
-  <!-- Popover -->
-  <div class="popover-backdrop" id="popover">
-    <div class="popover">
-      <button class="popover-close" id="popover-close" aria-label="Close">×</button>
-      <div class="popover-label">Question for the reader</div>
-      <div class="popover-quote" id="popover-quote"></div>
-      <div class="popover-question" id="popover-question"></div>
-    </div>
+  <!-- Popover — anchored to clicked phrase -->
+  <div class="popover" id="popover">
+    <button class="popover-close" id="popover-close" aria-label="Close">×</button>
+    <div class="popover-label">Question for the reader</div>
+    <div class="popover-quote" id="popover-quote"></div>
+    <div class="popover-question" id="popover-question"></div>
   </div>
 
 </div>
@@ -803,27 +818,87 @@
   const popoverQuestion = document.getElementById('popover-question');
   const popoverClose = document.getElementById('popover-close');
 
+  function positionPopover(anno) {
+    const annoRect = anno.getBoundingClientRect();
+    const popWidth = 320;
+    const popHeight = popover.offsetHeight || 200;
+    const margin = 14;
+    const viewportW = window.innerWidth;
+    const viewportH = window.innerHeight;
+    const scrollY = window.scrollY || window.pageYOffset;
+    const scrollX = window.scrollX || window.pageXOffset;
+
+    let left, top, arrowClass;
+
+    const spaceRight = viewportW - annoRect.right;
+    const spaceLeft = annoRect.left;
+
+    if (spaceRight >= popWidth + margin + 20) {
+      left = annoRect.right + scrollX + margin;
+      top = annoRect.top + scrollY - 8;
+      arrowClass = 'arrow-left';
+    } else if (spaceLeft >= popWidth + margin + 20) {
+      left = annoRect.left + scrollX - popWidth - margin;
+      top = annoRect.top + scrollY - 8;
+      arrowClass = 'arrow-right';
+    } else {
+      left = annoRect.left + scrollX + (annoRect.width / 2) - (popWidth / 2);
+      left = Math.max(scrollX + 12, Math.min(left, scrollX + viewportW - popWidth - 12));
+      top = annoRect.bottom + scrollY + margin;
+      arrowClass = 'arrow-top';
+    }
+
+    const minTop = scrollY + 12;
+    const maxTop = scrollY + viewportH - popHeight - 12;
+    top = Math.max(minTop, Math.min(top, maxTop));
+
+    popover.classList.remove('arrow-left', 'arrow-right', 'arrow-top');
+    popover.classList.add(arrowClass);
+    popover.style.left = left + 'px';
+    popover.style.top = top + 'px';
+  }
+
   document.querySelectorAll('.anno').forEach(el => {
     el.addEventListener('click', e => {
+      e.stopPropagation();
       const id = el.getAttribute('data-anno');
       const data = annotations[id];
       if (!data) return;
       popoverQuote.textContent = '"' + data.quote + '"';
       popoverQuestion.textContent = data.question;
-      popover.classList.add('open');
       document.querySelectorAll('.anno').forEach(a => a.classList.remove('opened'));
       el.classList.add('opened');
+      popover.classList.add('open');
+      requestAnimationFrame(() => positionPopover(el));
     });
   });
 
-  popoverClose.addEventListener('click', () => popover.classList.remove('open'));
-  popover.addEventListener('click', e => {
-    if (e.target === popover) popover.classList.remove('open');
+  popoverClose.addEventListener('click', e => {
+    e.stopPropagation();
+    popover.classList.remove('open');
+    document.querySelectorAll('.anno').forEach(a => a.classList.remove('opened'));
+  });
+
+  document.addEventListener('click', e => {
+    if (!popover.contains(e.target) && !e.target.classList.contains('anno')) {
+      popover.classList.remove('open');
+      document.querySelectorAll('.anno').forEach(a => a.classList.remove('opened'));
+    }
   });
 
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') popover.classList.remove('open');
+    if (e.key === 'Escape') {
+      popover.classList.remove('open');
+      document.querySelectorAll('.anno').forEach(a => a.classList.remove('opened'));
+    }
     if (e.key === 'ArrowLeft' && !prevBtn.disabled) showPage(currentPage - 1);
     if (e.key === 'ArrowRight' && !nextBtn.disabled) showPage(currentPage + 1);
+  });
+
+  window.addEventListener('resize', () => {
+    if (popover.classList.contains('open')) {
+      const opened = document.querySelector('.anno.opened');
+      if (opened) positionPopover(opened);
+    }
   });
 </script>
