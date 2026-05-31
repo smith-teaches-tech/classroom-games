@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How Scientific Is It? — TOK Natural Sciences L1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4efe4; --paper-2:#ece4d3; --ink:#23201a; --ink-soft:#4a443a;
+    --rule:#c9bda3; --rule-soft:#dbd0ba; --accent:#1f4e6b; --accent-warm:#9a6a2f;
+    --flag:#7a3b2e; --shadow:rgba(40,33,22,.16);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    background-image:
+      radial-gradient(circle at 18% 12%, rgba(255,255,255,.45), transparent 42%),
+      radial-gradient(circle at 85% 78%, rgba(155,106,47,.06), transparent 55%);
+    color:var(--ink); font-family:"Cormorant Garamond",Georgia,serif;
+    font-size:20px; line-height:1.5; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:34px 22px 80px;}
+  .kicker{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--accent-warm);margin:0 0 10px;}
+  h1{font-weight:700;font-size:clamp(38px,7vw,58px);line-height:1.02;margin:0 0 16px;letter-spacing:-.01em;}
+  .kq{border-left:3px solid var(--accent);background:rgba(31,78,107,.05);padding:13px 18px;margin:0 0 8px;
+    font-size:21px;font-style:italic;color:var(--ink-soft);}
+  .kq b{font-family:"JetBrains Mono",monospace;font-style:normal;font-size:10px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--accent);display:block;margin-bottom:4px;}
+  .lede{color:var(--ink-soft);margin:18px 0 0;}
+  hr.sep{border:none;border-top:1px solid var(--rule);margin:34px 0;}
+  .step{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--accent);margin:0 0 4px;}
+  .step .n{display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;background:var(--accent);
+    color:var(--paper);border-radius:50%;font-size:11px;margin-right:8px;}
+  h2{font-weight:600;font-size:27px;margin:0 0 6px;}
+  .hint{color:var(--ink-soft);font-size:18px;margin:0 0 16px;}
+  label.q{display:block;font-weight:600;margin:0 0 6px;}
+  input[type=text], textarea{width:100%;background:#fbf8f0;border:1px solid var(--rule);border-radius:5px;
+    padding:11px 13px;font-family:"Cormorant Garamond",Georgia,serif;font-size:19px;color:var(--ink);resize:vertical;}
+  input[type=text]:focus, textarea:focus{outline:none;border-color:var(--accent);background:#fff;}
+  textarea{min-height:78px;line-height:1.45;}
+  .field{margin:0 0 22px;}
+  .ranklist{list-style:none;margin:0;padding:0;}
+  .card{background:#fbf8f0;border:1px solid var(--rule);border-radius:7px;margin:0 0 10px;
+    box-shadow:0 1px 2px var(--shadow);overflow:hidden;transition:box-shadow .15s;}
+  .card.dragging{opacity:.5;}
+  .card.flash{box-shadow:0 0 0 2px var(--accent);}
+  .card-row{display:flex;align-items:stretch;}
+  .rank-badge{flex:0 0 58px;background:var(--paper-2);border-right:1px solid var(--rule-soft);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+    font-family:"JetBrains Mono",monospace;}
+  .rank-badge .num{font-size:23px;font-weight:700;color:var(--accent);}
+  .rank-badge .pos{font-size:8px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);
+    margin-top:3px;line-height:1.2;}
+  .card-body{flex:1;padding:11px 14px;}
+  .card-body .name{font-weight:700;font-size:20px;}
+  .card-body .desc{color:var(--ink-soft);font-size:17px;line-height:1.38;margin-top:2px;}
+  .learn{margin-top:8px;background:transparent;border:none;padding:0;cursor:pointer;
+    font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--accent);transition:color .12s;}
+  .learn:hover{color:var(--accent-warm);}
+  .card-ctrl{flex:0 0 42px;display:flex;flex-direction:column;border-left:1px solid var(--rule-soft);}
+  .card-ctrl button{flex:1;border:none;background:transparent;cursor:pointer;font-size:16px;color:var(--ink-soft);
+    font-family:"JetBrains Mono",monospace;transition:background .12s,color .12s;}
+  .card-ctrl button:first-child{border-bottom:1px solid var(--rule-soft);}
+  .card-ctrl button:hover{background:var(--accent);color:var(--paper);}
+  .card-ctrl button:disabled{opacity:.25;cursor:default;}
+  .card-ctrl button:disabled:hover{background:transparent;color:var(--ink-soft);}
+  .grip{cursor:grab;}
+  .more-panel{display:none;border-top:1px dashed var(--rule);background:#f7f2e7;padding:14px 18px 4px;}
+  .more-panel.open{display:block;}
+  .more-panel p{font-size:17px;line-height:1.5;margin:0 0 12px;color:var(--ink);}
+  .more-panel p:last-child{font-style:italic;color:var(--ink-soft);}
+  .scale-note{display:flex;justify-content:space-between;font-family:"JetBrains Mono",monospace;
+    font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-warm);margin:0 0 12px;}
+  .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px;}
+  .btn{font-family:"JetBrains Mono",monospace;font-size:13px;letter-spacing:.06em;padding:13px 22px;
+    border-radius:6px;cursor:pointer;border:1px solid var(--accent);background:var(--accent);color:var(--paper);
+    transition:transform .12s,opacity .12s;}
+  .btn:hover{transform:translateY(-1px);opacity:.92;}
+  .btn.ghost{background:transparent;color:var(--accent);}
+  .submit-note{font-size:16px;color:var(--ink-soft);margin-top:14px;font-style:italic;}
+  @media (max-width:520px){
+    body{font-size:18px;} .rank-badge{flex-basis:46px;} .card-body .name{font-size:18px;}
+  }
+  @media print{
+    .card-ctrl,.actions,.submit-note,.learn{display:none;}
+    .more-panel{display:block;} body{background:#fff;}
+    textarea,input[type=text]{border:1px solid #999;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="kicker">TOK · Natural Sciences · Lesson 1</p>
+  <h1>How Scientific Is It?</h1>
+  <div class="kq"><b>Knowledge Question</b>How does a community decide what counts as scientific knowledge — and can the line be drawn from inside?</div>
+  <p class="lede">No voting on right answers today. The job is to notice the <em>ruler</em> you're using — and whether everyone in the room is using the same one.</p>
+
+  <hr class="sep">
+
+  <p class="step"><span class="n">1</span>Before you rank</p>
+  <h2>Commit first</h2>
+  <p class="hint">Answer this before you touch the cards. One sentence, gut instinct.</p>
+  <div class="field">
+    <label class="q" for="name">Your name</label>
+    <input type="text" id="name" placeholder="First and last">
+  </div>
+  <div class="field">
+    <label class="q" for="q1">What makes something "scientific"? (one sentence)</label>
+    <textarea id="q1" placeholder="Science is&hellip;"></textarea>
+  </div>
+
+  <hr class="sep">
+
+  <p class="step"><span class="n">2</span>Rank the cards</p>
+  <h2>Most scientific &rarr; least scientific</h2>
+  <p class="hint">Rank them on instinct first — drag, or use the arrows. <strong>Then</strong> open "Learn more" on the ones you felt most sure about, and check whether your ruler still holds. Your group must agree on one order.</p>
+  <div class="scale-note"><span>&uarr; #1 — most scientific</span><span>#8 — least scientific &darr;</span></div>
+  <ul class="ranklist" id="ranklist"></ul>
+
+  <hr class="sep">
+
+  <p class="step"><span class="n">3</span>Now interrogate your own ruler</p>
+  <h2>The real questions</h2>
+  <p class="hint">These are the point of the activity. Take them slowly.</p>
+
+  <div class="field">
+    <label class="q" for="q2">Name the rule you actually used to rank these. What were you really measuring — testability? truth? having a method? being widely accepted? being useful?</label>
+    <textarea id="q2"></textarea>
+  </div>
+  <div class="field">
+    <label class="q" for="q3">String theory and the horoscope are both things we <em>can't test right now</em>. Why might one still count as science and the other not — or do you think neither does? What's the actual difference?</label>
+    <textarea id="q3"></textarea>
+  </div>
+  <div class="field">
+    <label class="q" for="q4">Phrenology had a careful method, data, journals, and respected experts — and was still wrong. What does that do to "it has a method" as your test for science?</label>
+    <textarea id="q4"></textarea>
+  </div>
+  <div class="field">
+    <label class="q" for="q5"><strong>Exit.</strong> "Is ___ scientific?" turned out to hide its ruler. Rewrite it as a knowledge question we could actually investigate.</label>
+    <textarea id="q5"></textarea>
+  </div>
+
+  <div class="actions">
+    <button class="btn" onclick="downloadSubmission()">&darr; Download my ranking &amp; notes</button>
+    <button class="btn ghost" onclick="window.print()">Print / Save as PDF</button>
+  </div>
+  <p class="submit-note">Then submit the downloaded file the usual way (Google Classroom / your LMS). This page doesn't send anything on its own.</p>
+
+</div>
+
+<script>
+  const CARDS = [
+    {id:"weather", name:"A weather forecast", desc:"\u201cThere's a 70% chance of rain tomorrow.\u201d",
+      more:`<p>A modern forecast isn't a guess. It comes from physics-based computer models running millions of equations on supercomputers, fed by satellites, radar, weather balloons, and thousands of ground stations. A "70% chance of rain" has a precise meaning: in past situations very much like tomorrow's, it rained about 70% of the time.</p>
+      <p>Forecasters keep score. They compare what they predicted against what actually happened, every day, and the models get corrected. This is called verification.</p>
+      <p>But here's the catch: if it doesn't rain tomorrow, was the 70% forecast <em>wrong</em>? A probability can't really be proven false by a single day. So what <em>would</em> it take to test it?</p>`},
+
+    {id:"horoscope", name:"A horoscope", desc:"\u201cMercury is in retrograde, so you'll face a tough choice this week.\u201d",
+      more:`<p>Astrology is one of the oldest knowledge systems on Earth. Babylonian, Greek, Indian, and Chinese astronomers tracked the planets for thousands of years, and for most of history astronomy and astrology were the <em>same</em> study. It has detailed rules, mathematical charts, trained practitioners who study for years, and it makes specific predictions about people and events.</p>
+      <p>So astrology has a method, a long tradition, recognised experts, and testable-sounding predictions — several of the things we might call "scientific." When researchers have run controlled tests (for example, asking astrologers to match real birth charts to real personality profiles), the matches have come out no better than chance.</p>
+      <p>So it isn't the lack of a method or experts that's the problem. Then what is it?</p>`},
+
+    {id:"string", name:"String theory", desc:"The universe's smallest pieces aren't particles but tiny vibrating strings.",
+      more:`<p>String theory is one of the most ambitious ideas in physics: that the smallest things in existence aren't dot-like particles but minuscule vibrating strings, and that every particle is a different "note" a string plays. It's the leading candidate for a "theory of everything" that would finally unite gravity with the other forces. Some of the most brilliant physicists alive have worked on it for decades, and its mathematics is extraordinarily rigorous.</p>
+      <p>Here's the problem. A string is thought to be about 10<sup>&minus;35</sup> metres long. The most powerful instrument we have, the Large Hadron Collider, can resolve down to roughly 10<sup>&minus;19</sup> metres — meaning a string is about <strong>10<sup>16</sup> (ten quadrillion) times smaller</strong> than anything we can currently detect. To probe that scale directly, by some physicists' estimates, you would need a particle accelerator larger than our solar system. No experiment anyone can imagine building could confirm or refute it.</p>
+      <p>So string theory has rigorous mathematics, the backing of expert physicists, and decades of serious work — but perhaps no possible test, ever. The physicist Lee Smolin has argued this means it isn't really science. Many of his colleagues strongly disagree. Who's right depends entirely on what you think science <em>is</em>.</p>`},
+
+    {id:"planet", name:"A planet's position", desc:"An astronomer predicts exactly where a planet will be, using the law of gravity.",
+      more:`<p>In 1846, astronomers noticed the planet Uranus wasn't quite where Newton's laws of gravity said it should be. Rather than throw out the laws, the mathematician Urbain Le Verrier used those <em>same</em> laws to argue that an unseen planet must be tugging on Uranus — and he calculated exactly where in the sky that hidden planet had to be.</p>
+      <p>He mailed the coordinates to an observatory in Berlin. The astronomer there pointed his telescope at that exact spot and found Neptune the very same night, within one degree of the prediction.</p>
+      <p>The claim made a specific, risky prediction that could easily have failed — and didn't. Anyone with the maths and a telescope can repeat the check. (Though it's worth knowing: Newton's laws themselves were later corrected by Einstein. Even the cleanest case isn't final.)</p>`},
+
+    {id:"phrenology", name:"Phrenology", desc:"You can read a person's intelligence and character from the bumps on their skull.",
+      more:`<p>In the early 1800s, phrenology was cutting-edge science. Its founder, Franz Joseph Gall, was a respected anatomist who made genuine discoveries about the brain. Phrenologists held that different mental abilities lived in different parts of the brain — which is broadly <em>true</em> — and that the bumps of the skull revealed which abilities were strongest. They measured thousands of skulls, kept meticulous records, published journals, held university positions, and drew huge public audiences. It looked exactly like a science.</p>
+      <p>It was also used to justify slavery, racism, and the ranking of human "types" — and its measurements always seemed to confirm what the people in power already believed about who was superior.</p>
+      <p>So phrenology had a method, data, experts, journals, and institutional standing — every outward mark of science — and was wrong. So what was actually missing? How was the claim being checked: against the world, or against what people wanted to find?</p>`},
+
+    {id:"vaccines", name:"Vaccines", desc:"\u201cVaccines are safe and effective at preventing disease.\u201d",
+      more:`<p>This claim rests on one of the largest evidence bases in all of medicine: randomised controlled trials with tens of thousands of participants, followed by monitoring of hundreds of millions of people after approval, with surveillance systems built specifically to catch rare side effects. The smallpox vaccine wiped out a disease that killed roughly 300 million people in the twentieth century alone.</p>
+      <p>And yet many people don't accept the claim — often pointing to a single study, a personal story, or distrust of the institutions involved.</p>
+      <p>Notice the trap waiting here: "the health agency says so" and "an influencer says so" are <em>both</em> appeals to authority. The interesting question isn't who said it — it's what kind of justification sits behind each authority, and how you'd tell a strong one from a weak one.</p>`},
+
+    {id:"evolution", name:"Evolution by natural selection", desc:"Today's species developed from earlier ones over millions of years.",
+      more:`<p>Evolution is supported by an unusual feature: many completely independent lines of evidence all point to the same conclusion. Fossils show change over deep time. DNA comparisons across living species build a family tree — and it matches the fossil record. The geographic spread of animals matches how the continents moved. And we have <em>directly watched</em> evolution happen: bacteria evolving antibiotic resistance, finch beaks measurably changing within a few years. When methods that could easily have disagreed all converge instead, that convergence is itself the evidence.</p>
+      <p>You can't rerun the last four billion years in a lab. In that sense, evolution is like the dinosaurs' extinction, or a crime with no witnesses: it's reconstructed from evidence, not repeated on demand. Does that make it less scientific — or scientific in a different way than a lab experiment?</p>
+      <p>One thing to watch: "the textbook says evolution is true" and "my tradition says it isn't" are the <em>same</em> move — leaning on an authority. The scientific question was never who said it. It's whether the evidence converges.</p>`},
+
+    {id:"homeopathy", name:"Homeopathy", desc:"Illness cured with water that once held a trace of a substance, now diluted until almost none is left.",
+      more:`<p>Homeopathy was invented in the 1790s and rests on two principles: that a substance which causes symptoms in a healthy person can cure those symptoms in a sick one, and that <em>diluting</em> the substance makes it stronger. Remedies are often diluted so many times that, by the basic laws of chemistry, not a single molecule of the original substance remains — the patient is taking plain water or a sugar pill.</p>
+      <p>It's regulated, sold in pharmacies, practised by people with credentials and clinics, and backed by a 200-year tradition and a worked-out theory. Large reviews of the evidence have found it performs no better than a placebo.</p>
+      <p>So homeopathy has the full <em>form</em> of medicine — but no measurable effect. Hold it next to the vaccines card: both are health claims with credentials behind them. What exactly is the difference in how each one is justified?</p>`}
+  ];
+
+  // shuffle so no starting order is implied
+  let order = CARDS.slice();
+  for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}
+  const openSet = new Set();
+
+  const POS = ["most scientific","","","","","","","least scientific"];
+  const list = document.getElementById("ranklist");
+
+  function render(){
+    list.innerHTML="";
+    order.forEach((card,i)=>{
+      const li=document.createElement("li");
+      li.className="card"; li.draggable=true; li.dataset.idx=i; li.dataset.id=card.id;
+      const posLabel = POS[i] ? `<span class="pos">${POS[i]}</span>` : "";
+      const isOpen = openSet.has(card.id);
+      li.innerHTML = `
+        <div class="card-row">
+          <div class="rank-badge"><span class="num">${i+1}</span>${posLabel}</div>
+          <div class="card-body grip">
+            <div class="name">${card.name}</div>
+            <div class="desc">${card.desc}</div>
+            <button class="learn" onclick="toggleMore(event,'${card.id}')">${isOpen?"Close &#9650;":"Learn more &#9656;"}</button>
+          </div>
+          <div class="card-ctrl">
+            <button title="Move up" onclick="move(${i},-1)" ${i===0?"disabled":""}>&uarr;</button>
+            <button title="Move down" onclick="move(${i},1)" ${i===order.length-1?"disabled":""}>&darr;</button>
+          </div>
+        </div>
+        <div class="more-panel ${isOpen?"open":""}" id="more-${card.id}">${card.more}</div>`;
+      addDrag(li);
+      list.appendChild(li);
+    });
+  }
+
+  function toggleMore(e,id){
+    e.stopPropagation();
+    if(openSet.has(id)) openSet.delete(id); else openSet.add(id);
+    const panel=document.getElementById("more-"+id);
+    const btn=e.currentTarget;
+    if(panel){
+      panel.classList.toggle("open");
+      btn.innerHTML = panel.classList.contains("open") ? "Close &#9650;" : "Learn more &#9656;";
+    }
+  }
+
+  function move(i,dir){
+    const j=i+dir;
+    if(j<0||j>=order.length) return;
+    [order[i],order[j]]=[order[j],order[i]];
+    render();
+    const cards=list.querySelectorAll(".card");
+    if(cards[j]){cards[j].classList.add("flash");setTimeout(()=>cards[j].classList.remove("flash"),350);}
+  }
+
+  let dragIdx=null;
+  function addDrag(li){
+    li.addEventListener("dragstart",e=>{dragIdx=+li.dataset.idx;li.classList.add("dragging");});
+    li.addEventListener("dragend",e=>{li.classList.remove("dragging");dragIdx=null;});
+    li.addEventListener("dragover",e=>{e.preventDefault();});
+    li.addEventListener("drop",e=>{
+      e.preventDefault();
+      const dropIdx=+li.dataset.idx;
+      if(dragIdx===null||dragIdx===dropIdx) return;
+      const [moved]=order.splice(dragIdx,1);
+      order.splice(dropIdx,0,moved);
+      render();
+    });
+  }
+
+  function downloadSubmission(){
+    const name=(document.getElementById("name").value||"").trim();
+    const g=id=>(document.getElementById(id).value||"").trim()||"(left blank)";
+    let txt="TOK — NATURAL SCIENCES — LESSON 1\n";
+    txt+="HOW SCIENTIFIC IS IT?\n";
+    txt+="Knowledge Question: How does a community decide what counts as scientific\n";
+    txt+="knowledge \u2014 and can the line be drawn from inside?\n";
+    txt+="=".repeat(60)+"\n\n";
+    txt+="NAME: "+(name||"(no name entered)")+"\n";
+    txt+="DATE: "+new Date().toLocaleDateString()+"\n\n";
+    txt+="--- STEP 1 — Before ranking ---\n";
+    txt+="What makes something scientific?\n  "+g("q1")+"\n\n";
+    txt+="--- STEP 2 — Final ranking (1 = most scientific) ---\n";
+    order.forEach((c,i)=>{txt+="  "+(i+1)+". "+c.name+"\n";});
+    txt+="\n--- STEP 3 — Interrogating the ruler ---\n";
+    txt+="The rule I actually used:\n  "+g("q2")+"\n\n";
+    txt+="String theory vs. horoscope \u2014 the actual difference:\n  "+g("q3")+"\n\n";
+    txt+="What phrenology does to \u2018it has a method\u2019:\n  "+g("q4")+"\n\n";
+    txt+="EXIT \u2014 rewritten as an investigable knowledge question:\n  "+g("q5")+"\n";
+    const blob=new Blob([txt],{type:"text/plain"});
+    const a=document.createElement("a");
+    const safe=name?name.replace(/[^a-z0-9]+/gi,"_"):"submission";
+    a.href=URL.createObjectURL(blob);
+    a.download="TOK_HowScientific_"+safe+".txt";
+    document.body.appendChild(a);a.click();
+    setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},100);
+  }
+
+  render();
+</script>
+</body>
+</html>
