@@ -11,7 +11,7 @@
   :root{
     --paper:#f4efe4; --paper-2:#ece4d3; --ink:#23201a; --ink-soft:#4a443a;
     --rule:#c9bda3; --rule-soft:#dbd0ba; --accent:#1f4e6b; --accent-warm:#9a6a2f;
-    --flag:#7a3b2e; --shadow:rgba(40,33,22,.16);
+    --flag:#7a3b2e; --good:#3f7d4f; --shadow:rgba(40,33,22,.16);
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
@@ -32,6 +32,15 @@
   .kq b{font-family:"JetBrains Mono",monospace;font-style:normal;font-size:10px;letter-spacing:.18em;
     text-transform:uppercase;color:var(--accent);display:block;margin-bottom:4px;}
   .lede{color:var(--ink-soft);margin:18px 0 0;}
+
+  /* stepper */
+  .stepper{display:flex;gap:10px;margin:26px 0 4px;}
+  .pill{flex:1;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    padding:10px 12px;border:1px solid var(--rule);border-radius:6px;color:var(--ink-soft);background:transparent;
+    text-align:center;transition:all .15s;}
+  .pill.active{background:var(--accent);color:var(--paper);border-color:var(--accent);}
+  .pill .pn{opacity:.7;margin-right:6px;}
+
   hr.sep{border:none;border-top:1px solid var(--rule);margin:34px 0;}
   .step{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;
     color:var(--accent);margin:0 0 4px;}
@@ -43,29 +52,30 @@
   input[type=text], textarea{width:100%;background:#fbf8f0;border:1px solid var(--rule);border-radius:5px;
     padding:11px 13px;font-family:"Cormorant Garamond",Georgia,serif;font-size:19px;color:var(--ink);resize:vertical;}
   input[type=text]:focus, textarea:focus{outline:none;border-color:var(--accent);background:#fff;}
-  textarea{min-height:78px;line-height:1.45;}
+  textarea{min-height:74px;line-height:1.45;}
   .field{margin:0 0 22px;}
+
   .ranklist{list-style:none;margin:0;padding:0;}
   .card{background:#fbf8f0;border:1px solid var(--rule);border-radius:7px;margin:0 0 10px;
     box-shadow:0 1px 2px var(--shadow);overflow:hidden;transition:box-shadow .15s;}
   .card.dragging{opacity:.5;}
   .card.flash{box-shadow:0 0 0 2px var(--accent);}
   .card-row{display:flex;align-items:stretch;}
-  .rank-badge{flex:0 0 58px;background:var(--paper-2);border-right:1px solid var(--rule-soft);
+  .rank-badge{flex:0 0 54px;background:var(--paper-2);border-right:1px solid var(--rule-soft);
     display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
     font-family:"JetBrains Mono",monospace;}
-  .rank-badge .num{font-size:23px;font-weight:700;color:var(--accent);}
-  .rank-badge .pos{font-size:8px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);
+  .rank-badge .num{font-size:22px;font-weight:700;color:var(--accent);}
+  .rank-badge .pos{font-size:8px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);
     margin-top:3px;line-height:1.2;}
-  .card-body{flex:1;padding:11px 14px;}
+  .card-body{flex:1;padding:11px 14px;min-width:0;}
   .card-body .name{font-weight:700;font-size:20px;}
-  .card-body .desc{color:var(--ink-soft);font-size:17px;line-height:1.38;margin-top:2px;}
+  .card-body .desc{color:var(--ink-soft);font-size:16px;line-height:1.36;margin-top:2px;}
   .learn{margin-top:8px;background:transparent;border:none;padding:0;cursor:pointer;
     font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;
     color:var(--accent);transition:color .12s;}
   .learn:hover{color:var(--accent-warm);}
-  .card-ctrl{flex:0 0 42px;display:flex;flex-direction:column;border-left:1px solid var(--rule-soft);}
-  .card-ctrl button{flex:1;border:none;background:transparent;cursor:pointer;font-size:16px;color:var(--ink-soft);
+  .card-ctrl{flex:0 0 40px;display:flex;flex-direction:column;border-left:1px solid var(--rule-soft);}
+  .card-ctrl button{flex:1;border:none;background:transparent;cursor:pointer;font-size:15px;color:var(--ink-soft);
     font-family:"JetBrains Mono",monospace;transition:background .12s,color .12s;}
   .card-ctrl button:first-child{border-bottom:1px solid var(--rule-soft);}
   .card-ctrl button:hover{background:var(--accent);color:var(--paper);}
@@ -74,23 +84,54 @@
   .grip{cursor:grab;}
   .more-panel{display:none;border-top:1px dashed var(--rule);background:#f7f2e7;padding:14px 18px 4px;}
   .more-panel.open{display:block;}
-  .more-panel p{font-size:17px;line-height:1.5;margin:0 0 12px;color:var(--ink);}
-  .more-panel p:last-child{font-style:italic;color:var(--ink-soft);}
+  .more-panel p{font-size:17px;line-height:1.52;margin:0 0 12px;color:var(--ink);}
   .scale-note{display:flex;justify-content:space-between;font-family:"JetBrains Mono",monospace;
     font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-warm);margin:0 0 12px;}
+
+  /* phase 2 grid reference */
+  .grid-ref{border:1px solid var(--accent);border-radius:8px;background:rgba(31,78,107,.04);padding:6px 18px 14px;margin:0 0 22px;}
+  .grid-ref h3{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--accent);margin:16px 0 12px;}
+  .gq{display:flex;gap:12px;margin:0 0 12px;align-items:baseline;}
+  .gq .gkey{flex:0 0 26px;height:26px;line-height:26px;text-align:center;border-radius:5px;
+    font-family:"JetBrains Mono",monospace;font-weight:700;font-size:13px;color:var(--paper);background:var(--accent);}
+  .gq.r .gkey{background:var(--accent-warm);}
+  .gq .gtxt{flex:1;font-size:17px;line-height:1.4;}
+  .gq .gtxt b{font-weight:600;}
+  .gq .gtool{display:block;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--accent-warm);margin-top:2px;}
+
+  /* phase 2 toggles */
+  .toggles{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap;}
+  .tog{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.04em;
+    border:1px solid var(--rule);border-radius:5px;background:#fff;cursor:pointer;
+    padding:5px 9px;color:var(--ink-soft);transition:all .12s;min-width:46px;text-align:center;}
+  .tog .tl{font-weight:700;}
+  .tog .tv{margin-left:5px;opacity:.85;}
+  .tog.t-yes{background:rgba(63,125,79,.14);border-color:var(--good);color:var(--good);}
+  .tog.t-maybe{background:rgba(154,106,47,.14);border-color:var(--accent-warm);color:var(--accent-warm);}
+  .tog.t-no{background:rgba(122,59,46,.12);border-color:var(--flag);color:var(--flag);}
+  .legend{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.04em;color:var(--ink-soft);
+    margin:0 0 14px;line-height:1.7;}
+  .legend b{color:var(--accent);}
+
   .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px;}
   .btn{font-family:"JetBrains Mono",monospace;font-size:13px;letter-spacing:.06em;padding:13px 22px;
     border-radius:6px;cursor:pointer;border:1px solid var(--accent);background:var(--accent);color:var(--paper);
     transition:transform .12s,opacity .12s;}
   .btn:hover{transform:translateY(-1px);opacity:.92;}
   .btn.ghost{background:transparent;color:var(--accent);}
+  .btn.wide{width:100%;text-align:center;font-size:14px;padding:15px;}
   .submit-note{font-size:16px;color:var(--ink-soft);margin-top:14px;font-style:italic;}
+  .hidden{display:none;}
+
   @media (max-width:520px){
-    body{font-size:18px;} .rank-badge{flex-basis:46px;} .card-body .name{font-size:18px;}
+    body{font-size:18px;} .rank-badge{flex-basis:44px;} .card-body .name{font-size:18px;}
+    .tog{min-width:42px;padding:5px 7px;}
   }
   @media print{
-    .card-ctrl,.actions,.submit-note,.learn{display:none;}
-    .more-panel{display:block;} body{background:#fff;}
+    .card-ctrl,.actions,.submit-note,.learn,.stepper,.btn{display:none;}
+    .more-panel,.hidden{display:block;} body{background:#fff;}
     textarea,input[type=text]{border:1px solid #999;}
   }
 </style>
@@ -103,118 +144,141 @@
   <div class="kq"><b>Knowledge Question</b>How does a community decide what counts as scientific knowledge — and can the line be drawn from inside?</div>
   <p class="lede">No voting on right answers today. The job is to notice the <em>ruler</em> you're using — and whether everyone in the room is using the same one.</p>
 
-  <hr class="sep">
-
-  <p class="step"><span class="n">1</span>Before you rank</p>
-  <h2>Commit first</h2>
-  <p class="hint">Answer this before you touch the cards. One sentence, gut instinct.</p>
-  <div class="field">
-    <label class="q" for="name">Your name</label>
-    <input type="text" id="name" placeholder="First and last">
-  </div>
-  <div class="field">
-    <label class="q" for="q1">What makes something "scientific"? (one sentence)</label>
-    <textarea id="q1" placeholder="Science is&hellip;"></textarea>
+  <div class="stepper">
+    <div class="pill active" id="pill1"><span class="pn">1</span>Rank it your way</div>
+    <div class="pill" id="pill2"><span class="pn">2</span>Apply the grid</div>
   </div>
 
-  <hr class="sep">
+  <!-- ============ PHASE 1 ============ -->
+  <section id="phase1">
+    <hr class="sep">
+    <p class="step"><span class="n">1</span>Before you rank</p>
+    <h2>Commit first</h2>
+    <p class="hint">Answer this before you touch the cards. One sentence, gut instinct.</p>
+    <div class="field">
+      <label class="q" for="name">Your name</label>
+      <input type="text" id="name" placeholder="First and last">
+    </div>
+    <div class="field">
+      <label class="q" for="q1">What makes something "scientific"? (one sentence)</label>
+      <textarea id="q1" placeholder="Science is&hellip;"></textarea>
+    </div>
 
-  <p class="step"><span class="n">2</span>Rank the cards</p>
-  <h2>Most scientific &rarr; least scientific</h2>
-  <p class="hint">Rank them on instinct first — drag, or use the arrows. <strong>Then</strong> open "Learn more" on the ones you felt most sure about, and check whether your ruler still holds. Your group must agree on one order.</p>
-  <div class="scale-note"><span>&uarr; #1 — most scientific</span><span>#8 — least scientific &darr;</span></div>
-  <ul class="ranklist" id="ranklist"></ul>
+    <hr class="sep">
+    <p class="step"><span class="n">2</span>Rank the cards</p>
+    <h2>Most scientific &rarr; least scientific</h2>
+    <p class="hint">Rank them on instinct first — drag, or use the arrows. <strong>Then</strong> open "Learn more" on the ones you felt most sure about. Read carefully: the facts are the puzzle. Your group must agree on one order.</p>
+    <div class="scale-note"><span>&uarr; #1 — most scientific</span><span>#8 — least scientific &darr;</span></div>
+    <ul class="ranklist" id="ranklist"></ul>
 
-  <hr class="sep">
+    <hr class="sep">
+    <div class="field">
+      <label class="q" for="q2">Now name it: what rule did you actually use to rank these? What were you really measuring — testability? truth? having a method? being widely believed? being useful?</label>
+      <textarea id="q2"></textarea>
+    </div>
+    <button class="btn wide" onclick="lockPhase1()">I've ranked &amp; named my ruler &nbsp;&rarr;&nbsp; Apply the grid</button>
+  </section>
 
-  <p class="step"><span class="n">3</span>Now interrogate your own ruler</p>
-  <h2>The real questions</h2>
-  <p class="hint">These are the point of the activity. Take them slowly.</p>
+  <!-- ============ PHASE 2 ============ -->
+  <section id="phase2" class="hidden">
+    <hr class="sep">
+    <p class="step"><span class="n">3</span>A better ruler</p>
+    <h2>Ask all four at once</h2>
+    <p class="hint">Single rules failed — each one crowned something absurd. So stop asking "is it science?" and ask these four questions of every card instead. This is the grid. It travels: later this year we'll point it at things that aren't science at all.</p>
 
-  <div class="field">
-    <label class="q" for="q2">Name the rule you actually used to rank these. What were you really measuring — testability? truth? having a method? being widely accepted? being useful?</label>
-    <textarea id="q2"></textarea>
-  </div>
-  <div class="field">
-    <label class="q" for="q3">String theory and the horoscope are both things we <em>can't test right now</em>. Why might one still count as science and the other not — or do you think neither does? What's the actual difference?</label>
-    <textarea id="q3"></textarea>
-  </div>
-  <div class="field">
-    <label class="q" for="q4">Phrenology had a careful method, data, journals, and respected experts — and was still wrong. What does that do to "it has a method" as your test for science?</label>
-    <textarea id="q4"></textarea>
-  </div>
-  <div class="field">
-    <label class="q" for="q5"><strong>Exit.</strong> "Is ___ scientific?" turned out to hide its ruler. Rewrite it as a knowledge question we could actually investigate.</label>
-    <textarea id="q5"></textarea>
-  </div>
+    <div class="grid-ref">
+      <h3>The grid — four questions for any claim</h3>
+      <div class="gq"><span class="gkey">E</span><span class="gtxt"><b>Evidence.</b> What counts as evidence here — and could any observation ever have proved the claim <em>wrong</em>?<span class="gtool">Science's tool: falsifiability</span></span></div>
+      <div class="gq"><span class="gkey">V</span><span class="gtxt"><b>Validated.</b> How is the claim checked? Has it survived real tests, and can others repeat them?<span class="gtool">Science's tool: replication</span></span></div>
+      <div class="gq"><span class="gkey">C</span><span class="gtxt"><b>Community.</b> Who counts as an expert? Is the claim scrutinised by a community that actively hunts each other's errors?<span class="gtool">Science's tool: peer review</span></span></div>
+      <div class="gq r"><span class="gkey">R</span><span class="gtxt"><b>Reach.</b> Is the question even answerable by this method at all — or is it beyond what evidence can settle?<span class="gtool">The one we don't yet have a clean tool for — leave it open</span></span></div>
+    </div>
 
-  <div class="actions">
-    <button class="btn" onclick="downloadSubmission()">&darr; Download my ranking &amp; notes</button>
-    <button class="btn ghost" onclick="window.print()">Print / Save as PDF</button>
-  </div>
-  <p class="submit-note">Then submit the downloaded file the usual way (Google Classroom / your LMS). This page doesn't send anything on its own.</p>
+    <h2>Re-rank — and mark each card</h2>
+    <p class="hint">Tap each letter to mark the card on that question. Then reorder. Watch which cards move — and notice any card that <em>passes some questions but fails others</em>.</p>
+    <p class="legend">Tap to cycle: <b>blank</b> &rarr; <span style="color:var(--good)">&#10003; yes</span> &rarr; <span style="color:var(--accent-warm)">~ unclear</span> &rarr; <span style="color:var(--flag)">&#10007; no</span> &nbsp;|&nbsp; <b>E</b>vidence &nbsp;<b>V</b>alidated &nbsp;<b>C</b>ommunity &nbsp;<b>R</b>each</p>
+    <div class="scale-note"><span>&uarr; #1 — most scientific</span><span>#8 — least scientific &darr;</span></div>
+    <ul class="ranklist" id="ranklist2"></ul>
+
+    <hr class="sep">
+    <p class="step"><span class="n">4</span>What the grid showed you</p>
+    <div class="field">
+      <label class="q" for="q3">Which card moved the most between your two rankings — and which of the four questions moved it?</label>
+      <textarea id="q3"></textarea>
+    </div>
+    <div class="field">
+      <label class="q" for="q4">Did any card <em>pass</em> some questions but <em>fail</em> others? Which one — and what does that split tell you about it?</label>
+      <textarea id="q4"></textarea>
+    </div>
+    <div class="field">
+      <label class="q" for="q5"><strong>Exit.</strong> "Is ___ scientific?" hid its ruler. Rewrite it as a knowledge question you could actually investigate.</label>
+      <textarea id="q5"></textarea>
+    </div>
+
+    <div class="actions">
+      <button class="btn ghost" onclick="showPhase(1)">&larr; Back to Phase 1</button>
+      <button class="btn" onclick="downloadSubmission()">&darr; Download both rankings &amp; notes</button>
+      <button class="btn ghost" onclick="window.print()">Print / Save as PDF</button>
+    </div>
+    <p class="submit-note">Then submit the downloaded file the usual way (Google Classroom / your LMS). This page doesn't send anything on its own.</p>
+  </section>
 
 </div>
 
 <script>
   const CARDS = [
     {id:"weather", name:"A weather forecast", desc:"\u201cThere's a 70% chance of rain tomorrow.\u201d",
-      more:`<p>A modern forecast isn't a guess. It comes from physics-based computer models running millions of equations on supercomputers, fed by satellites, radar, weather balloons, and thousands of ground stations. A "70% chance of rain" has a precise meaning: in past situations very much like tomorrow's, it rained about 70% of the time.</p>
-      <p>Forecasters keep score. They compare what they predicted against what actually happened, every day, and the models get corrected. This is called verification.</p>
-      <p>But here's the catch: if it doesn't rain tomorrow, was the 70% forecast <em>wrong</em>? A probability can't really be proven false by a single day. So what <em>would</em> it take to test it?</p>`},
+      more:`<p>A modern forecast comes from physics equations run on supercomputers, fed by satellites, radar, and thousands of weather stations. The "70%" is precise: in past situations very much like tomorrow's, it rained about 70% of the time. Forecasters keep score \u2014 every prediction is checked against what actually happened, across thousands of forecasts, and the models are corrected when they drift. A single dry tomorrow, on its own, neither confirms nor refutes a 70% claim.</p>`},
 
     {id:"horoscope", name:"A horoscope", desc:"\u201cMercury is in retrograde, so you'll face a tough choice this week.\u201d",
-      more:`<p>Astrology is one of the oldest knowledge systems on Earth. Babylonian, Greek, Indian, and Chinese astronomers tracked the planets for thousands of years, and for most of history astronomy and astrology were the <em>same</em> study. It has detailed rules, mathematical charts, trained practitioners who study for years, and it makes specific predictions about people and events.</p>
-      <p>So astrology has a method, a long tradition, recognised experts, and testable-sounding predictions — several of the things we might call "scientific." When researchers have run controlled tests (for example, asking astrologers to match real birth charts to real personality profiles), the matches have come out no better than chance.</p>
-      <p>So it isn't the lack of a method or experts that's the problem. Then what is it?</p>`},
+      more:`<p>Astrology is among the oldest knowledge systems on Earth: for most of recorded history, it and astronomy were the same study. It runs on detailed charts, precise planetary calculations, and practitioners who train for years, and it issues specific predictions about people and events. When astrologers have been tested under controlled conditions \u2014 matching real birth charts to real personality profiles without knowing which was which \u2014 they have performed no better than chance.</p>`},
 
     {id:"string", name:"String theory", desc:"The universe's smallest pieces aren't particles but tiny vibrating strings.",
-      more:`<p>String theory is one of the most ambitious ideas in physics: that the smallest things in existence aren't dot-like particles but minuscule vibrating strings, and that every particle is a different "note" a string plays. It's the leading candidate for a "theory of everything" that would finally unite gravity with the other forces. Some of the most brilliant physicists alive have worked on it for decades, and its mathematics is extraordinarily rigorous.</p>
-      <p>Here's the problem. A string is thought to be about 10<sup>&minus;35</sup> metres long. The most powerful instrument we have, the Large Hadron Collider, can resolve down to roughly 10<sup>&minus;19</sup> metres — meaning a string is about <strong>10<sup>16</sup> (ten quadrillion) times smaller</strong> than anything we can currently detect. To probe that scale directly, by some physicists' estimates, you would need a particle accelerator larger than our solar system. No experiment anyone can imagine building could confirm or refute it.</p>
-      <p>So string theory has rigorous mathematics, the backing of expert physicists, and decades of serious work — but perhaps no possible test, ever. The physicist Lee Smolin has argued this means it isn't really science. Many of his colleagues strongly disagree. Who's right depends entirely on what you think science <em>is</em>.</p>`},
+      more:`<p>These strings are hypothesised to be almost unimaginably small \u2014 about 10<sup>&minus;35</sup> metres across, roughly ten quadrillion (10<sup>16</sup>) times smaller than the tiniest thing our most powerful instrument, the Large Hadron Collider, can detect. To probe that scale directly, by some estimates, you would need a particle accelerator larger than our solar system.</p>
+      <p>Yet the theory is mathematically rigorous, has occupied some of the most brilliant physicists alive for over forty years, and remains the leading candidate to unite gravity with the other forces of nature. No experiment anyone can currently imagine could confirm it or rule it out.</p>`},
 
     {id:"planet", name:"A planet's position", desc:"An astronomer predicts exactly where a planet will be, using the law of gravity.",
-      more:`<p>In 1846, astronomers noticed the planet Uranus wasn't quite where Newton's laws of gravity said it should be. Rather than throw out the laws, the mathematician Urbain Le Verrier used those <em>same</em> laws to argue that an unseen planet must be tugging on Uranus — and he calculated exactly where in the sky that hidden planet had to be.</p>
-      <p>He mailed the coordinates to an observatory in Berlin. The astronomer there pointed his telescope at that exact spot and found Neptune the very same night, within one degree of the prediction.</p>
-      <p>The claim made a specific, risky prediction that could easily have failed — and didn't. Anyone with the maths and a telescope can repeat the check. (Though it's worth knowing: Newton's laws themselves were later corrected by Einstein. Even the cleanest case isn't final.)</p>`},
+      more:`<p>In 1846, the planet Uranus wasn't quite where Newton's laws of gravity said it should be. The mathematician Urbain Le Verrier used those same laws to calculate that an unseen planet must be pulling on it \u2014 and worked out exactly where in the sky to look. He sent the coordinates to an observatory in Berlin, where an astronomer found Neptune that very night, within one degree of the prediction.</p>
+      <p>The claim made a specific, risky forecast that could easily have failed, and anyone with the maths and a telescope can repeat the check. (Newton's own laws, it later turned out, were themselves corrected by Einstein.)</p>`},
 
     {id:"phrenology", name:"Phrenology", desc:"You can read a person's intelligence and character from the bumps on their skull.",
-      more:`<p>In the early 1800s, phrenology was cutting-edge science. Its founder, Franz Joseph Gall, was a respected anatomist who made genuine discoveries about the brain. Phrenologists held that different mental abilities lived in different parts of the brain — which is broadly <em>true</em> — and that the bumps of the skull revealed which abilities were strongest. They measured thousands of skulls, kept meticulous records, published journals, held university positions, and drew huge public audiences. It looked exactly like a science.</p>
-      <p>It was also used to justify slavery, racism, and the ranking of human "types" — and its measurements always seemed to confirm what the people in power already believed about who was superior.</p>
-      <p>So phrenology had a method, data, experts, journals, and institutional standing — every outward mark of science — and was wrong. So what was actually missing? How was the claim being checked: against the world, or against what people wanted to find?</p>`},
+      more:`<p>In the early 1800s this was cutting-edge science. Its founder, the anatomist Franz Joseph Gall, mapped 27 distinct faculties of the mind, each assigned to a region of the brain. Practitioners ran calipers over the skull to measure the size of each region, recorded the readings, and published them in journals that ran for over twenty years. They founded professional societies, lectured to packed halls, and their readings were used in hiring, in schooling, and in the courts.</p>
+      <p>Their core idea \u2014 that different mental functions live in different parts of the brain \u2014 turned out to be broadly right. The claim that you can read those functions from the bumps of the skull turned out to be entirely false.</p>`},
 
     {id:"vaccines", name:"Vaccines", desc:"\u201cVaccines are safe and effective at preventing disease.\u201d",
-      more:`<p>This claim rests on one of the largest evidence bases in all of medicine: randomised controlled trials with tens of thousands of participants, followed by monitoring of hundreds of millions of people after approval, with surveillance systems built specifically to catch rare side effects. The smallpox vaccine wiped out a disease that killed roughly 300 million people in the twentieth century alone.</p>
-      <p>And yet many people don't accept the claim — often pointing to a single study, a personal story, or distrust of the institutions involved.</p>
-      <p>Notice the trap waiting here: "the health agency says so" and "an influencer says so" are <em>both</em> appeals to authority. The interesting question isn't who said it — it's what kind of justification sits behind each authority, and how you'd tell a strong one from a weak one.</p>`},
+      more:`<p>This claim rests on one of the largest evidence bases in medicine: randomised trials with tens of thousands of volunteers, followed by the monitoring of hundreds of millions of people after approval, with systems built to catch even rare side effects. The smallpox vaccine erased a disease that killed some 300 million people in the twentieth century alone.</p>
+      <p>Doubt about the claim, where it exists, usually rests on a single study, a personal story, or distrust of the institutions involved.</p>`},
 
     {id:"evolution", name:"Evolution by natural selection", desc:"Today's species developed from earlier ones over millions of years.",
-      more:`<p>Evolution is supported by an unusual feature: many completely independent lines of evidence all point to the same conclusion. Fossils show change over deep time. DNA comparisons across living species build a family tree — and it matches the fossil record. The geographic spread of animals matches how the continents moved. And we have <em>directly watched</em> evolution happen: bacteria evolving antibiotic resistance, finch beaks measurably changing within a few years. When methods that could easily have disagreed all converge instead, that convergence is itself the evidence.</p>
-      <p>You can't rerun the last four billion years in a lab. In that sense, evolution is like the dinosaurs' extinction, or a crime with no witnesses: it's reconstructed from evidence, not repeated on demand. Does that make it less scientific — or scientific in a different way than a lab experiment?</p>
-      <p>One thing to watch: "the textbook says evolution is true" and "my tradition says it isn't" are the <em>same</em> move — leaning on an authority. The scientific question was never who said it. It's whether the evidence converges.</p>`},
+      more:`<p>Several completely independent lines of evidence point to the same conclusion. Fossils show change across deep time. DNA comparisons between living species build a family tree \u2014 and it matches the fossil record. The spread of animals across the globe matches how the continents drifted. And evolution has been watched directly: bacteria evolving resistance to antibiotics, finch beaks measurably shifting within a few years.</p>
+      <p>No one can rerun the last four billion years in a laboratory, so the deep history is reconstructed from evidence rather than repeated on demand \u2014 much as a geologist reads a canyon, or a detective reconstructs a crime with no witnesses.</p>`},
 
-    {id:"homeopathy", name:"Homeopathy", desc:"Illness cured with water that once held a trace of a substance, now diluted until almost none is left.",
-      more:`<p>Homeopathy was invented in the 1790s and rests on two principles: that a substance which causes symptoms in a healthy person can cure those symptoms in a sick one, and that <em>diluting</em> the substance makes it stronger. Remedies are often diluted so many times that, by the basic laws of chemistry, not a single molecule of the original substance remains — the patient is taking plain water or a sugar pill.</p>
-      <p>It's regulated, sold in pharmacies, practised by people with credentials and clinics, and backed by a 200-year tradition and a worked-out theory. Large reviews of the evidence have found it performs no better than a placebo.</p>
-      <p>So homeopathy has the full <em>form</em> of medicine — but no measurable effect. Hold it next to the vaccines card: both are health claims with credentials behind them. What exactly is the difference in how each one is justified?</p>`}
+    {id:"homeopathy", name:"Homeopathy", desc:"Illness cured with water diluted until almost none of the original substance remains.",
+      more:`<p>Homeopathy, invented in the 1790s, holds that a substance is made <em>more</em> powerful by diluting it. A common "30C" remedy has been diluted to one part in 10<sup>60</sup> \u2014 so extreme that, to swallow even a single molecule of the original ingredient, you would need to drink more water than exists in all of Earth's oceans.</p>
+      <p>The remedies are sold in pharmacies, prescribed by credentialed practitioners, and backed by a two-hundred-year tradition. The largest reviews of the evidence, covering hundreds of trials, find they work no better than a sugar pill.</p>`}
   ];
 
-  // shuffle so no starting order is implied
+  // shuffle starting order
   let order = CARDS.slice();
   for(let i=order.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[order[i],order[j]]=[order[j],order[i]];}
+
   const openSet = new Set();
+  const grid = {};            // grid[id] = {E:'',V:'',C:'',R:''}
+  CARDS.forEach(c=>grid[c.id]={E:"",V:"",C:"",R:""});
+  let phase1Order = null;     // snapshot of ids when phase 1 locked
 
   const POS = ["most scientific","","","","","","","least scientific"];
-  const list = document.getElementById("ranklist");
 
+  /* ---------- PHASE 1 ---------- */
   function render(){
+    const list=document.getElementById("ranklist");
     list.innerHTML="";
     order.forEach((card,i)=>{
       const li=document.createElement("li");
-      li.className="card"; li.draggable=true; li.dataset.idx=i; li.dataset.id=card.id;
-      const posLabel = POS[i] ? `<span class="pos">${POS[i]}</span>` : "";
-      const isOpen = openSet.has(card.id);
-      li.innerHTML = `
+      li.className="card"; li.draggable=true; li.dataset.idx=i;
+      const posLabel=POS[i]?`<span class="pos">${POS[i]}</span>`:"";
+      const isOpen=openSet.has(card.id);
+      li.innerHTML=`
         <div class="card-row">
           <div class="rank-badge"><span class="num">${i+1}</span>${posLabel}</div>
           <div class="card-body grip">
@@ -223,12 +287,12 @@
             <button class="learn" onclick="toggleMore(event,'${card.id}')">${isOpen?"Close &#9650;":"Learn more &#9656;"}</button>
           </div>
           <div class="card-ctrl">
-            <button title="Move up" onclick="move(${i},-1)" ${i===0?"disabled":""}>&uarr;</button>
-            <button title="Move down" onclick="move(${i},1)" ${i===order.length-1?"disabled":""}>&darr;</button>
+            <button title="Move up" onclick="move(${i},-1,render)" ${i===0?"disabled":""}>&uarr;</button>
+            <button title="Move down" onclick="move(${i},1,render)" ${i===order.length-1?"disabled":""}>&darr;</button>
           </div>
         </div>
         <div class="more-panel ${isOpen?"open":""}" id="more-${card.id}">${card.more}</div>`;
-      addDrag(li);
+      addDrag(li,render);
       list.appendChild(li);
     });
   }
@@ -236,57 +300,120 @@
   function toggleMore(e,id){
     e.stopPropagation();
     if(openSet.has(id)) openSet.delete(id); else openSet.add(id);
-    const panel=document.getElementById("more-"+id);
-    const btn=e.currentTarget;
-    if(panel){
-      panel.classList.toggle("open");
-      btn.innerHTML = panel.classList.contains("open") ? "Close &#9650;" : "Learn more &#9656;";
-    }
+    const panel=document.getElementById("more-"+id), btn=e.currentTarget;
+    if(panel){panel.classList.toggle("open");
+      btn.innerHTML=panel.classList.contains("open")?"Close &#9650;":"Learn more &#9656;";}
   }
 
-  function move(i,dir){
+  /* ---------- PHASE 2 ---------- */
+  const TKEYS=["E","V","C","R"];
+  function renderP2(){
+    const list=document.getElementById("ranklist2");
+    list.innerHTML="";
+    order.forEach((card,i)=>{
+      const li=document.createElement("li");
+      li.className="card"; li.draggable=true; li.dataset.idx=i;
+      const posLabel=POS[i]?`<span class="pos">${POS[i]}</span>`:"";
+      let togs="";
+      TKEYS.forEach(k=>{
+        const v=grid[card.id][k];
+        const cls=v==="\u2713"?"t-yes":v==="~"?"t-maybe":v==="\u2717"?"t-no":"";
+        togs+=`<button class="tog ${cls}" onclick="cycleTog('${card.id}','${k}',this)"><span class="tl">${k}</span><span class="tv">${v||"\u00b7"}</span></button>`;
+      });
+      li.innerHTML=`
+        <div class="card-row">
+          <div class="rank-badge"><span class="num">${i+1}</span>${posLabel}</div>
+          <div class="card-body grip">
+            <div class="name">${card.name}</div>
+            <div class="toggles">${togs}</div>
+          </div>
+          <div class="card-ctrl">
+            <button title="Move up" onclick="move(${i},-1,renderP2)" ${i===0?"disabled":""}>&uarr;</button>
+            <button title="Move down" onclick="move(${i},1,renderP2)" ${i===order.length-1?"disabled":""}>&darr;</button>
+          </div>
+        </div>`;
+      addDrag(li,renderP2);
+      list.appendChild(li);
+    });
+  }
+
+  function cycleTog(id,key,btn){
+    const seq=["","\u2713","~","\u2717"];
+    const cur=grid[id][key];
+    const next=seq[(seq.indexOf(cur)+1)%seq.length];
+    grid[id][key]=next;
+    btn.className="tog "+(next==="\u2713"?"t-yes":next==="~"?"t-maybe":next==="\u2717"?"t-no":"");
+    btn.querySelector(".tv").textContent=next||"\u00b7";
+  }
+
+  /* ---------- shared reorder + drag ---------- */
+  function move(i,dir,rerender){
     const j=i+dir;
     if(j<0||j>=order.length) return;
     [order[i],order[j]]=[order[j],order[i]];
-    render();
-    const cards=list.querySelectorAll(".card");
+    rerender();
+    const cards=document.querySelectorAll((rerender===render?"#ranklist":"#ranklist2")+" .card");
     if(cards[j]){cards[j].classList.add("flash");setTimeout(()=>cards[j].classList.remove("flash"),350);}
   }
 
   let dragIdx=null;
-  function addDrag(li){
-    li.addEventListener("dragstart",e=>{dragIdx=+li.dataset.idx;li.classList.add("dragging");});
-    li.addEventListener("dragend",e=>{li.classList.remove("dragging");dragIdx=null;});
-    li.addEventListener("dragover",e=>{e.preventDefault();});
+  function addDrag(li,rerender){
+    li.addEventListener("dragstart",()=>{dragIdx=+li.dataset.idx;li.classList.add("dragging");});
+    li.addEventListener("dragend",()=>{li.classList.remove("dragging");dragIdx=null;});
+    li.addEventListener("dragover",e=>e.preventDefault());
     li.addEventListener("drop",e=>{
       e.preventDefault();
       const dropIdx=+li.dataset.idx;
       if(dragIdx===null||dragIdx===dropIdx) return;
       const [moved]=order.splice(dragIdx,1);
       order.splice(dropIdx,0,moved);
-      render();
+      rerender();
     });
   }
 
+  /* ---------- phase switching ---------- */
+  function showPhase(n){
+    document.getElementById("phase1").classList.toggle("hidden",n!==1);
+    document.getElementById("phase2").classList.toggle("hidden",n!==2);
+    document.getElementById("pill1").classList.toggle("active",n===1);
+    document.getElementById("pill2").classList.toggle("active",n===2);
+    window.scrollTo({top:0,behavior:"smooth"});
+    if(n===2) renderP2();
+  }
+  function lockPhase1(){
+    phase1Order=order.map(c=>c.id);
+    showPhase(2);
+  }
+
+  /* ---------- download ---------- */
   function downloadSubmission(){
     const name=(document.getElementById("name").value||"").trim();
     const g=id=>(document.getElementById(id).value||"").trim()||"(left blank)";
-    let txt="TOK — NATURAL SCIENCES — LESSON 1\n";
+    const labelFor=id=>CARDS.find(c=>c.id===id).name;
+    let txt="TOK \u2014 NATURAL SCIENCES \u2014 LESSON 1\n";
     txt+="HOW SCIENTIFIC IS IT?\n";
-    txt+="Knowledge Question: How does a community decide what counts as scientific\n";
-    txt+="knowledge \u2014 and can the line be drawn from inside?\n";
-    txt+="=".repeat(60)+"\n\n";
+    txt+="KQ: How does a community decide what counts as scientific knowledge \u2014\n";
+    txt+="and can the line be drawn from inside?\n"+"=".repeat(60)+"\n\n";
     txt+="NAME: "+(name||"(no name entered)")+"\n";
     txt+="DATE: "+new Date().toLocaleDateString()+"\n\n";
-    txt+="--- STEP 1 — Before ranking ---\n";
+
+    txt+="--- PHASE 1 \u2014 my own ruler ---\n";
     txt+="What makes something scientific?\n  "+g("q1")+"\n\n";
-    txt+="--- STEP 2 — Final ranking (1 = most scientific) ---\n";
-    order.forEach((c,i)=>{txt+="  "+(i+1)+". "+c.name+"\n";});
-    txt+="\n--- STEP 3 — Interrogating the ruler ---\n";
-    txt+="The rule I actually used:\n  "+g("q2")+"\n\n";
-    txt+="String theory vs. horoscope \u2014 the actual difference:\n  "+g("q3")+"\n\n";
-    txt+="What phrenology does to \u2018it has a method\u2019:\n  "+g("q4")+"\n\n";
+    txt+="My ranking (1 = most scientific):\n";
+    (phase1Order||order.map(c=>c.id)).forEach((id,i)=>{txt+="  "+(i+1)+". "+labelFor(id)+"\n";});
+    txt+="\nThe rule I actually used:\n  "+g("q2")+"\n\n";
+
+    txt+="--- PHASE 2 \u2014 using the grid (E=Evidence V=Validated C=Community R=Reach) ---\n";
+    txt+="Re-ranking with grid marks:\n";
+    order.forEach((c,i)=>{
+      const m=grid[c.id];
+      const fmt=v=>v||"\u00b7";
+      txt+="  "+(i+1)+". "+c.name+"   [E "+fmt(m.E)+" | V "+fmt(m.V)+" | C "+fmt(m.C)+" | R "+fmt(m.R)+"]\n";
+    });
+    txt+="\nBiggest move, and the question that caused it:\n  "+g("q3")+"\n\n";
+    txt+="A card that passed some questions but failed others:\n  "+g("q4")+"\n\n";
     txt+="EXIT \u2014 rewritten as an investigable knowledge question:\n  "+g("q5")+"\n";
+
     const blob=new Blob([txt],{type:"text/plain"});
     const a=document.createElement("a");
     const safe=name?name.replace(/[^a-z0-9]+/gi,"_"):"submission";
