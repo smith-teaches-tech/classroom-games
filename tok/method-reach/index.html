@@ -94,7 +94,7 @@
     <p class="body"><b>Knowledge question:</b> How do the methods of the natural sciences set the limits of what science can know?</p>
     <div class="card exemplar">
       <span class="claim">Scientific knowledge of the inside of a proton is a model inferred entirely from the outside — and the very force that builds the knowledge is also what seals it shut.</span>
-      Physicists describe the proton as three quarks bound by the strong force, yet no one has ever observed a quark on its own: pull two apart and the energy stored in the field becomes a new quark–antiquark pair, so every attempt yields <i>more</i> particles and never a single free one. Everything we know of the interior is therefore reconstructed indirectly, from how protons scatter when they are smashed together — from the debris, never from a direct look. The limit this reveals is not the ordinary "we haven't built a big enough collider yet" — a more powerful machine would not help, because a lone quark is unobservable <i>in principle</i>, not merely in practice. That is a limit of <b>scope</b>: a boundary built into the method itself, not a gap awaiting better tools. And because the model is read off external behaviour rather than from seeing the constituents directly, the evidence constrains the model without ever singling out the mechanism by direct observation. The implication is not that the quark model is a guess; it is among the most precisely tested knowledge humans possess. What lies past the method's reach is <i>direct certainty about the interior</i> — the lid can never be lifted. The knowledge is genuine, and bounded; and the boundary itself is something the theory tells us, so the method maps its own edge.
+      Physicists describe the proton as three quarks bound by the strong force, yet no one has ever observed a quark on its own: pull two apart and the energy stored in the field becomes a new quark–antiquark pair, so every attempt yields <i>more</i> particles and never a single free one. Everything we know of the interior is therefore reconstructed indirectly, from how protons scatter when they are smashed together — from the debris, never from a direct look. The limit this reveals is not the ordinary "we haven't built a big enough collider yet" — a more powerful machine would not help, because a lone quark is unobservable <i>in principle</i>, not merely in practice. That is a limit of <b>scope</b>: a boundary built into the method itself, not a gap awaiting better tools. And because the model is read off external behaviour rather than from seeing the constituents directly, the evidence constrains the model without ever singling out the mechanism by direct observation. The implication is not that the quark model is a guess; it is among the most precisely tested knowledge humans possess. What lies past the method's reach is <i>direct certainty about the interior</i> — the lid can never be lifted. The knowledge is genuine, and bounded; and the limit is itself part of what we know — the physics that explains the proton is the same physics that says a lone quark cannot exist. Science doesn't stumble onto this wall; it predicts it.
     </div>
     <p class="body" style="margin-top:6px"><b>Why this works</b> — don't stop at the facts. Each part earns its place:</p>
     <ul class="anatomy">
@@ -194,7 +194,9 @@
     </div>
     <div class="controls">
       <button class="act" id="cSend">Send the seismic waves</button>
-      <button class="act ghost" id="cSepBtn">Try to tell them apart</button>
+      <button class="act ghost" id="cBig">Trigger a bigger quake</button>
+      <button class="act ghost" id="cMove">Move the sensors</button>
+      <button class="act ghost" id="cAddDet">Add a detector</button>
       <button class="act ghost" id="cReset">Reset</button>
     </div>
     <div class="counts">
@@ -221,7 +223,21 @@
     <h2>The origin of life</h2>
     <p class="body"><b>The model:</b> life began from non-living chemistry on the early Earth, roughly 3.8 billion years ago. In the lab, under early-Earth conditions, scientists can grow the building blocks of life and show how self-replicating systems <i>could</i> form.</p>
     <p class="body"><b>Your job:</b> run the experiment and find out how life actually began. Run it as many times as you need.</p>
-    <div class="sim" style="background:var(--panel);padding:20px">
+    <div class="sim" style="background:var(--panel);padding:18px">
+      <div style="max-width:380px;margin:0 auto 4px">
+        <svg id="osvg" viewBox="0 0 380 196" role="img" aria-label="A spark-discharge flask runs early-Earth chemistry; molecules assemble into a self-copying chain.">
+          <defs><clipPath id="bk"><path d="M132,48 L132,166 Q132,180 146,180 L214,180 Q228,180 228,166 L228,48 Z"/></clipPath></defs>
+          <rect x="138" y="118" width="84" height="62" fill="#d9c39a" opacity="0.85" clip-path="url(#bk)"/>
+          <g id="oBub" clip-path="url(#bk)"></g>
+          <path d="M132,48 L132,166 Q132,180 146,180 L214,180 Q228,180 228,166 L228,48" fill="none" stroke="#aebcc4" stroke-width="2.5"/>
+          <line x1="166" y1="40" x2="166" y2="92" stroke="#6f685b" stroke-width="3"/>
+          <line x1="194" y1="40" x2="194" y2="92" stroke="#6f685b" stroke-width="3"/>
+          <polyline id="oSpark" points="166,92 174,100 180,92 187,101 194,92" fill="none" stroke="#e0a226" stroke-width="2" opacity="0"/>
+          <g id="oLink"></g><g id="oMol"></g>
+          <g id="oCap" opacity="0"><line x1="234" y1="150" x2="252" y2="150" stroke="#2f6f8f" stroke-width="1.5"/><polygon points="252,150 246,146 246,154" fill="#2f6f8f"/><text x="258" y="147" fill="#2f6f8f" font-family="JetBrains Mono,monospace" font-size="10">a self-copying</text><text x="258" y="160" fill="#2f6f8f" font-family="JetBrains Mono,monospace" font-size="10">chain forms</text></g>
+          <text id="oEnv" x="180" y="194" text-anchor="middle" fill="#6f685b" font-family="JetBrains Mono,monospace" font-size="10.5">early-Earth conditions</text>
+        </svg>
+      </div>
       <div class="pathways" id="oPaths"><p class="note" style="margin:0">No runs yet. Press "Run the experiment" to begin.</p></div>
       <div class="reveal" id="oReveal"></div>
     </div>
@@ -313,106 +329,131 @@ function mix(c1,c2,t){const p=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5
 (function(){
   const NS='http://www.w3.org/2000/svg';
   const note=document.getElementById('coreNote'), sepEl=document.getElementById('cSep');
-  const send=document.getElementById('cSend'), sepBtn=document.getElementById('cSepBtn'), reset=document.getElementById('cReset');
-  const R=92;
-  const detDeg=[28,74,106,152];      // detector positions on the rim (degrees, 0=east)
-  const arrive=[0.46,0.64,0.80,0.95]; // when each detector receives — IDENTICAL for both Earths
+  const send=document.getElementById('cSend'), bigBtn=document.getElementById('cBig'),
+        moveBtn=document.getElementById('cMove'), addBtn=document.getElementById('cAddDet'), reset=document.getElementById('cReset');
+  const R=92, STRIPY=330;
   const earths={
     A:{cx:200,cy:150,bend:-40,fx:document.getElementById('fxA'),blip:document.getElementById('blipA'),x0:112,x1:288},
     B:{cx:560,cy:150,bend:42, fx:document.getElementById('fxB'),blip:document.getElementById('blipB'),x0:472,x1:648}
   };
-  const STRIPY=330;
-  let busy=false;
+  const BASE=[28,74,106,152];
+  let dets=BASE.slice(), big=false, rot=0, busy=false;
 
   function det(e,deg){const r=deg*Math.PI/180;return [e.cx+R*Math.cos(r), e.cy+R*Math.sin(r)];}
   function bez(p,c,q,u){const m=1-u;return [m*m*p[0]+2*m*u*c[0]+u*u*q[0], m*m*p[1]+2*m*u*c[1]+u*u*q[1]];}
-  function el(tag,attrs){const n=document.createElementNS(NS,tag);for(const k in attrs)n.setAttribute(k,attrs[k]);return n;}
+  function el(tag,a){const n=document.createElementNS(NS,tag);for(const k in a)n.setAttribute(k,a[k]);return n;}
+  // arrival fraction depends ONLY on detector position (same formula for both Earths) -> identical readouts
+  function frac(deg){ const d=Math.abs(((deg+90)%360)); const chord=Math.abs(Math.sin((deg-(-90))*Math.PI/360)); return 0.42+0.52*chord; }
 
   function buildRays(e){
     e.fx.innerHTML='';
-    const Q=[e.cx,e.cy-R];
-    const refs=[];
-    detDeg.forEach((deg,i)=>{
+    const Q=[e.cx,e.cy-R], refs=[];
+    // quake pulse
+    const pulse=el('circle',{cx:Q[0],cy:Q[1],r:'4',fill:'none',stroke:big?'#c33a20':'#cb8f2c','stroke-width':big?'2.5':'1.5',opacity:'0'});
+    e.fx.appendChild(pulse); refs.pulse=pulse;
+    dets.forEach((deg,i)=>{
       const D=det(e,deg);
       const mid=[(Q[0]+D[0])/2,(Q[1]+D[1])/2];
-      const dir=[D[0]-Q[0],D[1]-Q[1]]; const len=Math.hypot(dir[0],dir[1]);
-      const perp=[-dir[1]/len,dir[0]/len];
+      const dir=[D[0]-Q[0],D[1]-Q[1]], len=Math.hypot(dir[0],dir[1]), perp=[-dir[1]/len,dir[0]/len];
       const ctrl=[mid[0]+perp[0]*e.bend, mid[1]+perp[1]*e.bend];
-      const path=el('path',{d:'M'+Q[0]+','+Q[1]+' Q'+ctrl[0]+','+ctrl[1]+' '+D[0]+','+D[1],fill:'none',stroke:'#b9ae98',opacity:'0',
-        'stroke-width':'1.4','stroke-dasharray':'2 4'});
+      const path=el('path',{d:'M'+Q[0]+','+Q[1]+' Q'+ctrl[0]+','+ctrl[1]+' '+D[0]+','+D[1],fill:'none',stroke:'#b9ae98',opacity:'0','stroke-width':'1.4','stroke-dasharray':'2 4'});
       const detDot=el('circle',{cx:D[0],cy:D[1],r:'5',fill:'#9a9486'});
-      const wave=el('circle',{r:'4',fill:'#2f6f8f',opacity:'0'});
+      const wave=el('circle',{r:big?'5.5':'4',fill:'#2f6f8f',opacity:'0'});
       e.fx.appendChild(path); e.fx.appendChild(detDot); e.fx.appendChild(wave);
-      refs.push({Q,ctrl,D,path,detDot,wave,done:false,i});
+      refs.push({Q,ctrl,D,path,detDot,wave,done:false,f:frac(deg)});
     });
     return refs;
   }
-  function blip(e,frac){
-    const x=e.x0+frac*(e.x1-e.x0);
-    e.blip.appendChild(el('line',{x1:x,y1:STRIPY-16,x2:x,y2:STRIPY,stroke:'#2f6f8f','stroke-width':'2'}));
-    e.blip.appendChild(el('circle',{cx:x,cy:STRIPY-16,r:'2.6',fill:'#2f6f8f'}));
+  function blip(e,f){
+    const x=e.x0+f*(e.x1-e.x0), h=big?24:16;
+    e.blip.appendChild(el('line',{x1:x,y1:STRIPY-h,x2:x,y2:STRIPY,stroke:'#2f6f8f','stroke-width':big?'2.6':'2'}));
+    e.blip.appendChild(el('circle',{cx:x,cy:STRIPY-h,r:'2.6',fill:'#2f6f8f'}));
   }
   function clearAll(){ for(const k in earths){earths[k].fx.innerHTML='';earths[k].blip.innerHTML='';} }
 
-  function run(){
-    if(busy)return; busy=true; send.disabled=true;
+  function run(msg){
+    if(busy)return; busy=true; [send,bigBtn,moveBtn,addBtn].forEach(b=>b.disabled=true);
     clearAll();
     const sets={A:buildRays(earths.A),B:buildRays(earths.B)};
-    for(const k in sets) sets[k].forEach(r=>tween(350,t=>r.path.setAttribute('opacity',(0.7*t).toFixed(2))));
-    note.innerHTML='Watch: the waves take <b>different routes</b> through the two interiors\u2026';
-    tween(2600,t=>{
+    for(const k in sets){ sets[k].forEach(r=>tween(320,t=>r.path.setAttribute('opacity',(0.7*t).toFixed(2))));
+      tween(520,t=>{ sets[k].pulse.setAttribute('r',(4+t*(big?34:22)).toFixed(1)); sets[k].pulse.setAttribute('opacity',((big?0.9:0.7)*(1-t)).toFixed(2)); }); }
+    note.innerHTML='Watch \u2014 the waves take <b>different routes</b> through the two interiors\u2026';
+    tween(big?2000:2600,t=>{
       for(const k in sets){ const e=earths[k];
         sets[k].forEach(r=>{
-          const u=Math.min(1,t/arrive[r.i]);
-          const pos=bez(r.Q,r.ctrl,r.D,u);
+          const u=Math.min(1,t/r.f), pos=bez(r.Q,r.ctrl,r.D,u);
           r.wave.setAttribute('cx',pos[0]);r.wave.setAttribute('cy',pos[1]);r.wave.setAttribute('opacity',u<1?'1':'0');
-          if(u>=1 && !r.done){ r.done=true; r.detDot.setAttribute('fill','#2f6f8f'); r.detDot.setAttribute('r','7'); blip(e,arrive[r.i]); }
+          if(u>=1 && !r.done){ r.done=true; r.detDot.setAttribute('fill','#2f6f8f'); r.detDot.setAttribute('r','7'); blip(e,r.f); }
         });
       }
-    },()=>{
-      note.innerHTML='Look at the two readouts below: <b>identical</b>. Different inside \u2014 same surface readings. From the readings alone, you cannot tell which Earth is real.';
-      busy=false; send.disabled=false;
-    });
+    },()=>{ note.innerHTML=msg; sepEl.textContent='0'; busy=false; [send,bigBtn,moveBtn,addBtn].forEach(b=>b.disabled=false); });
   }
 
-  const attempts=[
-    'Add another detector \u2192 both Earths give the <b>same</b> new reading. Still nothing separates them.',
-    'Trigger a bigger quake \u2192 a louder signal, not a different <i>kind</i>. Readouts still identical.',
-    'Measure the arrival times more precisely \u2192 still identical, to every decimal.',
-    'Move the quake to the other side \u2192 still identical. The data cannot choose.'
-  ];
-  let ai=0;
-  sepBtn.addEventListener('click',()=>{ note.innerHTML=attempts[ai%attempts.length]; ai++; sepEl.textContent='0'; });
-  reset.addEventListener('click',()=>{ if(busy)return; clearAll(); ai=0;
+  send.addEventListener('click',()=>run('The two readouts below are <b>identical</b>. Different inside \u2014 same surface readings. From the readings alone you cannot tell which Earth is real.'));
+  bigBtn.addEventListener('click',()=>{ big=true; run('Bigger quake: taller signals, but the <i>same</i> pattern \u2014 and still identical across both Earths. Louder data is not different data.'); });
+  moveBtn.addEventListener('click',()=>{ rot=(rot+26)%360; dets=BASE.map(d=>(d+rot)%360); run('Sensors moved to new positions \u2014 new readings, but again <b>identical</b> on both Earths. The location of the detectors does not separate them.'); });
+  addBtn.addEventListener('click',()=>{ if(dets.length>=7){run('Even with extra detectors the two readouts stay identical. More of the same data never breaks the tie.');return;} dets.push((dets[dets.length-1]+34)%360); run('Detector added \u2014 it reads the same whichever interior is real. Still <b>0</b> measurements separate them.'); });
+  reset.addEventListener('click',()=>{ if(busy)return; big=false; rot=0; dets=BASE.slice(); clearAll();
     note.innerHTML='Two Earths with <b>different</b> insides. Send the waves and watch what each one records at the surface.'; });
-  send.addEventListener('click',run);
 })();
+
 
 
 /* ---------- ORIGIN OF LIFE ---------- */
 (function(){
+  const NS='http://www.w3.org/2000/svg';
   const wrap=document.getElementById('oPaths'), reveal=document.getElementById('oReveal'), count=document.getElementById('oCount');
+  const spark=document.getElementById('oSpark'), molG=document.getElementById('oMol'), linkG=document.getElementById('oLink'),
+        bubG=document.getElementById('oBub'), cap=document.getElementById('oCap'), env=document.getElementById('oEnv');
+  const runBtn=document.getElementById('oRun'), whichBtn=document.getElementById('oWhich');
   const pathways=[
-    'Run #N — <b>warm tidal pools.</b> Cycles of wetting and drying concentrate molecules until short self-copying chains appear.',
-    'Run #N — <b>hydrothermal vents.</b> Mineral surfaces on the deep sea floor catalyse the first self-replicating system.',
-    'Run #N — <b>clay templates.</b> Layered clay minerals line up molecules and act as a scaffold for replication.',
-    'Run #N — <b>ice channels.</b> Tiny pockets of liquid trapped in ice concentrate the building blocks until they self-assemble.',
-    'Run #N — <b>volcanic ponds.</b> Lightning over a shallow mineral pond drives the chemistry toward a replicator.'
+    ['warm tidal pools','Run #N — <b>warm tidal pools.</b> Cycles of wetting and drying concentrate molecules until short self-copying chains appear.'],
+    ['hydrothermal vents','Run #N — <b>hydrothermal vents.</b> Mineral surfaces on the deep sea floor catalyse the first self-replicating system.'],
+    ['clay templates','Run #N — <b>clay templates.</b> Layered clay minerals line up molecules and act as a scaffold for replication.'],
+    ['ice channels','Run #N — <b>ice channels.</b> Tiny pockets of liquid trapped in ice concentrate the building blocks until they self-assemble.'],
+    ['volcanic ponds','Run #N — <b>volcanic ponds.</b> Lightning over a shallow mineral pond drives the chemistry toward a replicator.']
   ];
-  let n=0;
-  document.getElementById('oRun').addEventListener('click',()=>{
+  function el(t,a){const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);return n;}
+  const scatter=[[150,138],[206,132],[160,170],[200,166],[178,150]];
+  const chain=[[150,158],[166,158],[182,158],[198,158],[214,158]];
+  const mol=[], link=[], bub=[];
+  scatter.forEach(p=>{const c=el('circle',{cx:p[0],cy:p[1],r:'5',fill:'#2f6f8f'}); molG.appendChild(c); mol.push(c);});
+  for(let i=0;i<chain.length-1;i++){const l=el('line',{x1:chain[i][0],y1:chain[i][1],x2:chain[i+1][0],y2:chain[i+1][1],stroke:'#2f6f8f','stroke-width':'2',opacity:'0'}); linkG.appendChild(l); link.push(l);}
+  [148,164,180,196,212].forEach((x,i)=>{const b=el('circle',{cx:x,cy:176,r:'2.6',fill:'#fff',opacity:'0'}); bubG.appendChild(b); bub.push(b);});
+
+  let n=0, busy=false;
+  function animate(done){
+    busy=true;
+    mol.forEach((c,i)=>{c.setAttribute('cx',scatter[i][0]);c.setAttribute('cy',scatter[i][1]);});
+    link.forEach(l=>l.setAttribute('opacity','0')); cap.setAttribute('opacity','0');
+    let flashes=0; const sp=setInterval(()=>{spark.setAttribute('opacity',spark.getAttribute('opacity')==='0'?'0.95':'0'); if(++flashes>6){clearInterval(sp);spark.setAttribute('opacity','0');}},90);
+    bub.forEach((b,i)=>tween(1500,t=>{const tt=(t+i*0.18)%1; b.setAttribute('cy',(176-tt*54).toFixed(1)); b.setAttribute('opacity',(0.5*(1-tt)).toFixed(2));}));
+    setTimeout(()=>{
+      mol.forEach((c,i)=>tween(800,t=>{c.setAttribute('cx',lerp(scatter[i][0],chain[i][0],t).toFixed(1));c.setAttribute('cy',lerp(scatter[i][1],chain[i][1],t).toFixed(1));}));
+      setTimeout(()=>{ link.forEach((l,i)=>tween(300,t=>l.setAttribute('opacity',t.toFixed(2)))); tween(400,t=>cap.setAttribute('opacity',t.toFixed(2))); },520);
+    },620);
+    setTimeout(()=>{busy=false; if(done)done();},1700);
+  }
+  runBtn.addEventListener('click',()=>{
+    if(busy)return;
+    const idx=n%pathways.length; env.textContent=pathways[idx][0];
     if(n===0) wrap.innerHTML='';
-    n++; count.textContent=n;
-    const d=document.createElement('div'); d.className='pw'; d.innerHTML=pathways[(n-1)%pathways.length].replace('#N','#'+n)+' <span style="color:var(--good);font-family:JetBrains Mono,monospace;font-size:12px">&#10003; plausible</span>';
-    wrap.appendChild(d);
-    reveal.classList.remove('show');
+    runBtn.disabled=true; whichBtn.disabled=true;
+    animate(()=>{
+      n++; count.textContent=n;
+      const d=document.createElement('div'); d.className='pw';
+      d.innerHTML=pathways[idx][1].replace('#N','#'+n)+' <span style="color:var(--good);font-family:JetBrains Mono,monospace;font-size:12px">&#10003; plausible</span>';
+      wrap.appendChild(d); reveal.classList.remove('show');
+      runBtn.disabled=false; whichBtn.disabled=false;
+    });
   });
-  document.getElementById('oWhich').addEventListener('click',()=>{
+  whichBtn.addEventListener('click',()=>{
     if(n===0){reveal.innerHTML='Run the experiment first — see what it can show before asking what it can\'t.';reveal.classList.add('show');return;}
     reveal.innerHTML='You have now shown <b>'+n+'</b> ways life <i>could</i> have begun. But the real event happened <b>once</b>, about 3.8 billion years ago, and left no record to read. Running the experiment again only adds another <i>possible</i> story — it can never replay the one that actually occurred. The lab shows what is <i>possible</i>; what <i>happened</i> is gone.';
     reveal.classList.add('show');
   });
 })();
+
 </script>
 </body>
 </html>
