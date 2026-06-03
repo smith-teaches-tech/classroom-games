@@ -1,230 +1,402 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Smith Teaches Tech – Classroom Games</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root {
-      --bg: #f5f5f7;
-      --card-bg: #ffffff;
-      --accent: #2563eb;
-      --text-main: #111827;
-      --text-muted: #4b5563;
-      --border-soft: #e5e7eb;
-    }
+<meta charset="UTF-8" />
+<title>Smith Teaches Tech — Classroom Games & Tools</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500;1,9..144,600&family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4eede; --paper2:#efe7d3; --paper3:#faf6ec;
+    --ink:#241f17; --ink-soft:#615847; --line:#2a241a;
+    --rule:#cdbf9f;
+    --accent:#b9432f;
+    --shadow:5px 5px 0 rgba(36,31,23,.13);
+    --shadow-h:7px 7px 0 rgba(36,31,23,.18);
+    /* subject hues */
+    --ap-lang:#b9432f; --ap-res:#b9841c; --ibcore:#1d6f6a; --tok:#3b4ea0;
+    --ee:#7c4a86; --mock:#8a2c2c; --practice:#46637e; --ai:#3a7a44; --eng:#cf6f1f;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;color:var(--ink);
+    font-family:'Hanken Grotesk',system-ui,sans-serif;
+    line-height:1.55;
+    background:
+      repeating-linear-gradient(0deg, rgba(120,100,60,.035) 0 1px, transparent 1px 28px),
+      radial-gradient(circle at 18% 12%, rgba(0,0,0,.022) 0 1.5px, transparent 1.5px) 0 0/6px 6px,
+      linear-gradient(165deg,var(--paper3),var(--paper) 55%,var(--paper2));
+    background-attachment:fixed;
+  }
+  a{color:inherit}
 
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--bg);
-      color: var(--text-main);
-      line-height: 1.6;
-    }
+  /* ---------- Masthead ---------- */
+  .mast{max-width:1180px;margin:0 auto;padding:20px 22px 0}
+  .mast-meta{display:flex;justify-content:space-between;align-items:center;
+    font-family:'DM Mono',monospace;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-soft);
+    border-bottom:2px solid var(--line);padding-bottom:9px;flex-wrap:wrap;gap:6px}
+  .mast-meta .dot{color:var(--accent)}
+  .mast-title{text-align:center;padding:26px 0 6px}
+  .mast-title h1{
+    font-family:'Fraunces',serif;font-weight:900;font-optical-sizing:auto;
+    font-size:clamp(2.6rem,7vw,5.3rem);line-height:.92;margin:0;letter-spacing:-1px;
+  }
+  .mast-title h1 .it{font-style:italic;font-weight:600;color:var(--accent)}
+  .mast-title .tag{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(1rem,2.1vw,1.32rem);
+    color:var(--ink-soft);margin-top:12px;font-weight:500}
+  .doublerule{max-width:1180px;margin:14px auto 0;padding:0 22px}
+  .doublerule .r1{border-top:3px solid var(--line)}
+  .doublerule .r2{border-top:1px solid var(--line);margin-top:3px}
 
-    header {
-      padding: 2.5rem 1.5rem 1rem;
-      text-align: center;
-    }
+  /* ---------- Filter bar (sticky) ---------- */
+  .filterwrap{position:sticky;top:0;z-index:30;background:rgba(244,238,222,.86);backdrop-filter:blur(7px);
+    border-bottom:1.5px solid var(--rule);margin-top:0}
+  .filters{max-width:1180px;margin:0 auto;padding:11px 22px;display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+  .filters .flabel{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-soft);margin-right:3px}
+  .pill{font-family:'Hanken Grotesk';font-weight:600;font-size:14px;cursor:pointer;
+    border:2px solid var(--line);background:var(--paper3);color:var(--ink);
+    border-radius:30px;padding:5px 15px;transition:all .14s;box-shadow:2px 2px 0 rgba(36,31,23,.16)}
+  .pill:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 rgba(36,31,23,.22)}
+  .pill .ct{font-family:'DM Mono',monospace;font-size:11px;opacity:.6;margin-left:5px}
+  .pill.active{background:var(--ink);color:var(--paper3);border-color:var(--ink)}
+  .pill.active .ct{opacity:.7}
 
-    header h1 {
-      margin: 0 0 0.5rem;
-      font-size: clamp(2rem, 3vw, 2.4rem);
-    }
+  /* ---------- Main ---------- */
+  main{max-width:1180px;margin:0 auto;padding:22px 22px 10px}
 
-    header p {
-      margin: 0;
-      color: var(--text-muted);
-      font-size: 0.98rem;
-    }
+  /* ---------- Featured ---------- */
+  .featured{display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;
+    border:3px solid var(--line);border-radius:14px;background:var(--paper3);
+    padding:20px 24px;margin-bottom:28px;box-shadow:var(--shadow);position:relative;overflow:hidden;
+    --c:var(--mock)}
+  .featured::before{content:"";position:absolute;left:0;top:0;bottom:0;width:10px;background:var(--c)}
+  .featured .ficon{width:64px;height:64px;color:var(--c);flex:none}
+  .featured .ficon svg{width:100%;height:100%}
+  .featured .fkick{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--c);font-weight:500}
+  .featured .ftitle{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.4rem,3vw,2.05rem);line-height:1.02;margin:3px 0 5px}
+  .featured .fdesc{color:var(--ink-soft);font-size:15px;max-width:62ch}
+  .featured .fgo{font-family:'Hanken Grotesk';font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.5px;
+    text-decoration:none;border:2px solid var(--line);border-radius:30px;padding:10px 20px;white-space:nowrap;
+    background:var(--c);color:#fff;box-shadow:3px 3px 0 rgba(36,31,23,.22);transition:all .14s}
+  .featured .fgo:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 rgba(36,31,23,.28)}
+  @media(max-width:680px){.featured{grid-template-columns:1fr;text-align:left}.featured .ficon{width:48px;height:48px}.featured .fgo{justify-self:start}}
 
-    main {
-      max-width: 1100px;
-      margin: 0 auto 3rem;
-      padding: 0 1.5rem 2rem;
-    }
+  /* ---------- Masonry of cards ---------- */
+  .grid{column-count:3;column-gap:22px}
+  @media(max-width:980px){.grid{column-count:2}}
+  @media(max-width:640px){.grid{column-count:1}}
 
-    .courses {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
-      margin-top: 1.5rem;
-    }
+  .card{
+    break-inside:avoid;margin:0 0 22px;display:inline-block;width:100%;
+    background:var(--paper3);border:2.5px solid var(--line);border-radius:13px;
+    padding:0 0 14px;box-shadow:var(--shadow);overflow:hidden;
+    transition:transform .16s ease, box-shadow .16s ease;
+    animation:rise .5s ease backwards;
+  }
+  .card:hover{transform:translate(-2px,-2px);box-shadow:var(--shadow-h)}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .card .top{background:var(--c);height:8px}
+  .card .head{display:flex;gap:12px;align-items:flex-start;padding:15px 16px 10px}
+  .card .icon{width:38px;height:38px;flex:none;color:var(--c);
+    border:2px solid var(--c);border-radius:9px;display:grid;place-items:center;background:color-mix(in srgb, var(--c) 9%, transparent)}
+  .card .icon svg{width:23px;height:23px}
+  .card .htext{flex:1;min-width:0}
+  .card .ctitle{font-family:'Fraunces',serif;font-weight:600;font-size:1.22rem;line-height:1.08;letter-spacing:-.2px}
+  .card .ctag{font-size:12.5px;color:var(--ink-soft);font-style:italic;margin-top:2px}
+  .card .count{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--c);
+    border:1.5px solid var(--c);border-radius:20px;padding:2px 9px;white-space:nowrap;align-self:center;
+    background:color-mix(in srgb, var(--c) 8%, transparent)}
 
-    .course-card {
-      background: var(--card-bg);
-      border-radius: 0.9rem;
-      padding: 1.25rem 1.25rem 1.25rem;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.07);
-      border: 1px solid var(--border-soft);
-      min-height: 180px;
-    }
+  .glist{list-style:none;margin:2px 0 0;padding:0 16px}
+  .glist li{margin:0}
+  .glist a{display:flex;align-items:baseline;gap:8px;text-decoration:none;color:var(--ink);
+    font-size:14.7px;padding:6px 8px;border-radius:7px;border:1px solid transparent;transition:all .12s}
+  .glist a:hover{background:color-mix(in srgb, var(--c) 10%, transparent);border-color:color-mix(in srgb, var(--c) 35%, transparent)}
+  .glist a .lk{flex:1}
+  .glist a:hover .lk{text-decoration:underline;text-decoration-color:var(--c);text-underline-offset:2px}
+  .glist a .ext{font-family:'DM Mono',monospace;font-size:9.5px;font-weight:500;letter-spacing:.5px;
+    color:var(--c);border:1px solid var(--c);border-radius:4px;padding:1px 5px;text-transform:uppercase;flex:none;opacity:.8}
+  .glist a .arrow{color:var(--c);font-size:13px;flex:none;opacity:.55;transition:transform .12s}
+  .glist a:hover .arrow{transform:translateX(3px);opacity:1}
 
-    .course-title {
-      font-size: 1.15rem;
-      font-weight: 600;
-      margin-bottom: 0.25rem;
-    }
+  .subhead{font-family:'DM Mono',monospace;font-size:10.5px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;
+    color:var(--ink-soft);padding:13px 24px 4px;display:flex;align-items:center;gap:9px}
+  .subhead::after{content:"";flex:1;height:1px;background:var(--rule)}
 
-    .course-tagline {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 0.75rem;
-    }
+  .empty{display:none;text-align:center;color:var(--ink-soft);font-style:italic;font-family:'Fraunces',serif;padding:30px;font-size:1.1rem}
 
-    ul.game-list {
-      list-style: none;
-      padding-left: 0;
-      margin: 0.25rem 0 0.25rem;
-    }
-
-    ul.game-list li {
-      margin: 0.2rem 0;
-      font-size: 0.92rem;
-    }
-
-    ul.game-list a {
-      text-decoration: none;
-      color: var(--accent);
-    }
-
-    ul.game-list a:hover {
-      text-decoration: underline;
-    }
-
-    footer {
-      text-align: center;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      padding: 1.5rem 0;
-    }
-  </style>
+  footer{text-align:center;font-family:'DM Mono',monospace;font-size:11.5px;letter-spacing:1px;
+    color:var(--ink-soft);padding:24px 0 34px;border-top:1.5px solid var(--rule);margin-top:14px}
+  footer .accent{color:var(--accent)}
+</style>
 </head>
-
 <body>
-  <header>
-    <h1>Smith Teaches Tech – Classroom Games</h1>
-    <p>Interactive tools and browser-based games for my students.<br>Choose your course to get started.</p>
-  </header>
+
+  <!-- icon sprite -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+    <g id="i-pencil" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4L15 6l3 3L8 19l-4 1z"/><path d="M13.5 7.5l3 3"/></g>
+    <g id="i-search" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M15.5 15.5L20 20"/></g>
+    <g id="i-dash" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="4" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.2"/></g>
+    <g id="i-bulb" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0 0 12 3z"/><path d="M9.5 19h5M10.5 21.5h3"/></g>
+    <g id="i-doc" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M9.5 12h5M9.5 15.5h5"/></g>
+    <g id="i-gavel" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 3.2l4.3 4.3-2.6 2.6-4.3-4.3z"/><path d="M11.5 6.5l-7 7 2.8 2.8 7-7"/><path d="M5 21h8"/></g>
+    <g id="i-clip" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4.5" width="12" height="16" rx="2"/><path d="M9 4.5h6V7H9z"/><path d="M9 13l2 2 4-4"/></g>
+    <g id="i-spark" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l1.9 5.6 5.6 1.9-5.6 1.9L12 18.5l-1.9-5.6L4.5 11l5.6-1.9z"/></g>
+    <g id="i-chat" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h14v10.5H9.5L5 20z"/><path d="M8 9h8M8 12h5"/></g>
+  </defs></svg>
+
+  <!-- ===== MASTHEAD ===== -->
+  <div class="mast">
+    <div class="mast-meta">
+      <span>The Classroom Toolbox <span class="dot">●</span> Browser Games &amp; Tools</span>
+      <span>Vol. 1 <span class="dot">—</span> Always in Progress</span>
+    </div>
+    <div class="mast-title">
+      <h1>Smith Teaches <span class="it">Tech</span></h1>
+      <div class="tag">Interactive games and classroom tools I build for my students — pick a course to begin.</div>
+    </div>
+  </div>
+  <div class="doublerule"><div class="r1"></div><div class="r2"></div></div>
+
+  <!-- ===== FILTER BAR ===== -->
+  <div class="filterwrap">
+    <div class="filters">
+      <span class="flabel">Browse</span>
+      <button class="pill active" data-filter="all">All <span class="ct">9</span></button>
+      <button class="pill" data-filter="ap">AP <span class="ct">2</span></button>
+      <button class="pill" data-filter="ibcore">IB Core <span class="ct">3</span></button>
+      <button class="pill" data-filter="english">English <span class="ct">1</span></button>
+      <button class="pill" data-filter="more">More <span class="ct">3</span></button>
+    </div>
+  </div>
 
   <main>
-    <section class="courses">
+    <!-- ===== FEATURED ===== -->
+    <a class="featured filterable" data-group="more" href="mock-trial-materials/objections/" style="text-decoration:none">
+      <span class="ficon"><svg><use href="#i-gavel"/></svg></span>
+      <div>
+        <div class="fkick">New ● Mock Trial</div>
+        <div class="ftitle">I Object, Your Honor!</div>
+        <div class="fdesc">A whole-class courtroom game for <em>State v. Alli</em> — teams decide when to object, name the call, and argue admissibility as the trial unfolds in order.</div>
+      </div>
+      <span class="fgo">Play ›</span>
+    </a>
+
+    <!-- ===== GRID ===== -->
+    <div class="grid" id="grid">
 
       <!-- AP Language -->
-      <article class="course-card">
-        <div class="course-title">AP Language & Composition</div>
-        <div class="course-tagline">Rhetoric, syntax, argument, and style.</div>
-        <ul class="game-list">
-          <li><a href="ap-lang/hexagonal-thinking/">Hexagonal Thinking</a></li>
-          <li><a href="ap-lang/commentary-workshop/">Commentary Workshop</a></li>
-          <li><a href="ap-lang/commentary/">ARG: Claims, Evidence, and Commentary</a></li>
-          <li><a href="ap-lang/high-school-drama/">High School Drama: Synthesis</a></li>
-          <li><a href="ap-lang/unpopular-opinions/">Unpopular Opinion Generator</a></li>
-          <li><a href="ap-lang/evidence-hunt/">Evidence Hunt</a></li>
-          <li><a href="ap-lang/thesis-statements/">Crafting Thesis Statements</a></li>
-          <li><a href="ap-lang/ra-review/">Rhetorical Analysis Review</a></li>
+      <article class="card filterable" data-group="ap" style="--c:var(--ap-lang)">
+        <div class="top"></div>
+        <div class="head">
+          <span class="icon"><svg><use href="#i-pencil"/></svg></span>
+          <div class="htext">
+            <div class="ctitle">AP Language &amp; Composition</div>
+            <div class="ctag">Rhetoric, syntax, argument &amp; style</div>
+          </div>
+          <span class="count">8 tools</span>
+        </div>
+        <ul class="glist">
+          <li><a href="ap-lang/hexagonal-thinking/"><span class="lk">Hexagonal Thinking</span><span class="arrow">→</span></a></li>
+          <li><a href="ap-lang/commentary-workshop/"><span class="lk">Commentary Workshop</span><span class="arrow">→</span></a></li>
+          <li><a href="ap-lang/commentary/"><span class="lk">ARG: Claims, Evidence &amp; Commentary</span><span class="arrow">→</span></a></li>
+          <li><a href="ap-lang/high-school-drama/"><span class="lk">High School Drama: Synthesis</span><span class="arrow">→</span></a></li>
+          <li><a href="ap-lang/unpopular-opinions/"><span class="lk">Unpopular Opinion Generator</span><span class="arrow">→</span></a></li>
+          <li><a href="ap-lang/evidence-hunt/"><span class="lk">Evidence Hunt</span><span class="arrow">→</span></a></li>
+          <li><a href="ap-lang/thesis-statements/"><span class="lk">Crafting Thesis Statements</span><span class="arrow">→</span></a></li>
+          <li><a href="ap-lang/ra-review/"><span class="lk">Rhetorical Analysis Review</span><span class="arrow">→</span></a></li>
         </ul>
       </article>
 
       <!-- AP Research -->
-      <article class="course-card">
-        <div class="course-title">AP Research</div>
-        <div class="course-tagline">Methods, reliability, sources, and claims.</div>
-        <ul class="game-list">
-          <li><a href="ap-research/lit-review-org/">Organize a Literature Review!</a></li>
-          <li><a href="https://chatgpt.com/g/g-674c32c885f481918b08a0894c76f775-ap-research-expert-advisor" target="_blank">Your AI Expert Advisor</a></li>
+      <article class="card filterable" data-group="ap" style="--c:var(--ap-res)">
+        <div class="top"></div>
+        <div class="head">
+          <span class="icon"><svg><use href="#i-search"/></svg></span>
+          <div class="htext">
+            <div class="ctitle">AP Research</div>
+            <div class="ctag">Methods, reliability, sources &amp; claims</div>
+          </div>
+          <span class="count">2 tools</span>
+        </div>
+        <ul class="glist">
+          <li><a href="ap-research/lit-review-org/"><span class="lk">Organize a Literature Review!</span><span class="arrow">→</span></a></li>
+          <li><a href="https://chatgpt.com/g/g-674c32c885f481918b08a0894c76f775-ap-research-expert-advisor" target="_blank" rel="noopener"><span class="lk">Your AI Expert Advisor</span><span class="ext">GPT ↗</span></a></li>
         </ul>
       </article>
 
       <!-- IB Core -->
-      <article class="course-card">
-        <div class="course-title">IB Core</div>
-        <div class="course-tagline">Logistics, Resources, Activities</div>
-        <ul class="game-list">
-          <li><a href="IB Core/ib-dashboard/">IB Dashboard</a></li>
+      <article class="card filterable" data-group="ibcore" style="--c:var(--ibcore)">
+        <div class="top"></div>
+        <div class="head">
+          <span class="icon"><svg><use href="#i-dash"/></svg></span>
+          <div class="htext">
+            <div class="ctitle">IB Core</div>
+            <div class="ctag">Logistics, resources &amp; activities</div>
+          </div>
+          <span class="count">1 tool</span>
+        </div>
+        <ul class="glist">
+          <li><a href="IB Core/ib-dashboard/"><span class="lk">IB Dashboard</span><span class="arrow">→</span></a></li>
         </ul>
       </article>
 
       <!-- TOK -->
-      <article class="course-card">
-        <div class="course-title">Theory of Knowledge (TOK)</div>
-        <div class="course-tagline">Knowledge, perspectives, meaning, and language.</div>
-        <ul class="game-list">
-          <li><a href="https://chatgpt.com/g/g-692bf1d33ef48191b45434a6a707f0f8-tok-essay-coach-ib-academic-integrity-safe" target="_blank">TOK Essay Socratic Coach (Guardrailed)</a></li>
-         <li><a href="tok/two-true-maps/">The Map is Not the Territory</a></li>
-           <li><a href="tok/paradigm-shift/">Paradigm Shifts</a></li>
-          <li><a href="tok/who-has-power/">Power and Knowledge</a></li>
-           <li><a href="tok/earthrise/">Object: Values, Interpretation, Objectivity</a></li>
-          <li><a href="tok/single-object-analysis/">Single Object Analysis Exemplar</a></li>
-           <li><a href="tok/is-it-scientific/">Is it Science?</a></li>
-          <li><a href="tok/quark-confinement-sim/">Quark Confinement Simulator</a></li>
-          <li><a href="tok/method-reach/">Where the Method Can't Reach</a></li>
-           <li><a href="tok/peer-review/">What Did Peer Review Actually Check?</a></li>
-          <li><a href="feeling-the-future/">Feeling the Future: Peer Review Simulation</a></li>
-          <li><a href="tok/scoring-calculator/">Semester 1 Scoring Calculator</a></li>
-           <li><a href="tok/scoring-calculator-sem2/">Semester 2 Scoring Calculator</a></li>
+      <article class="card filterable" data-group="ibcore" style="--c:var(--tok)">
+        <div class="top"></div>
+        <div class="head">
+          <span class="icon"><svg><use href="#i-bulb"/></svg></span>
+          <div class="htext">
+            <div class="ctitle">Theory of Knowledge</div>
+            <div class="ctag">Knowledge, perspectives &amp; method</div>
+          </div>
+          <span class="count">13 tools</span>
+        </div>
+        <div class="subhead">AI Coach</div>
+        <ul class="glist">
+          <li><a href="https://chatgpt.com/g/g-692bf1d33ef48191b45434a6a707f0f8-tok-essay-coach-ib-academic-integrity-safe" target="_blank" rel="noopener"><span class="lk">TOK Essay Socratic Coach (Guardrailed)</span><span class="ext">GPT ↗</span></a></li>
+        </ul>
+        <div class="subhead">Knowledge &amp; Perspectives</div>
+        <ul class="glist">
+          <li><a href="tok/two-true-maps/"><span class="lk">The Map is Not the Territory</span><span class="arrow">→</span></a></li>
+          <li><a href="tok/paradigm-shift/"><span class="lk">Paradigm Shifts</span><span class="arrow">→</span></a></li>
+          <li><a href="tok/who-has-power/"><span class="lk">Power and Knowledge</span><span class="arrow">→</span></a></li>
+          <li><a href="tok/earthrise/"><span class="lk">Object: Values, Interpretation, Objectivity</span><span class="arrow">→</span></a></li>
+          <li><a href="tok/single-object-analysis/"><span class="lk">Single Object Analysis Exemplar</span><span class="arrow">→</span></a></li>
+        </ul>
+        <div class="subhead">Science &amp; Method</div>
+        <ul class="glist">
+          <li><a href="tok/is-it-scientific/"><span class="lk">Is it Science?</span><span class="arrow">→</span></a></li>
+          <li><a href="tok/quark-confinement-sim/"><span class="lk">Quark Confinement Simulator</span><span class="arrow">→</span></a></li>
+          <li><a href="tok/method-reach/"><span class="lk">Where the Method Can't Reach</span><span class="arrow">→</span></a></li>
+          <li><a href="tok/peer-review/"><span class="lk">What Did Peer Review Actually Check?</span><span class="arrow">→</span></a></li>
+          <li><a href="feeling-the-future/"><span class="lk">Feeling the Future: Peer Review Simulation</span><span class="arrow">→</span></a></li>
+        </ul>
+        <div class="subhead">Scoring Calculators</div>
+        <ul class="glist">
+          <li><a href="tok/scoring-calculator/"><span class="lk">Semester 1 Scoring Calculator</span><span class="arrow">→</span></a></li>
+          <li><a href="tok/scoring-calculator-sem2/"><span class="lk">Semester 2 Scoring Calculator</span><span class="arrow">→</span></a></li>
         </ul>
       </article>
 
       <!-- Extended Essay -->
-      <article class="course-card">
-        <div class="course-title">Extended Essay (EE)</div>
-        <div class="course-tagline">RQ design, structure, and line of reasoning.</div>
-        <ul class="game-list">
-          <li><a href="extended-essay/ee-formatting/">EE Formatting Game</a></li>
+      <article class="card filterable" data-group="ibcore" style="--c:var(--ee)">
+        <div class="top"></div>
+        <div class="head">
+          <span class="icon"><svg><use href="#i-doc"/></svg></span>
+          <div class="htext">
+            <div class="ctitle">Extended Essay</div>
+            <div class="ctag">RQ design, structure &amp; line of reasoning</div>
+          </div>
+          <span class="count">1 tool</span>
+        </div>
+        <ul class="glist">
+          <li><a href="extended-essay/ee-formatting/"><span class="lk">EE Formatting Game</span><span class="arrow">→</span></a></li>
         </ul>
       </article>
 
-      <!-- Mock Trail Materials -->
-      <article class="course-card">
-        <div class="course-title">Mock Trial Materials</div>
-        <div class="course-tagline">Case Packets, Games, Rules.</div>
-        <ul class="game-list">
-          <li><a href="mock-trial-materials/objections/">I Object, Your Honor!</a></li>
+      <!-- Mock Trial -->
+      <article class="card filterable" data-group="more" style="--c:var(--mock)">
+        <div class="top"></div>
+        <div class="head">
+          <span class="icon"><svg><use href="#i-gavel"/></svg></span>
+          <div class="htext">
+            <div class="ctitle">Mock Trial</div>
+            <div class="ctag">Case packets, games &amp; rules</div>
+          </div>
+          <span class="count">1 tool</span>
+        </div>
+        <ul class="glist">
+          <li><a href="mock-trial-materials/objections/"><span class="lk">I Object, Your Honor!</span><span class="arrow">→</span></a></li>
         </ul>
-      </article>  
-      
+      </article>
+
       <!-- Practice Tests -->
-      <article class="course-card">
-        <div class="course-title">Practice Tests</div>
-        <div class="course-tagline">IELTS, AP, SAT.</div>
-        <ul class="game-list">
-          <li><a href="practice-tests/ielts-reading/">IELTS Reading Test</a></li>
+      <article class="card filterable" data-group="more" style="--c:var(--practice)">
+        <div class="top"></div>
+        <div class="head">
+          <span class="icon"><svg><use href="#i-clip"/></svg></span>
+          <div class="htext">
+            <div class="ctitle">Practice Tests</div>
+            <div class="ctag">IELTS, AP &amp; SAT</div>
+          </div>
+          <span class="count">1 tool</span>
+        </div>
+        <ul class="glist">
+          <li><a href="practice-tests/ielts-reading/"><span class="lk">IELTS Reading Test</span><span class="arrow">→</span></a></li>
         </ul>
       </article>
 
       <!-- AI Teaching Tools -->
-<article class="course-card">
-  <div class="course-title">AI Teaching Tools</div>
-  <div class="course-tagline">Custom GPTs built with guardrails for safe classroom use.</div>
-  <ul class="game-list">
-    <li><a href="https://chatgpt.com/g/g-691d4473b73881918e92898207514056-mechanics-coach-quote-syntax-doctor" target="_blank">Writing Mechanics Coach (Guardrail AI)</a></li>
-    <li><a href="https://chatgpt.com/g/g-674bfd91ffc4819196fb585f6bb59a5d-debate-me" target="_blank">Debate Me!</a></li>
-    <li><a href="https://chatgpt.com/g/g-XX2c9bppc-the-writing-coach" target="_blank">The Writing Coach (Guardrail AI)</a></li>
-  </ul>
-</article>
-
-      <!-- Learning English -->
-      <article class="course-card">
-        <div class="course-title">Learning English</div>
-        <div class="course-tagline">Vocabulary, grammar, and communication.</div>
-        <ul class="game-list">
-          <li><a href="learning-english/dating-vocab-game/">Dating Vocabulary Game</a></li>
-          <li><a href="learning-english/subordinating-conjunctions/">Subordinating Conjunctions Game</a></li>
-          <li><a href="learning-english/car-vocabulary/">Car Vocabulary</a></li>
-          <li><a href="learning-english/test-1-review/">Test 1 Review</a></li>
+      <article class="card filterable" data-group="more" style="--c:var(--ai)">
+        <div class="top"></div>
+        <div class="head">
+          <span class="icon"><svg><use href="#i-spark"/></svg></span>
+          <div class="htext">
+            <div class="ctitle">AI Teaching Tools</div>
+            <div class="ctag">Custom GPTs with classroom guardrails</div>
+          </div>
+          <span class="count">3 tools</span>
+        </div>
+        <ul class="glist">
+          <li><a href="https://chatgpt.com/g/g-691d4473b73881918e92898207514056-mechanics-coach-quote-syntax-doctor" target="_blank" rel="noopener"><span class="lk">Writing Mechanics Coach (Guardrail AI)</span><span class="ext">GPT ↗</span></a></li>
+          <li><a href="https://chatgpt.com/g/g-674bfd91ffc4819196fb585f6bb59a5d-debate-me" target="_blank" rel="noopener"><span class="lk">Debate Me!</span><span class="ext">GPT ↗</span></a></li>
+          <li><a href="https://chatgpt.com/g/g-XX2c9bppc-the-writing-coach" target="_blank" rel="noopener"><span class="lk">The Writing Coach (Guardrail AI)</span><span class="ext">GPT ↗</span></a></li>
         </ul>
       </article>
 
-    </section>
+      <!-- Learning English -->
+      <article class="card filterable" data-group="english" style="--c:var(--eng)">
+        <div class="top"></div>
+        <div class="head">
+          <span class="icon"><svg><use href="#i-chat"/></svg></span>
+          <div class="htext">
+            <div class="ctitle">Learning English</div>
+            <div class="ctag">Vocabulary, grammar &amp; communication</div>
+          </div>
+          <span class="count">4 tools</span>
+        </div>
+        <ul class="glist">
+          <li><a href="learning-english/dating-vocab-game/"><span class="lk">Dating Vocabulary Game</span><span class="arrow">→</span></a></li>
+          <li><a href="learning-english/subordinating-conjunctions/"><span class="lk">Subordinating Conjunctions Game</span><span class="arrow">→</span></a></li>
+          <li><a href="learning-english/car-vocabulary/"><span class="lk">Car Vocabulary</span><span class="arrow">→</span></a></li>
+          <li><a href="learning-english/test-1-review/"><span class="lk">Test 1 Review</span><span class="arrow">→</span></a></li>
+        </ul>
+      </article>
+
+    </div>
+    <div class="empty" id="empty">Nothing in this category yet — check back soon.</div>
   </main>
 
   <footer>
-    © <span id="year"></span> Smith Teaches Tech
+    © <span id="year"></span> Smith Teaches Tech <span class="accent">·</span> built for students, one tool at a time
   </footer>
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    const pills = document.querySelectorAll('.pill');
+    const cards = document.querySelectorAll('.filterable');
+    const empty = document.getElementById('empty');
+
+    pills.forEach(p => p.addEventListener('click', () => {
+      pills.forEach(x => x.classList.remove('active'));
+      p.classList.add('active');
+      const f = p.dataset.filter;
+      let shown = 0;
+      cards.forEach((c, i) => {
+        const match = (f === 'all' || c.dataset.group === f);
+        c.style.display = match ? '' : 'none';
+        if (match) { c.style.animation = 'none'; void c.offsetWidth; c.style.animation = `rise .45s ease backwards`; c.style.animationDelay = (shown * 0.04) + 's'; shown++; }
+      });
+      empty.style.display = shown ? 'none' : 'block';
+    }));
+
+    // initial stagger
+    document.querySelectorAll('.grid .card').forEach((c, i) => { c.style.animationDelay = (i * 0.05) + 's'; });
   </script>
 </body>
 </html>
