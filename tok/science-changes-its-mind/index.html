@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How Science Changes Its Mind — TOK Natural Sciences L5</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4efe2;
+    --paper-2:#efe8d6;
+    --ink:#2a2622;
+    --ink-soft:#5a5145;
+    --blue:#1f3f6e;
+    --blue-2:#3a629c;
+    --amber:#b07d18;
+    --amber-2:#caa24a;
+    --rust:#8a3b2a;
+    --line:#cbbf9f;
+    --good:#3f6b3a;
+    --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+    --mono:"JetBrains Mono","Courier New",monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:var(--serif);
+    color:var(--ink);
+    background:var(--paper);
+    background-image:
+      radial-gradient(circle at 18% 12%, rgba(176,125,24,.05), transparent 40%),
+      radial-gradient(circle at 82% 88%, rgba(31,63,110,.05), transparent 42%),
+      repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(120,108,80,.035) 27px, rgba(120,108,80,.035) 28px);
+    line-height:1.45;
+    -webkit-font-smoothing:antialiased;
+    padding:24px 16px 80px;
+  }
+  .wrap{max-width:880px;margin:0 auto;}
+
+  /* ---- Pinned header ---- */
+  header.pin{
+    border:1px solid var(--line);
+    background:linear-gradient(180deg,var(--paper-2),var(--paper));
+    padding:16px 20px 14px;
+    box-shadow:0 1px 0 #fff inset, 0 6px 18px rgba(40,34,26,.06);
+    position:relative;
+  }
+  header.pin::before{
+    content:"NATURAL SCIENCES · LESSON 5";
+    font-family:var(--mono);font-size:10px;letter-spacing:.22em;color:var(--amber);
+    display:block;margin-bottom:6px;
+  }
+  header.pin h1{
+    font-size:30px;font-weight:600;margin:0 0 4px;letter-spacing:.01em;line-height:1.05;
+  }
+  .kq{font-style:italic;color:var(--blue);font-size:18px;margin:2px 0 12px;}
+  .tags{display:flex;gap:8px;flex-wrap:wrap;}
+  .tag{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    border:1px solid var(--blue-2);color:var(--blue);border-radius:2px;padding:3px 8px;background:rgba(58,98,156,.06);}
+
+  /* ---- Progress ---- */
+  .dots{display:flex;gap:7px;align-items:center;justify-content:center;margin:18px 0 6px;}
+  .dot{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--blue-2);background:transparent;transition:.25s;}
+  .dot.active{background:var(--amber);border-color:var(--amber);transform:scale(1.25);}
+  .dot.done{background:var(--blue-2);}
+  .stepname{text-align:center;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:14px;}
+
+  /* ---- Stage card ---- */
+  .stage{display:none;border:1px solid var(--line);background:rgba(255,253,247,.6);
+    padding:26px 26px 28px;box-shadow:0 8px 30px rgba(40,34,26,.07);animation:rise .4s ease;}
+  .stage.show{display:block;}
+  @keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  .stage h2{font-size:25px;font-weight:600;margin:0 0 4px;}
+  .lead{color:var(--ink-soft);font-size:17px;margin:0 0 18px;}
+  .micro{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin:0 0 4px;}
+
+  /* ---- Ranking ---- */
+  .scale{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;
+    letter-spacing:.08em;color:var(--ink-soft);text-transform:uppercase;margin:0 2px 8px;}
+  .scale b{color:var(--rust);}
+  .scale span:last-child b{color:var(--good);}
+  ol.rank{list-style:none;margin:0;padding:0;counter-reset:r;}
+  ol.rank li{counter-increment:r;display:flex;align-items:center;gap:12px;
+    border:1px solid var(--line);background:var(--paper);margin:7px 0;padding:11px 12px;cursor:grab;
+    transition:.15s;border-left:4px solid var(--blue-2);}
+  ol.rank li.drag{opacity:.45;}
+  ol.rank li .num{font-family:var(--mono);font-weight:700;color:var(--blue);min-width:20px;}
+  ol.rank li .claim{flex:1;font-size:17.5px;}
+  ol.rank li .ctl{display:flex;flex-direction:column;gap:2px;}
+  ol.rank li .ctl button{font-family:var(--mono);border:1px solid var(--line);background:var(--paper-2);
+    color:var(--blue);cursor:pointer;width:26px;height:18px;line-height:1;font-size:11px;border-radius:2px;}
+  ol.rank li .ctl button:hover{background:var(--amber-2);color:#fff;}
+  ol.rank.locked li{cursor:default;border-left-color:var(--amber);}
+  ol.rank.locked li .ctl{display:none;}
+
+  /* compare view */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .compare h4{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px;}
+  ol.prev{list-style:none;margin:0;padding:0;}
+  ol.prev li{border:1px solid var(--line);background:var(--paper-2);margin:7px 0;padding:11px 12px;font-size:16px;color:var(--ink-soft);}
+  @media(max-width:640px){.compare{grid-template-columns:1fr;}}
+
+  /* ---- Textbook pages (stage 2) ---- */
+  .pages{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:6px 0 14px;}
+  @media(max-width:680px){.pages{grid-template-columns:1fr;}}
+  .pg{border:1px solid var(--line);background:#f7f2e6;padding:18px 18px 16px;position:relative;
+    box-shadow:0 4px 14px rgba(40,34,26,.08);}
+  .pg .yr{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--rust);}
+  .pg .src{font-family:var(--mono);font-size:9.5px;color:var(--ink-soft);margin-bottom:8px;}
+  .pg p{font-size:15.5px;margin:8px 0;}
+  .pg .stamp{position:absolute;top:10px;right:12px;font-family:var(--mono);font-size:9px;letter-spacing:.15em;
+    border:1px solid var(--rust);color:var(--rust);padding:2px 5px;transform:rotate(6deg);opacity:.7;}
+
+  /* ---- Convergence visual (stage 3) ---- */
+  .vizbar{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 12px;}
+  .vizbar button{font-family:var(--mono);font-size:11px;letter-spacing:.05em;border:1px solid var(--blue-2);
+    background:var(--paper);color:var(--blue);padding:7px 11px;cursor:pointer;border-radius:2px;transition:.15s;}
+  .vizbar button.on{background:var(--blue);color:#fff;}
+  .vizwrap{border:1px solid var(--line);background:radial-gradient(circle at 50% 46%,#fbf7ec,#efe8d6);padding:6px;}
+  #viz{width:100%;height:auto;display:block;}
+  .evline{cursor:pointer;}
+  .vstatus{margin-top:8px;border-top:1px dashed var(--line);padding-top:10px;font-size:16px;}
+  .vstatus .verdict{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:2px;}
+  .v-hold{background:rgba(63,107,58,.14);color:var(--good);border:1px solid var(--good);}
+  .v-fall{background:rgba(138,59,42,.12);color:var(--rust);border:1px solid var(--rust);}
+  .v-reach{background:rgba(176,125,24,.14);color:var(--amber);border:1px solid var(--amber);}
+  .hint{font-family:var(--mono);font-size:11px;color:var(--ink-soft);margin-top:6px;letter-spacing:.02em;}
+
+  /* ---- Recorded question ---- */
+  .qbox{border:1px solid var(--blue-2);border-left:5px solid var(--amber);background:rgba(58,98,156,.045);
+    padding:14px 16px;margin:18px 0 2px;}
+  .qbox .qlabel{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);}
+  .qbox .qtext{font-size:17px;font-style:italic;color:var(--blue);margin:5px 0 10px;}
+  textarea{width:100%;font-family:var(--serif);font-size:16.5px;color:var(--ink);background:var(--paper);
+    border:1px solid var(--line);padding:10px 12px;resize:vertical;min-height:74px;line-height:1.4;}
+  textarea:focus{outline:none;border-color:var(--blue-2);box-shadow:0 0 0 2px rgba(58,98,156,.12);}
+
+  /* ---- Nav ---- */
+  .nav{display:flex;justify-content:space-between;align-items:center;margin-top:22px;}
+  .btn{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+    padding:11px 22px;border:1px solid var(--blue);background:var(--blue);color:#fff;cursor:pointer;border-radius:2px;transition:.15s;}
+  .btn:hover{background:var(--blue-2);}
+  .btn.ghost{background:transparent;color:var(--blue);}
+  .btn.ghost:hover{background:rgba(31,63,110,.07);}
+  .btn:disabled{opacity:.3;cursor:not-allowed;}
+  .btn.dl{background:var(--amber);border-color:var(--amber);}
+  .btn.dl:hover{background:var(--amber-2);}
+
+  /* ---- Consolidation ---- */
+  .recap{border:1px solid var(--line);background:var(--paper-2);padding:14px 16px;margin:10px 0;}
+  .recap .rl{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);}
+  .recap .rv{font-size:16px;margin-top:4px;white-space:pre-wrap;color:var(--ink-soft);min-height:20px;}
+  .namefield{display:flex;gap:10px;align-items:center;margin:6px 0 16px;flex-wrap:wrap;}
+  .namefield input{font-family:var(--serif);font-size:17px;border:none;border-bottom:1.5px solid var(--blue-2);
+    background:transparent;padding:4px 6px;min-width:220px;color:var(--ink);}
+  .namefield input:focus{outline:none;border-bottom-color:var(--amber);}
+  .namefield label{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
+
+  .footnote{font-family:var(--mono);font-size:10px;color:var(--ink-soft);text-align:center;margin-top:26px;letter-spacing:.04em;}
+
+  /* ---- Print sheet ---- */
+  #printsheet{display:none;}
+  @media print{
+    body{background:#fff;padding:0;}
+    .wrap,header.pin,.dots,.stepname,.stage,.nav,.footnote{display:none !important;}
+    #printsheet{display:block;font-family:Georgia,serif;color:#000;padding:0 6px;}
+    #printsheet h1{font-size:20px;margin:0 0 2px;}
+    #printsheet .pk{font-size:12px;font-style:italic;color:#333;margin:0 0 14px;}
+    #printsheet .meta{font-size:11px;color:#444;margin-bottom:14px;border-bottom:1px solid #000;padding-bottom:8px;}
+    #printsheet .blk{margin:0 0 13px;page-break-inside:avoid;}
+    #printsheet .bl{font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:#000;font-weight:bold;}
+    #printsheet .bq{font-size:12px;font-style:italic;color:#333;margin:2px 0;}
+    #printsheet .ba{font-size:13px;white-space:pre-wrap;border-left:3px solid #888;padding-left:10px;margin-top:3px;min-height:14px;}
+    #printsheet ol{margin:4px 0;padding-left:22px;font-size:13px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="pin">
+    <h1>How Science Changes Its Mind</h1>
+    <div class="kq">How does science change its mind — and how settled is &ldquo;settled science&rdquo;?</div>
+    <div class="tags">
+      <span class="tag">Paradigm</span>
+      <span class="tag">Certainty</span>
+      <span class="tag">Explanation</span>
+    </div>
+  </header>
+
+  <div class="dots" id="dots"></div>
+  <div class="stepname" id="stepname"></div>
+
+  <!-- STAGE 1 — RANK -->
+  <section class="stage" data-name="Rank">
+    <div class="micro">Step 1 of 5 · Commit first</div>
+    <h2>Which science is least likely to change?</h2>
+    <p class="lead">Drag the cards (or use the arrows) to order them. No looking anything up — go on your gut.</p>
+    <div class="scale"><span><b>TOP</b> — science most likely to change its mind</span><span><b>BOTTOM</b> — most settled, least likely to change</span></div>
+    <ol class="rank" id="rank1"></ol>
+    <div class="qbox">
+      <div class="qlabel">Record · Q1</div>
+      <div class="qtext">Which card did you put at the very bottom (least likely to change)? What makes it feel that settled to you?</div>
+      <textarea id="a1" placeholder="The card I put as least likely to change is… It feels settled because…"></textarea>
+    </div>
+    <div class="nav"><span></span><button class="btn" data-next>Lock my ranking →</button></div>
+  </section>
+
+  <!-- STAGE 2 — PLATE TECTONICS / METHOD -->
+  <section class="stage" data-name="Change">
+    <div class="micro">Step 2 of 5 · How the mind changes</div>
+    <h2>Settled — and then not.</h2>
+    <p class="lead">Both pages below were the consensus science of their moment. Read what each treats as obvious.</p>
+    <div class="pages">
+      <div class="pg">
+        <span class="stamp">SETTLED 1942</span>
+        <div class="yr">1942</div>
+        <div class="src">Geology textbook · geosynclinal theory</div>
+        <p>The continents are fixed in place. Mountain ranges rise where the crust buckles and sags vertically over long ages.</p>
+        <p>Wegener&rsquo;s notion of drifting continents is dismissed: no known force could plough a continent through the ocean floor. The matching coastlines of Africa and South America are a coincidence of erosion.</p>
+      </div>
+      <div class="pg">
+        <span class="stamp" style="border-color:var(--good);color:var(--good);transform:rotate(-5deg);">SETTLED 1968</span>
+        <div class="yr">1968</div>
+        <div class="src">Geology textbook · plate tectonics</div>
+        <p>The continents move, carried on plates of the Earth&rsquo;s surface. Mountains rise where plates collide.</p>
+        <p>Wegener was substantially right. The matching coastlines are not coincidence — they are a record of a single landmass that split apart.</p>
+      </div>
+    </div>
+    <p class="lead" style="font-size:16px;">What happened between 1942 and 1968 was not a better argument. New evidence arrived that <em>neither</em> framework could ignore — magnetic stripes mirrored on the seafloor either side of mid-ocean ridges, recording the spreading itself. The community didn&rsquo;t vote; the old framework had no category that could hold the new data, so the framework had to give.</p>
+    <div class="qbox">
+      <div class="qlabel">Record · Q2</div>
+      <div class="qtext">&ldquo;The continents are fixed&rdquo; was settled science in 1942. What forced the change — a more persuasive argument, or something else? What does that tell you about <em>how</em> science changes its mind?</div>
+      <textarea id="a2" placeholder="Science changed its mind because… This tells me that how science changes its mind is…"></textarea>
+    </div>
+    <div class="nav"><button class="btn ghost" data-prev>← Back</button><button class="btn" data-next>Next →</button></div>
+  </section>
+
+  <!-- STAGE 3 — CONVERGENCE -->
+  <section class="stage" data-name="Two kinds">
+    <div class="micro">Step 3 of 5 · Two kinds of settled</div>
+    <h2>What holds a claim up?</h2>
+    <p class="lead">Each claim sits on lines of independent evidence. <strong>Click a line to switch it off</strong> — then watch whether the claim still stands. <strong>Work through all five claims</strong> (the buttons below) — you&rsquo;ll need them for the re-rank.</p>
+    <div class="vizbar" id="vizbar"></div>
+    <div class="vizwrap">
+      <svg id="viz" viewBox="0 0 700 420" role="img" aria-label="convergence diagram"></svg>
+    </div>
+    <div class="vstatus" id="vstatus"></div>
+    <div class="hint" id="vhint"></div>
+    <div class="qbox">
+      <div class="qlabel">Record · Q3</div>
+      <div class="qtext">When you switched off a line, what happened to each claim? What is the difference between the claim that <em>stayed up</em> and the claim that <em>went dark</em>?</div>
+      <textarea id="a3" placeholder="When I removed a line… The claim that stayed up was different because… The claim that went dark was…"></textarea>
+    </div>
+    <div class="nav"><button class="btn ghost" data-prev>← Back</button><button class="btn" data-next>Re-rank →</button></div>
+  </section>
+
+  <!-- STAGE 4 — RE-RANK -->
+  <section class="stage" data-name="Re-rank">
+    <div class="micro">Step 4 of 5 · Order it again</div>
+    <h2>Order them once more.</h2>
+    <p class="lead">Your first ranking is on the left. Now that you&rsquo;ve tested what holds each of the five claims up — convergent, contested, single-thread, or out of reach — re-order them on the right. Move whatever the evidence structure tells you to.</p>
+    <div class="compare">
+      <div>
+        <h4>Round 1 — your gut</h4>
+        <ol class="prev" id="prev1"></ol>
+      </div>
+      <div>
+        <h4>Round 2 — now</h4>
+        <ol class="rank" id="rank2"></ol>
+      </div>
+    </div>
+    <div class="qbox">
+      <div class="qlabel">Record · Q4</div>
+      <div class="qtext">Pick one card you moved (or explain why you moved none). What did you learn that let you re-judge how settled it is?</div>
+      <textarea id="a4" placeholder="I moved … because I learned … / I moved nothing because …"></textarea>
+    </div>
+    <div class="nav"><button class="btn ghost" data-prev>← Back</button><button class="btn" data-next>Pull it together →</button></div>
+  </section>
+
+  <!-- STAGE 5 — CONSOLIDATE -->
+  <section class="stage" data-name="Reflect">
+    <div class="micro">Step 5 of 5 · Write your reflection</div>
+    <h2>What you found.</h2>
+    <p class="lead">Your own answers, gathered. Use them to write the reflection at the bottom, then download everything as a PDF to hand in.</p>
+
+    <div class="recap"><div class="rl">Your Q1 — least likely to change</div><div class="rv" id="r1"></div></div>
+    <div class="recap"><div class="rl">Your Q2 — how science changes its mind</div><div class="rv" id="r2"></div></div>
+    <div class="recap"><div class="rl">Your Q3 — what holds a claim up</div><div class="rv" id="r3"></div></div>
+    <div class="recap"><div class="rl">Your Q4 — the card you re-judged</div><div class="rv" id="r4"></div></div>
+
+    <div class="qbox" style="margin-top:22px;">
+      <div class="qlabel">Reflect · Q5 — the blind spot</div>
+      <div class="qtext" id="q5text">1942 geologists ranked &ldquo;the continents are fixed&rdquo; as the <em>least</em> likely thing to change — they were certain. You ranked <span id="r5card" style="font-style:normal;color:var(--ink);border-bottom:1px solid var(--amber);">your bottom card</span> as least likely to change. What would have to be true for you to be the 1942 geologist about that card — and could you see it coming?</div>
+      <textarea id="a5" placeholder="For me to be the 1942 geologist about that card…"></textarea>
+    </div>
+
+    <div class="qbox">
+      <div class="qlabel">Reflect · Q6 — the knowledge question</div>
+      <div class="qtext">So: how settled is &ldquo;settled science&rdquo;? Write 2&ndash;3 sentences. Aim for a <em>calibrated</em> answer — not &ldquo;it&rsquo;s all just opinion,&rdquo; not &ldquo;it&rsquo;s permanent fact.&rdquo;</div>
+      <textarea id="a6" placeholder="Settled science is…"></textarea>
+    </div>
+
+    <div class="namefield">
+      <label for="nm">Name</label><input id="nm" type="text" placeholder="your name">
+      <label for="cls" style="margin-left:8px;">Class</label><input id="cls" type="text" placeholder="block / period" style="min-width:120px;">
+    </div>
+
+    <div class="nav"><button class="btn ghost" data-prev>← Back</button><button class="btn dl" id="download">⤓ Download my reflection (PDF)</button></div>
+  </section>
+
+  <div class="footnote">TOK · Natural Sciences · Lesson 5 — paradigm &amp; the limits of certainty</div>
+</div>
+
+<!-- PRINT-ONLY OUTPUT -->
+<div id="printsheet"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- data ---------- */
+  var CARDS = [
+    {id:"age",   text:"The Earth is about 4.5 billion years old"},
+    {id:"desc",  text:"All living things share a common ancestry"},
+    {id:"plate", text:"The continents move across the Earth\u2019s surface"},
+    {id:"string",text:"String theory correctly describes matter\u2019s smallest parts"},
+    {id:"chol",  text:"Eating cholesterol raises your risk of heart disease"}
+  ];
+
+  // convergence specimens. each line carries a ROLE: support (empirical), theory (internal), conflict (pulls against).
+  var SPECIMENS = {
+    age: {
+      label:"Earth \u2248 4.5 billion years", kind:"convergent", threshold:2,
+      lines:[
+        {l:"Radiometric dating of Earth rocks", role:"support"},
+        {l:"Radiometric dating of meteorites", role:"support"},
+        {l:"Lead-isotope ratios (whole planet)", role:"support"},
+        {l:"Models of the Sun\u2019s lifespan", role:"support"}
+      ],
+      holdNote:"Knock out one line and the others still point to the same age, independently. No single line is load-bearing \u2014 that is what makes it robust.",
+      fallNote:"Down to a single line, a claim this size rests on one thread."
+    },
+    desc: {
+      label:"Common ancestry of living things", kind:"convergent", threshold:2,
+      lines:[
+        {l:"Fossil record (transitional forms)", role:"support"},
+        {l:"Comparative anatomy", role:"support"},
+        {l:"Shared DNA / molecular homology", role:"support"},
+        {l:"Observed speciation & biogeography", role:"support"}
+      ],
+      holdNote:"Examined only for its STRUCTURE: independent lines converge on the same place, so removing one doesn\u2019t collapse it. (We are not asking whether it is true \u2014 we are asking what holds it up.)",
+      fallNote:"With one line left, even a much-examined claim has only a single thread to stand on."
+    },
+    plate: {
+      label:"Continents: FIXED vs MOVING", kind:"rivalry", years:["1942","1968"],
+      claims:[
+        { id:"fixed", name:"Continents are FIXED",
+          lines:{
+            "1942":[
+              {l:"Mountains form by vertical flexing", role:"support"},
+              {l:"Land-bridges explain fossils", role:"support"},
+              {l:"No force could move a continent", role:"support"}
+            ],
+            "1968":[
+              {l:"Vertical-flexing model superseded", role:"dead"},
+              {l:"A force WAS found: spreading", role:"dead"},
+              {l:"Stripes contradict a fixed crust", role:"conflict"}
+            ]
+          }
+        },
+        { id:"move", name:"Continents MOVE",
+          lines:{
+            "1942":[ {l:"Coastlines fit together", role:"support"} ],
+            "1968":[
+              {l:"Coastlines fit together", role:"support"},
+              {l:"Matching fossils across oceans", role:"support"},
+              {l:"Seafloor magnetic stripes", role:"support"},
+              {l:"Earthquake & volcano belts", role:"support"}
+            ]
+          }
+        }
+      ],
+      notes:{
+        "1942":"1942 \u2014 settled science. The well-supported claim is FIXED: three independent lines converge on it. MOVE hangs on a single thread (the coastline fit) and is dismissed as crackpot.",
+        "1968":"The SAME new evidence \u2014 seafloor spreading \u2014 BROKE the strong claim (FIXED\u2019s \u2018no force exists\u2019 support dissolved; the stripes contradict a fixed crust) and BUILT the weak one (MOVE now has four converging lines). The strongly-supported claim FAILED; the one-thread claim SUCCEEDED \u2014 because the evidence base changed, not because anyone argued better. Strong support did not save it."
+      }
+    },
+    chol: {
+      label:"Dietary cholesterol \u2192 heart-disease risk", kind:"contested", threshold:2,
+      lines:[
+        {l:"Early population studies", role:"support"},
+        {l:"Some metabolic trials", role:"support"},
+        {l:"Trials: saturated fat matters more", role:"conflict"},
+        {l:"2015 guidelines drop the limit", role:"conflict"}
+      ],
+      contestedNote:"Real empirical lines \u2014 but they don\u2019t all point the same way. Some pull against the others, and the claim is openly being revised. This is a KNOWN unknown of the not-yet-settled kind: the science is still moving. That is why health headlines flip.",
+      cherryNote:"Switch the conflicting lines back ON. A claim only \u2018looks settled\u2019 here because you hid the evidence that disagrees \u2014 that is cherry-picking, not convergence.",
+      threadNote:"One supporting line and the disagreement hidden \u2014 nowhere near convergence."
+    },
+    string: {
+      label:"String theory describes matter\u2019s smallest parts", kind:"untestable",
+      lines:[
+        {l:"Mathematically consistent", role:"theory"},
+        {l:"Unifies gravity & quantum mechanics", role:"theory"},
+        {l:"Predicts the graviton", role:"theory"},
+        {l:"Requires extra spatial dimensions", role:"theory"}
+      ],
+      reachNote:"Every line here is INTERNAL to the theory \u2014 elegance, consistency, unifying power. Not one is an independent observation that could have come out otherwise (no test it could fail \u2014 the L2 falsifiability point). Switch them all on: there is still no empirical line, so the method cannot yet reach this. Coherence is not convergence."
+    }
+  };
+
+  /* ---------- state ---------- */
+  var round1=null, round2=null, currentSpec="age", currentEra="1965";
+  var activeLines={}; // specKey -> array of bools
+
+  /* ---------- stage nav ---------- */
+  var stages=[].slice.call(document.querySelectorAll(".stage"));
+  var dotsWrap=document.getElementById("dots");
+  var stepname=document.getElementById("stepname");
+  var idx=0;
+  stages.forEach(function(s,i){
+    var d=document.createElement("div"); d.className="dot"; dotsWrap.appendChild(d);
+  });
+  function show(i){
+    idx=i;
+    stages.forEach(function(s,j){ s.classList.toggle("show", j===i); });
+    [].forEach.call(dotsWrap.children,function(d,j){
+      d.classList.toggle("active", j===i);
+      d.classList.toggle("done", j<i);
+    });
+    stepname.textContent=stages[i].getAttribute("data-name");
+    if(i===3) buildRerank();
+    if(i===4) buildConsolidate();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+  document.querySelectorAll("[data-next]").forEach(function(b){
+    b.addEventListener("click",function(){
+      if(idx===0){ round1=readOrder("rank1"); }
+      if(idx<stages.length-1) show(idx+1);
+    });
+  });
+  document.querySelectorAll("[data-prev]").forEach(function(b){
+    b.addEventListener("click",function(){ if(idx>0) show(idx-1); });
+  });
+
+  /* ---------- ranking lists ---------- */
+  function makeRankList(elId, order){
+    var ol=document.getElementById(elId);
+    ol.innerHTML="";
+    order.forEach(function(c){
+      var li=document.createElement("li");
+      li.setAttribute("draggable","true");
+      li.dataset.id=c.id;
+      li.innerHTML='<span class="num"></span><span class="claim">'+c.text+'</span>'+
+        '<span class="ctl"><button data-up>\u25B2</button><button data-down>\u25BC</button></span>';
+      ol.appendChild(li);
+    });
+    renumber(ol);
+    wireMove(ol);
+    wireDrag(ol);
+  }
+  function renumber(ol){
+    [].forEach.call(ol.children,function(li,i){ li.querySelector(".num").textContent=(i+1); });
+  }
+  function wireMove(ol){
+    ol.addEventListener("click",function(e){
+      var li=e.target.closest("li"); if(!li) return;
+      if(e.target.hasAttribute("data-up") && li.previousElementSibling){
+        ol.insertBefore(li, li.previousElementSibling); renumber(ol);
+      }
+      if(e.target.hasAttribute("data-down") && li.nextElementSibling){
+        ol.insertBefore(li.nextElementSibling, li); renumber(ol);
+      }
+    });
+  }
+  function wireDrag(ol){
+    var dragged=null;
+    ol.addEventListener("dragstart",function(e){ var li=e.target.closest("li"); if(!li)return; dragged=li; li.classList.add("drag"); });
+    ol.addEventListener("dragend",function(e){ if(dragged){dragged.classList.remove("drag");dragged=null;} renumber(ol); });
+    ol.addEventListener("dragover",function(e){
+      e.preventDefault();
+      var li=e.target.closest("li"); if(!li||li===dragged) return;
+      var r=li.getBoundingClientRect();
+      var after=(e.clientY-r.top)/r.height>0.5;
+      ol.insertBefore(dragged, after?li.nextElementSibling:li);
+    });
+  }
+  function readOrder(elId){
+    return [].map.call(document.getElementById(elId).children,function(li){
+      var id=li.dataset.id; return CARDS.filter(function(c){return c.id===id;})[0];
+    });
+  }
+  makeRankList("rank1", CARDS.slice());
+
+  function buildRerank(){
+    // left: read-only round1
+    var prev=document.getElementById("prev1"); prev.innerHTML="";
+    (round1||CARDS).forEach(function(c,i){
+      var li=document.createElement("li"); li.textContent=(i+1)+".  "+c.text; prev.appendChild(li);
+    });
+    // right: editable, seeded from round1 order
+    if(!document.getElementById("rank2").children.length){
+      makeRankList("rank2", (round1||CARDS).slice());
+    }
+  }
+
+  /* ---------- convergence viz ---------- */
+  var vizbar=document.getElementById("vizbar");
+  Object.keys(SPECIMENS).forEach(function(k){
+    var b=document.createElement("button");
+    b.textContent=SPECIMENS[k].label;
+    b.dataset.k=k;
+    b.addEventListener("click",function(){ currentSpec=k; drawViz(); });
+    vizbar.appendChild(b);
+  });
+  // era toggle button (only used for plate)
+  var eraBtn=document.createElement("button");
+  eraBtn.id="eraBtn"; eraBtn.style.borderColor="var(--amber)"; eraBtn.style.color="var(--amber)";
+  eraBtn.addEventListener("click",function(){
+    var sp=SPECIMENS[currentSpec]; if(sp.kind!=="rivalry") return;
+    currentEra = (currentEra===sp.years[0]?sp.years[1]:sp.years[0]); drawViz();
+  });
+  vizbar.appendChild(eraBtn);
+
+  var COL={support:"var(--blue-2)", supportDot:"var(--blue)", theory:"var(--amber)", conflict:"var(--rust)", off:"#c4b8a0", offDot:"#d8cdb0"};
+  function node(){ var s=SPECIMENS[currentSpec]; return s.toggleEra ? s.eras[currentEra] : s; }
+  function specLines(){ return node().lines; }
+  function ensureActive(){
+    var key=currentSpec+(SPECIMENS[currentSpec].toggleEra?currentEra:"");
+    if(!activeLines[key]){ activeLines[key]=specLines().map(function(){return true;}); }
+    return key;
+  }
+  function getVerdict(act){
+    var s=SPECIMENS[currentSpec], nd=node(), lines=nd.lines;
+    var sup=0,con=0,thy=0;
+    lines.forEach(function(ln,i){ if(act[i]){ if(ln.role==="support")sup++; else if(ln.role==="conflict")con++; else thy++; } });
+    if(s.kind==="untestable"){
+      return {k:"reach", txt:"OUT OF REACH", col:"var(--amber)", fill:"rgba(176,125,24,.13)", note:s.reachNote};
+    }
+    if(s.kind==="contested"){
+      if(con>0) return {k:"contested", txt:"CONTESTED", col:"var(--amber)", fill:"rgba(176,125,24,.13)", note:nd.contestedNote};
+      if(sup>=(s.threshold||2)) return {k:"cherry", txt:"LOOKS SETTLED?", col:"var(--amber)", fill:"rgba(176,125,24,.13)", note:nd.cherryNote};
+      return {k:"thread", txt:"ONE THREAD", col:"var(--rust)", fill:"rgba(138,59,42,.14)", note:nd.threadNote};
+    }
+    // convergent
+    if(sup>=(s.threshold||2)) return {k:"hold", txt:"HOLDS", col:"var(--good)", fill:"rgba(63,107,58,.16)", note:nd.holdNote};
+    return {k:"thread", txt:sup<=1?"ONE THREAD":"NOT ENOUGH", col:"var(--rust)", fill:"rgba(138,59,42,.14)", note:nd.fallNote||"Below the threshold for convergence."};
+  }
+
+  function drawViz(){
+    var svg=document.getElementById("viz");
+    var s=SPECIMENS[currentSpec];
+    [].forEach.call(vizbar.children,function(b){ if(b.dataset.k) b.classList.toggle("on", b.dataset.k===currentSpec); });
+    if(s.kind==="rivalry"){ drawRivalry(s); return; }
+    eraBtn.style.display="none";
+    var key=ensureActive();
+    var lines=specLines();
+    var act=activeLines[key];
+    var cx=350, cy=210, R=150, N=lines.length, html="";
+    lines.forEach(function(ln,i){
+      var ang=(-140 + i*(280/Math.max(N-1,1)))*Math.PI/180; if(N===1) ang=Math.PI;
+      var ex=cx+Math.cos(ang)*R, ey=cy+Math.sin(ang)*R, on=act[i];
+      var base = ln.role==="conflict"?COL.conflict : ln.role==="theory"?COL.theory : COL.support;
+      var col = on?base:COL.off;
+      var dash = on ? (ln.role==="theory"?"7 5":(ln.role==="conflict"?"2 4":"")) : "5 5";
+      html+='<line class="evline" data-i="'+i+'" x1="'+cx+'" y1="'+cy+'" x2="'+ex+'" y2="'+ey+'" stroke="'+col+'" stroke-width="'+(on?3:1.5)+'" stroke-dasharray="'+dash+'"/>';
+      var lx=cx+Math.cos(ang)*(R+8), ly=cy+Math.sin(ang)*(R+8);
+      var anchor = ex<cx-20?"end":(ex>cx+20?"start":"middle");
+      html+='<circle class="evline" data-i="'+i+'" cx="'+ex+'" cy="'+ey+'" r="7" fill="'+(on?base:COL.offDot)+'" stroke="#fff" stroke-width="1.5"/>';
+      var words=ln.l.split(" "), arr=[], cur="";
+      words.forEach(function(w){ if((cur+" "+w).length>22){arr.push(cur);cur=w;} else cur=(cur?cur+" ":"")+w; });
+      if(cur)arr.push(cur);
+      var ty=ly-(arr.length-1)*7;
+      html+='<text class="evline" data-i="'+i+'" x="'+lx+'" y="'+ty+'" text-anchor="'+anchor+'" font-family="JetBrains Mono, monospace" font-size="10.5" fill="'+(on?"var(--ink)":"#a99")+'">';
+      arr.forEach(function(l,k){ html+='<tspan x="'+lx+'" dy="'+(k===0?0:13)+'">'+escapeXml(l)+'</tspan>'; });
+      html+='</text>';
+    });
+
+    var v=getVerdict(act);
+    html+='<circle cx="'+cx+'" cy="'+cy+'" r="60" fill="'+v.fill+'" stroke="'+v.col+'" stroke-width="3"/>';
+    html+='<text x="'+cx+'" y="'+(cy-6)+'" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10" letter-spacing="2" fill="'+v.col+'">THE CLAIM</text>';
+    html+='<text x="'+cx+'" y="'+(cy+15)+'" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="'+v.col+'">'+v.txt+'</text>';
+    svg.innerHTML=html;
+
+    [].forEach.call(svg.querySelectorAll(".evline"),function(el){
+      el.addEventListener("click",function(){ var i=+el.dataset.i; act[i]=!act[i]; drawViz(); });
+    });
+
+    var nOn=act.filter(Boolean).length;
+    var cls = (v.k==="hold")?"v-hold":(v.k==="thread"?"v-fall":"v-reach");
+    document.getElementById("vstatus").innerHTML=
+      '<span class="verdict '+cls+'">'+v.txt+'</span>'+
+      '&nbsp;<span style="font-family:var(--mono);font-size:12px;color:var(--ink-soft)">lines active: '+nOn+' / '+N+'</span><br><br>'+v.note;
+    document.getElementById("vhint").innerHTML = "Lines: <span style='color:var(--blue)'>\u25CF empirical</span> \u00B7 <span style='color:var(--amber)'>\u25CF theoretical</span> \u00B7 <span style='color:var(--rust)'>\u25CF conflicting</span>. Click any line to switch it off; switch between all five claims above.";
+  }
+  function wrapText(str,maxc){ var w=str.split(" "),a=[],c=""; w.forEach(function(x){ if((c+" "+x).length>maxc){a.push(c);c=x;} else c=(c?c+" ":"")+x; }); if(c)a.push(c); return a; }
+
+  function drawRivalry(s){
+    if(s.years.indexOf(currentEra)<0) currentEra=s.years[0];
+    var atStart = currentEra===s.years[0];
+    eraBtn.style.display="inline-block"; eraBtn.classList.add("on");
+    eraBtn.textContent = atStart ? ("\u25B6  New evidence arrives ("+s.years[1]+")") : ("\u25C0  Rewind to "+s.years[0]);
+    var svg=document.getElementById("viz");
+    var cy=210, R=100, html="";
+    html+='<text x="350" y="24" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="15" letter-spacing="4" fill="var(--amber)">'+currentEra+'</text>';
+    html+='<line x1="350" y1="40" x2="350" y2="392" stroke="#d8cdb0" stroke-width="1" stroke-dasharray="3 6"/>';
+    var nodes=[{c:s.claims[0],cx:205,side:-1},{c:s.claims[1],cx:495,side:1}];
+    nodes.forEach(function(nd){
+      var lines=nd.c.lines[currentEra], N=lines.length, sup=0;
+      lines.forEach(function(ln){ if(ln.role==="support")sup++; });
+      var v = sup>=2 ? {txt:"HOLDS",col:"var(--good)",fill:"rgba(63,107,58,.16)"} :
+              sup===1 ? {txt:"ONE THREAD",col:"var(--rust)",fill:"rgba(138,59,42,.14)"} :
+                        {txt:"COLLAPSES",col:"var(--rust)",fill:"rgba(138,59,42,.14)"};
+      var base = nd.side<0?180:0, spread=150;
+      lines.forEach(function(ln,i){
+        var a = N===1 ? base : (base - spread/2 + i*(spread/(N-1)));
+        var ang=a*Math.PI/180, ex=nd.cx+Math.cos(ang)*R, ey=cy+Math.sin(ang)*R;
+        var stroke = ln.role==="support"?COL.support : ln.role==="conflict"?COL.conflict : "#bcae90";
+        var dash = ln.role==="conflict"?"2 4":(ln.role==="dead"?"3 5":"");
+        html+='<line x1="'+nd.cx+'" y1="'+cy+'" x2="'+ex+'" y2="'+ey+'" stroke="'+stroke+'" stroke-width="'+(ln.role==="support"?3:1.6)+'" stroke-dasharray="'+dash+'"/>';
+        html+='<circle cx="'+ex+'" cy="'+ey+'" r="6" fill="'+stroke+'" stroke="#fff" stroke-width="1.5"/>';
+        var lx=nd.cx+Math.cos(ang)*(R+8), ly=cy+Math.sin(ang)*(R+8), anchor=nd.side<0?"end":"start";
+        var arr=wrapText(ln.l,16), ty=ly-(arr.length-1)*6.5;
+        var fill = ln.role==="dead"?"#a99":(ln.role==="conflict"?"var(--rust)":"var(--ink)");
+        var deco = ln.role==="dead"?' text-decoration="line-through"':'';
+        html+='<text x="'+lx+'" y="'+ty+'" text-anchor="'+anchor+'" font-family="JetBrains Mono,monospace" font-size="9" fill="'+fill+'"'+deco+'>';
+        arr.forEach(function(l,k){ html+='<tspan x="'+lx+'" dy="'+(k===0?0:11)+'">'+escapeXml(l)+'</tspan>'; });
+        html+='</text>';
+      });
+      html+='<circle cx="'+nd.cx+'" cy="'+cy+'" r="50" fill="'+v.fill+'" stroke="'+v.col+'" stroke-width="3"/>';
+      var narr=wrapText(nd.c.name,12), nty=cy-12-(narr.length-1)*6;
+      html+='<text x="'+nd.cx+'" y="'+nty+'" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9.5" fill="'+v.col+'">';
+      narr.forEach(function(l,k){ html+='<tspan x="'+nd.cx+'" dy="'+(k===0?0:11)+'">'+escapeXml(l.toUpperCase())+'</tspan>'; });
+      html+='</text>';
+      html+='<text x="'+nd.cx+'" y="'+(cy+24)+'" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="12" font-weight="700" fill="'+v.col+'">'+v.txt+'</text>';
+    });
+    svg.innerHTML=html;
+    document.getElementById("vstatus").innerHTML =
+      '<span class="verdict v-reach">'+currentEra+'</span>&nbsp;<span style="font-family:var(--mono);font-size:12px;color:var(--ink-soft)">press the amber button to move through time</span><br><br>'+s.notes[currentEra];
+    document.getElementById("vhint").innerHTML = "Lines: <span style='color:var(--blue)'>\u25CF support</span> \u00B7 <span style='color:var(--rust)'>\u25CF contradicts</span> \u00B7 <span style='color:#a99'>\u25CF support that dissolved</span>. Watch both verdicts flip when the evidence base changes.";
+  }
+  function escapeXml(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+  drawViz();
+
+  /* ---------- consolidate ---------- */
+  function val(id){ return (document.getElementById(id).value||"").trim(); }
+  function buildConsolidate(){
+    document.getElementById("r1").textContent = val("a1")||"\u2014 (not yet answered) \u2014";
+    document.getElementById("r2").textContent = val("a2")||"\u2014 (not yet answered) \u2014";
+    document.getElementById("r3").textContent = val("a3")||"\u2014 (not yet answered) \u2014";
+    document.getElementById("r4").textContent = val("a4")||"\u2014 (not yet answered) \u2014";
+    // bottom card from round1
+    var bottom = round1 ? round1[round1.length-1].text : "your bottom card";
+    document.getElementById("r5card").textContent = "\u201C"+bottom+"\u201D";
+  }
+
+  /* ---------- print / pdf ---------- */
+  document.getElementById("download").addEventListener("click",function(){
+    var o2 = readOrder("rank2");
+    var sheet=document.getElementById("printsheet");
+    function block(label,q,a){ return '<div class="blk"><div class="bl">'+label+'</div><div class="bq">'+q+'</div><div class="ba">'+ (escapeHtml(a)||" ") +'</div></div>'; }
+    var bottom = round1 ? round1[round1.length-1].text : "(card)";
+    var html="";
+    html+='<h1>How Science Changes Its Mind</h1>';
+    html+='<div class="pk">Reflection \u2014 TOK Natural Sciences, Lesson 5 \u00B7 KQ: How settled is &ldquo;settled science&rdquo;?</div>';
+    html+='<div class="meta"><b>Name:</b> '+(escapeHtml(val("nm"))||"____________")+' &nbsp;&nbsp; <b>Class:</b> '+(escapeHtml(val("cls"))||"______")+'</div>';
+    // rankings
+    html+='<div class="blk"><div class="bl">Round 1 ranking (most likely to change \u2192 least)</div><ol>';
+    (round1||CARDS).forEach(function(c){ html+='<li>'+escapeHtml(c.text)+'</li>'; });
+    html+='</ol></div>';
+    html+='<div class="blk"><div class="bl">Round 2 ranking (after the lesson)</div><ol>';
+    (o2||CARDS).forEach(function(c){ html+='<li>'+escapeHtml(c.text)+'</li>'; });
+    html+='</ol></div>';
+    html+=block("Q1 \u2014 least likely to change","Which card did you put as least likely to change, and why?",val("a1"));
+    html+=block("Q2 \u2014 how science changes its mind","What forced the change from \u201Ccontinents are fixed\u201D \u2014 argument, or something else?",val("a2"));
+    html+=block("Q3 \u2014 what holds a claim up","What was the difference between the claim that stayed up and the one that went dark?",val("a3"));
+    html+=block("Q4 \u2014 a card you re-judged","Which card did you move, and what did you learn that let you re-judge it?",val("a4"));
+    html+=block("Q5 \u2014 the blind spot","1942 geologists were certain too. You ranked \u201C"+escapeHtml(bottom)+"\u201D as least likely to change \u2014 what would have to be true for you to be the 1942 geologist about it?",val("a5"));
+    html+=block("Q6 \u2014 the knowledge question","How settled is \u201Csettled science\u201D? (calibrated)",val("a6"));
+    sheet.innerHTML=html;
+    window.print();
+  });
+  function escapeHtml(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+  show(0);
+})();
+</script>
+</body>
+</html>
