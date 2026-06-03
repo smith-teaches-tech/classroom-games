@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Objection! — State v. Alli</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#efe6d0; --paper2:#e7dcc0; --paper3:#f6efdd;
+    --ink:#23201a; --ink-soft:#5a5347; --line:#2a2620;
+    --pros:#1f4e6b; --pros-tint:#dde8ef; --pros-deep:#143548;
+    --def:#3c6138; --def-tint:#e1ebdd; --def-deep:#274226;
+    --stamp:#b5301f; --gold:#b8893b; --good:#3c6138;
+    --shadow:4px 4px 0 rgba(35,32,26,.18);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:Georgia, 'Times New Roman', serif;
+    color:var(--ink);
+    background:
+      radial-gradient(circle at 20% 10%, rgba(0,0,0,.025) 0 2px, transparent 2px) 0 0/7px 7px,
+      radial-gradient(circle at 70% 60%, rgba(0,0,0,.02) 0 2px, transparent 2px) 3px 4px/9px 9px,
+      linear-gradient(160deg,var(--paper3),var(--paper) 60%,var(--paper2));
+    line-height:1.5;
+    min-height:100vh;
+  }
+  .wrap{max-width:1020px;margin:0 auto;padding:18px 16px 60px}
+  h1,h2,h3,.disp{font-family:'Oswald',sans-serif;letter-spacing:.5px}
+  .tw{font-family:'Special Elite','Courier New',monospace}
+
+  /* ---------- Masthead ---------- */
+  .masthead{
+    border:3px solid var(--line);
+    background:var(--paper3);
+    box-shadow:var(--shadow);
+    border-radius:3px;
+    overflow:hidden;
+    margin-bottom:16px;
+  }
+  .mast-top{
+    display:flex;justify-content:space-between;align-items:baseline;
+    padding:10px 16px 6px;border-bottom:2px solid var(--line);
+    flex-wrap:wrap;gap:6px;
+  }
+  .mast-top h1{margin:0;font-size:30px;font-weight:700;text-transform:uppercase;line-height:1}
+  .mast-top .case{font-family:'Special Elite',monospace;font-size:13px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:1px}
+  .scene{display:block;width:100%;height:auto;background:var(--paper);}
+
+  /* ---------- Scoreboard ---------- */
+  .scorebar{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;margin-bottom:16px}
+  .score{
+    border:3px solid var(--line);border-radius:3px;box-shadow:var(--shadow);
+    padding:10px 12px;background:var(--paper3);position:relative;
+  }
+  .score.pros{border-top:9px solid var(--pros)}
+  .score.def{border-top:9px solid var(--def)}
+  .score .lbl{font-family:'Oswald';font-weight:600;text-transform:uppercase;font-size:14px;letter-spacing:1px;display:flex;align-items:center;gap:7px}
+  .dot{width:13px;height:13px;border-radius:50%;display:inline-block;border:2px solid var(--line)}
+  .dot.p{background:var(--pros)} .dot.d{background:var(--def)}
+  .score .num{font-family:'Oswald';font-weight:700;font-size:46px;line-height:.95;margin:2px 0}
+  .score.pros .num{color:var(--pros-deep)} .score.def .num{color:var(--def-deep)}
+  .score .adj{display:flex;gap:6px;margin-top:2px}
+  .vs{align-self:center;font-family:'Oswald';font-weight:700;font-size:20px;color:var(--ink-soft);text-align:center}
+  .vs .gav{font-size:26px}
+
+  button{font-family:'Oswald',sans-serif;cursor:pointer;border:2px solid var(--line);background:var(--paper3);
+    border-radius:3px;padding:6px 12px;font-size:14px;font-weight:500;color:var(--ink);
+    box-shadow:2px 2px 0 rgba(35,32,26,.2);transition:transform .05s, box-shadow .05s}
+  button:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 rgba(35,32,26,.25)}
+  button:active{transform:translate(1px,1px);box-shadow:1px 1px 0 rgba(35,32,26,.2)}
+  button.mini{padding:2px 9px;font-size:15px;font-weight:700;line-height:1}
+  button[disabled]{opacity:.4;cursor:not-allowed;box-shadow:none;transform:none}
+
+  /* ---------- On the clock banner ---------- */
+  .clock{
+    border:3px solid var(--line);border-radius:3px;box-shadow:var(--shadow);
+    padding:9px 14px;margin-bottom:0;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+    background:var(--paper3);border-top-left-radius:3px;border-top-right-radius:3px;border-bottom:none;
+  }
+  .clock.pros{border-left:11px solid var(--pros)}
+  .clock.def{border-left:11px solid var(--def)}
+  .clock .who{font-family:'Oswald';font-weight:600;font-size:15px;text-transform:uppercase;letter-spacing:.5px}
+  .clock .who b{font-weight:700}
+  .badge{font-family:'Oswald';font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:1.5px;
+    padding:3px 11px;border:2px solid var(--line);border-radius:20px}
+  .badge.direct{background:#f3e6c4;color:#7a5a14}
+  .badge.cross{background:#e9d9d6;color:#8a2c1c}
+  .badge.cross::after{content:" ⚑"}
+  .seg-tag{margin-left:auto;font-family:'Special Elite',monospace;font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:1px}
+
+  /* ---------- Round card ---------- */
+  .card{
+    border:3px solid var(--line);border-radius:3px;box-shadow:var(--shadow);
+    background:var(--paper3);padding:16px 18px 18px;margin-bottom:14px;
+  }
+  .witline{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;border-bottom:2px dashed var(--line);padding-bottom:9px;margin-bottom:12px}
+  .witline .wname{font-family:'Oswald';font-weight:700;font-size:21px;text-transform:uppercase}
+  .witline .wrole{font-family:'Special Elite',monospace;font-size:12px;color:var(--ink-soft)}
+  .witline .exam{margin-left:auto;font-family:'Oswald';font-size:13px;font-weight:500;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.5px}
+
+  .transcript{margin:4px 0 6px}
+  .spk{display:flex;gap:9px;margin-bottom:8px}
+  .spk .tag{font-family:'Oswald';font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.5px;
+    border:2px solid var(--line);border-radius:3px;padding:2px 7px;white-space:nowrap;height:fit-content;background:var(--paper)}
+  .spk.lawP .tag{background:var(--pros-tint);color:var(--pros-deep)}
+  .spk.lawD .tag{background:var(--def-tint);color:var(--def-deep)}
+  .spk.wit .tag{background:#efe2c2;color:#7a5a14}
+  .spk .txt{font-family:'Special Elite',monospace;font-size:16.5px;line-height:1.45}
+
+  /* ---------- Lead-up (examination so far) ---------- */
+  .leadup{opacity:.6;border-left:3px solid #c3b489;padding-left:12px;margin-bottom:4px}
+  .leadup .llab{font-family:'Oswald';font-weight:600;font-size:10.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-soft);margin-bottom:7px}
+  .leadup .spk{margin-bottom:5px}
+  .leadup .spk .txt{font-size:14.5px;line-height:1.4}
+  .leadup .spk .tag{opacity:.85}
+  .judgemark{font-family:'Oswald';font-weight:700;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--stamp);margin:6px 0 9px;display:flex;align-items:center;gap:7px}
+  .judgemark::before{content:"\25B6";font-size:10px}
+  .spk.judged .txt{background:#f6ecc8;border-radius:3px;padding:3px 8px;box-shadow:inset 0 0 0 1px rgba(184,137,59,.45)}
+
+  /* ---------- Decision controls ---------- */
+  .decide{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:6px;padding-top:12px;border-top:2px solid var(--line)}
+  .decide .prompt{font-family:'Oswald';font-weight:600;font-size:14px;text-transform:uppercase;letter-spacing:.5px;margin-right:2px}
+  .btn-obj{background:var(--stamp);color:#fff;border-color:#5e1a10;font-weight:700;font-size:17px;letter-spacing:1px;text-transform:uppercase;padding:9px 18px}
+  .btn-stand{background:var(--paper);font-weight:600;font-size:15px;padding:9px 16px}
+  .btn-obj.sel,.btn-stand.sel{outline:3px solid var(--gold);outline-offset:1px}
+  .btn-reveal{background:var(--ink);color:var(--paper3);border-color:#000;font-weight:600;font-size:15px;text-transform:uppercase;letter-spacing:1px;padding:9px 18px;margin-left:auto}
+
+  .typebox{margin-top:12px;padding:11px;border:2px dashed var(--line);border-radius:3px;background:var(--paper)}
+  .typebox .lab{font-family:'Oswald';font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--ink-soft);margin-bottom:8px}
+  .types{display:flex;flex-wrap:wrap;gap:7px}
+  .types button{font-size:13px;padding:5px 10px}
+  .types button.sel{background:var(--stamp);color:#fff;border-color:#5e1a10}
+
+  /* ---------- Reveal panel ---------- */
+  .reveal{margin-top:14px;border:3px solid var(--line);border-radius:3px;background:var(--paper);overflow:hidden;
+    animation:drop .25s ease}
+  @keyframes drop{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  .verdict{padding:10px 14px;font-family:'Oswald';font-weight:700;font-size:17px;text-transform:uppercase;letter-spacing:.5px;
+    display:flex;align-items:center;gap:10px;border-bottom:2px solid var(--line)}
+  .verdict.ok{background:#dce8d4;color:var(--def-deep)}
+  .verdict.no{background:#ecd9d5;color:#7c2417}
+  .verdict .mk{font-size:22px}
+  .ruling-pill{margin-left:auto;font-size:12px;font-weight:600;letter-spacing:1px;padding:3px 10px;border:2px solid var(--line);border-radius:20px;background:var(--paper3);color:var(--ink)}
+  .rbody{padding:12px 15px}
+  .rbody p{margin:0 0 9px}
+  .rbody .k{font-family:'Oswald';font-weight:700;text-transform:uppercase;font-size:12px;letter-spacing:1px;color:var(--ink-soft);margin-right:4px}
+  .strat{background:#f3e6c4;border-left:5px solid var(--gold);padding:9px 12px;border-radius:2px;margin:4px 0 9px;font-size:15px}
+  .nochall{background:#ecd9d5;border-left:5px solid var(--stamp);padding:9px 12px;border-radius:2px;font-size:14.5px;margin:4px 0 9px}
+
+  .award{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:6px;padding-top:10px;border-top:2px dashed var(--line)}
+  .award .sg{font-family:'Oswald';font-weight:600;font-size:14px;text-transform:uppercase;letter-spacing:.5px}
+  .btn-award{font-weight:700;color:#fff}
+  .btn-award.p{background:var(--pros);border-color:var(--pros-deep)}
+  .btn-award.d{background:var(--def);border-color:var(--def-deep)}
+  .awarded{font-family:'Oswald';font-weight:700;color:var(--def-deep);font-size:14px;text-transform:uppercase}
+
+  /* ---------- Counter / argue-it ---------- */
+  .counter{margin:12px 15px 14px;border:3px dashed var(--line);border-radius:3px;background:var(--paper3);padding:0}
+  .counter .ch{padding:9px 13px;font-family:'Oswald';font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px dashed var(--line);display:flex;align-items:center;gap:9px}
+  .counter.p .ch{background:var(--pros-tint);color:var(--pros-deep)}
+  .counter.d .ch{background:var(--def-tint);color:var(--def-deep)}
+  .counter .cbody{padding:11px 14px}
+  .counter .cprompt{font-size:15px;margin:0 0 9px}
+  .counter .cmodel{font-family:'Special Elite',monospace;font-size:15px;background:var(--paper);border:2px solid var(--line);border-radius:3px;padding:10px 12px;margin:8px 0}
+
+  /* ---------- Nav + map ---------- */
+  .nav{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .nav .count{font-family:'Oswald';font-weight:600;font-size:15px;text-transform:uppercase;letter-spacing:1px}
+  .btn-next{margin-left:auto;background:var(--gold);color:#2a2008;border-color:#6e5212;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+  .map{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:18px}
+  .map button{width:30px;height:30px;padding:0;font-size:12px;font-weight:600}
+  .map button.cur{background:var(--ink);color:var(--paper3);border-color:#000}
+  .map button.done{background:#dce8d4}
+  .map .seglab{flex-basis:100%;font-family:'Special Elite',monospace;font-size:10.5px;letter-spacing:1px;text-transform:uppercase;color:var(--ink-soft);margin:6px 0 1px}
+
+  /* ---------- How to play ---------- */
+  details.howto{border:3px solid var(--line);border-radius:3px;box-shadow:var(--shadow);background:var(--paper3);margin-bottom:16px}
+  details.howto summary{font-family:'Oswald';font-weight:700;text-transform:uppercase;letter-spacing:1px;font-size:15px;padding:11px 15px;cursor:pointer;list-style:none}
+  details.howto summary::-webkit-details-marker{display:none}
+  details.howto summary::before{content:"▸ ";color:var(--gold)}
+  details.howto[open] summary::before{content:"▾ "}
+  .howbody{padding:0 16px 14px;font-size:15px}
+  .howbody ul{margin:6px 0;padding-left:20px}
+  .howbody li{margin-bottom:6px}
+  .keyhint{font-family:'Special Elite',monospace;font-size:12px;background:var(--paper);border:1px solid var(--line);border-radius:3px;padding:1px 6px}
+
+  /* ---------- Start screen ---------- */
+  .start{border:3px solid var(--line);border-radius:3px;box-shadow:var(--shadow);background:var(--paper3);padding:22px 24px;text-align:center}
+  .start h2{font-size:24px;margin:.2em 0;text-transform:uppercase}
+  .start p{max-width:620px;margin:8px auto;font-size:16px}
+  .flowstrip{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:16px 0}
+  .flowstrip span{font-family:'Oswald';font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.5px;border:2px solid var(--line);border-radius:20px;padding:5px 12px;background:var(--paper)}
+  .flowstrip i{align-self:center;color:var(--gold);font-style:normal;font-weight:700}
+  .btn-begin{background:var(--stamp);color:#fff;border-color:#5e1a10;font-weight:700;font-size:20px;text-transform:uppercase;letter-spacing:2px;padding:12px 30px;margin-top:8px}
+
+  footer{text-align:center;font-family:'Special Elite',monospace;font-size:11px;color:var(--ink-soft);margin-top:22px}
+  @media(max-width:620px){
+    .mast-top h1{font-size:22px}
+    .score .num{font-size:36px}
+    .seg-tag{margin-left:0;flex-basis:100%}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== MASTHEAD + COURTROOM SCENE ===== -->
+  <div class="masthead">
+    <div class="mast-top">
+      <h1>Objection!</h1>
+      <span class="case">Mini-Mock Trial &nbsp;·&nbsp; State v. Alli</span>
+    </div>
+    <svg class="scene" id="scene" viewBox="0 0 940 270" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Low-fi courtroom">
+      <rect x="0" y="0" width="940" height="200" fill="#e6dcc1"/>
+      <rect x="0" y="200" width="940" height="70" fill="#d8cba9"/>
+      <g stroke="#c3b489" stroke-width="2">
+        <line x1="60" y1="0" x2="60" y2="200"/><line x1="180" y1="0" x2="180" y2="200"/>
+        <line x1="760" y1="0" x2="760" y2="200"/><line x1="880" y1="0" x2="880" y2="200"/>
+      </g>
+      <g stroke="#2a2620" stroke-width="3" fill="#cfe3ec">
+        <rect x="92" y="34" width="66" height="84" rx="3"/>
+        <rect x="784" y="34" width="66" height="84" rx="3"/>
+      </g>
+      <g stroke="#2a2620" stroke-width="2">
+        <line x1="125" y1="34" x2="125" y2="118"/><line x1="92" y1="76" x2="158" y2="76"/>
+        <line x1="817" y1="34" x2="817" y2="118"/><line x1="784" y1="76" x2="850" y2="76"/>
+      </g>
+      <g>
+        <line x1="245" y1="20" x2="245" y2="150" stroke="#6e5212" stroke-width="4"/>
+        <path d="M245 24 q70 -14 120 6 q-58 26 -120 12 Z" fill="#b5301f" stroke="#2a2620" stroke-width="2.5"/>
+        <rect x="245" y="24" width="44" height="22" fill="#1f4e6b" stroke="#2a2620" stroke-width="2"/>
+        <circle cx="245" cy="20" r="6" fill="#b8893b" stroke="#2a2620" stroke-width="2"/>
+      </g>
+      <g transform="translate(470,70)">
+        <circle r="44" fill="#e9dcbc" stroke="#2a2620" stroke-width="3.5"/>
+        <circle r="33" fill="none" stroke="#b8893b" stroke-width="3"/>
+        <text x="0" y="-12" text-anchor="middle" font-family="Oswald, sans-serif" font-size="11" fill="#5a5347" letter-spacing="1">DISTRICT</text>
+        <text x="0" y="6" text-anchor="middle" font-family="Oswald, sans-serif" font-size="13" font-weight="700" fill="#2a2620">COURT</text>
+        <path d="M0 14 q-16 6 -22 18 M0 14 q16 6 22 18" stroke="#5a5347" stroke-width="2" fill="none"/>
+      </g>
+      <g id="bench">
+        <rect x="408" y="150" width="124" height="78" rx="3" fill="#9c7b46" stroke="#2a2620" stroke-width="3.5"/>
+        <rect x="420" y="162" width="100" height="20" rx="2" fill="#b8954f" stroke="#2a2620" stroke-width="2"/>
+        <circle cx="470" cy="138" r="16" fill="#efe0c4" stroke="#2a2620" stroke-width="3"/>
+        <path d="M449 154 q21 -20 42 0 l0 8 q-21 -10 -42 0 Z" fill="#2a2620"/>
+        <rect x="455" y="120" width="30" height="9" rx="4" fill="#2a2620"/>
+        <g id="gavel" transform="rotate(0 540 150)">
+          <rect x="528" y="140" width="40" height="11" rx="4" fill="#8a6a2f" stroke="#2a2620" stroke-width="2.5"/>
+          <rect x="544" y="150" width="9" height="26" rx="3" fill="#8a6a2f" stroke="#2a2620" stroke-width="2.5"/>
+        </g>
+        <rect x="520" y="174" width="36" height="9" rx="3" fill="#d8cba9" stroke="#2a2620" stroke-width="2"/>
+      </g>
+      <g>
+        <rect x="300" y="172" width="78" height="58" rx="3" fill="#ad8a52" stroke="#2a2620" stroke-width="3.5"/>
+        <circle cx="339" cy="162" r="14" fill="#efe0c4" stroke="#2a2620" stroke-width="3"/>
+        <path d="M321 178 q18 -16 36 0 l0 6 q-18 -8 -36 0 Z" fill="#7a5a14"/>
+        <text x="339" y="218" text-anchor="middle" font-family="Oswald,sans-serif" font-size="10" font-weight="600" fill="#3a2f12" letter-spacing="1">WITNESS</text>
+      </g>
+      <g>
+        <rect x="70" y="208" width="150" height="52" rx="3" fill="#1f4e6b" stroke="#2a2620" stroke-width="3.5" opacity="0.92"/>
+        <circle cx="120" cy="196" r="14" fill="#efe0c4" stroke="#2a2620" stroke-width="3"/>
+        <path d="M103 212 q17 -15 34 0 l0 7 q-17 -8 -34 0 Z" fill="#143548"/>
+        <text x="145" y="240" text-anchor="middle" font-family="Oswald,sans-serif" font-size="13" font-weight="700" fill="#fff" letter-spacing="1">PROSECUTION</text>
+      </g>
+      <g>
+        <rect x="720" y="208" width="150" height="52" rx="3" fill="#3c6138" stroke="#2a2620" stroke-width="3.5" opacity="0.92"/>
+        <circle cx="770" cy="196" r="14" fill="#efe0c4" stroke="#2a2620" stroke-width="3"/>
+        <path d="M753 212 q17 -15 34 0 l0 7 q-17 -8 -34 0 Z" fill="#274226"/>
+        <text x="797" y="240" text-anchor="middle" font-family="Oswald,sans-serif" font-size="13" font-weight="700" fill="#fff" letter-spacing="1">DEFENSE</text>
+      </g>
+      <g>
+        <rect x="612" y="196" width="92" height="40" rx="3" fill="#cdbd92" stroke="#2a2620" stroke-width="3"/>
+        <g fill="#efe0c4" stroke="#2a2620" stroke-width="2">
+          <circle cx="628" cy="206" r="7"/><circle cx="650" cy="206" r="7"/><circle cx="672" cy="206" r="7"/><circle cx="690" cy="206" r="7"/>
+        </g>
+        <text x="658" y="230" text-anchor="middle" font-family="Oswald,sans-serif" font-size="9" font-weight="600" fill="#3a2f12" letter-spacing="1">JURY</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ===== HOW TO PLAY ===== -->
+  <details class="howto" id="howto">
+    <summary>How to play &nbsp;·&nbsp; the strategy of objecting</summary>
+    <div class="howbody">
+      <p><b>Whole-class game.</b> The trial runs in order: Prosecution's witnesses first (direct, then defense cross), then Defense's witnesses (direct, then prosecution cross). Each round shows the <b>examination so far</b> (faded), then the one line to judge. <b>One team is "on the clock"</b> — the team that would be objecting. Read it aloud, let the team debate, lock in their call, and reveal the ruling.</p>
+      <ul>
+        <li><b>Object — and name the type.</b> A clean, correct objection scores. You must say <i>which</i> objection it is.</li>
+        <li><b>Watch how a direct exam BUILDS.</b> Lawyers lay foundation step by step with open questions. A question is judged in the context of what came before it — that's why the lead-up is shown.</li>
+        <li><b>Sometimes DON'T object.</b> A leading question is fine on <b>cross</b>; a witness describing what they <i>saw</i> is fine; "hearsay" is fine if the speaker is testifying. Objecting to these just tells everyone you don't know the rules.</li>
+        <li><b>Some slips are GOOD to let ride.</b> If a witness blurts out an opinion or hearsay that <i>helps your side</i>, the jury already heard it. Letting it stand can be the smart move.</li>
+        <li><b>Getting caught leading on <span class="badge direct" style="font-size:11px;padding:1px 7px">Direct</span> is the bad kind.</b> It looks sloppy. Watch the <b>Direct / Cross</b> flag every round — it changes the answer.</li>
+        <li><b>Argue it.</b> When an objection <i>can</i> be challenged (relevance, expert opinion, speculation), the <b>other team</b> gets to argue the evidence should come in — and can score too. Leading and hearsay <b>cannot</b> be argued: apologize and rephrase or drop.</li>
+      </ul>
+      <p style="font-size:13px;color:var(--ink-soft)">Both teams have roughly the same points available, so neither side is favored. Use the <b>+ / −</b> buttons to adjust any score by hand. Keyboard: <span class="keyhint">←</span> <span class="keyhint">→</span> to move, <span class="keyhint">R</span> to reveal.</p>
+    </div>
+  </details>
+
+  <!-- ===== SCOREBOARD ===== -->
+  <div class="scorebar">
+    <div class="score pros">
+      <div class="lbl"><span class="dot p"></span> Prosecution</div>
+      <div class="num" id="pScore">0</div>
+      <div class="adj"><button class="mini" onclick="bump('P',-1)">−</button><button class="mini" onclick="bump('P',1)">+</button></div>
+    </div>
+    <div class="vs"><div class="gav">⚖️</div>VS</div>
+    <div class="score def">
+      <div class="lbl"><span class="dot d"></span> Defense</div>
+      <div class="num" id="dScore">0</div>
+      <div class="adj"><button class="mini" onclick="bump('D',-1)">−</button><button class="mini" onclick="bump('D',1)">+</button></div>
+    </div>
+  </div>
+
+  <!-- ===== GAME AREA ===== -->
+  <div id="game"></div>
+
+  <footer>Built for the classroom · Case adapted from the Learning Law &amp; Democracy Foundation Mini-Mock Trial, <i>State v. Alli</i>.</footer>
+</div>
+
+<script>
+const TYPES = ["Irrelevant","Leading","Improper character opinion","Expert / improper opinion","Invention of facts","Speculation","Hearsay"];
+
+// ---- Trial, in chronological order. who in setup: 'L' = examining counsel, 'W' = witness ----
+const ROUNDS = [
+ // ===== SEGMENT 1: PROSECUTION DIRECT (Defense decides) =====
+ {seg:"Prosecution Calls Its Witnesses — Direct Examination", witness:"Mr. Tilman", role:"Private Investigator", by:"Prosecution", mode:"Direct", decider:"Defense", kind:"Question",
+  setup:[{who:'L',text:"Mr. Tilman, what do you do for a living?"},{who:'W',text:"I'm a private investigator. The school hired me to look into a drug problem."},{who:'L',text:"And did there come a time when you searched a backpack belonging to Alli?"},{who:'W',text:"Yes — on April 22nd."}],
+  line:"What did you find inside that backpack?",
+  answer:"no", pts:2, ruling:"—",
+  why:"The lawyer laid the foundation step by step — who the witness is, that he searched the bag, and when — so this open question is properly set up. Nothing to object to.",
+  strat:"Watch how a clean direct exam BUILDS: each question rests on the one before it. Don't object to a properly-founded open question — over-objecting just looks uninformed."},
+
+ {seg:"Prosecution — Direct Examination", witness:"Mr. Tilman", role:"Private Investigator", by:"Prosecution", mode:"Direct", decider:"Defense", kind:"Question",
+  setup:[{who:'L',text:"How long have you worked drug-related cases inside schools?"},{who:'W',text:"About five years now, on top of my years in policing."}],
+  line:"In your experience, what effect does marijuana have on a teenager's grades, focus, and behavior?",
+  answer:"object", type:"Expert / improper opinion", accepts:["Expert / improper opinion"], pts:3, ruling:"Could go either way",
+  why:"The question asks for an opinion on the EFFECTS of a drug — specialized knowledge. Tilman hasn't been qualified as a medical or scientific expert.",
+  strat:"A real, defensible objection — exactly the kind the other side will fight back on.",
+  chall:true, cTeam:"Prosecution", cPts:3,
+  cPrompt:"Argue why Mr. Tilman IS qualified to answer.",
+  cModel:"Mr. Tilman spent 7 years as a police officer, 10 as a private investigator, and the last 5 working drug cases in schools. His whole career is recognizing drug use and its effects — that experience qualifies him to speak to what he has seen firsthand."},
+
+ {seg:"Prosecution — Direct Examination", witness:"Mr. Tilman", role:"Private Investigator", by:"Prosecution", mode:"Direct", decider:"Defense", kind:"Question",
+  setup:[{who:'L',text:"Where in the backpack did you find the marijuana?"},{who:'W',text:"In a zippered compartment on the inside."}],
+  line:"And you found it there because that's where students always hide drugs — isn't that right?",
+  answer:"object", type:"Leading", accepts:["Leading"], pts:2, ruling:"Sustained",
+  why:"This is DIRECT examination, and the lawyer is stuffing the answer into the question. Leading isn't allowed on direct.",
+  strat:"He already had the answer cleanly with the open question — then tacked on a leading conclusion. Getting CAUGHT leading on direct is the bad kind: it tells everyone the prosecution forgot the rules. An easy clean point for the objector.",
+  chall:false, noChall:"Leading can't be argued. The prosecutor should say \u201cI'm sorry, Your Honor, I'll rephrase\u201d and re-ask it openly."},
+
+ {seg:"Prosecution — Direct Examination", witness:"Mr. Tilman", role:"Private Investigator", by:"Prosecution", mode:"Direct", decider:"Defense", kind:"Testimony",
+  setup:[{who:'L',text:"When you started, were you looking at Alli specifically, or the school in general?"},{who:'W',text:"The school in general, at first."}],
+  q:"Did you have any reason to focus on Alli in particular?",
+  line:"Yes — the principal TOLD me Alli had been hanging around the three students who got arrested.",
+  answer:"object", type:"Hearsay", accepts:["Hearsay"], pts:3, ruling:"Sustained",
+  why:"Tilman is repeating what the PRINCIPAL said out of court. The principal isn't testifying, so the jury can't test whether it's true.",
+  strat:"This HURTS Alli, so the defense genuinely wants it struck. But notice the trick — the jury already HEARD it before the judge struck it. Sometimes the questioning side fishes for exactly this slip.",
+  chall:false, noChall:"Hearsay can't be argued away here. It would only be allowed if the principal were going to testify, or were deceased."},
+
+ {seg:"Prosecution — Direct Examination", witness:"Matt", role:"Classmate", by:"Prosecution", mode:"Direct", decider:"Defense", kind:"Testimony",
+  setup:[{who:'L',text:"Matt, were you nearby when Mr. Tilman searched Alli's backpack?"},{who:'W',text:"Yeah, I was standing just a few feet away."}],
+  q:"What did you notice about Alli during the search?",
+  line:"She seemed really nervous, and when he pulled the bag out she said \u201cOh no!\u201d",
+  answer:"no", pts:3, ruling:"—",
+  why:"Two traps in one. \u201cShe seemed nervous\u201d is an observation of demeanor — lay witnesses ARE allowed to describe what they saw. And \u201cOh no!\u201d isn't barred hearsay, because Alli herself testifies in this trial.",
+  strat:"The instinct is to shout \u201cSpeculation!\u201d or \u201cHearsay!\u201d — but you'd lose both and look hasty. Knowing when NOT to object is worth as much as a good objection."},
+
+ {seg:"Prosecution — Direct Examination", witness:"Matt", role:"Classmate", by:"Prosecution", mode:"Direct", decider:"Defense", kind:"Question",
+  setup:[{who:'L',text:"You said Alli seemed nervous. How could you tell?"},{who:'W',text:"She was fidgeting and wouldn't look at the investigator."}],
+  line:"Why do you think Alli was so nervous? What was going through her head?",
+  answer:"object", type:"Speculation", accepts:["Speculation"], pts:2, ruling:"Sustained",
+  why:"Now the lawyer asks Matt to guess what's inside someone else's mind. He can describe what he saw; he can't read her thoughts.",
+  strat:"Compare this to the lead-up: describing demeanor is fine, guessing motive is speculation. That line is the whole lesson.",
+  chall:false, noChall:"Hard to save — Matt is a lay witness with no special insight into Alli's mind. Prosecution should move on."},
+
+ {seg:"Prosecution — Direct Examination", witness:"Matt", role:"Classmate", by:"Prosecution", mode:"Direct", decider:"Defense", kind:"Testimony",
+  setup:[{who:'L',text:"Matt, are you and Alli friends?"},{who:'W',text:"We're friendly — we've been in classes together for years."}],
+  q:"How well do you know Alli?",
+  line:"I've known her four years. She's never been in trouble — she's a good kid.",
+  answer:"no", pts:3, ruling:"—",
+  why:"Technically a character opinion. But it HELPS Alli, and it's spilling out of the prosecution's OWN witness.",
+  strat:"Never object to favorable evidence the other side's witness hands you. Let the jury sit with \u201cshe's a good kid.\u201d Restraint here is the smart, scored move."},
+
+ {seg:"Prosecution — Direct Examination", witness:"Sandy", role:"Science Partner", by:"Prosecution", mode:"Direct", decider:"Defense", kind:"Question",
+  setup:[{who:'L',text:"Sandy, you're Alli's lab partner in chemistry?"},{who:'W',text:"Yes, all semester."},{who:'L',text:"Have you noticed anything different about her lately?"},{who:'W',text:"She's seemed kind of confused and distracted."}],
+  line:"Tell the jury about the chemistry experiment last week — the one that caused the explosion.",
+  answer:"object", type:"Irrelevant", accepts:["Irrelevant"], pts:3, ruling:"Could go either way",
+  why:"Whether a lab experiment went wrong has nothing to do with whether the marijuana in the backpack was Alli's.",
+  strat:"A solid relevance objection — but exactly the kind the other side can argue back. Be ready for the prosecution to claim it shows a pattern.",
+  chall:true, cTeam:"Prosecution", cPts:3,
+  cPrompt:"Argue why the explosion IS relevant.",
+  cModel:"It shows a sudden, recent change in Alli's focus and judgment. We'll connect that change to the charge in the next two questions — it goes to whether something has been affecting her behavior."},
+
+ // ===== SEGMENT 2: DEFENSE CROSS of prosecution witnesses (Prosecution decides) =====
+ {seg:"Defense Cross-Examines the Prosecution's Witnesses", witness:"Mr. Tilman", role:"Private Investigator", by:"Defense", mode:"Cross", decider:"Prosecution", kind:"Question",
+  setup:[{who:'L',text:"Mr. Tilman, you searched the bag on the 22nd — three days after the garage sale, correct?"},{who:'W',text:"That's right."}],
+  line:"You never actually saw Alli put anything into that backpack, did you?",
+  answer:"no", pts:3, ruling:"—",
+  why:"It's a leading question — but this is CROSS-examination, where leading is completely proper and expected.",
+  strat:"THE classic trap. Object \u201cleading\u201d here and the judge overrules it — and you've just announced you don't know the direct/cross rule. Hold your fire."},
+
+ {seg:"Defense Cross-Examination", witness:"Mr. Tilman", role:"Private Investigator", by:"Defense", mode:"Cross", decider:"Prosecution", kind:"Question",
+  setup:[{who:'L',text:"You're paid by the school for this investigation, aren't you?"},{who:'W',text:"I'm paid for my time, yes."}],
+  line:"Isn't it true the school pays you a bonus for every student you catch with drugs?",
+  answer:"object", type:"Invention of facts", accepts:["Invention of facts"], pts:2, ruling:"Sustained",
+  why:"Nothing in the case mentions a bonus or per-arrest pay. The defense is inventing a fact that isn't in the record.",
+  strat:"Good catch — the defense is trying to smear the investigator with something made up. Shut it down cleanly.",
+  chall:false, noChall:"Can't be argued — it's outside the record. Defense should drop it or ask about something actually in the case."},
+
+ {seg:"Defense Cross-Examination", witness:"Mr. Tilman", role:"Private Investigator", by:"Defense", mode:"Cross", decider:"Prosecution", kind:"Question",
+  setup:[{who:'L',text:"This wasn't the first search you'd done at the school, was it?"},{who:'W',text:"No — I'd been searching for several days."}],
+  line:"Before April 22nd, you'd searched students for many days and found no drugs at all — correct?",
+  answer:"no", pts:2, ruling:"—",
+  why:"Straight from the record (he searched for days with no results) and a fair line of cross. Nothing improper.",
+  strat:"Resist objecting just because the answer hurts your side. A true, in-record question is not objectionable."},
+
+ {seg:"Defense Cross-Examination", witness:"Matt", role:"Classmate", by:"Defense", mode:"Cross", decider:"Prosecution", kind:"Question",
+  setup:[{who:'L',text:"You testified you were only a few feet away during the search?"},{who:'W',text:"Yes."}],
+  line:"You were standing next to Alli, but you couldn't actually see inside her backpack, could you?",
+  answer:"no", pts:3, ruling:"—",
+  why:"A fair, in-record cross question that simply tests what Matt could really observe. Leading is allowed on cross anyway.",
+  strat:"Another don't-object trap. It stings your witness, but there's nothing wrong with it. Objecting would just look defensive."},
+
+ {seg:"Defense Cross-Examination", witness:"Matt", role:"Classmate", by:"Defense", mode:"Cross", decider:"Prosecution", kind:"Question",
+  setup:[{who:'L',text:"You've known Alli for four years, you said?"},{who:'W',text:"That's right."}],
+  line:"And you'd agree Alli is a good kid who has never been in trouble, right?",
+  answer:"no", pts:2, ruling:"—",
+  why:"It's favorable to Alli — but it's already in evidence from Matt's own testimony, and it's a fair cross question.",
+  strat:"Even if you'd rather the jury forget it, objecting now just spotlights \u201cgood kid\u201d a second time. Sometimes silence is the better play."},
+
+ {seg:"Defense Cross-Examination", witness:"Sandy", role:"Science Partner", by:"Defense", mode:"Cross", decider:"Prosecution", kind:"Question",
+  setup:[{who:'L',text:"You told the jury Alli seemed confused in the lab."},{who:'W',text:"Yes."},{who:'L',text:"And you're a student yourself, the same as Alli?"},{who:'W',text:"Right."}],
+  line:"You're not a doctor or a drug counselor, are you?",
+  answer:"no", pts:3, ruling:"—",
+  why:"A legitimate cross question exposing that Sandy has no qualification to link \u201cconfusion\u201d to drug use. Nothing improper.",
+  strat:"Don't-object trap. The defense is fairly undercutting your witness's earlier implication — objecting would only draw attention to it."},
+
+ // ===== SEGMENT 3: DEFENSE DIRECT (Prosecution decides) =====
+ {seg:"Defense Calls Its Witnesses — Direct Examination", witness:"Alli", role:"Defendant", by:"Defense", mode:"Direct", decider:"Prosecution", kind:"Question",
+  setup:[{who:'L',text:"Alli, you've heard the testimony about what was found in your backpack."},{who:'W',text:"Yes, I have."}],
+  line:"You had absolutely no idea there was any marijuana in that bag — isn't that right?",
+  answer:"object", type:"Leading", accepts:["Leading"], pts:2, ruling:"Sustained",
+  why:"Defense is on DIRECT with its own client and is feeding her the answer. Leading isn't allowed on direct.",
+  strat:"Now it's the DEFENSE getting caught leading on direct — the same sloppy mistake. As prosecutor, this is a free, clean point.",
+  chall:false, noChall:"Defense can't argue it. They should rephrase: \u201cWhat, if anything, did you know about the contents of the bag?\u201d"},
+
+ {seg:"Defense — Direct Examination", witness:"Alli", role:"Defendant", by:"Defense", mode:"Direct", decider:"Prosecution", kind:"Question",
+  setup:[{who:'L',text:"Withdrawn, Your Honor — I'll rephrase. Alli, let's start at the beginning."},{who:'W',text:"Okay."}],
+  line:"Where and when did you buy the backpack?",
+  answer:"no", pts:2, ruling:"—",
+  why:"Open, non-leading, and directly relevant — this is the proper, rephrased version of the leading question that was just sustained.",
+  strat:"Over-objecting trap. The defense fixed its mistake and asked it the right way. There's nothing here — let it go."},
+
+ {seg:"Defense — Direct Examination", witness:"Rob", role:"Alli's Cousin", by:"Defense", mode:"Direct", decider:"Prosecution", kind:"Testimony",
+  setup:[{who:'L',text:"Rob, how are you related to Alli?"},{who:'W',text:"She's my cousin — and we're next-door neighbors."}],
+  q:"What do you know about the people who sold the backpack?",
+  line:"My mom TOLD me that one of those men once offered her marijuana.",
+  answer:"object", type:"Hearsay", accepts:["Hearsay"], pts:3, ruling:"Sustained",
+  why:"Rob is repeating what his MOM said out of court. She's the one with the knowledge, and she isn't testifying — the jury can't test it.",
+  strat:"This HELPS the defense (drugs floating around that house), so they fished for it. Even though it'll be struck, the jury already heard \u201coffered marijuana.\u201d Mirror of the principal slip — both sides play this game.",
+  chall:false, noChall:"Hearsay, no argument. Contrast: if Rob had said \u201cI SAW them smoking at their parties,\u201d that's his OWN observation — not hearsay, and an objection would be overruled."},
+
+ {seg:"Defense — Direct Examination", witness:"Rob", role:"Alli's Cousin", by:"Defense", mode:"Direct", decider:"Prosecution", kind:"Testimony",
+  setup:[{who:'L',text:"You've lived right next door to Alli your whole life?"},{who:'W',text:"Pretty much — we grew up together."}],
+  q:"Does your cousin use drugs?",
+  line:"No. Alli never gets into trouble — she doesn't use drugs.",
+  answer:"object", type:"Speculation", accepts:["Speculation","Improper character opinion","Expert / improper opinion"], pts:3, ruling:"Could go either way",
+  why:"Whether Alli secretly uses drugs isn't something Rob can actually KNOW — it's a guess/opinion about someone else's private conduct.",
+  strat:"A defensible objection the other side can fight. Be ready: the defense will argue Rob knows her well enough to say.",
+  chall:true, cTeam:"Defense", cPts:3,
+  cPrompt:"Argue why Rob CAN say this.",
+  cModel:"Rob is Alli's cousin and next-door neighbor — he's known her his whole life and sees her constantly. A close family member is entitled to describe a relative's habits and character from long personal observation."},
+
+ {seg:"Defense — Direct Examination", witness:"Ms. Swanson", role:"Band Director", by:"Defense", mode:"Direct", decider:"Prosecution", kind:"Testimony",
+  setup:[{who:'L',text:"Ms. Swanson, what do you teach?"},{who:'W',text:"I'm the band director. Alli's been in my program for three years."}],
+  q:"In all your time with Alli, what's your view?",
+  line:"I don't think Alli uses drugs.",
+  answer:"object", type:"Expert / improper opinion", accepts:["Expert / improper opinion","Speculation","Improper character opinion"], pts:2, ruling:"Sustained",
+  why:"A band director has no basis to opine on whether someone uses drugs — that's not her expertise or something she can directly observe.",
+  strat:"You're right to object — but it's the \u201cgood slip\u201d for the defense again. It HELPS Alli and the jury heard it before it was struck. The defense doesn't mind losing this one.",
+  chall:false, noChall:"Not really arguable — she has no foundation to know. (If pushed, defense could only try to limit it to her own classroom observations.)"},
+
+ {seg:"Defense — Direct Examination", witness:"Ms. Swanson", role:"Band Director", by:"Defense", mode:"Direct", decider:"Prosecution", kind:"Question",
+  setup:[{who:'L',text:"Alli's involved in a lot of activities, isn't she?"},{who:'W',text:"Oh yes — band, dance line, track, and a part-time job."}],
+  line:"How much time does Alli spend practicing and preparing for band each week?",
+  answer:"object", type:"Irrelevant", accepts:["Irrelevant"], pts:2, ruling:"Could go either way",
+  why:"On its face, hours of band practice seem far from whether the marijuana was hers — a fair relevance objection to raise.",
+  strat:"A reasonable objection, but one the defense can argue back. Watch how they tie it to Alli's busy, distracted-but-innocent spring.",
+  chall:true, cTeam:"Defense", cPts:3,
+  cPrompt:"Argue why this IS relevant.",
+  cModel:"It explains Alli's recent distraction innocently — she's juggling band, dance line, track, and a job. The prosecution says distraction means drugs; we're showing the jury a far simpler reason."},
+
+ // ===== SEGMENT 4: PROSECUTION CROSS of defense witnesses (Defense decides) =====
+ {seg:"Prosecution Cross-Examines the Defense's Witnesses", witness:"Alli", role:"Defendant", by:"Prosecution", mode:"Cross", decider:"Defense", kind:"Question",
+  setup:[{who:'L',text:"Alli, you testified you bought the backpack at a garage sale on the 19th."},{who:'W',text:"Yes."}],
+  line:"You bought a used backpack from a house full of people known for marijuana, didn't you?",
+  answer:"no", pts:3, ruling:"—",
+  why:"It's leading — but this is CROSS-examination, where leading is allowed. The content stings; the form is proper.",
+  strat:"Mirror of the Tilman cross trap. Object \u201cleading\u201d here and it's overruled — and the defense looks like it forgot the direct/cross rule."},
+
+ {seg:"Prosecution Cross-Examination", witness:"Alli", role:"Defendant", by:"Prosecution", mode:"Cross", decider:"Defense", kind:"Question",
+  setup:[{who:'L',text:"You've been in trouble at school before, haven't you?"},{who:'W',text:"Once — for talking too much in class."}],
+  line:"Isn't it true you were caught smoking marijuana last year?",
+  answer:"object", type:"Invention of facts", accepts:["Invention of facts"], pts:2, ruling:"Sustained",
+  why:"Nothing in the record says Alli was ever caught with marijuana — her only prior \u201ctrouble\u201d was talking too much in class. The prosecution is inventing a fact.",
+  strat:"Good catch. The prosecution is smuggling in a made-up prior. Shut it down.",
+  chall:false, noChall:"Can't be argued — it's outside the record. Prosecution should drop it."},
+
+ {seg:"Prosecution Cross-Examination", witness:"Rob", role:"Alli's Cousin", by:"Prosecution", mode:"Cross", decider:"Defense", kind:"Question",
+  setup:[{who:'L',text:"Rob, you told the jury your mother was once offered marijuana by those neighbors."},{who:'W',text:"That's what she told me."}],
+  line:"You weren't actually there when your mom was supposedly offered marijuana, were you?",
+  answer:"no", pts:2, ruling:"—",
+  why:"A fair cross question — the prosecution is exposing that Rob's \u201cmom\u201d story was second-hand. Proper, and nothing to object to.",
+  strat:"Even though it weakens your witness, it's legitimate. Objecting would only look defensive."},
+
+ {seg:"Prosecution Cross-Examination", witness:"Ms. Swanson", role:"Band Director", by:"Prosecution", mode:"Cross", decider:"Defense", kind:"Question",
+  setup:[{who:'L',text:"Ms. Swanson, you've noticed Alli seemed distracted this spring?"},{who:'W',text:"A little — but it's a busy time of year."}],
+  line:"She's been distracted in your class lately — that's because she's been high, isn't it?",
+  answer:"object", type:"Speculation", accepts:["Speculation","Invention of facts","Expert / improper opinion"], pts:2, ruling:"Sustained",
+  why:"The question asks Swanson to guess the CAUSE of Alli's distraction and assumes a fact (that she's high) with no basis. Pure speculation.",
+  strat:"Don't let the prosecution put a cause in the witness's mouth on cross. Clean objection.",
+  chall:false, noChall:"Not arguable — Swanson can't diagnose why a student is distracted. Prosecution should rephrase."}
+];
+
+// ---- State ----
+let idx = -1;
+let scores = {P:0, D:0};
+const st = {};
+
+function teamKey(t){return t==="Prosecution"?"P":"D";}
+function bump(k, d){ scores[k]=Math.max(0,scores[k]+d); paintScores(); }
+function paintScores(){ document.getElementById('pScore').textContent=scores.P; document.getElementById('dScore').textContent=scores.D; }
+function ensure(i){ if(!st[i]) st[i]={picked:null,type:null,revealed:false,cRevealed:false,awarded:false,cAwarded:false}; return st[i]; }
+
+function render(){
+  const g = document.getElementById('game');
+  if(idx===-1){ g.innerHTML = startHTML(); return; }
+  const r = ROUNDS[idx];
+  const s = ensure(idx);
+  const dk = teamKey(r.decider);
+  const dClass = r.decider==="Prosecution"?"pros":"def";
+  const lawClass = r.by==="Prosecution"?"lawP":"lawD";
+  const cTag = r.by==='Prosecution'?'Pros. Counsel':'Def. Counsel';
+  const wTag = r.witness.replace(/^(Mr\.|Ms\.)\s/,'').slice(0,9)+' (Witness)';
+
+  let h = '';
+  h += `<div class="nav">
+    <button onclick="go(${idx-1})" ${idx===0?'disabled':''}>‹ Prev</button>
+    <span class="count">Round ${idx+1} of ${ROUNDS.length}</span>
+    <button class="btn-next" onclick="go(${idx+1})" ${idx===ROUNDS.length-1?'disabled':''}>Next ›</button>
+  </div>`;
+
+  h += `<div class="clock ${dClass}">
+    <span class="who"><b>${r.decider}</b> is on the clock — do you object?</span>
+    <span class="badge ${r.mode.toLowerCase()}">${r.mode} Exam</span>
+    <span class="seg-tag">${r.seg}</span>
+  </div>`;
+
+  h += `<div class="card">
+    <div class="witline">
+      <span class="wname">${r.witness}</span>
+      <span class="wrole">${r.role}</span>
+      <span class="exam">Examined by ${r.by} · ${r.mode}</span>
+    </div>
+    <div class="transcript">`;
+
+  // lead-up (examination so far)
+  if(r.setup && r.setup.length){
+    h += `<div class="leadup"><div class="llab">Earlier in this examination…</div>`;
+    r.setup.forEach(t=>{
+      if(t.who==='W') h += `<div class="spk wit"><span class="tag">${wTag}</span><span class="txt">${t.text}</span></div>`;
+      else h += `<div class="spk ${lawClass}"><span class="tag">${cTag}</span><span class="txt">${t.text}</span></div>`;
+    });
+    h += `</div>`;
+  }
+
+  h += `<div class="judgemark">The line to judge</div>`;
+  if(r.kind==="Testimony"){
+    if(r.q){ h += `<div class="spk ${lawClass}"><span class="tag">${cTag}</span><span class="txt">${r.q}</span></div>`; }
+    h += `<div class="spk wit judged"><span class="tag">${wTag}</span><span class="txt">${r.line}</span></div>`;
+  } else {
+    h += `<div class="spk ${lawClass} judged"><span class="tag">${cTag}</span><span class="txt">${r.line}</span></div>`;
+  }
+  h += `</div>`; // transcript
+
+  h += `<div class="decide">
+    <span class="prompt">Class verdict:</span>
+    <button class="btn-obj ${s.picked==='object'?'sel':''}" onclick="pick('object')">Objection!</button>
+    <button class="btn-stand ${s.picked==='no'?'sel':''}" onclick="pick('no')">Let it stand</button>
+    <button class="btn-reveal" onclick="reveal()" ${s.revealed?'disabled':''}>Reveal Ruling</button>
+  </div>`;
+
+  if(s.picked==='object'){
+    h += `<div class="typebox"><div class="lab">If objecting, name the objection:</div><div class="types">`;
+    TYPES.forEach(t=>{ h += `<button class="${s.type===t?'sel':''}" onclick="setType('${t.replace(/'/g,"\\'")}')">${t}</button>`; });
+    h += `</div></div>`;
+  }
+
+  if(s.revealed) h += revealHTML(r,s,dk);
+
+  h += `</div>`; // card
+  h += mapHTML();
+  g.innerHTML = h;
+  paintScores();
+}
+
+function revealHTML(r,s,dk){
+  const correctObj = r.answer==="object";
+  let matchAction = (s.picked===r.answer) || (s.picked===null);
+  let typeOK = true;
+  if(correctObj && s.picked==="object"){ typeOK = s.type && r.accepts.includes(s.type); }
+  const fullyRight = (s.picked!==null) && matchAction && (!correctObj || s.picked!=="object" || typeOK);
+
+  let vTxt, vClass, mk;
+  if(s.picked===null){ vClass="ok"; mk="•"; vTxt = correctObj? `The correct call: OBJECT — ${r.type}` : "The correct call: NO objection"; }
+  else if(fullyRight){ vClass="ok"; mk="✓";
+    vTxt = correctObj? `Correct — objection (${r.type})${s.type&&s.type!==r.type?` · \u201c${s.type}\u201d also accepted`:''}` : "Correct — let it stand";
+  } else { vClass="no"; mk="✗";
+    if(correctObj && s.picked==="no") vTxt = `Not quite — you should OBJECT (${r.type})`;
+    else if(!correctObj && s.picked==="object") vTxt = "Not quite — there is NO valid objection here";
+    else if(correctObj && s.picked==="object" && !typeOK) vTxt = `Right to object, wrong type — it's ${r.type}`;
+    else vTxt = `The correct call: ${correctObj?`OBJECT — ${r.type}`:"NO objection"}`;
+  }
+
+  let h = `<div class="reveal">
+    <div class="verdict ${vClass}"><span class="mk">${mk}</span><span>${vTxt}</span>
+      <span class="ruling-pill">Judge: ${r.ruling}</span></div>
+    <div class="rbody">
+      <p><span class="k">Why</span>${r.why}</p>
+      <div class="strat"><span class="k">Strategy</span>${r.strat}</div>`;
+  if(r.answer==="object" && !r.chall && r.noChall){ h += `<div class="nochall"><span class="k">Can't argue this</span>${r.noChall}</div>`; }
+
+  h += `<div class="award"><span class="sg">Suggested:</span>`;
+  if(s.awarded){ h += `<span class="awarded">✓ +${r.pts} awarded to ${r.decider}</span>`; }
+  else { h += `<button class="btn-award ${dk.toLowerCase()}" onclick="award(${r.pts},'${dk}')">Award +${r.pts} to ${r.decider}</button>
+    <span style="font-size:13px;color:var(--ink-soft)">(for the correct call)</span>`; }
+  h += `</div></div>`;
+
+  if(r.chall){
+    const cKey = teamKey(r.cTeam);
+    const cClass = r.cTeam==="Prosecution"?"p":"d";
+    h += `<div class="counter ${cClass}">
+      <div class="ch">⚖️ Argue it! — ${r.cTeam}, make your case</div>
+      <div class="cbody">
+        <p class="cprompt"><b>${r.cTeam}:</b> ${r.cPrompt}</p>`;
+    if(s.cRevealed){
+      h += `<div class="cmodel">${r.cModel}</div>
+        <div class="award"><span class="sg">For a strong argument:</span>`;
+      if(s.cAwarded){ h += `<span class="awarded">✓ +${r.cPts} awarded to ${r.cTeam}</span>`; }
+      else { h += `<button class="btn-award ${cClass}" onclick="awardC(${r.cPts},'${cKey}')">Award +${r.cPts} to ${r.cTeam}</button>`; }
+      h += `</div>`;
+    } else {
+      h += `<button onclick="revealCounter()">Reveal model argument</button>`;
+    }
+    h += `</div></div>`;
+  }
+
+  h += `</div>`;
+  return h;
+}
+
+function mapHTML(){
+  let h = '<div class="map">';
+  ROUNDS.forEach((r,i)=>{
+    const cur = i===idx ? 'cur' : (st[i]&&st[i].revealed ? 'done' : '');
+    h += `<button class="${cur}" onclick="go(${i})" title="${r.witness} — ${r.mode}">${i+1}</button>`;
+  });
+  h += '</div>';
+  return h;
+}
+
+function startHTML(){
+  return `<div class="start">
+    <h2>State v. Alli</h2>
+    <p>Alli is charged with possessing marijuana found in a used backpack she bought at a garage sale. Today your class runs the trial — but you're not arguing the facts. You're watching for one thing: <b>when to object, what to call it, and when staying quiet is the smarter move.</b></p>
+    <div class="flowstrip">
+      <span style="border-color:var(--pros)">Prosecution Direct</span><i>→</i>
+      <span>Defense Cross</span><i>→</i>
+      <span style="border-color:var(--def)">Defense Direct</span><i>→</i>
+      <span>Prosecution Cross</span>
+    </div>
+    <p style="font-size:14px;color:var(--ink-soft)">Split the room into a <b>Prosecution</b> team and a <b>Defense</b> team. Each round shows the examination so far, then one line to judge. The team that would be objecting is \u201con the clock.\u201d Read it, debate it, lock in the call, and reveal the ruling. Open <b>How to play</b> above for the strategy.</p>
+    <button class="btn-begin" onclick="go(0)">⚖️ Begin Trial</button>
+  </div>`;
+}
+
+function go(i){ if(i<-1||i>=ROUNDS.length) return; idx=i; render(); window.scrollTo({top:0,behavior:'smooth'}); }
+function pick(a){ const s=ensure(idx); s.picked = (s.picked===a?null:a); if(a==='no') s.type=null; render(); }
+function setType(t){ const s=ensure(idx); s.type=(s.type===t?null:t); render(); }
+function reveal(){ const s=ensure(idx); s.revealed=true; bang(); render(); }
+function revealCounter(){ const s=ensure(idx); s.cRevealed=true; render(); }
+function award(p,k){ const s=ensure(idx); if(s.awarded) return; s.awarded=true; bump(k,p); render(); }
+function awardC(p,k){ const s=ensure(idx); if(s.cAwarded) return; s.cAwarded=true; bump(k,p); render(); }
+
+function bang(){
+  const gav = document.getElementById('gavel');
+  if(!gav) return;
+  gav.style.transition='transform .12s ease';
+  gav.style.transform='rotate(-32deg)';
+  setTimeout(()=>{ gav.style.transform='rotate(4deg)'; },130);
+  setTimeout(()=>{ gav.style.transform='rotate(0deg)'; },300);
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
+  if(e.key==='ArrowRight') go(idx+1);
+  else if(e.key==='ArrowLeft') go(idx===-1?-1:idx-1);
+  else if(e.key.toLowerCase()==='r' && idx>=0){ const s=ensure(idx); if(!s.revealed){ reveal(); } }
+});
+
+render();
+paintScores();
+</script>
+</body>
+</html>
