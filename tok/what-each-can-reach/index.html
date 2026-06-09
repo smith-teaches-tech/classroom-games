@@ -570,8 +570,9 @@
   function doReset(){
     revealed=false;
     document.querySelector('[data-map]').classList.remove('revealed');
-    tray.querySelectorAll('.card').forEach(function(e){e.remove()});
-    // rebuild tray (keep label)
+    // clear every card wherever it sits — tray AND all four zones
+    document.querySelectorAll('.card').forEach(function(e){e.remove()});
+    // rebuild the full deck back in the tray (the .tray-label is untouched)
     CARDS.forEach(function(c){tray.appendChild(makeCard(c))});
     clearSelected();
     revealBtn.textContent='Reveal placement';
