@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Counts as a Reason — Case Cards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#ece2cd;
+    --card:#f8f2e4;
+    --card-edge:#e6dcc4;
+    --ink:#2a2520;
+    --ink-soft:#5d5446;
+    --mono:#8a7c64;
+    --oxblood:#6f2128;
+    --oxblood-deep:#561a20;
+    --hair:#d6c9ac;
+    --seal:#241f1a;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    background-image:radial-gradient(rgba(110,33,40,.025) 1px, transparent 1px);
+    background-size:4px 4px;
+    color:var(--ink);
+    font-family:'Cormorant Garamond',Georgia,serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- screen-only control bar ---------- */
+  .bar{
+    max-width:980px;margin:0 auto;padding:34px 28px 10px;
+  }
+  .bar h1{
+    font-size:30px;font-weight:600;letter-spacing:.01em;margin:0 0 4px;
+    color:var(--oxblood-deep);
+  }
+  .bar p{
+    font-size:18px;line-height:1.5;color:var(--ink-soft);margin:0 0 18px;max-width:64ch;
+  }
+  .controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center;
+    border-top:1px solid var(--hair);padding-top:16px;}
+  button{
+    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;
+    letter-spacing:.14em;text-transform:uppercase;cursor:pointer;
+    background:var(--card);color:var(--ink);
+    border:1px solid var(--ink);border-radius:0;padding:11px 16px;
+    transition:background .15s,color .15s;
+  }
+  button:hover{background:var(--ink);color:var(--card);}
+  button.primary{background:var(--oxblood);color:#f8f2e4;border-color:var(--oxblood-deep);}
+  button.primary:hover{background:var(--oxblood-deep);}
+  button:focus-visible{outline:2px solid var(--oxblood);outline-offset:2px;}
+  .hint{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;
+    color:var(--mono);text-transform:uppercase;margin-left:2px;}
+  .state{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--oxblood);margin-left:auto;}
+
+  /* ---------- card grid ---------- */
+  .deck{
+    max-width:980px;margin:0 auto;padding:24px 28px 60px;
+    display:grid;grid-template-columns:repeat(2,1fr);gap:26px;
+  }
+  @media(max-width:680px){.deck{grid-template-columns:1fr;}}
+
+  .card{
+    position:relative;background:var(--card);
+    border:1px solid var(--card-edge);
+    box-shadow:0 1px 0 #fff inset, 0 8px 22px -16px rgba(40,30,20,.55);
+    padding:22px 24px 18px;
+    display:flex;flex-direction:column;min-height:330px;
+  }
+  /* archival corner ticks */
+  .card::before,.card::after{
+    content:"";position:absolute;width:11px;height:11px;border:1px solid var(--hair);
+  }
+  .card::before{top:7px;left:7px;border-right:0;border-bottom:0;}
+  .card::after{bottom:7px;right:7px;border-left:0;border-top:0;}
+
+  .eyebrow{
+    display:flex;justify-content:space-between;align-items:baseline;
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--mono);margin-bottom:2px;
+  }
+  .way{
+    font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:600;
+    letter-spacing:.26em;color:var(--oxblood);text-transform:uppercase;
+  }
+  .ditto{font-size:9.5px;letter-spacing:.16em;}
+
+  .subhead{
+    font-style:italic;font-size:16.5px;color:var(--ink-soft);
+    margin:7px 0 12px;line-height:1.25;
+  }
+  .rule{height:0;border:0;border-top:1px solid var(--hair);margin:0 0 13px;}
+
+  .body{
+    font-size:16.5px;line-height:1.42;color:var(--ink);flex:1;
+  }
+  .body .lede{font-variant:small-caps;letter-spacing:.03em;color:var(--oxblood-deep);font-weight:600;}
+
+  /* ---- ORIGIN field: the signature ---- */
+  .origin{
+    margin-top:16px;border-top:1px solid var(--hair);padding-top:11px;
+    display:flex;align-items:center;gap:12px;
+  }
+  .origin .lab{
+    font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--mono);white-space:nowrap;
+  }
+  .seal{
+    flex:1;position:relative;height:26px;background:
+      repeating-linear-gradient(45deg,var(--seal),var(--seal) 6px,#332c25 6px,#332c25 12px);
+    display:flex;align-items:center;justify-content:center;overflow:hidden;
+  }
+  .seal span{
+    font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.22em;
+    color:#cbb89a;text-transform:uppercase;
+  }
+  .reveal{display:none;}
+  .reveal .name{font-size:18px;font-weight:600;color:var(--oxblood-deep);line-height:1.15;}
+  .reveal .tech{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.06em;
+    color:var(--ink-soft);text-transform:none;margin-top:2px;}
+
+  /* toggled state */
+  body.unsealed .seal{display:none;}
+  body.unsealed .reveal{display:block;}
+
+  .foot{
+    font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--mono);margin-top:12px;
+  }
+
+  /* ---------- print ---------- */
+  @media print{
+    @page{size:A4 portrait;margin:12mm;}
+    body{background:#fff;background-image:none;}
+    .bar{display:none;}
+    .deck{max-width:none;margin:0;padding:0;gap:0;
+      grid-template-columns:repeat(2,1fr);}
+    .card{
+      border:1px dashed #999;box-shadow:none;background:#fff;
+      margin:0;min-height:118mm;break-inside:avoid;page-break-inside:avoid;
+    }
+    .card::before,.card::after{border-color:#bbb;}
+    .seal{background:repeating-linear-gradient(45deg,#222,#222 6px,#444 6px,#444 12px)
+      ;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .way,.body .lede,.reveal .name{color:#000;}
+  }
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <h1>What Counts as a Reason — Case Cards</h1>
+  <p>Four ways of deciding what counts as a legitimate reason, with their origins withheld.
+     Print with origins <em>sealed</em> for the student sort. At the reveal, either unseal on screen
+     (to project) or re-print after unsealing for physical reveal cards. Two cards per page.</p>
+  <div class="controls">
+    <button class="primary" onclick="window.print()">Print cards</button>
+    <button id="toggle" onclick="toggleSeal()">Unseal origins</button>
+    <span class="hint">keep sealed until verdicts are committed</span>
+    <span class="state" id="state">Origins: sealed</span>
+  </div>
+</div>
+
+<div class="deck">
+
+  <!-- WAY 1 — isnād -->
+  <article class="card">
+    <div class="eyebrow"><span class="way">Way 1</span><span class="ditto">Case 1 of 4</span></div>
+    <div class="subhead">A way of deciding what counts as a legitimate reason to accept a teaching as genuine</div>
+    <hr class="rule">
+    <div class="body">
+      <p>A teaching is preserved by recording the <span class="lede">unbroken line</span> of people who passed it down, one to the next, from the founding figure to today. Two checks run before a report is accepted. <em>The chain:</em> every person in the line is investigated — honest? reliable? accurate of memory? — and the report is graded only as strong as its weakest carrier; a break, or one unreliable carrier, downgrades it however good it sounds. <em>The content:</em> even a perfectly transmitted report is set aside if it contradicts the community's most firmly established teachings. <strong>Certified by:</strong> trained specialists in the carriers' lives — not the ordinary reader.</p>
+    </div>
+    <div class="origin">
+      <span class="lab">Origin</span>
+      <div class="seal"><span>sealed · withheld for assessment</span></div>
+      <div class="reveal">
+        <div class="name">Islam</div>
+        <div class="tech">ʿilm al-rijāl — hadith chain authentication (isnād + matn-check)</div>
+      </div>
+    </div>
+    <div class="foot">TOK · Religion · the E column</div>
+  </article>
+
+  <!-- WAY 2 — LDS -->
+  <article class="card">
+    <div class="eyebrow"><span class="way">Way 2</span><span class="ditto">Case 2 of 4</span></div>
+    <div class="subhead">A way of deciding what counts as a legitimate reason to accept a teaching as genuine</div>
+    <hr class="rule">
+    <div class="body">
+      <p>A person may seek <span class="lede">personal confirmation</span> of a teaching directly: study it carefully, then ask in prayer, expecting an inward witness that it is true. This counts as real knowledge — but it is bounded by three rules. It is trusted only for the person's own life and responsibilities, not for redefining the teaching for everyone. It must agree with the established written scripture. And a teaching binding on the whole community can come only through the one recognised leader, never from a private individual's experience. An inward witness that breaks these bounds is treated as mistaken or counterfeit, not as authority.</p>
+    </div>
+    <div class="origin">
+      <span class="lab">Origin</span>
+      <div class="seal"><span>sealed · withheld for assessment</span></div>
+      <div class="reveal">
+        <div class="name">Latter-day Saints</div>
+        <div class="tech">confirmatory personal revelation, bounded by scripture &amp; stewardship</div>
+      </div>
+    </div>
+    <div class="foot">TOK · Religion · the E column</div>
+  </article>
+
+  <!-- WAY 3 — Catholic -->
+  <article class="card">
+    <div class="eyebrow"><span class="way">Way 3</span><span class="ditto">Case 3 of 4</span></div>
+    <div class="subhead">A way of deciding what counts as a legitimate reason to accept a teaching as genuine</div>
+    <hr class="rule">
+    <div class="body">
+      <p>The authority to say what the founding texts <span class="lede">mean</span> does not rest with each individual reader; it rests with a recognised teaching office that has carried the interpretation across generations. When a person reports a private vision or a strong inner prompting, it is not accepted automatically — it is submitted to that office and tested against the established texts and inherited tradition, and trained guides apply set rules for telling a genuine prompting from a misleading one. Even a vision the office judges trustworthy adds nothing binding to the core teaching: it is permitted belief, not required. <strong>Certified by:</strong> the teaching office — not the individual visionary.</p>
+    </div>
+    <div class="origin">
+      <span class="lab">Origin</span>
+      <div class="seal"><span>sealed · withheld for assessment</span></div>
+      <div class="reveal">
+        <div class="name">Roman Catholicism</div>
+        <div class="tech">the Magisterium &amp; discernment of spirits</div>
+      </div>
+    </div>
+    <div class="foot">TOK · Religion · the E column</div>
+  </article>
+
+  <!-- WAY 4 — Buddhist -->
+  <article class="card">
+    <div class="eyebrow"><span class="way">Way 4</span><span class="ditto">Case 4 of 4</span></div>
+    <div class="subhead">A way of deciding what counts as a legitimate reason to accept a teaching as genuine</div>
+    <hr class="rule">
+    <div class="body">
+      <p>When someone claims "this teaching comes from the founder himself," the claim is <span class="lede">not accepted on the strength of the source</span> — not even if the source is a famous elder, a whole community of teachers, or a respected senior. The procedure is fixed: lay the claimed teaching beside the established collection of the founder's recorded discourses and the community's rule of conduct. If it fits and agrees with them, accept it as authentic; if it does not, reject it — however senior or sincere the person reporting it. <strong>The test is the fit with the canon, not the prestige of the speaker.</strong></p>
+    </div>
+    <div class="origin">
+      <span class="lab">Origin</span>
+      <div class="seal"><span>sealed · withheld for assessment</span></div>
+      <div class="reveal">
+        <div class="name">Buddhism</div>
+        <div class="tech">the Four Great References — cattāro mahāpadesā, DN 16</div>
+      </div>
+    </div>
+    <div class="foot">TOK · Religion · the E column</div>
+  </article>
+
+</div>
+
+<script>
+  function toggleSeal(){
+    var on = document.body.classList.toggle('unsealed');
+    document.getElementById('toggle').textContent = on ? 'Reseal origins' : 'Unseal origins';
+    document.getElementById('state').textContent = on ? 'Origins: revealed' : 'Origins: sealed';
+  }
+</script>
+</body>
+</html>
