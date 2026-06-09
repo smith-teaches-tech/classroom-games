@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>One Text, Many Readings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EDE6D4;--paper-2:#E4DAC2;--ink:#241E16;--ink-soft:#4A4136;--faded:#7C7160;
+    --oxblood:#6E1E22;--oxblood-deep:#551418;--ochre:#9A7B3F;--rule:#C9BD9E;--seal:#7C7160;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:
+      radial-gradient(circle at 18% 12%, rgba(154,123,63,.10), transparent 60%),
+      radial-gradient(circle at 85% 90%, rgba(110,30,34,.07), transparent 55%),
+      var(--paper);
+    color:var(--ink);font-family:'EB Garamond',Georgia,serif;
+    font-size:clamp(17px,1.05vw + 13px,21px);line-height:1.5;-webkit-font-smoothing:antialiased;
+    display:flex;flex-direction:column;min-height:100%;
+  }
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.04;z-index:0;
+    background-image:repeating-linear-gradient(0deg,#000 0 1px,transparent 1px 4px)}
+  .stage{flex:1;display:flex;flex-direction:column;justify-content:center;
+    width:min(1040px,92vw);margin:0 auto;padding:5vh 0 2vh;position:relative;z-index:1}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.28em;
+    text-transform:uppercase;color:var(--oxblood);font-weight:700;margin-bottom:1.1rem}
+  .eyebrow .dim{color:var(--faded);font-weight:400}
+  h1{font-family:'Cormorant Garamond',serif;font-weight:600;line-height:1.02;
+    font-size:clamp(2.5rem,6vw,4.6rem);letter-spacing:-.01em}
+  h2{font-family:'Cormorant Garamond',serif;font-weight:600;line-height:1.05;
+    font-size:clamp(1.9rem,4.2vw,3.1rem);margin-bottom:.5rem}
+  p.lead{font-size:1.15rem;max-width:64ch;color:var(--ink-soft)}
+  p.lead + p.lead{margin-top:.9rem}
+  em{font-style:italic}
+  .kq{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;
+    font-size:clamp(1.5rem,2.6vw,2rem);color:var(--oxblood-deep);line-height:1.25;max-width:30ch}
+
+  .screen{display:none;animation:rise .5s ease both}
+  .screen.active{display:block}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+  .sign{display:inline-block;border:4px solid var(--ink);background:var(--paper-2);
+    padding:1.1rem 2.2rem;border-radius:3px;margin:.4rem 0 .2rem;
+    font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:.12em;
+    font-size:clamp(1.4rem,4.2vw,2.6rem);text-transform:uppercase;line-height:1.15;
+    box-shadow:4px 5px 0 rgba(36,30,22,.18)}
+  .cases{list-style:none;margin-top:1.6rem;display:grid;gap:.55rem;max-width:70ch}
+  .cases li{padding:.55rem .9rem;border:1px solid var(--rule);border-radius:2px;
+    background:rgba(255,253,247,.45);font-size:1.02rem;color:var(--ink-soft)}
+  .cases li b{color:var(--ink);font-weight:600;font-family:'Cormorant Garamond',serif;font-size:1.15rem}
+
+  .verba{font-family:'Cormorant Garamond',serif;font-weight:500;
+    font-size:clamp(2.6rem,8vw,6rem);line-height:1.04;letter-spacing:-.015em;margin:.2rem 0 .3rem}
+  .verba .pivot{color:var(--oxblood);font-style:italic}
+  .latin{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--faded);
+    font-size:clamp(1.3rem,3vw,2rem);letter-spacing:.02em}
+  .setting{margin-top:1.5rem;max-width:62ch;color:var(--ink-soft)}
+  .prompt{margin-top:1.8rem;border-left:3px solid var(--oxblood);padding:.7rem 0 .7rem 1.2rem;max-width:66ch}
+  .prompt .tag{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--oxblood);font-weight:700;display:block;margin-bottom:.35rem}
+
+  .hinge-word{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--oxblood);
+    font-size:clamp(7rem,26vw,18rem);line-height:.8;text-align:center;margin:.1rem 0}
+  .hinge-q{display:flex;gap:1.4rem;justify-content:center;flex-wrap:wrap;margin-top:1.4rem}
+  .hinge-q span{font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,3vw,2.1rem);color:var(--ink-soft)}
+  .hinge-q .or{color:var(--faded);font-style:italic}
+
+  .tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.8rem;margin-top:1.5rem}
+  .tool{border:1px solid var(--rule);border-radius:2px;padding:.95rem 1.05rem;background:rgba(255,253,247,.45)}
+  .tool .n{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.18em;color:var(--ochre);font-weight:700}
+  .tool h4{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.4rem;margin:.1rem 0 .3rem;line-height:1.05}
+  .tool p{font-size:.92rem;color:var(--ink-soft)}
+  .tool-foot{margin-top:1.2rem;font-family:'Cormorant Garamond',serif;font-style:italic;
+    font-size:1.3rem;color:var(--oxblood-deep);max-width:48ch}
+
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-top:1.5rem}
+  .card{border:1px solid var(--rule);background:rgba(255,253,247,.5);border-radius:2px;
+    padding:1.1rem 1.2rem;position:relative;min-height:240px;display:flex;flex-direction:column}
+  .card .who{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--faded);font-weight:700}
+  .card h3{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.6rem;margin:.15rem 0 .45rem;line-height:1.04}
+  .card .reads{color:var(--ink-soft);flex:1;font-size:.98rem}
+  .card .reads b{color:var(--oxblood-deep);font-weight:600}
+  .card .tool-tag{margin-top:.8rem;padding-top:.65rem;border-top:1px dashed var(--rule)}
+  .card .tool-tag .lab{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--ochre);font-weight:700;display:block;margin-bottom:.25rem}
+  .card .tool-tag .val{font-size:.92rem;color:var(--ink)}
+  .card.sealed .body{visibility:hidden}
+  .card.sealed{cursor:pointer;background:repeating-linear-gradient(135deg,
+      rgba(124,113,96,.10) 0 9px,rgba(124,113,96,.04) 9px 18px)}
+  .card.sealed::after{content:"sealed — click to unseal";position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;
+    font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--seal)}
+
+  .marburg{display:grid;grid-template-columns:1fr auto 1fr;gap:1.1rem;align-items:stretch;margin-top:1.4rem}
+  .man{border:1px solid var(--rule);background:rgba(255,253,247,.45);padding:1rem 1.1rem;border-radius:2px}
+  .man .name{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.5rem}
+  .man .pos{color:var(--ink-soft);font-size:.96rem;margin-top:.3rem}
+  .versus{display:flex;align-items:center;justify-content:center;
+    font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--oxblood);font-size:2rem}
+  .table-line{margin-top:1.4rem;text-align:center}
+  .table-line .chalk{font-family:'Cormorant Garamond',serif;font-style:italic;
+    font-size:clamp(1.6rem,3.5vw,2.4rem);color:var(--ink);
+    border-bottom:2px solid var(--ink-soft);display:inline-block;padding-bottom:.2rem}
+  .tally{margin-top:1.3rem;font-family:'JetBrains Mono',monospace;font-size:.88rem;
+    color:var(--ink-soft);text-align:center}
+  .tally b{color:var(--oxblood);font-weight:700}
+
+  .gate-flow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem;margin-top:1.5rem;align-items:center}
+  .gate-step{border:1px solid var(--rule);padding:1rem;border-radius:2px;background:rgba(255,253,247,.45);height:100%}
+  .gate-step .n{font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--oxblood);font-weight:700;display:block;margin-bottom:.4rem}
+  .gate-step p{font-size:.95rem;color:var(--ink-soft)}.gate-step b{color:var(--oxblood-deep)}
+  .arrow{text-align:center;color:var(--ochre);font-size:1.5rem;font-family:'Cormorant Garamond',serif}
+  .gate-land{margin-top:1.4rem;font-family:'Cormorant Garamond',serif;font-style:italic;
+    font-size:clamp(1.4rem,2.8vw,2rem);color:var(--oxblood-deep);max-width:36ch;line-height:1.2}
+
+  .io{display:grid;grid-template-columns:1fr 1fr;gap:1.1rem;margin-top:1.5rem}
+  .io .q{border:1px solid var(--rule);border-radius:2px;padding:1.15rem 1.25rem;background:rgba(255,253,247,.45)}
+  .io .q .lab{font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--ochre);font-weight:700;display:block;margin-bottom:.5rem}
+  .io .q .ask{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.35rem;color:var(--ink)}
+  .io-land{margin-top:1.3rem;border-left:3px solid var(--oxblood);padding-left:1.2rem;max-width:68ch;color:var(--ink-soft)}
+  .io-land b{color:var(--oxblood-deep)}
+
+  .exit-box{margin-top:1.5rem;border:1px solid var(--rule);border-radius:2px;
+    padding:1.3rem 1.4rem;background:rgba(255,253,247,.5);max-width:74ch}
+  .exit-box .lab{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--oxblood);font-weight:700;display:block;margin-bottom:.6rem}
+  .exit-box p{color:var(--ink-soft)}
+  .exit-box .stem{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--ink);font-size:1.18rem;margin-top:.8rem}
+
+  .nav{position:sticky;bottom:0;z-index:5;display:flex;align-items:center;justify-content:space-between;
+    gap:1rem;padding:.9rem clamp(1rem,4vw,2rem);
+    background:linear-gradient(0deg,var(--paper),rgba(237,230,212,.85) 70%,transparent);backdrop-filter:blur(2px)}
+  .dots{display:flex;gap:.45rem;flex-wrap:wrap}
+  .dot{width:9px;height:9px;border-radius:50%;border:1px solid var(--faded);background:transparent;
+    cursor:pointer;padding:0;transition:all .2s}
+  .dot.on{background:var(--oxblood);border-color:var(--oxblood)}
+  .btn{font-family:'JetBrains Mono',monospace;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;
+    font-weight:700;border:1px solid var(--ink);background:transparent;color:var(--ink);
+    padding:.6rem 1.1rem;border-radius:2px;cursor:pointer;transition:all .18s}
+  .btn:hover{background:var(--ink);color:var(--paper)}
+  .btn:disabled{opacity:.3;cursor:default}
+  .btn:focus-visible,.dot:focus-visible,.card:focus-visible{outline:2px solid var(--oxblood);outline-offset:3px}
+
+  @media (max-width:720px){
+    .grid,.io,.gate-flow{grid-template-columns:1fr}
+    .gate-flow .arrow{transform:rotate(90deg)}
+    .marburg{grid-template-columns:1fr}.versus{padding:.3rem 0}
+    .stage{padding-top:3vh}
+  }
+  @media (prefers-reduced-motion:reduce){.screen{animation:none}}
+</style>
+</head>
+<body>
+<main class="stage" id="stage">
+
+  <!-- 0 — THE SIGN -->
+  <section class="screen active" data-step="0">
+    <div class="eyebrow">Religion · L4 <span class="dim">/ one text, many readings</span></div>
+    <div class="sign">No vehicles in the park</div>
+    <p class="setting">A sign bolted to the gate of a public park. Five words. The committee that wrote it thought it was obvious.</p>
+    <div class="prompt">
+      <span class="tag">In your group — argue it out</span>
+      Which of these breaks the rule? Decide for each:
+    </div>
+    <ul class="cases">
+      <li><b>A bicycle</b> ridden down the main path.</li>
+      <li><b>An ambulance</b> driving in to reach a collapsed jogger.</li>
+      <li><b>A child's battery-powered toy car.</b></li>
+      <li><b>Skateboards.</b></li>
+      <li><b>A tank,</b> donated as a war memorial and bolted to a stone plinth.</li>
+    </ul>
+  </section>
+
+  <!-- 1 — THE GATE, FELT -->
+  <section class="screen" data-step="1">
+    <div class="eyebrow">You disagreed — but not about everything</div>
+    <h2>Nobody read it to mean "no ice cream."</h2>
+    <p class="lead">Your group split on the ambulance and the toy car. Fine — those are <em>defensible</em> disagreements. But no one argued the sign bans ice cream, or hats, or singing. That reading is simply <b>out</b> — not because it's unpopular, but because nothing in the five words allows it.</p>
+    <p class="lead">So the readings diverged, yet they were not lawless. Something ruled the ice-cream reading out and let the ambulance argument in. <b>You reached for something the five words don't say.</b> What was it?</p>
+  </section>
+
+  <!-- 2 — THE TOOLKIT -->
+  <section class="screen" data-step="2">
+    <div class="eyebrow">What you reached for</div>
+    <h2>A reading is disciplined when it answers to one of these.</h2>
+    <div class="tools">
+      <div class="tool"><span class="n">01</span><h4>The words</h4><p>What does "vehicle" plainly mean? Is a bicycle one? Grammar and plain sense.</p></div>
+      <div class="tool"><span class="n">02</span><h4>The purpose</h4><p>Why was the rule made — and what did its makers mean to stop? An ambulance saving a life may serve that purpose, not break it.</p></div>
+      <div class="tool"><span class="n">03</span><h4>The rest of the text</h4><p>What do the park's other rules say? A reading is checked against everything around it.</p></div>
+      <div class="tool"><span class="n">04</span><h4>Precedent</h4><p>How were past cases settled? Once the warden lets ambulances in, that decision carries.</p></div>
+      <div class="tool"><span class="n">05</span><h4>Who decides</h4><p>When readers split and stay split — whose ruling settles it? A warden, a court, a committee.</p></div>
+    </div>
+    <p class="tool-foot">A reading that uses none of these isn't a reading. It's a guess.</p>
+  </section>
+
+  <!-- 3 — THE TEXT -->
+  <section class="screen" data-step="3">
+    <div class="eyebrow">Same job — a harder text</div>
+    <div class="verba">This <span class="pivot">is</span> my body.</div>
+    <div class="latin">Hoc est corpus meum.</div>
+    <p class="setting">Four words. Spoken once, over bread, at a final meal — then read again every week for two thousand years.</p>
+    <div class="prompt">
+      <span class="tag">In your group</span>
+      What is this sentence telling its reader — and <em>which tool</em> did you reach for to back your reading? You have the words; that is all anyone had.
+    </div>
+  </section>
+
+  <!-- 4 — THE HINGE -->
+  <section class="screen" data-step="4">
+    <div class="eyebrow">The whole thing turns on one word</div>
+    <div class="hinge-word">is</div>
+    <div class="hinge-q">
+      <span>the bread <em>is</em> the body</span>
+      <span class="or">— or —</span>
+      <span>the bread <em>stands for</em> the body</span>
+    </div>
+    <p class="setting" style="text-align:center;margin:1.5rem auto 0">Same four words, same Bible, everyone reading in good faith. Four people staked their lives on four readings — and each used a tool from the kit.</p>
+  </section>
+
+  <!-- 5 — FOUR READINGS -->
+  <section class="screen" data-step="5">
+    <div class="eyebrow">Four disciplined readings <span class="dim">/ click each to unseal</span></div>
+    <h2>None of them said "anything goes."</h2>
+    <div class="grid" id="readings">
+
+      <div class="card sealed" tabindex="0" role="button" aria-label="Unseal reading">
+        <div class="body">
+          <span class="who">Rome · the Mass</span>
+          <h3>It becomes the body.</h3>
+          <p class="reads">The bread <b>is</b> the body — literally. Its substance changes; only the appearance of bread remains.</p>
+          <div class="tool-tag"><span class="lab">Tool used · 04 + 05</span><span class="val">Precedent and who decides — the reading the tradition has carried, fixed by the Church's authority to settle it.</span></div>
+        </div>
+      </div>
+
+      <div class="card sealed" tabindex="0" role="button" aria-label="Unseal reading">
+        <div class="body">
+          <span class="who">Luther</span>
+          <h3>"Is" means is.</h3>
+          <p class="reads">The body is truly present <b>in, with, and under</b> the bread. You don't get to soften the plain word.</p>
+          <div class="tool-tag"><span class="lab">Tool used · 01</span><span class="val">The words. "Is" is "is" — the plain sense governs.</span></div>
+        </div>
+      </div>
+
+      <div class="card sealed" tabindex="0" role="button" aria-label="Unseal reading">
+        <div class="body">
+          <span class="who">Zwingli</span>
+          <h3>"Is" means signifies.</h3>
+          <p class="reads">The bread <b>stands for</b> the body; the meal is a memorial. "I am the vine," "I am the door" — no one thinks Jesus is a plant or a plank.</p>
+          <div class="tool-tag"><span class="lab">Tool used · 03 (+ 01)</span><span class="val">The rest of the text. Scripture itself uses "is" to mean "stands for" — so the word can carry it here too.</span></div>
+        </div>
+      </div>
+
+      <div class="card sealed" tabindex="0" role="button" aria-label="Unseal reading">
+        <div class="body">
+          <span class="who">Calvin</span>
+          <h3>Lifted up to it.</h3>
+          <p class="reads">Not in the bread — but no mere reminder either. In the meal the believer is <b>truly raised by the Spirit</b> to feed on Christ.</p>
+          <div class="tool-tag"><span class="lab">Tool used · 01 + 03 balanced</span><span class="val">Honour the force of the words and the problem of a body in heaven — at once.</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 6 — MARBURG -->
+  <section class="screen" data-step="6">
+    <div class="eyebrow">Marburg · 1529 <span class="dim">/ same tools, no agreement</span></div>
+    <h2>Two readers. One Bible. No referee.</h2>
+    <p class="lead">A prince gathers the reformers to agree a common front against Rome. They settle <b>fourteen</b> of fifteen articles. The fifteenth is this sentence.</p>
+    <div class="marburg">
+      <div class="man"><div class="name">Luther</div><div class="pos">The body is present. "This is my body" — and he will not move off the word.</div></div>
+      <div class="versus">vs.</div>
+      <div class="man"><div class="name">Zwingli</div><div class="pos">The body is in heaven. The bread signifies. Sign and thing signified are a heaven's-width apart.</div></div>
+    </div>
+    <div class="table-line"><span class="chalk">Hoc est corpus meum.</span></div>
+    <div class="tally">Luther chalks the words on the table and keeps pointing at them. &nbsp;·&nbsp; They part <b>without a handshake.</b></div>
+  </section>
+
+  <!-- 7 — THE GATE -->
+  <section class="screen" data-step="7">
+    <div class="eyebrow">Take the gate away from the gatekeeper</div>
+    <h2>The gate moved. It did not vanish.</h2>
+    <div class="gate-flow">
+      <div class="gate-step"><span class="n">The claim</span><p>The text is clear enough to read <b>without</b> Rome standing at the gate. Scripture reads itself.</p></div>
+      <div class="arrow">→</div>
+      <div class="gate-step"><span class="n">The test</span><p>So — reading freely, in good faith, did they <b>converge</b>? They fractured. Four readings, then forty.</p></div>
+      <div class="gate-step" style="grid-column:1/-1;margin-top:.4rem"><span class="n">What happened next</span><p>Every fracture immediately built <b>its own gate</b> — confessions, catechisms, the Augsburg and Westminster standards. New texts, new authorised readings, new gatekeepers. (Tool 05 never went away.)</p></div>
+    </div>
+    <div class="gate-land">You can decide <em>who</em> holds the gate. You cannot run a knowledge community without one.</div>
+  </section>
+
+  <!-- 8 — INSIDER / OUTSIDER -->
+  <section class="screen" data-step="8">
+    <div class="eyebrow">Can someone outside the frame judge the reading?</div>
+    <div class="io">
+      <div class="q"><span class="lab">Question one</span><p class="ask">"To me, it's just bread."<br>Is that a fifth <em>reading</em> — or a refusal to use the tools at all?</p></div>
+      <div class="q"><span class="lab">Question two</span><p class="ask">Could you — from outside — say which of the four is the <em>best</em> reading of the sentence?</p></div>
+    </div>
+    <p class="io-land">An outsider can check the <b>discipline</b>: did this reading use the tools — the words, the rest of the text, the tradition — or none of them? That much anyone can grade. But which disciplined reading is the <b>most faithful</b> is settled <b>inside</b> the community that holds the text. You can tell a reading from a guess from outside. You cannot, from outside, rank the readings.</p>
+  </section>
+
+  <!-- 9 — KQ + EXIT -->
+  <section class="screen" data-step="9">
+    <div class="eyebrow">Where this lands</div>
+    <p class="kq">When a text can be read many defensible ways, what makes one reading better-justified — and can an outsider judge it?</p>
+    <div class="exit-box">
+      <span class="lab">Write — the only writing today (~150 words)</span>
+      <p>Use the park sign, the four readings, and Marburg as your evidence. Name at least one tool.</p>
+      <p class="stem">"A park sign and a line of scripture turned out to be read the same way — by reaching past the words to a rule. The difference was&nbsp;…"</p>
+    </div>
+  </section>
+
+</main>
+
+<nav class="nav">
+  <button class="btn" id="prev">← Back</button>
+  <div class="dots" id="dots" role="tablist" aria-label="Lesson steps"></div>
+  <button class="btn" id="next">Next →</button>
+</nav>
+
+<script>
+  const screens=[...document.querySelectorAll('.screen')];
+  const dotsWrap=document.getElementById('dots');
+  const prev=document.getElementById('prev');
+  const next=document.getElementById('next');
+  let i=0;
+  const labels=['The sign','The gate, felt','The toolkit','The text','The hinge','Four readings','Marburg 1529','The gate moves','Inside / outside','Write'];
+  screens.forEach((_,n)=>{
+    const d=document.createElement('button');
+    d.className='dot'+(n===0?' on':'');
+    d.setAttribute('role','tab');d.setAttribute('aria-label',labels[n]);
+    d.addEventListener('click',()=>go(n));
+    dotsWrap.appendChild(d);
+  });
+  function go(n){
+    i=Math.max(0,Math.min(screens.length-1,n));
+    screens.forEach((s,k)=>s.classList.toggle('active',k===i));
+    [...dotsWrap.children].forEach((d,k)=>d.classList.toggle('on',k===i));
+    prev.disabled=i===0;next.disabled=i===screens.length-1;
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  prev.addEventListener('click',()=>go(i-1));
+  next.addEventListener('click',()=>go(i+1));
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'||e.key==='PageDown'){go(i+1)}
+    if(e.key==='ArrowLeft'||e.key==='PageUp'){go(i-1)}
+  });
+  document.querySelectorAll('#readings .card').forEach(c=>{
+    const open=()=>c.classList.remove('sealed');
+    c.addEventListener('click',open);
+    c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}});
+  });
+  go(0);
+</script>
+</body>
+</html>
