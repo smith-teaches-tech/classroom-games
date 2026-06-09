@@ -54,6 +54,7 @@
     display:none;flex:1;min-height:0;
     padding:clamp(18px,3vw,40px) clamp(18px,4vw,64px);
     flex-direction:column;
+    overflow-y:auto;
     animation:fade .5s ease;
   }
   .screen.active{display:flex}
@@ -170,19 +171,25 @@
   .card.correct{border-color:var(--gold);box-shadow:0 0 0 1px rgba(154,125,52,.4)}
   .card.hot{border-left:3px solid var(--oxblood)}
 
-  /* ---------- NOMA / verdict bars ---------- */
-  .verdicts{display:flex;flex-direction:column;gap:.9rem;max-width:62ch;margin-top:.4rem}
-  .verdict{display:grid;grid-template-columns:auto 1fr;gap:.9rem;align-items:start}
-  .vbar{height:100%;min-height:2.6rem;border-radius:3px;position:relative;align-self:stretch}
-  .vbar .seg{position:absolute;top:0;bottom:0;background:var(--overlap);opacity:.85;border-radius:3px}
-  .verdict .vlab{font-family:var(--mono);font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft)}
-  .verdict .vname{font-size:clamp(1.1rem,1.8vw,1.4rem);font-weight:600}
-  .verdict.none .vname{color:var(--empirical)}
-  .verdict.total .vname{color:var(--religious)}
-  .verdict.real .vname{color:var(--oxblood)}
-  .verdict .vtext{color:var(--ink-soft);font-size:clamp(1rem,1.5vw,1.2rem);line-height:1.4}
-  .vtrack{width:clamp(120px,22vw,260px);height:2.6rem;border:1px solid var(--line-strong);border-radius:3px;position:relative;background:rgba(255,255,255,.25)}
-  .vtrack .lens{position:absolute;top:0;bottom:0;background:var(--overlap);opacity:.7;border-radius:2px}
+  /* ---------- NOMA: how big is the overlap (three mini-Venns) ---------- */
+  .noma-lede{font-size:clamp(1.1rem,2vw,1.5rem);color:var(--ink-soft);line-height:1.4;max-width:60ch;margin:.4rem 0 .2rem}
+  .noma-row{flex:1;min-height:0;display:flex;gap:clamp(1rem,3vw,3.5rem);align-items:center;justify-content:center;padding:.5rem 0 .2rem}
+  .ov{flex:1 1 0;min-width:0;max-width:34ch;display:flex;flex-direction:column;align-items:center;text-align:center;gap:.55rem}
+  .venn-mini{position:relative;width:100%;max-width:340px;aspect-ratio:2 / 1}
+  .venn-mini .c{position:absolute;top:50%;transform:translateY(-50%);height:92%;aspect-ratio:1;border-radius:50%;mix-blend-mode:multiply;opacity:.72;border:1.5px solid rgba(0,0,0,.12)}
+  .venn-mini .c-e{background:var(--empirical-soft)}
+  .venn-mini .c-r{background:var(--religious-soft)}
+  /* overlap amounts encode each claim */
+  .ov.none  .c-e{left:0%}   .ov.none  .c-r{right:0%}    /* a clear gap — circles do not touch */
+  .ov.total .c-e{left:25%}  .ov.total .c-r{right:25%}   /* heavily merged */
+  .ov.real  .c-e{left:9%}   .ov.real  .c-r{right:9%}     /* a narrow band */
+  .ov-size{font-family:var(--serif);font-weight:700;font-size:clamp(1.5rem,3vw,2.3rem);line-height:1}
+  .ov.none  .ov-size{color:var(--empirical)}
+  .ov.total .ov-size{color:var(--religious)}
+  .ov.real  .ov-size{color:var(--oxblood)}
+  .ov-claim{font-style:italic;font-size:clamp(1rem,1.7vw,1.3rem);color:var(--ink);line-height:1.28}
+  .ov-break{font-size:clamp(.92rem,1.45vw,1.12rem);color:var(--ink-soft);line-height:1.32}
+  .ov.real .ov-break{color:var(--oxblood);font-weight:500}
 
   /* ---------- interlock (two R-cells meet) ---------- */
   .interlock{display:flex;gap:clamp(1rem,3vw,3rem);flex-wrap:wrap;align-items:center;margin-top:.6rem}
@@ -240,11 +247,16 @@
     .grain,#stage,.navbar{display:none!important}
     #printDeck{display:block!important}
     .pc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8mm}
-    .pc{border:1.5px solid #333;border-radius:6px;padding:7mm 6mm;break-inside:avoid;min-height:46mm;display:flex;flex-direction:column;justify-content:space-between}
-    .pc .pc-q{font-family:'Cormorant Garamond',Georgia,serif;font-size:15pt;line-height:1.25;color:#1a1a1a}
-    .pc .pc-foot{font-family:'JetBrains Mono',monospace;font-size:6.5pt;letter-spacing:.12em;text-transform:uppercase;color:#888;border-top:1px dotted #aaa;padding-top:2mm;margin-top:4mm}
+    .pc{position:relative;border:1.5px solid #333;border-radius:6px;padding:8mm 6mm;break-inside:avoid;min-height:46mm;display:flex;align-items:center;justify-content:center;text-align:center}
+    .pc .pc-q{font-family:'Cormorant Garamond',Georgia,serif;font-size:16pt;line-height:1.25;color:#1a1a1a}
+    .pc .pc-num{position:absolute;top:3mm;left:4mm;font-family:'JetBrains Mono',monospace;font-size:7pt;color:#bbb;letter-spacing:.1em}
     .pc-title{font-family:'JetBrains Mono',monospace;font-size:9pt;letter-spacing:.2em;text-transform:uppercase;margin-bottom:5mm;color:#333}
     .pc-note{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:11pt;color:#555;margin-bottom:6mm}
+    .pc-key{break-before:page;padding-top:4mm}
+    .pc-key h3{font-family:'JetBrains Mono',monospace;font-size:10pt;letter-spacing:.18em;text-transform:uppercase;color:#333;margin-bottom:5mm}
+    .pc-key ol{margin:0;padding-left:9mm;columns:2;column-gap:10mm}
+    .pc-key li{font-family:'Cormorant Garamond',serif;font-size:11.5pt;line-height:1.5;color:#222;break-inside:avoid;margin-bottom:1.5mm}
+    .pc-key li b{font-family:'JetBrains Mono',monospace;font-size:8pt;letter-spacing:.08em;text-transform:uppercase;color:#7a2522}
   }
 
   @media (max-width:760px){
@@ -256,8 +268,9 @@
     .tray{max-height:30%}
     .interlock{flex-direction:column;align-items:stretch}
     .joiner{transform:rotate(90deg)}
-    .verdict{grid-template-columns:1fr}
-    .vtrack{width:100%}
+    .noma-row{flex-direction:column;gap:1.4rem;align-items:center}
+    .ov{max-width:none}
+    .venn-mini{max-width:260px}
   }
 </style>
 </head>
@@ -329,23 +342,39 @@
   </section>
 
   <!-- 3 — NOMA named after -->
-  <section class="screen" data-screen>
-    <div class="eyebrow">Now name it <span class="dot">/</span> the famous claim your map just tested</div>
-    <h2>How big <em>is</em> the overlap?</h2>
-    <p class="body" style="margin-top:.5rem">A biologist, Stephen Jay Gould, proposed <span class="mono">NOMA</span> — “non-overlapping magisteria”: science and religion never touch, so they can never conflict. The loudest voices on the other side say the opposite — it’s total war, all the way across. You just built the map. Which is right?</p>
-    <div class="verdicts">
-      <div class="verdict none">
-        <div class="vtrack"><div class="lens" style="left:50%;width:0"></div></div>
-        <div><div class="vlab">The NOMA claim</div><div class="vname">Overlap = none</div><div class="vtext">Tidy, but your cards broke it: origins, miracles, prayer-as-effective all sat in the middle. The circles <em>do</em> touch.</div></div>
-      </div>
-      <div class="verdict total">
-        <div class="vtrack"><div class="lens" style="left:6%;width:88%"></div></div>
-        <div><div class="vlab">The culture-war claim</div><div class="vname">Overlap = total</div><div class="vtext">Also broken: “boiling point,” “what causes malaria,” “what makes a death meaningful” sat cleanly on one side. Most questions never met.</div></div>
-      </div>
-      <div class="verdict real">
-        <div class="vtrack"><div class="lens" style="left:38%;width:24%"></div></div>
-        <div><div class="vlab">What the cards show</div><div class="vname">Overlap = small, and real</div><div class="vtext">Not zero, not everything. A few questions are genuinely contested by both — and that narrow band is where the friction actually lives.</div></div>
-      </div>
+  <section class="screen" data-screen data-noma>
+    <div class="eyebrow">Now name it <span class="dot">/</span> the claim your map just tested</div>
+    <h2>So — how big <em>is</em> the overlap?</h2>
+    <p class="noma-lede">Two famous answers sit at the extremes. Your cards land in between.</p>
+    <div class="noma-row">
+
+      <figure class="ov none">
+        <div class="venn-mini"><span class="c c-e"></span><span class="c c-r"></span></div>
+        <figcaption>
+          <div class="ov-size">None</div>
+          <div class="ov-claim">Gould’s <span class="mono">NOMA</span>: the circles never touch — so science and religion can never conflict.</div>
+          <div class="ov-break">Broken — origins, a miracle, healing-prayer all landed in the middle.</div>
+        </figcaption>
+      </figure>
+
+      <figure class="ov total">
+        <div class="venn-mini"><span class="c c-e"></span><span class="c c-r"></span></div>
+        <figcaption>
+          <div class="ov-size">Total</div>
+          <div class="ov-claim">The popular “science vs. religion” story: they fight over everything.</div>
+          <div class="ov-break">Also broken — boiling point, malaria, a death’s meaning never met.</div>
+        </figcaption>
+      </figure>
+
+      <figure class="ov real">
+        <div class="venn-mini"><span class="c c-e"></span><span class="c c-r"></span></div>
+        <figcaption>
+          <div class="ov-size">Small &amp; real</div>
+          <div class="ov-claim">What your cards show.</div>
+          <div class="ov-break">A narrow band — not zero, not everything — and that band is where the friction lives.</div>
+        </figcaption>
+      </figure>
+
     </div>
   </section>
 
@@ -409,8 +438,12 @@
 <!-- print-only deck -->
 <div id="printDeck">
   <div class="pc-title">What Each Can Reach — question cards</div>
-  <div class="pc-note">Print, cut, sort onto a two-circle map. Foot-tags are the teacher’s answer key — fold under or trim before handing out for a blind sort.</div>
+  <div class="pc-note">Print and cut. Cards are question-only — ready for a blind sort onto a two-circle map. The teacher answer key is on the last page (cards are numbered to match).</div>
   <div class="pc-grid" id="pcGrid"></div>
+  <div class="pc-key">
+    <h3>Answer key — teacher only</h3>
+    <ol id="pcKey"></ol>
+  </div>
 </div>
 
 <nav class="navbar">
@@ -587,11 +620,17 @@
 
   // ---------- print deck ----------
   var pcGrid=document.getElementById('pcGrid');
-  CARDS.forEach(function(c){
+  var pcKey=document.getElementById('pcKey');
+  CARDS.forEach(function(c,i){
+    var n=String(i+1).padStart(2,'0');
     var d=document.createElement('div');
     d.className='pc';
-    d.innerHTML='<div class="pc-q">'+c.q+'</div><div class="pc-foot">key: '+ZONE_NAMES[c.z]+(c.hot?' · hot card':'')+'</div>';
+    d.innerHTML='<div class="pc-num">'+n+'</div><div class="pc-q">'+c.q+'</div>';
     pcGrid.appendChild(d);
+    var li=document.createElement('li');
+    li.innerHTML='<b>'+ZONE_NAMES[c.z]+(c.hot?' · hot':'')+'</b> — '+c.q;
+    li.value=i+1;
+    pcKey.appendChild(li);
   });
   document.getElementById('printBtn').addEventListener('click',function(){
     document.body.classList.add('printing');
