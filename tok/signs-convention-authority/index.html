@@ -139,6 +139,20 @@
   .thread b{color:var(--oxblood)}
   .thread .arrow{color:var(--oxblood);font-weight:700}
 
+  /* instrument */
+  .qrow{display:flex;gap:16px;align-items:flex-start;max-width:60ch;margin:0 0 13px}
+  .qrow .qnum{flex:none;width:30px;height:30px;border-radius:50%;background:var(--oxblood);color:var(--paper);font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px}
+  .qrow > div{font-size:clamp(16px,1.9vw,21px);line-height:1.38}
+  .qrow b{color:var(--oxblood);font-weight:600;letter-spacing:.03em}
+  .qrow .src{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-left:6px}
+  /* specimen-3 cards */
+  .spec-grid{display:flex;gap:18px;flex-wrap:wrap;margin:6px 0 0}
+  .spec-card{flex:1 1 230px;background:var(--card);border:1px solid var(--rule);border-top:3px solid var(--oxblood);border-radius:2px;padding:18px 20px}
+  .spec-glyph{font-size:34px;line-height:1;margin:0 0 8px;min-height:38px}
+  .swatch{display:inline-block;width:32px;height:32px;background:#fff;border:1px solid #c9bfad;vertical-align:middle}
+  .spec-name{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--oxblood);margin:0 0 10px}
+  .spec-card p{font-size:18px;line-height:1.38;margin:0}
+
   /* ---------- nav ---------- */
   .nav{position:fixed;bottom:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;background:linear-gradient(transparent,var(--paper) 40%)}
   .nav button{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:9px 16px;background:transparent;color:var(--ink);border:1px solid var(--rule);border-radius:2px;cursor:pointer;transition:background .15s}
@@ -210,14 +224,15 @@
     </div>
   </section>
 
-  <!-- 3 — TOOLKIT -->
+  <!-- 3 — THE INSTRUMENT -->
   <section class="screen">
-    <p class="eyebrow slate">The tools you just used</p>
-    <h2>You felt these before we named them.</h2>
-    <div class="concept"><b>SIGNIFIER</b> — the mark itself (the figure, the colour). &nbsp;<b>SIGNIFIED</b> — the idea it points to (toilet, "this kind of person").</div>
-    <div class="concept" style="margin-top:12px"><b>ARBITRARY</b> — nothing in the mark <em>forces</em> its meaning; the link is fixed by agreement, not by nature. &nbsp;<b>CONVENTION</b> — that agreement, held by a community.</div>
-    <div class="concept" style="margin-top:12px"><b>MYTH</b> (Barthes) — a convention that disguises itself as nature, so the reader stops seeing the choice.</div>
-    <p class="support muted" style="margin-top:20px">Keep these four. The next specimen runs on them.</p>
+    <p class="eyebrow slate">The instrument · four questions for any sign</p>
+    <h2>You felt these. Now name them — and use them.</h2>
+    <div class="qrow"><span class="qnum">1</span><div><b>THE CUT</b><span class="src">Saussure</span><br>What is the <em>signifier</em> (the mark) and the <em>signified</em> (the concept it points to)?</div></div>
+    <div class="qrow"><span class="qnum">2</span><div><b>ARBITRARY &amp; DIFFERENTIAL</b><span class="src">Saussure</span><br>Does anything in the mark <em>force</em> its meaning? It means what it means by <em>not</em> being its neighbour — green says "go" only against red's "stop."</div></div>
+    <div class="qrow"><span class="qnum">3</span><div><b>DRIFT &amp; MYTH</b><span class="src">Barthes</span><br>Has the <em>connotation</em> peeled away from the literal <em>denotation</em>? Does the convention pose as <em>natural</em>?</div></div>
+    <div class="qrow"><span class="qnum">4</span><div><b>AUTHORITY &amp; REACH</b><br>Who fixes the meaning — <em>imposed</em> by an institution, or <em>emergent</em> from a community's drift? Either way it binds, and the outsider misreads without knowing.</div></div>
+    <p class="support muted" style="margin-top:18px">Every specimen from here runs through these four.</p>
   </section>
 
   <!-- 4 — SPECIMEN 2 COMMIT -->
@@ -252,12 +267,36 @@
     <button class="reveal-btn">Reveal</button>
     <div class="reveal">
       <p class="r-line"><strong>Hong Kong</strong> — a Chinese context — uses the <em>Western</em> code: green up, red down. So it isn't culture-as-destiny.</p>
-      <p class="r-sub">If culture doesn't fix the meaning, what does? <strong>A community and an authority</strong> — which exchange, which trading software, which regulator adopted which convention. The sign is <em>arbitrary</em> (Saussure); someone holds the power to <em>fix</em> it.</p>
+      <p class="r-sub">If culture doesn't fix the meaning, what does? <strong>A community and an authority</strong> — which exchange, which trading software, which regulator adopted which convention. The sign is <em>arbitrary</em> (Saussure); someone holds the power to <em>fix</em> it — authority <em>imposed</em>, not grown.</p>
       <div class="concept"><b>CALLBACK · L1 / L2</b> — this is the same power you tracked in <em>expat vs migrant</em> and in the euphemism releases: authority over what a sign is allowed to mean.</div>
     </div>
   </section>
 
-  <!-- 7 — THE CUT -->
+  <!-- 7 — SPECIMEN 3 (YOU DO) -->
+  <section class="screen">
+    <p class="eyebrow">Specimen 3 · now you run the instrument</p>
+    <p class="big-q">Your turn. Pick a sign system — put all four questions to it.</p>
+    <div class="spec-grid">
+      <div class="spec-card">
+        <div class="spec-glyph">💀</div>
+        <div class="spec-name">Emoji</div>
+        <p>💀 means "dying laughing," not death. 👍 reads as approval here, as an insult elsewhere. Where did the denotation go — and who moved it?</p>
+      </div>
+      <div class="spec-card">
+        <div class="spec-glyph">okay.</div>
+        <div class="spec-name">Texting punctuation</div>
+        <p>"okay" · "okay." · "okay…" · "k". The full stop is <em>unmarked</em> in formal writing, <em>marked</em> in a text. Same sign, flipped by the system it sits in.</p>
+      </div>
+      <div class="spec-card">
+        <div class="spec-glyph"><span class="swatch"></span></div>
+        <div class="spec-name">The colour of mourning</div>
+        <p>White: mourning across much of East and South Asia; weddings and purity in the West. The same colour, the opposite occasion.</p>
+      </div>
+    </div>
+    <div class="debate"><span class="lab">Teach-back</span>Is your system's authority <strong>imposed</strong> or <strong>emergent</strong>? If <em>no one decreed</em> the meaning, why can a member still get it "wrong"?</div>
+  </section>
+
+  <!-- 8 — THE CUT -->
   <section class="screen">
     <p class="eyebrow">The cut TOK keeps</p>
     <p class="big-q">If the same sign means opposite things and neither is wrong — where does the meaning live?</p>
@@ -273,10 +312,10 @@
     <p class="eyebrow">Now write</p>
     <h2>~200 words. One specimen as your evidence.</h2>
     <div class="prompt-card">
-      A sign system can <em>look</em> universal or natural and still carry a presupposition or a convention that decides what it means. Using the pictogram <em>or</em> the colour code:
+      A sign system can <em>look</em> universal or natural and still carry a presupposition or a convention that decides what it means. Using the pictogram, the colour code, <em>or your group's specimen</em>:
       <ol>
         <li>Name the presupposition or convention in your specimen.</li>
-        <li>Name <em>who holds authority</em> over it.</li>
+        <li>Name <em>who holds authority</em> over it — <em>imposed</em> or <em>emergent</em>?</li>
         <li>State what a reader who didn't know the code would wrongly <em>"know."</em></li>
         <li>Close on the cut: which part of the meaning is in the sign, and which part is in the community reading it?</li>
       </ol>
