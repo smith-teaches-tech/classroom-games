@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Single-Object Analysis — The Exhibition Atom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3eee1;
+    --paper-2:#ece5d3;
+    --ink:#1f1c17;
+    --ink-soft:#4a4339;
+    --rule:#cbbfa3;
+    --nasa:#1d3b5c;
+    --green:#39563f;
+    --amber:#b9892f;
+    --hl:rgba(185,137,47,.26);
+    --hl-strong:rgba(185,137,47,.5);
+    --bad:#8a3324;
+    --good:#39563f;
+    --shadow:0 18px 50px -22px rgba(31,28,23,.5);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(120% 90% at 80% -10%, rgba(29,59,92,.07), transparent 60%),
+      radial-gradient(120% 90% at 0% 110%, rgba(57,86,63,.08), transparent 55%),
+      var(--paper);
+    color:var(--ink);
+    font-family:"Cormorant Garamond", Georgia, serif;
+    font-size:20px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:0 26px 120px;}
+  .mono{font-family:"JetBrains Mono", monospace;}
+
+  /* ---- header ---- */
+  header{padding:64px 0 30px;border-bottom:2px solid var(--ink);margin-bottom:8px;}
+  .kicker{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--amber);margin:0 0 18px;}
+  h1{font-size:clamp(40px,7vw,68px);line-height:.98;font-weight:600;margin:0;letter-spacing:-.015em;}
+  h1 em{font-style:italic;color:var(--nasa);}
+  .sub{font-size:22px;color:var(--ink-soft);margin:18px 0 0;max-width:60ch;font-style:italic;}
+  .target{font-family:"JetBrains Mono",monospace;font-size:12.5px;line-height:1.6;text-transform:uppercase;letter-spacing:.08em;margin-top:26px;padding:14px 18px;border:1px solid var(--rule);background:rgba(255,255,255,.35);color:var(--ink-soft);}
+  .target b{color:var(--ink);}
+
+  /* ---- section scaffolding ---- */
+  section{padding:52px 0 8px;}
+  .sec-num{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.2em;color:var(--amber);}
+  h2{font-size:clamp(28px,4.4vw,40px);font-weight:600;margin:6px 0 14px;letter-spacing:-.01em;line-height:1.02;}
+  h2 .step{color:var(--nasa);}
+  .lede{font-size:21px;color:var(--ink-soft);margin:0 0 26px;max-width:62ch;}
+
+  /* ---- the move strip ---- */
+  .move{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;font-family:"JetBrains Mono",monospace;font-size:13px;letter-spacing:.04em;margin:6px 0 8px;}
+  .move .node{padding:9px 15px;border:1.5px solid var(--ink);background:var(--paper-2);text-transform:uppercase;}
+  .move .arrow{color:var(--amber);font-size:18px;}
+
+  /* ---- object checker ---- */
+  .checker{background:rgba(255,255,255,.45);border:1.5px solid var(--rule);padding:26px;margin-top:4px;}
+  .checker label{display:block;font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px;}
+  .checkrow{display:flex;gap:10px;flex-wrap:wrap;}
+  .checker input{flex:1;min-width:220px;font-family:"Cormorant Garamond",serif;font-size:21px;padding:11px 15px;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);}
+  .checker input:focus{outline:2px solid var(--amber);outline-offset:1px;}
+  .checker button{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:11px 22px;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer;transition:transform .12s;}
+  .checker button:hover{transform:translateY(-2px);}
+  .verdict{margin-top:20px;font-size:19px;min-height:0;}
+  .verdict .test{font-family:"JetBrains Mono",monospace;font-size:14px;background:var(--paper-2);padding:12px 15px;border-left:3px solid var(--amber);margin:0 0 12px;}
+  .verdict .flag{color:var(--bad);font-weight:600;}
+  .verdict .pass{color:var(--good);font-weight:600;}
+  .hint{font-size:17px;color:var(--ink-soft);margin-top:12px;font-style:italic;}
+
+  /* ---- prompts ---- */
+  .prompts{display:grid;gap:0;border-top:1px solid var(--rule);margin-top:8px;}
+  .prompt{display:grid;grid-template-columns:34px 1fr;gap:18px;padding:20px 4px;border-bottom:1px solid var(--rule);align-items:start;}
+  .prompt .pn{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--amber);padding-top:5px;}
+  .prompt .pq{font-size:23px;line-height:1.22;margin:0;}
+  .prompt .pmeta{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-top:8px;}
+  .prompt .pmeta b{color:var(--green);}
+  .warnflag{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--bad);border:1px solid var(--bad);padding:2px 7px;margin-left:8px;vertical-align:middle;}
+
+  /* ---- annotated model ---- */
+  .model-intro{font-size:19px;color:var(--ink-soft);font-style:italic;margin-bottom:20px;}
+  figure{margin:0 0 30px;border:1px solid var(--rule);background:#0d1622;box-shadow:var(--shadow);}
+  figure img{display:block;width:100%;height:auto;}
+  .fig-fallback{aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 70% 80%, #14233a, #060a12);}
+  figcaption{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.08em;color:#a9b6c9;background:#0d1622;padding:9px 14px;text-transform:uppercase;}
+  .paper-card{background:rgba(255,255,255,.5);border:1.5px solid var(--rule);padding:34px 36px;position:relative;box-shadow:var(--shadow);}
+  .block-tag{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin:0 0 6px;}
+  .block-tag.b2{color:var(--nasa);margin-top:26px;}
+  .model p{font-size:22px;line-height:1.62;margin:0;}
+  .legend{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-soft);margin-top:24px;padding-top:16px;border-top:1px dashed var(--rule);}
+  .legend b{color:var(--amber);}
+
+  .hl{
+    background:var(--hl);
+    border-bottom:2px solid var(--hl-strong);
+    cursor:pointer;
+    padding:.5px 1px;
+    transition:background .15s, transform .15s;
+    position:relative;
+  }
+  .hl:hover,.hl:focus{background:var(--hl-strong);outline:none;}
+  .hl::after{content:attr(data-n);font-family:"JetBrains Mono",monospace;font-size:9px;vertical-align:super;color:var(--amber);font-weight:700;margin-left:2px;}
+
+  /* ---- modal ---- */
+  .overlay{position:fixed;inset:0;background:rgba(20,18,14,.55);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;padding:24px;z-index:50;}
+  .overlay.open{display:flex;}
+  .modal{background:var(--paper);max-width:560px;width:100%;border:2px solid var(--ink);box-shadow:0 30px 80px -20px rgba(0,0,0,.6);padding:34px 34px 30px;position:relative;animation:pop .22s ease;}
+  @keyframes pop{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
+  .modal .mlabel{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin:0 0 14px;}
+  .modal .mquote{font-size:21px;font-style:italic;line-height:1.4;color:var(--nasa);border-left:3px solid var(--amber);padding-left:16px;margin:0 0 18px;}
+  .modal .mwhy{font-size:20px;line-height:1.5;margin:0;color:var(--ink);}
+  .modal .close{position:absolute;top:14px;right:16px;font-family:"JetBrains Mono",monospace;font-size:20px;background:none;border:none;color:var(--ink-soft);cursor:pointer;line-height:1;}
+  .modal .close:hover{color:var(--bad);}
+  .modal .dots{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-soft);margin-top:22px;border-top:1px dashed var(--rule);padding-top:12px;}
+
+  /* ---- rubric ---- */
+  .rubric{border:1.5px solid var(--ink);margin-top:6px;background:rgba(255,255,255,.4);}
+  .band{border-bottom:1px solid var(--rule);}
+  .band:last-child{border-bottom:none;}
+  .band-head{display:flex;align-items:baseline;gap:16px;padding:18px 22px;cursor:pointer;user-select:none;}
+  .band-head:hover{background:rgba(185,137,47,.07);}
+  .band-letter{font-family:"JetBrains Mono",monospace;font-size:30px;font-weight:700;width:34px;}
+  .band-name{font-size:24px;font-weight:600;flex:1;}
+  .band-tag{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);}
+  .band-body{max-height:0;overflow:hidden;transition:max-height .3s ease;}
+  .band-body p{margin:0;padding:0 22px 22px 72px;font-size:19px;color:var(--ink-soft);line-height:1.5;}
+  .band.open .band-body{max-height:340px;}
+  .band[data-l="A"] .band-letter{color:var(--green);}
+  .band[data-l="B"] .band-letter{color:var(--green);}
+  .band[data-l="C"] .band-letter{color:var(--amber);}
+  .band[data-l="D"] .band-letter{color:var(--bad);}
+  .band[data-l="E"] .band-letter{color:var(--bad);}
+  .cdline{display:flex;align-items:center;gap:14px;background:var(--ink);color:var(--paper);padding:10px 22px;font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;}
+  .cdline .dot{width:7px;height:7px;background:var(--amber);border-radius:50%;flex:none;}
+
+  .dims{margin-top:30px;border-top:1px solid var(--rule);padding-top:24px;}
+  .dims h3{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin:0 0 14px;}
+  .dims ol{margin:0;padding-left:22px;}
+  .dims li{font-size:20px;margin-bottom:10px;line-height:1.4;}
+  .dims li b{color:var(--nasa);}
+
+  /* ---- closing ---- */
+  .close-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:8px;}
+  @media(max-width:640px){.close-grid{grid-template-columns:1fr;}}
+  .card{border:1.5px solid var(--rule);background:rgba(255,255,255,.45);padding:24px;}
+  .card .ct{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin:0 0 12px;}
+  .card .cq{font-size:23px;line-height:1.3;margin:0;font-style:italic;}
+  .card .ok{display:inline-block;margin-top:14px;font-family:"JetBrains Mono",monospace;font-size:13px;}
+  .ok .o{color:var(--bad);}.ok .k{color:var(--good);}
+
+  footer{margin-top:60px;padding-top:24px;border-top:2px solid var(--ink);font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.06em;color:var(--ink-soft);text-transform:uppercase;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="kicker">TOK · Unit 1 · Knowledge &amp; the Knower</p>
+    <h1>Single-Object<br>Analysis <em>— the exhibition atom</em></h1>
+    <p class="sub">One object. One concept as a lens. One prompt. A short paragraph about how knowledge works. You watched it done on Earthrise — now do it yourself.</p>
+    <p class="target"><b>Today's practice, not the graded exhibition.</b> Target → <b>I can take an object and produce a justified knowledge question linked to TOK.</b></p>
+  </header>
+
+  <!-- THE MOVE -->
+  <section>
+    <span class="sec-num">00 / THE MOVE</span>
+    <div class="move">
+      <span class="node">The Object</span><span class="arrow">→</span>
+      <span class="node">A Concept (your lens)</span><span class="arrow">→</span>
+      <span class="node">An IA Prompt</span><span class="arrow">→</span>
+      <span class="node">The Paragraph</span>
+    </div>
+  </section>
+
+  <!-- OBJECT CHECKER -->
+  <section>
+    <span class="sec-num">01 / THE FIRST GATE</span>
+    <h2>Is it <span class="step">THE</span> object, or <span class="step">A</span> object?</h2>
+    <p class="lede">Your object must be one specific thing that exists in the world — with a history you can point to. Not a <em>type</em> of thing. Test it: put the word “a” in front of it.</p>
+    <div class="checker">
+      <label for="objin">Type your object</label>
+      <div class="checkrow">
+        <input id="objin" type="text" placeholder="e.g. my grandmother's prayer book" autocomplete="off">
+        <button id="objbtn">Run the test</button>
+      </div>
+      <div class="verdict" id="verdict"></div>
+      <p class="hint">The tool is a rough guide — the real judgement is yours. If <em>“a ___”</em> names the thing you mean, you've got a category. <b>THE / THIS / MY — never A.</b></p>
+    </div>
+  </section>
+
+  <!-- PROMPTS -->
+  <section>
+    <span class="sec-num">02 / CHOOSE ONE PROMPT</span>
+    <h2>The Knowledge Questions</h2>
+    <p class="lede">Pick the prompt that lets your object say something about <em>how knowledge works</em> — not something about the object's subject matter. (Check exact wording against the class list.)</p>
+    <div class="prompts">
+      <div class="prompt">
+        <span class="pn">35</span>
+        <div><p class="pq">In what ways do values affect the production of knowledge?<span class="warnflag">Earthrise prompt — beware parroting</span></p>
+        <p class="pmeta">L6 · lens: <b>values · interpretation · objectivity</b></p></div>
+      </div>
+      <div class="prompt">
+        <span class="pn">12</span>
+        <div><p class="pq">Is bias inevitable in the production of knowledge?</p>
+        <p class="pmeta">L4 frameworks + L6 values · lens: <b>perspective · values · objectivity</b></p></div>
+      </div>
+      <div class="prompt">
+        <span class="pn">16</span>
+        <div><p class="pq">Should we trust the dominant theory more than rival theories?</p>
+        <p class="pmeta">L4 geosynclinal vs. plate tectonics; Wegener the rival · lens: <b>certainty · justification</b></p></div>
+      </div>
+      <div class="prompt">
+        <span class="pn">05</span>
+        <div><p class="pq">What counts as good evidence for a claim?</p>
+        <p class="pmeta">L2 JTB + L4 what a framework accepts · lens: <b>evidence · justification</b></p></div>
+      </div>
+      <div class="prompt">
+        <span class="pn">28</span>
+        <div><p class="pq">To what extent is certainty attainable?</p>
+        <p class="pmeta">L2 · lens: <b>certainty · truth</b></p></div>
+      </div>
+      <div class="prompt">
+        <span class="pn">24</span>
+        <div><p class="pq">How might the context in which knowledge is presented influence whether it is accepted or rejected?</p>
+        <p class="pmeta">L5 power, gatekeeping · lens: <b>power · perspective</b></p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ANNOTATED MODEL -->
+  <section>
+    <span class="sec-num">03 / THE MODEL, MARKED UP</span>
+    <h2>What a strong paragraph does</h2>
+    <p class="model-intro">This is the Earthrise commentary you read in Lesson 6, answering Prompt 35. The highlighted phrases are doing the analytical work — <b>click any one</b> to see why it counts as TOK and not argument.</p>
+
+    <figure>
+      <img src="iconic.jpg" alt="Earthrise — NASA AS08-14-2383" onerror="this.style.display='none';document.getElementById('figfb').style.display='flex';">
+      <div class="fig-fallback" id="figfb" style="display:none;">
+        <svg width="220" height="124" viewBox="0 0 220 124" xmlns="http://www.w3.org/2000/svg">
+          <rect width="220" height="124" fill="#060a12"/>
+          <path d="M0 124 Q60 96 220 110 L220 124 Z" fill="#2a2f37"/>
+          <circle cx="150" cy="46" r="26" fill="#3a6ea5"/>
+          <path d="M132 40 q10 -8 22 -2 q8 5 14 0" stroke="#5a8f5a" stroke-width="4" fill="none" opacity=".7"/>
+          <circle cx="40" cy="22" r="1.3" fill="#fff"/><circle cx="80" cy="14" r="1" fill="#fff"/><circle cx="200" cy="80" r="1.2" fill="#fff"/>
+        </svg>
+      </div>
+      <figcaption>Drop <span class="mono">iconic.jpg</span> beside this file · NASA AS08-14-2383 · Apollo 8 · 24 Dec 1968</figcaption>
+    </figure>
+
+    <div class="paper-card model">
+      <p class="block-tag">Block 1 — real-world context</p>
+      <p><span class="hl" data-n="1" data-key="1" tabindex="0">The Earthrise photograph — NASA catalogue AS08-14-2383, taken on 24 December 1968 aboard Apollo 8</span> shows the Earth apparently rising over the Moon's horizon. <span class="hl" data-n="2" data-key="2" tabindex="0">Anders had been assigned to photograph the lunar surface for geological study; the shot of Earth was unscheduled</span>. Before release, <span class="hl" data-n="3" data-key="3" tabindex="0">editors rotated it roughly 95° and titled it “Earthrise”</span>; the 1968 press caption described it in the register of a mission record — longitude, coordinates, a “telephoto view.” Within a year the same frame ran on the cover of Stewart Brand's <em>Whole Earth Catalog</em>, recaptioned as a fragile planet in need of protection, and was taken up by the environmental movement.</p>
+
+      <p class="block-tag b2">Block 2 — link to the prompt</p>
+      <p><span class="hl" data-n="4" data-key="4" tabindex="0">Read through the concept of values</span>, the photograph shows that even an apparently neutral record is shaped — at the point of production and the point of reception — by what its makers and viewers care about. <span class="hl" data-n="5" data-key="5" tabindex="0">The “objectivity” of NASA's caption is itself a value, institutional and technical, quietly producing how the image is read</span>. <span class="hl" data-n="6" data-key="6" tabindex="0">The environmental reading is not contained in the image; it is supplied by viewers who already valued the planet as fragile</span>. <span class="hl" data-n="7" data-key="7" tabindex="0">Brand had campaigned for an image of the whole Earth in 1966, two years before one existed, which suggests the values preceded the image rather than flowing from it</span>. The same photograph therefore carried different knowledge for NASA and for the environmental movement, because each brought different values to it. <span class="hl" data-n="8" data-key="8" tabindex="0">Even a photograph, which appears to record reality directly, becomes knowledge only through the interpretation that values make available.</span></p>
+
+      <p class="legend"><b>8 highlights</b> — click to open the feedback. The peer-check question runs on every sentence: <em>is this about the object, or about how knowledge works?</em></p>
+    </div>
+  </section>
+
+  <!-- RUBRIC -->
+  <section>
+    <span class="sec-num">04 / HOW IT IS GRADED</span>
+    <h2>Assessment — A to E</h2>
+    <p class="lede">Adapted from the IB exhibition markband. Your whole paragraph earns <em>one</em> holistic letter; the four dimensions below are where the written feedback lands. <b>A = does, on your object, what the model does on Earthrise.</b> Click a band to read it.</p>
+
+    <div class="rubric" id="rubric">
+      <div class="band" data-l="A">
+        <div class="band-head"><span class="band-letter">A</span><span class="band-name">Excellent</span><span class="band-tag">the move is clean</span></div>
+        <div class="band-body"><p>Specific object, real-world context clearly identified. One concept genuinely operates as a lens, and the paragraph justifies why this object earns its place. Link to the prompt is clear and explicit. Evaluates how knowledge is produced, justified, or limited — supported by evidence from the object's context. Reads as a convincing single exhibition commentary.</p></div>
+      </div>
+      <div class="band" data-l="B">
+        <div class="band-head"><span class="band-letter">B</span><span class="band-name">Good</span><span class="band-tag">analytic, one element underpowered</span></div>
+        <div class="band-body"><p>All elements present and analytic, with one underpowered: the concept does lens-work but isn't fully load-bearing, or the prompt-link is clear but thin, or the evidence fades toward the end. Specific object, a real move, one thing to tighten.</p></div>
+      </div>
+      <div class="band" data-l="C">
+        <div class="band-head"><span class="band-letter">C</span><span class="band-name">Satisfactory</span><span class="band-tag">attempted, doesn't hold</span></div>
+        <div class="band-body"><p>The move is attempted and TOK intent is visible, but it doesn't hold. The concept sits on top as a label rather than driving the paragraph; or the prompt is named but the body never engages it; or the TOK link is asserted (“this shows knowledge is subjective”) rather than shown. On the TOK side of the line, wobbling. A borderline-generic object lands here at best.</p></div>
+      </div>
+
+      <div class="cdline"><span class="dot"></span> The line the unit is built to catch — did the TOK move &nbsp;vs.&nbsp; argued the topic / described the object</div>
+
+      <div class="band" data-l="D">
+        <div class="band-head"><span class="band-letter">D</span><span class="band-name">Basic</span><span class="band-tag">slides into argument / description</span></div>
+        <div class="band-body"><p>Slides into the failure mode. Argues the object's subject matter, or describes and summarises it, with TOK vocabulary applied on top. Often a generic object — generic can't anchor a real-world context, so justification and prompt-link dissolve into generalities. A prompt may be named; the body is argument or description.</p></div>
+      </div>
+      <div class="band" data-l="E">
+        <div class="band-head"><span class="band-letter">E</span><span class="band-name">Rudimentary</span><span class="band-tag">no TOK move</span></div>
+        <div class="band-body"><p>No TOK move and/or no real object. Topic opinion or description only; generic or absent object; no functioning concept-lens; prompt-link absent or sloganistic.</p></div>
+      </div>
+    </div>
+
+    <div class="dims">
+      <h3>The four feedback dimensions</h3>
+      <ol>
+        <li><b>Object</b> — specific (THE / MY) with a clearly identified real-world context?</li>
+        <li><b>Justification</b> — does the chosen concept genuinely work as a lens on <em>this</em> object; does the object earn its place?</li>
+        <li><b>Prompt link</b> — is the link to the IA prompt clear, explicit, and effective?</li>
+        <li><b>Evidence &amp; analysis</b> — are points supported by evidence from the object's context, and is this analysis rather than assertion?</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <section>
+    <span class="sec-num">05 / BEFORE YOU HAND IT IN</span>
+    <h2>Peer check &amp; exit</h2>
+    <div class="close-grid">
+      <div class="card">
+        <p class="ct">Peer check — mark every sentence</p>
+        <p class="cq">“Is this a claim about the object, or a claim about how knowledge works?”</p>
+        <p class="ok">Mark each sentence <span class="o">O</span> (object) or <span class="k">K</span> (knowledge). A strong paragraph is mostly <span class="k">K</span>.</p>
+      </div>
+      <div class="card">
+        <p class="ct">Exit ticket — one sentence</p>
+        <p class="cq">What could your object show about knowledge that you could not have shown by just describing it?</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>TOK · Knowledge &amp; the Knower · Lesson 7 · Single-Object Analysis — diagnostic, low-stakes</footer>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="close" id="mclose" aria-label="Close">✕</button>
+    <p class="mlabel" id="mlabel"></p>
+    <p class="mquote" id="mquote"></p>
+    <p class="mwhy" id="mwhy"></p>
+    <p class="dots" id="mdots"></p>
+  </div>
+</div>
+
+<script>
+// ---- annotation feedback ----
+const NOTES = {
+  "1":{label:"Dimension 1 · THE object, not A object",
+       quote:"…NASA catalogue AS08-14-2383, taken on 24 December 1968 aboard Apollo 8…",
+       why:"A specific, named, dated thing — THE photograph with a catalogue number, not “a photo of Earth.” You can't put “a” in front of it. That specificity is exactly what gives the paragraph a real-world context to analyse. A generic object would have nothing concrete to anchor to, and everything downstream would dissolve into generalities."},
+  "2":{label:"Dimension 4 · Evidenced context, not generality",
+       quote:"Anders had been assigned to photograph the lunar surface… the shot of Earth was unscheduled.",
+       why:"A concrete, checkable historical fact — not a vague gesture at “space exploration.” And it's doing work: it establishes that the image was never the mission's purpose, which the values argument leans on later. Context earns its place when the analysis actually needs it."},
+  "3":{label:"Dimension 4 · A choice turned into evidence",
+       quote:"…editors rotated it roughly 95° and titled it “Earthrise”…",
+       why:"This isn't an opinion — it's a documented decision. The writer turns a fact (the rotation, the naming) into evidence for a knowledge claim. That's analysis: showing how a producer-side choice shaped the image, rather than just asserting that values were involved."},
+  "4":{label:"Dimension 2 · The concept as a lens",
+       quote:"Read through the concept of values…",
+       why:"The concept is named, then used to drive everything that follows. Cover the word “values” and the paragraph loses its spine. That's the test of a lens versus a label: the whole analysis depends on it. The concept isn't decoration — it's the instrument."},
+  "5":{label:"Dimension 4 · Evaluation, not assertion",
+       quote:"The “objectivity” of NASA's caption is itself a value… quietly producing how the image is read.",
+       why:"This is the analytical turn. A weaker paragraph just asserts “the photo is subjective.” This one shows that the very appearance of objectivity is produced by a value — institutional, technical. It evaluates how the knowledge was made instead of slapping a label on it."},
+  "6":{label:"The line · a claim about knowing (K)",
+       quote:"The environmental reading is not contained in the image; it is supplied by viewers…",
+       why:"This sentence is about how knowledge works — interpretation is supplied by the viewer — not about whether environmentalism is right. That's the line the whole unit is built on. Run the peer-check question on it: “about the object, or about how knowledge works?” Firmly K."},
+  "7":{label:"Dimension 4 · Evidence-backed, properly hedged",
+       quote:"Brand had campaigned for an image of the whole Earth in 1966… which suggests the values preceded the image…",
+       why:"A datable fact used as evidence — and notice “suggests,” not “proves.” The claim is calibrated to what the evidence supports. Overclaiming (“this proves values cause all knowledge”) would be weaker. Strong analysis says exactly as much as its evidence allows — no more."},
+  "8":{label:"Dimension 3 · The synthesis — the prompt, answered",
+       quote:"Even a photograph… becomes knowledge only through the interpretation that values make available.",
+       why:"The closing sentence answers the IA prompt at the level of how knowledge works, and states it generally enough to reach beyond Earthrise. Every sentence above was building to this. On its own, this one line tells you the writer did the TOK move."}
+};
+const order = ["1","2","3","4","5","6","7","8"];
+const overlay=document.getElementById('overlay');
+function openNote(k){
+  const n=NOTES[k]; if(!n) return;
+  document.getElementById('mlabel').textContent=n.label;
+  document.getElementById('mquote').textContent="“"+n.quote+"”";
+  document.getElementById('mwhy').textContent=n.why;
+  document.getElementById('mdots').textContent="Highlight "+k+" of 8";
+  overlay.classList.add('open');
+}
+function closeNote(){overlay.classList.remove('open');}
+document.querySelectorAll('.hl').forEach(el=>{
+  el.addEventListener('click',()=>openNote(el.dataset.key));
+  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openNote(el.dataset.key);}});
+});
+document.getElementById('mclose').addEventListener('click',closeNote);
+overlay.addEventListener('click',e=>{if(e.target===overlay)closeNote();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeNote();});
+
+// ---- object checker ----
+const SPECIFIC=/^\s*(the|this|that|these|those|my|our|your|his|her|its|their)\b/i;
+const ARTICLE=/^\s*(a|an)\b/i;
+function runCheck(){
+  const raw=document.getElementById('objin').value.trim();
+  const v=document.getElementById('verdict');
+  if(!raw){v.innerHTML='<p class="hint">Type an object first.</p>';return;}
+  const cleaned=raw.replace(/[.]+$/,'');
+  const test='a '+cleaned.replace(SPECIFIC,'').trim();
+  let html='<div class="test">The test → “'+test.toLowerCase()+'” — does that name the exact thing you mean?</div>';
+  if(SPECIFIC.test(raw)){
+    html+='<p><span class="pass">Looks specific.</span> You opened with “'+raw.split(/\s+/)[0]+'”. Now check: can you name <em>where it exists in the world</em> in one sentence — whose, which one, from when? If yes, you have THE object.</p>';
+  }else if(ARTICLE.test(raw)){
+    html+='<p><span class="flag">That reads as a category.</span> You opened with “'+raw.split(/\s+/)[0]+'.” Make it one specific thing: whose is it? which one? from when? (“my…”, “the … that …”).</p>';
+  }else{
+    html+='<p><span class="flag">Probably still a category.</span> If “'+test.toLowerCase()+'” makes sense, this is a <em>type</em> of thing. Pin it to one real instance: THE / THIS / MY — then give it a real-world context.</p>';
+  }
+  v.innerHTML=html;
+}
+document.getElementById('objbtn').addEventListener('click',runCheck);
+document.getElementById('objin').addEventListener('keydown',e=>{if(e.key==='Enter')runCheck();});
+
+// ---- rubric accordion ----
+document.querySelectorAll('.band-head').forEach(h=>{
+  h.addEventListener('click',()=>h.parentElement.classList.toggle('open'));
+});
+</script>
+</body>
+</html>
