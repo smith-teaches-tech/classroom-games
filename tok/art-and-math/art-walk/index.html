@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Art Walk — TOK Arts &amp; Mathematics L2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3eddf; --paper-2:#fbf7ee;
+    --ink:#26211b; --ink-soft:#6a6155; --ink-faint:#9b9284;
+    --oxblood:#7a1c1c; --oxblood-soft:#a84a3c;
+    --slate:#3f545c; --rule:#d8cfbd; --rule-soft:#e6ddcc; --green:#4a5f3a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:var(--paper);color:var(--ink);font-family:"Cormorant Garamond",Georgia,serif;overflow:hidden;-webkit-font-smoothing:antialiased}
+  .mono{font-family:"JetBrains Mono",monospace}
+
+  #deck{height:100vh;width:100vw;position:relative}
+  .screen{position:absolute;inset:0;display:none;overflow-y:auto;padding:clamp(1.6rem,4vh,3.2rem) clamp(2rem,6vw,7rem) clamp(5.2rem,9vh,6.5rem)}
+  .screen.active{display:flex;flex-direction:column}
+  .inner{margin-top:auto;margin-bottom:auto;width:100%;max-width:1180px;margin-left:auto;margin-right:auto}
+
+  .eyebrow{font-family:"JetBrains Mono",monospace;font-size:clamp(.62rem,1vw,.8rem);letter-spacing:.22em;text-transform:uppercase;color:var(--oxblood);margin-bottom:1.2rem}
+  .eyebrow .sep{color:var(--ink-faint);margin:0 .55em}
+  h1{font-weight:600;font-size:clamp(2.3rem,6vw,4.6rem);line-height:1.02;letter-spacing:-.01em;max-width:18ch}
+  h2{font-weight:600;font-size:clamp(1.7rem,4vw,3rem);line-height:1.06;max-width:24ch}
+  .lede{font-size:clamp(1.08rem,2vw,1.6rem);line-height:1.4;color:var(--ink-soft);max-width:48ch;margin-top:1.2rem;font-weight:500}
+  em{font-style:italic;color:var(--ink)} strong{font-weight:700;color:var(--oxblood)}
+  .ox{color:var(--oxblood)}
+  .rule-top{height:2px;background:var(--oxblood);width:64px;margin-bottom:1.8rem}
+  .kq{margin-top:2rem;font-family:"JetBrains Mono",monospace;font-size:clamp(.76rem,1.25vw,.98rem);color:var(--ink-soft);letter-spacing:.02em;max-width:66ch;line-height:1.7}
+  .kq b{color:var(--oxblood);font-weight:700}
+
+  .steps{margin-top:1.6rem;max-width:62ch;display:grid;gap:.7rem}
+  .step{display:grid;grid-template-columns:2.2em 1fr;gap:.7rem;align-items:start;font-size:clamp(1rem,1.7vw,1.4rem);line-height:1.32}
+  .step .sn{font-family:"JetBrains Mono",monospace;color:var(--oxblood);font-size:.78em;padding-top:.3em}
+
+  .flip-scene{margin-top:.4rem;perspective:1800px;height:min(62vh,580px);max-width:1080px;width:100%}
+  .flip-card{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.4,0,.2,1)}
+  .flip-card.flipped{transform:rotateY(180deg)}
+  .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1px solid var(--rule);border-radius:4px;background:var(--paper-2);display:flex;flex-direction:column;overflow:hidden}
+  .face.back{transform:rotateY(180deg)}
+
+  .front-top{display:flex;justify-content:space-between;align-items:center;padding:.7rem 1.1rem;border-bottom:1px solid var(--rule-soft)}
+  .front-no{font-family:"JetBrains Mono",monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--oxblood);font-size:clamp(.65rem,1.1vw,.85rem)}
+  .front-cue{font-family:"JetBrains Mono",monospace;font-size:clamp(.6rem,1vw,.78rem);color:var(--ink-faint);letter-spacing:.04em}
+  .art-frame{flex:1;display:flex;align-items:center;justify-content:center;background:#efe8d9;overflow:hidden;min-height:0}
+  .art-frame img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+  .art-ph{display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--ink-faint);text-align:center;gap:.5rem;padding:2rem}
+  .art-ph .pn{font-family:"Cormorant Garamond",serif;font-size:clamp(2rem,5vw,3.5rem);color:var(--rule)}
+  .art-ph .ph-note{font-family:"JetBrains Mono",monospace;font-size:.72rem;letter-spacing:.08em}
+
+  .rate{padding:.7rem 1.1rem;border-top:1px solid var(--rule-soft);background:var(--paper-2)}
+  .rate-label{font-family:"JetBrains Mono",monospace;font-size:clamp(.6rem,1vw,.76rem);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:.45rem;display:flex;justify-content:space-between;align-items:center}
+  .rate-row{display:flex;gap:.35rem;flex-wrap:wrap}
+  .rb{font-family:"JetBrains Mono",monospace;font-size:clamp(.75rem,1.3vw,1rem);width:clamp(2em,3.4vw,2.6em);height:clamp(2em,3.4vw,2.6em);border:1px solid var(--rule);border-radius:3px;background:var(--paper);color:var(--ink-soft);cursor:pointer;transition:all .12s;display:flex;align-items:center;justify-content:center}
+  .rb:hover{border-color:var(--oxblood-soft);color:var(--oxblood)}
+  .rb.sel{background:var(--oxblood);color:#fff;border-color:var(--oxblood)}
+  .flipbtn{font-family:"JetBrains Mono",monospace;font-size:clamp(.62rem,1.05vw,.82rem);letter-spacing:.08em;text-transform:uppercase;color:var(--oxblood);background:none;border:none;cursor:pointer;padding:.2em .1em}
+  .flipbtn:hover{text-decoration:underline}
+
+  .back-body{flex:1;overflow-y:auto;padding:clamp(1.1rem,2.4vw,2rem)}
+  .back-title{font-weight:600;font-size:clamp(1.3rem,2.4vw,2rem);line-height:1.08;margin-bottom:.2rem}
+  .back-sub{font-family:"JetBrains Mono",monospace;font-size:clamp(.6rem,1vw,.78rem);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:.9rem}
+  .back-text{font-size:clamp(.96rem,1.5vw,1.28rem);line-height:1.38;color:var(--ink);max-width:64ch}
+  .back-text p{margin-bottom:.55rem}
+  .tag{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:clamp(.55rem,.9vw,.72rem);letter-spacing:.1em;text-transform:uppercase;padding:.2em .6em;border-radius:3px;margin-bottom:.7rem}
+  .tag.settled{background:#e7ecdf;color:var(--green);border:1px solid #c7d3b6}
+  .tag.disputed{background:#f6e7e2;color:var(--oxblood);border:1px solid #e3c3b8}
+  .back-q{margin-top:.9rem;border-left:3px solid var(--oxblood);padding:.5rem 0 .5rem 1rem;font-size:clamp(.98rem,1.6vw,1.32rem);font-style:italic;line-height:1.3;max-width:58ch}
+
+  /* tally */
+  .tally{margin:1.1rem 0 1.4rem;max-width:880px;width:100%}
+  .tally-head,.tally-row{display:grid;grid-template-columns:minmax(96px,11em) 3.2em 1.1em 3.2em 1fr 3.2em;gap:.7rem;align-items:center}
+  .tally-head{font-family:"JetBrains Mono",monospace;font-size:clamp(.55rem,.92vw,.72rem);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);padding-bottom:.4rem;border-bottom:1px solid var(--rule)}
+  .tally-head span:nth-child(2),.tally-head span:nth-child(4){text-align:center}
+  .tally-row{padding:.4rem 0;border-bottom:1px solid var(--rule-soft);font-size:clamp(.85rem,1.4vw,1.12rem)}
+  .tally-row .tname{line-height:1.1}
+  .tinput{font-family:"JetBrains Mono",monospace;width:100%;text-align:center;font-size:.9em;border:1px solid var(--rule);border-radius:3px;background:var(--paper);color:var(--ink);padding:.3em .2em}
+  .tinput:focus{outline:none;border-color:var(--oxblood)}
+  .tarrow{color:var(--ink-faint);font-family:"JetBrains Mono",monospace;text-align:center}
+  .trk{position:relative;height:22px;min-width:90px}
+  .trk-line{position:absolute;top:50%;left:0;right:0;height:2px;background:var(--rule);transform:translateY(-50%)}
+  .trk-seg{position:absolute;top:50%;height:3px;transform:translateY(-50%)}
+  .trk-seg.up{background:var(--green)} .trk-seg.down{background:var(--oxblood)} .trk-seg.none{background:var(--ink-faint)}
+  .dot{position:absolute;top:50%;width:12px;height:12px;border-radius:50%;transform:translate(-50%,-50%)}
+  .dot.before{background:var(--paper-2);border:2px solid var(--ink-faint)}
+  .dot.after{background:var(--ink-faint);border:2px solid var(--ink-faint)}
+  .dot.after.up{background:var(--green);border-color:var(--green)} .dot.after.down{background:var(--oxblood);border-color:var(--oxblood)}
+  .tdelta{font-family:"JetBrains Mono",monospace;font-size:.9em;text-align:right}
+  .tdelta.up{color:var(--green)} .tdelta.down{color:var(--oxblood)} .tdelta.none{color:var(--ink-faint)}
+  .tally-sum{font-family:"JetBrains Mono",monospace;font-size:clamp(.72rem,1.2vw,.92rem);color:var(--ink-soft);line-height:1.7;margin-top:.7rem}
+  .tally-reflect{margin-top:.9rem;border-left:3px solid var(--oxblood);padding:.5rem 0 .5rem 1rem;font-style:italic;font-size:clamp(.95rem,1.55vw,1.3rem);color:var(--ink);max-width:60ch;line-height:1.34}
+
+  .qstack{margin-top:1.4rem;display:grid;gap:1.1rem;max-width:78ch}
+  .dq{border-top:2px solid var(--rule);padding-top:.85rem}
+  .dq .dn{font-family:"JetBrains Mono",monospace;font-size:clamp(.6rem,1vw,.78rem);letter-spacing:.12em;text-transform:uppercase;color:var(--oxblood-soft);margin-bottom:.4rem}
+  .dq .dt{font-size:clamp(1rem,1.75vw,1.4rem);line-height:1.3}
+  .dq .dt b{color:var(--oxblood);font-weight:700}
+
+  .writegrid{margin-top:1.3rem;display:grid;gap:1rem;max-width:80ch}
+  .wq{border-top:2px solid var(--rule);padding-top:.8rem}
+  .wq .wn{font-family:"JetBrains Mono",monospace;font-size:clamp(.6rem,1vw,.78rem);letter-spacing:.12em;text-transform:uppercase;color:var(--oxblood-soft);margin-bottom:.4rem}
+  .wq .wt{font-size:clamp(1rem,1.7vw,1.38rem);line-height:1.34}
+  .wq .wt b{color:var(--oxblood);font-weight:700}
+  .small-note{margin-top:1.3rem;font-family:"JetBrains Mono",monospace;font-size:clamp(.66rem,1.05vw,.84rem);color:var(--ink-faint);letter-spacing:.03em;max-width:66ch;line-height:1.62}
+
+  .stage{opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s ease}
+  .stage.on{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){.screen,.stage,.flip-card,#progress,.rb{transition:none}}
+
+  #progress{position:fixed;top:0;left:0;height:3px;background:var(--oxblood);transition:width .4s ease;z-index:31;width:0}
+  #chrome{position:fixed;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;gap:.8rem;padding:.65rem clamp(1rem,4vw,2.6rem);background:linear-gradient(to top,var(--paper) 62%,transparent);z-index:30}
+  #counter{font-family:"JetBrains Mono",monospace;font-size:clamp(.58rem,.92vw,.76rem);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);text-align:center;flex:1}
+  .navbtn{font-family:"JetBrains Mono",monospace;font-size:clamp(.64rem,1vw,.84rem);letter-spacing:.1em;text-transform:uppercase;color:var(--oxblood);background:var(--paper-2);border:1px solid var(--rule);border-radius:3px;padding:.55em 1.1em;cursor:pointer;transition:background .15s,color .15s,border-color .15s;white-space:nowrap}
+  .navbtn:hover{background:var(--oxblood);color:var(--paper-2);border-color:var(--oxblood)}
+  .navbtn:disabled{opacity:.28;cursor:default;background:var(--paper-2);color:var(--oxblood);border-color:var(--rule)}
+  .navbtn:focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
+  #printbtn{position:fixed;top:.7rem;right:clamp(1rem,4vw,2.6rem);z-index:32}
+
+  @media (max-width:760px){.flip-scene{height:min(70vh,560px)} .rb{width:2.1em;height:2.1em} .tally-head,.tally-row{grid-template-columns:minmax(80px,8em) 2.8em 1em 2.8em 1fr 2.6em}}
+
+  /* PRINT: each piece -> painting page + story page only (glue & laminate) */
+  @page{margin:1cm}
+  @media print{
+    body{overflow:visible;background:#fff}
+    #deck{height:auto;position:static}
+    #chrome,#printbtn,#progress,.flipbtn,.front-cue,.rate,.eyebrow{display:none!important}
+    .screen{display:block!important;position:static!important;inset:auto;height:auto;overflow:visible;padding:0;opacity:1!important}
+    .screen[data-kind="cover"],.screen[data-kind="debrief"],.screen[data-kind="write"]{display:none!important}
+    .inner{margin:0;max-width:none}
+    .flip-scene{height:auto;perspective:none;margin:0}
+    .flip-card{transform:none!important;transform-style:flat;height:auto}
+    .face{position:static!important;transform:none!important;backface-visibility:visible;border:none;border-radius:0;height:auto;page-break-after:always;page-break-inside:avoid;justify-content:center;background:#fff}
+    .face.front .front-top{border:none;padding:0 0 .4cm}
+    .art-frame{flex:none;min-height:84vh;background:#fff}
+    .art-frame img{max-height:84vh}
+    .back-body{overflow:visible;padding:0}
+    .back-text{max-width:none}
+    #pieces .screen:last-child .face.back{page-break-after:auto}
+    h1{font-size:30pt} h2{font-size:22pt}
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<button class="navbtn" id="printbtn" onclick="window.print()">Print walk-cards</button>
+<div id="deck">
+
+  <section class="screen" data-screen data-kind="cover"><div class="inner">
+    <div class="rule-top"></div>
+    <div class="eyebrow">TOK <span class="sep">/</span> The Arts &amp; Mathematics <span class="sep">/</span> Lesson 2</div>
+    <h1>The Art Walk</h1>
+    <p class="lede">Seven pieces. No labels, no names. You meet each one cold &mdash; then turn it over.</p>
+    <div class="steps">
+      <div class="step"><span class="sn">01</span><span>Look at the piece. <strong>Rate it 1&ndash;10</strong> on your sheet.</span></div>
+      <div class="step"><span class="sn">02</span><span>Jot it down: <em>what's going on here? What, if anything, does it let you know?</em></span></div>
+      <div class="step"><span class="sn">03</span><span>Only now <strong>turn it over</strong> and read the story behind it.</span></div>
+      <div class="step"><span class="sn">04</span><span><strong>Rate it again</strong> &mdash; and note what changed, and why.</span></div>
+    </div>
+    <p class="kq"><b>Driving question:</b> How do our interpretations &mdash; and our sense of a work's value &mdash; change with the context we have?</p>
+  </div></section>
+
+  <div id="pieces"></div>
+
+  <section class="screen" data-screen data-kind="debrief"><div class="inner">
+    <div class="eyebrow">After the walk <span class="sep">/</span> Your scores</div>
+    <h2 style="max-width:28ch">How far did context move you?</h2>
+    <div class="tally">
+      <div class="tally-head"><span>piece</span><span>before</span><span></span><span>after</span><span>change</span><span></span></div>
+      <div id="tallyRows"></div>
+    </div>
+    <div class="tally-sum" id="tallySum"></div>
+    <div class="tally-reflect" id="tallyReflect"></div>
+    <div class="qstack">
+      <div class="dq stage"><div class="dn">The turn &mdash; 1</div><div class="dt">In every case the object stayed <em>exactly</em> the same; what changed was what you <em>knew</em>. So did context change the <b>artwork itself</b>, or only your <b>justification for valuing it</b>? (And: for the Arnolfini, did the <em>painting</em> change &mdash; or did <em>you</em>?)</div></div>
+      <div class="dq stage"><div class="dn">The turn &mdash; 2</div><div class="dt">The forgery's value was all <em>origin</em>; the urinal's object barely mattered &mdash; the <em>idea</em> was the work. Same question, opposite answers. So <b>where does art-knowledge live &mdash; in the object, the maker, or the institution that frames it?</b></div></div>
+      <div class="dq stage"><div class="dn">The turn &mdash; 3</div><div class="dt">van Meegeren <em>confessed</em> &mdash; settled. The Leonardo attribution, the Arnolfini's meaning, Fountain's author &mdash; <em>disputed</em>. So &ldquo;context changes value&rdquo; is <b>not</b> &ldquo;anything goes.&rdquo; What disciplines a reading &mdash; what would make one simply <b>wrong</b>?</div></div>
+    </div>
+  </div></section>
+
+  <section class="screen" data-screen data-kind="write"><div class="inner">
+    <div class="eyebrow">End assignment <span class="sep">/</span> Choose one</div>
+    <h2 style="max-width:24ch">Write one paragraph. You pick the question.</h2>
+    <div class="writegrid">
+      <div class="wq stage"><div class="wn">A &middot; context &amp; value</div><div class="wt">At least one rating changed when you learned a piece's context &mdash; though the object never did. Using <b>two</b> pieces, argue whether context changes the <em>artwork itself</em> or only our <em>justification for valuing it</em>. Make the strongest case for one side, then say what the other side gets right.</div></div>
+      <div class="wq stage"><div class="wn">B &middot; what makes art</div><div class="wt">Congo only <em>painted</em>, the Bechers only <em>photographed what was there</em>, Duchamp only <em>chose</em>. Using <b>two</b> of them, explain what actually confers the status &lsquo;art&rsquo; &mdash; and what that reveals about where art-knowledge comes from. <em>(Not whether they are good &mdash; whether they are art.)</em></div></div>
+      <div class="wq stage"><div class="wn">C &middot; perception</div><div class="wt">The Arnolfini Portrait shows that learning where to look changes what you see. Using the Arnolfini and <b>one</b> other piece, argue: does the knowledge a work gives you live <em>in the work</em>, or in <em>what the viewer brings to it</em>? What disciplines a &lsquo;seeing&rsquo; so it counts as knowledge and not just projection?</div></div>
+      <div class="wq stage"><div class="wn">D &middot; what art-knowledge holds</div><div class="wt">A work might let you know three different things: <em>about the world</em>, <em>what something is like</em>, or <em>about art itself</em>. Choose <b>one</b> piece and argue which kind of knowledge (if any) it offers &mdash; and show how context and perception shaped your answer.</div></div>
+    </div>
+    <p class="small-note">Whichever you choose: if I deleted your example, a claim about <em>how art-knowledge works</em> must still be standing. Write about the knowledge, not just the picture.</p>
+  </div></section>
+
+</div>
+
+<div id="chrome">
+  <button class="navbtn" id="backbtn">&lsaquo; Back</button>
+  <span id="counter">01 / 10</span>
+  <button class="navbtn" id="nextbtn">Next &rsaquo;</button>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var PIECES=[
+    {id:1,img:"../art/emmaus.jpg",title:"The Supper at Emmaus",sub:"Han van Meegeren \u00b7 1936\u201337",tag:["settled","forgery \u2014 confessed"],
+     body:"<p>For years this was hailed as a newly-discovered masterpiece by <strong>Johannes Vermeer</strong>. The most trusted Vermeer expert of the age, Abraham Bredius, called it \u201cevery inch a Vermeer.\u201d In 1937 a Rotterdam museum paid a fortune \u2014 about 520,000 guilders \u2014 and it became the museum's star attraction.</p><p>It is a forgery. Han van Meegeren painted it and confessed in 1945. Today critics call it heavy-handed and awkward.</p><p>Not one molecule of paint changed between &lsquo;masterpiece&rsquo; and &lsquo;fake.&rsquo; Only what we knew about it changed.</p>",
+     q:"Your rating moved \u2014 but the object didn't. So what moved: the artwork, or your reason for valuing it?"},
+    {id:2,img:"../art/salvator.jpg",title:"Salvator Mundi",sub:"attributed to Leonardo da Vinci \u00b7 c.1500",tag:["disputed","attribution contested"],
+     body:"<p>In 2005 this was bought at a small auction for about <strong>$1,175</strong> \u2014 taken for a worn old copy. After restoration and an attribution to <strong>Leonardo da Vinci</strong>, it sold at Christie's in 2017 for <strong>$450.3 million</strong>: the most expensive painting ever sold.</p><p>The same object, ~$1,175 &rarr; ~$450,000,000. The leap is the attribution \u2014 and the attribution is disputed. The Prado lists it as workshop; some scholars say mostly an assistant's hand; others defend Leonardo.</p><p>The value rests on a claim about whose hand held the brush \u2014 a claim that still isn't settled.</p>",
+     q:"If the value follows the name, and the name is uncertain \u2014 where does the value actually live?"},
+    {id:3,img:"../art/arnolfini.jpg",title:"The Arnolfini Portrait",sub:"Jan van Eyck \u00b7 1434",frontcue:"look slowly \u2014 what do you see?",tag:["disputed","look again"],
+     body:"<p>Go back to the picture. Did you catch \u2014 the convex mirror at the centre, ringed with <strong>ten tiny scenes of Christ's Passion</strong>? The <strong>two figures reflected in it</strong>, standing where you are: witnesses entering the room. The signature on the back wall, in legal script: <em>&lsquo;Jan van Eyck was here, 1434.&rsquo;</em> The single lit candle in a daylit chandelier. The little dog. The shoes slipped off. Costly oranges by the window.</p><p>And the catch: scholars can't agree what it all means. A marriage contract (Panofsky)? A <strong>memorial for Arnolfini's first wife, who had just died</strong> (the death-side mirror scenes, the snuffed candle)? A document letting his wife run the business? The same details, read several defensible ways.</p>",
+     q:"You saw more once you knew where to look. Did the painting change \u2014 or did you? And if experts read the same details differently, is any reading simply wrong?"},
+    {id:4,img:"../art/black-square.jpg",title:"Black Square",sub:"Kazimir Malevich \u00b7 1915",tag:["settled","founding work of abstraction"],
+     body:"<p>At its first showing in Petrograd, Malevich hung this high in the corner of the room \u2014 the spot a Russian home reserves for a holy <strong>icon</strong>. He called it the &lsquo;zero point of painting&rsquo;: the moment art stopped being obliged to depict anything. It became a founding work of all abstract art.</p><p>A black square is the easiest object in this room to reproduce. What can't be reproduced is the gesture, the moment, and the claim it made.</p>",
+     q:"If you could paint the square but not the moment \u2014 is the knowledge in the object, or in the context?"},
+    {id:5,img:"../art/becher.jpg",title:"Water Towers",sub:"Bernd & Hilla Becher \u00b7 begun 1959",tag:["settled","documentation \u2192 art"],
+     body:"<p>For four decades the Bechers photographed industrial structures most people walk past as ugly \u2014 water towers, gas tanks, blast furnaces \u2014 always head-on, in flat overcast light, then arranged them in grids by type. They called the results <strong>&lsquo;anonymous sculptures.&rsquo;</strong> The deadpan method and the grid turned plumbing into one of the most influential bodies of conceptual photography, and taught a whole generation of artists.</p><p>Every photograph is a true, neutral record. The art isn't in any one tower. It's in the choosing, the framing, and the lining-up.</p>",
+     q:"If each photo is just an accurate record, where did the art come from \u2014 the towers, or the decision to look at them this way?"},
+    {id:6,img:"../art/congo.jpg",title:"Untitled",sub:"Congo, a chimpanzee \u00b7 1950s",tag:["disputed","is it even art?"],
+     body:"<p>This was painted by <strong>Congo, a chimpanzee</strong>, at London Zoo in the 1950s, under the ethologist Desmond Morris. Congo made about 400 works; they were shown at the ICA in 1957. <strong>Picasso is said to have owned one</strong>; Mir\u00f3 and Dal\u00ed admired them.</p><p>In 2005, three of Congo's paintings sold at Bonhams for about \u00a314,400 \u2014 more than twenty times the estimate. In the <em>same sale</em>, works by Renoir and Warhol went unsold.</p><p>No human made it. No one intended a meaning.</p>",
+     q:"Did knowing the maker raise your rating, lower it \u2014 or change the question from &lsquo;is it good?&rsquo; to &lsquo;is it even art?&rsquo;"},
+    {id:7,img:"../art/fountain.jpg",title:"Fountain",sub:"Marcel Duchamp (signed \u2018R. Mutt\u2019) \u00b7 1917",tag:["disputed","is it even art?"],
+     body:"<p>In 1917 Duchamp bought a urinal, turned it on its back, signed it <strong>&lsquo;R. Mutt&rsquo;</strong> and submitted it to an exhibition that had promised to show <em>any</em> work sent in. They hid it. He didn't make it, carve it, or paint it \u2014 he <strong>chose</strong> it. That choice is often called the most influential gesture in modern art: the claim that an artist's selection, not their craft, can make a thing art.</p><p>The original was lost almost at once \u2014 everything you can see is a later replica or a photograph. Even the authorship is disputed; some credit the artist Elsa von Freytag-Loringhoven.</p>",
+     q:"A forgery's whole value was its origin. Here the object was never the point \u2014 the idea is. So is the artwork the urinal, the gesture, or the institution that argued over it?"}
+  ];
+
+  var ratings={}; PIECES.forEach(function(p){ratings[p.id]={before:null,after:null};});
+
+  function rateRow(pid,phase,label){
+    var wrap=document.createElement("div"); wrap.className="rate";
+    var btns=""; for(var i=1;i<=10;i++){btns+='<button class="rb" data-v="'+i+'">'+i+'</button>';}
+    wrap.innerHTML='<div class="rate-label"><span>'+label+'</span></div><div class="rate-row">'+btns+'</div>';
+    wrap.querySelectorAll(".rb").forEach(function(b){
+      b.addEventListener("click",function(){
+        wrap.querySelectorAll(".rb").forEach(function(x){x.classList.remove("sel");});
+        b.classList.add("sel"); ratings[pid][phase]=+b.dataset.v;
+      });
+    });
+    return wrap;
+  }
+
+  var pcontainer=document.getElementById("pieces");
+  PIECES.forEach(function(p){
+    var sec=document.createElement("section");
+    sec.className="screen"; sec.setAttribute("data-screen",""); sec.setAttribute("data-kind","piece");
+    var inner=document.createElement("div"); inner.className="inner";
+    var cue=p.frontcue||"no label \u2014 rate it cold";
+    inner.innerHTML=
+      '<div class="eyebrow">The walk <span class="sep">/</span> Piece '+p.id+' of '+PIECES.length+'</div>'+
+      '<div class="flip-scene"><div class="flip-card">'+
+        '<div class="face front">'+
+          '<div class="front-top"><span class="front-no">Piece '+p.id+'</span><span class="front-cue">'+cue+'</span></div>'+
+          '<div class="art-frame"><img src="'+p.img+'" alt="Piece '+p.id+'"></div>'+
+        '</div>'+
+        '<div class="face back">'+
+          '<div class="back-body">'+
+            '<div class="back-title">'+p.title+'</div>'+
+            '<div class="back-sub">'+p.sub+'</div>'+
+            '<span class="tag '+p.tag[0]+'">'+p.tag[1]+'</span>'+
+            '<div class="back-text">'+p.body+'</div>'+
+            '<div class="back-q">'+p.q+'</div>'+
+          '</div>'+
+        '</div>'+
+      '</div></div>';
+    sec.appendChild(inner); pcontainer.appendChild(sec);
+
+    var card=sec.querySelector(".flip-card");
+    var front=sec.querySelector(".face.front");
+    var back=sec.querySelector(".face.back");
+
+    var img=front.querySelector("img");
+    img.addEventListener("error",function(){
+      front.querySelector(".art-frame").innerHTML='<div class="art-ph"><span class="pn">'+p.id+'</span><span class="ph-note">add '+p.img+' to the repo</span></div>';
+    });
+
+    front.appendChild(rateRow(p.id,"before","Your first rating \u2014 1 (weak) to 10 (strong)"));
+    var fbar=document.createElement("div"); fbar.className="rate"; fbar.style.borderTop="none"; fbar.style.paddingTop="0";
+    fbar.innerHTML='<button class="flipbtn">Turn it over for the story \u2192</button>';
+    fbar.querySelector(".flipbtn").addEventListener("click",function(){card.classList.add("flipped");});
+    front.appendChild(fbar);
+
+    back.appendChild(rateRow(p.id,"after","Now rate it again \u2014 1 to 10"));
+    var bbar=document.createElement("div"); bbar.className="rate"; bbar.style.borderTop="none"; bbar.style.paddingTop="0";
+    bbar.innerHTML='<button class="flipbtn">\u2190 Turn back</button>';
+    bbar.querySelector(".flipbtn").addEventListener("click",function(){card.classList.remove("flipped");});
+    back.appendChild(bbar);
+  });
+
+  // ---- tally ----
+  function dirOf(b,a){ if(b==null||a==null)return "none"; return a>b?"up":(a<b?"down":"none"); }
+  function deltaStr(b,a){ if(b==null||a==null)return "\u2013"; var d=a-b; return d>0?("+"+d):(""+d); }
+  function renderTrack(b,a){
+    if(b==null||a==null) return '<div class="trk"><div class="trk-line"></div></div>';
+    var bp=(b-1)/9*100, ap=(a-1)/9*100, lo=Math.min(bp,ap), hi=Math.max(bp,ap), dir=dirOf(b,a);
+    return '<div class="trk"><div class="trk-line"></div>'
+      +'<div class="trk-seg '+dir+'" style="left:'+lo+'%;width:'+(hi-lo)+'%"></div>'
+      +'<div class="dot before" style="left:'+bp+'%"></div>'
+      +'<div class="dot after '+dir+'" style="left:'+ap+'%"></div></div>';
+  }
+  var tallyBuilt=false;
+  function buildTally(){
+    var host=document.getElementById("tallyRows"); if(!host)return;
+    if(!tallyBuilt){
+      PIECES.forEach(function(p){
+        var r=ratings[p.id];
+        var row=document.createElement("div"); row.className="tally-row"; row.dataset.pid=p.id;
+        row.innerHTML='<span class="tname">'+p.title+'</span>'
+          +'<input class="tinput" type="number" min="1" max="10" data-pid="'+p.id+'" data-ph="before" value="'+(r.before==null?"":r.before)+'">'
+          +'<span class="tarrow">\u2192</span>'
+          +'<input class="tinput" type="number" min="1" max="10" data-pid="'+p.id+'" data-ph="after" value="'+(r.after==null?"":r.after)+'">'
+          +'<span class="trkcell">'+renderTrack(r.before,r.after)+'</span>'
+          +'<span class="tdelta '+dirOf(r.before,r.after)+'">'+deltaStr(r.before,r.after)+'</span>';
+        host.appendChild(row);
+      });
+      host.querySelectorAll(".tinput").forEach(function(inp){
+        inp.addEventListener("input",function(){
+          var v=parseInt(inp.value,10);
+          if(isNaN(v)){v=null;} else {v=Math.max(1,Math.min(10,v));}
+          var pid=+inp.dataset.pid, rr=ratings[pid];
+          rr[inp.dataset.ph]=v;
+          var row=inp.closest(".tally-row");
+          row.querySelector(".trkcell").innerHTML=renderTrack(rr.before,rr.after);
+          var dd=row.querySelector(".tdelta"); dd.textContent=deltaStr(rr.before,rr.after); dd.className="tdelta "+dirOf(rr.before,rr.after);
+          buildSummary();
+        });
+      });
+      tallyBuilt=true;
+    } else {
+      // refresh values that may have been set via card buttons
+      host.querySelectorAll(".tinput").forEach(function(inp){
+        var rr=ratings[+inp.dataset.pid]; var val=rr[inp.dataset.ph];
+        if(document.activeElement!==inp) inp.value=(val==null?"":val);
+        var row=inp.closest(".tally-row");
+        row.querySelector(".trkcell").innerHTML=renderTrack(rr.before,rr.after);
+        var dd=row.querySelector(".tdelta"); dd.textContent=deltaStr(rr.before,rr.after); dd.className="tdelta "+dirOf(rr.before,rr.after);
+      });
+    }
+    buildSummary();
+  }
+  function buildSummary(){
+    var sum=document.getElementById("tallySum"), ref=document.getElementById("tallyReflect"); if(!sum)return;
+    var moved=0,up=0,down=0,bu=null,bd=null;
+    PIECES.forEach(function(p){
+      var r=ratings[p.id]; if(r.before==null||r.after==null)return;
+      var d=r.after-r.before; if(d>0){up++; if(!bu||d>bu.d)bu={t:p.title,d:d};}
+      else if(d<0){down++; if(!bd||d<bd.d)bd={t:p.title,d:d};}
+      if(d!==0)moved++;
+    });
+    var complete=0; PIECES.forEach(function(p){if(ratings[p.id].before!=null&&ratings[p.id].after!=null)complete++;});
+    if(complete===0){ sum.textContent=""; ref.innerHTML="Enter your before / after scores to see where context moved you."; return; }
+    sum.innerHTML="You changed your mind on <b style='color:var(--ink)'>"+moved+" of "+complete+"</b> &nbsp;\u00b7&nbsp; \u2191 "+up+" up &nbsp;\u00b7&nbsp; \u2193 "+down+" down";
+    var parts=[];
+    if(bu)parts.push("lifted you most on <em>"+bu.t+"</em> (+"+bu.d+")");
+    if(bd)parts.push("dropped you most on <em>"+bd.t+"</em> ("+bd.d+")");
+    var lead = parts.length? ("Context "+parts.join(" and ")+". ") : "Your scores held steady. ";
+    ref.innerHTML=lead+"In every case the object never changed &mdash; so this is a map of your <strong>justifications</strong> moving, not the art.";
+  }
+
+  // ---- navigation ----
+  var screens=Array.prototype.slice.call(document.querySelectorAll("[data-screen]"));
+  var idx=0;
+  var counter=document.getElementById("counter");
+  var prog=document.getElementById("progress");
+  var nextBtn=document.getElementById("nextbtn");
+  var backBtn=document.getElementById("backbtn");
+  var pad=function(n){return String(n).padStart(2,"0");};
+  function stagesOf(s){return Array.prototype.slice.call(s.querySelectorAll(".stage"));}
+  function hiddenStages(){return stagesOf(screens[idx]).filter(function(e){return !e.classList.contains("on");});}
+
+  function updateNav(){
+    counter.textContent=pad(idx+1)+" / "+pad(screens.length);
+    prog.style.width=(idx/(screens.length-1))*100+"%";
+    backBtn.disabled=(idx===0);
+    var hid=hiddenStages().length;
+    if(hid>0){nextBtn.textContent="Reveal \u25BE";nextBtn.disabled=false;}
+    else{nextBtn.textContent="Next \u203A";nextBtn.disabled=(idx===screens.length-1);}
+  }
+  function show(i){
+    if(i<0||i>=screens.length)return;
+    screens[idx].classList.remove("active");
+    idx=i;screens[idx].classList.add("active");screens[idx].scrollTop=0;
+    if(screens[idx].getAttribute("data-kind")==="debrief")buildTally();
+    updateNav();
+  }
+  function nextAction(){
+    var hid=hiddenStages();
+    if(hid.length){hid[0].classList.add("on");updateNav();}
+    else show(idx+1);
+  }
+  nextBtn.addEventListener("click",nextAction);
+  backBtn.addEventListener("click",function(){show(idx-1);});
+  document.addEventListener("keydown",function(e){
+    var t=e.target.tagName;
+    if(t==="INPUT"||t==="TEXTAREA")return;
+    if(e.key==="ArrowRight"||e.key===" "||e.key==="ArrowDown"||e.key==="PageDown"){e.preventDefault();nextAction();}
+    else if(e.key==="ArrowLeft"||e.key==="PageUp"){e.preventDefault();show(idx-1);}
+    else if(e.key==="ArrowUp"){e.preventDefault();stagesOf(screens[idx]).forEach(function(x){x.classList.add("on");});updateNav();}
+    else if(e.key==="Home"){e.preventDefault();show(0);}
+    else if(e.key==="End"){e.preventDefault();show(screens.length-1);}
+    else if(e.key.toLowerCase()==="f"){var c=screens[idx].querySelector(".flip-card");if(c)c.classList.toggle("flipped");}
+  });
+
+  screens[0].classList.add("active");
+  updateNav();
+})();
+</script>
+</body>
+</html>
