@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Inspection — Where Does Arthood Live?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EDE5D5; --paper-2:#E4DAC6; --card:#F4EEE1;
+    --ink:#221C17; --ink-soft:#5A5046;
+    --oxblood:#6E1F1A; --oxblood-bright:#8C2A22;
+    --slate:#3F4A50; --slate-soft:#6B7780;
+    --brillo:#C42A2C; --line:#C8BCA4; --gold:#9A7B33;
+    --shadow:rgba(34,28,23,.18);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:"Cormorant Garamond",Georgia,serif;font-size:20px;line-height:1.45;
+    -webkit-font-smoothing:antialiased;overscroll-behavior:none;
+    background-image:radial-gradient(circle at 15% 8%,rgba(255,255,255,.18),transparent 40%),
+      radial-gradient(circle at 85% 92%,rgba(110,31,26,.05),transparent 45%);
+  }
+  .mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+  .shell{max-width:1060px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;padding:0 22px}
+
+  header.kq{position:sticky;top:0;z-index:30;background:linear-gradient(var(--paper),var(--paper) 72%,rgba(237,229,213,0));padding:13px 0 9px}
+  .kq-tag{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--oxblood);font-weight:700}
+  .kq-q{font-size:20px;line-height:1.24;font-style:italic;max-width:850px;margin-top:3px;font-weight:500}
+  .kq-q b{font-style:normal;font-weight:600}
+  .rail{display:flex;gap:6px;margin-top:10px;align-items:center;flex-wrap:wrap}
+  .pip{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.08em;color:var(--slate-soft);border:1px solid var(--line);border-radius:20px;padding:3px 9px;background:var(--card);text-transform:uppercase;cursor:pointer}
+  .pip.on{color:#fff;background:var(--oxblood);border-color:var(--oxblood)}
+  .pip.done{color:var(--oxblood);border-color:var(--oxblood)}
+
+  main{flex:1;padding:8px 0 40px}
+  .screen{display:none;animation:fade .45s ease}
+  .screen.live{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  .eyebrow{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--slate-soft);font-weight:700;margin-bottom:8px}
+  h1{font-size:clamp(38px,6.6vw,64px);line-height:.99;font-weight:600;margin:.1em 0 .25em;letter-spacing:-.01em}
+  h2{font-size:clamp(27px,4.4vw,40px);line-height:1.05;font-weight:600;margin:0 0 .35em}
+  p.lede{font-size:22px;max-width:680px}
+  p{max-width:680px}
+  .soft{color:var(--ink-soft)}
+  .prompt{border-left:3px solid var(--oxblood);padding:4px 0 4px 18px;margin:20px 0;font-style:italic;font-size:22px;line-height:1.3;max-width:720px}
+  .prompt .mono{font-style:normal;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--oxblood);display:block;margin-bottom:6px;font-weight:700}
+
+  .btn{font-family:"JetBrains Mono",monospace;font-size:13px;letter-spacing:.06em;font-weight:500;background:var(--oxblood);color:#F4EEE1;border:none;border-radius:2px;padding:13px 22px;cursor:pointer;text-transform:uppercase;transition:background .15s,transform .05s}
+  .btn:hover{background:var(--oxblood-bright)}
+  .btn:active{transform:translateY(1px)}
+  .btn[disabled]{background:#C7BBA4;color:#8B8270;cursor:not-allowed}
+  .btn.ghost{background:transparent;color:var(--slate);border:1px solid var(--line)}
+  .btn.ghost:hover{background:var(--card)}
+  .navrow{display:flex;gap:12px;align-items:center;margin-top:28px;flex-wrap:wrap}
+
+  .cover{padding-top:4vh}
+  .cover .stamp{display:inline-block;border:2px solid var(--oxblood);color:var(--oxblood);font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.2em;text-transform:uppercase;padding:7px 14px;transform:rotate(-2.2deg);font-weight:700;margin-bottom:24px}
+  .cover-img{width:100%;max-width:560px;border:1px solid var(--line);border-radius:3px;margin:18px 0 4px;display:block;box-shadow:0 10px 26px var(--shadow)}
+  .cap{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--slate-soft);letter-spacing:.04em}
+
+  .station-head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:4px}
+  .station-no{font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:700;letter-spacing:.12em;color:#fff;background:var(--oxblood);padding:4px 10px;border-radius:2px}
+  .station-dots{display:flex;gap:6px;margin-left:auto}
+  .sdot{width:9px;height:9px;border-radius:50%;border:1px solid var(--slate-soft);background:transparent}
+  .sdot.on{background:var(--oxblood);border-color:var(--oxblood)}
+  .sdot.done{background:var(--slate-soft);border-color:var(--slate-soft)}
+  .instruct{font-size:21px;max-width:720px;margin:6px 0 4px}
+  .record{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.04em;color:var(--oxblood);background:rgba(110,31,26,.07);border:1px dashed var(--oxblood);border-radius:3px;padding:9px 13px;display:inline-block;margin:10px 0 4px}
+
+  .bench{display:grid;grid-template-columns:1fr;gap:16px;margin-top:14px}
+  .tabs{display:flex;gap:0;margin-bottom:10px}
+  .tab{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--line);background:var(--card);padding:9px 16px;cursor:pointer;color:var(--ink-soft)}
+  .tab.on{background:var(--slate);color:#fff;border-color:var(--slate)}
+  .tab:first-child{border-radius:2px 0 0 2px}
+  .tab:last-child{border-radius:0 2px 2px 0;border-left:none}
+
+  .stage-wrap{display:flex;flex-direction:column;align-items:center}
+  .viewer{position:relative;width:340px;max-width:88vw;aspect-ratio:1/1;border:1px solid var(--line);border-radius:3px;overflow:hidden;background:#E8E0CC;touch-action:none;user-select:none}
+  .viewer .specimen-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .ph-tag{position:absolute;bottom:6px;right:7px;font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.1em;color:var(--slate-soft);background:rgba(244,238,225,.85);padding:2px 5px;border-radius:2px;z-index:5}
+
+  .jaw{position:absolute;top:0;bottom:0;width:2px;background:var(--oxblood);cursor:ew-resize;z-index:6}
+  .jaw::before{content:"";position:absolute;top:50%;left:-9px;width:20px;height:20px;margin-top:-10px;background:var(--oxblood);border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+  .jaw::after{content:"";position:absolute;top:0;bottom:0;left:-15px;width:32px}
+  .span-line{position:absolute;height:2px;background:var(--oxblood);top:50%;z-index:5;opacity:.5}
+  .readout{position:absolute;top:8px;left:50%;transform:translateX(-50%);font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:700;color:#fff;background:var(--oxblood);padding:4px 10px;border-radius:2px;z-index:7;white-space:nowrap}
+
+  .loupe{position:absolute;width:120px;height:120px;border-radius:50%;border:2px solid var(--oxblood);box-shadow:0 4px 14px rgba(0,0,0,.35),inset 0 0 0 2px rgba(255,255,255,.4);pointer-events:none;z-index:6;background-repeat:no-repeat;display:none}
+  .loupe-hint{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.08em;color:var(--slate-soft);background:rgba(244,238,225,.85);padding:3px 8px;border-radius:2px;z-index:5}
+
+  .ovl{position:relative;width:340px;max-width:88vw;aspect-ratio:1/1;border:1px solid var(--line);border-radius:3px;overflow:hidden;background:#E8E0CC}
+  .ovl .lay{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .ovl-controls{margin-top:12px;width:340px;max-width:88vw}
+  input[type=range]{width:100%;accent-color:var(--oxblood)}
+  .rangerow{display:flex;justify-content:space-between;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--slate-soft);margin-top:3px}
+
+  .dossier{display:grid;grid-template-columns:1fr;gap:10px;max-width:680px}
+  .drec{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--oxblood);border-radius:2px;padding:11px 14px}
+  .drec .dl{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--slate-soft);font-weight:700;margin-bottom:4px}
+  .drec .dab{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:17px;line-height:1.25}
+  .drec .dab b{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;color:var(--slate);display:block}
+  @media(max-width:560px){.drec .dab{grid-template-columns:1fr}}
+
+  .trays{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px}
+  @media(max-width:680px){.trays{grid-template-columns:1fr}}
+  .tray{border:1px solid var(--line);border-radius:3px;padding:14px;background:rgba(244,238,225,.5);transition:opacity .6s,filter .6s,box-shadow .4s}
+  .tray h3{margin:0 0 2px;font-size:24px;font-weight:600}
+  .tray.obj h3{color:var(--slate)} .tray.sit h3{color:var(--oxblood)}
+  .tray .sub{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--slate-soft);margin-bottom:10px}
+  .chit{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--slate);border-radius:2px;padding:8px 10px;margin-bottom:8px;font-size:16px;line-height:1.25}
+  .tray.sit .chit{border-left-color:var(--oxblood)}
+  .chit .cl{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--slate-soft);font-weight:700;display:block;margin-bottom:2px}
+
+  .reveal-card{background:var(--card);border:1px solid var(--line);border-radius:3px;padding:18px 20px;max-width:720px;margin:16px 0;box-shadow:0 8px 22px var(--shadow)}
+  .reveal-card .rl{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--oxblood);font-weight:700;margin-bottom:6px}
+  .figure{float:right;width:230px;max-width:40%;margin:0 0 12px 18px}
+  .figure img{width:100%;border:1px solid var(--line);border-radius:3px;display:block;box-shadow:0 6px 18px var(--shadow)}
+  .figure .cap{margin-top:5px}
+  @media(max-width:560px){.figure{float:none;width:100%;max-width:320px;margin:0 0 14px}}
+  .strike{text-decoration:line-through;text-decoration-color:var(--oxblood);text-decoration-thickness:2px;color:var(--ink-soft)}
+  .pull{font-size:clamp(25px,3.8vw,36px);line-height:1.13;font-weight:600;font-style:italic;color:var(--oxblood);max-width:760px;margin:20px 0}
+  .pull .mono{font-style:normal}
+  .attrib{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.08em;color:var(--slate-soft);text-transform:uppercase}
+
+  .twocol{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:16px 0}
+  @media(max-width:640px){.twocol{grid-template-columns:1fr}}
+  .pole{background:var(--card);border:1px solid var(--line);border-radius:3px;padding:15px 17px}
+  .pole .pl{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;margin-bottom:8px}
+  .pole.no .pl{color:var(--slate)} .pole.yes .pl{color:var(--oxblood)}
+
+  .exit-box{border:2px solid var(--oxblood);border-radius:3px;padding:20px 22px;max-width:760px;margin:12px 0;background:var(--card)}
+  .exit-box .ql{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--oxblood);font-weight:700;margin-bottom:10px}
+  .exit-box ol{margin:0;padding-left:22px}
+  .exit-box li{font-size:21px;margin-bottom:9px;line-height:1.3}
+  .footnote{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--slate-soft);letter-spacing:.02em;max-width:680px;margin-top:24px;line-height:1.55;border-top:1px solid var(--line);padding-top:12px}
+
+  @media (prefers-reduced-motion: reduce){.screen,.chit{animation:none}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="kq">
+    <div class="kq-tag">The Arts &amp; Mathematics · L3 · Community</div>
+    <div class="kq-q">What makes something count as <b>art</b> — and if it isn't a property of the object, who has the authority to <b>confer</b> it?</div>
+    <div class="rail" id="rail"></div>
+  </header>
+
+  <main>
+    <!-- 0 COVER -->
+    <section class="screen live" data-name="Bench">
+      <div class="cover">
+        <span class="stamp">Authentication Bench · Specimen pair 1964</span>
+        <div class="eyebrow">The inspection</div>
+        <h1>Two boxes.<br>One is worth millions.</h1>
+        <img class="cover-img" data-img="stable" alt="Warhol Brillo Boxes, Stable Gallery, 1964">
+        <div class="cap">Specimen A on display, 1964 · stable-gallery-1964.jpg</div>
+        <p class="lede" style="margin-top:18px">Two boxes of Brillo soap pads. One hangs in major museums. The other was thrown out with the packaging it <em>was</em>. You're the authenticator — the role you ran on the chain of transmission last year. Don't ask whether it's <em>good</em>, or whether you <em>like</em> it. Run the instruments, record what they read, and find the one thing that makes one of them art.</p>
+        <div class="navrow"><button class="btn" data-go="1">Approach the bench →</button></div>
+      </div>
+    </section>
+
+    <!-- 1 STATION BENCH -->
+    <section class="screen" data-name="Inspect">
+      <div class="station-head">
+        <span class="station-no" id="stNo">STATION 1 / 4</span>
+        <h2 id="stTitle" style="margin:0">Measure</h2>
+        <div class="station-dots" id="stDots"></div>
+      </div>
+      <p class="instruct" id="stInstruct"></p>
+      <div class="record" id="stRecord"></div>
+
+      <div id="stage" class="bench"></div>
+
+      <div class="navrow">
+        <button class="btn ghost" id="stPrev" style="display:none">← Back</button>
+        <button class="btn" id="stNext">Next station →</button>
+      </div>
+    </section>
+
+    <!-- 2 THE CUT -->
+    <section class="screen" data-name="The cut">
+      <div class="eyebrow">Now read back your sheet</div>
+      <h2>Point to the arthood.</h2>
+      <p class="lede">Everything you recorded falls into two piles. <strong>Stations 1–3</strong> — what you found by <em>inspecting the object</em>. <strong>Station 4</strong> — what you found in the <em>dossier</em>, the record of where it sits in the world. One pile contains the difference that makes one box art. Which one?</p>
+      <div class="trays" style="margin-top:16px">
+        <div class="tray obj" id="trayObj"><h3>From inspecting the object</h3><div class="sub">stations 1–3</div><div id="cutObj"></div></div>
+        <div class="tray sit" id="traySit"><h3>From the dossier</h3><div class="sub">station 4</div><div id="cutSit"></div></div>
+      </div>
+      <div class="navrow">
+        <button class="btn ghost" id="doCut">Reveal the cut</button>
+        <button class="btn" data-go="3" id="afterCut" style="display:none">Then who made it art? →</button>
+      </div>
+      <div id="cutPayoff" style="display:none">
+        <p class="pull">Not one thing that makes it art turned up under the instruments. Every line of it is in the dossier.</p>
+        <p class="lede">So the arthood isn't <em>in</em> the object — you measured, magnified, and overlaid, and it was never there. It was put <em>onto</em> the box from outside. The question stops being <em>what is it?</em> and becomes <strong>who did that, and how?</strong></p>
+        <div class="prompt"><span class="mono">Discuss before moving on</span>If two objects are identical in every property an instrument can read, and one is art and one isn't — where can the difference possibly be?</div>
+      </div>
+    </section>
+
+    <!-- 3 HARVEY -->
+    <section class="screen" data-name="Harvey">
+      <div class="eyebrow">The two answers everyone reaches for</div>
+      <h2>"A real artist made it." "So ask the maker."</h2>
+      <p class="soft">Both reasonable. Both die on the same true fact.</p>
+      <div class="reveal-card">
+        <div class="figure"><img data-img="harvey" alt="James Harvey with a Brillo carton before his paintings"><div class="cap">James Harvey · harvey-brillo.jpg</div></div>
+        <div class="rl">Attribution — what the records actually show</div>
+        <p style="font-size:19px">Specimen B — the <em>supermarket</em> box — was designed in 1961 by <strong>James Harvey</strong>: a working commercial artist who was, by night, a genuine abstract-expressionist painter exhibiting at a New York gallery.</p>
+        <p style="font-size:19px;margin-bottom:0"><span class="strike">A real artist made it.</span> An abstract expressionist designed the grocery box too. The maker can't be the cut.</p>
+      </div>
+      <div class="reveal-card">
+        <div class="rl">The maker's own verdict</div>
+        <p style="font-size:19px">Harvey walked into Warhol's 1964 opening, saw his box selling as art, and said: "Oh my god, I designed those." To his death he refused to call <em>either</em> box art — not the grocery one, not Warhol's.</p>
+        <p style="font-size:19px;margin-bottom:0"><span class="strike">Ask the maker.</span> The maker said no — yet the verdict went the other way. So the maker doesn't decide it either.</p>
+      </div>
+      <p class="pull">"What's one man's box, may be another man's art."</p>
+      <p class="attrib">— Harvey's gallery, press release, 1964</p>
+      <div class="navrow"><button class="btn" data-go="4">Then who decides? →</button></div>
+    </section>
+
+    <!-- 4 NAME IT -->
+    <section class="screen" data-name="The artworld">
+      <div class="eyebrow">Naming the thing you've been pointing at</div>
+      <h2>The difference is conferred, not found.</h2>
+      <p class="lede">In 1964 a philosopher named <strong>Arthur Danto</strong> stood in that gallery and asked your exact question: <em>what distinguishes Warhol's Brillo Box from the Brillo boxes Brillo comes in?</em> His answer wasn't on the box.</p>
+      <div class="twocol">
+        <div class="pole no"><div class="pl">Danto — "the artworld"</div><p style="font-size:18px;margin:0">What makes one a work is "an atmosphere of artistic theory, a knowledge of the history of art." You can't see it — you have to <em>know</em> it. The box enters a conversation the cardboard one never joined.</p></div>
+        <div class="pole yes"><div class="pl">Dickie — conferred status</div><p style="font-size:18px;margin:0">A community — galleries, critics, curators, the market, art history — <strong>confers a status</strong>: "candidate for appreciation." Arthood is a title granted, like "champion" or "citizen." No instrument detects it because it isn't a physical fact.</p></div>
+      </div>
+      <p class="lede">This fills the <strong>Community</strong> cell on our grid: <em>who certifies, and what?</em> In the arts, the <strong>artworld</strong> certifies — not correctness, not goodness, but <strong>arthood itself</strong>.</p>
+      <div class="prompt"><span class="mono">On the board</span>C · The Arts → the artworld confers <em>arthood</em> (a status), on criteria with no mechanical test.</div>
+      <div class="navrow"><button class="btn" data-go="5">What kind of power is that? →</button></div>
+    </section>
+
+    <!-- 5 POWER -->
+    <section class="screen" data-name="The power">
+      <div class="eyebrow">Callback — "Who Has the Power?"</div>
+      <h2>The power to decide what <em>counts</em>.</h2>
+      <p class="lede">Last year: power doesn't only decide who knows what — it decides <strong>what counts as knowledge in the first place</strong>. Same move here. The artworld's authority isn't the power to <em>price</em> a banana. It's the power to make something <strong>count as art at all</strong> — to set the category, not just fill it.</p>
+      <div class="twocol">
+        <div class="pole no"><div class="pl">✗ Not the claim we're making</div><p style="font-size:18px;margin:0">"The art market is a racket — rich people and critics gatekeeping for money." Maybe so — but that's a <em>sociology</em> question about corruption. It isn't what we're asking.</p></div>
+        <div class="pole yes"><div class="pl">✓ The claim we're making</div><p style="font-size:18px;margin:0">The artworld holds <em>epistemic</em> authority: the power to constitute the category "art." The millions a Cattelan banana fetched in 2024 measure <strong>conferred status</strong> — not a scam, and not in the fruit (it was eaten and replaced).</p></div>
+      </div>
+      <div class="prompt"><span class="mono">Hold the line</span>We study <em>how</em> conferral works, not whether the institution deserves it. Keep the banana on "what confers arthood," never on "is the market corrupt."</div>
+      <div class="navrow"><button class="btn" data-go="6">So can <em>anything</em> be art? →</button></div>
+    </section>
+
+    <!-- 6 GUARD -->
+    <section class="screen" data-name="The guard">
+      <div class="eyebrow">The trap the lesson exists to spring</div>
+      <h2>If arthood is "only conferred"… is your kitchen banana art?</h2>
+      <p class="lede">Here's the cliff: "conferred, not found" gets heard as <em>"so anything goes — it's all made up."</em> Test it.</p>
+      <div class="twocol">
+        <div class="pole yes"><div class="pl">Cattelan's banana</div><p style="font-size:18px;margin:0">Duct-taped to a gallery wall, in an art fair, by an artist with a history, inside a conversation about value and objecthood. The conditions for conferral are <em>met</em>.</p></div>
+        <div class="pole no"><div class="pl">Your banana</div><p style="font-size:18px;margin:0">Taped to your kitchen wall. Same fruit, same tape. No artworld receives it, no art-historical position, no candidacy. The conditions are <em>not</em> met — so no conferral happens.</p></div>
+      </div>
+      <p class="pull">Conferred isn't arbitrary. It's <span class="mono" style="font-size:.62em;letter-spacing:.04em">RULE-GOVERNED WITHOUT BEING MECHANICAL.</span></p>
+      <p class="lede">No measurable test — and still, not anything can be conferred arthood. A status with conditions is exactly what "champion" or "verdict" is. Same structure as a chain of transmission doesn't mean same validity — but it does mean a <strong>structure</strong>, not a free-for-all.</p>
+      <div class="navrow"><button class="btn" data-go="7">And when the community can't agree? →</button></div>
+    </section>
+
+    <!-- 7 STALL -->
+    <section class="screen" data-name="The stall">
+      <div class="eyebrow">When conferral doesn't complete</div>
+      <h2>The verdict can stall.</h2>
+      <div class="figure" style="width:300px;max-width:46%"><img data-img="mybed" alt="Tracey Emin, My Bed"><div class="cap">Tracey Emin, My Bed (1998) · my-bed.jpg</div></div>
+      <p class="lede">A status is conferred by a community — so what happens when the community splits? <strong>Tracey Emin's <em>My Bed</em></strong> (1998): her own unmade bed, the debris of a bad week, shortlisted for the Turner Prize. Critics called it a landmark. Others called it not-art, loudly, in the press.</p>
+      <p class="lede" style="margin-top:12px">Decades on it sits in major collections — and the conferral is <em>still</em> argued. Certification here is a social act that can <strong>fail to complete</strong>, complete slowly, or stay contested.</p>
+      <div class="reveal-card" style="clear:both">
+        <div class="rl">Forward link — Mathematics, L6</div>
+        <p style="font-size:18px;margin:0">Hold this. In two lessons you'll watch the <em>most</em> rigorous AOK do the same thing: a proof sitting uncertified for a decade because the community can't agree it's been checked — a theorem in one city, a conjecture everywhere else. Same slot on the grid, opposite ends of the rigour scale.</p>
+      </div>
+      <div class="navrow"><button class="btn" data-go="8">Push it to the edge →</button></div>
+    </section>
+
+    <!-- 8 EDGE -->
+    <section class="screen" data-name="The edge">
+      <div class="eyebrow">The limit case — a seed for later</div>
+      <h2>Does the conferred thing need a human maker?</h2>
+      <p class="lede">We just killed "the maker decides." But conferral still seems to assume <em>a</em> maker behind the object. Press on it: an image generated by an AI, no person choosing the composition — if a gallery confers arthood on it, what exactly got the status?</p>
+      <div class="twocol">
+        <div class="pole no"><div class="pl">If conferral is the whole story</div><p style="font-size:18px;margin:0">…then intent, consciousness, even humanity may be optional. The artworld could confer arthood on a machine's output as readily as on a urinal.</p></div>
+        <div class="pole yes"><div class="pl">If something resists</div><p style="font-size:18px;margin:0">…then conferral has a hidden condition we haven't named — and "who, or what, counts as a maker?" becomes the live question.</p></div>
+      </div>
+      <p class="footnote">We're not settling this today — we're planting it. It returns in the Technology unit, where the AI image is the new readymade. For now: notice the Brillo question and the AI question are the same question, sixty years apart.</p>
+      <div class="navrow"><button class="btn" data-go="9">The write →</button></div>
+    </section>
+
+    <!-- 9 EXIT -->
+    <section class="screen" data-name="The write">
+      <div class="eyebrow">Exit · ~150–180 words · second-order</div>
+      <h2>Where the arthood lives.</h2>
+      <div class="exit-box">
+        <div class="ql">Using the two Brillo boxes</div>
+        <ol>
+          <li>Explain where the arthood comes from, if it isn't in the object — and say what the artworld's authority is the power <em>to do</em>.</li>
+          <li>Name one thing that authority does <strong>not</strong> settle, and explain it.</li>
+          <li>Explain why your kitchen banana still isn't art, even though arthood is "only conferred."</li>
+        </ol>
+      </div>
+      <p class="footnote">Mark check — deleted-example rule: your claim about conferral should survive deleting the word "Brillo." If it can't, you've written about the box, not about knowledge.<br><br>
+      C/D line: arguing whether the box "really is" art · "the market's a scam" · "it's art because it's worth millions / because it's good" · retelling the Brillo story without the conferral move.</p>
+      <div class="navrow"><button class="btn ghost" data-go="1">↺ Back to the bench</button></div>
+    </section>
+  </main>
+</div>
+
+<script>
+/* ============ image resolution (jpg with SVG placeholder fallback) ============ */
+const ART='../art/';
+const IMG={
+  A:{src:ART+'brillo-warhol.jpg',     ph:ph('SPECIMEN A','brillo-warhol.jpg','#E8E0CC')},
+  B:{src:ART+'brillo-commercial.jpg', ph:ph('SPECIMEN B','brillo-commercial.jpg','#E9E2D2')},
+  stable:{src:ART+'stable-gallery-1964.jpg', ph:ph('STABLE GALLERY 1964','stable-gallery-1964.jpg','#E4DAC6')},
+  harvey:{src:ART+'harvey-brillo.jpg', ph:ph('JAMES HARVEY','harvey-brillo.jpg','#E4DAC6')},
+  mybed:{src:ART+'my-bed.jpg', ph:ph('MY BED · EMIN','my-bed.jpg','#E4DAC6')},
+};
+function ph(title,fname,bg){
+  const svg=`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'>
+    <rect width='400' height='400' fill='${bg}'/>
+    <g transform='translate(0 150)'>
+      <path d='M0 64 q50 -34 100 0 t100 0 t100 0 t100 0 v40 q-50 34 -100 0 t-100 0 t-100 0 t-100 0 Z' fill='#9E1F22'/>
+      <path d='M0 58 q50 -34 100 0 t100 0 t100 0 t100 0 v16 q-50 34 -100 0 t-100 0 t-100 0 t-100 0 Z' fill='#C42A2C'/>
+    </g>
+    <text x='200' y='120' text-anchor='middle' font-family='Arial' font-weight='900' font-size='66' letter-spacing='2' fill='#C42A2C'>BRILLO</text>
+    <text x='200' y='150' text-anchor='middle' font-family='Arial' font-weight='700' font-size='17' letter-spacing='4' fill='#222'>SOAP PADS</text>
+    <text x='200' y='330' text-anchor='middle' font-family='Arial' font-weight='800' font-size='20' letter-spacing='2' fill='#9E1F22'>SHINES ALUMINUM FAST</text>
+    <rect x='6' y='6' width='388' height='388' fill='none' stroke='#9A7B33' stroke-dasharray='5 5' opacity='.6'/>
+    <text x='200' y='372' text-anchor='middle' font-family='monospace' font-size='13' letter-spacing='2' fill='#6B7780'>PLACEHOLDER · ${fname}</text>
+    <text x='200' y='40' text-anchor='middle' font-family='monospace' font-size='12' letter-spacing='3' fill='#6B7780'>${title}</text>
+  </svg>`;
+  return 'data:image/svg+xml;utf8,'+encodeURIComponent(svg);
+}
+const _cache={};
+function resolve(key){
+  if(_cache[key]) return Promise.resolve(_cache[key]);
+  return new Promise(res=>{
+    const im=new Image();
+    im.onload=()=>{_cache[key]=IMG[key].src;res(IMG[key].src)};
+    im.onerror=()=>{_cache[key]=IMG[key].ph;res(IMG[key].ph)};
+    im.src=IMG[key].src;
+  });
+}
+document.querySelectorAll('img[data-img]').forEach(el=>{resolve(el.dataset.img).then(u=>el.src=u)});
+
+/* ============ station bench ============ */
+const STATIONS=[
+  {no:1,title:'Measure',tool:'caliper',
+   instruct:'Drag the two red lines to the left and right edges of the box. Read the width off the gauge. Do it for Specimen A, then switch to Specimen B.',
+   record:'RECORD → 1A width: ____ cm   ·   1B width: ____ cm'},
+  {no:2,title:'Surface',tool:'loupe',
+   instruct:'Move the loupe across each box. What is the printed image — the wordmark, the wave, the layout? Look for any difference in the design itself. Switch between A and B.',
+   record:'RECORD → 2. Printed design, A vs B: same / different. Any difference you can name: ____'},
+  {no:3,title:'Overlay',tool:'overlay',
+   instruct:'Slide Specimen A across until it sits on top of Specimen B. Watch the edges and the wordmark. How far do the two designs drift apart?',
+   record:'RECORD → 3. Overlaid, A and B line up: perfectly / roughly / not at all.'},
+  {no:4,title:'The dossier',tool:'dossier',
+   instruct:'These four facts cannot be found by inspecting the box — they live on the paperwork. Read each record and note how A and B differ.',
+   record:'RECORD → 4. How A differs from B: origin · price · location · maker.'},
+];
+let stIdx=0, curSpec='A';
+
+const stage=document.getElementById('stage');
+const stNo=document.getElementById('stNo'),stTitle=document.getElementById('stTitle'),
+      stInstruct=document.getElementById('stInstruct'),stRecord=document.getElementById('stRecord'),
+      stDots=document.getElementById('stDots'),stPrev=document.getElementById('stPrev'),stNext=document.getElementById('stNext');
+STATIONS.forEach(()=>{const d=document.createElement('div');d.className='sdot';stDots.appendChild(d)});
+
+function renderStation(){
+  const s=STATIONS[stIdx];
+  stNo.textContent=`STATION ${s.no} / 4`;
+  stTitle.textContent=s.title;
+  stInstruct.textContent=s.instruct;
+  stRecord.textContent=s.record;
+  [...stDots.children].forEach((d,i)=>{d.className='sdot'+(i===stIdx?' on':i<stIdx?' done':'')});
+  stPrev.style.display=stIdx===0?'none':'inline-block';
+  stNext.textContent = stIdx===STATIONS.length-1 ? 'Make the cut →' : 'Next station →';
+  stage.innerHTML='';
+  ({caliper:buildCaliper,loupe:buildLoupe,overlay:buildOverlay,dossier:buildDossier})[s.tool]();
+}
+stNext.onclick=()=>{ if(stIdx===STATIONS.length-1){go(2);} else {stIdx++;renderStation();} };
+stPrev.onclick=()=>{ if(stIdx>0){stIdx--;renderStation();} };
+
+function specTabs(onSwitch){
+  const wrap=document.createElement('div');wrap.className='tabs';
+  ['A','B'].forEach(k=>{
+    const t=document.createElement('div');t.className='tab'+(curSpec===k?' on':'');
+    t.textContent='Specimen '+k;
+    t.onclick=()=>{curSpec=k;[...wrap.children].forEach(c=>c.classList.remove('on'));t.classList.add('on');onSwitch(k)};
+    wrap.appendChild(t);
+  });
+  return wrap;
+}
+
+/* Station 1: caliper */
+const SCALE_CM=50;
+function buildCaliper(){
+  const w=document.createElement('div');w.className='stage-wrap';
+  const tabs=specTabs(k=>setImg(k));
+  const viewer=document.createElement('div');viewer.className='viewer';
+  const img=document.createElement('img');img.className='specimen-img';
+  const tag=document.createElement('div');tag.className='ph-tag';
+  const left=document.createElement('div');left.className='jaw';left.style.left='14%';
+  const right=document.createElement('div');right.className='jaw';right.style.left='86%';
+  const span=document.createElement('div');span.className='span-line';
+  const read=document.createElement('div');read.className='readout';
+  viewer.append(img,tag,span,left,right,read);
+  w.append(tabs,viewer);stage.appendChild(w);
+  function setImg(k){resolve(k).then(u=>img.src=u);tag.textContent='specimen '+k}
+  setImg(curSpec);
+  function pct(el){return parseFloat(el.style.left)/100}
+  function update(){
+    const a=Math.min(pct(left),pct(right)),b=Math.max(pct(left),pct(right));
+    const W=viewer.clientWidth;
+    span.style.left=(a*W)+'px';span.style.width=((b-a)*W)+'px';
+    read.textContent='WIDTH: '+((b-a)*SCALE_CM).toFixed(1)+' cm';
+  }
+  function drag(jaw){
+    jaw.addEventListener('pointerdown',e=>{
+      e.preventDefault();jaw.setPointerCapture(e.pointerId);
+      const move=ev=>{const r=viewer.getBoundingClientRect();let p=(ev.clientX-r.left)/r.width;p=Math.max(0,Math.min(1,p));jaw.style.left=(p*100)+'%';update()};
+      const up=()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up)};
+      window.addEventListener('pointermove',move);window.addEventListener('pointerup',up);
+    });
+  }
+  drag(left);drag(right);
+  requestAnimationFrame(update);
+}
+
+/* Station 2: loupe */
+const ZOOM=2.6;
+function buildLoupe(){
+  const w=document.createElement('div');w.className='stage-wrap';
+  const tabs=specTabs(k=>setImg(k));
+  const viewer=document.createElement('div');viewer.className='viewer';
+  const img=document.createElement('img');img.className='specimen-img';
+  const loupe=document.createElement('div');loupe.className='loupe';
+  const hint=document.createElement('div');hint.className='loupe-hint';hint.textContent='move across the surface';
+  viewer.append(img,loupe,hint);
+  w.append(tabs,viewer);stage.appendChild(w);
+  function setImg(k){resolve(k).then(u=>{img.src=u;loupe.style.backgroundImage=`url("${u}")`})}
+  setImg(curSpec);
+  function moveLoupe(ev){
+    const r=viewer.getBoundingClientRect();
+    const x=ev.clientX-r.left,y=ev.clientY-r.top;
+    if(x<0||y<0||x>r.width||y>r.height){loupe.style.display='none';return}
+    const L=120;loupe.style.display='block';
+    loupe.style.left=(x-L/2)+'px';loupe.style.top=(y-L/2)+'px';
+    loupe.style.backgroundSize=(r.width*ZOOM)+'px '+(r.height*ZOOM)+'px';
+    loupe.style.backgroundPosition=`${-(x*ZOOM-L/2)}px ${-(y*ZOOM-L/2)}px`;
+  }
+  viewer.addEventListener('pointermove',moveLoupe);
+  viewer.addEventListener('pointerdown',moveLoupe);
+  viewer.addEventListener('pointerleave',()=>loupe.style.display='none');
+}
+
+/* Station 3: overlay */
+function buildOverlay(){
+  const w=document.createElement('div');w.className='stage-wrap';
+  const ovl=document.createElement('div');ovl.className='ovl';
+  const bB=document.createElement('img');bB.className='lay';
+  const bA=document.createElement('img');bA.className='lay';bA.style.opacity=.5;
+  ovl.append(bB,bA);
+  const ctr=document.createElement('div');ctr.className='ovl-controls';
+  const range=document.createElement('input');range.type='range';range.min=0;range.max=100;range.value=50;
+  const row=document.createElement('div');row.className='rangerow';
+  row.innerHTML='<span>Specimen B</span><span>slide A across</span><span>Specimen A</span>';
+  ctr.append(range,row);
+  w.append(ovl,ctr);stage.appendChild(w);
+  resolve('A').then(u=>bA.src=u);resolve('B').then(u=>bB.src=u);
+  range.oninput=()=>bA.style.opacity=range.value/100;
+}
+
+/* Station 4: dossier */
+const DOSSIER=[
+  {label:'Origin',a:'Stable Gallery, New York — April 1964.',b:'Brillo Mfg. Co. — shipped to grocers by the pallet.'},
+  {label:'Exchange',a:'Sold for $300 (1964).',b:'$0 on its own — it was the packaging; the soap was inside.'},
+  {label:'Location',a:'A gallery, then museums.',b:'A supermarket shelf, stacked by the dozen.'},
+  {label:'Maker',a:'"by Andy Warhol."',b:'"designed by James Harvey, commercial artist."'},
+];
+function buildDossier(){
+  const wrap=document.createElement('div');wrap.className='dossier';
+  DOSSIER.forEach(d=>{
+    const c=document.createElement('div');c.className='drec';
+    c.innerHTML=`<div class="dl">${d.label}</div><div class="dab"><div><b>Specimen A</b>${d.a}</div><div><b>Specimen B</b>${d.b}</div></div>`;
+    wrap.appendChild(c);
+  });
+  stage.appendChild(wrap);
+}
+
+/* ============ the cut ============ */
+function populateCut(){
+  const o=document.getElementById('cutObj'),s=document.getElementById('cutSit');
+  o.innerHTML='';s.innerHTML='';
+  [['DIMENSIONS','You measured A and B — within a few millimetres.'],
+   ['SURFACE','The printed design is the same on both — same wordmark, wave, layout.'],
+   ['OVERLAY','Slid together, the two line up almost perfectly. One design.']]
+   .forEach(([l,t])=>o.insertAdjacentHTML('beforeend',`<div class="chit"><span class="cl">${l}</span>${t}</div>`));
+  DOSSIER.forEach(d=>s.insertAdjacentHTML('beforeend',`<div class="chit"><span class="cl">${d.label}</span>A: ${d.a} &nbsp;/&nbsp; B: ${d.b}</div>`));
+}
+document.getElementById('doCut').onclick=function(){
+  const obj=document.getElementById('trayObj');
+  obj.style.opacity='.32';obj.style.filter='grayscale(1)';
+  document.getElementById('traySit').style.boxShadow='0 0 0 2px var(--oxblood)';
+  document.getElementById('cutPayoff').style.display='block';
+  document.getElementById('afterCut').style.display='inline-block';
+  this.style.display='none';
+  document.getElementById('cutPayoff').scrollIntoView({behavior:'smooth',block:'start'});
+};
+
+/* ============ nav ============ */
+const screens=[...document.querySelectorAll('.screen')];
+const rail=document.getElementById('rail');
+screens.forEach((s,i)=>{const p=document.createElement('span');p.className='pip';p.textContent=s.dataset.name;p.onclick=()=>go(i);rail.appendChild(p)});
+function go(i){
+  screens.forEach((s,j)=>s.classList.toggle('live',j===i));
+  [...rail.children].forEach((p,j)=>{p.classList.toggle('on',j===i);p.classList.toggle('done',j<i)});
+  if(i===1) renderStation();
+  if(i===2) populateCut();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(+b.dataset.go));
+go(0);
+</script>
+</body>
+</html>
