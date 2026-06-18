@@ -283,6 +283,12 @@
   .perform-btn .tri{font-size:11px;}
   .perform-clock{font-family:"JetBrains Mono",monospace;font-size:15px;color:var(--ink-soft);font-weight:500;font-variant-numeric:tabular-nums;}
   .perform-caption{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:18px;color:var(--ink);min-height:1.5em;margin:2px 0 8px;max-width:46ch;}
+  .videoembed{margin:24px auto 0;max-width:900px;border-top:1px solid var(--rule);padding-top:20px;}
+  .videoembed .veh{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--oxblood);font-weight:700;margin-bottom:12px;text-align:center;}
+  .video-frame{position:relative;width:100%;max-width:760px;aspect-ratio:16/9;margin:0 auto;border:1px solid var(--rule-strong);border-radius:3px;overflow:hidden;box-shadow:var(--shadow);background:#000;}
+  .video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+  .vcap{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:17px;color:var(--ink-soft);text-align:center;margin-top:10px;}
+
   :focus-visible{outline:2px solid var(--slate);outline-offset:2px;}
 </style>
 </head>
@@ -486,8 +492,6 @@
           <span class="perform-clock" id="performClock">0:00 / 4:33</span>
         </div>
         <div class="perform-caption" id="performCaption">Press play. No one performs a note. Listen to the room.</div>
-        <a class="videobtn" id="cageVideo" href="https://www.youtube.com/results?search_query=John+Cage+4%2733%22+full+performance" target="_blank" rel="noopener"><span class="tri">&#9654;</span> Watch a real performance</a>
-        <div class="soft mono" style="font-size:11px;letter-spacing:.04em;">Paste your recording URL to swap this link.</div>
       </div>
       <div>
         <div class="prompt"><span class="tag">Try it · write first</span><span class="task">Force a reading on 4′33″. List your evidence. What does it <b>mean?</b></span></div>
@@ -501,6 +505,13 @@
           <p style="margin-bottom:0">4′33″ doesn't <i>interpret</i> anything. The frame — score, performer, hush — makes you finally <b>listen</b>, and the room fills with sound that was always there. That's a <b>discovery</b>, true for every listener. You can't dissent from it the way you dissented from a Marxist Red Riding Hood. <b>Knowledge made in the work — not in the reading.</b></p>
         </div>
       </div>
+    </div>
+    <div class="videoembed">
+      <div class="veh">Now watch it performed</div>
+      <div class="video-frame">
+        <iframe src="https://www.youtube-nocookie.com/embed/AWVUp12XPpU" title="John Cage — 4′33″ (full performance)" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
+      <div class="vcap">The score sits open; not a note is played. Watch the audience begin to hear the room.</div>
     </div>
   </section>
 
