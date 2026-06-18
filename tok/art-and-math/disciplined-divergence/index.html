@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L4 · Disciplined Divergence + Knowledge in the Making</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f1ece1;
+    --paper-deep:#e7dfcf;
+    --card:#f7f3ea;
+    --ink:#221f1a;
+    --ink-soft:#5b5446;
+    --rule:rgba(34,31,26,0.16);
+    --rule-strong:rgba(34,31,26,0.32);
+    --oxblood:#7a2e2e;
+    --oxblood-bright:#9c3b3b;
+    --slate:#33505f;
+    --slate-bright:#3f6678;
+    --gold:#8a6d2f;
+    --shadow:0 1px 0 rgba(255,255,255,.5), 0 10px 30px rgba(34,31,26,.10);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Cormorant Garamond",Georgia,serif;
+    font-size:20px;
+    line-height:1.45;
+    display:flex;flex-direction:column;height:100vh;overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:"JetBrains Mono",monospace;}
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    flex:0 0 auto;
+    border-bottom:1px solid var(--rule);
+    background:linear-gradient(var(--paper),var(--paper-deep));
+    padding:10px 22px 9px;
+    display:flex;align-items:center;gap:18px;
+  }
+  .brand{
+    font-family:"JetBrains Mono",monospace;
+    font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--oxblood);font-weight:700;white-space:nowrap;
+  }
+  .kq{
+    flex:1;font-style:italic;font-size:17px;color:var(--ink-soft);
+    line-height:1.25;
+  }
+  .kq b{color:var(--ink);font-style:normal;font-weight:600;}
+  .dots{display:flex;gap:7px;align-items:center;}
+  .dot{
+    width:9px;height:9px;border-radius:50%;border:1px solid var(--rule-strong);
+    background:transparent;cursor:pointer;padding:0;transition:all .2s;
+  }
+  .dot.on{background:var(--oxblood);border-color:var(--oxblood);}
+  .dot.past{background:var(--rule-strong);border-color:var(--rule-strong);}
+
+  /* ---------- stage ---------- */
+  .stage{flex:1 1 auto;overflow-y:auto;display:flex;justify-content:center;}
+  .screen{
+    display:none;width:100%;max-width:1080px;padding:30px 36px 46px;
+    flex-direction:column;justify-content:flex-start;
+    animation:fade .45s ease both;
+  }
+  .screen.active{display:flex;}
+  @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  @media (prefers-reduced-motion:reduce){.screen.active{animation:none;}}
+
+  .eyebrow{
+    font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--oxblood);font-weight:700;margin-bottom:14px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::after{content:"";flex:1;height:1px;background:var(--rule);}
+  h1{font-size:54px;font-weight:600;line-height:1.02;margin:0 0 18px;letter-spacing:-.01em;}
+  h2{font-size:38px;font-weight:600;line-height:1.06;margin:0 0 16px;letter-spacing:-.01em;}
+  h3{font-size:25px;font-weight:600;margin:22px 0 8px;}
+  p{margin:0 0 14px;max-width:64ch;}
+  .lede{font-size:24px;color:var(--ink);max-width:60ch;}
+  .soft{color:var(--ink-soft);}
+  em,i{font-style:italic;}
+  strong,b{font-weight:600;}
+  .big-q{font-size:30px;font-style:italic;line-height:1.18;color:var(--ink);max-width:30ch;margin:6px 0 18px;}
+
+  /* prompt card (the forced read) */
+  .prompt{
+    background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--oxblood);
+    border-radius:3px;padding:18px 22px;margin:6px 0 16px;box-shadow:var(--shadow);max-width:62ch;
+  }
+  .prompt .tag{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--oxblood);font-weight:700;display:block;margin-bottom:7px;}
+  .prompt .task{font-size:23px;font-style:italic;line-height:1.22;color:var(--ink);}
+  .prompt.slate{border-left-color:var(--slate);}
+  .prompt.slate .tag{color:var(--slate);}
+  .commit{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-soft);
+    margin-top:10px;display:flex;align-items:center;gap:8px;}
+  .commit::before{content:"✎";font-family:serif;font-size:16px;color:var(--oxblood);}
+
+  /* two-column work area */
+  .work{display:grid;grid-template-columns:minmax(280px,1fr) 1.05fr;gap:30px;align-items:start;}
+  @media (max-width:780px){.work{grid-template-columns:1fr;}}
+
+  /* ---------- the plate (image + markers) ---------- */
+  .plate-wrap{position:relative;}
+  .plate{
+    position:relative;width:100%;border:1px solid var(--rule-strong);
+    background:var(--paper-deep);border-radius:2px;overflow:visible;
+    box-shadow:var(--shadow);aspect-ratio:4/3;
+  }
+  .plate img{width:100%;height:100%;object-fit:cover;display:block;border-radius:2px;}
+  .plate .fallback{
+    position:absolute;inset:0;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;padding:24px;
+    color:var(--ink-soft);
+  }
+  .plate .fallback .fcap{font-family:"JetBrains Mono",monospace;font-size:11px;
+    letter-spacing:.08em;margin-top:16px;max-width:30ch;line-height:1.5;}
+  .plate-cap{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-soft);
+    margin-top:8px;letter-spacing:.04em;}
+
+  /* markers */
+  .marker{
+    position:absolute;transform:translate(-50%,-50%);display:none;
+    align-items:center;gap:7px;z-index:3;animation:pop .3s ease both;
+  }
+  .marker.show{display:flex;}
+  @keyframes pop{from{opacity:0;transform:translate(-50%,-50%) scale(.7);}to{opacity:1;transform:translate(-50%,-50%) scale(1);}}
+  @media (prefers-reduced-motion:reduce){.marker{animation:none;}}
+  .marker .pin{
+    width:24px;height:24px;border-radius:50%;flex:0 0 auto;
+    display:flex;align-items:center;justify-content:center;
+    font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:700;color:#fff;
+    box-shadow:0 2px 8px rgba(0,0,0,.35);
+  }
+  .marker .lbl{
+    background:rgba(247,243,234,.96);border:1px solid var(--rule-strong);
+    border-radius:3px;padding:5px 9px;font-size:15px;line-height:1.18;max-width:200px;
+    box-shadow:0 3px 12px rgba(0,0,0,.18);
+  }
+  .marker.a .pin{background:var(--oxblood);}
+  .marker.b .pin{background:var(--slate);}
+  .marker.a .lbl{border-left:3px solid var(--oxblood);}
+  .marker.b .lbl{border-left:3px solid var(--slate);}
+
+  .empty-state{
+    position:absolute;inset:0;display:none;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;padding:30px;
+    background:rgba(231,223,207,.82);backdrop-filter:blur(1px);z-index:4;
+  }
+  .empty-state.show{display:flex;animation:fade .4s ease both;}
+  .empty-state .x{font-size:40px;color:var(--oxblood);margin-bottom:10px;}
+  .empty-state .msg{font-size:23px;font-style:italic;max-width:24ch;line-height:1.22;color:var(--ink);}
+
+  /* toggle controls */
+  .toggle-row{display:flex;flex-wrap:wrap;gap:10px;margin:4px 0 14px;}
+  .tg{
+    font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.04em;
+    border:1px solid var(--rule-strong);background:var(--card);color:var(--ink-soft);
+    padding:9px 15px;border-radius:3px;cursor:pointer;transition:all .18s;font-weight:500;
+    display:flex;align-items:center;gap:8px;
+  }
+  .tg .swatch{width:12px;height:12px;border-radius:50%;flex:0 0 auto;}
+  .tg.a .swatch{background:var(--oxblood);}
+  .tg.b .swatch{background:var(--slate);}
+  .tg:hover{border-color:var(--ink-soft);}
+  .tg.active{color:#fff;border-color:transparent;}
+  .tg.a.active{background:var(--oxblood);}
+  .tg.b.active{background:var(--slate);}
+  .tg.off.active{background:var(--ink);color:#fff;}
+
+  /* reveal blocks */
+  .reveal{
+    background:linear-gradient(var(--card),#fbf7ee);
+    border:1px solid var(--rule);border-radius:4px;padding:20px 24px;margin:14px 0;
+    box-shadow:var(--shadow);max-width:64ch;
+  }
+  .reveal .rtag{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.15em;
+    text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px;}
+  .reveal.ox{border-left:4px solid var(--oxblood);}
+  .reveal.ox .rtag{color:var(--oxblood);}
+
+  /* anchors strip */
+  .anchors{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 16px;}
+  .anchor{
+    font-family:"JetBrains Mono",monospace;font-size:12.5px;font-weight:500;
+    background:var(--card);border:1px solid var(--rule-strong);border-radius:20px;
+    padding:8px 16px;color:var(--ink);
+  }
+  .anchor b{color:var(--oxblood);}
+
+  /* synthesis behaviour rows */
+  .behave{display:flex;flex-direction:column;gap:12px;margin:10px 0 18px;max-width:70ch;}
+  .brow{display:grid;grid-template-columns:160px 1fr;gap:18px;align-items:baseline;
+    border-bottom:1px solid var(--rule);padding-bottom:11px;}
+  .brow .name{font-size:24px;font-weight:600;}
+  .brow .name .sub{display:block;font-family:"JetBrains Mono",monospace;font-size:10.5px;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);font-weight:500;margin-top:2px;}
+  .brow .verdict b{color:var(--oxblood);}
+  .tag-real{color:var(--slate);font-weight:700;}
+  .tag-bound{color:var(--gold);font-weight:700;}
+  .tag-none{color:var(--oxblood);font-weight:700;}
+
+  /* grid fill cell */
+  .cellfill{display:grid;grid-template-columns:60px 1fr;gap:14px;margin:8px 0;
+    border:1px solid var(--rule);border-radius:4px;overflow:hidden;max-width:66ch;}
+  .cellfill .k{background:var(--oxblood);color:#fff;font-family:"JetBrains Mono",monospace;
+    font-weight:700;font-size:18px;display:flex;align-items:center;justify-content:center;}
+  .cellfill .v{padding:12px 16px;font-size:18px;line-height:1.3;}
+
+  .videobtn{
+    display:inline-flex;align-items:center;gap:10px;font-family:"JetBrains Mono",monospace;
+    font-size:14px;font-weight:700;letter-spacing:.03em;text-decoration:none;
+    background:var(--oxblood);color:#fff;padding:13px 22px;border-radius:3px;margin:8px 0 6px;
+    box-shadow:var(--shadow);transition:background .18s;
+  }
+  .videobtn:hover{background:var(--oxblood-bright);}
+  .videobtn .tri{font-size:13px;}
+
+  .guard{
+    border-top:1px dashed var(--rule-strong);margin-top:18px;padding-top:14px;
+    font-size:17px;color:var(--ink-soft);max-width:64ch;
+  }
+  .guard b{color:var(--oxblood);font-style:normal;}
+
+  .writebox{
+    border:2px solid var(--ink);border-radius:4px;padding:22px 26px;margin:10px 0;
+    max-width:64ch;background:var(--card);
+  }
+  .writebox .wq{font-size:23px;font-style:italic;line-height:1.25;margin-bottom:12px;}
+  .writebox ul{margin:6px 0 0;padding-left:20px;}
+  .writebox li{margin-bottom:5px;font-size:18px;}
+  .del{font-family:"JetBrains Mono",monospace;font-size:12.5px;color:var(--ink-soft);
+    margin-top:14px;padding-top:12px;border-top:1px solid var(--rule);}
+  .del b{color:var(--oxblood);}
+
+  /* ---------- footer nav ---------- */
+  .nav{
+    flex:0 0 auto;border-top:1px solid var(--rule);
+    background:linear-gradient(var(--paper-deep),var(--paper));
+    padding:10px 22px;display:flex;align-items:center;justify-content:space-between;gap:14px;
+  }
+  .nav button{
+    font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.06em;font-weight:500;
+    text-transform:uppercase;border:1px solid var(--rule-strong);background:var(--card);
+    color:var(--ink);padding:10px 20px;border-radius:3px;cursor:pointer;transition:all .18s;
+  }
+  .nav button:hover:not(:disabled){background:var(--oxblood);color:#fff;border-color:var(--oxblood);}
+  .nav button:disabled{opacity:.35;cursor:default;}
+  .counter{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-soft);letter-spacing:.06em;}
+  .counter b{color:var(--oxblood);}
+
+
+  /* ---------- 4'33" score ---------- */
+  .score{position:relative;background:#faf6ec;border:1px solid var(--rule-strong);
+    border-radius:3px;padding:16px 14px 10px;box-shadow:var(--shadow);
+    --score-ink:#221f1a;--score-line:#3a352c;}
+  .score svg{width:100%;height:auto;display:block;}
+  .scoreSvg .title{font-family:"Cormorant Garamond",serif;font-size:54px;font-weight:600;fill:var(--score-ink);text-anchor:middle;}
+  .scoreSvg .subtitle{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:18px;fill:var(--ink-soft);text-anchor:middle;}
+  .scoreSvg .byline{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.18em;fill:var(--oxblood);text-anchor:middle;font-weight:700;}
+  .scoreSvg .tempo{font-family:"Cormorant Garamond",serif;font-size:21px;font-weight:600;fill:var(--score-ink);}
+  .scoreSvg .tempocap{font-family:"JetBrains Mono",monospace;font-size:10.5px;fill:var(--ink-soft);}
+  .scoreSvg .timesig{font-family:"Cormorant Garamond",serif;font-weight:700;font-size:22px;fill:var(--score-ink);text-anchor:middle;}
+  .scoreSvg .movnum{font-family:"Cormorant Garamond",serif;font-size:25px;font-weight:600;fill:var(--oxblood);text-anchor:middle;}
+  .scoreSvg .tacet{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:18px;fill:var(--ink-soft);text-anchor:middle;letter-spacing:.05em;}
+  .scoreSvg .dur{font-family:"JetBrains Mono",monospace;font-size:12px;fill:var(--oxblood);text-anchor:end;font-weight:500;}
+  .scoreSvg .footnote{font-family:"JetBrains Mono",monospace;font-size:11px;fill:var(--oxblood);text-anchor:middle;letter-spacing:.07em;}
+  .scoreSvg .glow{fill:var(--oxblood);opacity:0;stroke:var(--oxblood);stroke-width:1;transition:opacity .45s;}
+  .scoreSvg .glow.on{opacity:.11;}
+  .perform-bar{display:flex;align-items:center;gap:14px;margin:13px 0 4px;flex-wrap:wrap;}
+  .perform-btn{font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:700;letter-spacing:.04em;
+    border:1px solid var(--ink);background:var(--card);color:var(--ink);padding:11px 18px;border-radius:3px;
+    cursor:pointer;display:inline-flex;align-items:center;gap:9px;transition:all .18s;}
+  .perform-btn:hover{background:var(--ink);color:var(--paper);}
+  .perform-btn.running{background:var(--oxblood);color:#fff;border-color:var(--oxblood);}
+  .perform-btn .tri{font-size:11px;}
+  .perform-clock{font-family:"JetBrains Mono",monospace;font-size:15px;color:var(--ink-soft);font-weight:500;font-variant-numeric:tabular-nums;}
+  .perform-caption{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:18px;color:var(--ink);min-height:1.5em;margin:2px 0 8px;max-width:46ch;}
+  .videoembed{margin:24px auto 0;max-width:900px;border-top:1px solid var(--rule);padding-top:20px;}
+  .videoembed .veh{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--oxblood);font-weight:700;margin-bottom:12px;text-align:center;}
+  .video-frame{position:relative;width:100%;max-width:760px;aspect-ratio:16/9;margin:0 auto;border:1px solid var(--rule-strong);border-radius:3px;overflow:hidden;box-shadow:var(--shadow);background:#000;}
+  .video-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+  .vcap{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:17px;color:var(--ink-soft);text-align:center;margin-top:10px;}
+
+  :focus-visible{outline:2px solid var(--slate);outline-offset:2px;}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <span class="brand">TOK · Arts &amp; Maths · L4</span>
+  <div class="kq"><b>If one object yields several defensible readings,</b> what makes one <i>justified</i> rather than merely <i>possible</i> — and is all art-knowledge in the reading?</div>
+  <div class="dots" id="dots"></div>
+</header>
+
+<main class="stage" id="stage">
+
+  <!-- 0 · TITLE -->
+  <section class="screen active">
+    <div class="eyebrow">Lesson 4 · Interpretation &amp; the work</div>
+    <h1>Disciplined divergence<br>&amp; the knowledge made <span style="font-style:italic;color:var(--oxblood)">in the work</span></h1>
+    <p class="lede">Three specimens. One question for each: <i>can the work carry this reading?</i> You'll produce the readings yourself, by hand, before anything on screen confirms them.</p>
+    <p class="soft mono" style="font-size:13px;letter-spacing:.04em;margin-top:8px;">WRITE FIRST · REVEAL AFTER · THE SCREEN ONLY CONFIRMS WHAT YOUR HANDS FOUND</p>
+  </section>
+
+  <!-- 1 · LRRH prompt A -->
+  <section class="screen">
+    <div class="eyebrow">Specimen 1 · A tale everyone already knows</div>
+    <div class="work">
+      <div class="plate-wrap">
+        <div class="plate" data-img="../art/lrrh-dore.jpg" data-cap="“Le Petit Chaperon rouge” — Gustave Doré, 1862 (public domain)"></div>
+        <div class="plate-cap" data-capslot></div>
+      </div>
+      <div>
+        <p>You know this story. That's the point — no one is underqualified to read it.</p>
+        <div class="prompt">
+          <span class="tag">Read 1 · write on your sheet</span>
+          <span class="task">From the tale and the picture, list every detail that shows <b>who holds power</b> and <b>who is prey.</b></span>
+          <div class="commit">Commit at least three before you turn the page.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · LRRH prompt B -->
+  <section class="screen">
+    <div class="eyebrow">Specimen 1 · same tale, second pass</div>
+    <div class="work">
+      <div class="plate-wrap">
+        <div class="plate" data-img="../art/lrrh-dore.jpg" data-cap="“Le Petit Chaperon rouge” — Gustave Doré, 1862 (public domain)"></div>
+        <div class="plate-cap" data-capslot></div>
+      </div>
+      <div>
+        <p><i>Same tale. Same picture. Nothing has changed.</i></p>
+        <div class="prompt slate">
+          <span class="tag">Read 2 · write on your sheet</span>
+          <span class="task">Now list every detail that shows the girl <b>making her own choices</b> — acting, not just being acted upon.</span>
+          <div class="commit">Commit at least three. Then turn the page.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · LRRH the catch + toggle -->
+  <section class="screen" data-toggle="lrrh">
+    <div class="eyebrow">Specimen 1 · what just happened</div>
+    <h2>Two lists. One picture that never moved.</h2>
+    <div class="work">
+      <div class="plate-wrap">
+        <div class="plate" data-img="../art/lrrh-dore.jpg" data-cap="Toggle a stance to light up the evidence it selects.">
+          <span class="marker a" style="left:30%;top:24%"><span class="pin">1</span><span class="lbl">The wolf seizes the bed &amp; bonnet — takes her place</span></span>
+          <span class="marker a" style="left:72%;top:40%"><span class="pin">2</span><span class="lbl">The forest isolates her — no one to call on</span></span>
+          <span class="marker a" style="left:46%;top:68%"><span class="pin">3</span><span class="lbl">“What big teeth” — she sees the threat too late</span></span>
+          <span class="marker a" style="left:20%;top:54%"><span class="pin">4</span><span class="lbl">Sent on an errand, carrying food — she serves</span></span>
+          <span class="marker b" style="left:26%;top:34%"><span class="pin">1</span><span class="lbl">She sets out through the forest alone — she undertakes it</span></span>
+          <span class="marker b" style="left:64%;top:30%"><span class="pin">2</span><span class="lbl">She stops &amp; answers the wolf — chooses to engage</span></span>
+          <span class="marker b" style="left:52%;top:60%"><span class="pin">3</span><span class="lbl">She questions what she sees — she interrogates</span></span>
+          <span class="marker b" style="left:78%;top:66%"><span class="pin">4</span><span class="lbl">The tale turns on what she does next — agency in the ending</span></span>
+        </div>
+        <div class="plate-cap" data-capslot></div>
+      </div>
+      <div>
+        <div class="toggle-row">
+          <button class="tg a" data-stance="a"><span class="swatch"></span>Power &amp; prey</button>
+          <button class="tg b" data-stance="b"><span class="swatch"></span>Her choices</button>
+          <button class="tg off" data-stance="off">Both off</button>
+        </div>
+        <p class="big-q">Same picture. So what changed?</p>
+        <div class="reveal ox">
+          <div class="rtag">The move</div>
+          <p style="margin-bottom:0">The picture didn't change — <b>your stance did</b>, and the stance chose which details counted as evidence. That selecting lens has a name you already met: <b>perspective</b>. <i>The text never changed; the knowledge did.</i></p>
+        </div>
+        <div class="reveal">
+          <div class="rtag">Now the names — after, not before</div>
+          <p style="margin-bottom:0">The power/prey read is broadly <b>Marxist</b>; the choices read is <b>feminist / reader-response</b>. You ran both without the labels. Naming them is housekeeping — the <i>move</i> is what you did by hand.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · the anchors -->
+  <section class="screen">
+    <div class="eyebrow">The discipline · why this isn't anything-goes</div>
+    <h2>What stopped you inventing nonsense?</h2>
+    <p class="lede">Both your lists pointed at <i>things in the work.</i> Neither was free invention. That's the discipline — a reading has to <b>anchor</b> to something the work actually offers:</p>
+    <div class="anchors">
+      <span class="anchor"><b>1.</b> the words / what's shown</span>
+      <span class="anchor"><b>2.</b> the purpose</span>
+      <span class="anchor"><b>3.</b> the rest of the work</span>
+      <span class="anchor"><b>4.</b> precedent — prior readings</span>
+      <span class="anchor"><b>5.</b> who decides — the gate</span>
+    </div>
+    <div class="reveal ox">
+      <div class="rtag">The cut · justified vs merely possible</div>
+      <p style="margin-bottom:0">A reading is <b>justified</b> when it's anchored. A reading is <b>merely possible</b> when nothing in the work reaches it — you <i>could</i> say it, but nothing holds it up. Several readings can be justified at once. That is <b>not</b> the same as all readings being legitimate. Hold the question for the next specimen: <i>can the work carry it?</i></p>
+    </div>
+  </section>
+
+  <!-- 5 · Guernica bounded -->
+  <section class="screen" data-toggle="guernica">
+    <div class="eyebrow">Specimen 2 · can the work carry any reading?</div>
+    <div class="work">
+      <div class="plate-wrap">
+        <div class="plate" data-img="../art/guernica.jpg" data-cap="Toggle each stance. Watch what the work will — and won't — carry.">
+          <span class="marker a" style="left:30%;top:30%"><span class="pin">1</span><span class="lbl">Mother &amp; dead child, head thrown back — grief</span></span>
+          <span class="marker a" style="left:60%;top:26%"><span class="pin">2</span><span class="lbl">The screaming horse, mouth torn open — agony</span></span>
+          <span class="marker a" style="left:24%;top:74%"><span class="pin">3</span><span class="lbl">Fallen figure, broken sword — defeat, not victory</span></span>
+          <span class="marker a" style="left:74%;top:66%"><span class="pin">4</span><span class="lbl">Grey, fragmented bodies — wreckage, no glory</span></span>
+        </div>
+        <div class="empty-state" data-empty>
+          <div class="x">∅</div>
+          <div class="msg">No anchors reach this reading. No victor, no banner, no triumph is in the work. It <b>won't carry it.</b></div>
+        </div>
+        <div class="plate-cap" data-capslot></div>
+      </div>
+      <div>
+        <div class="prompt"><span class="tag">Read 1 · write first</span><span class="task">List what shows <b>suffering</b> — human, animal, civilian.</span></div>
+        <div class="prompt slate" style="border-left-color:var(--oxblood)"><span class="tag" style="color:var(--oxblood)">Read 2 · now try this one</span><span class="task">Read it as a celebration of <b>heroic, glorious battle.</b> List your evidence.</span></div>
+        <div class="toggle-row">
+          <button class="tg a" data-stance="a"><span class="swatch"></span>Suffering</button>
+          <button class="tg b" data-stance="empty" style="border-left:3px solid var(--oxblood)">Heroic battle</button>
+          <button class="tg off" data-stance="off">Off</button>
+        </div>
+        <div class="reveal ox">
+          <div class="rtag">The cut · divergence is bounded</div>
+          <p style="margin-bottom:0">Read 2 came up <b>empty</b> in your own hand — the work resisted it. The reading is ruled out <i>by the work</i>, not by a teacher's decree. And note the cut: an unanchored reading is <b>unanchored, not false.</b> Ruling a reading out isn't calling it wrong — it's saying nothing holds it up. <i>Defend it or drop it.</i></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · Guernica exemplification -->
+  <section class="screen">
+    <div class="eyebrow">Specimen 2 · a second place knowledge lives</div>
+    <h2>Guernica doesn't <i>tell</i> you war is horror.</h2>
+    <p class="lede">It doesn't argue a thesis or assert a proposition. It <b>makes you know it firsthand</b> — the thing it shows, it shows by <i>being</i> it. Philosophers call this <b>exemplification</b>: the work doesn't point at horror, it hands you a sample of it.</p>
+    <div class="reveal">
+      <div class="rtag">Three places art-knowledge can live</div>
+      <p style="margin-bottom:6px"><b>① In the reading</b> — disciplined interpretation (Specimen 1).</p>
+      <p style="margin-bottom:6px"><b>② In what the work shows you firsthand</b> — exemplification / what-it's-like (this one).</p>
+      <p style="margin-bottom:0;color:var(--ink-soft)"><b>③ In what the work discovers</b> — coming next. ▸</p>
+    </div>
+  </section>
+
+  <!-- 7 · intent grace-note -->
+  <section class="screen">
+    <div class="eyebrow">A wrinkle · doesn't the artist decide?</div>
+    <h2>Intent is <i>an</i> anchor — not the trump. And it drifts.</h2>
+    <p class="lede">The Brillo carton from Lesson 3 was designed by <b>James Harvey</b> as commercial packaging. He didn't intend art; he denied his boxes were art at all. Yet the identical design, conferred by Warhol and the artworld, <i>is</i> art.</p>
+    <div class="reveal ox">
+      <div class="rtag">L3 callback</div>
+      <p style="margin-bottom:0">“Ask the maker” already died on Harvey. The maker's intention is one anchor among five — it can be outrun by what the work supports and what the community confers. <b>Meaning lives in the work + a competent reading, not in the maker's say-so.</b></p>
+    </div>
+  </section>
+
+  <!-- 8 · 4'33" the boundary -->
+  <section class="screen" data-toggle="cage">
+    <div class="eyebrow">Specimen 3 · the boundary of interpretation</div>
+    <div class="work">
+      <div class="plate-wrap">
+        <div class="score" id="cageScore">
+          <svg class="scoreSvg" viewBox="0 0 800 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The score of 4 minutes 33 seconds by John Cage: three movements marked TACET, only rests, no notes.">
+  <text class="title" x="400" y="62">4&#8242;33&#8243;</text>
+  <text class="subtitle" x="400" y="88">for any instrument or combination of instruments</text>
+  <text class="byline" x="400" y="110">JOHN CAGE &#183; 1952</text>
+  <!-- tempo -->
+  <g>
+    <ellipse cx="76" cy="156" rx="5.4" ry="3.8" fill="var(--score-ink)" transform="rotate(-18 76 156)"/>
+    <line x1="81" y1="155" x2="81" y2="136" stroke="var(--score-ink)" stroke-width="1.6"/>
+    <text class="tempo" x="92" y="161">= 60</text>
+  </g>
+  <text class="tempocap" x="70" y="180">Cage scored it by the clock, not the beat — durations are fixed, the tempo is yours.</text>
+  <rect class="glow" id="glow1" x="58" y="201" width="676" height="84" rx="6"/><g class="sysgroup" id="sys1"><g stroke="var(--score-line)" stroke-width="1.1"><line x1="70" y1="225" x2="720" y2="225"/><line x1="70" y1="234" x2="720" y2="234"/><line x1="70" y1="243" x2="720" y2="243"/><line x1="70" y1="252" x2="720" y2="252"/><line x1="70" y1="261" x2="720" y2="261"/></g><text class="timesig" x="96" y="241">4</text><text class="timesig" x="96" y="260">4</text><line x1="120.0" y1="225" x2="120.0" y2="261" stroke="var(--score-line)" stroke-width="1.1"/><line x1="420.0" y1="225" x2="420.0" y2="261" stroke="var(--score-line)" stroke-width="1.1"/><line x1="720.0" y1="225" x2="720.0" y2="261" stroke="var(--score-line)" stroke-width="1.1"/><rect x="263.0" y="234" width="14" height="5" fill="var(--score-ink)"/><rect x="563.0" y="234" width="14" height="5" fill="var(--score-ink)"/><text class="movnum" x="40" y="251">I</text><text class="tacet" x="400" y="216">TACET</text><text class="dur" x="720" y="216">0&#8242;30&#8243;</text></g>
+  <rect class="glow" id="glow2" x="58" y="316" width="676" height="84" rx="6"/><g class="sysgroup" id="sys2"><g stroke="var(--score-line)" stroke-width="1.1"><line x1="70" y1="340" x2="720" y2="340"/><line x1="70" y1="349" x2="720" y2="349"/><line x1="70" y1="358" x2="720" y2="358"/><line x1="70" y1="367" x2="720" y2="367"/><line x1="70" y1="376" x2="720" y2="376"/></g><text class="timesig" x="96" y="356">4</text><text class="timesig" x="96" y="375">4</text><line x1="120.0" y1="340" x2="120.0" y2="376" stroke="var(--score-line)" stroke-width="1.1"/><line x1="240.0" y1="340" x2="240.0" y2="376" stroke="var(--score-line)" stroke-width="1.1"/><line x1="360.0" y1="340" x2="360.0" y2="376" stroke="var(--score-line)" stroke-width="1.1"/><line x1="480.0" y1="340" x2="480.0" y2="376" stroke="var(--score-line)" stroke-width="1.1"/><line x1="600.0" y1="340" x2="600.0" y2="376" stroke="var(--score-line)" stroke-width="1.1"/><line x1="720.0" y1="340" x2="720.0" y2="376" stroke="var(--score-line)" stroke-width="1.1"/><rect x="173.0" y="349" width="14" height="5" fill="var(--score-ink)"/><rect x="293.0" y="349" width="14" height="5" fill="var(--score-ink)"/><rect x="413.0" y="349" width="14" height="5" fill="var(--score-ink)"/><rect x="533.0" y="349" width="14" height="5" fill="var(--score-ink)"/><rect x="653.0" y="349" width="14" height="5" fill="var(--score-ink)"/><text class="movnum" x="40" y="366">II</text><text class="tacet" x="400" y="331">TACET</text><text class="dur" x="720" y="331">2&#8242;23&#8243;</text></g>
+  <rect class="glow" id="glow3" x="58" y="431" width="676" height="84" rx="6"/><g class="sysgroup" id="sys3"><g stroke="var(--score-line)" stroke-width="1.1"><line x1="70" y1="455" x2="720" y2="455"/><line x1="70" y1="464" x2="720" y2="464"/><line x1="70" y1="473" x2="720" y2="473"/><line x1="70" y1="482" x2="720" y2="482"/><line x1="70" y1="491" x2="720" y2="491"/></g><text class="timesig" x="96" y="471">4</text><text class="timesig" x="96" y="490">4</text><line x1="120.0" y1="455" x2="120.0" y2="491" stroke="var(--score-line)" stroke-width="1.1"/><line x1="320.0" y1="455" x2="320.0" y2="491" stroke="var(--score-line)" stroke-width="1.1"/><line x1="520.0" y1="455" x2="520.0" y2="491" stroke="var(--score-line)" stroke-width="1.1"/><line x1="720.0" y1="455" x2="720.0" y2="491" stroke="var(--score-line)" stroke-width="1.1"/><line x1="716" y1="455" x2="716" y2="491" stroke="var(--score-line)" stroke-width="3.4"/><rect x="213.0" y="464" width="14" height="5" fill="var(--score-ink)"/><rect x="413.0" y="464" width="14" height="5" fill="var(--score-ink)"/><rect x="613.0" y="464" width="14" height="5" fill="var(--score-ink)"/><text class="movnum" x="40" y="481">III</text><text class="tacet" x="400" y="446">TACET</text><text class="dur" x="720" y="446">1&#8242;40&#8243;</text></g>
+  <text class="footnote" x="400" y="530">no notes — by design</text>
+</svg>
+          <div class="empty-state" data-empty>
+            <div class="x">&#8709;</div>
+            <div class="msg">No stance to switch. Nothing to re-foreground. <b>This isn't asking to be read.</b></div>
+          </div>
+        </div>
+        <div class="perform-bar">
+          <button id="performBtn" class="perform-btn"><span class="tri">&#9654;</span> Perform 4&#8242;33&#8243;</button>
+          <span class="perform-clock" id="performClock">0:00 / 4:33</span>
+        </div>
+        <div class="perform-caption" id="performCaption">Press play. No one performs a note. Listen to the room.</div>
+      </div>
+      <div>
+        <div class="prompt"><span class="tag">Try it · write first</span><span class="task">Force a reading on 4′33″. List your evidence. What does it <b>mean?</b></span></div>
+        <div class="toggle-row">
+          <button class="tg a" data-stance="empty"><span class="swatch"></span>Any stance</button>
+          <button class="tg off" data-stance="off">Off</button>
+        </div>
+        <div class="reveal ox">
+          <div class="rtag">What Cage discovered (his own account)</div>
+          <p>In 1951 Cage sat in Harvard's anechoic chamber — a room built to be perfectly silent — and still heard two sounds. The engineer told him the high one was his nervous system, the low one his blood. His conclusion: <b>there is no such thing as silence.</b></p>
+          <p style="margin-bottom:0">4′33″ doesn't <i>interpret</i> anything. The frame — score, performer, hush — makes you finally <b>listen</b>, and the room fills with sound that was always there. That's a <b>discovery</b>, true for every listener. You can't dissent from it the way you dissented from a Marxist Red Riding Hood. <b>Knowledge made in the work — not in the reading.</b></p>
+        </div>
+      </div>
+    </div>
+    <div class="videoembed">
+      <div class="veh">Now watch it performed</div>
+      <div class="video-frame">
+        <iframe src="https://www.youtube-nocookie.com/embed/AWVUp12XPpU" title="John Cage — 4′33″ (full performance)" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      </div>
+      <div class="vcap">The score sits open; not a note is played. Watch the audience begin to hear the room.</div>
+    </div>
+  </section>
+
+  <!-- 9 · synthesis -->
+  <section class="screen">
+    <div class="eyebrow">The fill · where art-knowledge lives</div>
+    <h2>One mechanism. Three behaviours.</h2>
+    <div class="behave">
+      <div class="brow">
+        <div class="name">Red Riding Hood<span class="sub">interpreted</span></div>
+        <div class="verdict"><span class="tag-real">REAL divergence</span> — several anchored readings, all justified. The lens chooses the evidence; <b>perspective</b> is doing real work.</div>
+      </div>
+      <div class="brow">
+        <div class="name">Guernica<span class="sub">exemplified</span></div>
+        <div class="verdict"><span class="tag-bound">BOUNDED divergence</span> — some readings the work won't carry. And it shows you horror <b>firsthand</b>, not as a claim.</div>
+      </div>
+      <div class="brow">
+        <div class="name">4′33″<span class="sub">discovered</span></div>
+        <div class="verdict"><span class="tag-none">NO divergence</span> — nothing to read; a discovery that binds <b>every</b> listener.</div>
+      </div>
+    </div>
+    <p class="lede">So art-knowledge isn't one thing — and it isn't all “the interpretation.” That fills the two cells we left blank since Lesson 1:</p>
+    <div class="cellfill"><div class="k">E</div><div class="v">The <b>work itself</b> — what it shows, exemplifies, or discovers — disciplined by the five anchors. “Evidence” chafes: art <i>presents</i>, it doesn't prove.</div></div>
+    <div class="cellfill"><div class="k">V</div><div class="v">A reading is <b>accepted</b> when it survives the anchors. That certifies it <i>disciplined</i> — <b>not correct.</b></div></div>
+    <div class="guard"><b>The based part:</b> the “soft” AOK turns out to have a gate — and even discoveries. Not anything-goes. Next: mathematics — the AOK whose gate is the <i>hardest</i> there is. Same axis, opposite pole.</div>
+  </section>
+
+  <!-- 10 · the write -->
+  <section class="screen">
+    <div class="eyebrow">The write · ~150–180 words</div>
+    <h2>Make the move, not the case.</h2>
+    <div class="writebox">
+      <div class="wq">Take one specimen. Explain what disciplines a reading of it — and say whether all of that work's knowledge is in the reading, or whether some is shown / discovered.</div>
+      <ul>
+        <li>Name at least one <b>anchor</b> doing real work.</li>
+        <li>Use the cut: <b>justified</b> vs <b>merely possible</b> (anchored vs unanchored — not true vs false).</li>
+        <li>If you take Guernica or 4′33″, say where the knowledge lives that <i>isn't</i> in the reading.</li>
+      </ul>
+      <div class="del"><b>Deleted-example test:</b> cross out the artwork's name. If your opening and closing sentences still stand — about <i>how readings are disciplined</i> — you made the TOK move. If they collapse, you just described a picture.</div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="nav">
+  <button id="prev">◂ Back</button>
+  <div class="counter"><b id="cur">01</b> / <span id="tot">11</span></div>
+  <button id="next">Next ▸</button>
+</footer>
+
+<script>
+(function(){
+  const screens=[...document.querySelectorAll('.screen')];
+  const dotsWrap=document.getElementById('dots');
+  const prev=document.getElementById('prev');
+  const next=document.getElementById('next');
+  const cur=document.getElementById('cur');
+  const tot=document.getElementById('tot');
+  let i=0;
+  tot.textContent=String(screens.length).padStart(2,'0');
+
+  // build dots
+  screens.forEach((_,idx)=>{
+    const b=document.createElement('button');
+    b.className='dot';b.setAttribute('aria-label','Go to screen '+(idx+1));
+    b.addEventListener('click',()=>go(idx));
+    dotsWrap.appendChild(b);
+  });
+  const dots=[...dotsWrap.children];
+
+  // hydrate plates: try real image, fall back to SVG placeholder
+  document.querySelectorAll('.plate[data-img]').forEach(p=>{
+    const src=p.getAttribute('data-img');
+    const cap=p.getAttribute('data-cap')||'';
+    const capSlot=p.parentElement.querySelector('[data-capslot]');
+    if(capSlot) capSlot.textContent=cap;
+    const img=new Image();
+    img.alt='';
+    img.onload=()=>{ p.insertBefore(img,p.firstChild); };
+    img.onerror=()=>{ p.insertBefore(buildFallback(src),p.firstChild); };
+    img.src=src;
+  });
+
+  function buildFallback(src){
+    const d=document.createElement('div');
+    d.className='fallback';
+    let glyph='', name='';
+    if(src.includes('lrrh')){glyph=fbLRRH();name='“Le Petit Chaperon rouge” · Gustave Doré (public domain)<br>drop file → art/lrrh-dore.jpg';}
+    else if(src.includes('guernica')){glyph=fbGuernica();name='Guernica · Picasso, 1937 — in copyright<br>drop your deck thumbnail → art/guernica.jpg';}
+    else if(src.includes('cage')){glyph=fbCage();name='4′33″ · John Cage, 1952 — score: TACET<br>drop file → art/cage-433.jpg';}
+    d.innerHTML=glyph+'<div class="fcap">'+name+'</div>';
+    return d;
+  }
+  function fbLRRH(){return '<svg width="120" height="120" viewBox="0 0 120 120" fill="none" stroke="#7a2e2e" stroke-width="2.2"><circle cx="42" cy="46" r="16"/><path d="M42 62 L42 96 M30 74 L54 74 M42 96 L32 110 M42 96 L52 110"/><path d="M78 50 q14 -10 22 4 q-6 6 -14 4 q-4 10 -12 4 q-2 -10 4 -16z"/><circle cx="90" cy="52" r="1.6" fill="#7a2e2e"/></svg>';}
+  function fbGuernica(){return '<svg width="150" height="110" viewBox="0 0 150 110" fill="none" stroke="#5b5446" stroke-width="2"><path d="M10 95 L40 30 L55 70 L75 20 L90 80 L120 35 L140 95Z"/><path d="M30 60 L70 50 M80 40 L110 60" stroke="#7a2e2e"/><circle cx="55" cy="45" r="3"/></svg>';}
+  function fbCage(){return '<svg width="170" height="90" viewBox="0 0 170 90" fill="none" stroke="#5b5446" stroke-width="1.4"><line x1="15" y1="20" x2="155" y2="20"/><line x1="15" y1="30" x2="155" y2="30"/><line x1="15" y1="40" x2="155" y2="40"/><line x1="15" y1="50" x2="155" y2="50"/><line x1="15" y1="60" x2="155" y2="60"/><text x="85" y="80" font-family="JetBrains Mono,monospace" font-size="13" fill="#7a2e2e" text-anchor="middle" stroke="none">TACET</text></svg>';}
+
+  // toggles
+  document.querySelectorAll('[data-toggle]').forEach(scr=>{
+    const buttons=scr.querySelectorAll('.tg');
+    const markers=scr.querySelectorAll('.marker');
+    const empty=scr.querySelector('[data-empty]');
+    buttons.forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        buttons.forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        const s=btn.getAttribute('data-stance');
+        markers.forEach(m=>m.classList.remove('show'));
+        if(empty) empty.classList.remove('show');
+        if(s==='off'){return;}
+        if(s==='empty'){ if(empty) empty.classList.add('show'); return; }
+        markers.forEach(m=>{ if(m.classList.contains(s)) m.classList.add('show'); });
+      });
+    });
+  });
+
+  function go(n){
+    i=Math.max(0,Math.min(screens.length-1,n));
+    screens.forEach((s,idx)=>s.classList.toggle('active',idx===i));
+    dots.forEach((d,idx)=>{d.classList.toggle('on',idx===i);d.classList.toggle('past',idx<i);});
+    cur.textContent=String(i+1).padStart(2,'0');
+    prev.disabled=(i===0);
+    next.disabled=(i===screens.length-1);
+    document.getElementById('stage').scrollTop=0;
+  }
+  prev.addEventListener('click',()=>go(i-1));
+  next.addEventListener('click',()=>go(i+1));
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'||e.key==='PageDown'){go(i+1);}
+    if(e.key==='ArrowLeft'||e.key==='PageUp'){go(i-1);}
+  });
+
+  // 4'33" silent performance
+  const performBtn=document.getElementById('performBtn');
+  if(performBtn){
+    const clock=document.getElementById('performClock');
+    const cap=document.getElementById('performCaption');
+    const glows=[1,2,3].map(n=>document.getElementById('glow'+n));
+    const movs=[
+      {end:30,  cap:'Movement I \u2014 0:30. Listen to the room.'},
+      {end:173, cap:'Movement II \u2014 2:23. The sounds were always there.'},
+      {end:273, cap:'Movement III \u2014 1:40. This is the piece.'}
+    ];
+    const idle='Press play. No one performs a note. Listen to the room.';
+    let timer=null,t=0;
+    const fmt=x=>Math.floor(x/60)+':'+String(x%60).padStart(2,'0');
+    const setGlow=idx=>glows.forEach((g,i)=>{if(g)g.classList.toggle('on',i===idx);});
+    function stop(done){
+      clearInterval(timer);timer=null;setGlow(-1);
+      performBtn.classList.remove('running');
+      performBtn.innerHTML='<span class="tri">\u25B6</span> '+(done?'Perform again':'Perform 4\u203233\u2033');
+      if(done){clock.textContent='4:33 / 4:33';cap.textContent='4\u203233\u2033. Now \u2014 what did you hear?';}
+    }
+    function tick(){
+      t++;clock.textContent=fmt(t)+' / 4:33';
+      const idx=movs.findIndex(m=>t<=m.end);
+      if(idx<0||t>=273){stop(true);return;}
+      setGlow(idx);cap.textContent=movs[idx].cap;
+    }
+    performBtn.addEventListener('click',()=>{
+      if(timer){stop(false);clock.textContent='0:00 / 4:33';cap.textContent=idle;return;}
+      t=0;clock.textContent='0:00 / 4:33';
+      performBtn.classList.add('running');
+      performBtn.innerHTML='<span class="tri">\u25A0</span> Stop';
+      setGlow(0);cap.textContent=movs[0].cap;
+      timer=setInterval(tick,1000);
+    });
+  }
+
+  go(0);
+})();
+</script>
+</body>
+</html>
