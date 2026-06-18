@@ -197,9 +197,9 @@
         <button class="btn" data-go="3" id="afterCut" style="display:none">Then who made it art? →</button>
       </div>
       <div id="cutPayoff" style="display:none">
-        <p class="pull">Not one thing that makes it art turned up under the instruments. Every line of it is in the dossier.</p>
-        <p class="lede">So the arthood isn't <em>in</em> the object — you measured, magnified, and overlaid, and it was never there. It was put <em>onto</em> the box from outside. The question stops being <em>what is it?</em> and becomes <strong>who did that, and how?</strong></p>
-        <div class="prompt"><span class="mono">Discuss before moving on</span>If two objects are identical in every property an instrument can read, and one is art and one isn't — where can the difference possibly be?</div>
+        <p class="pull">The instruments found exactly one real difference — the surface. And a surface isn't arthood.</p>
+        <p class="lede">Silkscreen-on-plywood versus dots-on-cardboard is a <em>material</em> fact. It can't be the cut: most art isn't silkscreened, and the grocery box was designed by an abstract expressionist anyway. Everything that actually sorts one box into <em>art</em> sits in the other column — origin, who said so, where it hangs. None of that is on the object. It was put <em>onto</em> the box from outside. The question stops being <em>what is it?</em> and becomes <strong>who did that, and how?</strong></p>
+        <div class="prompt"><span class="mono">Discuss before moving on</span>The two boxes differ only in material and in paperwork. A material difference doesn't make a thing art — so where can the arthood possibly be?</div>
       </div>
     </section>
 
@@ -312,33 +312,61 @@
 </div>
 
 <script>
-/* ============ image resolution (jpg with SVG placeholder fallback) ============ */
+/* ============ specimens: built Brillo recreation (close to the 1964 design) ============ */
+/* Same design on both — only the surface differs: A = silkscreen on plywood (flat ink),
+   B = offset litho on cardboard (halftone dots). The dot/weave textures are near-invisible
+   at viewing size and resolve under the loupe at station 2. */
+function brilloSVG(tex){
+  const ground = tex==='silk' ? '#F3EEDF' : '#EFE9D6';
+  const pat = tex==='silk'
+    ? `<pattern id='tx' width='3.2' height='3.2' patternUnits='userSpaceOnUse'>
+         <path d='M0 0H3.2M0 0V3.2' stroke='#5a4a2a' stroke-width='0.35' opacity='0.06'/>
+       </pattern>`
+    : `<pattern id='tx' width='4' height='4' patternUnits='userSpaceOnUse'>
+         <circle cx='1.4' cy='1.4' r='1.05' fill='#16222f' opacity='0.17'/>
+       </pattern>`;
+  const grain = tex==='silk'
+    ? `<g opacity='0.045'><path d='M0 66 H400 M0 132 H400 M0 214 H400 M0 286 H400 M0 352 H400' stroke='#6b4f25' stroke-width='7'/></g>` : '';
+  const wave='q50 -20 100 0 t100 0 t100 0 t100 0 v18 q-50 20 -100 0 t-100 0 t-100 0 t-100 0 Z';
+  return `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'>
+    <defs>${pat}</defs>
+    <rect width='400' height='400' fill='${ground}'/>
+    ${grain}
+    <text x='200' y='56' text-anchor='middle' font-family='Georgia,serif' font-style='italic' font-weight='700' font-size='27' fill='#D81E25'>New!</text>
+    <path d='M0 76 ${wave}' fill='#D81E25'/>
+    <text x='200' y='192' text-anchor='middle' font-family='Georgia,serif' font-style='italic' font-weight='700' font-size='88' fill='#D81E25'>Brillo</text>
+    <text x='200' y='222' text-anchor='middle' font-family='Arial,sans-serif' font-weight='700' font-size='25' letter-spacing='6' fill='#1a1a1a'>SOAP PADS</text>
+    <path d='M0 248 ${wave}' fill='#1E50A2'/>
+    <text x='200' y='308' text-anchor='middle' font-family='Arial,sans-serif' font-weight='800' font-size='21' letter-spacing='1.5' fill='#D81E25'>SHINES ALUMINUM FAST</text>
+    <text x='200' y='340' text-anchor='middle' font-family='Arial,sans-serif' font-weight='700' font-size='17' letter-spacing='2' fill='#1a1a1a'>24 GIANT SIZE PKGS</text>
+    <text x='200' y='364' text-anchor='middle' font-family='Arial,sans-serif' font-weight='600' font-size='13' letter-spacing='2' fill='#555'>WITH RUST RESISTER</text>
+    <rect width='400' height='400' fill='url(#tx)'/>
+  </svg>`;
+}
+const svg2uri = s => 'data:image/svg+xml;utf8,'+encodeURIComponent(s);
+const SPEC = { A: svg2uri(brilloSVG('silk')), B: svg2uri(brilloSVG('offset')) };
+
+/* ============ context photos (real jpgs you supply, with placeholder fallback) ============ */
 const ART='../art/';
 const IMG={
-  A:{src:ART+'brillo-warhol.jpg',     ph:ph('SPECIMEN A','brillo-warhol.jpg','#E8E0CC')},
-  B:{src:ART+'brillo-commercial.jpg', ph:ph('SPECIMEN B','brillo-commercial.jpg','#E9E2D2')},
-  stable:{src:ART+'stable-gallery-1964.jpg', ph:ph('STABLE GALLERY 1964','stable-gallery-1964.jpg','#E4DAC6')},
-  harvey:{src:ART+'harvey-brillo.jpg', ph:ph('JAMES HARVEY','harvey-brillo.jpg','#E4DAC6')},
-  mybed:{src:ART+'my-bed.jpg', ph:ph('MY BED · EMIN','my-bed.jpg','#E4DAC6')},
+  stable:{src:ART+'stable-gallery-1964.jpg', ph:ph('STABLE GALLERY 1964','stable-gallery-1964.jpg')},
+  warhol:{src:ART+'brillo-warhol.jpg',       ph:ph('THE ACTUAL WARHOL BOX','brillo-warhol.jpg')},
+  harvey:{src:ART+'harvey-brillo.jpg',       ph:ph('JAMES HARVEY','harvey-brillo.jpg')},
+  mybed:{src:ART+'my-bed.jpg',               ph:ph('MY BED · EMIN','my-bed.jpg')},
+  comedian:{src:ART+'comedian.jpg',          ph:ph('COMEDIAN · CATTELAN','comedian.jpg')},
 };
-function ph(title,fname,bg){
-  const svg=`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'>
-    <rect width='400' height='400' fill='${bg}'/>
-    <g transform='translate(0 150)'>
-      <path d='M0 64 q50 -34 100 0 t100 0 t100 0 t100 0 v40 q-50 34 -100 0 t-100 0 t-100 0 t-100 0 Z' fill='#9E1F22'/>
-      <path d='M0 58 q50 -34 100 0 t100 0 t100 0 t100 0 v16 q-50 34 -100 0 t-100 0 t-100 0 t-100 0 Z' fill='#C42A2C'/>
-    </g>
-    <text x='200' y='120' text-anchor='middle' font-family='Arial' font-weight='900' font-size='66' letter-spacing='2' fill='#C42A2C'>BRILLO</text>
-    <text x='200' y='150' text-anchor='middle' font-family='Arial' font-weight='700' font-size='17' letter-spacing='4' fill='#222'>SOAP PADS</text>
-    <text x='200' y='330' text-anchor='middle' font-family='Arial' font-weight='800' font-size='20' letter-spacing='2' fill='#9E1F22'>SHINES ALUMINUM FAST</text>
-    <rect x='6' y='6' width='388' height='388' fill='none' stroke='#9A7B33' stroke-dasharray='5 5' opacity='.6'/>
-    <text x='200' y='372' text-anchor='middle' font-family='monospace' font-size='13' letter-spacing='2' fill='#6B7780'>PLACEHOLDER · ${fname}</text>
-    <text x='200' y='40' text-anchor='middle' font-family='monospace' font-size='12' letter-spacing='3' fill='#6B7780'>${title}</text>
+function ph(title,fname){
+  const svg=`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 320'>
+    <rect width='400' height='320' fill='#E4DAC6'/>
+    <rect x='6' y='6' width='388' height='308' fill='none' stroke='#9A7B33' stroke-dasharray='5 5' opacity='.6'/>
+    <text x='200' y='150' text-anchor='middle' font-family='monospace' font-size='14' letter-spacing='3' fill='#6B7780'>${title}</text>
+    <text x='200' y='178' text-anchor='middle' font-family='monospace' font-size='12' letter-spacing='2' fill='#9A7B33'>PLACEHOLDER · ${fname}</text>
   </svg>`;
-  return 'data:image/svg+xml;utf8,'+encodeURIComponent(svg);
+  return svg2uri(svg);
 }
 const _cache={};
 function resolve(key){
+  if(key==='A'||key==='B') return Promise.resolve(SPEC[key]);
   if(_cache[key]) return Promise.resolve(_cache[key]);
   return new Promise(res=>{
     const im=new Image();
@@ -355,8 +383,8 @@ const STATIONS=[
    instruct:'Drag the two red lines to the left and right edges of the box. Read the width off the gauge. Do it for Specimen A, then switch to Specimen B.',
    record:'RECORD → 1A width: ____ cm   ·   1B width: ____ cm'},
   {no:2,title:'Surface',tool:'loupe',
-   instruct:'Move the loupe across each box. What is the printed image — the wordmark, the wave, the layout? Look for any difference in the design itself. Switch between A and B.',
-   record:'RECORD → 2. Printed design, A vs B: same / different. Any difference you can name: ____'},
+   instruct:'Magnify each box. Keep the two questions apart: is the printed DESIGN — wordmark, wave, layout — the same? And is the SURFACE the same — how the ink sits? Zoom right in on the colour and compare A and B.',
+   record:'RECORD → 2. Design (wordmark/wave/layout): same / different. Surface under magnification: A = ____ , B = ____ (e.g. flat ink / dots).'},
   {no:3,title:'Overlay',tool:'overlay',
    instruct:'Slide Specimen A across until it sits on top of Specimen B. Watch the edges and the wordmark. How far do the two designs drift apart?',
    record:'RECORD → 3. Overlaid, A and B line up: perfectly / roughly / not at all.'},
@@ -498,8 +526,9 @@ function buildDossier(){
 function populateCut(){
   const o=document.getElementById('cutObj'),s=document.getElementById('cutSit');
   o.innerHTML='';s.innerHTML='';
-  [['DIMENSIONS','You measured A and B — within a few millimetres.'],
-   ['SURFACE','The printed design is the same on both — same wordmark, wave, layout.'],
+  [['DIMENSIONS','You measured A and B — within a few millimetres. The same.'],
+   ['DESIGN','Wordmark, wave, layout — identical on both boxes.'],
+   ['SURFACE','One real difference: A is flat silkscreen, B is offset dots. A material fact — not arthood.'],
    ['OVERLAY','Slid together, the two line up almost perfectly. One design.']]
    .forEach(([l,t])=>o.insertAdjacentHTML('beforeend',`<div class="chit"><span class="cl">${l}</span>${t}</div>`));
   DOSSIER.forEach(d=>s.insertAdjacentHTML('beforeend',`<div class="chit"><span class="cl">${d.label}</span>A: ${d.a} &nbsp;/&nbsp; B: ${d.b}</div>`));
