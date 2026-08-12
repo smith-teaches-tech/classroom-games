@@ -18,7 +18,7 @@
     /* subject hues */
     --ap-lang:#b9432f; --ap-res:#b9841c; --ibcore:#1d6f6a; --tok:#3b4ea0;
     --ee:#7c4a86; --mock:#8a2c2c; --practice:#46637e; --ai:#3a7a44; --eng:#cf6f1f;
-    --cas:#a8476b;
+    --cas:#a8476b; --intro:#6d5aa6;
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -148,6 +148,7 @@
     <g id="i-spark" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l1.9 5.6 5.6 1.9-5.6 1.9L12 18.5l-1.9-5.6L4.5 11l5.6-1.9z"/></g>
     <g id="i-chat" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h14v10.5H9.5L5 20z"/><path d="M8 9h8M8 12h5"/></g>
     <g id="i-cas" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9.2" cy="9.8" r="5"/><circle cx="14.8" cy="9.8" r="5"/><circle cx="12" cy="15" r="5"/></g>
+    <g id="i-present" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="11" rx="1.6"/><path d="M12 15.5V19M9 21l3-2 3 2"/><path d="M8 11l2.5-2.5L13 11l3-3.5"/></g>
   </defs></svg>
 
   <!-- ===== MASTHEAD ===== -->
@@ -167,7 +168,8 @@
   <div class="filterwrap">
     <div class="filters">
       <span class="flabel">Browse</span>
-      <button class="pill active" data-filter="all">All <span class="ct">10</span></button>
+      <button class="pill active" data-filter="all">All <span class="ct">11</span></button>
+      <button class="pill" data-filter="intros">Course Intros <span class="ct">1</span></button>
       <button class="pill" data-filter="ap">AP <span class="ct">2</span></button>
       <button class="pill" data-filter="ibcore">IB Core <span class="ct">4</span></button>
       <button class="pill" data-filter="english">English <span class="ct">1</span></button>
@@ -189,6 +191,24 @@
 
     <!-- ===== GRID ===== -->
     <div class="grid" id="grid">
+
+      <!-- Course Introductions -->
+      <article class="card filterable" data-group="intros" style="--c:var(--intro)">
+        <div class="top"></div>
+        <div class="head">
+          <span class="icon"><svg><use href="#i-present"/></svg></span>
+          <div class="htext">
+            <div class="ctitle">Course Introductions</div>
+            <div class="ctag">10-minute clickable decks for parent night</div>
+          </div>
+          <span class="count">3 decks</span>
+        </div>
+        <ul class="glist">
+          <li><a href="course-intros/ap-language/"><span class="lk">AP Language &amp; Composition</span><span class="arrow">→</span></a></li>
+          <li><a href="course-intros/ib-core/"><span class="lk">IB Core</span><span class="arrow">→</span></a></li>
+          <li><a href="course-intros/building-with-ai/"><span class="lk">Building with AI</span><span class="arrow">→</span></a></li>
+        </ul>
+      </article>
 
       <!-- AP Language -->
       <article class="card filterable" data-group="ap" style="--c:var(--ap-lang)">

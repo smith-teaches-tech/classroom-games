@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Building with AI — Parent Introduction</title>
+<style>
+  :root{
+    --bg1:#0c2320; --bg2:#05100e;
+    --ink:#eafaf3; --muted:#9ec4b6; --faint:#5d857870;
+    --accent:#39d39a;   /* emerald */
+    --accent2:#2aa3c4;  /* cyan */
+    --violet:#a892f0;
+    --gold:#f2c85b; --hi:#5fe0b0;
+    --card:#0f2a26cc; --line:#26483f;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{
+    background:radial-gradient(1200px 800px at 50% -10%, #114038 0%, var(--bg1) 42%, var(--bg2) 100%);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    overflow:hidden;
+  }
+  h1,h2,h3,.serif{font-family:Georgia,"Iowan Old Style","Times New Roman",serif}
+  code,.mono{font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace}
+
+  #stage{position:fixed;inset:0}
+  .slide{
+    position:absolute;inset:0;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:clamp(24px,5vw,72px);
+    opacity:0;visibility:hidden;transform:translateY(14px);
+    transition:opacity .5s ease, transform .5s ease;
+    text-align:center;
+  }
+  .slide.active{opacity:1;visibility:visible;transform:none}
+  .slide .wrap{max-width:1040px;width:100%}
+  .eyebrow{letter-spacing:.26em;text-transform:uppercase;font-size:clamp(11px,1.4vw,13px);color:var(--hi);font-weight:600;margin-bottom:18px}
+  .slide h1{font-size:clamp(34px,6vw,64px);line-height:1.04;margin:0 0 18px}
+  .slide h2{font-size:clamp(26px,4.4vw,44px);line-height:1.1;margin:0 0 22px}
+  .lead{font-size:clamp(18px,2.4vw,25px);line-height:1.5;color:var(--ink);margin:0 auto;max-width:860px}
+  .sub{font-size:clamp(14px,1.7vw,18px);color:var(--muted);margin-top:22px;line-height:1.5}
+  .tag{display:inline-block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:5px 12px;margin-bottom:26px}
+  em{color:var(--gold);font-style:italic}
+
+  /* what-it-is card */
+  .pcard{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;
+    padding:clamp(20px,3vw,30px);text-align:left;max-width:840px;margin:0 auto;font-size:clamp(16px,1.95vw,21px);line-height:1.55;color:var(--ink)}
+  .pcard + .pcard{margin-top:16px}
+  .pcard b{color:var(--gold)}
+  .big-line{font-family:Georgia,serif;font-size:clamp(22px,3.2vw,34px);line-height:1.3;color:var(--ink);max-width:860px;margin:0 auto}
+  .big-line b{color:var(--accent)}
+
+  /* roadmap */
+  .road{display:flex;flex-direction:column;gap:10px;max-width:840px;margin:6px auto 0;text-align:left}
+  .unit{display:flex;align-items:center;gap:16px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 18px}
+  .unit .num{flex:0 0 auto;width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#04231c;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:15px;font-family:Georgia,serif}
+  .unit .uname{font-weight:700;font-size:clamp(15px,1.8vw,18px);color:var(--ink);min-width:150px}
+  .unit .ubuild{font-size:clamp(13px,1.6vw,16px);color:var(--muted);flex:1}
+  .unit .ubuild b{color:var(--hi);font-weight:600}
+
+  /* workflow chain */
+  .chain{display:flex;gap:10px;justify-content:center;align-items:stretch;flex-wrap:wrap;margin:10px auto 0;max-width:940px}
+  .step{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:16px 16px;flex:1 1 150px;max-width:190px;text-align:center}
+  .step .tool{font-weight:700;font-size:clamp(15px,1.9vw,19px);color:var(--accent)}
+  .step .role{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.4}
+  .chevron{align-self:center;color:var(--faint);font-size:24px}
+  .backing{margin-top:20px;font-size:clamp(14px,1.7vw,17px);color:var(--muted)}
+  .backing b{color:var(--hi)}
+
+  /* ship gate checks */
+  .gate{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;max-width:840px;margin:6px auto 0;text-align:left}
+  .check{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start}
+  .check .ck{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:#123c33;border:1.5px solid var(--accent);
+    color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px}
+  .check .ctit{font-weight:700;font-size:clamp(15px,1.7vw,17.5px);color:var(--ink)}
+  .check .cdesc{font-size:13.5px;color:var(--muted);margin-top:3px;line-height:1.4}
+  @media(max-width:680px){ .gate{grid-template-columns:1fr} }
+
+  /* needs chips */
+  .needs{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+  .need{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--accent2);border-radius:14px;padding:20px 22px;max-width:240px;flex:1 1 200px}
+  .need .nname{font-family:Georgia,serif;font-weight:700;font-size:20px;color:var(--ink)}
+  .need .nwhat{font-size:13.5px;color:var(--muted);margin-top:8px;line-height:1.4}
+  .freepill{display:inline-block;margin-top:22px;background:#123c33;border:1px solid var(--accent);color:var(--hi);
+    border-radius:999px;padding:8px 18px;font-size:14px;letter-spacing:.04em}
+
+  #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent2),var(--accent),var(--gold));z-index:25;transition:width .4s ease;width:0}
+  #topbar{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:16px 22px;z-index:20;pointer-events:none}
+  #brand{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+  #count{font-size:12px;color:var(--muted);letter-spacing:.08em}
+  #nav{position:fixed;bottom:20px;right:22px;display:flex;gap:10px;z-index:20}
+  .nbtn{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:#0f2a26cc;color:var(--ink);
+    font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:.2s}
+  .nbtn:hover{border-color:var(--hi);background:#153c34}
+  .nbtn:disabled{opacity:.3;cursor:default}
+  #hint{position:fixed;bottom:26px;left:22px;font-size:12px;color:var(--faint);z-index:20;line-height:1.6}
+  #hint kbd{background:#123028;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:11px;color:var(--muted)}
+
+  aside.notes{display:none}
+  body.notes-on aside.notes{
+    display:block;position:fixed;bottom:78px;left:50%;transform:translateX(-50%);
+    width:min(90vw,900px);background:#1a1206ee;border:1px solid #6b511f;border-left:4px solid var(--gold);
+    border-radius:10px;padding:14px 20px;text-align:left;z-index:30;color:#f6e6c4;font-size:14.5px;line-height:1.5}
+  aside.notes .nh{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;font-weight:700}
+  #noteFlag{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:26;font-size:11px;letter-spacing:.14em;color:var(--gold);opacity:0;transition:.3s;pointer-events:none;text-transform:uppercase}
+  body.notes-on #noteFlag{opacity:1}
+
+  @media (max-width:720px){ #hint{display:none} .unit .uname{min-width:110px} }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div id="topbar"><span id="brand">Building with AI · Parent Night</span><span id="count"></span></div>
+<div id="noteFlag">Presenter notes on</div>
+
+<div id="stage">
+
+  <!-- 0 TITLE -->
+  <section class="slide">
+    <div class="wrap">
+      <div class="eyebrow">Parent Information Night · about 10 minutes</div>
+      <h1>Building with AI</h1>
+      <p class="lead">One semester · project-based · <em>no prior coding experience required</em></p>
+      <p class="sub">Press <b>&rarr;</b> or <b>Space</b> to begin</p>
+    </div>
+  </section>
+
+  <!-- 1 WHAT IT IS -->
+  <section class="slide">
+    <div class="wrap">
+      <div class="eyebrow">What this course is</div>
+      <p class="big-line">Students design and build <b>real web apps that run live on the internet</b> &mdash; working with AI as their development partner.</p>
+      <p class="sub" style="max-width:820px">The AI writes the code. Your child <em>designs it, directs it, and must be able to explain it.</em> They finish with a portfolio of original, working apps that are theirs from idea to live URL.</p>
+    </div>
+    <aside class="notes"><div class="nh">Presenter</div>The key reframe for parents: this is not &ldquo;let the robot do your homework.&rdquo; It&rsquo;s learning to architect and direct software. AI is the tool; judgment is the skill.</aside>
+  </section>
+
+  <!-- 2 WHAT THEY BUILD -->
+  <section class="slide">
+    <div class="wrap" style="max-width:920px">
+      <div class="eyebrow">Over 18 weeks, each project adds one new system</div>
+      <h2>What They&rsquo;ll Build</h2>
+      <div class="road">
+        <div class="unit"><div class="num">1</div><div class="uname">Foundations</div><div class="ubuild">A live <b>portfolio website</b> &mdash; the build &rarr; publish workflow</div></div>
+        <div class="unit"><div class="num">2</div><div class="uname">Memory</div><div class="ubuild">An app that <b>saves and shows data</b> &mdash; storing information</div></div>
+        <div class="unit"><div class="num">3</div><div class="uname">Identity</div><div class="ubuild">An app with <b>accounts and private data</b> &mdash; sign-in &amp; privacy</div></div>
+        <div class="unit"><div class="num">4</div><div class="uname">Connection</div><div class="ubuild">An app that <b>pulls in outside data</b> &mdash; talking to other services</div></div>
+        <div class="unit"><div class="num">5</div><div class="uname">Intelligence</div><div class="ubuild">An app with an <b>AI-powered feature</b> &mdash; calling an AI model securely</div></div>
+        <div class="unit"><div class="num">6</div><div class="uname">Showcase</div><div class="ubuild">Finish, polish, and <b>present</b> &mdash; putting it all together</div></div>
+      </div>
+    </div>
+    <aside class="notes"><div class="nh">Presenter</div>They can build four separate apps or evolve a single app across the builds. The point is each unit introduces one real system that modern software is made of.</aside>
+  </section>
+
+  <!-- 3 WORKFLOW -->
+  <section class="slide">
+    <div class="wrap" style="max-width:980px">
+      <div class="eyebrow">Real, industry-standard tools &mdash; all free</div>
+      <h2>How It Works</h2>
+      <div class="chain">
+        <div class="step"><div class="tool">Gemini</div><div class="role">The AI partner writes &amp; explains the code</div></div>
+        <div class="chevron">&rarr;</div>
+        <div class="step"><div class="tool">VS Code</div><div class="role">Your child organizes the project</div></div>
+        <div class="chevron">&rarr;</div>
+        <div class="step"><div class="tool">GitHub</div><div class="role">Publish it to a real public URL</div></div>
+        <div class="chevron">&rarr;</div>
+        <div class="step"><div class="tool">Live app</div><div class="role">Runs on the internet for anyone</div></div>
+      </div>
+      <p class="backing">All of it backed by <b>Supabase</b> &mdash; the database, sign-in, and secure AI calls behind the apps.</p>
+    </div>
+    <aside class="notes"><div class="nh">Presenter</div>Reassure: these are the same tools professional developers use, but every one has a free tier. Nothing to buy.</aside>
+  </section>
+
+  <!-- 4 SHIP GATE -->
+  <section class="slide">
+    <div class="wrap" style="max-width:900px">
+      <div class="eyebrow">How your child is graded</div>
+      <h2>The &ldquo;Ship-Gate&rdquo;</h2>
+      <p class="sub" style="margin:0 auto 22px;max-width:760px">Because AI writes the code, grading targets what AI can&rsquo;t fake. Every project must pass four checks:</p>
+      <div class="gate">
+        <div class="check"><div class="ck">1</div><div><div class="ctit">It works</div><div class="cdesc">A live URL, with that unit&rsquo;s system actually functioning.</div></div></div>
+        <div class="check"><div class="ck">2</div><div><div class="ctit">Explanation &mdash; handwritten</div><div class="cdesc">They explain, step by step, how their app works.</div></div></div>
+        <div class="check"><div class="ck">3</div><div><div class="ctit">Data-flow diagram &mdash; handwritten</div><div class="cdesc">Boxes &amp; arrows: where data goes, where secrets live, who sees what.</div></div></div>
+        <div class="check"><div class="ck">4</div><div><div class="ctit">Testing check</div><div class="cdesc">Evidence it works on a phone, for someone who isn&rsquo;t them, under a few attempts to break it.</div></div></div>
+      </div>
+      <p class="sub" style="margin-top:18px">The grade is the four builds plus a final Showcase. Design and usability count &mdash; and there is <em>no final exam</em>.</p>
+    </div>
+    <aside class="notes"><div class="nh">Presenter</div>This is the heart of the course&rsquo;s integrity. The handwritten explanation and diagram are the anti-cheat: an app you can&rsquo;t explain doesn&rsquo;t pass, no matter how polished.</aside>
+  </section>
+
+  <!-- 5 AI POLICY -->
+  <section class="slide">
+    <div class="wrap">
+      <div class="eyebrow">The question every parent asks</div>
+      <h2 class="serif">&ldquo;Isn&rsquo;t this just letting AI do the work?&rdquo;</h2>
+      <div class="pcard"><b>Using AI to write code is the point of the course.</b> But an app your child can&rsquo;t explain doesn&rsquo;t pass the gate.</div>
+      <div class="pcard">The graded skill is <b>understanding</b> &mdash; how the pieces fit, where data flows, why it works. That&rsquo;s exactly the skill the working world is now asking for.</div>
+      <p class="sub">Misuse or unethical use of these tools is taken seriously and will be reported to the school.</p>
+    </div>
+    <aside class="notes"><div class="nh">Presenter</div>Meet the concern head-on. The course is designed so that using AI without understanding fails. Understanding &amp; direction are what&rsquo;s assessed.</aside>
+  </section>
+
+  <!-- 6 WHAT YOU NEED -->
+  <section class="slide">
+    <div class="wrap">
+      <div class="eyebrow">What your child will need</div>
+      <h2>Getting Set Up</h2>
+      <div class="needs">
+        <div class="need"><div class="nname">Google</div><div class="nwhat">School account &mdash; for Gemini, the AI partner</div></div>
+        <div class="need"><div class="nname">GitHub</div><div class="nwhat">Free account to publish projects (age 13+)</div></div>
+        <div class="need"><div class="nname">Supabase</div><div class="nwhat">Free account for data &amp; sign-in (age 13+)</div></div>
+      </div>
+      <div class="freepill">Everything used in this course has a free tier &mdash; nothing to purchase.</div>
+    </div>
+    <aside class="notes"><div class="nh">Presenter</div>Minimum age 13 for the outside accounts. If that&rsquo;s a concern for a younger student, talk to me. Nothing here costs money.</aside>
+  </section>
+
+  <!-- 7 FINALLY -->
+  <section class="slide">
+    <div class="wrap">
+      <div class="eyebrow">How we stay in touch</div>
+      <h2 class="serif">Finally</h2>
+      <ul style="list-style:none;margin:14px auto 0;padding:0;max-width:780px;text-align:left">
+        <li style="font-size:clamp(17px,2.1vw,22px);line-height:1.45;padding:12px 6px 12px 34px;position:relative;border-bottom:1px solid #ffffff12">
+          <span style="position:absolute;left:6px;top:20px;width:11px;height:11px;border-radius:3px;background:var(--accent)"></span>
+          Feel free to reach out any time by email</li>
+        <li style="font-size:clamp(17px,2.1vw,22px);line-height:1.45;padding:12px 6px 12px 34px;position:relative;border-bottom:1px solid #ffffff12">
+          <span style="position:absolute;left:6px;top:20px;width:11px;height:11px;border-radius:3px;background:var(--accent2)"></span>
+          Join the video conference &mdash; scheduled for next week &mdash; with any further questions</li>
+        <li style="font-size:clamp(17px,2.1vw,22px);line-height:1.45;padding:12px 6px 12px 34px;position:relative">
+          <span style="position:absolute;left:6px;top:20px;width:11px;height:11px;border-radius:3px;background:var(--violet)"></span>
+          Best of all &mdash; ask your child to <em>show you their live apps</em>. They&rsquo;ll have real URLs to share</li>
+      </ul>
+      <p class="sub" style="margin-top:26px">Thank you for being here tonight.</p>
+    </div>
+  </section>
+
+</div>
+
+<div id="nav">
+  <button class="nbtn" id="prev" aria-label="Previous">&lsaquo;</button>
+  <button class="nbtn" id="next" aria-label="Next">&rsaquo;</button>
+</div>
+<div id="hint"><kbd>&larr;</kbd> <kbd>&rarr;</kbd> move · <kbd>N</kbd> presenter notes · <kbd>F</kbd> fullscreen</div>
+
+<script>
+(function(){
+  "use strict";
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var idx=0;
+  var prevBtn=document.getElementById('prev'), nextBtn=document.getElementById('next');
+  var progress=document.getElementById('progress'), count=document.getElementById('count');
+  function show(n){
+    idx = Math.max(0, Math.min(slides.length-1, n));
+    slides.forEach(function(s,i){ s.classList.toggle('active', i===idx); });
+    progress.style.width = (idx/(slides.length-1)*100)+'%';
+    count.textContent = (idx+1)+' / '+slides.length;
+    prevBtn.disabled = idx===0;
+    nextBtn.disabled = idx===slides.length-1;
+  }
+  function nextS(){ show(idx+1); }
+  function prevS(){ show(idx-1); }
+  nextBtn.addEventListener('click',nextS);
+  prevBtn.addEventListener('click',prevS);
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){ e.preventDefault(); nextS(); }
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){ e.preventDefault(); prevS(); }
+    else if(e.key==='Home'){ e.preventDefault(); show(0); }
+    else if(e.key==='End'){ e.preventDefault(); show(slides.length-1); }
+    else if(e.key==='n'||e.key==='N'){ document.body.classList.toggle('notes-on'); }
+    else if(e.key==='f'||e.key==='F'){ toggleFull(); }
+  });
+  function toggleFull(){
+    if(!document.fullscreenElement){ if(document.documentElement.requestFullscreen) document.documentElement.requestFullscreen(); }
+    else { if(document.exitFullscreen) document.exitFullscreen(); }
+  }
+  show(0);
+})();
+</script>
+</body>
+</html>
