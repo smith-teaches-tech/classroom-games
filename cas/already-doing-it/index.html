@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You've Been Doing This the Whole Time — CAS · Class 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3eee1;
+    --paper-2:#ece5d3;
+    --ink:#1f1c17;
+    --ink-soft:#4a4339;
+    --rule:#cbbfa3;
+    --nasa:#1d3b5c;      /* Service */
+    --green:#39563f;     /* Activity */
+    --amber:#b9892f;     /* Creativity */
+    --hl:rgba(185,137,47,.26);
+    --hl-strong:rgba(185,137,47,.5);
+    --bad:#8a3324;       /* Not CAS */
+    --good:#39563f;
+    --shadow:0 18px 50px -22px rgba(31,28,23,.5);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(120% 90% at 80% -10%, rgba(29,59,92,.07), transparent 60%),
+      radial-gradient(120% 90% at 0% 110%, rgba(57,86,63,.08), transparent 55%),
+      var(--paper);
+    color:var(--ink);
+    font-family:"Cormorant Garamond", Georgia, serif;
+    font-size:20px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:0 26px 120px;}
+  .mono{font-family:"JetBrains Mono", monospace;}
+
+  /* ---- header ---- */
+  header{padding:64px 0 30px;border-bottom:2px solid var(--ink);margin-bottom:8px;}
+  .kicker{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--amber);margin:0 0 18px;}
+  h1{font-size:clamp(38px,6.6vw,64px);line-height:.99;font-weight:600;margin:0;letter-spacing:-.015em;}
+  h1 em{font-style:italic;color:var(--nasa);}
+  .sub{font-size:22px;color:var(--ink-soft);margin:18px 0 0;max-width:60ch;font-style:italic;}
+  .target{font-family:"JetBrains Mono",monospace;font-size:12.5px;line-height:1.6;text-transform:uppercase;letter-spacing:.08em;margin-top:26px;padding:14px 18px;border:1px solid var(--rule);background:rgba(255,255,255,.35);color:var(--ink-soft);}
+  .target b{color:var(--ink);}
+
+  /* ---- section scaffolding ---- */
+  section{padding:52px 0 8px;}
+  .sec-num{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.2em;color:var(--amber);}
+  h2{font-size:clamp(26px,4.2vw,38px);font-weight:600;margin:6px 0 14px;letter-spacing:-.01em;line-height:1.03;}
+  h2 .step{color:var(--nasa);}
+  .lede{font-size:21px;color:var(--ink-soft);margin:0 0 26px;max-width:64ch;}
+
+  /* ---- dump ---- */
+  .dump{background:rgba(255,255,255,.45);border:1.5px solid var(--rule);padding:24px 26px;}
+  .dump label{display:block;font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px;}
+  .dumprow{display:flex;gap:10px;flex-wrap:wrap;}
+  .dump input{flex:1;min-width:240px;font-family:"Cormorant Garamond",serif;font-size:21px;padding:11px 15px;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);}
+  .dump input:focus{outline:2px solid var(--amber);outline-offset:1px;}
+  .dump button{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:11px 22px;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer;transition:transform .12s;}
+  .dump button:hover{transform:translateY(-2px);}
+  .dumplist{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+  .chip{font-family:"JetBrains Mono",monospace;font-size:13px;padding:7px 13px;border:1.5px solid var(--rule);background:var(--paper-2);}
+  .dump .hint{font-size:17px;color:var(--ink-soft);margin-top:14px;font-style:italic;}
+
+  /* ---- legend / bins ---- */
+  .legend-strands{display:flex;flex-wrap:wrap;gap:10px;margin:2px 0 26px;font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;}
+  .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1.5px solid var(--ink);}
+  .badge .swatch{width:12px;height:12px;display:inline-block;}
+  .badge.c .swatch{background:var(--amber);} .badge.a .swatch{background:var(--green);}
+  .badge.s .swatch{background:var(--nasa);}  .badge.n .swatch{background:var(--bad);}
+
+  /* ---- controls ---- */
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 22px;}
+  .controls button{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;padding:10px 16px;border:1.5px solid var(--ink);background:var(--paper-2);color:var(--ink);cursor:pointer;transition:transform .12s, background .15s;}
+  .controls button:hover{transform:translateY(-2px);background:var(--paper);}
+  .controls .primary{background:var(--ink);color:var(--paper);}
+
+  /* ---- card grid (flip) ---- */
+  .deck{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;}
+  .card{perspective:1200px;min-height:186px;cursor:pointer;}
+  .card-inner{position:relative;width:100%;height:100%;min-height:186px;transition:transform .5s cubic-bezier(.4,.15,.2,1);transform-style:preserve-3d;}
+  .card.flipped .card-inner{transform:rotateY(180deg);}
+  .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1.5px solid var(--ink);padding:18px 18px 16px;display:flex;flex-direction:column;box-shadow:var(--shadow);}
+  .front{background:rgba(255,255,255,.55);}
+  .front .cnum{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--amber);letter-spacing:.14em;}
+  .front .ctext{font-size:22px;line-height:1.2;margin:auto 0 0;}
+  .front .cq{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-top:12px;}
+  .back{background:var(--paper-2);transform:rotateY(180deg);}
+  .back .verdict-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+  .vbadge{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border:1.5px solid var(--ink);color:#fff;}
+  .vbadge.c{background:var(--amber);} .vbadge.a{background:var(--green);}
+  .vbadge.s{background:var(--nasa);}  .vbadge.n{background:var(--bad);}
+  .back .why{font-size:16.5px;line-height:1.34;color:var(--ink);margin:0;overflow:auto;}
+  .back .why b{color:var(--nasa);}
+
+  /* ---- definitions ---- */
+  .defs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:6px;}
+  @media(max-width:760px){.defs{grid-template-columns:1fr;}}
+  .def{border:1.5px solid var(--rule);background:rgba(255,255,255,.45);padding:22px;border-top:5px solid var(--ink);}
+  .def.c{border-top-color:var(--amber);} .def.a{border-top-color:var(--green);} .def.s{border-top-color:var(--nasa);}
+  .def h3{font-size:26px;margin:0 0 8px;font-weight:600;}
+  .def .g{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
+  .def p{font-size:18px;line-height:1.4;color:var(--ink-soft);margin:12px 0 0;}
+  .tests{margin-top:26px;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);padding:22px 24px;}
+  .tests h3{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin:0 0 14px;}
+  .tests ol{margin:0;padding-left:22px;}
+  .tests li{font-size:19px;margin-bottom:10px;line-height:1.4;}
+  .tests li b{color:#f0d79b;}
+
+  /* ---- outcomes accordion ---- */
+  .seven{border:1.5px solid var(--ink);margin-top:6px;background:rgba(255,255,255,.4);}
+  .oc{border-bottom:1px solid var(--rule);}
+  .oc:last-child{border-bottom:none;}
+  .oc-head{display:flex;align-items:baseline;gap:16px;padding:16px 22px;cursor:pointer;user-select:none;}
+  .oc-head:hover{background:rgba(185,137,47,.07);}
+  .oc-n{font-family:"JetBrains Mono",monospace;font-size:22px;font-weight:700;width:30px;color:var(--nasa);}
+  .oc-plain{font-size:22px;font-weight:600;flex:1;}
+  .oc-tag{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);}
+  .oc-body{max-height:0;overflow:hidden;transition:max-height .3s ease;}
+  .oc-body p{margin:0;padding:0 22px 20px 68px;font-size:18px;color:var(--ink-soft);line-height:1.45;}
+  .oc.open .oc-body{max-height:220px;}
+
+  /* ---- myths ---- */
+  .myths{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:6px;}
+  @media(max-width:640px){.myths{grid-template-columns:1fr;}}
+  .myth{perspective:1200px;min-height:150px;cursor:pointer;}
+  .myth-inner{position:relative;width:100%;min-height:150px;transition:transform .5s cubic-bezier(.4,.15,.2,1);transform-style:preserve-3d;}
+  .myth.flipped .myth-inner{transform:rotateY(180deg);}
+  .myth .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1.5px solid var(--ink);padding:22px;display:flex;flex-direction:column;justify-content:center;}
+  .myth .mfront{background:rgba(138,51,36,.08);}
+  .myth .mlabel{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--bad);margin:0 0 10px;}
+  .myth .mtext{font-size:22px;line-height:1.24;margin:0;font-style:italic;}
+  .myth .mback{background:var(--paper-2);transform:rotateY(180deg);}
+  .myth .tlabel{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--green);margin:0 0 10px;}
+  .myth .ttext{font-size:19px;line-height:1.34;margin:0;}
+
+  /* ---- sort your own week ---- */
+  .mine-tally{font-family:"JetBrains Mono",monospace;font-size:14px;letter-spacing:.06em;color:var(--nasa);margin:0 0 18px;min-height:1.3em;font-style:italic;}
+  .mine-tally b{color:var(--green);font-size:22px;font-style:normal;}
+  .mine-empty{font-size:18px;color:var(--ink-soft);font-style:italic;}
+  .mrow{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:13px 4px;border-bottom:1px solid var(--rule);}
+  .mrow.tagged-cas{background:rgba(57,86,63,.07);}
+  .mrow .mtext{flex:1;min-width:180px;font-size:21px;}
+  .mtags{display:flex;gap:6px;flex-wrap:wrap;}
+  .mtags button{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:6px 11px;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer;transition:transform .1s;}
+  .mtags button:hover{transform:translateY(-1px);}
+  .mtags button.on.c{background:var(--amber);color:#fff;border-color:var(--amber);}
+  .mtags button.on.a{background:var(--green);color:#fff;border-color:var(--green);}
+  .mtags button.on.s{background:var(--nasa);color:#fff;border-color:var(--nasa);}
+  .mtags button.on.n{background:var(--bad);color:#fff;border-color:var(--bad);}
+
+  /* ---- closing ---- */
+  .exit{border:1.5px solid var(--ink);background:rgba(255,255,255,.5);padding:28px 30px;margin-top:8px;box-shadow:var(--shadow);}
+  .exit .ct{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin:0 0 12px;}
+  .exit .cq{font-size:25px;line-height:1.3;margin:0;font-style:italic;}
+
+  footer{margin-top:60px;padding-top:24px;border-top:2px solid var(--ink);font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.06em;color:var(--ink-soft);text-transform:uppercase;}
+
+  /* ---- print: scenario cards as a cut-out deck ---- */
+  @media print{
+    @page{margin:12mm;}
+    body{background:var(--paper);font-size:12pt;}
+    .wrap{max-width:none;padding:0;}
+    header, .dump, .controls, .legend-strands, footer,
+    #defs, #seven, #myths, #ownsort, #exit, .noprint{display:none !important;}
+    section{padding:0;}
+    .print-only{display:block !important;}
+    .print-title{font-family:"JetBrains Mono",monospace;font-size:11pt;letter-spacing:.1em;text-transform:uppercase;margin:0 0 8mm;}
+    .deck{display:grid;grid-template-columns:1fr 1fr;gap:6mm;}
+    .card{perspective:none;min-height:52mm;break-inside:avoid;page-break-inside:avoid;}
+    .card-inner{transform:none !important;min-height:52mm;}
+    .back{display:none !important;}
+    .front{position:relative;border:1.5pt dashed #555;box-shadow:none;background:#fff;height:100%;}
+    .front .ctext{font-size:16pt;}
+    .front .cq{display:none;}
+  }
+  .print-only{display:none;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="kicker">CAS · Class 1 · The Core</p>
+    <h1>You've Been Doing<br>This <em>the Whole Time</em></h1>
+    <p class="sub">Creativity, Activity, Service. Before anyone tells you what CAS is, we're going to prove you're already doing it — and find the exact line where "stuff you do" turns into CAS.</p>
+    <p class="target"><b>By the end of today:</b> I can name the three CAS strands, spot what does <b>not</b> count and why, and point to things I already do that live in each one.</p>
+  </header>
+
+  <!-- THE DUMP -->
+  <section>
+    <span class="sec-num">00 / THE DUMP</span>
+    <h2>What did you actually <span class="step">do</span> this week?</h2>
+    <p class="lede">Two minutes, no filter. Everything outside of class — training, cooking, gaming, editing, coaching a cousin, helping at a community event, a job, chores, a hobby. Write it in your notebook. Add a few here so we can see the room's list on the board.</p>
+    <div class="dump">
+      <label for="dumpin">Add something you did this week</label>
+      <div class="dumprow">
+        <input id="dumpin" type="text" placeholder="e.g. taught my little brother to ride a bike" autocomplete="off">
+        <button id="dumpbtn">Add</button>
+      </div>
+      <div class="dumplist" id="dumplist"></div>
+      <p class="hint">Keep the honest ones in. The point of the next activity is that most of this list is closer to CAS than you think — and a few pieces aren't, for reasons worth arguing about.</p>
+    </div>
+  </section>
+
+  <!-- THE SORT -->
+  <section>
+    <span class="sec-num">01 / THE SORT</span>
+    <h2>CAS, or not CAS?</h2>
+    <p class="lede">Fifteen real things students do. For each one: <b>commit first</b> — which strand does it belong in, or does it not count at all? — then flip the card to see the verdict. Watch for the ones that land in <em>two</em> strands, and the ones that fool you.</p>
+    <div class="legend-strands">
+      <span class="badge c"><span class="swatch"></span>Creativity</span>
+      <span class="badge a"><span class="swatch"></span>Activity</span>
+      <span class="badge s"><span class="swatch"></span>Service</span>
+      <span class="badge n"><span class="swatch"></span>Not CAS</span>
+    </div>
+    <div class="controls noprint">
+      <button id="revealAll">Reveal all</button>
+      <button id="resetAll">Reset</button>
+      <button class="primary" id="printCards">Print the card deck</button>
+    </div>
+    <p class="print-only print-title">CAS Class 1 — Sort Deck · cut along the dashes · one card per group to place on the floor Venn</p>
+    <div class="deck" id="deck"></div>
+  </section>
+
+  <!-- NAME THE RULERS -->
+  <section id="defs">
+    <span class="sec-num">02 / NAME THE RULERS</span>
+    <h2>Now we can say what each one <span class="step">is</span></h2>
+    <p class="lede">You sorted using your own instinct. Here are the actual definitions — notice how well your instinct already matched them.</p>
+    <div class="defs">
+      <div class="def c">
+        <span class="g">Strand 01</span>
+        <h3>Creativity</h3>
+        <p>Exploring and extending ideas leading to an original or interpretive product or performance. Making, designing, performing — and getting better at it.</p>
+      </div>
+      <div class="def a">
+        <span class="g">Strand 02</span>
+        <h3>Activity</h3>
+        <p>Physical exertion contributing to a healthy lifestyle. Sport, training, dance, hiking — anything that moves your body with intent.</p>
+      </div>
+      <div class="def s">
+        <span class="g">Strand 03</span>
+        <h3>Service</h3>
+        <p>Collaborative and reciprocal engagement with the community in response to an authentic need. You help; you also learn. Never paid, never one-directional charity.</p>
+      </div>
+    </div>
+    <div class="tests">
+      <h3>The three questions that decide if it counts</h3>
+      <ol>
+        <li><b>Is it voluntary?</b> Paid work and required chores are out. CAS is something you choose.</li>
+        <li><b>Is there real growth or challenge?</b> If it costs you nothing and teaches you nothing, it's not CAS — it's just Tuesday.</li>
+        <li><b>Will you reflect on it?</b> CAS isn't the doing alone. It's the doing <em>plus</em> noticing what it did to you. (More on that next class.)</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- THE SEVEN -->
+  <section id="seven">
+    <span class="sec-num">03 / THE SEVEN</span>
+    <h2>What you're meant to get out of it</h2>
+    <p class="lede">Over the next 18 months you have to show <b>seven learning outcomes</b> — not seven boxes to tick, but seven things CAS should grow in you. Here they are in plain English. Click one; think of a time you've already hit it.</p>
+    <div class="seven" id="sevenAcc">
+      <div class="oc"><div class="oc-head"><span class="oc-n">1</span><span class="oc-plain">Know your strengths — and your growth areas.</span><span class="oc-tag">strengths</span></div><div class="oc-body"><p>Official: <em>Identify own strengths and develop areas for growth.</em> You can name what you're good at and pick something you genuinely want to get better at.</p></div></div>
+      <div class="oc"><div class="oc-head"><span class="oc-n">2</span><span class="oc-plain">Take on a challenge and build a new skill.</span><span class="oc-tag">challenge</span></div><div class="oc-body"><p>Official: <em>Demonstrate that challenges have been undertaken, developing new skills in the process.</em> Not "I did the thing I already do well" — something that was actually hard.</p></div></div>
+      <div class="oc"><div class="oc-head"><span class="oc-n">3</span><span class="oc-plain">Start and plan something yourself.</span><span class="oc-tag">initiate</span></div><div class="oc-body"><p>Official: <em>Demonstrate how to initiate and plan a CAS experience.</em> You made it happen — you weren't just handed a slot on a sign-up sheet.</p></div></div>
+      <div class="oc"><div class="oc-head"><span class="oc-n">4</span><span class="oc-plain">Stick with it after the new wears off.</span><span class="oc-tag">commitment</span></div><div class="oc-body"><p>Official: <em>Show commitment to and perseverance in CAS experiences.</em> You kept showing up when it stopped being novel.</p></div></div>
+      <div class="oc"><div class="oc-head"><span class="oc-n">5</span><span class="oc-plain">Work with others — and see why it's worth it.</span><span class="oc-tag">collaboration</span></div><div class="oc-body"><p>Official: <em>Demonstrate the skills and recognize the benefits of working collaboratively.</em> Real teamwork, including the friction, and what it got you that solo wouldn't.</p></div></div>
+      <div class="oc"><div class="oc-head"><span class="oc-n">6</span><span class="oc-plain">Engage with something bigger than your backyard.</span><span class="oc-tag">global</span></div><div class="oc-body"><p>Official: <em>Demonstrate engagement with issues of global significance.</em> A problem that reaches past you and your school — connected, even locally, to a wider issue.</p></div></div>
+      <div class="oc"><div class="oc-head"><span class="oc-n">7</span><span class="oc-plain">Notice the right-and-wrong of your choices.</span><span class="oc-tag">ethics</span></div><div class="oc-body"><p>Official: <em>Recognize and consider the ethics of choices and actions.</em> You thought about who's affected and whether it was yours to do — before, during, and after.</p></div></div>
+    </div>
+  </section>
+
+  <!-- MYTHS -->
+  <section id="myths">
+    <span class="sec-num">04 / MYTH-BUSTERS</span>
+    <h2>Four things people get wrong about CAS</h2>
+    <p class="lede">Flip each one.</p>
+    <div class="myths" id="mythWrap">
+      <div class="myth"><div class="myth-inner">
+        <div class="face mfront"><p class="mlabel">Myth</p><p class="mtext">"CAS is 150 hours you have to log."</p></div>
+        <div class="face mback"><p class="tlabel">Actually</p><p class="ttext">There's no magic hour count anymore. It's about the seven outcomes and steady involvement across your two years — quality and reflection, not a stopwatch.</p></div>
+      </div></div>
+      <div class="myth"><div class="myth-inner">
+        <div class="face mfront"><p class="mlabel">Myth</p><p class="mtext">"My paid job counts as service."</p></div>
+        <div class="face mback"><p class="tlabel">Actually</p><p class="ttext">The moment money changes hands, it's a job, not service. The skills can be real — but CAS is what you choose to give, not what you're paid to do.</p></div>
+      </div></div>
+      <div class="myth"><div class="myth-inner">
+        <div class="face mfront"><p class="mlabel">Myth</p><p class="mtext">"I did it once, so I can tick it off."</p></div>
+        <div class="face mback"><p class="tlabel">Actually</p><p class="ttext">One-and-done rarely reaches an outcome. What earns the outcome is the reflection — what you noticed, what changed, what you'd do differently.</p></div>
+      </div></div>
+      <div class="myth"><div class="myth-inner">
+        <div class="face mfront"><p class="mlabel">Myth</p><p class="mtext">"It has to be huge and impressive."</p></div>
+        <div class="face mback"><p class="tlabel">Actually</p><p class="ttext">It has to be <em>yours</em>, real, and a genuine stretch. A small thing you truly took on beats a grand thing you just attended.</p></div>
+      </div></div>
+    </div>
+  </section>
+
+  <!-- SORT YOUR OWN WEEK -->
+  <section id="ownsort">
+    <span class="sec-num">05 / SORT YOUR OWN WEEK</span>
+    <h2>Now run the rulers on <span class="step">your</span> life</h2>
+    <p class="lede">Remember your Dump from the start of class — written before you knew any of this. Pull it back in and tag each item with the strand it really belongs to. This is the whole point of today, in your own week.</p>
+    <div class="controls noprint">
+      <button class="primary" id="pullWeek">Pull in my week</button>
+      <button id="clearTags">Clear tags</button>
+    </div>
+    <p class="mine-tally" id="mineTally"></p>
+    <div id="mine"><p class="mine-empty">Add a few things up in <b>00 / The Dump</b> first — then click &ldquo;Pull in my week&rdquo;.</p></div>
+  </section>
+
+  <!-- EXIT -->
+  <section id="exit">
+    <span class="sec-num">06 / EXIT TICKET</span>
+    <div class="exit">
+      <p class="ct">One sentence, in your notebook</p>
+      <p class="cq">Name one thing you already do that you didn't realise was CAS — say which strand it lives in, and which of the seven outcomes it could reach.</p>
+    </div>
+  </section>
+
+  <footer>CAS · Class 1 of 3 · The Core — strands, exclusions, outcomes · next: what counts as evidence</footer>
+</div>
+
+<script>
+// ---- the deck data ----
+const CARDS = [
+  {t:"Training for a 5K run", v:["a"], why:"<b>Activity.</b> Physical exertion with a goal and visible progress — the cleanest kind of Activity."},
+  {t:"Playing in the school band", v:["c"], why:"<b>Creativity.</b> An interpretive performance you're building skill in. Creativity, no asterisk."},
+  {t:"Volunteering at a weekend food drive", v:["s"], why:"<b>Service.</b> Reciprocal engagement with the community answering a real need — and unpaid."},
+  {t:"Coaching your little cousin's football team", v:["a","s"], why:"<b>Activity + Service.</b> You're moving <em>and</em> serving others <em>and</em> planning it. The overlaps are where CAS gets rich — don't force it into one bin."},
+  {t:"Your paid shift at the café", v:["n"], why:"<b>Not CAS.</b> The skills are real, but paid work isn't CAS. Money is the line. CAS is what you choose to give."},
+  {t:"Cooking dinner for the family every night", v:["n"], why:"<b>Not CAS — usually.</b> A routine household expectation. It could become CAS only if you take on a genuine new challenge with it (say, cooking for a shelter) — but expected chores don't count."},
+  {t:"Doing your homework", v:["n"], why:"<b>Not CAS.</b> Your coursework is your coursework. CAS lives outside your academic requirements."},
+  {t:"Scrolling for two hours straight", v:["n"], why:"<b>Not CAS.</b> No challenge, no growth, no purpose. (Making something skilled with intent to learn is a different card — read on.)"},
+  {t:"Teaching yourself video editing, posting weekly", v:["c"], why:"<b>Creativity.</b> Real creative skill developed with commitment — as long as there's genuine learning and you reflect on it."},
+  {t:"Helping set up and run your community/faith event", v:["s"], why:"<b>Service.</b> Organising and serving at a community event counts. (Worship or prayer itself is personal and isn't CAS — but running the food stall, the clean-up, the fundraiser is.)"},
+  {t:"Weekly swim practice with your club", v:["a"], why:"<b>Activity.</b> Regular physical training with progression. Clean Activity."},
+  {t:"Tutoring a struggling classmate for free", v:["s"], why:"<b>Service.</b> Reciprocal, answers a real need, unpaid — and you learn to explain, so you grow too."},
+  {t:"Fundraising to build a well overseas", v:["s"], why:"<b>Service + global reach.</b> Service that also engages an issue bigger than your backyard (that's outcome 6 doing double duty)."},
+  {t:"Selling your handmade jewellery at a market", v:["c"], why:"<b>Creativity — with a catch.</b> The designing and making is creative growth. The selling/profit isn't the CAS part. If it's purely for income, question it."},
+  {t:"Practising for your driving test", v:["n"], why:"<b>Not CAS.</b> A personal life-admin task — no wider purpose or creative/physical growth in the CAS sense. Worth arguing about, though."}
+];
+const LABELS={c:"Creativity",a:"Activity",s:"Service",n:"Not CAS"};
+
+const deck=document.getElementById('deck');
+CARDS.forEach((card,i)=>{
+  const el=document.createElement('div');
+  el.className='card';
+  const badges=card.v.map(k=>`<span class="vbadge ${k}">${LABELS[k]}</span>`).join('');
+  el.innerHTML=`
+    <div class="card-inner">
+      <div class="face front">
+        <span class="cnum">${String(i+1).padStart(2,'0')} / 15</span>
+        <p class="ctext">${card.t}</p>
+        <p class="cq">Commit &rarr; then flip</p>
+      </div>
+      <div class="face back">
+        <div class="verdict-row">${badges}</div>
+        <p class="why">${card.why}</p>
+      </div>
+    </div>`;
+  el.addEventListener('click',()=>el.classList.toggle('flipped'));
+  deck.appendChild(el);
+});
+
+document.getElementById('revealAll').addEventListener('click',()=>{
+  document.querySelectorAll('.deck .card').forEach(c=>c.classList.add('flipped'));
+});
+document.getElementById('resetAll').addEventListener('click',()=>{
+  document.querySelectorAll('.deck .card').forEach(c=>c.classList.remove('flipped'));
+});
+document.getElementById('printCards').addEventListener('click',()=>{
+  document.querySelectorAll('.deck .card').forEach(c=>c.classList.remove('flipped'));
+  window.print();
+});
+
+// ---- the dump ----
+const dumplist=document.getElementById('dumplist');
+const WEEK=[];
+function addDump(){
+  const inp=document.getElementById('dumpin');
+  const val=inp.value.trim();
+  if(!val) return;
+  WEEK.push({text:val,tag:null});
+  const chip=document.createElement('span');
+  chip.className='chip';
+  chip.textContent=val;
+  dumplist.appendChild(chip);
+  inp.value='';
+  inp.focus();
+}
+document.getElementById('dumpbtn').addEventListener('click',addDump);
+document.getElementById('dumpin').addEventListener('keydown',e=>{if(e.key==='Enter')addDump();});
+
+// ---- sort your own week ----
+const mine=document.getElementById('mine');
+const mineTally=document.getElementById('mineTally');
+const TAGS=[['c','Creativity'],['a','Activity'],['s','Service'],['n','Not CAS']];
+function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function updateTally(){
+  const tagged=WEEK.filter(w=>w.tag);
+  const cas=WEEK.filter(w=>w.tag&&w.tag!=='n').length;
+  if(!tagged.length){mineTally.textContent='Tag each item — how much of your ordinary week was CAS all along?';return;}
+  mineTally.innerHTML='<b>'+cas+'</b> of your '+WEEK.length+' everyday things are already CAS-shaped.';
+}
+function renderMine(){
+  if(!WEEK.length){
+    mine.innerHTML='<p class="mine-empty">Nothing in your Dump yet — add a few things up in <b>00 / The Dump</b>, then pull them in.</p>';
+    mineTally.textContent='';
+    return;
+  }
+  mine.innerHTML='';
+  WEEK.forEach((item,i)=>{
+    const row=document.createElement('div');
+    row.className='mrow'+(item.tag&&item.tag!=='n'?' tagged-cas':'');
+    const btns=TAGS.map(([k,label])=>'<button class="'+k+(item.tag===k?' on':'')+'" data-i="'+i+'" data-k="'+k+'">'+label+'</button>').join('');
+    row.innerHTML='<span class="mtext">'+esc(item.text)+'</span><div class="mtags">'+btns+'</div>';
+    mine.appendChild(row);
+  });
+  mine.querySelectorAll('.mtags button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const i=+b.dataset.i, k=b.dataset.k;
+      WEEK[i].tag=(WEEK[i].tag===k?null:k);
+      renderMine();
+    });
+  });
+  updateTally();
+}
+document.getElementById('pullWeek').addEventListener('click',renderMine);
+document.getElementById('clearTags').addEventListener('click',()=>{WEEK.forEach(w=>w.tag=null);renderMine();});
+
+// ---- outcomes accordion ----
+document.querySelectorAll('.oc-head').forEach(h=>{
+  h.addEventListener('click',()=>h.parentElement.classList.toggle('open'));
+});
+
+// ---- myths flip ----
+document.querySelectorAll('.myth').forEach(m=>{
+  m.addEventListener('click',()=>m.classList.toggle('flipped'));
+});
+</script>
+</body>
+</html>
