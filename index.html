@@ -18,6 +18,7 @@
     /* subject hues */
     --ap-lang:#b9432f; --ap-res:#b9841c; --ibcore:#1d6f6a; --tok:#3b4ea0;
     --ee:#7c4a86; --mock:#8a2c2c; --practice:#46637e; --ai:#3a7a44; --eng:#cf6f1f;
+    --cas:#a8476b;
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -146,6 +147,7 @@
     <g id="i-clip" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4.5" width="12" height="16" rx="2"/><path d="M9 4.5h6V7H9z"/><path d="M9 13l2 2 4-4"/></g>
     <g id="i-spark" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l1.9 5.6 5.6 1.9-5.6 1.9L12 18.5l-1.9-5.6L4.5 11l5.6-1.9z"/></g>
     <g id="i-chat" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h14v10.5H9.5L5 20z"/><path d="M8 9h8M8 12h5"/></g>
+    <g id="i-cas" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9.2" cy="9.8" r="5"/><circle cx="14.8" cy="9.8" r="5"/><circle cx="12" cy="15" r="5"/></g>
   </defs></svg>
 
   <!-- ===== MASTHEAD ===== -->
@@ -165,9 +167,9 @@
   <div class="filterwrap">
     <div class="filters">
       <span class="flabel">Browse</span>
-      <button class="pill active" data-filter="all">All <span class="ct">9</span></button>
+      <button class="pill active" data-filter="all">All <span class="ct">10</span></button>
       <button class="pill" data-filter="ap">AP <span class="ct">2</span></button>
-      <button class="pill" data-filter="ibcore">IB Core <span class="ct">3</span></button>
+      <button class="pill" data-filter="ibcore">IB Core <span class="ct">4</span></button>
       <button class="pill" data-filter="english">English <span class="ct">1</span></button>
       <button class="pill" data-filter="more">More <span class="ct">3</span></button>
     </div>
@@ -315,6 +317,23 @@
         </div>
         <ul class="glist">
           <li><a href="extended-essay/ee-formatting/"><span class="lk">EE Formatting Game</span><span class="arrow">→</span></a></li>
+        </ul>
+      </article>
+
+      <!-- CAS -->
+      <article class="card filterable" data-group="ibcore" style="--c:var(--cas)">
+        <div class="top"></div>
+        <div class="head">
+          <span class="icon"><svg><use href="#i-cas"/></svg></span>
+          <div class="htext">
+            <div class="ctitle">CAS</div>
+            <div class="ctag">Creativity, Activity &amp; Service</div>
+          </div>
+          <span class="count">1 tool</span>
+        </div>
+        <div class="subhead">Onboarding · 3 Classes</div>
+        <ul class="glist">
+          <li><a href="cas/already-doing-it/"><span class="lk">You've Been Doing This the Whole Time</span><span class="arrow">&rarr;</span></a></li>
         </ul>
       </article>
 
