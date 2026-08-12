@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Introduction to IB Core</title>
+<style>
+  :root{
+    --bg1:#0e2a4d; --bg2:#071426;
+    --ink:#eaf1fb; --muted:#9fb3cc; --faint:#63769170;
+    --tok:#4a90e2; --cas:#35c39a; --ee:#e0a13a;
+    --gold:#f2c85b; --hi:#6fb1ff;
+    --card:#0f2645cc; --line:#25436e;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{
+    background:radial-gradient(1200px 800px at 50% -10%, #12365f 0%, var(--bg1) 40%, var(--bg2) 100%);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    overflow:hidden;
+  }
+  h1,h2,h3,.serif{font-family:Georgia,"Iowan Old Style","Times New Roman",serif}
+
+  /* ---- stage / slides ---- */
+  #stage{position:fixed;inset:0}
+  .slide{
+    position:absolute;inset:0;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:clamp(24px,5vw,72px);
+    opacity:0;visibility:hidden;transform:translateY(14px);
+    transition:opacity .5s ease, transform .5s ease;
+    text-align:center;
+  }
+  .slide.active{opacity:1;visibility:visible;transform:none}
+  .slide .wrap{max-width:1040px;width:100%}
+  .eyebrow{letter-spacing:.28em;text-transform:uppercase;font-size:clamp(11px,1.4vw,13px);color:var(--hi);font-weight:600;margin-bottom:18px}
+  .slide h1{font-size:clamp(34px,6vw,68px);line-height:1.05;margin:0 0 18px}
+  .slide h2{font-size:clamp(26px,4.4vw,46px);line-height:1.1;margin:0 0 18px}
+  .lead{font-size:clamp(18px,2.4vw,27px);line-height:1.5;color:var(--ink);margin:0 auto;max-width:840px}
+  .sub{font-size:clamp(14px,1.7vw,18px);color:var(--muted);margin-top:22px;line-height:1.5}
+  .prompt-big{font-size:clamp(24px,3.6vw,40px);line-height:1.25;margin:0}
+  .tag{display:inline-block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:5px 12px;margin-bottom:26px}
+
+  /* ---- poster build layout ---- */
+  .poster-row{display:flex;gap:clamp(24px,4vw,60px);align-items:center;justify-content:center;flex-wrap:wrap}
+  .schematic{flex:0 0 auto;width:min(46vw,420px)}
+  .schematic svg{width:100%;height:auto;display:block}
+  .poster-copy{flex:1 1 300px;text-align:left;min-width:280px;max-width:480px}
+  .poster-copy .step-no{font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--hi);font-weight:600;margin-bottom:10px}
+  .poster-copy .prompt-big{margin-bottom:14px}
+  .poster-copy .hint{color:var(--muted);font-size:clamp(14px,1.7vw,17px);line-height:1.5}
+
+  .zbox{fill:#0f2748;stroke:var(--line);stroke-width:2;transition:all .4s ease}
+  .zbox.done{fill:#123a49;stroke:#3d6f7a}
+  .zbox.active{fill:#123a63;stroke:var(--hi);filter:drop-shadow(0 0 10px rgba(111,177,255,.5))}
+  .zlabel{fill:var(--muted);font-size:14px;font-family:-apple-system,Segoe UI,sans-serif;transition:fill .4s}
+  .zlabel.active{fill:var(--ink);font-weight:600}
+  .zlabel.done{fill:#a9d9d0}
+  .znum{fill:var(--faint);font-size:13px;font-weight:700}
+  .znum.active{fill:var(--hi)}
+  .zcheck{opacity:0;transition:opacity .4s}
+  .zcheck.show{opacity:1}
+  .center-c{fill:#12365f;stroke:var(--hi);stroke-width:2.5}
+  .center-c.dim{stroke:var(--line);fill:#0f2748}
+  .center-t{fill:var(--ink);font-family:Georgia,serif;font-size:20px;font-weight:700}
+  .center-sub{fill:var(--muted);font-size:11px}
+
+  /* ---- reveal cards ---- */
+  .cards{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+  .lens{flex:1 1 260px;max-width:320px;background:var(--card);border:1px solid var(--line);border-top-width:4px;border-radius:14px;padding:26px 24px;text-align:left}
+  .lens.tok{border-top-color:var(--tok)}
+  .lens.cas{border-top-color:var(--cas)}
+  .lens.ee{border-top-color:var(--ee)}
+  .lens .role{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .lens .name{font-family:Georgia,serif;font-size:28px;margin:6px 0 4px}
+  .lens.tok .name{color:var(--tok)} .lens.cas .name{color:var(--cas)} .lens.ee .name{color:var(--ee)}
+  .lens .zones{font-size:12.5px;color:var(--hi);letter-spacing:.04em;margin-bottom:12px}
+  .lens p{margin:0;color:var(--ink);font-size:15.5px;line-height:1.5}
+
+  /* ---- CORE diagram ---- */
+  .diagram-wrap{position:relative;width:min(92vw,860px);height:min(64vh,600px);margin:0 auto}
+  .node{position:absolute;transform:translate(-50%,-50%);cursor:default;user-select:none;
+    transition:transform .3s ease, box-shadow .3s ease;text-align:center}
+  .node:focus{outline:none}
+  .core-hub{width:126px;height:126px;border-radius:50%;
+    background:radial-gradient(circle at 50% 35%,#1c4d84,#0e2a4d);
+    border:2px solid var(--hi);display:flex;align-items:center;justify-content:center;
+    box-shadow:0 0 34px rgba(111,177,255,.35)}
+  .core-hub span{font-family:Georgia,serif;font-weight:700;font-size:22px;letter-spacing:.04em}
+  .petal{width:96px;height:96px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    cursor:pointer;border:2px solid;background:#0f2645;font-weight:700}
+  .petal small{display:block;font-weight:400;font-size:10.5px;color:var(--muted);margin-top:2px;font-family:-apple-system,sans-serif}
+  .petal .abbr{font-family:Georgia,serif;font-size:26px}
+  .petal.tok{border-color:var(--tok)} .petal.tok .abbr{color:var(--tok)}
+  .petal.cas{border-color:var(--cas)} .petal.cas .abbr{color:var(--cas)}
+  .petal.ee{border-color:var(--ee)} .petal.ee .abbr{color:var(--ee)}
+  .aok{padding:9px 15px;border-radius:999px;background:#10294a;border:1.5px solid #33578a;
+    font-size:14px;cursor:pointer;white-space:nowrap;color:#dce8fa;font-weight:600}
+  .lp{font-size:13px;color:var(--gold);opacity:.82;cursor:pointer;white-space:nowrap;font-style:italic}
+  .node.interactive:hover,.node.interactive:focus-visible{transform:translate(-50%,-50%) scale(1.12);z-index:5}
+  .aok:hover,.aok:focus-visible{box-shadow:0 0 16px rgba(111,177,255,.5);border-color:var(--hi)}
+  .lp:hover,.lp:focus-visible{opacity:1;text-shadow:0 0 12px rgba(242,200,91,.6)}
+  .orbit-ring{position:absolute;top:50%;left:50%;border:1px dashed #244069;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none}
+  #infoPanel{margin-top:14px;min-height:44px;font-size:15px;color:var(--muted);line-height:1.4;transition:opacity .2s}
+  #infoPanel b{color:var(--ink)}
+  .float{animation:float 6s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-50%,calc(-50% - 7px))}}
+
+  /* ---- roadmap ---- */
+  .roadmap{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+  .step-chip{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px;max-width:220px;text-align:left}
+  .step-chip .k{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--hi);font-weight:600}
+  .step-chip p{margin:6px 0 0;font-size:14px;color:var(--muted);line-height:1.4}
+  .arrow{align-self:center;color:var(--faint);font-size:22px}
+
+  /* ---- chrome: nav, progress, help ---- */
+  #topbar{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:16px 22px;z-index:20;pointer-events:none}
+  #brand{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
+  #count{font-size:12px;color:var(--muted);letter-spacing:.08em}
+  #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--tok),var(--cas),var(--ee));z-index:25;transition:width .4s ease;width:0}
+  #nav{position:fixed;bottom:20px;right:22px;display:flex;gap:10px;z-index:20}
+  .nbtn{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:#0f2645cc;color:var(--ink);
+    font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:.2s}
+  .nbtn:hover{border-color:var(--hi);background:#173357}
+  .nbtn:disabled{opacity:.3;cursor:default}
+  #hint{position:fixed;bottom:26px;left:22px;font-size:12px;color:var(--faint);z-index:20;line-height:1.6}
+  #hint kbd{background:#122a4a;border:1px solid var(--line);border-radius:5px;padding:1px 6px;font-size:11px;color:var(--muted)}
+
+  /* ---- presenter notes ---- */
+  aside.notes{display:none}
+  body.notes-on aside.notes{
+    display:block;position:fixed;bottom:78px;left:50%;transform:translateX(-50%);
+    width:min(90vw,900px);background:#1a1206ee;border:1px solid #6b511f;border-left:4px solid var(--gold);
+    border-radius:10px;padding:14px 20px;text-align:left;z-index:30;color:#f6e6c4;font-size:14.5px;line-height:1.5}
+  aside.notes .nh{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;font-weight:700}
+  body:not(.notes-on) aside.notes{display:none}
+  #noteFlag{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:26;font-size:11px;letter-spacing:.14em;color:var(--gold);opacity:0;transition:.3s;pointer-events:none;text-transform:uppercase}
+  body.notes-on #noteFlag{opacity:1}
+
+  /* ---- timer ---- */
+  #timer{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:22;display:none;
+    align-items:center;gap:10px;background:#0f2645ee;border:1px solid var(--line);border-radius:999px;padding:8px 14px;backdrop-filter:blur(4px)}
+  #timer.show{display:flex}
+  #timer .tval{font-variant-numeric:tabular-nums;font-size:20px;font-weight:700;min-width:74px;text-align:center;font-family:Georgia,serif}
+  #timer button{background:#173357;border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:5px 10px;cursor:pointer;font-size:13px}
+  #timer button:hover{border-color:var(--hi)}
+  #timer.done .tval{color:var(--ee)}
+
+  /* ---- all-zones work board ---- */
+  .az-centre{display:inline-block;margin:0 auto 22px;background:var(--card);border:1px solid var(--line);
+    border-radius:999px;padding:10px 22px;color:var(--ink);font-size:clamp(15px,1.8vw,18px)}
+  .az-centre b{color:var(--gold);font-family:Georgia,serif}
+  .az-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;text-align:left}
+  .az-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;display:flex;gap:14px;align-items:flex-start}
+  .az-card .az-n{flex:0 0 auto;width:34px;height:34px;border-radius:50%;background:#12365f;border:1.5px solid var(--hi);
+    color:var(--hi);font-weight:700;font-family:Georgia,serif;display:flex;align-items:center;justify-content:center;font-size:16px}
+  .az-card .az-lab{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+  .az-card .az-p{font-size:clamp(15px,1.55vw,18.5px);line-height:1.35;color:var(--ink);font-family:Georgia,serif}
+  @media(max-width:860px){.az-grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.az-grid{grid-template-columns:1fr}}
+
+  @media (max-width:720px){
+    .schematic{width:min(78vw,340px)}
+    .poster-copy{text-align:center}
+    #hint{display:none}
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div id="topbar"><span id="brand">IB Core · Introduction</span><span id="count"></span></div>
+<div id="noteFlag">Presenter notes on</div>
+
+<div id="stage">
+
+  <!-- 0 TITLE -->
+  <section class="slide">
+    <div class="wrap">
+      <div class="eyebrow">Theory of Knowledge · Extended Essay · CAS</div>
+      <h1>Introduction to<br>IB Core</h1>
+      <p class="lead">Before we talk about the course, we're going to talk about <em>you.</em></p>
+      <p class="sub">Press <b>→</b> or <b>Space</b> to begin</p>
+    </div>
+  </section>
+
+  <!-- 1 HOOK -->
+  <section class="slide">
+    <div class="wrap">
+      <div class="tag">Warm-up · 60 seconds with a neighbour</div>
+      <p class="prompt-big serif">You are more than your grades and your schedule.<br>What parts of you never show up on a report card?</p>
+      <p class="sub">Don't overthink it. Turn to someone next to you and trade two or three.</p>
+    </div>
+    <aside class="notes"><div class="nh">Presenter</div>Let this hang — don't resolve it. You're just legitimising the whole-person premise of Core before the poster. Pull 2–3 voices, then move on.</aside>
+  </section>
+
+  <!-- 2 POSTER OVERVIEW -->
+  <section class="slide">
+    <div class="wrap">
+      <div class="eyebrow">Your task today</div>
+      <h2>Make a poster: <span class="serif" style="color:var(--gold)">“This Is Me”</span></h2>
+      <div class="poster-row">
+        <div class="schematic" data-active="-1"></div>
+        <div class="poster-copy">
+          <p class="hint">Introduce the <b>real</b> you — not your transcript. Put your <b>name</b> and a <b>symbol or drawing</b> that represents you in the centre, then fill in the five areas around it.</p>
+          <p class="hint" style="margin-top:14px;color:var(--ink)">Words, sketches, doodles, colour — whatever fits you. We'll build it one piece at a time.</p>
+        </div>
+      </div>
+    </div>
+    <aside class="notes"><div class="nh">Presenter · the hidden map</div>The five zones quietly seed the whole course. 1&amp;2 → the <b>knower</b> (TOK). 3 → the <b>contributor</b> (CAS). 4&amp;5 → the <b>inquirer</b> (EE). Don't reveal this until the end. Press <b>T</b> for a work timer.</aside>
+  </section>
+
+  <!-- 3 CENTRE -->
+  <section class="slide poster-slide" data-active="0">
+    <div class="wrap"><div class="poster-row">
+      <div class="schematic"></div>
+      <div class="poster-copy">
+        <div class="step-no">Start here · the centre</div>
+        <p class="prompt-big serif">Your name, and a symbol that represents you.</p>
+        <p class="hint">A drawing, an object, an animal, a shape — something that feels like <em>you</em> at a glance.</p>
+      </div>
+    </div></div>
+  </section>
+
+  <!-- 4 ZONE 1 -->
+  <section class="slide poster-slide" data-active="1">
+    <div class="wrap"><div class="poster-row">
+      <div class="schematic"></div>
+      <div class="poster-copy">
+        <div class="step-no">Zone 1</div>
+        <p class="prompt-big serif">The people, places, and communities that made me who I am.</p>
+        <p class="hint">Family, friends, a team, a country, a faith, a corner of the internet — who and what shaped you?</p>
+      </div>
+    </div></div>
+    <aside class="notes"><div class="nh">Seeds</div><b>Knower / TOK.</b> Where perspective comes from. Bank anything students say here — you'll call back to it when TOK opens.</aside>
+  </section>
+
+  <!-- 5 ZONE 2 -->
+  <section class="slide poster-slide" data-active="2">
+    <div class="wrap"><div class="poster-row">
+      <div class="schematic"></div>
+      <div class="poster-copy">
+        <div class="step-no">Zone 2</div>
+        <p class="prompt-big serif">Things I'm pretty sure are true — about the world, or about life.</p>
+        <p class="hint">Big or small. What do you feel certain about?</p>
+      </div>
+    </div></div>
+    <aside class="notes"><div class="nh">Seeds</div><b>Knower / TOK.</b> This is the setup for the class-5 destabiliser: “where did that certainty actually come from?” Don't spring it yet.</aside>
+  </section>
+
+  <!-- 6 ZONE 3 -->
+  <section class="slide poster-slide" data-active="3">
+    <div class="wrap"><div class="poster-row">
+      <div class="schematic"></div>
+      <div class="poster-copy">
+        <div class="step-no">Zone 3</div>
+        <p class="prompt-big serif">Something in the world I care about, or wish were different.</p>
+        <p class="hint">A cause, a problem, a person or place you'd want to help. Something that actually moves you.</p>
+      </div>
+    </div></div>
+    <aside class="notes"><div class="nh">Seeds</div><b>Contributor / CAS.</b> This is your CAS on-ramp for next class — students are surfacing experience ideas without realising it.</aside>
+  </section>
+
+  <!-- 7 ZONE 4 -->
+  <section class="slide poster-slide" data-active="4">
+    <div class="wrap"><div class="poster-row">
+      <div class="schematic"></div>
+      <div class="poster-copy">
+        <div class="step-no">Zone 4</div>
+        <p class="prompt-big serif">What I'm good at, and how I do my best work.</p>
+        <p class="hint">A skill, a strength, a way of working. Alone or with people? Hands-on or in your head?</p>
+      </div>
+    </div></div>
+    <aside class="notes"><div class="nh">Seeds</div><b>Inquirer / EE</b> (and CAS). Strengths and working style — the raw material of a good research process.</aside>
+  </section>
+
+  <!-- 8 ZONE 5 -->
+  <section class="slide poster-slide" data-active="5">
+    <div class="wrap"><div class="poster-row">
+      <div class="schematic"></div>
+      <div class="poster-copy">
+        <div class="step-no">Zone 5</div>
+        <p class="prompt-big serif">A question I've always wondered about.</p>
+        <p class="hint">Anything. Silly or serious. Something you've never had a real answer to.</p>
+      </div>
+    </div></div>
+    <aside class="notes"><div class="nh">Seeds</div><b>Inquirer / EE.</b> Somewhere down this road is a 4,000-word question. Note the good ones.</aside>
+  </section>
+
+  <!-- 8b ALL ZONES · work board -->
+  <section class="slide">
+    <div class="wrap" style="max-width:1120px">
+      <div class="eyebrow">Build your poster · do these in any order you like</div>
+      <div class="az-centre"><b>Centre:</b>&nbsp; your name + a symbol that represents you</div>
+      <div class="az-grid">
+        <div class="az-card"><div class="az-n">1</div><div><div class="az-lab">Communities</div><div class="az-p">The people, places, and communities that made me who I am.</div></div></div>
+        <div class="az-card"><div class="az-n">2</div><div><div class="az-lab">Certainties</div><div class="az-p">Things I'm pretty sure are true — about the world, or about life.</div></div></div>
+        <div class="az-card"><div class="az-n">3</div><div><div class="az-lab">I care about</div><div class="az-p">Something in the world I care about, or wish were different.</div></div></div>
+        <div class="az-card"><div class="az-n">4</div><div><div class="az-lab">My strengths</div><div class="az-p">What I'm good at, and how I do my best work.</div></div></div>
+        <div class="az-card"><div class="az-n">5</div><div><div class="az-lab">My question</div><div class="az-p">A question I've always wondered about.</div></div></div>
+      </div>
+    </div>
+    <aside class="notes"><div class="nh">Presenter</div>Leave this up during work time — everything's here, no set order. Press <b>T</b> for the timer. (Zones 1–5 still map to knower / contributor / inquirer — that's the reveal a couple of slides on.)</aside>
+  </section>
+
+  <!-- 9 GALLERY -->
+  <section class="slide">
+    <div class="wrap">
+      <div class="tag">Gallery walk</div>
+      <h2>Put your poster up. Walk. Read.</h2>
+      <p class="lead" style="margin-top:8px">As you go, find one thing:</p>
+      <p class="prompt-big serif" style="margin-top:18px;color:var(--gold)">Find a poster where someone's “things I'm pretty sure are true” are different from yours.<br>Why might two reasonable people be certain of different things?</p>
+    </div>
+    <aside class="notes"><div class="nh">Presenter · first drop of TOK</div>This quietly introduces <b>perspective</b>. If a student says “because they grew up differently / know different things,” they've just stated the knower thesis for you. Bank that line for class 5.</aside>
+  </section>
+
+  <!-- 10 REVEAL -->
+  <section class="slide">
+    <div class="wrap">
+      <div class="eyebrow">So — what did you just do?</div>
+      <h2>You didn't fill in a get-to-know-you sheet.<br>You mapped <span class="serif" style="color:var(--gold)">yourself.</span></h2>
+      <p class="sub" style="margin-top:6px;margin-bottom:24px">And you happened to map the exact three things this course cares about.</p>
+      <div class="cards">
+        <div class="lens tok">
+          <div class="role">You as a</div><div class="name">Knower</div>
+          <div class="zones">← Zones 1 &amp; 2 · TOK</div>
+          <p>Your communities and your certainties. Where does what you “know” actually come from?</p>
+        </div>
+        <div class="lens cas">
+          <div class="role">You as a</div><div class="name">Contributor</div>
+          <div class="zones">← Zone 3 · CAS</div>
+          <p>The thing you care about. Learning by doing something real, and giving back.</p>
+        </div>
+        <div class="lens ee">
+          <div class="role">You as an</div><div class="name">Inquirer</div>
+          <div class="zones">← Zones 4 &amp; 5 · EE</div>
+          <p>Your strengths and your question. The seed of a 4,000-word essay that's entirely yours.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 CORE DIAGRAM -->
+  <section class="slide" data-diagram="1">
+    <div class="wrap" style="max-width:none">
+      <div class="eyebrow">The whole picture · hover or tap anything</div>
+      <div class="diagram-wrap" id="diagram"></div>
+      <div id="infoPanel">The <b>Core</b> sits at the centre of the IB. Around it: the <b>Areas of Knowledge</b> you'll explore, wrapped in the values of the <b>Learner Profile.</b></div>
+    </div>
+    <aside class="notes"><div class="nh">Presenter</div>This is your reference diagram for “what IB wants” — the philosophy of the programme. TOK/CAS/EE at the centre, the five AOKs as the fields where knowledge gets tested, the Learner Profile as the kind of person it's all meant to grow.</aside>
+  </section>
+
+  <!-- 12 CLOSING -->
+  <section class="slide">
+    <div class="wrap">
+      <div class="eyebrow">What this class is about</div>
+      <h2 class="serif">Core isn't three requirements bolted together.<br>It's three lenses on one person — <span style="color:var(--gold)">you.</span></h2>
+      <div class="roadmap">
+        <div class="step-chip"><div class="k">Next · 3 classes</div><p>CAS gets moving — <b>you as a contributor.</b> We start turning “what you care about” into something real.</p></div>
+        <div class="arrow">→</div>
+        <div class="step-chip"><div class="k">Mid-semester</div><p>The <b>project</b> — planning something bigger with others.</p></div>
+        <div class="arrow">→</div>
+        <div class="step-chip"><div class="k">Then</div><p>The hardest, most interesting one: <b>you as a knower.</b> TOK, in full.</p></div>
+      </div>
+      <p class="sub" style="margin-top:30px">Keep your poster. We come back to it.</p>
+    </div>
+    <aside class="notes"><div class="nh">Presenter · save this line for the day TOK resumes (class 5)</div>“Three weeks ago you wrote down things you're <i>pretty sure are true.</i> Today we find out whether you actually <i>know</i> any of them — and where that certainty really came from.” → straight into the “list five certainties” destabiliser.</aside>
+  </section>
+
+</div>
+
+<!-- timer -->
+<div id="timer">
+  <button data-t="minus">−</button>
+  <span class="tval" id="tval">15:00</span>
+  <button data-t="plus">+</button>
+  <button data-t="start" id="tstart">Start</button>
+  <button data-t="reset">Reset</button>
+</div>
+
+<div id="nav">
+  <button class="nbtn" id="prev" aria-label="Previous">‹</button>
+  <button class="nbtn" id="next" aria-label="Next">›</button>
+</div>
+<div id="hint"><kbd>←</kbd> <kbd>→</kbd> move · <kbd>N</kbd> presenter notes · <kbd>T</kbd> timer · <kbd>F</kbd> fullscreen</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- poster schematic ---------- */
+  var ZONES = [
+    {n:1,label:"Communities",x:210,y:52},
+    {n:2,label:"Certainties",x:356,y:158},
+    {n:3,label:"I care about",x:300,y:326},
+    {n:4,label:"My strengths",x:120,y:326},
+    {n:5,label:"My question",x:64,y:158}
+  ];
+  function buildSchematic(active){
+    // active: -1 empty, 0 centre, 1..5 zone
+    var s='<svg viewBox="0 0 420 388" role="img" aria-label="Poster layout">';
+    // connectors
+    ZONES.forEach(function(z){
+      s+='<line x1="210" y1="194" x2="'+z.x+'" y2="'+z.y+'" stroke="#22406a" stroke-width="1.5"/>';
+    });
+    // centre
+    var cdim = active<0 ? ' dim' : '';
+    s+='<circle class="center-c'+cdim+'" cx="210" cy="194" r="50"/>';
+    s+='<text class="center-t" x="210" y="192" text-anchor="middle">ME</text>';
+    s+='<text class="center-sub" x="210" y="210" text-anchor="middle">name + symbol</text>';
+    // zones
+    ZONES.forEach(function(z){
+      var st = "";
+      if(active===z.n) st=" active";
+      else if(active>z.n || (active===0 && false)) st=" done";
+      else if(active>=1 && z.n<active) st=" done";
+      var bx=z.x-58, by=z.y-26;
+      s+='<rect class="zbox'+st+'" x="'+bx+'" y="'+by+'" width="116" height="52" rx="11"/>';
+      s+='<text class="znum'+(active===z.n?' active':'')+'" x="'+(bx+13)+'" y="'+(z.y-4)+'">'+z.n+'</text>';
+      s+='<text class="zlabel'+st+'" x="'+(bx+58)+'" y="'+(z.y+5)+'" text-anchor="middle">'+z.label+'</text>';
+      // check
+      var showCheck = (active>=1 && z.n<active) || (active>z.n);
+      s+='<text class="zcheck'+(showCheck?' show':'')+'" x="'+(bx+100)+'" y="'+(z.y-6)+'" fill="#5fd0b6" font-size="15">✓</text>';
+    });
+    s+='</svg>';
+    return s;
+  }
+  // overview schematic (data-active=-1)
+  document.querySelectorAll('.schematic[data-active]').forEach(function(el){
+    el.innerHTML = buildSchematic(parseInt(el.getAttribute('data-active'),10));
+  });
+  // poster slides
+  document.querySelectorAll('.poster-slide').forEach(function(sl){
+    var a = parseInt(sl.getAttribute('data-active'),10);
+    sl.querySelector('.schematic').innerHTML = buildSchematic(a);
+  });
+
+  /* ---------- CORE diagram ---------- */
+  var CORE_INFO = {
+    tok:{t:"TOK — Theory of Knowledge",d:"You as a <b>knower</b>: how you know what you know, and how far you can trust it."},
+    cas:{t:"CAS — Creativity, Activity, Service",d:"You as a <b>contributor</b>: learning by doing something real, and giving back."},
+    ee:{t:"EE — Extended Essay",d:"You as an <b>inquirer</b>: a 4,000-word deep dive into a question that's yours."}
+  };
+  var AOKS = [
+    {k:"History",d:"How can we know about a past we can't observe or repeat?"},
+    {k:"The Human Sciences",d:"Can we study people and societies with the tools of science?"},
+    {k:"The Natural Sciences",d:"How far can knowledge built from observation and experiment be trusted?"},
+    {k:"Mathematics",d:"Is mathematical knowledge discovered — or invented by us?"},
+    {k:"The Arts",d:"Can the arts give us knowledge, and if so, of what kind?"}
+  ];
+  var LP = [
+    {k:"Inquirers",d:"We nurture curiosity and learn how to learn."},
+    {k:"Knowledgeable",d:"We explore ideas of local and global significance."},
+    {k:"Thinkers",d:"We think critically and creatively to solve problems."},
+    {k:"Communicators",d:"We express ourselves in more than one language and many ways."},
+    {k:"Principled",d:"We act with integrity, honesty, and fairness."},
+    {k:"Open-minded",d:"We seek and value other perspectives."},
+    {k:"Caring",d:"We show empathy, compassion, and respect."},
+    {k:"Risk-takers",d:"We approach the unfamiliar with courage."},
+    {k:"Balanced",d:"We recognise the many parts of a well-lived life."},
+    {k:"Reflective",d:"We think about the world and our own learning."}
+  ];
+  var infoPanel = document.getElementById('infoPanel');
+  var defaultInfo = infoPanel.innerHTML;
+  function setInfo(t,d){ infoPanel.innerHTML = '<b>'+t+'</b> — '+d; }
+
+  function placeNode(container, el, angleDeg, rxPct, ryPct){
+    var rad = angleDeg*Math.PI/180;
+    var left = 50 + rxPct*Math.cos(rad);
+    var top  = 50 + ryPct*Math.sin(rad);
+    el.style.left = left+'%';
+    el.style.top  = top+'%';
+    container.appendChild(el);
+  }
+  var diagramBuilt=false;
+  function buildDiagram(){
+    if(diagramBuilt) return; diagramBuilt=true;
+    var d = document.getElementById('diagram');
+    // rings
+    [ '260px','440px','560px' ].forEach(function(sz,i){
+      var r=document.createElement('div'); r.className='orbit-ring';
+      r.style.width=sz; r.style.height=(parseInt(sz)*0.82)+'px'; d.appendChild(r);
+    });
+    // hub
+    var hub=document.createElement('div'); hub.className='node core-hub';
+    hub.style.left='50%'; hub.style.top='50%';
+    hub.innerHTML='<span>CORE</span>'; d.appendChild(hub);
+    // petals TOK top, CAS lower-left, EE lower-right
+    var petals=[['tok','TOK','the knower',-90],['cas','CAS','the contributor',150],['ee','EE','the inquirer',30]];
+    petals.forEach(function(p){
+      var el=document.createElement('div');
+      el.className='node interactive petal '+p[0];
+      el.tabIndex=0;
+      el.innerHTML='<span class="abbr">'+p[1]+'</span><small>'+p[2]+'</small>';
+      var info=CORE_INFO[p[0]];
+      bindInfo(el,info.t,info.d);
+      placeNode(d,el,p[3],14,17);
+    });
+    // AOKs mid ring
+    AOKS.forEach(function(a,i){
+      var el=document.createElement('div');
+      el.className='node interactive aok float';
+      el.style.animationDelay=(i*0.5)+'s';
+      el.tabIndex=0; el.textContent=a.k;
+      bindInfo(el,"Area of Knowledge · "+a.k,a.d);
+      var ang = -90 + i*(360/AOKS.length);
+      placeNode(d,el,ang,33,36);
+    });
+    // LP outer ring
+    LP.forEach(function(l,i){
+      var el=document.createElement('div');
+      el.className='node interactive lp float';
+      el.style.animationDelay=(i*0.35)+'s';
+      el.tabIndex=0; el.textContent=l.k;
+      bindInfo(el,"Learner Profile · "+l.k,l.d);
+      var ang = -90 + i*(360/LP.length) + 18;
+      placeNode(d,el,ang,46,45);
+    });
+  }
+  function bindInfo(el,t,d){
+    function on(){ setInfo(t,d); }
+    function off(){ infoPanel.innerHTML = defaultInfo; }
+    el.addEventListener('mouseenter',on);
+    el.addEventListener('mouseleave',off);
+    el.addEventListener('focus',on);
+    el.addEventListener('blur',off);
+    el.addEventListener('click',on);
+  }
+
+  /* ---------- slide navigation ---------- */
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var idx=0;
+  var prevBtn=document.getElementById('prev'), nextBtn=document.getElementById('next');
+  var progress=document.getElementById('progress'), count=document.getElementById('count');
+  function show(n){
+    idx = Math.max(0, Math.min(slides.length-1, n));
+    slides.forEach(function(s,i){ s.classList.toggle('active', i===idx); });
+    progress.style.width = ((idx)/(slides.length-1)*100)+'%';
+    count.textContent = (idx+1)+' / '+slides.length;
+    prevBtn.disabled = idx===0;
+    nextBtn.disabled = idx===slides.length-1;
+    if(slides[idx].getAttribute('data-diagram')) buildDiagram();
+  }
+  function nextS(){ show(idx+1); }
+  function prevS(){ show(idx-1); }
+  nextBtn.addEventListener('click',nextS);
+  prevBtn.addEventListener('click',prevS);
+
+  document.addEventListener('keydown',function(e){
+    if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){ e.preventDefault(); nextS(); }
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){ e.preventDefault(); prevS(); }
+    else if(e.key==='Home'){ e.preventDefault(); show(0); }
+    else if(e.key==='End'){ e.preventDefault(); show(slides.length-1); }
+    else if(e.key==='n'||e.key==='N'){ document.body.classList.toggle('notes-on'); }
+    else if(e.key==='t'||e.key==='T'){ document.getElementById('timer').classList.toggle('show'); }
+    else if(e.key==='f'||e.key==='F'){ toggleFull(); }
+  });
+  function toggleFull(){
+    if(!document.fullscreenElement){ if(document.documentElement.requestFullscreen) document.documentElement.requestFullscreen(); }
+    else { if(document.exitFullscreen) document.exitFullscreen(); }
+  }
+
+  /* ---------- timer ---------- */
+  var tmr={mins:15,remain:15*60,running:false,id:null};
+  var tval=document.getElementById('tval'), tstart=document.getElementById('tstart'), tbox=document.getElementById('timer');
+  function fmt(s){ var m=Math.floor(s/60), ss=s%60; return m+':'+(ss<10?'0':'')+ss; }
+  function renderT(){ tval.textContent=fmt(tmr.remain); }
+  function tick(){
+    if(tmr.remain>0){ tmr.remain--; renderT(); }
+    if(tmr.remain<=0){ stopT(); tbox.classList.add('done'); }
+  }
+  function startT(){ if(tmr.running) return; tmr.running=true; tstart.textContent='Pause'; tbox.classList.remove('done'); tmr.id=setInterval(tick,1000); }
+  function stopT(){ tmr.running=false; tstart.textContent='Start'; if(tmr.id){clearInterval(tmr.id); tmr.id=null;} }
+  document.getElementById('timer').addEventListener('click',function(e){
+    var a=e.target.getAttribute('data-t'); if(!a) return;
+    if(a==='start'){ tmr.running?stopT():startT(); }
+    else if(a==='reset'){ stopT(); tbox.classList.remove('done'); tmr.remain=tmr.mins*60; renderT(); }
+    else if(a==='plus'){ stopT(); tmr.mins=Math.min(60,tmr.mins+1); tmr.remain=tmr.mins*60; renderT(); }
+    else if(a==='minus'){ stopT(); tmr.mins=Math.max(1,tmr.mins-1); tmr.remain=tmr.mins*60; renderT(); }
+  });
+  renderT();
+
+  show(0);
+})();
+</script>
+</body>
+</html>
