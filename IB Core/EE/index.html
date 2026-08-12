@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB Core — Extended Essay Mockup</title>
+<style>
+  :root{
+    --bg:#f4f6f8; --panel:#fff; --ink:#1c2430; --muted:#6b7683; --line:#e3e8ee;
+    --brand:#2f6f6a; --brand-soft:#e6f1f0;
+    --ok:#2e7d5b; --ok-soft:#e4f3ec; --warn:#b23c3c; --warn-soft:#fbe8e8;
+    --gold:#a5761c; --gold-soft:#f7efdc; --info:#2b5f9e; --info-soft:#e7eff9;
+    --radius:12px; --shadow:0 1px 2px rgba(20,30,45,.06),0 4px 16px rgba(20,30,45,.05);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.45}
+  header.top{background:var(--panel);border-bottom:1px solid var(--line);padding:0 22px;display:flex;align-items:center;gap:20px;position:sticky;top:0;z-index:20}
+  .logo{font-weight:700;font-size:16px;padding:16px 0;color:var(--brand)}
+  .logo span{color:var(--muted);font-weight:500}
+  .rolebar{margin-left:auto;display:flex;gap:6px;padding:9px 0;flex-wrap:wrap}
+  .rolebtn{border:1px solid var(--line);background:#fff;color:var(--muted);padding:7px 14px;border-radius:99px;cursor:pointer;font-size:13px;font-weight:600}
+  .rolebtn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .wrap{max-width:1080px;margin:0 auto;padding:22px}
+  .view{display:none}.view.active{display:block}
+  h1{font-size:20px;margin:2px 0 2px}
+  .sub{color:var(--muted);margin:0 0 18px;font-size:13px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:16px}
+  .panel-h{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .panel-h h2{font-size:15px;margin:0}
+  .panel-b{padding:16px 18px}
+  .spacer{margin-left:auto}
+  .btn{border:1px solid var(--line);background:#fff;color:var(--ink);padding:7px 13px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600}
+  .btn.pri{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .btn.sm{padding:5px 10px;font-size:12px}
+  .btn.ghost{background:transparent}
+  .btn.danger{color:var(--warn)}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .pill{display:inline-block;padding:3px 9px;border-radius:99px;font-size:12px;font-weight:600}
+  .pill.grey{background:#eef1f4;color:#5b6470}.pill.info{background:var(--info-soft);color:var(--info)}
+  .pill.ok{background:var(--ok-soft);color:var(--ok)}.pill.warn{background:var(--warn-soft);color:var(--warn)}
+  .pill.gold{background:var(--gold-soft);color:var(--gold)}
+  label.fld{display:block;font-weight:600;font-size:12px;margin:12px 0 5px;color:#42505f}
+  input[type=text],textarea,select{width:100%;border:1px solid var(--line);border-radius:8px;padding:9px 10px;font-family:inherit;font-size:13px;background:#fff}
+  textarea{resize:vertical}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+  .tile{background:#fff;border:1px solid var(--line);border-radius:10px;padding:13px}
+  .tile .k{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+  .tile .v{font-size:22px;font-weight:700;margin-top:3px}.tile .v small{font-size:13px;color:var(--muted);font-weight:600}
+  .caps{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700}
+  .note{background:var(--info-soft);border:1px solid #cfe0f2;color:#28486e;border-radius:8px;padding:10px 12px;font-size:12.5px}
+  .note.warn{background:var(--warn-soft);border-color:#f0cccc;color:#8a2b2b}
+  .note.ok{background:var(--ok-soft);border-color:#c7e6d5;color:#1f5c40}
+  .lock{font-size:11px;color:var(--muted);display:inline-flex;align-items:center;gap:4px}
+  .mut{color:var(--muted)}
+  /* timeline */
+  .timeline{border-left:2px solid var(--line);margin-left:6px;padding-left:18px}
+  .ms{position:relative;padding:0 0 16px}
+  .ms:last-child{padding-bottom:2px}
+  .ms:before{content:'';position:absolute;left:-25px;top:2px;width:12px;height:12px;border-radius:50%;background:#cdd5dd;border:2px solid #fff}
+  .ms.done:before{background:var(--ok)}.ms.late:before{background:var(--warn)}.ms.now:before{background:var(--gold);box-shadow:0 0 0 4px var(--gold-soft)}
+  .ms .mt{font-weight:600}
+  .ms .md{font-size:12px;color:var(--muted)}
+  /* link rows */
+  .linkrow{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+  .linkrow:last-child{border-bottom:none}
+  .linkrow .lk{flex:1;min-width:0}
+  .linkrow .lk b{font-weight:600}.linkrow .lk a{color:var(--info);font-size:12px;text-decoration:none}
+  /* rubric */
+  .crit{border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:10px}
+  .crit-h{display:flex;align-items:center;gap:8px}
+  .crit-h .cn{font-weight:700}.crit-h .cd{color:var(--muted);font-size:12px}
+  .marks{display:flex;gap:5px;margin-top:9px;flex-wrap:wrap}
+  .mk{width:30px;height:30px;border:1px solid var(--line);border-radius:7px;background:#fff;cursor:pointer;font-weight:700;font-size:13px;color:#42505f}
+  .mk.sel{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .desc{display:none;margin-top:8px;font-size:12px;color:#42505f;background:#f7f9fa;border-radius:8px;padding:8px 10px}
+  .desc.show{display:block}
+  .totalbar{display:flex;align-items:center;gap:14px;background:var(--brand-soft);border:1px solid #cfe6e3;border-radius:10px;padding:12px 14px;margin-top:6px}
+  .totalbar .tt{font-size:26px;font-weight:800;color:var(--brand)}
+  .counter{font-size:12px;font-weight:700}
+  .counter.over{color:var(--warn)}
+  /* student list */
+  .slist .si{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);cursor:pointer}
+  .slist .si:last-child{border-bottom:none}
+  .star{cursor:pointer;color:#d7b23a;font-size:15px}
+  .star.off{color:#d3d9df}
+  .si .sn{font-weight:600}.si .ss{color:var(--muted);font-size:12px}
+  /* table */
+  table{width:100%;border-collapse:collapse}
+  thead th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700;padding:10px 12px;border-bottom:1px solid var(--line)}
+  tbody td{padding:11px 12px;border-bottom:1px solid var(--line)}
+  tr.srow{cursor:pointer}tr.srow:hover{background:#fafbfc}
+  .chev{display:inline-block;transition:transform .15s;color:var(--muted);margin-right:8px}
+  tr.srow.open .chev{transform:rotate(90deg)}
+  .drawer-inner{padding:14px 18px;background:#fafbfc}
+  .queue-item{display:flex;align-items:center;gap:10px;padding:10px;border-bottom:1px solid var(--line)}
+  .queue-item:last-child{border-bottom:none}
+  .qtag{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;padding:3px 7px;border-radius:6px;flex-shrink:0}
+  .qtag.draft{background:var(--info-soft);color:var(--info)}.qtag.rpf{background:var(--gold-soft);color:var(--gold)}
+  .qtag.score{background:var(--ok-soft);color:var(--ok)}.qtag.assign{background:var(--warn-soft);color:var(--warn)}
+  .qmain{flex:1;min-width:0}.qmain b{font-weight:600}.qmain small{color:var(--muted);display:block;font-size:12px}
+  .chev.open{transform:rotate(90deg)}
+  .collapse.hidden{display:none}
+  .ckrow{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .ckrow:last-child{border-bottom:none}
+  .ckn{flex:1;min-width:120px;font-size:13px}
+  .seg{display:flex;gap:4px}
+  .sg{border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:7px;padding:4px 9px;font-size:11.5px;font-weight:700;cursor:pointer}
+  .sg.sel{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .sg.sel.late{background:var(--warn);border-color:var(--warn)}
+  .checklist label{display:flex;align-items:center;gap:7px;padding:3px 0;font-size:12.5px;margin:0}
+  @media(max-width:720px){.two{grid-template-columns:1fr}.tableshell{overflow-x:auto}table{min-width:820px}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="logo">IB&nbsp;Core <span>· Extended Essay</span></div>
+  <div class="rolebar">
+    <button class="rolebtn active" data-view="student">Student</button>
+    <button class="rolebtn" data-view="super">Supervisor</button>
+    <button class="rolebtn" data-view="coord">Coordinator</button>
+  </div>
+</header>
+
+<!-- ================= STUDENT ================= -->
+<div class="wrap view active" id="student">
+  <h1>My Extended Essay</h1>
+  <p class="sub">4,000-word limit · assessed out of 30.</p>
+
+  <div class="panel">
+    <div class="panel-h"><h2>Essay details</h2><span class="spacer"></span><span class="pill info">Draft stage</span></div>
+    <div class="panel-b">
+      <div class="two">
+        <div>
+          <label class="fld">Pathway</label>
+          <select id="pathway" onchange="togglePath()">
+            <option>Subject-focused</option>
+            <option selected>Interdisciplinary (two subjects)</option>
+          </select>
+        </div>
+        <div>
+          <label class="fld">Working title</label>
+          <input type="text" value="Sound and memory: music as a mnemonic device">
+        </div>
+      </div>
+      <div class="two" id="subjectWrap">
+        <div>
+          <label class="fld">Subject 1</label>
+          <select>
+            <optgroup label="Languages">
+              <option>Language A: Literature</option><option>Language A: Language &amp; Literature</option><option>Language B</option><option>Classical Languages</option>
+            </optgroup>
+            <optgroup label="Individuals &amp; Societies">
+              <option>Business Management</option><option>Digital Society</option><option>Economics</option><option>Geography</option><option>Global Politics</option><option>History</option><option>Philosophy</option><option selected>Psychology</option><option>Social &amp; Cultural Anthropology</option><option>World Religions</option>
+            </optgroup>
+            <optgroup label="Sciences">
+              <option>Biology</option><option>Chemistry</option><option>Computer Science</option><option>Design Technology</option><option>Physics</option><option>Sports, Exercise &amp; Health Science</option>
+            </optgroup>
+            <optgroup label="Mathematics"><option>Mathematics</option></optgroup>
+            <optgroup label="The Arts">
+              <option>Dance</option><option>Film</option><option>Music</option><option>Theatre</option><option>Visual Arts</option>
+            </optgroup>
+            <optgroup label="Cross-disciplinary (subject-focused only)">
+              <option>Environmental Systems &amp; Societies (ESS)</option><option>Literature and Performance</option>
+            </optgroup>
+          </select>
+        </div>
+        <div id="subject2">
+          <label class="fld">Subject 2 <span class="mut">(interdisciplinary)</span></label>
+          <select>
+            <optgroup label="Languages">
+              <option>Language A: Literature</option><option>Language A: Language &amp; Literature</option><option>Language B</option><option>Classical Languages</option>
+            </optgroup>
+            <optgroup label="Individuals &amp; Societies">
+              <option>Business Management</option><option>Digital Society</option><option>Economics</option><option>Geography</option><option>Global Politics</option><option>History</option><option>Philosophy</option><option>Psychology</option><option>Social &amp; Cultural Anthropology</option><option>World Religions</option>
+            </optgroup>
+            <optgroup label="Sciences">
+              <option>Biology</option><option>Chemistry</option><option>Computer Science</option><option>Design Technology</option><option>Physics</option><option>Sports, Exercise &amp; Health Science</option>
+            </optgroup>
+            <optgroup label="Mathematics"><option>Mathematics</option></optgroup>
+            <optgroup label="The Arts">
+              <option>Dance</option><option>Film</option><option selected>Music</option><option>Theatre</option><option>Visual Arts</option>
+            </optgroup>
+          </select>
+        </div>
+      </div>
+      <label class="fld">Research question</label>
+      <input type="text" value="To what extent does background music improve recall of verbal information in adolescents?">
+      <div class="note" style="margin-top:12px">Interdisciplinary pathway: follow the subject-specific guidance for <b>both</b> subjects. World Studies is no longer offered.</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-h"><h2>Milestones</h2><span class="spacer"></span><span class="mut" style="font-size:12px">Due dates set by your coordinator</span></div>
+    <div class="panel-b">
+      <div class="note" style="margin-bottom:12px">Your three <b>reflection sessions</b> are the required meetings with your supervisor (the third is the viva voce). Some checkpoints have no file to attach — e.g. research you keep in external software — so your supervisor or coordinator simply marks those done.</div>
+      <div class="timeline">
+        <div class="ms done"><div class="mt">Proposal & research question ✓</div><div class="md">Due 3 Oct 2025 · submitted 1 Oct</div></div>
+        <div class="ms done"><div class="mt">Reflection session 1 ✓ <span class="mut">(supervisor meeting)</span></div><div class="md">Held 10 Oct 2025</div></div>
+        <div class="ms done"><div class="mt">Outline ✓</div><div class="md">Due 14 Nov 2025 · submitted 14 Nov</div></div>
+        <div class="ms done"><div class="mt">Research log — kept in Zotero ✓</div><div class="md">No upload · marked complete by your supervisor, 20 Nov</div></div>
+        <div class="ms now"><div class="mt">Full draft + Reflection session 2 ← you are here</div><div class="md">Due 30 Jan 2026</div></div>
+        <div class="ms"><div class="mt">Finalized EE (PDF)</div><div class="md">Due 6 Mar 2026</div></div>
+        <div class="ms"><div class="mt">Viva voce (Reflection session 3)</div><div class="md">Mar 2026</div></div>
+        <div class="ms"><div class="mt">RPF — reflection statement</div><div class="md">Written right after the viva</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-h"><h2>Process documents (Google Doc links)</h2></div>
+    <div class="panel-b">
+      <div class="note" style="margin-bottom:12px">📎 Before pasting a link, set sharing so your supervisor can open it: <b>Share → Anyone at International Schools Group with the link → Viewer</b>, or share directly with your supervisor's email. We'll flag links we can't open.</div>
+      <div class="linkrow"><div class="lk"><b>Initial planning</b><br><a href="#">docs.google.com/…/planning ↗</a></div><span class="pill ok">Access OK</span><button class="btn sm">Replace</button></div>
+      <div class="linkrow"><div class="lk"><b>Outline</b><br><a href="#">docs.google.com/…/outline ↗</a></div><span class="pill ok">Access OK</span><button class="btn sm">Replace</button></div>
+      <div class="linkrow"><div class="lk"><b>Draft</b><br><a href="#">docs.google.com/…/draft-v2 ↗</a></div><span class="pill warn">Can't open — check sharing</span><button class="btn sm">Fix link</button></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-h"><h2>Finalized Extended Essay (PDF)</h2></div>
+    <div class="panel-b">
+      <div class="note" style="margin-bottom:12px"><b>Title page MUST show:</b> essay title · research question · subject(s) · word count · your <b>candidate personal code</b> (e.g. ABC123).<br><b>Must NOT show:</b> your name, candidate number, school name, or supervisor name — the EE is marked anonymously and the personal code stands in for you.</div>
+      <div class="row" style="margin-bottom:12px"><span class="caps">Your candidate personal code</span> <span class="pill info">ABC123</span> <span class="mut" style="font-size:12px">set by the IB coordinator</span></div>
+      <div class="note" style="margin-bottom:12px"><b>Before you upload:</b>
+        <div class="checklist" style="margin-top:6px">
+          <label><input type="checkbox"> Candidate personal code is on the title page</label>
+          <label><input type="checkbox"> No name, candidate number, school or supervisor anywhere in the PDF</label>
+          <label><input type="checkbox"> Essay is under 4,000 words</label>
+        </div>
+      </div>
+      <div class="row"><button class="btn pri">⤒ Upload finalized EE (PDF)</button><span class="mut" style="font-size:12px">PDF only · locks on upload · unlock only by EE/IB coordinator</span></div>
+      <div class="note ok" style="margin-top:12px"><b>Anonymity check runs automatically on upload:</b> ✓ candidate personal code found · ✓ no name / school / supervisor detected · ✓ under 4,000 words. Anything missing is flagged before the file is accepted. <span class="mut">(The same check applies to final IA uploads.)</span></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-h"><h2>Reflection & Progress Form (RPF)</h2><span class="spacer"></span><span class="lock">🔒 Unlocks after your viva voce</span></div>
+    <div class="panel-b">
+      <div class="note" style="margin-bottom:12px">Write <b>one</b> reflection of up to <b>500 words</b> after your viva voce. Focus on your <b>growth as a learner and the thinking/research skills you'll carry forward</b> — not a summary of what you did. This is Criterion E (4 marks).</div>
+      <div style="margin-bottom:8px">
+        <span class="caps">Prompts</span>
+        <button class="btn sm ghost">How did your thinking change?</button>
+        <button class="btn sm ghost">Which skills will transfer to future work?</button>
+        <button class="btn sm ghost">What would you do differently?</button>
+      </div>
+      <textarea id="rpf" rows="8" placeholder="Your reflection… (hard limit 500 words)" oninput="countRpf()"></textarea>
+      <div class="row" style="margin-top:6px"><span class="counter" id="rpfCount">0 / 500 words</span><span class="spacer"></span><input type="text" style="max-width:130px" placeholder="Date"><button class="btn pri sm">Submit & lock</button></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-h"><h2>Supervisor feedback</h2></div>
+    <div class="panel-b">
+      <div class="note ok" style="margin-bottom:10px">💬 <b>Ms. Rivera:</b> "Strong RQ. In the draft, push Criterion D — evaluate your sources' limitations more, don't just report findings."</div>
+      <div class="note warn">🔔 <b>Nudge:</b> your draft is due 30 Jan — Reflection session 2 needs to be booked.</div>
+      <div style="margin-top:12px"><span class="caps">Score</span> <span class="pill grey">Not released yet</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= SUPERVISOR ================= -->
+<div class="wrap view" id="super">
+  <h1>Extended Essay — Supervisor</h1>
+  <p class="sub">All students are listed; ⭐ your supervisees to keep them on top. Search to find anyone.</p>
+
+  <div class="panel">
+    <div class="panel-h"><h2>Students</h2><span class="spacer"></span><input type="text" placeholder="Search…" style="max-width:200px"></div>
+    <div class="panel-b slist">
+      <div class="si" onclick="openSup()"><span class="star">★</span><div class="lk" style="flex:1"><div class="sn">Ahmed, Layla</div><div class="ss">Interdisciplinary · Psychology + Music · draft in</div></div><span class="pill info">Draft</span><span class="chev">▶</span></div>
+      <div class="si"><span class="star">★</span><div class="lk" style="flex:1"><div class="sn">Chen, Marcus</div><div class="ss">Subject-focused · History · outline in</div></div><span class="pill grey">Outline</span><span class="chev">▶</span></div>
+      <div class="si"><span class="star off">☆</span><div class="lk" style="flex:1"><div class="sn">Okonkwo, Zara</div><div class="ss">Subject-focused · Biology</div></div><span class="pill grey">Proposal</span><span class="chev">▶</span></div>
+    </div>
+  </div>
+
+  <div class="panel" id="supDetail">
+    <div class="panel-h"><h2>Ahmed, Layla — Psychology + Music (interdisciplinary)</h2><span class="spacer"></span><button class="btn sm">🔔 Nudge</button><button class="btn sm">✎ Note to student</button></div>
+    <div class="panel-b">
+      <div class="two">
+        <div>
+          <span class="caps">Research question</span>
+          <p style="margin:4px 0 12px">To what extent does background music improve recall of verbal information in adolescents?</p>
+          <span class="caps">Process documents</span>
+          <div class="linkrow"><div class="lk"><a href="#">Initial planning ↗</a></div></div>
+          <div class="linkrow"><div class="lk"><a href="#">Outline ↗</a></div></div>
+          <div class="linkrow"><div class="lk"><a href="#">Draft ↗</a></div></div>
+          <div class="linkrow"><div class="lk"><b>Finalized EE</b> <span class="lock">🔒 locked</span></div><button class="btn sm">👁 View PDF</button></div>
+        </div>
+        <div>
+          <span class="caps">Reflection sessions (required supervisor meetings)</span>
+          <div class="timeline" style="margin-top:8px">
+            <div class="ms done"><div class="mt">Session 1 ✓</div><div class="md">10 Oct 2025</div></div>
+            <div class="ms now"><div class="mt">Session 2 — book now</div><div class="md">with the draft</div></div>
+            <div class="ms"><div class="mt">Viva voce (Session 3)</div><div class="md">pending</div></div>
+          </div>
+          <span class="caps">RPF statement</span>
+          <p class="mut" style="margin:4px 0">Written by student after viva — not yet submitted.</p>
+          <span class="caps">Authentication</span>
+          <div class="row" style="margin-top:6px"><button class="btn sm">⤒ Turnitin report</button><button class="btn sm">⤒ Viva/oral report</button></div>
+        </div>
+      </div>
+
+      <div style="margin-top:16px">
+        <span class="caps">Checkpoints — mark done even when there's no file (e.g. research kept in external software)</span>
+        <div style="margin-top:8px">
+          <div class="ckrow"><div class="ckn">Proposal & RQ</div><div class="seg"><button class="sg sel">On-time</button><button class="sg">Late</button><button class="sg">Complete</button><button class="sg">N/A</button></div></div>
+          <div class="ckrow"><div class="ckn">Research log (external software — no link)</div><div class="seg"><button class="sg">On-time</button><button class="sg">Late</button><button class="sg sel">Complete</button><button class="sg">N/A</button></div></div>
+          <div class="ckrow"><div class="ckn">Outline</div><div class="seg"><button class="sg sel">On-time</button><button class="sg">Late</button><button class="sg">Complete</button><button class="sg">N/A</button></div></div>
+          <div class="ckrow"><div class="ckn">Full draft</div><div class="seg"><button class="sg">On-time</button><button class="sg sel late">Late</button><button class="sg">Complete</button><button class="sg">N/A</button></div></div>
+        </div>
+        <p class="mut" style="font-size:11px;margin-top:6px">Coordinator can set these too. Status feeds the timeline and the "needs my attention" queue — no attachment required.</p>
+      </div>
+
+      <hr style="border:none;border-top:1px solid var(--line);margin:18px 0">
+
+      <div class="row"><h2 style="font-size:15px;margin:0">Rubric (out of 30)</h2><span class="mut" style="font-size:12px">Click a mark; open “descriptors” for band guidance. <b>Note:</b> the text shown is a short summary — full IB band descriptors (0 / 1–2 / 3–4 …) to be loaded from the official 2027 guide.</span></div>
+      <div style="margin-top:10px">
+        <div class="crit" data-max="6">
+          <div class="crit-h"><span class="cn">A · Framework for the essay</span><span class="cd">/6</span><span class="spacer"></span><button class="btn sm ghost" onclick="tDesc(this)">descriptors ▾</button></div>
+          <div class="marks"></div>
+          <div class="desc"><b>Strands:</b> research question · research methods · structure.<br>
+            <b>5–6:</b> sharply focused RQ; well-chosen methods applied effectively; structure fully supports the argument.<br>
+            <b>3–4:</b> appropriate RQ and methods; structure mostly sound, some lapses.<br>
+            <b>1–2:</b> broad/descriptive RQ; limited or ill-suited methods; weak structure.<br>
+            <b>0:</b> below the standard above.<br>
+            <span class="mut">Paraphrased — confirm against the official 2027 guide. Absorbs the old “Presentation” criterion.</span></div>
+        </div>
+        <div class="crit" data-max="6">
+          <div class="crit-h"><span class="cn">B · Knowledge and understanding</span><span class="cd">/6</span><span class="spacer"></span><button class="btn sm ghost" onclick="tDesc(this)">descriptors ▾</button></div>
+          <div class="marks"></div>
+          <div class="desc"><b>Strands:</b> knowledge · terminology · concepts.<br>
+            <b>5–6:</b> strong, consistent subject knowledge; terminology and concepts accurate and effectively applied.<br>
+            <b>3–4:</b> adequate knowledge; terminology/concepts mostly accurate.<br>
+            <b>1–2:</b> limited knowledge; inconsistent terminology.<br>
+            <b>0:</b> below the standard above.<br>
+            <span class="mut">Paraphrased — confirm against the official 2027 guide.</span></div>
+        </div>
+        <div class="crit" data-max="6">
+          <div class="crit-h"><span class="cn">C · Analysis and line of argument</span><span class="cd">/6</span><span class="spacer"></span><button class="btn sm ghost" onclick="tDesc(this)">descriptors ▾</button></div>
+          <div class="marks"></div>
+          <div class="desc"><b>Strands:</b> analysis · line of argument.<br>
+            <b>5–6:</b> insightful analysis of findings; coherent, well-developed line of argument throughout.<br>
+            <b>3–4:</b> some analysis; argument present but uneven.<br>
+            <b>1–2:</b> largely descriptive; little clear argument.<br>
+            <b>0:</b> below the standard above.<br>
+            <span class="mut">Paraphrased — confirm against the official 2027 guide.</span></div>
+        </div>
+        <div class="crit" data-max="8">
+          <div class="crit-h"><span class="cn">D · Discussion and evaluation</span><span class="cd">/8</span><span class="spacer"></span><span class="pill gold">highest weight</span><button class="btn sm ghost" onclick="tDesc(this)">descriptors ▾</button></div>
+          <div class="marks"></div>
+          <div class="desc"><b>Strands:</b> discussion · evaluation.<br>
+            <b>7–8:</b> sustained discussion; evidence weighed and sources evaluated <i>throughout</i> the essay, not just the conclusion.<br>
+            <b>5–6:</b> good discussion/evaluation, not fully sustained.<br>
+            <b>3–4:</b> some evaluation, mostly toward the end.<br>
+            <b>1–2:</b> minimal evaluation.<br>
+            <b>0:</b> below the standard above.<br>
+            <span class="mut">Paraphrased — confirm against the official 2027 guide. Highest-weighted criterion (8 marks).</span></div>
+        </div>
+        <div class="crit" data-max="4">
+          <div class="crit-h"><span class="cn">E · Reflection</span><span class="cd">/4</span><span class="spacer"></span><span class="pill info">from the RPF</span><button class="btn sm ghost" onclick="tDesc(this)">descriptors ▾</button></div>
+          <div class="marks"></div>
+          <div class="desc"><b>Assessed from the RPF (≤500 words after the viva).</b><br>
+            <b>4:</b> genuine growth as a learner; clear, specific transferable (ATL) skills.<br>
+            <b>2–3:</b> some growth and skills development shown.<br>
+            <b>1:</b> superficial or procedural reflection.<br>
+            <b>0:</b> below the standard above.<br>
+            <span class="mut">Paraphrased — confirm against the official 2027 guide.</span></div>
+        </div>
+      </div>
+      <div class="totalbar"><span class="tt" id="eeTotal">0</span><span>/ 30</span><span class="spacer"></span><span>Indicative band: <b id="eeBand">—</b></span></div>
+      <p class="mut" style="font-size:11px;margin-top:6px">Band shown is indicative — IB sets grade boundaries each session.</p>
+
+      <div class="two" style="margin-top:16px">
+        <div><label class="fld">Hours spent supervising</label><input type="text" value="4.5" style="max-width:120px"></div>
+        <div><label class="fld">&nbsp;</label>
+          <label class="row" style="gap:8px;cursor:pointer"><input type="checkbox" id="attest" onchange="gateScore()"><span>I held the required reflection sessions and confirm this work is authentic.</span></label>
+        </div>
+      </div>
+      <label class="fld">Supervisor final comment (not shown to student — justifies the score; part of the RPF)</label>
+      <textarea rows="3" placeholder="Justify the score and attest you met with the student…"></textarea>
+      <div class="row" style="margin-top:12px">
+        <button class="btn pri">Save scoring</button>
+        <button class="btn" id="submitScore" disabled title="Complete the attestation first">Submit to coordinator for release</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= COORDINATOR ================= -->
+<div class="wrap view" id="coord">
+  <h1>Extended Essay — Coordinator overview</h1>
+  <p class="sub">Whole-cohort view. Assign supervisors, set milestone due dates, release scores, export.</p>
+
+  <div class="grid" style="margin-bottom:14px">
+    <div class="tile"><div class="k">Students</div><div class="v">24</div></div>
+    <div class="tile"><div class="k">Drafts in</div><div class="v">15<small>/24</small></div></div>
+    <div class="tile"><div class="k">Finals in</div><div class="v">2<small>/24</small></div></div>
+    <div class="tile"><div class="k">Scores to release</div><div class="v" style="color:var(--gold)">3</div></div>
+    <div class="tile"><div class="k">At risk</div><div class="v" style="color:var(--warn)">2</div></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-h" style="cursor:pointer" onclick="tCollapse(this)"><span class="chev open">▶</span><h2>⚑ Needs my attention</h2><span class="spacer"></span><span class="pill warn">5 items</span><span class="mut" style="font-size:11px">click to collapse</span></div>
+    <div class="collapse" style="padding:2px 8px">
+      <div class="queue-item"><span class="qtag assign">Assign</span><div class="qmain"><b>No supervisor assigned</b><small>Okonkwo, Zara · Biology</small></div><button class="btn sm">Assign</button></div>
+      <div class="queue-item"><span class="qtag draft">Overdue</span><div class="qmain"><b>Draft overdue (due 30 Jan)</b><small>Park, Sunwoo · English A</small></div><button class="btn sm">Open</button></div>
+      <div class="queue-item"><span class="qtag rpf">RPF missing</span><div class="qmain"><b>Viva done, RPF not submitted</b><small>Diallo, Amadou · Economics</small></div><button class="btn sm">Nudge</button></div>
+      <div class="queue-item"><span class="qtag score">Release</span><div class="qmain"><b>3 scores submitted by supervisors</b><small>Awaiting your release to students</small></div><button class="btn sm">Review</button></div>
+      <div class="queue-item"><span class="qtag draft">Due dates</span><div class="qmain"><b>Set milestone due dates for Class of 2028</b><small>New cohort has no dates yet</small></div><button class="btn sm">Set dates</button></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-h"><h2>Students</h2>
+      <span class="spacer"></span>
+      <button class="btn sm ghost">🗓 Set due dates</button>
+      <button class="btn sm">⤓ IB registration export (subject + title/RQ)</button>
+      <button class="btn sm">⤓ Export finalized EEs</button>
+      <button class="btn sm">⤓ Export RPFs</button>
+    </div>
+    <div class="tableshell">
+    <table>
+      <thead><tr><th style="width:170px">Student</th><th>Pathway / Subject</th><th>Supervisor</th><th>Stage</th><th>Sessions</th><th>Final</th><th>RPF</th><th>Score</th></tr></thead>
+      <tbody>
+        <tr class="srow" onclick="tr_(this)"><td><span class="chev">▶</span>Ahmed, Layla</td><td>Interdisc. · Psych + Music</td><td>Rivera</td><td><span class="pill info">Draft</span></td><td>1/3</td><td>—</td><td>—</td><td><span class="pill grey">—</span></td></tr>
+        <tr class="drawer" style="display:none"><td colspan="8"><div class="drawer-inner">
+          <div class="row"><span class="caps">Actions</span><button class="btn sm">Change supervisor</button><button class="btn sm">Edit due dates</button><button class="btn sm">Unlock finalized EE</button><button class="btn sm">Open student EE</button></div>
+        </div></td></tr>
+
+        <tr class="srow" onclick="tr_(this)"><td><span class="chev">▶</span>Diallo, Amadou</td><td>Subject · Economics</td><td>Osei</td><td><span class="pill gold">Viva done</span></td><td>3/3</td><td><span class="pill ok">In</span></td><td><span class="pill warn">Missing</span></td><td><span class="pill grey">—</span></td></tr>
+        <tr class="drawer" style="display:none"><td colspan="8"><div class="drawer-inner">
+          <div class="note warn">RPF not submitted though viva is complete. Nudge the student — Criterion E can't be scored without it.</div>
+        </div></td></tr>
+
+        <tr class="srow" onclick="tr_(this)"><td><span class="chev">▶</span>Mensah, Kofi</td><td>Subject · History</td><td>Rivera</td><td><span class="pill ok">Complete</span></td><td>3/3</td><td><span class="pill ok">In</span></td><td><span class="pill ok">In</span></td><td><span class="pill gold">26/30 ready</span></td></tr>
+        <tr class="drawer" style="display:none"><td colspan="8"><div class="drawer-inner">
+          <div class="row"><span class="caps">Score submitted by supervisor</span> <span class="pill gold">26 / 30 · indicative A</span> <span class="lock">🔒 attestation signed</span></div>
+          <div class="row" style="margin-top:10px"><button class="btn pri sm">Release score to student</button><button class="btn sm">View rubric breakdown</button><button class="btn sm">Return to supervisor</button></div>
+          <div class="note ok" style="margin-top:10px">On release, this EE grade automatically feeds the EE + TOK bonus-points matrix in Predicted Grades.</div>
+        </div></td></tr>
+
+        <tr class="srow" onclick="tr_(this)"><td><span class="chev">▶</span>Okonkwo, Zara</td><td>Subject · Biology</td><td class="mut">— none —</td><td><span class="pill grey">Proposal</span></td><td>0/3</td><td>—</td><td>—</td><td><span class="pill grey">—</span></td></tr>
+        <tr class="drawer" style="display:none"><td colspan="8"><div class="drawer-inner">
+          <div class="note warn">No supervisor assigned yet.</div>
+          <div style="margin-top:8px"><button class="btn pri sm">Assign supervisor</button></div>
+        </div></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.rolebtn').forEach(b=>b.onclick=()=>{
+    document.querySelectorAll('.rolebtn').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');document.getElementById(b.dataset.view).classList.add('active');window.scrollTo(0,0);
+  });
+  // pathway toggle
+  function togglePath(){
+    const inter=document.getElementById('pathway').value.startsWith('Inter');
+    document.getElementById('subject2').style.visibility=inter?'visible':'hidden';
+  }
+  // RPF hard cap 500 words
+  function countRpf(){
+    const t=document.getElementById('rpf');
+    let w=t.value.trim().split(/\s+/).filter(Boolean);
+    if(w.length>500){ w=w.slice(0,500); t.value=w.join(' '); }
+    const c=document.getElementById('rpfCount');
+    c.textContent=w.filter(Boolean).length+' / 500 words';
+    c.classList.toggle('over', w.filter(Boolean).length>=500);
+  }
+  // rubric
+  const crits=document.querySelectorAll('.crit');
+  function band(t){ if(t>=25)return'A'; if(t>=20)return'B'; if(t>=14)return'C'; if(t>=8)return'D'; if(t>0)return'E'; return'—'; }
+  function recompute(){
+    let tot=0; crits.forEach(c=>{ tot += (+c.dataset.val||0); });
+    document.getElementById('eeTotal').textContent=tot;
+    document.getElementById('eeBand').textContent=band(tot);
+  }
+  crits.forEach(c=>{
+    const max=+c.dataset.max, box=c.querySelector('.marks');
+    for(let i=0;i<=max;i++){ const b=document.createElement('button'); b.className='mk'; b.textContent=i;
+      b.onclick=()=>{ c.dataset.val=i; box.querySelectorAll('.mk').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); recompute(); };
+      box.appendChild(b);
+    }
+  });
+  function tDesc(btn){ btn.closest('.crit').querySelector('.desc').classList.toggle('show'); }
+  // attestation gates score submit
+  function gateScore(){ document.getElementById('submitScore').disabled = !document.getElementById('attest').checked; }
+  // misc toggles
+  function tr_(tr){ tr.classList.toggle('open'); const d=tr.nextElementSibling; d.style.display=d.style.display==='table-row'?'none':'table-row'; }
+  function openSup(){ document.getElementById('supDetail').scrollIntoView({behavior:'smooth'}); }
+  function tCollapse(h){ h.nextElementSibling.classList.toggle('hidden'); h.querySelector('.chev').classList.toggle('open'); }
+  document.querySelectorAll('.seg').forEach(g=>g.querySelectorAll('.sg').forEach(b=>b.onclick=()=>{
+    g.querySelectorAll('.sg').forEach(x=>x.classList.remove('sel'));
+    b.classList.add('sel');
+  }));
+  togglePath();
+</script>
+</body>
+</html>

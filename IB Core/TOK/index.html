@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB Core — TOK Mockup</title>
+<style>
+  :root{
+    --bg:#f4f6f8; --panel:#fff; --ink:#1c2430; --muted:#6b7683; --line:#e3e8ee;
+    --brand:#2f6f6a; --brand-soft:#e6f1f0;
+    --ok:#2e7d5b; --ok-soft:#e4f3ec; --warn:#b23c3c; --warn-soft:#fbe8e8;
+    --gold:#a5761c; --gold-soft:#f7efdc; --info:#2b5f9e; --info-soft:#e7eff9;
+    --radius:12px; --shadow:0 1px 2px rgba(20,30,45,.06),0 4px 16px rgba(20,30,45,.05);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.45}
+  header.top{background:var(--panel);border-bottom:1px solid var(--line);padding:0 22px;display:flex;align-items:center;gap:20px;position:sticky;top:0;z-index:20}
+  .logo{font-weight:700;font-size:16px;padding:16px 0;color:var(--brand)}
+  .logo span{color:var(--muted);font-weight:500}
+  .rolebar{margin-left:auto;display:flex;gap:6px;padding:9px 0;flex-wrap:wrap}
+  .rolebtn{border:1px solid var(--line);background:#fff;color:var(--muted);padding:7px 14px;border-radius:99px;cursor:pointer;font-size:13px;font-weight:600}
+  .rolebtn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .wrap{max-width:1080px;margin:0 auto;padding:22px}
+  .view{display:none}.view.active{display:block}
+  h1{font-size:20px;margin:2px 0 2px}
+  .sub{color:var(--muted);margin:0 0 18px;font-size:13px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:16px}
+  .panel-h{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .panel-h h2{font-size:15px;margin:0}
+  .panel-b{padding:16px 18px}
+  .spacer{margin-left:auto}
+  .btn{border:1px solid var(--line);background:#fff;color:var(--ink);padding:7px 13px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600}
+  .btn.pri{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .btn.sm{padding:5px 10px;font-size:12px}.btn.ghost{background:transparent}.btn.danger{color:var(--warn)}
+  .btn:disabled{opacity:.45;cursor:not-allowed}
+  .pill{display:inline-block;padding:3px 9px;border-radius:99px;font-size:12px;font-weight:600}
+  .pill.grey{background:#eef1f4;color:#5b6470}.pill.info{background:var(--info-soft);color:var(--info)}
+  .pill.ok{background:var(--ok-soft);color:var(--ok)}.pill.warn{background:var(--warn-soft);color:var(--warn)}
+  .pill.gold{background:var(--gold-soft);color:var(--gold)}
+  label.fld{display:block;font-weight:600;font-size:12px;margin:12px 0 5px;color:#42505f}
+  input[type=text],textarea,select{width:100%;border:1px solid var(--line);border-radius:8px;padding:9px 10px;font-family:inherit;font-size:13px;background:#fff}
+  textarea{resize:vertical}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+  .tile{background:#fff;border:1px solid var(--line);border-radius:10px;padding:13px}
+  .tile .k{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+  .tile .v{font-size:22px;font-weight:700;margin-top:3px}.tile .v small{font-size:13px;color:var(--muted);font-weight:600}
+  .caps{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700}
+  .note{background:var(--info-soft);border:1px solid #cfe0f2;color:#28486e;border-radius:8px;padding:10px 12px;font-size:12.5px}
+  .note.warn{background:var(--warn-soft);border-color:#f0cccc;color:#8a2b2b}
+  .note.ok{background:var(--ok-soft);border-color:#c7e6d5;color:#1f5c40}
+  .lock{font-size:11px;color:var(--muted);display:inline-flex;align-items:center;gap:4px}
+  .mut{color:var(--muted)}
+  .counter{font-size:12px;font-weight:700}.counter.over{color:var(--warn)}
+  .subnav{display:flex;gap:6px;margin-bottom:16px}
+  .subbtn{border:1px solid var(--line);background:#fff;color:var(--muted);padding:8px 16px;border-radius:9px;cursor:pointer;font-weight:700;font-size:13px}
+  .subbtn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .subview{display:none}.subview.active{display:block}
+  .obj{border:1px dashed var(--line);border-radius:10px;padding:10px;text-align:center;background:#fafbfc}
+  .objimg{height:70px;border-radius:6px;background:#dfe5ea;display:flex;align-items:center;justify-content:center;color:#7d8894;font-size:11px;font-weight:600;margin-bottom:6px}
+  .marks{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+  .mk{width:30px;height:30px;border:1px solid var(--line);border-radius:7px;background:#fff;cursor:pointer;font-weight:700;font-size:13px;color:#42505f}
+  .mk.sel{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .linkrow{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+  .linkrow:last-child{border-bottom:none}.linkrow .lk{flex:1;min-width:0}.linkrow .lk a{color:var(--info);font-size:12px;text-decoration:none}
+  .slist .si{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);cursor:pointer}
+  .slist .si:last-child{border-bottom:none}
+  .si .sn{font-weight:600}.si .ss{color:var(--muted);font-size:12px}
+  table{width:100%;border-collapse:collapse}
+  thead th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700;padding:10px 12px;border-bottom:1px solid var(--line)}
+  tbody td{padding:11px 12px;border-bottom:1px solid var(--line)}
+  tr.srow{cursor:pointer}tr.srow:hover{background:#fafbfc}
+  .chev{display:inline-block;transition:transform .15s;color:var(--muted);margin-right:8px}
+  tr.srow.open .chev{transform:rotate(90deg)}
+  .chev.open{transform:rotate(90deg)}
+  .drawer-inner{padding:14px 18px;background:#fafbfc}
+  .collapse.hidden{display:none}
+  .queue-item{display:flex;align-items:center;gap:10px;padding:10px;border-bottom:1px solid var(--line)}
+  .queue-item:last-child{border-bottom:none}
+  .qtag{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;padding:3px 7px;border-radius:6px;flex-shrink:0}
+  .qtag.ex{background:var(--gold-soft);color:var(--gold)}.qtag.es{background:var(--info-soft);color:var(--info)}.qtag.sc{background:var(--ok-soft);color:var(--ok)}
+  .qmain{flex:1;min-width:0}.qmain b{font-weight:600}.qmain small{color:var(--muted);display:block;font-size:12px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:720px){.two{grid-template-columns:1fr}.tableshell{overflow-x:auto}table{min-width:820px}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="logo">IB&nbsp;Core <span>· Theory of Knowledge</span></div>
+  <div class="rolebar">
+    <button class="rolebtn active" data-view="student">Student</button>
+    <button class="rolebtn" data-view="staff">Core teacher (TOK)</button>
+    <button class="rolebtn" data-view="staff">IB Coordinator</button>
+  </div>
+</header>
+
+<!-- ================= STUDENT ================= -->
+<div class="wrap view active" id="student">
+  <h1>My TOK</h1>
+  <p class="sub">Two assessments: the Exhibition (internal) and the Essay (external). Word limits are enforced.</p>
+
+  <div class="grid" style="margin-bottom:16px">
+    <div class="tile"><div class="k">Exhibition</div><div class="v" style="font-size:15px;padding-top:8px"><span class="pill info">Submitted</span></div></div>
+    <div class="tile"><div class="k">Essay</div><div class="v" style="font-size:15px;padding-top:8px"><span class="pill grey">Draft</span></div></div>
+    <div class="tile"><div class="k">Predicted TOK grade</div><div class="v" style="font-size:15px;padding-top:8px"><span class="pill grey">Not released</span></div></div>
+    <div class="tile"><div class="k">Candidate code</div><div class="v" style="font-size:15px;padding-top:8px"><span class="pill warn">Assigned later</span></div></div>
+  </div>
+
+  <div class="subnav">
+    <button class="subbtn active" onclick="sub(this,'sEx')">TOK Exhibition</button>
+    <button class="subbtn" onclick="sub(this,'sEs')">TOK Essay</button>
+  </div>
+
+  <div class="subview active" id="sEx">
+  <div class="panel">
+    <div class="panel-h"><h2>TOK Exhibition</h2><span class="spacer"></span><span class="mut" style="font-size:12px">Internal · you submit, your teacher marks it</span></div>
+    <div class="panel-b">
+      <label class="fld">IA prompt (one of the 35 fixed prompts)</label>
+      <select>
+        <option>1. What counts as knowledge?</option>
+        <option>2. Are some types of knowledge more useful than others?</option>
+        <option selected>3. What features of knowledge have an impact on its reliability?</option>
+        <option>5. What counts as good evidence for a claim?</option>
+        <option>13. How can we know that current knowledge is an improvement on past knowledge?</option>
+        <option>24. How might the context in which knowledge is presented influence whether it is accepted or rejected?</option>
+        <option>32. What makes a good explanation?</option>
+        <option>— … all 35 official IA prompts —</option>
+      </select>
+      <label class="fld">Exhibition file <span class="mut">(your 3 objects + commentary as one PDF, prepared outside)</span></label>
+      <div class="linkrow"><div class="lk"><b>Exhibition PDF</b></div><span class="pill info">Submitted 4 Feb</span><button class="btn sm">Replace</button></div>
+      <div class="note" style="margin-top:12px">No candidate code yet? Submit anyway — it's stamped onto the first page automatically once your code is assigned.</div>
+      <div class="note ok" style="margin-top:10px">Teacher &amp; coordinator view your PDF inline — no download needed.</div>
+      <div style="margin-top:12px"><span class="caps">Score</span> <span class="pill grey">Not released</span></div>
+    </div>
+  </div>
+  </div>
+
+  <div class="subview" id="sEs">
+
+  <!-- ESSAY -->
+  <div class="panel">
+    <div class="panel-h"><h2>TOK Essay</h2><span class="spacer"></span><span class="mut" style="font-size:12px">≤ 1,600 words · external (IB-marked) · on a prescribed title</span></div>
+    <div class="panel-b">
+      <label class="fld">Prescribed title (posted by your teacher this session)</label>
+      <select>
+        <option>Title 1 — "Is the quality of knowledge best measured by how much of it we have?"</option>
+        <option selected>Title 3 — "Does it matter that our knowledge is provisional?"</option>
+        <option>Title 5 — "How far should we trust intuition?"</option>
+        <option>— 6 titles posted for May 2027 —</option>
+      </select>
+      <div class="two" style="margin-top:8px">
+        <div>
+          <span class="caps">Planning documents (Google Doc links)</span>
+          <div class="linkrow"><div class="lk"><a href="#">Outline ↗</a></div><span class="pill ok">Access OK</span></div>
+          <div class="linkrow"><div class="lk"><a href="#">Draft ↗</a></div><span class="pill ok">Access OK</span></div>
+          <div class="linkrow"><div class="lk"><b>Final essay</b> — PDF, locks on upload</div><button class="btn sm">⤒ Upload</button></div>
+        </div>
+        <div>
+          <span class="caps">TK/PPF status</span>
+          <div class="linkrow"><div class="lk">Interaction 1 <span class="mut">· 12 Nov · 🔒 locked</span></div></div>
+          <div class="linkrow"><div class="lk">Interaction 2 <span class="mut">· 15 Jan · 🔒 locked</span></div></div>
+          <div class="linkrow"><div class="lk">Interaction 3 <span class="mut">· in progress ↓</span></div></div>
+        </div>
+      </div>
+
+      <div style="margin-top:14px;border-top:1px solid var(--line);padding-top:12px">
+        <span class="caps">Write your TK/PPF</span>
+        <div class="note" style="margin:6px 0 10px">Reflect on each of your three interactions with your supervisor, dated. When you submit an entry it <b>locks</b> — only the TOK teacher or IB coordinator can unlock it. Your teacher sees which entries are done.</div>
+        <div class="linkrow"><div class="lk"><b>Interaction 1</b> <span class="mut">· 12 Nov · 🔒 locked</span></div><button class="btn sm">View</button></div>
+        <div class="linkrow"><div class="lk"><b>Interaction 2</b> <span class="mut">· 15 Jan · 🔒 locked</span></div><button class="btn sm">View</button></div>
+        <label class="fld">Interaction 3 <span class="mut">(current)</span></label>
+        <textarea rows="5" placeholder="Write your reflection on this interaction with your supervisor…"></textarea>
+        <div class="row" style="margin-top:8px"><input type="text" style="max-width:130px" placeholder="Date"><button class="btn pri sm">Submit &amp; lock</button><span class="mut" style="font-size:12px">Locks on submit.</span></div>
+      </div>
+
+      <label class="fld">Final essay word check</label>
+      <textarea id="esEssay" rows="3" oninput="cap('esEssay','esCount',1600)" placeholder="(paste to check length — final is uploaded as PDF)"></textarea>
+      <div class="row" style="margin-top:6px"><span class="counter" id="esCount">0 / 1600 words</span></div>
+      <div class="note" style="margin-top:10px">Your final essay PDF is stamped with your candidate code automatically once it's assigned.</div>
+      <div class="note" style="margin-top:10px">💬 <b>Mr. Adeyemi:</b> "Strong link to the shared knowledge / personal knowledge distinction — develop the counterclaim in paragraph 3."</div>
+      <div style="margin-top:10px"><span class="caps">Predicted essay score</span> <span class="pill grey">Not released</span></div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<!-- ============ STAFF: Core teacher (TOK/CAS/EE coord) + IB Coordinator oversight ============ -->
+<div class="wrap view" id="staff">
+  <h1>Theory of Knowledge — staff</h1>
+  <p class="sub">One shared view. The <b>Core teacher</b> (TOK teacher — also the CAS &amp; EE coordinator) marks and posts titles; the <b>IB Coordinator</b> sees the same progress and can release scores.</p>
+
+  <div class="subnav">
+    <button class="subbtn active" onclick="sub(this,'oOv')">Overview</button>
+    <button class="subbtn" onclick="sub(this,'oEx')">Exhibition</button>
+    <button class="subbtn" onclick="sub(this,'oEs')">Essay</button>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="subview active" id="oOv">
+    <div class="grid" style="margin-bottom:14px">
+      <div class="tile"><div class="k">Students</div><div class="v">24</div></div>
+      <div class="tile"><div class="k">Exhibitions marked</div><div class="v">9<small>/24</small></div></div>
+      <div class="tile"><div class="k">Essays final in</div><div class="v">1<small>/24</small></div></div>
+      <div class="tile"><div class="k">Scores to release</div><div class="v" style="color:var(--gold)">4</div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-h" style="cursor:pointer" onclick="tCollapse(this)"><span class="chev open">▶</span><h2>⚑ Needs attention</h2><span class="spacer"></span><span class="pill warn">4 items</span></div>
+      <div class="collapse" style="padding:2px 8px">
+        <div class="queue-item"><span class="qtag ex">Exhibition</span><div class="qmain"><b>4 exhibitions marked — awaiting release</b><small>Release to students</small></div><button class="btn sm">Review</button></div>
+        <div class="queue-item"><span class="qtag es">Essay</span><div class="qmain"><b>TK/PPF incomplete (2/3)</b><small>Ahmed, Layla · third interaction pending</small></div><button class="btn sm">Nudge</button></div>
+        <div class="queue-item"><span class="qtag sc">Codes</span><div class="qmain"><b>Assign candidate personal codes</b><small>Needed before final IB upload</small></div><button class="btn sm">Batch assign</button></div>
+        <div class="queue-item"><span class="qtag es">Titles</span><div class="qmain"><b>Prescribed essay titles not posted for Class of 2028</b><small>Post 6 titles</small></div><button class="btn sm">Open</button></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><h2>Candidate codes</h2><span class="spacer"></span><span class="pill warn">6 PDFs missing a code</span></div>
+      <div class="panel-b">
+        <div class="note">When IB issues personal codes, import or assign them here. The system then <b>stamps each code onto the first page of every submitted PDF that's missing one</b> — originals kept, stamped copies used for the IB export, anonymity preserved (code only, never name/school). Students can also add their own once notified.</div>
+        <div class="row" style="margin-top:10px"><button class="btn pri sm">Import / assign codes</button><button class="btn sm">Stamp codes onto 6 PDFs</button><span class="mut" style="font-size:12px">Applies to exhibitions, essays &amp; IA finals.</span></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><h2>Students</h2><span class="spacer"></span>
+        <button class="btn sm">⤓ Export exhibitions</button><button class="btn sm">⤓ Export TK/PPFs</button>
+      </div>
+      <div class="tableshell">
+      <table>
+        <thead><tr><th style="width:170px">Student</th><th>Exhibition</th><th>Essay title</th><th>TK/PPF</th><th>Essay</th><th>Predicted TOK</th></tr></thead>
+        <tbody>
+          <tr class="srow" onclick="tr_(this)"><td><span class="chev">▶</span>Ahmed, Layla</td><td><span class="pill gold">7/10 ready</span></td><td>Title 3</td><td>2/3</td><td><span class="pill grey">Draft</span></td><td><span class="pill grey">—</span></td></tr>
+          <tr class="drawer" style="display:none"><td colspan="6"><div class="drawer-inner">
+            <div class="row"><span class="caps">Exhibition score submitted</span> <span class="pill gold">7/10</span> <button class="btn pri sm">Release exhibition score</button> <button class="btn sm">View PDF</button></div>
+            <div class="note ok" style="margin-top:10px">When both marks are in, the predicted TOK grade is computed automatically and feeds the EE + TOK bonus-points matrix in Predicted Grades.</div>
+          </div></td></tr>
+          <tr class="srow" onclick="tr_(this)"><td><span class="chev">▶</span>Mensah, Kofi</td><td><span class="pill ok">Released 8/10</span></td><td>Title 1</td><td>3/3</td><td><span class="pill ok">Final in</span></td><td><span class="pill gold">A predicted</span></td></tr>
+          <tr class="drawer" style="display:none"><td colspan="6"><div class="drawer-inner"><div class="mut">Exhibition released. Essay uploaded &amp; sent to IB. Predicted TOK grade A (auto from 8/10 + predicted essay).</div></div></td></tr>
+          <tr class="srow" onclick="tr_(this)"><td><span class="chev">▶</span>Chen, Marcus</td><td><span class="pill grey">Not submitted</span></td><td class="mut">— none —</td><td>0/3</td><td><span class="pill grey">—</span></td><td><span class="pill grey">—</span></td></tr>
+          <tr class="drawer" style="display:none"><td colspan="6"><div class="drawer-inner"><div class="note warn">No exhibition and no essay title chosen. Nudge.</div></div></td></tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXHIBITION -->
+  <div class="subview" id="oEx">
+    <div class="panel">
+      <div class="panel-h"><h2>Exhibitions — mark out of 10</h2><span class="spacer"></span><button class="btn sm">⤓ Export exhibitions</button></div>
+      <div class="panel-b slist">
+        <div class="si" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block'"><div class="lk" style="flex:1"><div class="sn">Ahmed, Layla</div><div class="ss">Prompt 3 · submitted 4 Feb</div></div><span class="pill info">To mark</span><span class="chev">▶</span></div>
+        <div style="display:none">
+          <div class="note" style="margin:10px 0"><b>Prompt 3:</b> What features of knowledge have an impact on its reliability?</div>
+          <div class="row" style="margin-top:10px"><button class="btn sm">👁 View exhibition PDF (inline)</button></div>
+          <label class="fld">Score (/10)</label>
+          <div class="marks" id="exMarks"></div>
+          <div class="totalline" style="margin-top:8px"><span class="caps">Selected</span> <b id="exScore">—</b> / 10</div>
+          <label class="fld">Justification / comments</label>
+          <textarea rows="3" placeholder="Justify the mark against the exhibition assessment instrument…"></textarea>
+          <div class="row" style="margin-top:10px"><button class="btn pri sm">Save mark</button><button class="btn sm">Release score to student</button></div>
+        </div>
+        <div class="si"><div class="lk" style="flex:1"><div class="sn">Chen, Marcus</div><div class="ss">Prompt 13 · not submitted</div></div><span class="pill grey">Waiting</span><span class="chev">▶</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ESSAY -->
+  <div class="subview" id="oEs">
+    <div class="panel">
+      <div class="panel-h"><h2>Prescribed titles — May 2027</h2></div>
+      <div class="panel-b">
+        <div class="note" style="margin-bottom:10px">Post the 6 titles IB released for this session; students choose from these. You can also upload the official titles PDF for reference.</div>
+        <div class="linkrow"><div class="lk">1. Is the quality of knowledge best measured by how much of it we have?</div></div>
+        <div class="linkrow"><div class="lk">3. Does it matter that our knowledge is provisional?</div></div>
+        <div class="linkrow"><div class="lk">5. How far should we trust intuition?</div></div>
+        <div class="row" style="margin-top:10px"><button class="btn sm">+ Add title</button><button class="btn sm">⤒ Upload official titles PDF</button></div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><h2>Essays</h2><span class="spacer"></span><button class="btn sm">⤓ Export TK/PPFs</button></div>
+      <div class="panel-b slist">
+        <div class="si" onclick="this.nextElementSibling.style.display=this.nextElementSibling.style.display==='block'?'none':'block'"><div class="lk" style="flex:1"><div class="sn">Ahmed, Layla</div><div class="ss">Title 3 · draft in · TK/PPF 2/3</div></div><span class="pill grey">Draft</span><span class="chev">▶</span></div>
+        <div style="display:none">
+          <div class="two" style="margin-top:10px">
+            <div><span class="caps">Documents</span>
+              <div class="linkrow"><div class="lk"><a href="#">Outline ↗</a></div></div>
+              <div class="linkrow"><div class="lk"><a href="#">Draft ↗</a></div></div>
+              <div class="linkrow"><div class="lk"><b>Final essay</b> <span class="lock">🔒 not uploaded</span></div></div>
+            </div>
+            <div><span class="caps">TK/PPF interactions</span>
+              <div class="linkrow"><div class="lk">1 · 12 Nov ✓</div></div>
+              <div class="linkrow"><div class="lk">2 · 15 Jan ✓</div></div>
+              <div class="linkrow"><div class="lk">3 · pending</div><button class="btn sm">Add note</button></div>
+            </div>
+          </div>
+          <label class="fld">Predicted score (/10) <span class="mut">— actual essay mark comes from IB externally</span></label>
+          <div class="marks" id="esMarks"></div>
+          <div style="margin-top:8px"><span class="caps">Selected</span> <b id="esScore">—</b> / 10</div>
+          <label class="fld">Feedback to student</label>
+          <textarea rows="3" placeholder="Feedback (nudges, guidance)…"></textarea>
+          <div class="row" style="margin-top:10px"><button class="btn pri sm">Save</button><button class="btn sm">🔔 Nudge</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.rolebtn').forEach(b=>b.onclick=()=>{
+    document.querySelectorAll('.rolebtn').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');document.getElementById(b.dataset.view).classList.add('active');window.scrollTo(0,0);
+  });
+  function sub(btn,id){
+    const p=btn.closest('.view');
+    p.querySelectorAll('.subbtn').forEach(x=>x.classList.remove('active'));
+    p.querySelectorAll('.subview').forEach(x=>x.classList.remove('active'));
+    btn.classList.add('active');document.getElementById(id).classList.add('active');
+  }
+  function cap(taId,cId,max){
+    const t=document.getElementById(taId); let w=t.value.trim().split(/\s+/).filter(Boolean);
+    if(w.length>max){ w=w.slice(0,max); t.value=w.join(' '); }
+    const c=document.getElementById(cId); const n=w.filter(Boolean).length;
+    c.textContent=n+' / '+max+' words'; c.classList.toggle('over',n>=max);
+  }
+  function makeMarks(boxId,outId){
+    const box=document.getElementById(boxId); if(!box)return;
+    for(let i=0;i<=10;i++){ const b=document.createElement('button'); b.className='mk'; b.textContent=i;
+      b.onclick=()=>{ box.querySelectorAll('.mk').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); document.getElementById(outId).textContent=i; };
+      box.appendChild(b);
+    }
+  }
+  makeMarks('exMarks','exScore'); makeMarks('esMarks','esScore');
+  function tCollapse(h){ h.nextElementSibling.classList.toggle('hidden'); h.querySelector('.chev').classList.toggle('open'); }
+  function tr_(tr){ tr.classList.toggle('open'); const d=tr.nextElementSibling; d.style.display=d.style.display==='table-row'?'none':'table-row'; }
+</script>
+</body>
+</html>

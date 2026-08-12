@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB Core — CAS Mockup</title>
+<style>
+  :root{
+    --bg:#f4f6f8; --panel:#ffffff; --ink:#1c2430; --muted:#6b7683; --line:#e3e8ee;
+    --brand:#2f6f6a; --brand-soft:#e6f1f0;
+    --ok:#2e7d5b; --ok-soft:#e4f3ec; --warn:#b23c3c; --warn-soft:#fbe8e8;
+    --gold:#a5761c; --gold-soft:#f7efdc; --info:#2b5f9e; --info-soft:#e7eff9;
+    --c:#8a5cc4; --a:#c2681c; --s:#2b7f9e;
+    --radius:12px; --shadow:0 1px 2px rgba(20,30,45,.06),0 4px 16px rgba(20,30,45,.05);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:14px;line-height:1.45}
+  header.top{background:var(--panel);border-bottom:1px solid var(--line);padding:0 22px;display:flex;align-items:center;gap:20px;position:sticky;top:0;z-index:20}
+  .logo{font-weight:700;font-size:16px;letter-spacing:.2px;padding:16px 0;color:var(--brand)}
+  .logo span{color:var(--muted);font-weight:500}
+  .rolebar{margin-left:auto;display:flex;gap:6px;padding:9px 0}
+  .rolebtn{border:1px solid var(--line);background:#fff;color:var(--muted);padding:7px 14px;border-radius:99px;cursor:pointer;font-size:13px;font-weight:600}
+  .rolebtn.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .wrap{max-width:1080px;margin:0 auto;padding:22px}
+  .view{display:none}.view.active{display:block}
+  h1{font-size:20px;margin:2px 0 2px}
+  .sub{color:var(--muted);margin:0 0 18px;font-size:13px}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+  .panel-h{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
+  .panel-h h2{font-size:15px;margin:0}
+  .panel-h .spacer{margin-left:auto}
+  .btn{border:1px solid var(--line);background:#fff;color:var(--ink);padding:7px 13px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600}
+  .btn.pri{background:var(--brand);color:#fff;border-color:var(--brand)}
+  .btn.sm{padding:5px 10px;font-size:12px}
+  .btn.ghost{background:transparent}
+  .btn.danger{color:var(--warn)}
+  /* overview table */
+  table{width:100%;border-collapse:collapse}
+  thead th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700;padding:10px 12px;border-bottom:1px solid var(--line)}
+  tbody td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+  tr.srow{cursor:pointer}
+  tr.srow:hover{background:#fafbfc}
+  .name{font-weight:600}
+  .chev{display:inline-block;transition:transform .15s;color:var(--muted);margin-right:8px}
+  tr.srow.open .chev{transform:rotate(90deg)}
+  .strand{display:inline-flex;width:22px;height:22px;border-radius:6px;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;margin-right:3px}
+  .strand.C{background:var(--c)}.strand.A{background:var(--a)}.strand.S{background:var(--s)}
+  .strand.off{background:#e7ebef;color:#aeb6bf}
+  .pill{display:inline-block;padding:3px 9px;border-radius:99px;font-size:12px;font-weight:600}
+  .pill.grey{background:#eef1f4;color:#5b6470}
+  .pill.info{background:var(--info-soft);color:var(--info)}
+  .pill.ok{background:var(--ok-soft);color:var(--ok)}
+  .pill.warn{background:var(--warn-soft);color:var(--warn)}
+  .count{display:inline-flex;min-width:22px;height:22px;padding:0 6px;border-radius:6px;background:#eef1f4;align-items:center;justify-content:center;font-weight:700;font-size:12px}
+  .count.hot{background:var(--warn-soft);color:var(--warn)}
+  .ind{font-size:18px;cursor:pointer;border:none;background:transparent}
+  .ind.dim{filter:grayscale(1);opacity:.35}
+  .drawer{background:#fafbfc;border-bottom:1px solid var(--line)}
+  .drawer-inner{padding:16px 18px 20px}
+  .tabs{display:flex;gap:4px;margin-bottom:14px;border-bottom:1px solid var(--line)}
+  .tab{padding:8px 14px;cursor:pointer;font-weight:600;font-size:13px;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px}
+  .tab.active{color:var(--brand);border-bottom-color:var(--brand)}
+  .tabpane{display:none}.tabpane.active{display:block}
+  .exp{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:10px}
+  .exp.expandable > .exp-h{cursor:pointer}
+  .exp-h{display:flex;align-items:center;gap:8px}
+  .exp-h .t{font-weight:600}
+  .exp-h .echev{color:var(--muted);transition:transform .15s;margin-left:auto;font-size:12px}
+  .exp.open .echev{transform:rotate(90deg)}
+  .exp-meta{color:var(--muted);font-size:12px;margin:4px 0 0}
+  .exp-detail{display:none;margin-top:12px}
+  .exp.open .exp-detail{display:block}
+  .lo{display:inline-block;background:var(--brand-soft);color:var(--brand);border-radius:6px;padding:2px 7px;font-size:11px;font-weight:600;margin:6px 6px 0 0}
+  /* thread */
+  .thread{border-left:2px solid var(--line);margin:12px 0 0;padding-left:16px}
+  .tentry{position:relative;padding:0 0 15px}
+  .tentry:last-child{padding-bottom:2px}
+  .tentry:before{content:'';position:absolute;left:-23px;top:3px;width:10px;height:10px;border-radius:50%;background:var(--brand);border:2px solid #fff}
+  .tdate{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+  .ttype{font-size:10px;font-weight:800;padding:1px 6px;border-radius:5px;margin-left:7px;text-transform:uppercase;letter-spacing:.3px}
+  .ttype.refl{background:var(--brand-soft);color:var(--brand)}
+  .ttype.evid{background:var(--gold-soft);color:var(--gold)}
+  .ttype.sup{background:var(--ok-soft);color:var(--ok)}
+  .tbody{margin-top:4px}
+  .thumbs{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+  .thumb{width:64px;height:48px;border-radius:6px;background:#dfe5ea;display:flex;align-items:center;justify-content:center;color:#7d8894;font-size:11px;font-weight:600;cursor:pointer;position:relative;overflow:hidden}
+  .thumb .play{position:absolute;font-size:16px}
+  .divider{height:1px;background:var(--line);margin:12px 0}
+  .actionbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:#f7f9fa;border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-top:12px}
+  .actionbar .lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);margin-right:2px}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+  .tile{background:#fff;border:1px solid var(--line);border-radius:10px;padding:13px}
+  .tile .k{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.5px;font-weight:700}
+  .tile .v{font-size:22px;font-weight:700;margin-top:3px}
+  .tile .v small{font-size:13px;color:var(--muted);font-weight:600}
+  label.fld{display:block;font-weight:600;font-size:12px;margin:12px 0 5px;color:#42505f}
+  input[type=text],textarea,select{width:100%;border:1px solid var(--line);border-radius:8px;padding:9px 10px;font-family:inherit;font-size:13px;background:#fff}
+  textarea{resize:vertical}
+  .chk{display:inline-flex;align-items:center;gap:7px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 11px;margin:0 8px 8px 0;font-size:13px;cursor:pointer}
+  .note{background:var(--info-soft);border:1px solid #cfe0f2;color:#28486e;border-radius:8px;padding:10px 12px;font-size:12.5px}
+  .note.warn{background:var(--warn-soft);border-color:#f0cccc;color:#8a2b2b}
+  .note.ok{background:var(--ok-soft);border-color:#c7e6d5;color:#1f5c40}
+  .lock{font-size:11px;color:var(--muted);display:inline-flex;align-items:center;gap:4px}
+  .cardhead{display:flex;align-items:center;gap:10px;margin-bottom:2px}
+  .mut{color:var(--muted)}
+  .wc{float:right;color:var(--muted);font-size:11px}
+  .modal-bg{display:none;position:fixed;inset:0;background:rgba(20,30,45,.45);z-index:40;align-items:center;justify-content:center;padding:20px}
+  .modal-bg.show{display:flex}
+  .modal{background:#fff;border-radius:14px;max-width:520px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.3);max-height:85vh;overflow:auto}
+  .modal-h{padding:15px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center}
+  .modal-b{padding:16px 18px}
+  .qs{margin:0;padding-left:18px}.qs li{margin:7px 0}
+  .badgerow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  .caps{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);font-weight:700}
+  .flag{background:var(--gold-soft);color:var(--gold);border:1px solid #ecd9ab;border-radius:6px;padding:2px 7px;font-size:11px;font-weight:700}
+  /* resizable reflection composer */
+  textarea.big{min-height:150px;resize:vertical}
+  .resize-hint{font-size:11px;color:var(--muted);margin-top:4px}
+  /* inline complete-on-behalf */
+  .cob{background:#fff;border:1px dashed #b9c4cf;border-radius:8px;padding:12px;margin-top:8px;display:none}
+  .cob.show{display:block}
+  /* phone frame */
+  .phone{max-width:392px;margin:0 auto;border:12px solid #10151c;border-radius:46px;background:#fff;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.25);height:820px;position:relative}
+  .phone .notch{height:26px;background:#10151c;border-radius:0 0 16px 16px;width:150px;margin:0 auto;position:relative;z-index:2}
+  .phone .screen{height:calc(820px - 26px);overflow:auto;background:var(--bg)}
+  .pbar{background:var(--brand);color:#fff;padding:13px 16px;font-weight:700;display:flex;align-items:center;gap:8px;position:sticky;top:0;z-index:3}
+  .pbody{padding:14px}
+  .install{background:#10151c;color:#fff;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .install .ico{width:36px;height:36px;border-radius:9px;background:var(--brand);display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0}
+  .install .txt{font-size:12px;line-height:1.35}
+  .bigbtn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:var(--brand-soft);border:1px solid #cfe6e3;color:var(--brand);border-radius:14px;padding:15px;font-weight:700;font-size:12.5px;cursor:pointer;flex:1}
+  .bigbtn .em{font-size:23px}
+  @media(max-width:720px){
+    .wrap{padding:14px}
+    .grid{grid-template-columns:1fr 1fr}
+    .panel-h{flex-wrap:wrap}
+    .rolebar{flex-wrap:wrap}
+    .exp-h{flex-wrap:wrap}
+    .tableshell{overflow-x:auto}
+    table{min-width:760px}
+  }
+  /* I4 attention queue */
+  .queue-item{display:flex;align-items:center;gap:10px;padding:10px;border-bottom:1px solid var(--line)}
+  .queue-item:last-child{border-bottom:none}
+  .qtag{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.3px;padding:3px 7px;border-radius:6px;flex-shrink:0}
+  .qtag.approve{background:var(--info-soft);color:var(--info)}
+  .qtag.verify{background:var(--gold-soft);color:var(--gold)}
+  .qtag.interview{background:var(--warn-soft);color:var(--warn)}
+  .qtag.reopen{background:#efe6f7;color:#6b3fa0}
+  .qmain{flex:1;min-width:0}.qmain b{font-weight:600}.qmain small{color:var(--muted);display:block;font-size:12px}
+  /* I5 filters */
+  .filterchips{display:flex;gap:5px}
+  .fchip{border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:99px;padding:4px 11px;font-size:12px;font-weight:600;cursor:pointer}
+  .fchip.active{background:var(--brand-soft);color:var(--brand);border-color:#cfe6e3}
+  /* I6 snippets */
+  .snip{border:1px solid var(--line);background:#fff;border-radius:99px;padding:5px 10px;font-size:12px;cursor:pointer;color:#42505f;margin:0 4px 4px 0}
+  .snip:hover{background:#f4f6f8}
+  /* I1 what's next */
+  .todo{padding:8px 0 8px 28px;position:relative;border-bottom:1px solid var(--line);font-size:13.5px}
+  .todo:last-child{border-bottom:none}
+  .todo:before{content:'○';position:absolute;left:6px;color:var(--muted)}
+  .todo.done{color:var(--muted)}
+  .todo.done:before{content:'✓';color:var(--ok)}
+  /* I8 history */
+  .hist{display:none;margin-top:8px}.hist.show{display:block}
+  .ttype.sys{background:#eef1f4;color:#5b6470}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="logo">IB&nbsp;Core <span>· CAS</span></div>
+  <div class="rolebar">
+    <button class="rolebtn active" data-view="coord">Coordinator view</button>
+    <button class="rolebtn" data-view="student">Student view</button>
+    <button class="rolebtn" data-view="phone">📱 Student (phone)</button>
+    <button class="rolebtn" data-view="super">Supervisor sign-off</button>
+  </div>
+</header>
+
+<!-- ============ COORDINATOR ============ -->
+<div class="wrap view active" id="coord">
+  <h1>CAS Overview — Class of 2027 (Cohort 15)</h1>
+  <p class="sub">One row per student. Push a row to expand; open an experience to read its dated thread of reflections &amp; evidence. No separate pages.</p>
+
+  <!-- I7 cohort analytics -->
+  <div class="grid" style="margin-bottom:14px">
+    <div class="tile"><div class="k">Students</div><div class="v">24</div></div>
+    <div class="tile"><div class="k">At risk</div><div class="v" style="color:var(--warn)">3</div></div>
+    <div class="tile"><div class="k">Avg outcomes met</div><div class="v">5.4<small>/7</small></div></div>
+    <div class="tile"><div class="k">Projects complete</div><div class="v">18<small>/24</small></div></div>
+  </div>
+
+  <!-- I4 needs my attention -->
+  <div class="panel" style="margin-bottom:16px">
+    <div class="panel-h"><h2>⚑ Needs my attention</h2><span class="spacer"></span><span class="pill warn">5 items</span></div>
+    <div style="padding:2px 8px">
+      <div class="queue-item"><span class="qtag approve">Approve</span><div class="qmain"><b>Varsity football — season</b><small>Ahmed, Layla · submitted 20 Sep</small></div><button class="btn sm">Review</button></div>
+      <div class="queue-item"><span class="qtag verify">Verify form</span><div class="qmain"><b>Beach cleanup — signed paper form</b><small>Chen, Marcus · uploaded 8 Jun</small></div><button class="btn sm">Verify</button></div>
+      <div class="queue-item"><span class="qtag interview">Interview</span><div class="qmain"><b>Interim interview overdue</b><small>Okonkwo, Zara · was due 1 Jun</small></div><button class="btn sm">Schedule</button></div>
+      <div class="queue-item"><span class="qtag verify">Stalled</span><div class="qmain"><b>Tutoring — awaiting supervisor 21 days</b><small>Ahmed, Layla · consider completing on their behalf</small></div><button class="btn sm">Open</button></div>
+      <div class="queue-item"><span class="qtag reopen">Reopened</span><div class="qmain"><b>Food drive — returned for fix</b><small>Park, Sunwoo · reason: evidence didn't match LO3</small></div><button class="btn sm">Open</button></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-h">
+      <h2>Students</h2>
+      <span class="filterchips" style="margin-left:12px"><button class="fchip active">All</button><button class="fchip">At-risk</button><button class="fchip">Awaiting action</button></span>
+      <span class="spacer"></span>
+      <button class="btn sm ghost">↕ Sort: Name</button>
+      <button class="btn sm ghost">☑ Select</button>
+      <button class="btn sm">⤓ Export portfolios</button>
+    </div>
+    <div class="tableshell">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:190px">Student</th>
+          <th>Strands</th>
+          <th>Outcomes</th>
+          <th>Project</th>
+          <th>Unapproved</th>
+          <th>Awaiting completion</th>
+          <th>Interviews</th>
+          <th style="text-align:center">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Row 1 -->
+        <tr class="srow" onclick="toggleRow(this)">
+          <td class="name"><span class="chev">▶</span>Ahmed, Layla</td>
+          <td><span class="strand C">C</span><span class="strand A">A</span><span class="strand S">S</span></td>
+          <td><span class="pill ok">7/7</span></td>
+          <td><span class="pill ok">Complete</span></td>
+          <td><span class="count">0</span></td>
+          <td><span class="count">0</span></td>
+          <td><span class="pill info">3/3</span></td>
+          <td style="text-align:center"><button class="ind" title="Excellent" onclick="event.stopPropagation()">🏆</button></td>
+        </tr>
+        <tr class="drawer"><td colspan="8"><div class="drawer-inner">
+          <div class="tabs">
+            <div class="tab active" onclick="tab(this,'d1a')">Experiences (3)</div>
+            <div class="tab" onclick="tab(this,'d1b')">Interviews</div>
+            <div class="tab" onclick="tab(this,'d1c')">Notes</div>
+            <div style="margin-left:auto;align-self:center"><button class="btn sm">⤓ Export this student</button></div>
+          </div>
+          <div class="tabpane active" id="d1a">
+
+            <!-- COMPLETE via supervisor sign-off -->
+            <div class="exp expandable" onclick="toggleExp(this)">
+              <div class="exp-h">
+                <span class="strand C">C</span><span class="strand S">S</span>
+                <span class="t">Community mural project</span>
+                <span class="flag">PROJECT</span>
+                <span class="pill ok">Complete</span>
+                <span class="echev">▶</span>
+              </div>
+              <p class="exp-meta">Created 12 Mar · Supervisor: Ms. Okafor</p>
+              <div class="exp-detail" onclick="event.stopPropagation()">
+                <span class="lo">LO1 Strengths</span><span class="lo">LO3 Initiative</span><span class="lo">LO5 Collaboration</span>
+                <div class="note ok" style="margin-top:10px">✓ Completed automatically when Ms. Okafor signed off on 2 May. Reopen only if you find an issue.</div>
+                <div class="caps" style="margin-top:12px">Reflections &amp; evidence — newest first</div>
+                <div class="thread">
+                  <div class="tentry"><span class="tdate">2 May 2026</span><span class="ttype sup">Supervisor sign-off</span>
+                    <div class="tbody">Ms. Okafor confirmed LO1, LO3, LO5. "Layla led the design and coordinated 6 volunteers — excellent initiative."</div></div>
+                  <div class="tentry"><span class="tdate">28 Apr 2026</span><span class="ttype evid">Evidence</span>
+                    <div class="tbody">Finished mural + volunteer group photos
+                      <div class="thumbs"><div class="thumb">IMG</div><div class="thumb">IMG</div><div class="thumb"><span class="play">▶</span></div></div></div></div>
+                  <div class="tentry"><span class="tdate">15 Apr 2026</span><span class="ttype refl">Reflection</span>
+                    <div class="tbody">"Coordinating the volunteer schedule was harder than painting. I learned to delegate…"</div></div>
+                  <div class="tentry"><span class="tdate">12 Mar 2026</span><span class="ttype refl">Reflection</span>
+                    <div class="tbody">"Starting point — pitched the idea to the community centre and got approval."</div></div>
+                </div>
+                <div class="actionbar">
+                  <span class="lbl">Coordinator</span>
+                  <button class="btn danger sm" onclick="toggleCob(this)">↩ Reopen / un-complete</button>
+                  <span class="mut" style="font-size:12px">Complete by default — reopening notifies the student.</span>
+                </div>
+                <div class="cob">
+                  <label class="fld">Reason for reopening (required)</label>
+                  <input type="text" placeholder="e.g. Evidence doesn't clearly support LO3">
+                  <div style="margin-top:8px"><button class="btn danger sm">Confirm reopen</button></div>
+                </div>
+                <div style="margin-top:10px">
+                  <button class="btn sm ghost" onclick="toggleHist(this)">🕘 History (authenticity trail) ▾</button>
+                  <div class="hist">
+                    <div class="caps">Coordinator/admin only · append-only, tamper-evident record</div>
+                    <div class="thread" style="margin-top:8px">
+                      <div class="tentry"><span class="tdate">2 May 2026 · 09:14</span><span class="ttype sup">Sign-off</span><div class="tbody">Supervisor <b>Ms. Okafor</b> (okafor@brightwood.org) confirmed LO1, LO3, LO5 → experience marked <b>complete</b> automatically.</div></div>
+                      <div class="tentry"><span class="tdate">28 Apr 2026 · 16:02</span><span class="ttype evid">Evidence</span><div class="tbody">3 files uploaded by Layla (2 images, 1 video). Immutable.</div></div>
+                      <div class="tentry"><span class="tdate">15 Apr 2026 · 14:40</span><span class="ttype sys">Edit</span><div class="tbody">Reflection edited by Layla (v2 — prior version retained).</div></div>
+                      <div class="tentry"><span class="tdate">15 Apr 2026 · 14:32</span><span class="ttype refl">Reflection</span><div class="tbody">Reflection added by Layla.</div></div>
+                      <div class="tentry"><span class="tdate">15 Mar 2026 · 08:20</span><span class="ttype sys">Approved</span><div class="tbody">Approved by coordinator (M. Shmikie).</div></div>
+                      <div class="tentry"><span class="tdate">12 Mar 2026 · 10:05</span><span class="ttype sys">Created</span><div class="tbody">Experience created by Layla; strands C, S; outcomes LO1, LO3, LO5.</div></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- APPROVED, not yet complete -> coordinator can complete on behalf -->
+            <div class="exp expandable" onclick="toggleExp(this)">
+              <div class="exp-h">
+                <span class="strand S">S</span>
+                <span class="t">Tutoring younger students</span>
+                <span class="pill ok">Approved</span>
+                <span class="echev">▶</span>
+              </div>
+              <p class="exp-meta">Approved 18 Feb · awaiting supervisor sign-off</p>
+              <div class="exp-detail" onclick="event.stopPropagation()">
+                <span class="lo">LO2 Challenge</span><span class="lo">LO4 Commitment</span><span class="lo">LO5 Collaboration</span>
+                <div class="caps" style="margin-top:12px">Reflections &amp; evidence — newest first</div>
+                <div class="thread">
+                  <div class="tentry"><span class="tdate">2 Jun 2026</span><span class="ttype evid">Evidence</span>
+                    <div class="tbody">Session log &amp; thank-you note (PDF)<div class="thumbs"><div class="thumb">PDF</div></div></div></div>
+                  <div class="tentry"><span class="tdate">20 May 2026</span><span class="ttype refl">Reflection</span>
+                    <div class="tbody">"My student went from failing to a 5. Consistency mattered most."</div></div>
+                </div>
+                <div class="actionbar">
+                  <span class="lbl">Coordinator</span>
+                  <button class="btn pri sm" onclick="toggleCob(this)">✓ Mark complete on behalf of student</button>
+                  <button class="btn sm">Return with note</button>
+                  <span class="mut" style="font-size:12px">Use when a supervisor won't sign digitally.</span>
+                </div>
+                <div class="cob">
+                  <div class="caps">You're completing this — select the outcomes you see reflected in the experience</div>
+                  <div class="badgerow" style="margin-top:8px">
+                    <span class="chk"><input type="checkbox"> LO2 — Challenge &amp; new skills</span>
+                    <span class="chk"><input type="checkbox"> LO4 — Commitment</span>
+                    <span class="chk"><input type="checkbox"> LO5 — Collaboration</span>
+                  </div>
+                  <label class="fld">Comment (optional)</label>
+                  <textarea rows="2" placeholder="Note for the portfolio…"></textarea>
+                  <div style="margin-top:8px"><button class="btn pri sm">Confirm completion</button></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SUBMITTED, needs approval -->
+            <div class="exp expandable" onclick="toggleExp(this)">
+              <div class="exp-h">
+                <span class="strand A">A</span>
+                <span class="t">Varsity football — season</span>
+                <span class="pill info">Submitted</span>
+                <span class="echev">▶</span>
+              </div>
+              <p class="exp-meta">Created 20 Sep · awaiting your approval</p>
+              <div class="exp-detail" onclick="event.stopPropagation()">
+                <span class="lo">LO2 Challenge &amp; growth</span><span class="lo">LO4 Commitment</span>
+                <div class="caps" style="margin-top:12px">Reflections &amp; evidence — newest first</div>
+                <div class="thread">
+                  <div class="tentry"><span class="tdate">22 Sep 2025</span><span class="ttype refl">Reflection</span>
+                    <div class="tbody">"Committing to 5 practices a week around IB deadlines will be my challenge."</div></div>
+                </div>
+                <div class="actionbar">
+                  <span class="lbl">Coordinator</span>
+                  <button class="btn pri sm">Approve</button>
+                  <button class="btn sm" onclick="toggleCob(this)">Return with note</button>
+                  <button class="btn danger sm">Not a CAS experience</button>
+                </div>
+                <div class="cob">
+                  <div class="caps">Saved snippets — click to insert</div>
+                  <div class="badgerow" style="margin-top:6px">
+                    <button class="snip">Connect this more explicitly to each chosen outcome.</button>
+                    <button class="snip">Add at least one reflection before resubmitting.</button>
+                    <button class="snip">Upload evidence to authenticate this experience.</button>
+                    <button class="snip">Great start — clarify how this meets LO4.</button>
+                  </div>
+                  <textarea rows="3" placeholder="Note to student…"></textarea>
+                  <div style="margin-top:8px"><button class="btn pri sm">Send &amp; return</button></div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="tabpane" id="d1b">
+            <div class="exp">
+              <div class="cardhead"><b>Initial interview</b><span class="lock">🔒 locked</span>
+                <span style="margin-left:auto"><button class="btn sm">🔓 Unlock to edit</button>
+                <button class="btn sm ghost" onclick="openModal()">❓ Question bank</button></span></div>
+              <p class="exp-meta">Conducted 3 Oct 2025</p>
+              <p class="mut">Discussed goals for the year; Layla wants a service-heavy portfolio and one project…</p>
+            </div>
+            <div class="exp">
+              <div class="cardhead"><b>Interim interview</b><span class="lock">🔒 locked</span>
+                <span style="margin-left:auto"><button class="btn sm ghost" onclick="openModal()">❓ Question bank</button></span></div>
+              <p class="exp-meta">Conducted 4 Feb 2026</p>
+              <p class="mut">On track across all three strands; mural project underway…</p>
+            </div>
+            <div class="exp">
+              <div class="cardhead"><b>Final interview</b>
+                <span style="margin-left:auto"><button class="btn sm ghost" onclick="openModal()">❓ Question bank</button></span></div>
+              <label class="fld">Interview notes <span class="wc">Auto-locks on save</span></label>
+              <textarea rows="4" placeholder="Large text area for final interview notes…"></textarea>
+              <div class="row" style="margin-top:8px"><input type="text" style="max-width:150px" placeholder="Date"><button class="btn pri sm">Save &amp; lock</button></div>
+            </div>
+          </div>
+          <div class="tabpane" id="d1c">
+            <div class="note">Notes are messages to the student — for extra interviews or nudges. Student can see these.</div>
+            <label class="fld">Create note to student</label>
+            <textarea rows="3" placeholder="Write a note…"></textarea>
+            <div style="margin-top:8px"><button class="btn pri sm">Send note</button></div>
+          </div>
+        </div></td></tr>
+
+        <!-- Row 2 -->
+        <tr class="srow" onclick="toggleRow(this)">
+          <td class="name"><span class="chev">▶</span>Chen, Marcus</td>
+          <td><span class="strand C">C</span><span class="strand A">A</span><span class="strand off">S</span></td>
+          <td><span class="pill info">5/7</span></td>
+          <td><span class="pill info">In progress</span></td>
+          <td><span class="count hot">2</span></td>
+          <td><span class="count hot">1</span></td>
+          <td><span class="pill grey">1/3</span></td>
+          <td style="text-align:center"><button class="ind" title="On track" onclick="event.stopPropagation()">👍</button></td>
+        </tr>
+        <tr class="drawer"><td colspan="8"><div class="drawer-inner">
+          <div class="note warn">1 experience is <b>awaiting completion</b>: Marcus uploaded a signed paper form — open it to verify the signature and outcomes, then mark complete.</div>
+          <div class="exp expandable" style="margin-top:12px" onclick="toggleExp(this)">
+            <div class="exp-h"><span class="strand S">S</span><span class="t">Beach cleanup</span>
+              <span class="pill grey">Signed form uploaded</span><span class="echev">▶</span></div>
+            <p class="exp-meta">Supervisor: Mr. Diaz · form photographed 8 Jun</p>
+            <div class="exp-detail" onclick="event.stopPropagation()">
+              <div class="caps" style="margin-top:6px">Reflections &amp; evidence — newest first</div>
+              <div class="thread">
+                <div class="tentry"><span class="tdate">8 Jun 2026</span><span class="ttype evid">Evidence</span>
+                  <div class="tbody">Signed paper completion form<div class="thumbs"><div class="thumb">FORM</div></div></div></div>
+                <div class="tentry"><span class="tdate">1 Jun 2026</span><span class="ttype refl">Reflection</span>
+                  <div class="tbody">"Collected 40kg of waste with the class…"</div></div>
+              </div>
+              <div class="actionbar">
+                <span class="lbl">Coordinator</span>
+                <button class="btn pri sm">✓ Verify &amp; mark complete</button>
+                <button class="btn sm">Return to student</button>
+              </div>
+            </div>
+          </div>
+        </div></td></tr>
+
+        <!-- Row 3 -->
+        <tr class="srow" onclick="toggleRow(this)">
+          <td class="name"><span class="chev">▶</span>Okonkwo, Zara</td>
+          <td><span class="strand off">C</span><span class="strand A">A</span><span class="strand off">S</span></td>
+          <td><span class="pill warn">2/7</span></td>
+          <td><span class="pill grey">Not started</span></td>
+          <td><span class="count">0</span></td>
+          <td><span class="count">0</span></td>
+          <td><span class="pill grey">0/3</span></td>
+          <td style="text-align:center"><button class="ind" title="At risk" onclick="event.stopPropagation()">⚠️</button></td>
+        </tr>
+        <tr class="drawer"><td colspan="8"><div class="drawer-inner">
+          <div class="note warn">Auto-flag: no project started, 2/7 outcomes, no interviews conducted. Consider scheduling an initial interview.</div>
+        </div></td></tr>
+
+        <!-- Row 4 -->
+        <tr class="srow" onclick="toggleRow(this)">
+          <td class="name"><span class="chev">▶</span>Park, Sunwoo</td>
+          <td><span class="strand C">C</span><span class="strand A">A</span><span class="strand S">S</span></td>
+          <td><span class="pill info">6/7</span></td>
+          <td><span class="pill info">In progress</span></td>
+          <td><span class="count">0</span></td>
+          <td><span class="count">0</span></td>
+          <td><span class="pill info">2/3</span></td>
+          <td style="text-align:center"><button class="ind dim" title="Not yet assessed" onclick="event.stopPropagation()">⚪</button></td>
+        </tr>
+        <tr class="drawer"><td colspan="8"><div class="drawer-inner">
+          <div class="mut">Click the indicator ⚪ to set 👍 on-track · 🏆 excellent · ⚠️ at-risk.</div>
+        </div></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+
+<!-- ============ STUDENT ============ -->
+<div class="wrap view" id="student">
+  <h1>My CAS</h1>
+  <p class="sub">You can see only your own CAS. Your coordinator's status for you appears below.</p>
+
+  <div class="grid" style="margin-bottom:16px">
+    <div class="tile"><div class="k">Strands</div><div class="v"><span class="strand C">C</span><span class="strand A">A</span><span class="strand S">S</span></div></div>
+    <div class="tile"><div class="k">Learning outcomes</div><div class="v">7<small>/7 met</small></div></div>
+    <div class="tile"><div class="k">Project</div><div class="v" style="font-size:15px;padding-top:8px"><span class="pill ok">Complete</span></div></div>
+    <div class="tile"><div class="k">Coordinator status</div><div class="v" style="font-size:15px;padding-top:6px">🏆 <span style="font-size:13px;color:var(--gold);font-weight:700">Excellent</span></div></div>
+  </div>
+
+  <!-- I1 what's missing / next -->
+  <div class="panel" style="margin-bottom:16px">
+    <div class="panel-h"><h2>What's next for you</h2><span class="spacer"></span><span class="pill ok">On track</span></div>
+    <div style="padding:10px 18px">
+      <div class="todo done">All 7 learning outcomes evidenced</div>
+      <div class="todo done">CAS project complete</div>
+      <div class="todo">Add a reflection to “Varsity football” — nothing added in 3 weeks</div>
+      <div class="todo">Final interview not yet scheduled with your coordinator</div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-bottom:16px">
+    <div class="panel-h"><h2>My experiences</h2><span class="spacer"></span><button class="btn pri sm" onclick="document.getElementById('addexp').scrollIntoView({behavior:'smooth'})">+ Add experience</button></div>
+    <div style="padding:14px 18px">
+
+      <div class="exp expandable" onclick="toggleExp(this)">
+        <div class="exp-h"><span class="strand C">C</span><span class="strand S">S</span><span class="t">Community mural project</span><span class="flag">PROJECT</span><span class="pill ok">Complete ✓</span><span class="echev">▶</span></div>
+        <p class="exp-meta">Approved 15 Mar · Completed 2 May · 2 reflections, 1 evidence set</p>
+        <div class="exp-detail" onclick="event.stopPropagation()">
+          <div class="thread">
+            <div class="tentry"><span class="tdate">2 May 2026</span><span class="ttype sup">Supervisor sign-off</span><div class="tbody">Ms. Okafor confirmed LO1, LO3, LO5 — "excellent initiative."</div></div>
+            <div class="tentry"><span class="tdate">28 Apr 2026</span><span class="ttype evid">Evidence</span><div class="tbody"><div class="thumbs"><div class="thumb">IMG</div><div class="thumb">IMG</div><div class="thumb"><span class="play">▶</span></div></div></div></div>
+            <div class="tentry"><span class="tdate">15 Apr 2026</span><span class="ttype refl">Reflection</span><div class="tbody">"Coordinating the volunteer schedule was harder than painting…"</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="exp expandable" onclick="toggleExp(this)">
+        <div class="exp-h"><span class="strand S">S</span><span class="t">Tutoring younger students</span><span class="pill ok">Approved</span><span class="echev">▶</span></div>
+        <p class="exp-meta">Add reflections/evidence any time · then send to your supervisor</p>
+        <div class="exp-detail" onclick="event.stopPropagation()">
+          <div class="row" style="margin-bottom:8px">
+            <button class="btn pri sm">✎ Add reflection</button>
+            <button class="btn sm">⤒ Add evidence (photo/video/PDF)</button>
+            <span class="mut" style="font-size:12px">Each addition becomes a new dated entry below.</span>
+          </div>
+          <div class="row" style="margin-bottom:8px">
+            <span class="caps">Reflect with</span>
+            <button class="btn sm pri">✎ Text</button>
+            <button class="btn sm">🎤 Voice note</button>
+            <button class="btn sm">🎥 Video</button>
+          </div>
+          <div style="margin-bottom:8px">
+            <span class="caps">Prompts</span>
+            <button class="snip">What surprised you?</button>
+            <button class="snip">What would you do differently?</button>
+            <button class="snip">How did others respond?</button>
+          </div>
+          <div class="note" style="margin-bottom:8px">Write about <b>a paragraph</b> per reflection — the box is resizable, so make it as big as you need.</div>
+          <textarea class="big" rows="6" placeholder="Write your reflection here…"></textarea>
+          <div class="resize-hint">↕ Drag the bottom edge to make this taller — some students write a lot.</div>
+          <div style="margin:8px 0 4px"><button class="btn pri sm">Save dated reflection</button></div>
+          <div class="thread">
+            <div class="tentry"><span class="tdate">2 Jun 2026</span><span class="ttype evid">Evidence</span><div class="tbody"><div class="thumbs"><div class="thumb">PDF</div></div></div></div>
+            <div class="tentry"><span class="tdate">20 May 2026</span><span class="ttype refl">Reflection</span><div class="tbody">"My student went from failing to a 5…"</div></div>
+          </div>
+          <div class="note" style="margin-top:12px"><b>Ready to complete?</b> Email your supervisor a secure link to review &amp; sign, <b>or</b> print a form for paper sign-off, then photograph &amp; upload it.
+            <div class="row" style="margin-top:9px"><button class="btn sm pri">✉ Email supervisor</button><button class="btn sm">🖨 Print form</button></div></div>
+        </div>
+      </div>
+
+      <div class="exp expandable" onclick="toggleExp(this)">
+        <div class="exp-h"><span class="strand A">A</span><span class="t">Varsity football — season</span><span class="pill info">Submitted for approval</span><span class="echev">▶</span></div>
+        <p class="exp-meta">Waiting on coordinator</p>
+        <div class="exp-detail" onclick="event.stopPropagation()">
+          <div class="row" style="margin-bottom:6px"><button class="btn pri sm">✎ Add reflection</button><button class="btn sm">⤒ Add evidence</button></div>
+          <div class="thread"><div class="tentry"><span class="tdate">22 Sep 2025</span><span class="ttype refl">Reflection</span><div class="tbody">"Committing to 5 practices a week around IB deadlines will be my challenge."</div></div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="panel" id="addexp">
+    <div class="panel-h"><h2>Add an experience</h2></div>
+    <div style="padding:14px 18px">
+      <label class="fld">This experience is (choose one or more)</label>
+      <div class="badgerow">
+        <span class="chk"><input type="checkbox" checked> <span class="strand C">C</span> Creativity</span>
+        <span class="chk"><input type="checkbox"> <span class="strand A">A</span> Activity</span>
+        <span class="chk"><input type="checkbox" checked> <span class="strand S">S</span> Service</span>
+        <span class="chk" style="margin-left:6px"><input type="checkbox"> 🏆 This is a CAS project</span>
+      </div>
+      <label class="fld">Title</label>
+      <input type="text" placeholder="e.g. Community mural project">
+      <label class="fld">Description — explain <i>how</i> this experience will satisfy <b>each</b> learning outcome you choose</label>
+      <textarea rows="4" placeholder="Describe the experience and connect it to each outcome…"></textarea>
+      <label class="fld">Learning outcomes (choose one or more)</label>
+      <div class="badgerow">
+        <span class="chk"><input type="checkbox"> LO1 — Strengths &amp; growth areas</span>
+        <span class="chk"><input type="checkbox"> LO2 — Challenge &amp; new skills</span>
+        <span class="chk"><input type="checkbox"> LO3 — Initiate &amp; plan</span>
+        <span class="chk"><input type="checkbox"> LO4 — Commitment &amp; perseverance</span>
+        <span class="chk"><input type="checkbox"> LO5 — Collaboration</span>
+        <span class="chk"><input type="checkbox"> LO6 — Global engagement</span>
+        <span class="chk"><input type="checkbox"> LO7 — Ethics of action</span>
+      </div>
+      <div class="row" style="margin-top:14px"><button class="btn pri">Submit for approval</button><button class="btn">Save draft</button>
+        <span class="mut" style="margin-left:auto;font-size:12px">You can upload reflections &amp; evidence any time — even before approval.</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ STUDENT PHONE (PWA) ============ -->
+<div class="wrap view" id="phone">
+  <h1>CAS on your phone</h1>
+  <p class="sub">A student-only install ("Add to Home Screen") scoped to CAS — same Google sign-in. Built for capturing evidence and writing reflections on the go. Same codebase as the website.</p>
+  <div class="phone">
+    <div class="notch"></div>
+    <div class="screen">
+      <div class="pbar">📱 IB Core · CAS <span style="margin-left:auto;font-weight:600;font-size:12px">Layla</span></div>
+      <div class="pbody">
+        <div class="install"><div class="ico">IB</div><div class="txt"><b>Add CAS to your Home Screen</b><br>Upload photos &amp; write reflections anytime — no App Store needed.</div><button class="btn sm">Install</button></div>
+
+        <div class="grid" style="grid-template-columns:1fr 1fr 1fr;gap:8px">
+          <div class="tile" style="padding:10px"><div class="k">Strands</div><div class="v" style="font-size:14px;margin-top:6px"><span class="strand C" style="width:17px;height:17px">C</span><span class="strand A" style="width:17px;height:17px">A</span><span class="strand S" style="width:17px;height:17px">S</span></div></div>
+          <div class="tile" style="padding:10px"><div class="k">Outcomes</div><div class="v" style="font-size:18px">7<small>/7</small></div></div>
+          <div class="tile" style="padding:10px"><div class="k">Status</div><div class="v" style="font-size:17px;margin-top:5px">🏆</div></div>
+        </div>
+
+        <div class="note" style="margin-top:12px">⚑ <b>Next:</b> add a reflection to Varsity football — nothing in 3 weeks.</div>
+
+        <div class="exp" style="margin-top:14px">
+          <div class="exp-h"><span class="strand S">S</span><span class="t">Tutoring younger students</span></div>
+          <p class="exp-meta">Approved · add evidence &amp; reflections</p>
+          <div class="row" style="gap:8px;margin-top:12px">
+            <button class="bigbtn"><span class="em">📷</span>Take photo / video</button>
+            <button class="bigbtn"><span class="em">🖼</span>Upload from phone</button>
+          </div>
+          <div class="row" style="gap:8px;margin-top:8px">
+            <button class="bigbtn" style="padding:12px"><span class="em">🎤</span>Voice reflection</button>
+            <button class="bigbtn" style="padding:12px"><span class="em">🎥</span>Video reflection</button>
+          </div>
+          <label class="fld">Or write a reflection</label>
+          <div style="margin-bottom:8px">
+            <button class="snip">What surprised you?</button>
+            <button class="snip">What would you do differently?</button>
+          </div>
+          <textarea class="big" rows="5" placeholder="Aim for at least a paragraph…"></textarea>
+          <div class="resize-hint">↕ Drag to expand — write as much as you like.</div>
+          <button class="btn pri" style="width:100%;margin-top:10px">Save dated reflection</button>
+
+          <div class="caps" style="margin-top:16px">Recent</div>
+          <div class="thread" style="margin-top:8px">
+            <div class="tentry"><span class="tdate">2 Jun</span><span class="ttype evid">Evidence</span><div class="tbody"><div class="thumbs"><div class="thumb">PDF</div></div></div></div>
+            <div class="tentry"><span class="tdate">20 May</span><span class="ttype refl">Reflection</span><div class="tbody">"My student went from failing to a 5…"</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SUPERVISOR ============ -->
+<div class="wrap view" id="super">
+  <div class="panel" style="max-width:620px;margin:10px auto">
+    <div class="panel-h"><h2>CAS experience — sign-off</h2><span class="spacer"></span><span class="lock">🔗 Secure link · expires in 28 days</span></div>
+    <div style="padding:16px 18px">
+      <div class="note">You've been asked by <b>Layla</b> to review a CAS experience and confirm which learning outcomes you saw evidence of. You do <b>not</b> need to confirm every outcome — only the ones the student has justified. Please look at the reflections and evidence first. No account needed.</div>
+
+      <h3 style="margin:16px 0 2px">Tutoring younger students</h3>
+      <p class="mut" style="margin:0 0 8px">Service · submitted by Layla</p>
+      <p><b>Student's note to you:</b> "Thank you for supervising my weekly tutoring. Please confirm the outcomes you saw and add any comment for my portfolio."</p>
+
+      <div class="caps" style="margin-top:12px">Evidence (view inline — no download)</div>
+      <div class="thumbs"><div class="thumb">IMG</div><div class="thumb">IMG</div><div class="thumb">PDF</div><div class="thumb"><span class="play">▶</span></div></div>
+
+      <div class="divider"></div>
+      <div class="caps">Outcomes the student is claiming — check the ones you saw evidence of</div>
+      <div class="badgerow" style="margin-top:8px">
+        <span class="chk"><input type="checkbox"> LO2 — Challenge &amp; new skills</span>
+        <span class="chk"><input type="checkbox"> LO4 — Commitment</span>
+        <span class="chk"><input type="checkbox"> LO5 — Collaboration</span>
+      </div>
+
+      <label class="fld">Comment to the student (encouraged)</label>
+      <textarea rows="3" placeholder="A few words for Layla's portfolio…"></textarea>
+
+      <div class="row" style="margin-top:12px">
+        <input type="text" placeholder="Type your full name as signature" style="max-width:260px">
+        <input type="text" placeholder="Date" style="max-width:130px">
+      </div>
+      <div class="note ok" style="margin-top:12px">On sign-off this experience is marked <b>complete</b> and the outcomes are added to Layla's overview automatically.</div>
+      <div style="margin-top:12px"><button class="btn pri">Confirm &amp; sign off</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- question bank modal -->
+<div class="modal-bg" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-h"><b>Interview question bank — Initial interview</b><span style="margin-left:auto"><button class="btn sm ghost" onclick="closeModal()">✕</button></span></div>
+    <div class="modal-b">
+      <p class="mut">Suggested prompts you can work through during the interview.</p>
+      <ol class="qs">
+        <li>What experiences are you most looking forward to this year?</li>
+        <li>Which learning outcomes feel most natural to you, and which will stretch you?</li>
+        <li>Do you have an idea for your CAS project yet? Who might you collaborate with?</li>
+        <li>How will you balance CAS with your academic workload?</li>
+        <li>What does a successful CAS year look like to you?</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.rolebtn').forEach(b=>b.onclick=()=>{
+    document.querySelectorAll('.rolebtn').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');document.getElementById(b.dataset.view).classList.add('active');
+    window.scrollTo(0,0);
+  });
+  function toggleRow(tr){
+    tr.classList.toggle('open');
+    const d=tr.nextElementSibling;
+    d.style.display = d.style.display==='table-row' ? 'none' : 'table-row';
+  }
+  function toggleExp(el){ el.classList.toggle('open'); }
+  function toggleCob(btn){ const c=btn.closest('.actionbar').nextElementSibling; c.classList.toggle('show'); }
+  function toggleHist(btn){ btn.nextElementSibling.classList.toggle('show'); }
+  document.querySelectorAll('.snip').forEach(s=>s.onclick=function(e){
+    e.stopPropagation();
+    const box=this.closest('.cob,.exp-detail,.pbody')?.querySelector('textarea');
+    if(box){ box.value += (box.value?' ':'')+this.textContent; box.focus(); }
+  });
+  function tab(el,id){
+    const box=el.closest('.drawer-inner');
+    box.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    box.querySelectorAll('.tabpane').forEach(x=>x.classList.remove('active'));
+    el.classList.add('active');box.querySelector('#'+id).classList.add('active');
+  }
+  function openModal(){event.stopPropagation();document.getElementById('modal').classList.add('show');}
+  function closeModal(){document.getElementById('modal').classList.remove('show');}
+  document.querySelectorAll('tr.drawer').forEach(d=>d.style.display='none');
+</script>
+</body>
+</html>
