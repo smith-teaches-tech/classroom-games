@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prove It — CAS · Class 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3eee1; --paper-2:#ece5d3;
+    --ink:#1f1c17; --ink-soft:#4a4339; --rule:#cbbfa3;
+    --nasa:#1d3b5c; --green:#39563f; --amber:#b9892f;
+    --hl:rgba(185,137,47,.26); --hl-strong:rgba(185,137,47,.5);
+    --bad:#8a3324; --good:#39563f;
+    --presence:#7a7266; --growth:#39563f;
+    --shadow:0 18px 50px -22px rgba(31,28,23,.5);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(120% 90% at 80% -10%, rgba(29,59,92,.07), transparent 60%),
+      radial-gradient(120% 90% at 0% 110%, rgba(57,86,63,.08), transparent 55%),
+      var(--paper);
+    color:var(--ink);
+    font-family:"Cormorant Garamond", Georgia, serif;
+    font-size:20px; line-height:1.5; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:940px;margin:0 auto;padding:0 26px 120px;}
+  .mono{font-family:"JetBrains Mono", monospace;}
+
+  header{padding:64px 0 30px;border-bottom:2px solid var(--ink);margin-bottom:8px;}
+  .kicker{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--amber);margin:0 0 18px;}
+  h1{font-size:clamp(38px,6.6vw,64px);line-height:.99;font-weight:600;margin:0;letter-spacing:-.015em;}
+  h1 em{font-style:italic;color:var(--nasa);}
+  .sub{font-size:22px;color:var(--ink-soft);margin:18px 0 0;max-width:60ch;font-style:italic;}
+  .target{font-family:"JetBrains Mono",monospace;font-size:12.5px;line-height:1.6;text-transform:uppercase;letter-spacing:.08em;margin-top:26px;padding:14px 18px;border:1px solid var(--rule);background:rgba(255,255,255,.35);color:var(--ink-soft);}
+  .target b{color:var(--ink);}
+
+  section{padding:52px 0 8px;}
+  .sec-num{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.2em;color:var(--amber);}
+  h2{font-size:clamp(26px,4.2vw,38px);font-weight:600;margin:6px 0 14px;letter-spacing:-.01em;line-height:1.03;}
+  h2 .step-c{color:var(--nasa);}
+  .lede{font-size:21px;color:var(--ink-soft);margin:0 0 26px;max-width:64ch;}
+
+  .legend-strands{display:flex;flex-wrap:wrap;gap:10px;margin:2px 0 22px;font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;}
+  .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1.5px solid var(--ink);}
+  .badge .swatch{width:12px;height:12px;display:inline-block;}
+  .badge.pr .swatch{background:var(--presence);} .badge.gr .swatch{background:var(--growth);}
+
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 22px;}
+  .controls button{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;padding:10px 16px;border:1.5px solid var(--ink);background:var(--paper-2);color:var(--ink);cursor:pointer;transition:transform .12s, background .15s;}
+  .controls button:hover{transform:translateY(-2px);background:var(--paper);}
+  .controls .primary{background:var(--ink);color:var(--paper);}
+
+  /* detective flip deck */
+  .deck{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;}
+  .card{perspective:1200px;min-height:196px;cursor:pointer;}
+  .card-inner{position:relative;width:100%;height:100%;min-height:196px;transition:transform .5s cubic-bezier(.4,.15,.2,1);transform-style:preserve-3d;}
+  .card.flipped .card-inner{transform:rotateY(180deg);}
+  .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border:1.5px solid var(--ink);padding:18px;display:flex;flex-direction:column;box-shadow:var(--shadow);}
+  .front{background:rgba(255,255,255,.55);}
+  .front .cnum{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--amber);letter-spacing:.14em;}
+  .front .ctext{font-size:21px;line-height:1.22;margin:auto 0 0;}
+  .front .cq{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-top:12px;}
+  .back{background:var(--paper-2);transform:rotateY(180deg);}
+  .vbadge{align-self:flex-start;font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border:1.5px solid var(--ink);color:#fff;margin-bottom:10px;}
+  .vbadge.pr{background:var(--presence);} .vbadge.gr{background:var(--growth);}
+  .back .why{font-size:16.5px;line-height:1.34;margin:0;overflow:auto;}
+  .back .why b{color:var(--nasa);}
+  .payoff{margin-top:26px;border-left:3px solid var(--amber);background:var(--paper-2);padding:16px 20px;font-size:20px;line-height:1.4;}
+  .payoff b{color:var(--nasa);}
+
+  /* wizard */
+  .modebar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 20px;font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);}
+  .modebar .mbtn{padding:9px 15px;border:1.5px solid var(--ink);background:var(--paper-2);color:var(--ink);cursor:pointer;}
+  .modebar .mbtn.on{background:var(--nasa);color:#fff;border-color:var(--nasa);}
+  .dots{display:flex;gap:8px;margin:0 0 20px;flex-wrap:wrap;}
+  .dot{flex:1;min-width:120px;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:10px 12px;border:1.5px solid var(--rule);background:rgba(255,255,255,.35);color:var(--ink-soft);text-align:center;}
+  .dot.on{border-color:var(--ink);background:var(--ink);color:var(--paper);}
+  .dot b{display:block;font-size:15px;letter-spacing:0;text-transform:none;font-family:"Cormorant Garamond",serif;margin-top:2px;}
+  .panel{display:none;border:1.5px solid var(--rule);background:rgba(255,255,255,.42);padding:28px 30px;box-shadow:var(--shadow);}
+  .panel.on{display:block;animation:fade .3s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .panel h3{font-size:27px;margin:0 0 6px;font-weight:600;}
+  .panel .phelp{font-size:18px;color:var(--ink-soft);font-style:italic;margin:0 0 22px;}
+  .fieldlabel{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin:22px 0 10px;}
+  .activity-box{font-size:22px;line-height:1.3;border:1.5px solid var(--ink);background:var(--paper-2);padding:16px 18px;}
+  input.txt,textarea.txt{width:100%;font-family:"Cormorant Garamond",serif;font-size:20px;padding:12px 15px;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);}
+  textarea.txt{min-height:96px;resize:vertical;line-height:1.4;}
+  input.txt:focus,textarea.txt:focus{outline:2px solid var(--amber);outline-offset:1px;}
+  .chiprow{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip-toggle{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.04em;padding:9px 14px;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer;transition:transform .1s;}
+  .chip-toggle:hover{transform:translateY(-1px);}
+  .chip-toggle.on{color:#fff;}
+  .chip-toggle.on[data-strand="c"]{background:var(--amber);border-color:var(--amber);}
+  .chip-toggle.on[data-strand="a"]{background:var(--green);border-color:var(--green);}
+  .chip-toggle.on[data-strand="s"]{background:var(--nasa);border-color:var(--nasa);}
+  .chip-toggle.oc.on{background:var(--nasa);border-color:var(--nasa);}
+  .warn{font-size:16px;color:var(--bad);font-style:italic;margin-top:10px;min-height:1.2em;}
+
+  /* evidence add + tag */
+  .addrow{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+  .addrow input{flex:1;min-width:220px;}
+  .addrow button{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:12px 20px;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer;}
+  .erow{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:12px 4px;border-bottom:1px solid var(--rule);}
+  .erow.is-gr{background:rgba(57,86,63,.07);}
+  .erow .etext{flex:1;min-width:170px;font-size:20px;}
+  .etags{display:flex;gap:6px;}
+  .etags button{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:6px 11px;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer;}
+  .etags button.on.pr{background:var(--presence);color:#fff;border-color:var(--presence);}
+  .etags button.on.gr{background:var(--growth);color:#fff;border-color:var(--growth);}
+  .etally{font-family:"JetBrains Mono",monospace;font-size:14px;color:var(--nasa);margin:16px 0 0;font-style:italic;}
+  .etally b{font-style:normal;color:var(--growth);font-size:20px;}
+
+  /* timeline */
+  .timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:6px;position:relative;}
+  @media(max-width:760px){.timeline{grid-template-columns:1fr;}}
+  .tnode{border:1.5px solid var(--rule);background:var(--paper-2);padding:14px;display:flex;flex-direction:column;gap:8px;}
+  .tnode .twhen{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);}
+  .tnode .tlab{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-top:4px;}
+  .tnode input,.tnode textarea{width:100%;font-family:"Cormorant Garamond",serif;font-size:16px;padding:8px 10px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);}
+  .tnode textarea{min-height:66px;resize:vertical;line-height:1.32;}
+  .tnode .evslot input{border-left:3px solid var(--presence);}
+  .tnode .refslot textarea{border-left:3px solid var(--growth);font-style:italic;}
+  .threadnote{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink-soft);margin-top:16px;text-transform:uppercase;letter-spacing:.05em;}
+
+  /* final reflection */
+  .glow{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:6px 0 20px;}
+  @media(max-width:680px){.glow{grid-template-columns:1fr;}}
+  .gcard{border:1.5px solid var(--rule);padding:18px 20px;background:var(--paper-2);}
+  .gcard .glabel{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;margin:0 0 10px;}
+  .gcard.weak{border-left:4px solid var(--bad);} .gcard.weak .glabel{color:var(--bad);}
+  .gcard.strong{border-left:4px solid var(--growth);} .gcard.strong .glabel{color:var(--growth);}
+  .gcard p{font-size:17.5px;line-height:1.4;margin:0;}
+  .gcard.strong p em{font-style:italic;background:var(--hl);}
+  .thread-pull{border:1px dashed var(--rule);background:rgba(255,255,255,.4);padding:16px 18px;margin:6px 0 18px;font-size:17px;}
+  .thread-pull .tp-h{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin:0 0 10px;}
+  .thread-pull ul{margin:0;padding-left:20px;} .thread-pull li{margin-bottom:6px;line-height:1.35;}
+  .scaffold{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink-soft);line-height:1.9;margin:0 0 12px;}
+  .scaffold b{color:var(--nasa);}
+  .copybtn{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;padding:11px 20px;border:1.5px solid var(--ink);background:var(--paper-2);color:var(--ink);cursor:pointer;margin-top:12px;}
+  .copybtn:hover{background:var(--paper);}
+
+  .navbtns{display:flex;justify-content:space-between;gap:12px;margin-top:20px;}
+  .navbtns button{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:12px 22px;border:1.5px solid var(--ink);background:var(--paper-2);color:var(--ink);cursor:pointer;}
+  .navbtns button.next{background:var(--ink);color:var(--paper);}
+  .navbtns button:disabled{opacity:.35;cursor:default;}
+
+  .handoff{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:6px;}
+  @media(max-width:640px){.handoff{grid-template-columns:1fr;}}
+  .hcard{border:1.5px solid var(--ink);background:rgba(255,255,255,.5);padding:22px 24px;box-shadow:var(--shadow);}
+  .hcard .ht{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin:0 0 10px;}
+  .hcard p{margin:0;font-size:19px;line-height:1.4;}
+  .exit{border:1.5px solid var(--ink);background:rgba(255,255,255,.5);padding:26px 28px;margin-top:20px;box-shadow:var(--shadow);}
+  .exit .ct{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin:0 0 12px;}
+  .exit .cq{font-size:23px;line-height:1.3;margin:0;font-style:italic;}
+
+  footer{margin-top:60px;padding-top:24px;border-top:2px solid var(--ink);font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.06em;color:var(--ink-soft);text-transform:uppercase;}
+
+  @media print{
+    @page{margin:12mm;}
+    body{background:var(--paper);font-size:12pt;}
+    .wrap{max-width:none;padding:0;}
+    header,.controls,.legend-strands,.modebar,.dots,.navbtns,#handoffSec,footer,.noprint{display:none !important;}
+    section{padding:0;}
+    .card{perspective:none;min-height:46mm;break-inside:avoid;}
+    .card-inner{transform:none !important;min-height:46mm;}
+    .back{display:none !important;}
+    .front{position:relative;border:1.5pt dashed #555;box-shadow:none;background:#fff;height:100%;}
+    .front .cq{display:none;}
+    .panel{display:block !important;border:1.5pt solid #555;box-shadow:none;break-inside:avoid;margin-bottom:6mm;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="kicker">CAS · Class 2 · Evidence &amp; Reflection</p>
+    <h1>Prove It <em>— evidence you actually grew</em></h1>
+    <p class="sub">A photo proves you showed up. It can't prove you changed. Today we separate the two — then build a whole CAS experience, start to finish, the way it actually earns an outcome.</p>
+    <p class="target"><b>By the end of today:</b> I can tell evidence of <b>presence</b> from evidence of <b>growth</b>, and I can plan an experience as a thread over time — repeated reflection, culminating in a final reflection.</p>
+  </header>
+
+  <!-- PART 1 — EVIDENCE DETECTIVE -->
+  <section>
+    <span class="sec-num">00 / THE EVIDENCE DETECTIVE</span>
+    <h2>Sam's juggling pile — what actually <span class="step-c">counts</span>?</h2>
+    <p class="lede">Sam is learning to juggle for the talent show and uploaded all this as "evidence." For each exhibit, <b>commit first</b>: does it prove Sam <em>learned something</em>, or just that Sam <em>was there</em>? Then flip it.</p>
+    <div class="legend-strands">
+      <span class="badge pr"><span class="swatch"></span>Presence — you were there</span>
+      <span class="badge gr"><span class="swatch"></span>Growth — you changed</span>
+    </div>
+    <div class="controls noprint">
+      <button id="revealAll">Reveal all</button>
+      <button id="resetAll">Reset</button>
+      <button class="primary" id="printCards">Print the exhibit cards</button>
+    </div>
+    <div class="deck" id="deck"></div>
+    <div class="payoff">Evidence proves you were <b>there</b>. Reflection proves you <b>changed</b>. CAS grades the change — so your pile needs growth in it, not just attendance.</div>
+  </section>
+
+  <!-- PART 2 — BUILD AN EXPERIENCE -->
+  <section id="builder">
+    <span class="sec-num">01 / BUILD ONE PROPERLY</span>
+    <h2>An experience is a <span class="step-c">thread</span>, not a moment</h2>
+    <p class="lede">Now we build a full experience end to end. Follow Sam's juggling on the board — then switch to <b>Make it mine</b> and plan your own.</p>
+    <div class="modebar">
+      <span>Mode:</span>
+      <button class="mbtn on" id="modeDemo">Sam's juggling (demo)</button>
+      <button class="mbtn" id="modeMine">Make it mine (blank)</button>
+    </div>
+
+    <div class="dots" id="dots">
+      <div class="dot on" data-step="1">Step 1<b>Claim it</b></div>
+      <div class="dot" data-step="2">Step 2<b>Brainstorm evidence</b></div>
+      <div class="dot" data-step="3">Step 3<b>Over time</b></div>
+      <div class="dot" data-step="4">Step 4<b>Final reflection</b></div>
+    </div>
+
+    <!-- STEP 1 -->
+    <div class="panel on" id="p1">
+      <h3>Claim it</h3>
+      <p class="phelp">What are you doing, which strand(s) does it live in, which outcome(s) will it grow — and <em>why</em>? The "why" is the part people skip.</p>
+      <div class="fieldlabel">The experience</div>
+      <div id="actWrap"></div>
+      <div class="fieldlabel">Strand(s) — pick one or two</div>
+      <div class="chiprow" id="strandRow">
+        <button class="chip-toggle" data-strand="c">Creativity</button>
+        <button class="chip-toggle" data-strand="a">Activity</button>
+        <button class="chip-toggle" data-strand="s">Service</button>
+      </div>
+      <div class="fieldlabel">Learning outcome(s) — one or two, no more</div>
+      <div class="chiprow" id="ocRow"></div>
+      <div class="warn" id="ocWarn"></div>
+      <div class="fieldlabel">Justify it — why does this experience grow that outcome?</div>
+      <textarea class="txt" id="justify" placeholder="Because…"></textarea>
+      <div class="navbtns"><button disabled>‹ Back</button><button class="next" data-go="2">Next: evidence ›</button></div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="panel" id="p2">
+      <h3>Brainstorm the evidence</h3>
+      <p class="phelp">What could you capture? Add anything — then tag each piece <b>presence</b> or <b>growth</b>. Aim for real growth in the pile, not just proof you turned up.</p>
+      <div class="addrow noprint">
+        <input class="txt" id="evAdd" placeholder="e.g. a clip of me dropping the balls in week 1">
+        <button id="evAddBtn">Add</button>
+      </div>
+      <div id="evList"></div>
+      <p class="etally" id="evTally"></p>
+      <div class="navbtns"><button class="back" data-go="1">‹ Back</button><button class="next" data-go="3">Next: over time ›</button></div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="panel" id="p3">
+      <h3>Organize it over time</h3>
+      <p class="phelp">This is the part students miss: an experience isn't one entry. Evidence piles up across weeks, and you reflect <em>each time</em> — not once at the end. Fill each checkpoint with a piece of evidence and a short reflection.</p>
+      <div class="timeline" id="timeline"></div>
+      <p class="threadnote">↑ Four checkpoints. Notice the reflections building on each other — that's the thread the final reflection will pull together.</p>
+      <div class="navbtns"><button class="back" data-go="2">‹ Back</button><button class="next" data-go="4">Next: the final reflection ›</button></div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="panel" id="p4">
+      <h3>The final reflection</h3>
+      <p class="phelp">The culmination pulls the whole thread together. Compare a weak one with a strong one — then write yours.</p>
+      <div class="glow">
+        <div class="gcard weak">
+          <p class="glabel">✗ Weak — could be about anything</p>
+          <p id="weakFinal"></p>
+        </div>
+        <div class="gcard strong">
+          <p class="glabel">✓ Strong — references the arc</p>
+          <p id="strongFinal"></p>
+        </div>
+      </div>
+      <div class="thread-pull">
+        <p class="tp-h">Your raw material — pulled from the steps above</p>
+        <ul id="threadPull"></ul>
+      </div>
+      <div class="scaffold">
+        Answer these, in order: <b>1.</b> What did you set out to grow? &nbsp; <b>2.</b> What does your evidence show? &nbsp; <b>3.</b> How did your thinking change from your first reflection to your last? &nbsp; <b>4.</b> What next?
+      </div>
+      <textarea class="txt" id="finalRef" placeholder="Write your final reflection here…" style="min-height:150px;"></textarea>
+      <button class="copybtn noprint" id="copyFinal">Copy my reflection</button>
+      <div class="navbtns"><button class="back" data-go="3">‹ Back</button><button disabled>Done</button></div>
+    </div>
+  </section>
+
+  <!-- HANDOFF -->
+  <section id="handoffSec">
+    <span class="sec-num">02 / WHERE IT LIVES</span>
+    <h2>Every piece of this has a home in <span class="step-c">ManageBac</span></h2>
+    <p class="lede">Everything you just built on the board is exactly what ManageBac asks for — it only looks like admin until you've done it once by hand.</p>
+    <div class="handoff">
+      <div class="hcard"><p class="ht">The proposal</p><p>Your experience + strand(s) + outcome(s) + the justification = the "Add CAS Experience" form.</p></div>
+      <div class="hcard"><p class="ht">The reflections &amp; evidence</p><p>Your checkpoints = reflections added over time, each with its evidence attached — not one upload at the end.</p></div>
+    </div>
+    <div class="exit">
+      <p class="ct">Exit ticket — in your notebook</p>
+      <p class="cq">One piece of evidence you'd collect for <em>your</em> first experience — and whether it proves presence or growth.</p>
+    </div>
+  </section>
+
+  <footer>CAS · Class 2 of 3 · Evidence &amp; Reflection — the thread over time · next: Fix One Thing (your first experience)</footer>
+</div>
+
+<script>
+/* ---------- PART 1: evidence detective ---------- */
+const EXHIBITS=[
+  {t:"A selfie holding the juggling balls", v:"pr", why:"<b>Presence.</b> Proves you owned some juggling balls and took a photo. Nothing about learning."},
+  {t:"Week-1 clip: drops after 2 catches", v:"gr", why:"<b>Growth</b> — as one half of a pair. On its own it's a starting point; set beside a later clip it becomes proof of change."},
+  {t:"Week-6 clip: a 30-catch run", v:"gr", why:"<b>Growth.</b> Next to the week-1 clip, this is visible improvement — the strongest kind of evidence."},
+  {t:"20 near-identical photos of the balls", v:"pr", why:"<b>Presence ×20.</b> Volume isn't growth. Twenty photos prove attendance exactly as well as one does."},
+  {t:"“Juggling was fun, I learned patience.”", v:"pr", why:"<b>Presence-in-disguise.</b> It looks like reflection but names no specific change — it could be written by someone who never juggled. Vague = doesn't count."},
+  {t:"“I filmed myself and saw I watch my hands, not the peak — fixing my gaze changed everything.”", v:"gr", why:"<b>Growth.</b> A specific shift in understanding, in your own words. This is what a reflection is <em>for</em>."},
+  {t:"Practice log: dates + minutes, 8 weeks", v:"gr", why:"<b>Growth</b> — evidence of commitment (outcome 4). It shows perseverance over time, especially paired with a reflection on the weeks you nearly quit."},
+  {t:"A friend's text: “that was impressive”", v:"pr", why:"<b>Presence.</b> Kind, but it's someone else's reaction, not evidence of <em>your</em> learning. A coordinator's note on how you improved would be different."}
+];
+const deck=document.getElementById('deck');
+EXHIBITS.forEach((ex,i)=>{
+  const el=document.createElement('div'); el.className='card';
+  el.innerHTML='<div class="card-inner">'+
+    '<div class="face front"><span class="cnum">EXHIBIT '+String(i+1).padStart(2,'0')+'</span>'+
+    '<p class="ctext">'+ex.t+'</p><p class="cq">Presence or growth? &rarr; flip</p></div>'+
+    '<div class="face back"><span class="vbadge '+ex.v+'">'+(ex.v==='pr'?'Presence':'Growth')+'</span><p class="why">'+ex.why+'</p></div></div>';
+  el.addEventListener('click',()=>el.classList.toggle('flipped'));
+  deck.appendChild(el);
+});
+document.getElementById('revealAll').addEventListener('click',()=>document.querySelectorAll('.deck .card').forEach(c=>c.classList.add('flipped')));
+document.getElementById('resetAll').addEventListener('click',()=>document.querySelectorAll('.deck .card').forEach(c=>c.classList.remove('flipped')));
+document.getElementById('printCards').addEventListener('click',()=>{document.querySelectorAll('.deck .card').forEach(c=>c.classList.remove('flipped'));window.print();});
+
+/* ---------- PART 2: wizard ---------- */
+const OUTCOMES=[
+  "Strengths & growth","Challenge / new skill","Initiate & plan","Commitment",
+  "Collaboration","Global issues","Ethics of choices"
+];
+const DEMO={
+  activity:"Learning to juggle three balls to perform at the school talent show.",
+  strands:["a","c"],
+  outcomes:[2,4],
+  justify:"I'd never juggled, so it was a genuine challenge (#2). And the talent-show date meant I had to keep practising on the days I wanted to quit — that's commitment (#4), not just showing up.",
+  evidence:[
+    {t:"Week-1 clip: I drop after 2 catches", k:"gr"},
+    {t:"Week-6 clip: a 30-catch run", k:"gr"},
+    {t:"Reflection: “I watch my hands, not the peak”", k:"gr"},
+    {t:"Practice log: dates + minutes, 8 weeks", k:"gr"},
+    {t:"Selfie with the juggling balls", k:"pr"}
+  ],
+  timeline:[
+    {when:"Week 1",ev:"Clip: drops after 2 catches",ref:"Way harder than I thought — I can't even do two in a row. Tempted to give up already."},
+    {when:"Week 3",ev:"Practice log, ~20 min/day",ref:"Filmed myself: I stare at my hands, not the top of the arc. Going to try fixing my gaze."},
+    {when:"Week 6",ev:"Clip: a 30-catch run",ref:"The gaze fix worked. Now the problem isn't my hands, it's stamina and nerves."},
+    {when:"Talent Show",ev:"Performance video + reaction",ref:"Dropped once, recovered, kept going. A month ago I'd have frozen and walked off."}
+  ],
+  weakFinal:"Juggling was fun and I learned patience and commitment. Overall it was a good experience and I'm glad I did it.",
+  strongFinal:"In week 1 I couldn't manage two catches and assumed I was just uncoordinated. <em>Filming myself in week 3 showed the real problem was my gaze</em>, and fixing it got me to a 30-catch run by week 6. Performing — <em>dropping once and recovering instead of freezing</em> — showed me that commitment wasn't only the practising; it was staying in it when it went wrong in front of people. Next I want to learn a four-ball pattern."
+};
+const BLANK={activity:"",strands:[],outcomes:[],justify:"",evidence:[],
+  timeline:[{when:"Checkpoint 1",ev:"",ref:""},{when:"Checkpoint 2",ev:"",ref:""},{when:"Checkpoint 3",ev:"",ref:""},{when:"Final session",ev:"",ref:""}],
+  weakFinal:"It was fun and I learned a lot. Good experience.",
+  strongFinal:"(Your strong version references specific evidence and shows how your thinking changed from the first checkpoint to the last.)"};
+
+let mode="demo";
+let S=clone(DEMO);
+function clone(o){return JSON.parse(JSON.stringify(o));}
+function esc(s){return (s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+/* step 1 */
+function renderStep1(){
+  const aw=document.getElementById('actWrap');
+  if(mode==='demo'){ aw.innerHTML='<div class="activity-box">'+esc(S.activity)+'</div>'; }
+  else{ aw.innerHTML='<input class="txt" id="actInput" placeholder="Name your experience — the one specific thing you\'ll do">';
+    const ai=document.getElementById('actInput'); ai.value=S.activity;
+    ai.addEventListener('input',()=>S.activity=ai.value); }
+  document.querySelectorAll('#strandRow .chip-toggle').forEach(b=>{
+    b.classList.toggle('on', S.strands.includes(b.dataset.strand));
+  });
+  const ocRow=document.getElementById('ocRow');
+  ocRow.innerHTML='';
+  OUTCOMES.forEach((label,idx)=>{
+    const n=idx+1;
+    const b=document.createElement('button');
+    b.className='chip-toggle oc'+(S.outcomes.includes(n)?' on':'');
+    b.dataset.oc=n; b.textContent=n+'. '+label;
+    b.addEventListener('click',()=>toggleOutcome(n));
+    ocRow.appendChild(b);
+  });
+  const j=document.getElementById('justify'); j.value=S.justify;
+  j.oninput=()=>S.justify=j.value;
+  updateOcWarn();
+}
+document.querySelectorAll('#strandRow .chip-toggle').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const k=b.dataset.strand; const i=S.strands.indexOf(k);
+    if(i>=0)S.strands.splice(i,1); else S.strands.push(k);
+    b.classList.toggle('on');
+  });
+});
+function toggleOutcome(n){
+  const i=S.outcomes.indexOf(n);
+  if(i>=0)S.outcomes.splice(i,1); else S.outcomes.push(n);
+  renderStep1();
+}
+function updateOcWarn(){
+  const w=document.getElementById('ocWarn'); let msg='';
+  if(S.outcomes.length>2) msg='Pick the one or two this experience really grows — claiming all of them is the fastest way to evidence none of them.';
+  else if(S.outcomes.includes(6)) msg='⚠ Outcome 6 needs a genuine issue of global significance — make sure your justification actually reaches one.';
+  w.textContent=msg;
+}
+
+/* step 2 */
+function renderStep2(){
+  const list=document.getElementById('evList'); list.innerHTML='';
+  if(!S.evidence.length){ list.innerHTML='<p class="phelp">Add a few pieces of evidence above.</p>'; }
+  S.evidence.forEach((e,i)=>{
+    const row=document.createElement('div');
+    row.className='erow'+(e.k==='gr'?' is-gr':'');
+    row.innerHTML='<span class="etext">'+esc(e.t)+'</span><div class="etags">'+
+      '<button class="pr'+(e.k==='pr'?' on':'')+'" data-i="'+i+'" data-k="pr">Presence</button>'+
+      '<button class="gr'+(e.k==='gr'?' on':'')+'" data-i="'+i+'" data-k="gr">Growth</button></div>';
+    list.appendChild(row);
+  });
+  list.querySelectorAll('.etags button').forEach(b=>{
+    b.addEventListener('click',()=>{const i=+b.dataset.i,k=b.dataset.k;S.evidence[i].k=(S.evidence[i].k===k?null:k);renderStep2();});
+  });
+  const gr=S.evidence.filter(e=>e.k==='gr').length, pr=S.evidence.filter(e=>e.k==='pr').length;
+  const tal=document.getElementById('evTally');
+  if(!S.evidence.length){tal.textContent='';}
+  else if(!gr){tal.innerHTML='<b>0</b> growth so far — all presence. A pile with no growth can\'t earn an outcome.';}
+  else{tal.innerHTML='<b>'+gr+'</b> growth · '+pr+' presence. Growth is what earns the outcome.';}
+}
+function addEvidence(){
+  const inp=document.getElementById('evAdd'); const v=inp.value.trim(); if(!v)return;
+  S.evidence.push({t:v,k:null}); inp.value=''; inp.focus(); renderStep2();
+}
+document.getElementById('evAddBtn').addEventListener('click',addEvidence);
+document.getElementById('evAdd').addEventListener('keydown',e=>{if(e.key==='Enter')addEvidence();});
+
+/* step 3 */
+function renderStep3(){
+  const tl=document.getElementById('timeline'); tl.innerHTML='';
+  S.timeline.forEach((node,i)=>{
+    const div=document.createElement('div'); div.className='tnode';
+    div.innerHTML='<span class="twhen">'+esc(node.when)+'</span>'+
+      '<div class="evslot"><span class="tlab">Evidence</span><input data-i="'+i+'" data-f="ev" value="'+esc(node.ev)+'" placeholder="what you captured"></div>'+
+      '<div class="refslot"><span class="tlab">Reflection</span><textarea data-i="'+i+'" data-f="ref" placeholder="what you noticed">'+esc(node.ref)+'</textarea></div>';
+    tl.appendChild(div);
+  });
+  tl.querySelectorAll('[data-f]').forEach(el=>{
+    el.addEventListener('input',()=>{S.timeline[+el.dataset.i][el.dataset.f]=el.value;});
+  });
+}
+
+/* step 4 */
+function renderStep4(){
+  document.getElementById('weakFinal').textContent=S.weakFinal;
+  document.getElementById('strongFinal').innerHTML=S.strongFinal;
+  const ul=document.getElementById('threadPull'); ul.innerHTML='';
+  const ocNames=S.outcomes.map(n=>n+'. '+OUTCOMES[n-1]).join(' + ')||'—';
+  ul.innerHTML+='<li><b>Outcome you claimed:</b> '+esc(ocNames)+'</li>';
+  S.timeline.forEach(node=>{ if(node.ref) ul.innerHTML+='<li><b>'+esc(node.when)+':</b> '+esc(node.ref)+'</li>'; });
+  const fr=document.getElementById('finalRef'); fr.value=S.final||''; fr.oninput=()=>S.final=fr.value;
+}
+document.getElementById('copyFinal').addEventListener('click',()=>{
+  const fr=document.getElementById('finalRef'); fr.select();
+  navigator.clipboard.writeText(fr.value).then(()=>{
+    const b=document.getElementById('copyFinal'); const t=b.textContent; b.textContent='Copied ✓';
+    setTimeout(()=>b.textContent=t,1400);
+  }).catch(()=>{});
+});
+
+/* nav */
+let step=1;
+function show(n){
+  step=n;
+  for(let i=1;i<=4;i++){document.getElementById('p'+i).classList.toggle('on',i===n);}
+  document.querySelectorAll('#dots .dot').forEach(d=>d.classList.toggle('on',+d.dataset.step===n));
+  if(n===1)renderStep1(); if(n===2)renderStep2(); if(n===3)renderStep3(); if(n===4)renderStep4();
+  document.getElementById('builder').scrollIntoView({behavior:'smooth',block:'start'});
+}
+document.querySelectorAll('.navbtns button[data-go]').forEach(b=>b.addEventListener('click',()=>show(+b.dataset.go)));
+document.querySelectorAll('#dots .dot').forEach(d=>d.addEventListener('click',()=>show(+d.dataset.step)));
+
+/* mode */
+function setMode(m){
+  mode=m;
+  document.getElementById('modeDemo').classList.toggle('on',m==='demo');
+  document.getElementById('modeMine').classList.toggle('on',m==='mine');
+  S=clone(m==='demo'?DEMO:BLANK); S.final='';
+  show(1);
+}
+document.getElementById('modeDemo').addEventListener('click',()=>setMode('demo'));
+document.getElementById('modeMine').addEventListener('click',()=>setMode('mine'));
+
+/* init */
+renderStep1();
+</script>
+</body>
+</html>
