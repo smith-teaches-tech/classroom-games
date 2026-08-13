@@ -26,13 +26,13 @@
   .slide{
     position:absolute;inset:0;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
-    padding:clamp(24px,5vw,72px);
+    padding:clamp(56px,7vw,72px) clamp(24px,5vw,72px) clamp(40px,5vw,64px);
     opacity:0;visibility:hidden;transform:translateY(14px);
     transition:opacity .5s ease, transform .5s ease;
     text-align:center;
   }
   .slide.active{opacity:1;visibility:visible;transform:none}
-  .slide .wrap{max-width:1040px;width:100%}
+  .slide .wrap{max-width:1040px;width:100%;position:relative;z-index:2}
   .eyebrow{letter-spacing:.26em;text-transform:uppercase;font-size:clamp(11px,1.4vw,13px);color:var(--hi);font-weight:600;margin-bottom:18px}
   .slide h1{font-size:clamp(34px,6vw,66px);line-height:1.04;margin:0 0 18px}
   .slide h2{font-size:clamp(26px,4.4vw,44px);line-height:1.1;margin:0 0 22px}
@@ -41,6 +41,18 @@
   .prompt-big{font-size:clamp(24px,3.6vw,40px);line-height:1.25;margin:0}
   .tag{display:inline-block;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:5px 12px;margin-bottom:26px}
   em{color:var(--gold);font-style:italic}
+  .ghost{position:absolute;z-index:1;font-family:Georgia,serif;font-weight:700;color:#ffffff;opacity:.04;
+    font-size:min(44vw,520px);line-height:.8;pointer-events:none;user-select:none;top:50%;left:50%;transform:translate(-50%,-50%)}
+
+  /* track chooser (landing) */
+  .chooser{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;margin-top:26px}
+  .choose{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--tok);border-radius:16px;
+    padding:26px 30px;min-width:250px;cursor:pointer;transition:transform .16s, box-shadow .16s, border-color .16s;text-align:left}
+  .choose:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.4);border-color:var(--hi)}
+  .choose.y2{border-top-color:var(--ee)}
+  .choose .yr{font-family:Georgia,serif;font-size:28px;font-weight:700;color:var(--ink)}
+  .choose .yd{font-size:14px;color:var(--muted);margin-top:8px;line-height:1.4}
+  .choose .go{margin-top:14px;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--hi);font-weight:700}
 
   /* three lenses */
   .cards{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:12px}
@@ -53,10 +65,49 @@
   .lens .full{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:2px 0 12px}
   .lens p{margin:0;color:var(--ink);font-size:15.5px;line-height:1.5}
 
+  /* single intro block (EE/CAS/TOK deep slides) */
+  .introblock{display:flex;gap:26px;align-items:center;flex-wrap:wrap;justify-content:center;text-align:left;max-width:900px;margin:0 auto}
+  .bigabbr{font-family:Georgia,serif;font-weight:700;font-size:clamp(70px,13vw,150px);line-height:.9;flex:0 0 auto}
+  .introblock .body{flex:1 1 360px;min-width:300px}
+  .introblock .body h3{font-size:clamp(22px,3vw,32px);margin:0 0 10px}
+  .introblock .body p{font-size:clamp(15px,1.9vw,19px);line-height:1.55;color:var(--ink);margin:0 0 10px}
+  .introblock .body .meta{font-size:13.5px;color:var(--muted);border-left:3px solid;padding-left:12px;margin-top:14px}
+
+  /* learner profile grid */
+  .lp-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;max-width:960px;margin:6px auto 0}
+  .lp-cell{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:12px 10px;text-align:center}
+  .lp-cell .lpn{font-family:Georgia,serif;font-weight:700;font-size:clamp(13px,1.5vw,16px);color:var(--hi)}
+  .lp-cell .lpd{font-size:10.5px;color:var(--muted);margin-top:4px;line-height:1.3}
+  @media(max-width:820px){ .lp-grid{grid-template-columns:repeat(2,1fr)} }
+
+  /* CORE diagram */
+  .diagram-wrap{position:relative;width:min(88vw,760px);height:min(56vh,520px);margin:0 auto}
+  .node{position:absolute;transform:translate(-50%,-50%);cursor:default;user-select:none;transition:transform .3s ease;text-align:center}
+  .node:focus{outline:none}
+  .core-hub{width:112px;height:112px;border-radius:50%;background:radial-gradient(circle at 50% 35%,#1c4d84,#0e2a4d);
+    border:2px solid var(--hi);display:flex;align-items:center;justify-content:center;box-shadow:0 0 34px rgba(111,177,255,.35)}
+  .core-hub span{font-family:Georgia,serif;font-weight:700;font-size:20px;letter-spacing:.04em}
+  .petal{width:88px;height:88px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    cursor:pointer;border:2px solid;background:#0f2645;font-weight:700}
+  .petal small{display:block;font-weight:400;font-size:10px;color:var(--muted);margin-top:2px}
+  .petal .abbr{font-family:Georgia,serif;font-size:24px}
+  .petal.tok{border-color:var(--tok)} .petal.tok .abbr{color:var(--tok)}
+  .petal.cas{border-color:var(--cas)} .petal.cas .abbr{color:var(--cas)}
+  .petal.ee{border-color:var(--ee)} .petal.ee .abbr{color:var(--ee)}
+  .aok{padding:8px 13px;border-radius:999px;background:#10294a;border:1.5px solid #33578a;
+    font-size:13px;cursor:pointer;white-space:nowrap;color:#dce8fa;font-weight:600}
+  .node.interactive:hover,.node.interactive:focus-visible{transform:translate(-50%,-50%) scale(1.12);z-index:5}
+  .aok:hover,.aok:focus-visible{box-shadow:0 0 16px rgba(111,177,255,.5);border-color:var(--hi)}
+  .orbit-ring{position:absolute;top:50%;left:50%;border:1px dashed #244069;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none}
+  #infoPanel{margin-top:14px;min-height:40px;font-size:15px;color:var(--muted);line-height:1.4;transition:opacity .2s}
+  #infoPanel b{color:var(--ink)}
+  .float{animation:float 6s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-50%,calc(-50% - 7px))}}
+
   /* dates */
-  .dates{display:flex;flex-direction:column;gap:14px;max-width:640px;margin:6px auto 0;text-align:left}
-  .drow{display:flex;align-items:center;gap:18px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 22px}
-  .drow .dwhen{font-family:Georgia,serif;font-weight:700;font-size:clamp(17px,2vw,22px);color:var(--gold);white-space:nowrap;min-width:130px}
+  .dates{display:flex;flex-direction:column;gap:12px;max-width:640px;margin:6px auto 0;text-align:left}
+  .drow{display:flex;align-items:center;gap:18px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 22px}
+  .drow .dwhen{font-family:Georgia,serif;font-weight:700;font-size:clamp(16px,2vw,21px);color:var(--gold);white-space:nowrap;min-width:120px}
   .drow .dwhat{font-size:clamp(15px,1.8vw,18px);color:var(--ink)}
   .drow .dwhat small{display:block;color:var(--muted);font-size:.82em;margin-top:2px}
   .drow.tok{border-left:4px solid var(--tok)}
@@ -64,16 +115,31 @@
   .drow.cas{border-left:4px solid var(--cas)}
 
   /* claim demo */
-  .claim{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:clamp(24px,4vw,42px);max-width:820px;margin:0 auto}
+  .claim{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:clamp(22px,4vw,40px);max-width:820px;margin:0 auto}
   .claim .qmark{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--hi);margin-bottom:16px}
   .claim .statement{font-family:Georgia,serif;font-size:clamp(22px,3.4vw,38px);line-height:1.22;color:var(--ink)}
   .claim .ask{font-size:clamp(15px,1.8vw,19px);color:var(--muted);margin-top:22px;line-height:1.5}
   .claim .ask b{color:var(--gold)}
 
+  /* image figure */
+  .figure{margin:0 auto;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#fff;
+    box-shadow:0 20px 50px rgba(0,0,0,.5), 0 0 0 6px #ffffff08;max-height:66vh}
+  .figure img{display:block;width:auto;max-width:min(84vw,720px);max-height:66vh;height:auto}
+  .figcap{font-size:clamp(13px,1.6vw,16px);color:var(--muted);margin-top:14px;line-height:1.5;max-width:760px;margin-left:auto;margin-right:auto}
+  .figcap b{color:var(--gold)}
+
+  .mail{display:inline-block;margin-top:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:14px 26px;font-family:Georgia,serif;font-size:clamp(18px,2.4vw,26px);color:var(--gold)}
+
   #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--tok),var(--cas),var(--ee));z-index:25;transition:width .4s ease;width:0}
-  #topbar{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:16px 22px;z-index:20;pointer-events:none}
-  #brand{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
-  #count{font-size:12px;color:var(--muted);letter-spacing:.08em}
+  #topbar{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:12px 20px;z-index:20;pointer-events:none;gap:12px}
+  #brand{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);flex:1;min-width:0}
+  #tabs{pointer-events:auto;display:flex;gap:7px}
+  .tab{font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--muted);background:#0f2645cc;border:1px solid var(--line);
+    border-radius:999px;padding:6px 14px;cursor:pointer;transition:.16s;backdrop-filter:blur(4px)}
+  .tab:hover{border-color:var(--hi);color:var(--ink)}
+  .tab.active{background:var(--hi);border-color:var(--hi);color:#07182c}
+  #count{font-size:12px;color:var(--muted);letter-spacing:.08em;flex:1;text-align:right;min-width:0}
   #nav{position:fixed;bottom:20px;right:22px;display:flex;gap:10px;z-index:20}
   .nbtn{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:#0f2645cc;color:var(--ink);
     font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);transition:.2s}
@@ -91,81 +157,141 @@
   #noteFlag{position:fixed;top:14px;left:50%;transform:translateX(-50%);z-index:26;font-size:11px;letter-spacing:.14em;color:var(--gold);opacity:0;transition:.3s;pointer-events:none;text-transform:uppercase}
   body.notes-on #noteFlag{opacity:1}
 
-  @media (max-width:720px){ #hint{display:none} .drow .dwhen{min-width:100px} }
+  @media (max-width:720px){ #hint{display:none} .drow .dwhen{min-width:100px} #brand{display:none} }
 </style>
 </head>
 <body>
 <div id="progress"></div>
-<div id="topbar"><span id="brand">IB Core · Parent Night</span><span id="count"></span></div>
+<div id="topbar">
+  <span id="brand">IB Core · Parent Night</span>
+  <div id="tabs">
+    <button class="tab" data-track="y1">Year 1</button>
+    <button class="tab" data-track="y2">Year 2</button>
+  </div>
+  <span id="count"></span>
+</div>
 <div id="noteFlag">Presenter notes on</div>
 
 <div id="stage">
 
-  <!-- 0 WELCOME -->
-  <section class="slide">
+  <!-- ===== LANDING ===== -->
+  <section class="slide" data-role="landing">
+    <div class="ghost">CORE</div>
     <div class="wrap">
-      <div class="eyebrow">Parent Information Night · about 10 minutes</div>
+      <div class="eyebrow">Theory of Knowledge · Extended Essay · CAS</div>
       <h1>Welcome to<br>IB Core</h1>
-      <p class="lead">The heart of the IB Diploma &mdash; and the part that grows the whole <em>person</em>, not just the transcript.</p>
-      <p class="sub">Press <b>&rarr;</b> or <b>Space</b> to begin</p>
+      <p class="lead">Which year is your child in? Pick your track &mdash; tonight&rsquo;s content is tailored to each.</p>
+      <div class="chooser">
+        <div class="choose y1" data-track="y1">
+          <div class="yr">Year 1</div>
+          <div class="yd">New to the Core. The full picture &mdash; what it is, and how it grows the whole person.</div>
+          <div class="go">Start Year 1 &rarr;</div>
+        </div>
+        <div class="choose y2" data-track="y2">
+          <div class="yr">Year 2</div>
+          <div class="yd">The short version &mdash; what we&rsquo;re finishing this year, and the big deadlines.</div>
+          <div class="go">Start Year 2 &rarr;</div>
+        </div>
+      </div>
+      <p class="sub">You can switch tracks any time using the tabs at the top.</p>
     </div>
   </section>
 
-  <!-- 1 WHAT IS THE CORE -->
-  <section class="slide">
+  <!-- ============================================================ -->
+  <!-- ===================== YEAR 1 TRACK ========================= -->
+  <!-- ============================================================ -->
+
+  <!-- Y1 · what is the core -->
+  <section class="slide" data-track="y1">
     <div class="wrap">
-      <div class="eyebrow">Three requirements, one purpose</div>
+      <div class="eyebrow">Year 1 · three requirements, one purpose</div>
       <h2>What is the Core?</h2>
       <div class="cards">
-        <div class="lens tok">
-          <div class="abbr">TOK</div>
-          <div class="full">Theory of Knowledge</div>
-          <p>How we know what we know &mdash; and how far we can trust it. A course in critical thinking across every subject.</p>
-        </div>
-        <div class="lens ee">
-          <div class="abbr">EE</div>
-          <div class="full">Extended Essay</div>
-          <p>A 4,000-word independent research paper on a question your child chooses. A genuine taste of university work.</p>
-        </div>
-        <div class="lens cas">
-          <div class="abbr">CAS</div>
-          <div class="full">Creativity · Activity · Service</div>
-          <p>Learning by doing beyond the classroom &mdash; creativity, physical activity, and service to others.</p>
+        <div class="lens tok"><div class="abbr">TOK</div><div class="full">Theory of Knowledge</div>
+          <p>How we know what we know &mdash; and how far we can trust it. Critical thinking across every subject.</p></div>
+        <div class="lens ee"><div class="abbr">EE</div><div class="full">Extended Essay</div>
+          <p>A 4,000-word independent research paper on a question your child chooses.</p></div>
+        <div class="lens cas"><div class="abbr">CAS</div><div class="full">Creativity · Activity · Service</div>
+          <p>Learning by doing beyond the classroom &mdash; and giving back.</p></div>
+      </div>
+    </div>
+    <aside class="notes"><div class="nh">Presenter · Year 1</div>One line each. TOK = thinking, EE = researching, CAS = doing &amp; contributing. Together they&rsquo;re the &ldquo;whole person&rdquo; part of the diploma.</aside>
+  </section>
+
+  <!-- Y1 · learner profile -->
+  <section class="slide" data-track="y1">
+    <div class="wrap" style="max-width:1000px">
+      <div class="eyebrow">Year 1 · the kind of person the IB aims to grow</div>
+      <h2>The IB Learner Profile</h2>
+      <div class="lp-grid" id="lpGrid"></div>
+      <p class="sub">The Core is how these ten attributes get practiced &mdash; not just named.</p>
+    </div>
+    <aside class="notes"><div class="nh">Presenter · Year 1</div>Don&rsquo;t read all ten. Pick two or three and connect them to what parents already see in their kids. The profile is the &ldquo;why&rdquo; behind the whole diploma.</aside>
+  </section>
+
+  <!-- Y1 · core diagram -->
+  <section class="slide" data-track="y1" data-diagram="1">
+    <div class="wrap" style="max-width:none">
+      <div class="eyebrow">Year 1 · hover or tap anything</div>
+      <h2 style="margin-bottom:8px">The Core, at the centre</h2>
+      <div class="diagram-wrap" id="diagram"></div>
+      <div id="infoPanel">The <b>Core</b> sits at the centre. Around it: the <b>Areas of Knowledge</b> your child will study &mdash; and TOK asks how each one actually comes to <em>know</em> things.</div>
+    </div>
+    <aside class="notes"><div class="nh">Presenter · Year 1</div>TOK/CAS/EE at the centre; the Areas of Knowledge orbit as the fields where knowledge gets built and tested. This is the philosophy of the programme in one picture.</aside>
+  </section>
+
+  <!-- Y1 · EE -->
+  <section class="slide" data-track="y1">
+    <div class="wrap">
+      <div class="eyebrow">Year 1 · meet the three, one at a time</div>
+      <div class="introblock">
+        <div class="bigabbr" style="color:var(--ee)">EE</div>
+        <div class="body">
+          <h3>Extended Essay</h3>
+          <p>A <em>4,000-word</em> research paper on a question your child chooses, mentored by a supervisor. Their first real taste of university-level independent research.</p>
+          <p>It teaches how to ask a good question, gather and weigh evidence, and sustain a line of reasoning.</p>
+          <div class="meta" style="border-color:var(--ee)">In Year 1 we choose the subject and question, and begin research.</div>
         </div>
       </div>
     </div>
-    <aside class="notes"><div class="nh">Presenter</div>One line each. TOK = thinking, EE = researching, CAS = doing &amp; contributing. Together they&rsquo;re the &ldquo;whole person&rdquo; part of the diploma.</aside>
+    <aside class="notes"><div class="nh">Presenter · Year 1</div>Reassure: they don&rsquo;t do this alone or all at once. Supervisor + scaffolded steps across the year.</aside>
   </section>
 
-  <!-- 2 GOALS / DATES -->
-  <section class="slide">
+  <!-- Y1 · CAS -->
+  <section class="slide" data-track="y1">
     <div class="wrap">
-      <div class="eyebrow">The year at a glance</div>
-      <h2>Key Deadlines</h2>
-      <div class="dates">
-        <div class="drow ee"><div class="dwhen">September 21</div><div class="dwhat">Extended Essay <small>Full first draft milestone</small></div></div>
-        <div class="drow tok"><div class="dwhen">January 18</div><div class="dwhat">TOK Essay <small>Final essay on a prescribed title</small></div></div>
-        <div class="drow cas"><div class="dwhen">Early February</div><div class="dwhat">CAS Portfolio complete <small>Experiences, evidence &amp; reflections finalized</small></div></div>
+      <div class="eyebrow">Year 1 · meet the three, one at a time</div>
+      <div class="introblock">
+        <div class="bigabbr" style="color:var(--cas)">CAS</div>
+        <div class="body">
+          <h3>Creativity · Activity · Service</h3>
+          <p>Learning that happens <em>outside</em> the classroom: something creative, something physical, and something that serves others.</p>
+          <p>Students plan experiences, reflect on them, and collect evidence in a portfolio &mdash; it&rsquo;s about growth, not hours logged.</p>
+          <div class="meta" style="border-color:var(--cas)">In Year 1 CAS gets moving &mdash; turning &ldquo;what you care about&rdquo; into real experiences.</div>
+        </div>
       </div>
-      <p class="sub">These are the big anchors &mdash; we&rsquo;ll break each one into smaller steps along the way.</p>
     </div>
-    <aside class="notes"><div class="nh">Presenter</div>Reassure parents: no one faces these cold. Each deadline is scaffolded across many classes. Encourage them to note the dates.</aside>
+    <aside class="notes"><div class="nh">Presenter · Year 1</div>Emphasise reflection over box-ticking. Encourage families to support experiences their child genuinely cares about.</aside>
   </section>
 
-  <!-- 3 WHAT IS TOK -->
-  <section class="slide">
+  <!-- Y1 · TOK intro -->
+  <section class="slide" data-track="y1">
     <div class="wrap">
-      <div class="tag">A closer look at the hardest, most interesting piece</div>
-      <h2 class="serif">What is TOK?</h2>
-      <p class="lead">Theory of Knowledge asks one deceptively simple question:</p>
-      <p class="prompt-big serif" style="margin-top:20px;color:var(--gold)">&ldquo;How do you know that&rsquo;s true?&rdquo;</p>
-      <p class="sub">Not <em>what</em> to think, but <em>how</em> we come to know things &mdash; and where that knowledge can be trusted, doubted, or misused. Let&rsquo;s try two quick examples.</p>
+      <div class="introblock">
+        <div class="bigabbr" style="color:var(--tok)">TOK</div>
+        <div class="body">
+          <h3>Theory of Knowledge</h3>
+          <p>The hardest and most interesting piece. TOK asks one deceptively simple question:</p>
+          <p class="prompt-big serif" style="color:var(--gold);margin:8px 0">&ldquo;How do you know that&rsquo;s true?&rdquo;</p>
+          <p>Not <em>what</em> to think, but <em>how</em> we come to know &mdash; and where knowledge can be trusted, doubted, or misused. Here are a couple of examples&hellip;</p>
+        </div>
+      </div>
     </div>
-    <aside class="notes"><div class="nh">Presenter</div>This is the sell for TOK. It&rsquo;s not more content to memorise &mdash; it&rsquo;s a habit of asking for justification. The next two slides show it in action.</aside>
+    <aside class="notes"><div class="nh">Presenter · Year 1</div>TOK isn&rsquo;t more content to memorise — it&rsquo;s a habit of asking for justification. The next two slides show it in action.</aside>
   </section>
 
-  <!-- 4 CLAIM 1 -->
-  <section class="slide">
+  <!-- Y1 · TOK claim 1 -->
+  <section class="slide" data-track="y1">
     <div class="wrap">
       <div class="claim">
         <div class="qmark">A knowledge claim</div>
@@ -173,11 +299,11 @@
         <div class="ask">How would you decide? What would <b>count</b> as evidence &mdash; and is the absence of it evidence of anything? TOK examines how we reason about what we <em>can&rsquo;t</em> yet observe.</div>
       </div>
     </div>
-    <aside class="notes"><div class="nh">Presenter</div>The goal isn&rsquo;t an answer &mdash; it&rsquo;s noticing how we handle uncertainty and what standards of proof we demand. Let a couple of parents react.</aside>
+    <aside class="notes"><div class="nh">Presenter · Year 1</div>The goal isn&rsquo;t an answer — it&rsquo;s noticing what standard of proof we demand. Let a couple of parents react.</aside>
   </section>
 
-  <!-- 5 CLAIM 2 -->
-  <section class="slide">
+  <!-- Y1 · TOK claim 2 -->
+  <section class="slide" data-track="y1">
     <div class="wrap">
       <div class="claim">
         <div class="qmark">A different kind of claim</div>
@@ -185,26 +311,116 @@
         <div class="ask">Here we <em>do</em> have mountains of evidence. So TOK asks a different question: how does a whole community of experts build <b>confidence</b>, and why do people weigh the same evidence so differently?</div>
       </div>
     </div>
-    <aside class="notes"><div class="nh">Presenter</div>Contrast with the previous slide: one claim is short on evidence, one is rich in it. Same TOK move &mdash; interrogate <i>how</i> the knowing works. Keep it neutral; the point is method, not politics.</aside>
+    <aside class="notes"><div class="nh">Presenter · Year 1</div>Contrast with the previous claim: one is short on evidence, one is rich in it. Same TOK move — interrogate <i>how</i> the knowing works. Keep it neutral; the point is method, not politics.</aside>
   </section>
 
-  <!-- 6 FINALLY -->
-  <section class="slide">
+  <!-- Y1 · AI POLICY -->
+  <section class="slide" data-track="y1">
+    <div class="wrap">
+      <div class="eyebrow">Year 1 · academic integrity &amp; AI</div>
+      <div class="figure"><img src="../assets/ai-policy.png" alt="Academic Integrity — Review &amp; Escalation Pathway flowchart"></div>
+      <p class="figcap">Our approach to AI and integrity is a <b>fair, consistent process</b>. Any flag &mdash; missing citations, a high AI score, or sources that don&rsquo;t check out &mdash; leads first to a conversation. If a student can explain their work and produce their sources, it&rsquo;s resolved.</p>
+    </div>
+    <aside class="notes"><div class="nh">Presenter · Year 1</div>Frame as fairness, not suspicion. Students are never penalised on a score alone — they always get to explain and show their process.</aside>
+  </section>
+
+  <!-- Y1 · FINALLY -->
+  <section class="slide" data-track="y1">
     <div class="wrap">
       <div class="eyebrow">How we stay in touch</div>
       <h2 class="serif">Finally</h2>
-      <ul style="list-style:none;margin:14px auto 0;padding:0;max-width:760px;text-align:left">
+      <ul style="list-style:none;margin:14px auto 0;padding:0;max-width:780px;text-align:left">
         <li style="font-size:clamp(17px,2.1vw,22px);line-height:1.45;padding:12px 6px 12px 34px;position:relative;border-bottom:1px solid #ffffff12">
           <span style="position:absolute;left:6px;top:20px;width:11px;height:11px;border-radius:3px;background:var(--tok)"></span>
-          Feel free to reach out any time by email</li>
-        <li style="font-size:clamp(17px,2.1vw,22px);line-height:1.45;padding:12px 6px 12px 34px;position:relative;border-bottom:1px solid #ffffff12">
-          <span style="position:absolute;left:6px;top:20px;width:11px;height:11px;border-radius:3px;background:var(--cas)"></span>
-          Join the video conference &mdash; scheduled for next week &mdash; with any further questions</li>
+          Please reach out any time &mdash; email is the fastest way to reach me</li>
         <li style="font-size:clamp(17px,2.1vw,22px);line-height:1.45;padding:12px 6px 12px 34px;position:relative">
           <span style="position:absolute;left:6px;top:20px;width:11px;height:11px;border-radius:3px;background:var(--ee)"></span>
-          Stay involved by asking your child about their essay, their CAS experiences, and what we&rsquo;ve been discussing</li>
+          Stay involved by asking your child about their essay question, their CAS experiences, and what we&rsquo;ve been discussing in TOK</li>
       </ul>
-      <p class="sub" style="margin-top:26px">Thank you for being here tonight.</p>
+      <div class="mail">smith.m.04@isg.edu.sa</div>
+      <p class="sub" style="margin-top:22px">Thank you for being here tonight.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- ===================== YEAR 2 TRACK ========================= -->
+  <!-- ============================================================ -->
+
+  <!-- Y2 · intro -->
+  <section class="slide" data-track="y2">
+    <div class="wrap">
+      <div class="eyebrow">Year 2 · welcome back</div>
+      <h2 class="serif">This year is about <em>finishing.</em></h2>
+      <p class="lead">Your child already knows the Core. Year 2 is about bringing all three pieces across the line &mdash; with the TOK essay as our big focus.</p>
+    </div>
+    <aside class="notes"><div class="nh">Presenter · Year 2</div>Keep it brief and reassuring — Year 2 parents mostly want to know the deadlines and that things are on track.</aside>
+  </section>
+
+  <!-- Y2 · what we're doing + dates -->
+  <section class="slide" data-track="y2">
+    <div class="wrap">
+      <div class="eyebrow">Year 2 · what we&rsquo;re completing &amp; when</div>
+      <h2>The Year Ahead</h2>
+      <div class="dates">
+        <div class="drow ee"><div class="dwhen">September 21</div><div class="dwhat">Extended Essay <small>Final push &mdash; full draft milestone toward submission</small></div></div>
+        <div class="drow tok"><div class="dwhen">January 18</div><div class="dwhat">TOK Essay &mdash; our big thing <small>Final essay on a prescribed title</small></div></div>
+        <div class="drow cas"><div class="dwhen">Early February</div><div class="dwhat">CAS Portfolio complete <small>Experiences, evidence &amp; reflections finalized</small></div></div>
+      </div>
+      <p class="sub">The TOK essay is the heaviest lift this year &mdash; we scaffold it across many classes.</p>
+    </div>
+    <aside class="notes"><div class="nh">Presenter · Year 2</div>These are the operative dates. Reassure: each is broken into smaller steps; no one faces them cold.</aside>
+  </section>
+
+  <!-- Y2 · TOK reminder + claim 1 -->
+  <section class="slide" data-track="y2">
+    <div class="wrap">
+      <div class="tag">Year 2 · a reminder of what the TOK essay asks of them</div>
+      <div class="claim">
+        <div class="qmark">A knowledge claim</div>
+        <div class="statement">&ldquo;There is intelligent life on other planets.&rdquo;</div>
+        <div class="ask">The TOK essay lives here: not &ldquo;is it true,&rdquo; but <b>how</b> we&rsquo;d know, what counts as evidence, and how certainty is built. Your child is now writing at exactly this level.</div>
+      </div>
+    </div>
+    <aside class="notes"><div class="nh">Presenter · Year 2</div>Use this to show parents the intellectual level of the TOK essay their child is finishing.</aside>
+  </section>
+
+  <!-- Y2 · claim 2 -->
+  <section class="slide" data-track="y2">
+    <div class="wrap">
+      <div class="claim">
+        <div class="qmark">A different kind of claim</div>
+        <div class="statement">&ldquo;Climate is caused by human activity.&rdquo;</div>
+        <div class="ask">Rich in evidence &mdash; so TOK asks how a community of experts builds <b>confidence</b>, and why people weigh the same evidence differently. This is the reasoning the essay is graded on.</div>
+      </div>
+    </div>
+    <aside class="notes"><div class="nh">Presenter · Year 2</div>Keep neutral — the point is method and justification, not the politics of any single claim.</aside>
+  </section>
+
+  <!-- Y2 · AI POLICY -->
+  <section class="slide" data-track="y2">
+    <div class="wrap">
+      <div class="eyebrow">Year 2 · academic integrity &amp; AI</div>
+      <div class="figure"><img src="../assets/ai-policy.png" alt="Academic Integrity — Review &amp; Escalation Pathway flowchart"></div>
+      <p class="figcap">With final assessments on the line, this matters most now. Any flag leads first to a <b>conversation</b> &mdash; if a student can explain their work and produce their sources, it&rsquo;s resolved. Producing your process is the protection.</p>
+    </div>
+    <aside class="notes"><div class="nh">Presenter · Year 2</div>Especially relevant for the EE and TOK essay. Encourage students to keep drafts, notes, and sources — that&rsquo;s their evidence.</aside>
+  </section>
+
+  <!-- Y2 · FINALLY -->
+  <section class="slide" data-track="y2">
+    <div class="wrap">
+      <div class="eyebrow">How we stay in touch</div>
+      <h2 class="serif">Finally</h2>
+      <ul style="list-style:none;margin:14px auto 0;padding:0;max-width:780px;text-align:left">
+        <li style="font-size:clamp(17px,2.1vw,22px);line-height:1.45;padding:12px 6px 12px 34px;position:relative;border-bottom:1px solid #ffffff12">
+          <span style="position:absolute;left:6px;top:20px;width:11px;height:11px;border-radius:3px;background:var(--tok)"></span>
+          Please reach out any time &mdash; email is the fastest way to reach me</li>
+        <li style="font-size:clamp(17px,2.1vw,22px);line-height:1.45;padding:12px 6px 12px 34px;position:relative">
+          <span style="position:absolute;left:6px;top:20px;width:11px;height:11px;border-radius:3px;background:var(--ee)"></span>
+          The most helpful thing at home right now: help your child protect time for the EE and TOK essay</li>
+      </ul>
+      <div class="mail">smith.m.04@isg.edu.sa</div>
+      <p class="sub" style="margin-top:22px">Thank you for being here tonight.</p>
     </div>
   </section>
 
@@ -219,27 +435,136 @@
 <script>
 (function(){
   "use strict";
-  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
-  var idx=0;
+
+  /* ---- Learner Profile grid ---- */
+  var LP = [
+    {k:"Inquirers"},{k:"Knowledgeable"},{k:"Thinkers"},{k:"Communicators"},{k:"Principled"},
+    {k:"Open-minded"},{k:"Caring"},{k:"Risk-takers"},{k:"Balanced"},{k:"Reflective"}
+  ];
+  var LPD = {
+    "Inquirers":"Curious; learn how to learn.",
+    "Knowledgeable":"Explore ideas that matter locally &amp; globally.",
+    "Thinkers":"Think critically &amp; creatively.",
+    "Communicators":"Express ideas in many ways.",
+    "Principled":"Act with integrity &amp; fairness.",
+    "Open-minded":"Seek &amp; value other perspectives.",
+    "Caring":"Show empathy &amp; respect.",
+    "Risk-takers":"Meet the unfamiliar with courage.",
+    "Balanced":"Recognise the whole of a good life.",
+    "Reflective":"Consider the world &amp; their own learning."
+  };
+  var lpGrid=document.getElementById('lpGrid');
+  if(lpGrid){ LP.forEach(function(l){
+    var d=document.createElement('div'); d.className='lp-cell';
+    d.innerHTML='<div class="lpn">'+l.k+'</div><div class="lpd">'+LPD[l.k]+'</div>';
+    lpGrid.appendChild(d);
+  }); }
+
+  /* ---- CORE diagram ---- */
+  var CORE_INFO = {
+    tok:{t:"TOK — Theory of Knowledge",d:"You as a <b>knower</b>: how you know what you know."},
+    cas:{t:"CAS — Creativity, Activity, Service",d:"You as a <b>contributor</b>: learning by doing, and giving back."},
+    ee:{t:"EE — Extended Essay",d:"You as an <b>inquirer</b>: a 4,000-word dive into your own question."}
+  };
+  var AOKS = [
+    {k:"History",d:"How can we know a past we can&rsquo;t observe or repeat?"},
+    {k:"Human Sciences",d:"Can we study people with the tools of science?"},
+    {k:"Natural Sciences",d:"How far can observation &amp; experiment be trusted?"},
+    {k:"Mathematics",d:"Is maths discovered — or invented by us?"},
+    {k:"The Arts",d:"Can the arts give us knowledge, and of what kind?"}
+  ];
+  var infoPanel = document.getElementById('infoPanel');
+  var defaultInfo = infoPanel ? infoPanel.innerHTML : '';
+  function setInfo(t,d){ if(infoPanel) infoPanel.innerHTML = '<b>'+t+'</b> — '+d; }
+  function placeNode(container, el, angleDeg, rxPct, ryPct){
+    var rad = angleDeg*Math.PI/180;
+    el.style.left = (50 + rxPct*Math.cos(rad))+'%';
+    el.style.top  = (50 + ryPct*Math.sin(rad))+'%';
+    container.appendChild(el);
+  }
+  function bindInfo(el,t,d){
+    el.addEventListener('mouseenter',function(){ setInfo(t,d); });
+    el.addEventListener('mouseleave',function(){ if(infoPanel) infoPanel.innerHTML = defaultInfo; });
+    el.addEventListener('focus',function(){ setInfo(t,d); });
+    el.addEventListener('click',function(){ setInfo(t,d); });
+  }
+  var diagramBuilt=false;
+  function buildDiagram(){
+    if(diagramBuilt) return; diagramBuilt=true;
+    var d = document.getElementById('diagram'); if(!d) return;
+    ['240px','420px'].forEach(function(sz){
+      var r=document.createElement('div'); r.className='orbit-ring';
+      r.style.width=sz; r.style.height=(parseInt(sz)*0.82)+'px'; d.appendChild(r);
+    });
+    var hub=document.createElement('div'); hub.className='node core-hub';
+    hub.style.left='50%'; hub.style.top='50%'; hub.innerHTML='<span>CORE</span>'; d.appendChild(hub);
+    var petals=[['tok','TOK','the knower',-90],['cas','CAS','the contributor',150],['ee','EE','the inquirer',30]];
+    petals.forEach(function(p){
+      var el=document.createElement('div'); el.className='node interactive petal '+p[0]; el.tabIndex=0;
+      el.innerHTML='<span class="abbr">'+p[1]+'</span><small>'+p[2]+'</small>';
+      bindInfo(el,CORE_INFO[p[0]].t,CORE_INFO[p[0]].d); placeNode(d,el,p[3],15,18);
+    });
+    AOKS.forEach(function(a,i){
+      var el=document.createElement('div'); el.className='node interactive aok float';
+      el.style.animationDelay=(i*0.5)+'s'; el.tabIndex=0; el.textContent=a.k;
+      bindInfo(el,"Area of Knowledge · "+a.k,a.d);
+      placeNode(d,el,-90 + i*(360/AOKS.length),38,40);
+    });
+  }
+
+  /* ---- track navigation ---- */
+  var allSlides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var landing = document.querySelector('[data-role="landing"]');
   var prevBtn=document.getElementById('prev'), nextBtn=document.getElementById('next');
   var progress=document.getElementById('progress'), count=document.getElementById('count');
-  function show(n){
-    idx = Math.max(0, Math.min(slides.length-1, n));
-    slides.forEach(function(s,i){ s.classList.toggle('active', i===idx); });
-    progress.style.width = (idx/(slides.length-1)*100)+'%';
-    count.textContent = (idx+1)+' / '+slides.length;
-    prevBtn.disabled = idx===0;
-    nextBtn.disabled = idx===slides.length-1;
+  var tabs=Array.prototype.slice.call(document.querySelectorAll('.tab'));
+  var mode='landing', track=null, seq=[], idx=0;
+
+  function deactivateAll(){ allSlides.forEach(function(s){ s.classList.remove('active'); }); }
+
+  function goLanding(){
+    mode='landing'; track=null; seq=[]; idx=0;
+    deactivateAll(); landing.classList.add('active');
+    progress.style.width='0%'; count.textContent='Choose a year';
+    prevBtn.disabled=true; nextBtn.disabled=true;
+    tabs.forEach(function(t){ t.classList.remove('active'); });
   }
-  function nextS(){ show(idx+1); }
-  function prevS(){ show(idx-1); }
+  function setTrack(t){
+    track=t; mode='track';
+    seq=allSlides.filter(function(s){ return s.getAttribute('data-track')===t; });
+    idx=0; tabs.forEach(function(x){ x.classList.toggle('active', x.getAttribute('data-track')===t); });
+    showTrack(0);
+  }
+  function showTrack(n){
+    idx=Math.max(0,Math.min(seq.length-1,n));
+    deactivateAll(); var cur=seq[idx]; cur.classList.add('active');
+    progress.style.width=(seq.length>1 ? (idx/(seq.length-1)*100):100)+'%';
+    count.textContent=(track==='y1'?'Year 1 · ':'Year 2 · ')+(idx+1)+' / '+seq.length;
+    prevBtn.disabled=false; // prev always active (goes to landing at idx 0)
+    nextBtn.disabled=idx===seq.length-1;
+    if(cur.getAttribute('data-diagram')) buildDiagram();
+  }
+  function nextS(){
+    if(mode==='landing'){ setTrack('y1'); return; }
+    if(idx<seq.length-1) showTrack(idx+1);
+  }
+  function prevS(){
+    if(mode==='landing') return;
+    if(idx===0){ goLanding(); return; }
+    showTrack(idx-1);
+  }
   nextBtn.addEventListener('click',nextS);
   prevBtn.addEventListener('click',prevS);
+  tabs.forEach(function(t){ t.addEventListener('click',function(){ setTrack(t.getAttribute('data-track')); }); });
+  document.querySelectorAll('[data-track].choose, .choose[data-track]').forEach(function(c){
+    c.addEventListener('click',function(){ setTrack(c.getAttribute('data-track')); });
+  });
+
   document.addEventListener('keydown',function(e){
     if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){ e.preventDefault(); nextS(); }
     else if(e.key==='ArrowLeft'||e.key==='PageUp'){ e.preventDefault(); prevS(); }
-    else if(e.key==='Home'){ e.preventDefault(); show(0); }
-    else if(e.key==='End'){ e.preventDefault(); show(slides.length-1); }
+    else if(e.key==='Home'){ e.preventDefault(); goLanding(); }
+    else if(e.key==='End'){ e.preventDefault(); if(mode==='track') showTrack(seq.length-1); }
     else if(e.key==='n'||e.key==='N'){ document.body.classList.toggle('notes-on'); }
     else if(e.key==='f'||e.key==='F'){ toggleFull(); }
   });
@@ -247,7 +572,8 @@
     if(!document.fullscreenElement){ if(document.documentElement.requestFullscreen) document.documentElement.requestFullscreen(); }
     else { if(document.exitFullscreen) document.exitFullscreen(); }
   }
-  show(0);
+
+  goLanding();
 })();
 </script>
 </body>
