@@ -134,6 +134,30 @@
   .tsrc{font-size:12px;color:var(--muted);margin-top:14px}
   .tsrc a{color:var(--hi)}
 
+  /* native academic-integrity flow */
+  .flow{max-width:1080px;margin:2px auto 0}
+  .triggers{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .tcard{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;text-align:left}
+  .tcard .th{font-weight:700;font-size:13px;color:#fff;padding:8px 13px;letter-spacing:.01em}
+  .tcard.blue .th{background:#2f5aa0} .tcard.amber .th{background:#a9761c} .tcard.teal .th{background:#2f8f86}
+  .tcard ul{margin:0;padding:9px 13px 11px 27px;list-style:disc}
+  .tcard li{font-size:12px;color:var(--ink);line-height:1.32;margin:2.5px 0}
+  .tcard li .hint{color:var(--muted);font-style:italic}
+  .fconn{color:var(--muted);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;margin:8px 0 8px}
+  .fconn b{color:var(--hi)}
+  .fstep{display:inline-block;background:#122a4a;border:1px solid var(--line);border-radius:10px;padding:9px 22px;font-weight:700;font-size:14.5px;color:var(--ink)}
+  .fstep span{color:var(--muted);font-weight:400;font-size:12.5px}
+  .fdecision{max-width:620px;margin:8px auto 0;background:#0f2645;border:2px dashed var(--hi);border-radius:14px;
+    padding:12px 22px;font-family:Georgia,serif;font-size:clamp(14px,1.9vw,19px);line-height:1.3;color:var(--ink)}
+  .fbranches{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:780px;margin:14px auto 0}
+  .fout{border-radius:12px;padding:12px 16px;text-align:left;border:1px solid;position:relative}
+  .fout.yes{background:#123a2f;border-color:#2e7d5b} .fout.no{background:#3a1620;border-color:#8a3b48}
+  .fbadge{font-size:10.5px;font-weight:800;letter-spacing:.1em;padding:2px 9px;border-radius:6px;display:inline-block;margin-bottom:7px}
+  .fout.yes .fbadge{background:#2e7d5b;color:#eafaf3} .fout.no .fbadge{background:#b0424f;color:#fff}
+  .fout .ftitle{font-weight:700;font-size:14px;color:var(--ink);line-height:1.25}
+  .fout .fsub{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.35}
+  @media(max-width:720px){ .triggers{grid-template-columns:1fr} .fbranches{grid-template-columns:1fr} }
+
   /* completed date row */
   .drow.done{opacity:.72}
   .drow.done .dwhen{color:var(--cas)}
@@ -332,6 +356,40 @@
     <aside class="notes"><div class="nh">Presenter · Year 1</div>Contrast with the previous claim: one is short on evidence, one is rich in it. Same TOK move — interrogate <i>how</i> the knowing works. Keep it neutral; the point is method, not politics.</aside>
   </section>
 
+  <!-- Y1 · AI POLICY (native flow) -->
+  <section class="slide" data-track="y1">
+    <div class="wrap" style="max-width:1120px">
+      <div class="eyebrow">Year 1 · academic integrity &amp; AI &mdash; one fair process</div>
+      <h2 style="margin-bottom:4px;font-size:clamp(22px,3.4vw,34px)">If something looks off</h2>
+      <p class="sub" style="margin:0 auto 14px">Any one of these three triggers the <em>same</em> review.</p>
+      <div class="flow">
+        <div class="triggers">
+          <div class="tcard blue">
+            <div class="th">1 · Directions Not Followed</div>
+            <ul><li>No bibliography / works cited</li><li>No planning document</li><li>Submitted as Word or PDF <span class="hint">(Google Docs only)</span></li></ul>
+          </div>
+          <div class="tcard amber">
+            <div class="th">2 · Potential AI Use</div>
+            <ul><li>Turnitin AI score above 25%</li><li>Writing flagged as likely AI-generated</li></ul>
+          </div>
+          <div class="tcard teal">
+            <div class="th">3 · Potential Fabrication</div>
+            <ul><li>Raw data can&rsquo;t be produced</li><li>Sources don&rsquo;t appear to exist</li><li>Sources don&rsquo;t say what&rsquo;s claimed</li></ul>
+          </div>
+        </div>
+        <div class="fconn">&darr;&nbsp; <b>any one</b> triggers &nbsp;&darr;</div>
+        <div class="fstep">Meeting with the student <span>&mdash; questioned about the paper</span></div>
+        <div class="fconn">&darr;</div>
+        <div class="fdecision">Can the student answer the questions and produce their <b style="color:var(--gold)">raw data / sources</b>?</div>
+        <div class="fbranches">
+          <div class="fout yes"><div class="fbadge">YES</div><div class="ftitle">Concern resolved</div><div class="fsub">Addressed at the meeting.</div></div>
+          <div class="fout no"><div class="fbadge">NO</div><div class="ftitle">Referred to IB Coordinator / ASD Leadership</div><div class="fsub">A &ldquo;no&rdquo; will likely trigger a supervised rewrite.</div></div>
+        </div>
+      </div>
+    </div>
+    <aside class="notes"><div class="nh">Presenter · Year 1</div>Frame as fairness, not suspicion. Everything routes to a conversation first &mdash; students are never penalised on a score alone. Producing their process (drafts, sources, data) is the protection.</aside>
+  </section>
+
   <!-- Y1 · TURNITIN -->
   <section class="slide" data-track="y1">
     <div class="wrap" style="max-width:960px">
@@ -347,16 +405,6 @@
       <div class="tsrc">From our school&rsquo;s own validation study &middot; <a href="https://smith-teaches-tech.github.io/educational-research-data/turnitin-research-parents.html" target="_blank" rel="noopener">see the data &#8599;</a></div>
     </div>
     <aside class="notes"><div class="nh">Presenter · short &amp; direct</div>The point isn&rsquo;t to threaten &mdash; it&rsquo;s to pre-empt the reflex of &ldquo;the tool must be wrong.&rdquo; Our own data says it almost never is. Land the <b>77%</b> and the <b>zero</b>, then move to the process.</aside>
-  </section>
-
-  <!-- Y1 · AI POLICY -->
-  <section class="slide" data-track="y1">
-    <div class="wrap">
-      <div class="eyebrow">Year 1 · academic integrity &amp; AI</div>
-      <div class="figure"><img src="../assets/ai-policy.png" alt="Academic Integrity — Review &amp; Escalation Pathway flowchart"></div>
-      <p class="figcap">Our approach to AI and integrity is a <b>fair, consistent process</b>. Any flag &mdash; missing citations, a high AI score, or sources that don&rsquo;t check out &mdash; leads first to a conversation. If a student can explain their work and produce their sources, it&rsquo;s resolved.</p>
-    </div>
-    <aside class="notes"><div class="nh">Presenter · Year 1</div>Frame as fairness, not suspicion. Students are never penalised on a score alone — they always get to explain and show their process.</aside>
   </section>
 
   <!-- Y1 · FINALLY -->
@@ -432,6 +480,40 @@
     <aside class="notes"><div class="nh">Presenter · Year 2</div>Keep neutral — the point is method and justification, not the politics of any single claim.</aside>
   </section>
 
+  <!-- Y2 · AI POLICY (native flow) -->
+  <section class="slide" data-track="y2">
+    <div class="wrap" style="max-width:1120px">
+      <div class="eyebrow">Year 2 · academic integrity &amp; AI &mdash; one fair process</div>
+      <h2 style="margin-bottom:4px;font-size:clamp(22px,3.4vw,34px)">If something looks off</h2>
+      <p class="sub" style="margin:0 auto 14px">Any one of these three triggers the <em>same</em> review.</p>
+      <div class="flow">
+        <div class="triggers">
+          <div class="tcard blue">
+            <div class="th">1 · Directions Not Followed</div>
+            <ul><li>No bibliography / works cited</li><li>No planning document</li><li>Submitted as Word or PDF <span class="hint">(Google Docs only)</span></li></ul>
+          </div>
+          <div class="tcard amber">
+            <div class="th">2 · Potential AI Use</div>
+            <ul><li>Turnitin AI score above 25%</li><li>Writing flagged as likely AI-generated</li></ul>
+          </div>
+          <div class="tcard teal">
+            <div class="th">3 · Potential Fabrication</div>
+            <ul><li>Raw data can&rsquo;t be produced</li><li>Sources don&rsquo;t appear to exist</li><li>Sources don&rsquo;t say what&rsquo;s claimed</li></ul>
+          </div>
+        </div>
+        <div class="fconn">&darr;&nbsp; <b>any one</b> triggers &nbsp;&darr;</div>
+        <div class="fstep">Meeting with the student <span>&mdash; questioned about the paper</span></div>
+        <div class="fconn">&darr;</div>
+        <div class="fdecision">Can the student answer the questions and produce their <b style="color:var(--gold)">raw data / sources</b>?</div>
+        <div class="fbranches">
+          <div class="fout yes"><div class="fbadge">YES</div><div class="ftitle">Concern resolved</div><div class="fsub">Addressed at the meeting.</div></div>
+          <div class="fout no"><div class="fbadge">NO</div><div class="ftitle">Referred to IB Coordinator / ASD Leadership</div><div class="fsub">A &ldquo;no&rdquo; will likely trigger a supervised rewrite.</div></div>
+        </div>
+      </div>
+    </div>
+    <aside class="notes"><div class="nh">Presenter · Year 2</div>Especially relevant for the EE and TOK essay. Everything routes to a conversation first. Encourage students to keep drafts, notes, and sources &mdash; that&rsquo;s their protection.</aside>
+  </section>
+
   <!-- Y2 · TURNITIN -->
   <section class="slide" data-track="y2">
     <div class="wrap" style="max-width:960px">
@@ -447,16 +529,6 @@
       <div class="tsrc">From our school&rsquo;s own validation study &middot; <a href="https://smith-teaches-tech.github.io/educational-research-data/turnitin-research-parents.html" target="_blank" rel="noopener">see the data &#8599;</a></div>
     </div>
     <aside class="notes"><div class="nh">Presenter · short &amp; direct</div>Especially relevant for the EE and TOK essay. The data pre-empts &ldquo;the tool must be wrong.&rdquo; Encourage students to keep drafts and notes &mdash; that&rsquo;s their evidence.</aside>
-  </section>
-
-  <!-- Y2 · AI POLICY -->
-  <section class="slide" data-track="y2">
-    <div class="wrap">
-      <div class="eyebrow">Year 2 · academic integrity &amp; AI</div>
-      <div class="figure"><img src="../assets/ai-policy.png" alt="Academic Integrity — Review &amp; Escalation Pathway flowchart"></div>
-      <p class="figcap">With final assessments on the line, this matters most now. Any flag leads first to a <b>conversation</b> &mdash; if a student can explain their work and produce their sources, it&rsquo;s resolved. Producing your process is the protection.</p>
-    </div>
-    <aside class="notes"><div class="nh">Presenter · Year 2</div>Especially relevant for the EE and TOK essay. Encourage students to keep drafts, notes, and sources — that&rsquo;s their evidence.</aside>
   </section>
 
   <!-- Y2 · FINALLY -->
