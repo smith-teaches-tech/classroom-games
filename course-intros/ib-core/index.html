@@ -121,6 +121,24 @@
   .claim .ask{font-size:clamp(15px,1.8vw,19px);color:var(--muted);margin-top:22px;line-height:1.5}
   .claim .ask b{color:var(--gold)}
 
+  /* turnitin dramatic stats */
+  .tstat{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:8px auto 0;max-width:900px}
+  .tbox{flex:1 1 210px;max-width:280px;background:var(--card);border:1px solid var(--line);border-top:4px solid var(--tok);
+    border-radius:16px;padding:20px 18px;text-align:center}
+  .tbox.a{border-top-color:var(--cas)} .tbox.b{border-top-color:var(--ee)} .tbox.c{border-top-color:var(--ee)}
+  .tbox .tbig{font-family:Georgia,serif;font-weight:700;font-size:clamp(34px,5.5vw,54px);line-height:1;color:var(--gold)}
+  .tbox .tlab{font-size:13px;color:var(--ink);margin-top:10px;line-height:1.38}
+  .tpunch{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:14px;
+    padding:18px 24px;max-width:800px;margin:22px auto 0;text-align:left;font-size:clamp(15px,1.9vw,19px);line-height:1.5;color:var(--ink)}
+  .tpunch b{color:var(--gold)}
+  .tsrc{font-size:12px;color:var(--muted);margin-top:14px}
+  .tsrc a{color:var(--hi)}
+
+  /* completed date row */
+  .drow.done{opacity:.72}
+  .drow.done .dwhen{color:var(--cas)}
+  .drow.done .tick{color:var(--cas);font-weight:700}
+
   /* image figure */
   .figure{margin:0 auto;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:#fff;
     box-shadow:0 20px 50px rgba(0,0,0,.5), 0 0 0 6px #ffffff08;max-height:66vh}
@@ -314,6 +332,22 @@
     <aside class="notes"><div class="nh">Presenter · Year 1</div>Contrast with the previous claim: one is short on evidence, one is rich in it. Same TOK move — interrogate <i>how</i> the knowing works. Keep it neutral; the point is method, not politics.</aside>
   </section>
 
+  <!-- Y1 · TURNITIN -->
+  <section class="slide" data-track="y1">
+    <div class="wrap" style="max-width:960px">
+      <div class="eyebrow">Year 1 · a word about Turnitin &amp; AI</div>
+      <h2>The detector isn&rsquo;t guessing</h2>
+      <div class="tstat">
+        <div class="tbox a"><div class="tbig">&lt;1%</div><div class="tlab">false-positive rate above our threshold &mdash; <b>zero</b> in our own 44-document test</div></div>
+        <div class="tbox b"><div class="tbig">77%</div><div class="tlab">of flagged students <b>admitted AI use</b> when offered a no-penalty chance to come clean</div></div>
+        <div class="tbox c"><div class="tbig">0</div><div class="tlab">clean-scored students who <em>ever</em> came forward to say they were wrongly flagged</div></div>
+      </div>
+      <div class="tpunch">So if your child is ever flagged, it is <b>very rarely a mistake</b>. Our response is always a conversation first &mdash; and honesty is the best opening move.</div>
+      <div class="tsrc">From our school&rsquo;s own validation study &middot; <a href="https://smith-teaches-tech.github.io/educational-research-data/turnitin-research-parents.html" target="_blank" rel="noopener">see the data &#8599;</a></div>
+    </div>
+    <aside class="notes"><div class="nh">Presenter · short &amp; direct</div>The point isn&rsquo;t to threaten &mdash; it&rsquo;s to pre-empt the reflex of &ldquo;the tool must be wrong.&rdquo; Our own data says it almost never is. Land the <b>77%</b> and the <b>zero</b>, then move to the process.</aside>
+  </section>
+
   <!-- Y1 · AI POLICY -->
   <section class="slide" data-track="y1">
     <div class="wrap">
@@ -362,11 +396,12 @@
       <div class="eyebrow">Year 2 · what we&rsquo;re completing &amp; when</div>
       <h2>The Year Ahead</h2>
       <div class="dates">
-        <div class="drow ee"><div class="dwhen">September 21</div><div class="dwhat">Extended Essay <small>Final push &mdash; full draft milestone toward submission</small></div></div>
-        <div class="drow tok"><div class="dwhen">January 18</div><div class="dwhat">TOK Essay &mdash; our big thing <small>Final essay on a prescribed title</small></div></div>
-        <div class="drow cas"><div class="dwhen">Early February</div><div class="dwhat">CAS Portfolio complete <small>Experiences, evidence &amp; reflections finalized</small></div></div>
+        <div class="drow ee done"><div class="dwhen">August 1</div><div class="dwhat">Extended Essay &mdash; final draft <small><span class="tick">&#10003; Already due</span> &mdash; the biggest lift is behind them</small></div></div>
+        <div class="drow cas"><div class="dwhen">January 31</div><div class="dwhat">CAS portfolio complete <small>Experiences, evidence &amp; reflections finalized</small></div></div>
+        <div class="drow tok"><div class="dwhen">February 4</div><div class="dwhat">TOK Essay &mdash; our big thing <small>Final essay on a prescribed title</small></div></div>
+        <div class="drow cas"><div class="dwhen">February</div><div class="dwhat">CAS presentations <small>Students share their CAS journey</small></div></div>
       </div>
-      <p class="sub">The TOK essay is the heaviest lift this year &mdash; we scaffold it across many classes.</p>
+      <p class="sub">With the EE draft in, the <b style="color:var(--gold)">TOK essay</b> is the heaviest remaining lift &mdash; we scaffold it across many classes.</p>
     </div>
     <aside class="notes"><div class="nh">Presenter · Year 2</div>These are the operative dates. Reassure: each is broken into smaller steps; no one faces them cold.</aside>
   </section>
@@ -394,6 +429,22 @@
       </div>
     </div>
     <aside class="notes"><div class="nh">Presenter · Year 2</div>Keep neutral — the point is method and justification, not the politics of any single claim.</aside>
+  </section>
+
+  <!-- Y2 · TURNITIN -->
+  <section class="slide" data-track="y2">
+    <div class="wrap" style="max-width:960px">
+      <div class="eyebrow">Year 2 · a word about Turnitin &amp; AI</div>
+      <h2>The detector isn&rsquo;t guessing</h2>
+      <div class="tstat">
+        <div class="tbox a"><div class="tbig">&lt;1%</div><div class="tlab">false-positive rate above our threshold &mdash; <b>zero</b> in our own 44-document test</div></div>
+        <div class="tbox b"><div class="tbig">77%</div><div class="tlab">of flagged students <b>admitted AI use</b> when offered a no-penalty chance to come clean</div></div>
+        <div class="tbox c"><div class="tbig">0</div><div class="tlab">clean-scored students who <em>ever</em> came forward to say they were wrongly flagged</div></div>
+      </div>
+      <div class="tpunch">With final assessments on the line this year, this matters most now. A flag is <b>very rarely a mistake</b> &mdash; so keep drafts and sources, and if we ever talk, honesty is the best opening move.</div>
+      <div class="tsrc">From our school&rsquo;s own validation study &middot; <a href="https://smith-teaches-tech.github.io/educational-research-data/turnitin-research-parents.html" target="_blank" rel="noopener">see the data &#8599;</a></div>
+    </div>
+    <aside class="notes"><div class="nh">Presenter · short &amp; direct</div>Especially relevant for the EE and TOK essay. The data pre-empts &ldquo;the tool must be wrong.&rdquo; Encourage students to keep drafts and notes &mdash; that&rsquo;s their evidence.</aside>
   </section>
 
   <!-- Y2 · AI POLICY -->
