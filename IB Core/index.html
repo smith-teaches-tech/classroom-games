@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IB Core Dashboard — UI Mockups</title>
+<style>
+  :root{--bg:#f4f6f8;--panel:#fff;--ink:#1c2430;--muted:#6b7683;--line:#e3e8ee;--brand:#2f6f6a;--brand-soft:#e6f1f0;--gold:#a5761c;--gold-soft:#f7efdc;--shadow:0 1px 2px rgba(20,30,45,.06),0 6px 20px rgba(20,30,45,.06)}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+  .wrap{max-width:940px;margin:0 auto;padding:40px 22px 60px}
+  .logo{font-weight:800;color:var(--brand);font-size:15px;letter-spacing:.3px}
+  h1{font-size:30px;margin:14px 0 6px}
+  .lede{color:var(--muted);font-size:16px;margin:0 0 6px;max-width:680px}
+  .banner{background:var(--gold-soft);border:1px solid #ecd9ab;color:#6b4e13;border-radius:10px;padding:12px 15px;font-size:13.5px;margin:22px 0 26px}
+  .cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+  @media(max-width:760px){.cards{grid-template-columns:1fr}}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:20px;display:flex;flex-direction:column;text-decoration:none;color:inherit;transition:transform .12s,box-shadow .12s}
+  .card:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(20,30,45,.12)}
+  .tag{display:inline-block;background:var(--brand-soft);color:var(--brand);font-weight:700;font-size:11px;letter-spacing:.4px;text-transform:uppercase;border-radius:6px;padding:3px 8px;align-self:flex-start}
+  .card h2{font-size:18px;margin:12px 0 6px}
+  .card p{color:var(--muted);font-size:13.5px;margin:0 0 16px;flex:1}
+  .go{color:var(--brand);font-weight:700;font-size:13.5px}
+  .roles{font-size:12px;color:var(--muted);margin-top:8px}
+  .section{background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:20px 22px;margin-top:26px}
+  .section h3{margin:0 0 8px;font-size:15px}
+  .section ul{margin:6px 0 0;padding-left:20px}
+  .section li{margin:5px 0;font-size:14px}
+  footer{color:var(--muted);font-size:12.5px;margin-top:28px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">IB&nbsp;CORE</div>
+  <h1>IB Core Dashboard — UI Mockups</h1>
+  <p class="lede">Interactive prototypes of the proposed system for International Schools Group: one place to manage CAS, the Extended Essay, and TOK, built to improve on ManageBac's visibility and workflow.</p>
+
+  <div class="banner"><b>For reviewers:</b> these are clickable UI prototypes with sample data — buttons and dropdowns are illustrative, nothing is saved. Each screen has a <b>role switcher</b> at the top so you can view it as a student, teacher/supervisor, and coordinator. No login required.</div>
+
+  <div class="cards">
+    <a class="card" href="CAS/">
+      <span class="tag">CAS</span>
+      <h2>Creativity, Activity, Service</h2>
+      <p>Coordinator overview with at-a-glance progress, student experiences with dated reflection/evidence threads, external supervisor sign-off, interviews, and a phone app.</p>
+      <div class="go">Open the CAS mockup →</div>
+      <div class="roles">Roles: Coordinator · Student · Student (phone) · Supervisor</div>
+    </a>
+    <a class="card" href="EE/">
+      <span class="tag">Extended Essay</span>
+      <h2>Extended Essay (2027)</h2>
+      <p>New 30-mark rubric, RPF, milestone timeline, Google Doc links, anonymous PDF upload with candidate code, supervisor scoring &amp; attestation, coordinator cohort overview.</p>
+      <div class="go">Open the EE mockup →</div>
+      <div class="roles">Roles: Student · Supervisor · Coordinator</div>
+    </a>
+    <a class="card" href="TOK/">
+      <span class="tag">Theory of Knowledge</span>
+      <h2>TOK — Exhibition &amp; Essay</h2>
+      <p>Exhibition submission (35 prompts), essay with prescribed titles, in-app TK/PPF, /10 scoring, predicted TOK grade, and the shared staff view.</p>
+      <div class="go">Open the TOK mockup →</div>
+      <div class="roles">Roles: Student · Core teacher · IB Coordinator</div>
+    </a>
+  </div>
+
+  <div class="section">
+    <h3>How to review each mockup</h3>
+    <ul>
+      <li>Use the <b>role switcher</b> in the top-right to change perspective.</li>
+      <li>In tables, <b>click a student row</b> to expand it in place (no separate pages).</li>
+      <li>Try the interactive bits: rubric scoring updates a live total; word-count boxes enforce IB limits; tabs toggle between assessments.</li>
+      <li>These are design prototypes to agree the workflow and layout — the real app would sit on Firebase / Google Cloud (pending IT review).</li>
+    </ul>
+  </div>
+
+  <footer>Prototype for review · sample data · not for production use</footer>
+</div>
+</body>
+</html>
