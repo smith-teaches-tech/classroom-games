@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The AI Knows Me — Y2 Opening Activity</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Cormorant Garamond', serif;
+      background: #faf8f3;
+      color: #2c2c2a;
+      line-height: 1.6;
+    }
+
+    .slide-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .slide {
+      display: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      padding: 60px 50px;
+      background: white;
+      border: 1px solid #d9d7ce;
+      border-radius: 2px;
+      min-height: 500px;
+    }
+
+    .slide.active {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 1;
+    }
+
+    h1 {
+      font-size: 48px;
+      font-weight: 500;
+      margin-bottom: 20px;
+      color: #8b4513;
+    }
+
+    h2 {
+      font-size: 36px;
+      font-weight: 500;
+      margin-bottom: 30px;
+      color: #8b4513;
+    }
+
+    h3 {
+      font-size: 24px;
+      font-weight: 500;
+      margin-bottom: 20px;
+      color: #5c3d2e;
+    }
+
+    p {
+      font-size: 20px;
+      margin-bottom: 16px;
+      line-height: 1.8;
+    }
+
+    .subtitle {
+      font-size: 22px;
+      font-style: italic;
+      color: #666;
+      margin-bottom: 40px;
+    }
+
+    .timer {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 18px;
+      background: #f0ebe3;
+      padding: 16px 20px;
+      border-left: 4px solid #8b4513;
+      margin: 24px 0;
+      border-radius: 2px;
+    }
+
+    .wait-time {
+      background: #fef5e7;
+      padding: 20px 24px;
+      border-left: 4px solid #d4a574;
+      font-size: 18px;
+      margin: 24px 0;
+      font-style: italic;
+      color: #5c3d2e;
+    }
+
+    .prompt-box {
+      background: #faf8f3;
+      padding: 24px;
+      border: 1px solid #d9d7ce;
+      border-radius: 2px;
+      margin: 24px 0;
+      font-size: 19px;
+      line-height: 1.7;
+    }
+
+    .prompt-box strong {
+      color: #8b4513;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .visual {
+      font-size: 120px;
+      text-align: center;
+      margin: 40px 0;
+    }
+
+    .note {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      background: #f5f3ee;
+      padding: 16px;
+      border-radius: 2px;
+      color: #666;
+      margin-top: 40px;
+      border-left: 3px solid #999;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 60px;
+      padding-top: 30px;
+      border-top: 1px solid #d9d7ce;
+    }
+
+    button {
+      background: white;
+      border: 1px solid #8b4513;
+      color: #8b4513;
+      padding: 12px 24px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.2s;
+    }
+
+    button:hover {
+      background: #faf8f3;
+    }
+
+    button:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .slide-counter {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      color: #999;
+    }
+
+    .pair-share {
+      background: #f0ebe3;
+      padding: 20px;
+      border-left: 4px solid #8b4513;
+      margin: 24px 0;
+      font-size: 18px;
+    }
+
+    .pair-share strong {
+      color: #8b4513;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .question {
+      font-size: 20px;
+      margin: 20px 0;
+      padding: 16px;
+      background: #faf8f3;
+      border-left: 4px solid #d4a574;
+      line-height: 1.8;
+    }
+
+    .grid-pointer {
+      background: #f5e6d3;
+      padding: 20px;
+      border-radius: 2px;
+      margin-top: 40px;
+      font-size: 18px;
+      border-left: 4px solid #8b4513;
+    }
+  </style>
+</head>
+<body>
+<div class="slide-container">
+
+  <!-- SLIDE 1: TITLE -->
+  <div class="slide active">
+    <div style="text-align: center;">
+      <div class="visual">🤖</div>
+      <h1>The AI Knows Me</h1>
+      <p class="subtitle">A first class activity</p>
+      <p style="margin-top: 60px; font-size: 18px; color: #666;">Take your seats. We're starting with a question.</p>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: COMMIT — WRITE DOWN -->
+  <div class="slide">
+    <h2>What does it know?</h2>
+    <div class="wait-time">⏳ You have 3 minutes. Be honest. No phones, no looking around.</div>
+
+    <div class="prompt-box">
+      <strong>Write down three things:</strong>
+      <div style="margin-top: 12px;">
+        1. What does an AI chatbot (ChatGPT, Claude, whatever you use) know about you?<br>
+        2. How did it come to know that?<br>
+        3. Is it knowledge?
+      </div>
+    </div>
+
+    <div class="note">TEACHER: Circulate and read. You need 2–3 specific answers for Phase 3. Pick ones that show different reasoning (pattern / behavior / preference).</div>
+  </div>
+
+  <!-- SLIDE 3: REVEAL 1 — QUERY -->
+  <div class="slide">
+    <h2>Watch this.</h2>
+    <div class="visual">📱</div>
+
+    <div style="background: #f0ebe3; padding: 24px; border-radius: 2px; margin: 24px 0; font-family: 'JetBrains Mono', monospace; font-size: 16px; line-height: 1.6;">
+      <strong style="display: block; margin-bottom: 12px;">Query:</strong>
+      "I'm an 18-year-old IB student in [your city]. What do I probably care about? What stresses me?"<br><br>
+      <strong style="display: block; margin-bottom: 12px; margin-top: 20px;">AI Output:</strong>
+      You likely care about college admissions, grades, university choices, peer pressure, social media image, balancing activities. You're stressed about workload, competition, whether you're "doing enough," family expectations…
+    </div>
+
+    <p style="margin-top: 40px; font-size: 18px; color: #666;"><em>Weird, right?</em></p>
+  </div>
+
+  <!-- SLIDE 4: REVEAL 2 — PATTERNS -->
+  <div class="slide">
+    <h2>Another example.</h2>
+    <div class="visual">📊</div>
+
+    <div style="background: #f0ebe3; padding: 24px; border-radius: 2px; margin: 24px 0;">
+      <strong style="display: block; margin-bottom: 16px;">Your Netflix "For You" page knows:</strong>
+      <ul style="font-size: 18px; margin-left: 20px; line-height: 2;">
+        <li>What you watch (and don't finish)</li>
+        <li>How long you pause</li>
+        <li>What time you watch</li>
+        <li>What you rewind</li>
+        <li>What you search for</li>
+      </ul>
+    </div>
+
+    <p style="margin-top: 40px; font-size: 18px;">It shows you what comes next. It's <em>right</em>. But is that knowledge?</p>
+  </div>
+
+  <!-- SLIDE 5: SOCRATIC 1 — COMPARE WAYS OF KNOWING -->
+  <div class="slide">
+    <h2>First question.</h2>
+
+    <div class="pair-share">
+      <strong>Turn to someone near you. One minute.</strong><br>
+      Does the AI know you the same way your best friend knows you? How is it different?
+    </div>
+
+    <div class="wait-time">⏳ Don't raise your hand yet — think. Then turn. Then share.</div>
+
+    <div class="note">TEACHER: After pair-share, take 2–3 answers. Listen for: "AI has more data" / "Friend understands me" / "AI doesn't care" / "It doesn't know why I do things."</div>
+  </div>
+
+  <!-- SLIDE 6: SOCRATIC 2 — PATTERN VS REASON -->
+  <div class="slide">
+    <h2>So what does the AI know?</h2>
+
+    <div class="question">
+      Say it in one sentence. What does the AI know about you?
+    </div>
+
+    <div class="wait-time">⏳ Think first. Hands up at the top of your head.</div>
+
+    <div style="margin-top: 40px; padding: 20px; background: #faf8f3; border-left: 4px solid #d4a574;">
+      <strong style="display: block; margin-bottom: 12px;">You're looking for:</strong>
+      Patterns. Preferences. Behavior. What you like.
+    </div>
+
+    <div class="note">TEACHER: If they say "everything," push: "More data than your teacher, right? So does more data = knowledge? Or is 'know' doing different work?"</div>
+  </div>
+
+  <!-- SLIDE 7: SOCRATIC 3 — DATA VS UNDERSTANDING -->
+  <div class="slide">
+    <h2>But wait.</h2>
+
+    <div class="question">
+      Your teacher knows your patterns too. 100 hours of class. The AI has your Instagram for 8 years. Who knows more about you?
+    </div>
+
+    <div class="wait-time">⏳ Think. Then hands.</div>
+
+    <div style="margin-top: 40px; padding: 20px; background: #faf8f3; border-left: 4px solid #d4a574;">
+      <strong style="display: block; margin-bottom: 12px;">Next move:</strong>
+      "Right. But here's the question: Does 'more data' mean the same thing as 'knowledge'? Or are we using the word 'know' differently?"
+    </div>
+
+    <div class="note">TEACHER: This is the collision. Let silence sit. This is where they feel the grid forming.</div>
+  </div>
+
+  <!-- SLIDE 8: SOCRATIC 4 — TWO WAYS OF KNOWING THE SAME BEHAVIOR -->
+  <div class="slide">
+    <h2>Here's a nastier one.</h2>
+
+    <div style="margin-top: 40px;">
+      <p><strong>Two things could both be true:</strong></p>
+      <ul style="font-size: 20px; margin-left: 40px; margin-top: 20px; line-height: 2;">
+        <li>The AI says you'll doomscroll for 45 minutes at midnight <em>(pattern)</em></li>
+        <li>Your best friend says you do that when you're anxious <em>(reason, meaning)</em></li>
+      </ul>
+    </div>
+
+    <div class="question" style="margin-top: 40px;">
+      How can both be right about the same behavior if they're knowing it two different ways?
+    </div>
+
+    <div class="wait-time">⏳ Don't answer. Just write one sentence in your notebook. How are those two different kinds of knowing?</div>
+
+    <div class="note">TEACHER: Give them 90 seconds. Collect the notebooks at the end (they're your diagnostic). You're looking for: Do they see this as two ways of knowing the same thing? Or do they rank them (real vs fake)?</div>
+  </div>
+
+  <!-- SLIDE 9: LANDING — THE YEAR AHEAD -->
+  <div class="slide">
+    <h2>This is your year.</h2>
+
+    <div style="margin-top: 40px; padding: 24px; background: #f5e6d3; border-radius: 2px;">
+      <p style="font-size: 21px; line-height: 1.9;">
+        <strong>This question:</strong> What counts as knowledge? Who gets to decide? And does the answer change depending on what you're trying to know?
+      </p>
+    </div>
+
+    <p style="margin-top: 40px; font-size: 20px;">You'll ask it in science, religion, language, art, math. Same tool. Different answers.</p>
+
+    <p style="margin-top: 30px; font-size: 20px;"><em>And today you just did it without the tool.</em></p>
+
+    <div class="grid-pointer">
+      <strong>↗ Look at the back wall.</strong> That grid you see? That's the instrument. We'll use it starting next class.
+    </div>
+  </div>
+
+  <!-- SLIDE 10: EXIT TICKET — WRITE -->
+  <div class="slide">
+    <h2>Before you go.</h2>
+
+    <div class="timer">⏱ You have 5 minutes.</div>
+
+    <div class="prompt-box">
+      <strong>Write 3–4 sentences on a fresh page.</strong>
+      <br><br>
+      The AI knows your patterns. Your teacher knows your thinking. Your parent knows your fears. They all know you. But they know you in different ways.
+      <br><br>
+      Pick two of those (or pick your own pair). Write: <em>What's the difference between what each one knows? And what would have to be true for them to 'know' the other way?</em>
+    </div>
+
+    <div class="note">TEACHER: Collect these. You're diagnosing: Do they think one is "real knowing" and the other is fake? Or have they spotted that "knowing" has different structures depending on the context? That diagnostic tells you where to pitch the grid.</div>
+  </div>
+
+  <!-- Navigation -->
+  <div class="controls">
+    <button id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+    <span class="slide-counter"><span id="slideNum">1</span> / <span id="slideTotal">10</span></span>
+    <button id="nextBtn" onclick="changeSlide(1)">Next →</button>
+  </div>
+
+</div>
+<script>
+  let currentSlide = 0;
+  const slides = document.querySelectorAll('.slide');
+  const totalSlides = slides.length;
+  document.getElementById('slideTotal').textContent = totalSlides;
+
+  function showSlide(n) {
+    slides.forEach(s => s.classList.remove('active'));
+    slides[n].classList.add('active');
+    document.getElementById('slideNum').textContent = n + 1;
+    document.getElementById('prevBtn').disabled = n === 0;
+    document.getElementById('nextBtn').disabled = n === totalSlides - 1;
+  }
+
+  function changeSlide(direction) {
+    currentSlide += direction;
+    if (currentSlide >= 0 && currentSlide < totalSlides) {
+      showSlide(currentSlide);
+      window.scrollTo(0, 0);
+    }
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') changeSlide(-1);
+    if (e.key === 'ArrowRight') changeSlide(1);
+  });
+
+  showSlide(0);
+</script>
+</body>
+</html>
