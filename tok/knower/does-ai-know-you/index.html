@@ -1,415 +1,670 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The AI Knows Me — Y2 Opening Activity</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Does the AI Know You? · Y2 Opening Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4ede0;
+    --paper-deep: #ebe1cf;
+    --ink: #1a1814;
+    --ink-soft: #4a4438;
+    --ink-faint: #8a8275;
+    --rule: #c9bfa9;
+    --accent-red: #b8392e;
+    --accent-blue: #2a4d7a;
+  }
 
-    body {
-      font-family: 'Cormorant Garamond', serif;
-      background: #faf8f3;
-      color: #2c2c2a;
-      line-height: 1.6;
-    }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; overflow: hidden; }
 
-    .slide-container {
-      max-width: 1000px;
-      margin: 0 auto;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 40px 20px;
-    }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    line-height: 1.5;
+  }
 
-    .slide {
-      display: none;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      padding: 60px 50px;
-      background: white;
-      border: 1px solid #d9d7ce;
-      border-radius: 2px;
-      min-height: 500px;
-    }
+  /* PERSISTENT HEADER */
+  .header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 44px;
+    padding: 0 32px;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper);
+    overflow: hidden;
+  }
+  .header .phrase {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink-soft);
+    letter-spacing: 0.02em;
+    text-transform: none;
+  }
 
-    .slide.active {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      opacity: 1;
-    }
+  /* SLIDE FRAME */
+  .deck {
+    position: absolute;
+    top: 44px; left: 0; right: 0; bottom: 38px;
+  }
+  .slide {
+    display: none;
+    position: absolute;
+    inset: 0;
+    padding: 28px 48px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .slide.active { display: flex; }
 
-    h1 {
-      font-size: 48px;
-      font-weight: 500;
-      margin-bottom: 20px;
-      color: #8b4513;
-    }
+  .eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent-red);
+    margin-bottom: 8px;
+    flex: 0 0 auto;
+  }
 
-    h2 {
-      font-size: 36px;
-      font-weight: 500;
-      margin-bottom: 30px;
-      color: #8b4513;
-    }
+  h1 {
+    font-size: clamp(40px, 5.5vw, 80px);
+    font-weight: 500;
+    font-style: italic;
+    line-height: 1;
+    text-align: center;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+  h2 {
+    font-size: clamp(26px, 3.2vw, 44px);
+    font-weight: 500;
+    line-height: 1.15;
+    text-align: center;
+  }
+  h2 em {
+    color: var(--accent-red);
+    font-style: italic;
+    font-weight: 600;
+  }
+  .question {
+    font-size: clamp(22px, 2.6vw, 34px);
+    font-weight: 500;
+    text-align: center;
+    line-height: 1.35;
+    color: var(--ink);
+    font-style: italic;
+    max-width: 900px;
+  }
+  .question strong {
+    font-style: normal;
+    color: var(--accent-red);
+    font-weight: 600;
+  }
+  .subtle {
+    font-size: 16px;
+    color: var(--ink-soft);
+    font-style: italic;
+    text-align: center;
+    max-width: 720px;
+  }
 
-    h3 {
-      font-size: 24px;
-      font-weight: 500;
-      margin-bottom: 20px;
-      color: #5c3d2e;
-    }
+  /* DIRECTION STRIP (student directions) */
+  .direction {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    border: 1px solid var(--rule);
+    background: var(--paper-deep);
+    padding: 8px 16px;
+  }
+  .direction .t { color: var(--accent-red); font-weight: 500; }
 
-    p {
-      font-size: 20px;
-      margin-bottom: 16px;
-      line-height: 1.8;
-    }
+  /* PROMPT CARD */
+  .prompt-card {
+    background: white;
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent-red);
+    padding: 24px 30px;
+    max-width: 780px;
+    width: 100%;
+  }
+  .prompt-card .label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent-red);
+    margin-bottom: 12px;
+  }
+  .prompt-card ol {
+    font-size: clamp(18px, 1.9vw, 24px);
+    line-height: 1.6;
+    padding-left: 26px;
+  }
+  .prompt-card ol li { margin: 6px 0; }
+  .prompt-card p {
+    font-size: clamp(17px, 1.8vw, 22px);
+    line-height: 1.6;
+  }
+  .prompt-card em { color: var(--accent-red); }
 
-    .subtitle {
-      font-size: 22px;
-      font-style: italic;
-      color: #666;
-      margin-bottom: 40px;
-    }
+  /* TRANSCRIPT (mono) */
+  .transcript {
+    background: white;
+    border: 1px solid var(--rule);
+    padding: 20px 26px;
+    max-width: 780px;
+    width: 100%;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(12px, 1.3vw, 15px);
+    line-height: 1.7;
+    color: var(--ink);
+  }
+  .transcript .tag {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .transcript .q-text { color: var(--accent-blue); }
 
-    .timer {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 18px;
-      background: #f0ebe3;
-      padding: 16px 20px;
-      border-left: 4px solid #8b4513;
-      margin: 24px 0;
-      border-radius: 2px;
-    }
+  /* REVEAL MACHINERY */
+  .reveal { display: none; }
+  .reveal.shown { display: block; animation: fadeUp .45s ease; }
+  .reveal.shown.flexy { display: flex; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
+  }
+  .reveal-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent-red);
+    background: transparent;
+    border: 1px solid var(--accent-red);
+    padding: 10px 22px;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .reveal-btn:hover { background: var(--accent-red); color: var(--paper); }
+  .reveal-btn.gone { display: none; }
 
-    .wait-time {
-      background: #fef5e7;
-      padding: 20px 24px;
-      border-left: 4px solid #d4a574;
-      font-size: 18px;
-      margin: 24px 0;
-      font-style: italic;
-      color: #5c3d2e;
-    }
+  /* NETFLIX LIST (sequential reveal) */
+  .data-list {
+    max-width: 680px;
+    width: 100%;
+    list-style: none;
+  }
+  .data-list li {
+    display: none;
+    align-items: baseline;
+    gap: 14px;
+    background: white;
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent-blue);
+    padding: 10px 18px;
+    margin: 6px 0;
+    font-size: clamp(17px, 1.8vw, 22px);
+  }
+  .data-list li.shown { display: flex; animation: fadeUp .35s ease; }
+  .data-list .n {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent-blue);
+    flex: 0 0 auto;
+  }
 
-    .prompt-box {
-      background: #faf8f3;
-      padding: 24px;
-      border: 1px solid #d9d7ce;
-      border-radius: 2px;
-      margin: 24px 0;
-      font-size: 19px;
-      line-height: 1.7;
-    }
+  /* PAIR-SHARE CARD */
+  .pair-share {
+    background: var(--paper-deep);
+    border: 1px solid var(--rule);
+    padding: 22px 30px;
+    max-width: 780px;
+    width: 100%;
+    text-align: center;
+  }
+  .pair-share .ps-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent-red);
+    margin-bottom: 10px;
+  }
+  .pair-share .ps-q {
+    font-size: clamp(20px, 2.3vw, 30px);
+    font-style: italic;
+    line-height: 1.4;
+  }
 
-    .prompt-box strong {
-      color: #8b4513;
-      display: block;
-      margin-bottom: 12px;
-    }
+  /* HEARD QUOTES */
+  .quotes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    max-width: 860px;
+  }
+  .quotes .qt {
+    background: white;
+    border: 1px solid var(--rule);
+    padding: 10px 18px;
+    font-style: italic;
+    font-size: clamp(15px, 1.6vw, 19px);
+    color: var(--ink-soft);
+  }
 
-    .visual {
-      font-size: 120px;
-      text-align: center;
-      margin: 40px 0;
-    }
+  /* ANSWER CARD */
+  .answer-card {
+    background: white;
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent-red);
+    padding: 20px 30px;
+    max-width: 720px;
+    width: 100%;
+    text-align: center;
+  }
+  .answer-card .a-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent-red);
+    margin-bottom: 8px;
+  }
+  .answer-card .a-text {
+    font-size: clamp(20px, 2.4vw, 32px);
+    font-style: italic;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  .answer-card .a-text strong {
+    font-style: normal;
+    color: var(--accent-red);
+    font-weight: 600;
+  }
 
-    .note {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 14px;
-      background: #f5f3ee;
-      padding: 16px;
-      border-radius: 2px;
-      color: #666;
-      margin-top: 40px;
-      border-left: 3px solid #999;
-    }
+  /* TWO-TRUTHS (slide 8) */
+  .two-truths {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-width: 940px;
+    width: 100%;
+  }
+  .truth {
+    background: white;
+    border: 1px solid var(--rule);
+    padding: 20px 24px;
+    text-align: center;
+  }
+  .truth .who {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .truth.ai { border-top: 3px solid var(--accent-blue); }
+  .truth.ai .who { color: var(--accent-blue); }
+  .truth.friend { border-top: 3px solid var(--accent-red); }
+  .truth.friend .who { color: var(--accent-red); }
+  .truth .what {
+    font-size: clamp(17px, 1.9vw, 23px);
+    line-height: 1.5;
+  }
+  .truth .kind {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-top: 12px;
+  }
+  @media (max-width: 700px) { .two-truths { grid-template-columns: 1fr; } }
 
-    .controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 60px;
-      padding-top: 30px;
-      border-top: 1px solid #d9d7ce;
-    }
+  /* LANDING */
+  .landing-card {
+    background: var(--paper-deep);
+    border: 1px solid var(--rule);
+    padding: 26px 34px;
+    max-width: 860px;
+    text-align: center;
+  }
+  .landing-card .big-q {
+    font-size: clamp(22px, 2.6vw, 34px);
+    font-style: italic;
+    font-weight: 500;
+    line-height: 1.45;
+  }
+  .landing-card .big-q em { color: var(--accent-red); font-weight: 600; }
 
-    button {
-      background: white;
-      border: 1px solid #8b4513;
-      color: #8b4513;
-      padding: 12px 24px;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 16px;
-      cursor: pointer;
-      border-radius: 2px;
-      transition: all 0.2s;
-    }
+  /* EXIT */
+  .exit { text-align: center; max-width: 900px; }
+  .exit .kq {
+    font-size: clamp(24px, 3vw, 40px);
+    font-weight: 500;
+    font-style: italic;
+    color: var(--ink);
+    line-height: 1.35;
+    margin-bottom: 24px;
+  }
+  .exit .kq em { color: var(--accent-red); font-weight: 600; }
+  .exit .write-prompt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
 
-    button:hover {
-      background: #faf8f3;
-    }
-
-    button:disabled {
-      opacity: 0.3;
-      cursor: not-allowed;
-    }
-
-    .slide-counter {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 14px;
-      color: #999;
-    }
-
-    .pair-share {
-      background: #f0ebe3;
-      padding: 20px;
-      border-left: 4px solid #8b4513;
-      margin: 24px 0;
-      font-size: 18px;
-    }
-
-    .pair-share strong {
-      color: #8b4513;
-      display: block;
-      margin-bottom: 12px;
-    }
-
-    .question {
-      font-size: 20px;
-      margin: 20px 0;
-      padding: 16px;
-      background: #faf8f3;
-      border-left: 4px solid #d4a574;
-      line-height: 1.8;
-    }
-
-    .grid-pointer {
-      background: #f5e6d3;
-      padding: 20px;
-      border-radius: 2px;
-      margin-top: 40px;
-      font-size: 18px;
-      border-left: 4px solid #8b4513;
-    }
-  </style>
+  /* NAVIGATION */
+  .nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 38px;
+    padding: 0 32px;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    border-top: 1px solid var(--rule);
+    background: var(--paper);
+    overflow: hidden;
+  }
+  .nav button {
+    background: transparent;
+    border: 1px solid var(--rule);
+    color: var(--ink-soft);
+    padding: 4px 12px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+  }
+  .nav button:hover { border-color: var(--ink); color: var(--ink); }
+  .nav button:disabled { opacity: 0.3; cursor: not-allowed; }
+  .nav .counter { font-weight: 500; }
+</style>
 </head>
 <body>
-<div class="slide-container">
 
-  <!-- SLIDE 1: TITLE -->
-  <div class="slide active">
-    <div style="text-align: center;">
-      <div class="visual">🤖</div>
-      <h1>The AI Knows Me</h1>
-      <p class="subtitle">A first class activity</p>
-      <p style="margin-top: 60px; font-size: 18px; color: #666;">Take your seats. We're starting with a question.</p>
+<header class="header">
+  <span>TOK · K&amp;K · Y2 Opening</span>
+  <span class="phrase">"It knows what you'll do. Does it know <em>you</em>?"</span>
+  <span id="hCounter">01 / 10</span>
+</header>
+
+<div class="deck">
+
+  <!-- SLIDE 1 — TITLE -->
+  <section class="slide active" data-slide="1">
+    <div class="eyebrow">A First-Class Activity</div>
+    <h1>The AI Knows Me</h1>
+    <p class="subtle">Take your seats. We're starting with a question.</p>
+  </section>
+
+  <!-- SLIDE 2 — COMMIT -->
+  <section class="slide" data-slide="2">
+    <div class="eyebrow">Phase 1 · Commit</div>
+    <h2>What does it <em>know?</em></h2>
+    <div class="direction"><span class="t">⏳ 3 minutes</span> · Be honest · No phones · No looking around</div>
+    <div class="prompt-card">
+      <div class="label">Write down three things</div>
+      <ol>
+        <li>What does an AI chatbot (ChatGPT, Claude, whatever you use) know about you?</li>
+        <li>How did it come to know that?</li>
+        <li>Is it <em>knowledge?</em></li>
+      </ol>
     </div>
-  </div>
+  </section>
 
-  <!-- SLIDE 2: COMMIT — WRITE DOWN -->
-  <div class="slide">
-    <h2>What does it know?</h2>
-    <div class="wait-time">⏳ You have 3 minutes. Be honest. No phones, no looking around.</div>
+  <!-- SLIDE 3 — REVEAL 1: QUERY -->
+  <section class="slide" data-slide="3">
+    <div class="eyebrow">Phase 2 · Watch This</div>
+    <h2>Nobody typed anything <em>personal.</em></h2>
+    <div class="transcript">
+      <span class="tag">Query</span>
+      <span class="q-text">"I'm an 18-year-old IB student in [your city]. What do I probably care about? What stresses me?"</span>
+    </div>
+    <button class="reveal-btn" data-reveal="#out-1">Reveal the output →</button>
+    <div class="reveal" id="out-1">
+      <div class="transcript" style="border-left: 3px solid var(--accent-blue);">
+        <span class="tag">AI Output</span>
+        You likely care about college admissions, grades, university choices, peer pressure, social media image, balancing activities. You're stressed about workload, competition, whether you're "doing enough," family expectations…
+      </div>
+      <p class="subtle" style="margin-top: 14px;">Weird, right? It's never met you.</p>
+    </div>
+  </section>
 
-    <div class="prompt-box">
-      <strong>Write down three things:</strong>
-      <div style="margin-top: 12px;">
-        1. What does an AI chatbot (ChatGPT, Claude, whatever you use) know about you?<br>
-        2. How did it come to know that?<br>
-        3. Is it knowledge?
+  <!-- SLIDE 4 — REVEAL 2: PATTERNS -->
+  <section class="slide" data-slide="4">
+    <div class="eyebrow">Phase 2 · Another One</div>
+    <h2>Your Netflix "For You" page <em>knows:</em></h2>
+    <ul class="data-list" id="netflix">
+      <li><span class="n">01</span> What you watch — and what you don't finish</li>
+      <li><span class="n">02</span> How long you pause</li>
+      <li><span class="n">03</span> What time you watch</li>
+      <li><span class="n">04</span> What you rewind</li>
+      <li><span class="n">05</span> What you search for</li>
+    </ul>
+    <button class="reveal-btn" id="netflixBtn">Show me →</button>
+    <div class="reveal" id="netflix-q">
+      <p class="question">It shows you what comes next. It's <strong>right.</strong><br>But is that <em>knowledge?</em></p>
+    </div>
+  </section>
+
+  <!-- SLIDE 5 — SOCRATIC 1 -->
+  <section class="slide" data-slide="5">
+    <div class="eyebrow">Phase 3 · First Question</div>
+    <div class="pair-share">
+      <div class="ps-label">Turn to someone near you · One minute</div>
+      <div class="ps-q">Does the AI know you the same way your best friend knows you?<br>How is it different?</div>
+    </div>
+    <div class="direction">Think first · Then turn · Then share</div>
+    <button class="reveal-btn" data-reveal="#heard-1">What classes usually say →</button>
+    <div class="reveal" id="heard-1">
+      <div class="quotes">
+        <span class="qt">"The AI has more data."</span>
+        <span class="qt">"My friend actually understands me."</span>
+        <span class="qt">"The AI doesn't care."</span>
+        <span class="qt">"It doesn't know why I do things."</span>
+      </div>
+      <p class="subtle" style="margin-top: 14px;">Notice: those are four different claims about what "knowing" is.</p>
+    </div>
+  </section>
+
+  <!-- SLIDE 6 — SOCRATIC 2 -->
+  <section class="slide" data-slide="6">
+    <div class="eyebrow">Phase 3 · Name It</div>
+    <h2>So what does the AI <em>know?</em></h2>
+    <p class="question">Say it in one sentence.<br>What does the AI know about you?</p>
+    <div class="direction">Think first · Hands up when you have your sentence</div>
+    <button class="reveal-btn" data-reveal="#ans-1">Reveal →</button>
+    <div class="reveal" id="ans-1">
+      <div class="answer-card">
+        <div class="a-label">What it holds</div>
+        <div class="a-text"><strong>Patterns.</strong> Preferences. Behavior. What you like — and what you'll probably do next.</div>
       </div>
     </div>
+  </section>
 
-    <div class="note">TEACHER: Circulate and read. You need 2–3 specific answers for Phase 3. Pick ones that show different reasoning (pattern / behavior / preference).</div>
-  </div>
-
-  <!-- SLIDE 3: REVEAL 1 — QUERY -->
-  <div class="slide">
-    <h2>Watch this.</h2>
-    <div class="visual">📱</div>
-
-    <div style="background: #f0ebe3; padding: 24px; border-radius: 2px; margin: 24px 0; font-family: 'JetBrains Mono', monospace; font-size: 16px; line-height: 1.6;">
-      <strong style="display: block; margin-bottom: 12px;">Query:</strong>
-      "I'm an 18-year-old IB student in [your city]. What do I probably care about? What stresses me?"<br><br>
-      <strong style="display: block; margin-bottom: 12px; margin-top: 20px;">AI Output:</strong>
-      You likely care about college admissions, grades, university choices, peer pressure, social media image, balancing activities. You're stressed about workload, competition, whether you're "doing enough," family expectations…
+  <!-- SLIDE 7 — SOCRATIC 3 -->
+  <section class="slide" data-slide="7">
+    <div class="eyebrow">Phase 3 · But Wait</div>
+    <p class="question">Your teacher knows your patterns too — 100 hours of class.<br>The AI has your Instagram for 8 years.<br><strong>Who knows more about you?</strong></p>
+    <div class="direction">Think · Then hands</div>
+    <button class="reveal-btn" data-reveal="#ans-2">The real question →</button>
+    <div class="reveal" id="ans-2">
+      <div class="answer-card">
+        <div class="a-label">The real question</div>
+        <div class="a-text">Does <strong>more data</strong> mean the same thing as <strong>knowledge?</strong><br>Or is the word <em>"know"</em> doing different work each time we use it?</div>
+      </div>
     </div>
+  </section>
 
-    <p style="margin-top: 40px; font-size: 18px; color: #666;"><em>Weird, right?</em></p>
-  </div>
-
-  <!-- SLIDE 4: REVEAL 2 — PATTERNS -->
-  <div class="slide">
-    <h2>Another example.</h2>
-    <div class="visual">📊</div>
-
-    <div style="background: #f0ebe3; padding: 24px; border-radius: 2px; margin: 24px 0;">
-      <strong style="display: block; margin-bottom: 16px;">Your Netflix "For You" page knows:</strong>
-      <ul style="font-size: 18px; margin-left: 20px; line-height: 2;">
-        <li>What you watch (and don't finish)</li>
-        <li>How long you pause</li>
-        <li>What time you watch</li>
-        <li>What you rewind</li>
-        <li>What you search for</li>
-      </ul>
+  <!-- SLIDE 8 — SOCRATIC 4 -->
+  <section class="slide" data-slide="8">
+    <div class="eyebrow">Phase 3 · A Nastier One</div>
+    <h2>Two things can <em>both be true.</em></h2>
+    <div class="two-truths">
+      <div class="truth ai">
+        <div class="who">The AI says</div>
+        <div class="what">You'll doomscroll for 45 minutes at midnight.</div>
+        <div class="kind reveal" data-group="kinds">→ a pattern</div>
+      </div>
+      <div class="truth friend">
+        <div class="who">Your best friend says</div>
+        <div class="what">You do that when you're anxious.</div>
+        <div class="kind reveal" data-group="kinds">→ a reason. a meaning.</div>
+      </div>
     </div>
-
-    <p style="margin-top: 40px; font-size: 18px;">It shows you what comes next. It's <em>right</em>. But is that knowledge?</p>
-  </div>
-
-  <!-- SLIDE 5: SOCRATIC 1 — COMPARE WAYS OF KNOWING -->
-  <div class="slide">
-    <h2>First question.</h2>
-
-    <div class="pair-share">
-      <strong>Turn to someone near you. One minute.</strong><br>
-      Does the AI know you the same way your best friend knows you? How is it different?
+    <button class="reveal-btn" data-reveal='[data-group="kinds"], #q-8'>What kind of knowing is each? →</button>
+    <div class="reveal" id="q-8">
+      <p class="question">How can both be right about the same behavior<br>if they're knowing it <strong>two different ways?</strong></p>
+      <div class="direction" style="margin-top: 14px;">Don't answer out loud · Write one sentence in your notebook · How are those two different kinds of knowing?</div>
     </div>
+  </section>
 
-    <div class="wait-time">⏳ Don't raise your hand yet — think. Then turn. Then share.</div>
-
-    <div class="note">TEACHER: After pair-share, take 2–3 answers. Listen for: "AI has more data" / "Friend understands me" / "AI doesn't care" / "It doesn't know why I do things."</div>
-  </div>
-
-  <!-- SLIDE 6: SOCRATIC 2 — PATTERN VS REASON -->
-  <div class="slide">
-    <h2>So what does the AI know?</h2>
-
-    <div class="question">
-      Say it in one sentence. What does the AI know about you?
+  <!-- SLIDE 9 — LANDING -->
+  <section class="slide" data-slide="9">
+    <div class="eyebrow">Phase 4 · This Is Your Year</div>
+    <div class="landing-card">
+      <div class="big-q">What counts as <em>knowledge?</em> Who gets to <em>decide?</em><br>And does the answer change depending on<br>what you're trying to know?</div>
     </div>
-
-    <div class="wait-time">⏳ Think first. Hands up at the top of your head.</div>
-
-    <div style="margin-top: 40px; padding: 20px; background: #faf8f3; border-left: 4px solid #d4a574;">
-      <strong style="display: block; margin-bottom: 12px;">You're looking for:</strong>
-      Patterns. Preferences. Behavior. What you like.
+    <p class="subtle">You'll ask this in science, religion, language, art, math. Same tool. Different answers.</p>
+    <button class="reveal-btn" data-reveal="#land-2">One more thing →</button>
+    <div class="reveal" id="land-2" style="text-align: center;">
+      <p class="question">And today you just did it <strong>without the tool.</strong></p>
+      <p class="subtle" style="margin-top: 10px;">↗ Look at the back wall. That grid? That's the instrument. We start next class.</p>
     </div>
+  </section>
 
-    <div class="note">TEACHER: If they say "everything," push: "More data than your teacher, right? So does more data = knowledge? Or is 'know' doing different work?"</div>
-  </div>
-
-  <!-- SLIDE 7: SOCRATIC 3 — DATA VS UNDERSTANDING -->
-  <div class="slide">
-    <h2>But wait.</h2>
-
-    <div class="question">
-      Your teacher knows your patterns too. 100 hours of class. The AI has your Instagram for 8 years. Who knows more about you?
+  <!-- SLIDE 10 — EXIT TICKET -->
+  <section class="slide" data-slide="10">
+    <div class="exit">
+      <div class="eyebrow" style="margin-bottom: 20px;">Phase 5 · Exit Ticket</div>
+      <div class="kq">
+        The AI knows your <em>patterns.</em> Your teacher knows your <em>thinking.</em><br>
+        Your parent knows your <em>fears.</em> They all know you —<br>
+        but they know you in different ways.
+      </div>
+      <div class="prompt-card" style="text-align: left; margin: 0 auto 20px;">
+        <div class="label">Write 3–4 sentences · Fresh page</div>
+        <p>Pick two of those knowers — or pick your own pair. <em>What's the difference between what each one knows? And what would have to be true for each to "know" the other way?</em></p>
+      </div>
+      <div class="write-prompt">⏱ 5 minutes · Hand it in on your way out</div>
     </div>
-
-    <div class="wait-time">⏳ Think. Then hands.</div>
-
-    <div style="margin-top: 40px; padding: 20px; background: #faf8f3; border-left: 4px solid #d4a574;">
-      <strong style="display: block; margin-bottom: 12px;">Next move:</strong>
-      "Right. But here's the question: Does 'more data' mean the same thing as 'knowledge'? Or are we using the word 'know' differently?"
-    </div>
-
-    <div class="note">TEACHER: This is the collision. Let silence sit. This is where they feel the grid forming.</div>
-  </div>
-
-  <!-- SLIDE 8: SOCRATIC 4 — TWO WAYS OF KNOWING THE SAME BEHAVIOR -->
-  <div class="slide">
-    <h2>Here's a nastier one.</h2>
-
-    <div style="margin-top: 40px;">
-      <p><strong>Two things could both be true:</strong></p>
-      <ul style="font-size: 20px; margin-left: 40px; margin-top: 20px; line-height: 2;">
-        <li>The AI says you'll doomscroll for 45 minutes at midnight <em>(pattern)</em></li>
-        <li>Your best friend says you do that when you're anxious <em>(reason, meaning)</em></li>
-      </ul>
-    </div>
-
-    <div class="question" style="margin-top: 40px;">
-      How can both be right about the same behavior if they're knowing it two different ways?
-    </div>
-
-    <div class="wait-time">⏳ Don't answer. Just write one sentence in your notebook. How are those two different kinds of knowing?</div>
-
-    <div class="note">TEACHER: Give them 90 seconds. Collect the notebooks at the end (they're your diagnostic). You're looking for: Do they see this as two ways of knowing the same thing? Or do they rank them (real vs fake)?</div>
-  </div>
-
-  <!-- SLIDE 9: LANDING — THE YEAR AHEAD -->
-  <div class="slide">
-    <h2>This is your year.</h2>
-
-    <div style="margin-top: 40px; padding: 24px; background: #f5e6d3; border-radius: 2px;">
-      <p style="font-size: 21px; line-height: 1.9;">
-        <strong>This question:</strong> What counts as knowledge? Who gets to decide? And does the answer change depending on what you're trying to know?
-      </p>
-    </div>
-
-    <p style="margin-top: 40px; font-size: 20px;">You'll ask it in science, religion, language, art, math. Same tool. Different answers.</p>
-
-    <p style="margin-top: 30px; font-size: 20px;"><em>And today you just did it without the tool.</em></p>
-
-    <div class="grid-pointer">
-      <strong>↗ Look at the back wall.</strong> That grid you see? That's the instrument. We'll use it starting next class.
-    </div>
-  </div>
-
-  <!-- SLIDE 10: EXIT TICKET — WRITE -->
-  <div class="slide">
-    <h2>Before you go.</h2>
-
-    <div class="timer">⏱ You have 5 minutes.</div>
-
-    <div class="prompt-box">
-      <strong>Write 3–4 sentences on a fresh page.</strong>
-      <br><br>
-      The AI knows your patterns. Your teacher knows your thinking. Your parent knows your fears. They all know you. But they know you in different ways.
-      <br><br>
-      Pick two of those (or pick your own pair). Write: <em>What's the difference between what each one knows? And what would have to be true for them to 'know' the other way?</em>
-    </div>
-
-    <div class="note">TEACHER: Collect these. You're diagnosing: Do they think one is "real knowing" and the other is fake? Or have they spotted that "knowing" has different structures depending on the context? That diagnostic tells you where to pitch the grid.</div>
-  </div>
-
-  <!-- Navigation -->
-  <div class="controls">
-    <button id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
-    <span class="slide-counter"><span id="slideNum">1</span> / <span id="slideTotal">10</span></span>
-    <button id="nextBtn" onclick="changeSlide(1)">Next →</button>
-  </div>
+  </section>
 
 </div>
+
+<nav class="nav">
+  <button id="prevBtn">◀ Prev</button>
+  <span class="counter" id="counter">Slide 1 of 10</span>
+  <button id="nextBtn">Next ▶</button>
+</nav>
+
 <script>
-  let currentSlide = 0;
   const slides = document.querySelectorAll('.slide');
-  const totalSlides = slides.length;
-  document.getElementById('slideTotal').textContent = totalSlides;
+  const total = slides.length;
+  let current = 0;
 
-  function showSlide(n) {
-    slides.forEach(s => s.classList.remove('active'));
-    slides[n].classList.add('active');
-    document.getElementById('slideNum').textContent = n + 1;
-    document.getElementById('prevBtn').disabled = n === 0;
-    document.getElementById('nextBtn').disabled = n === totalSlides - 1;
+  const counter = document.getElementById('counter');
+  const hCounter = document.getElementById('hCounter');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  function show(i) {
+    if (i < 0) i = 0;
+    if (i >= total) i = total - 1;
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
+    current = i;
+    counter.textContent = `Slide ${i + 1} of ${total}`;
+    hCounter.textContent = `${String(i + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+    prevBtn.disabled = (i === 0);
+    nextBtn.disabled = (i === total - 1);
   }
 
-  function changeSlide(direction) {
-    currentSlide += direction;
-    if (currentSlide >= 0 && currentSlide < totalSlides) {
-      showSlide(currentSlide);
-      window.scrollTo(0, 0);
+  prevBtn.addEventListener('click', () => show(current - 1));
+  nextBtn.addEventListener('click', () => show(current + 1));
+
+  document.addEventListener('keydown', e => {
+    if (e.target.tagName === 'BUTTON' && e.key === ' ') return;
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+      e.preventDefault();
+      show(current + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      e.preventDefault();
+      show(current - 1);
+    } else if (e.key === 'Home') {
+      show(0);
+    } else if (e.key === 'End') {
+      show(total - 1);
+    } else if (e.key === 'f' || e.key === 'F') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
     }
-  }
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'ArrowLeft') changeSlide(-1);
-    if (e.key === 'ArrowRight') changeSlide(1);
   });
 
-  showSlide(0);
+  // Generic reveal buttons
+  document.querySelectorAll('.reveal-btn[data-reveal]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll(btn.dataset.reveal).forEach(el => el.classList.add('shown'));
+      btn.classList.add('gone');
+    });
+  });
+
+  // Sequential reveal — Netflix list
+  const netflixBtn = document.getElementById('netflixBtn');
+  const netflixItems = document.querySelectorAll('#netflix li');
+  netflixBtn.addEventListener('click', () => {
+    const next = [...netflixItems].find(li => !li.classList.contains('shown'));
+    if (next) {
+      next.classList.add('shown');
+      const remaining = [...netflixItems].filter(li => !li.classList.contains('shown')).length;
+      if (remaining === 0) {
+        netflixBtn.classList.add('gone');
+        document.getElementById('netflix-q').classList.add('shown');
+      } else {
+        netflixBtn.textContent = 'And… →';
+      }
+    }
+  });
+
+  show(0);
 </script>
 </body>
 </html>
