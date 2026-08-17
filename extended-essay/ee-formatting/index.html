@@ -1,1408 +1,1301 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Save the EE - Hero's Journey</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-        
-        .game-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .title {
-            font-size: 3rem;
-            font-weight: bold;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
-            margin-bottom: 10px;
-            background: linear-gradient(45deg, #FFD700, #FF6B35);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-        
-        .progress-bar {
-            width: 100%;
-            height: 20px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 10px;
-            margin: 20px 0;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #00C851, #007E33);
-            width: 0%;
-            transition: width 0.5s ease;
-        }
-        
-        .level-container {
-            background: rgba(255,255,255,0.1);
-            border-radius: 15px;
-            padding: 30px;
-            margin: 20px 0;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-        
-        .villain-intro {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .villain-avatar {
-            font-size: 4rem;
-            margin-bottom: 15px;
-            animation: float 2s ease-in-out infinite;
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        .villain-name {
-            font-size: 2rem;
-            color: #FF6B6B;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-        
-        .challenge-area {
-            background: rgba(0,0,0,0.2);
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        
-        .question {
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-        
-        .options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-        
-        .option {
-            padding: 15px;
-            background: rgba(255,255,255,0.1);
-            border: 2px solid transparent;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-        
-        .option:hover {
-            background: rgba(255,255,255,0.2);
-            border-color: #FFD700;
-            transform: translateY(-2px);
-        }
-        
-        .option.correct {
-            background: rgba(0, 200, 81, 0.3);
-            border-color: #00C851;
-        }
-        
-        .option.incorrect {
-            background: rgba(255, 107, 107, 0.3);
-            border-color: #FF6B6B;
-        }
-        
-        .drag-area {
-            min-height: 100px;
-            border: 2px dashed rgba(255,255,255,0.5);
-            border-radius: 8px;
-            padding: 20px;
-            margin: 10px 0;
-            position: relative;
-        }
-        
-        .drag-area.drag-over {
-            border-color: #FFD700;
-            background: rgba(255, 215, 0, 0.1);
-        }
-        
-        .draggable {
-            padding: 10px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 5px;
-            margin: 5px;
-            cursor: move;
-            display: inline-block;
-            user-select: none;
-        }
-        
-        .draggable:hover {
-            background: rgba(255,255,255,0.3);
-        }
-        
-        .btn {
-            padding: 12px 25px;
-            border: none;
-            border-radius: 25px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 10px;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(45deg, #FF6B35, #F7931E);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(247, 147, 30, 0.4);
-        }
-        
-        .btn-success {
-            background: linear-gradient(45deg, #00C851, #007E33);
-            color: white;
-        }
-        
-        .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 200, 81, 0.4);
-        }
-        
-        .mission-complete {
-            background: rgba(0, 200, 81, 0.2);
-            border: 2px solid #00C851;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-            text-align: center;
-        }
-        
-        .checklist {
-            text-align: left;
-            max-width: 600px;
-            margin: 20px auto;
-        }
-        
-        .checklist-item {
-            margin: 10px 0;
-            display: flex;
-            align-items: center;
-        }
-        
-        .checklist-item input[type="checkbox"] {
-            margin-right: 10px;
-            transform: scale(1.5);
-        }
-        
-        .hero-power {
-            background: rgba(255, 215, 0, 0.2);
-            border-left: 4px solid #FFD700;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 0 8px 8px 0;
-        }
-        
-        .hero-power::before {
-            content: "⚡ Hero Power: ";
-            font-weight: bold;
-            color: #FFD700;
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        .feedback {
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            text-align: center;
-            font-weight: bold;
-        }
-        
-        .feedback.correct {
-            background: rgba(0, 200, 81, 0.3);
-            border: 2px solid #00C851;
-        }
-        
-        .feedback.incorrect {
-            background: rgba(255, 107, 107, 0.3);
-            border: 2px solid #FF6B6B;
-        }
-        
-        .example-box {
-            background: rgba(0,0,0,0.3);
-            border-radius: 8px;
-            padding: 15px;
-            margin: 15px 0;
-            font-family: 'Courier New', monospace;
-            border-left: 4px solid #4ECDC4;
-        }
-        
-        .citation-builder {
-            background: rgba(255,255,255,0.1);
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        
-        .citation-input {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0;
-            border: none;
-            border-radius: 5px;
-            background: rgba(255,255,255,0.2);
-            color: white;
-        }
-        
-        .citation-match {
-            background: rgba(255,215,0,0.2);
-            border: 2px solid #FFD700;
-            margin: 5px;
-            padding: 8px 12px;
-            font-weight: bold;
-        }
-        
-        .citation-drop {
-            min-height: 40px;
-            border: 2px dashed rgba(255,255,255,0.3);
-            border-radius: 5px;
-            margin-top: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            color: rgba(255,255,255,0.7);
-        }
-        
-        .citation-drop.drag-over {
-            border-color: #FFD700;
-            background: rgba(255,215,0,0.1);
-        }
-        
-        .challenge-area {
-            background: rgba(0,0,0,0.2);
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        
-        .challenge-area h4 {
-            margin-bottom: 15px;
-            color: #4ECDC4;
-        }
-        
-        .word-counter {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(0,0,0,0.2);
-            padding: 15px;
-            border-radius: 8px;
-            margin: 10px 0;
-        }
-        
-        .final-boss {
-            background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-        }
-        
-        .victory {
-            text-align: center;
-            padding: 40px;
-            background: linear-gradient(135deg, #FFD700, #FFA726);
-            border-radius: 15px;
-            color: #333;
-        }
-        
-        .victory h2 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-        }
-        
-        .sound-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(255,255,255,0.2);
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 1.5rem;
-            color: white;
-            cursor: pointer;
-        }
-        
-        @media (max-width: 768px) {
-            .title {
-                font-size: 2rem;
-            }
-            
-            .options {
-                grid-template-columns: 1fr;
-            }
-            
-            .game-container {
-                padding: 10px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Save the EE — Formatting Missions (Class of 2027)</title>
+<style>
+:root{
+  --bg-1:#0b1020;
+  --bg-2:#171334;
+  --card:rgba(255,255,255,.055);
+  --card-2:rgba(255,255,255,.09);
+  --line:rgba(255,255,255,.14);
+  --ink:#eef1f8;
+  --ink-dim:#b6bdd2;
+  --amber:#fbbf24;
+  --teal:#2dd4bf;
+  --rose:#fb7185;
+  --green:#34d399;
+  --violet:#a78bfa;
+  --r:14px;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);
+  color:var(--ink);
+  background:
+    radial-gradient(1100px 700px at 12% -10%, rgba(167,139,250,.22), transparent 60%),
+    radial-gradient(900px 600px at 92% 0%, rgba(45,212,191,.16), transparent 55%),
+    linear-gradient(170deg,var(--bg-1),var(--bg-2));
+  background-repeat:no-repeat;
+  min-height:100vh;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- HUD ---------- */
+.hud{
+  position:sticky;top:0;z-index:50;
+  backdrop-filter:blur(14px);
+  background:rgba(11,16,32,.82);
+  border-bottom:1px solid var(--line);
+}
+.hud-inner{
+  max-width:1080px;margin:0 auto;padding:10px 18px;
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+}
+.brand{font-weight:800;letter-spacing:-.02em;font-size:1.05rem;display:flex;align-items:center;gap:8px}
+.brand small{font-weight:500;color:var(--ink-dim);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
+.stats{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap}
+.stat{
+  display:flex;align-items:baseline;gap:6px;
+  background:var(--card);border:1px solid var(--line);
+  padding:5px 11px;border-radius:999px;font-size:.82rem;
+}
+.stat b{font-size:1rem;font-variant-numeric:tabular-nums}
+.stat.xp b{color:var(--amber)}
+.stat.streak b{color:var(--teal)}
+.stat.badge b{color:var(--violet)}
+.pips{display:flex;gap:5px;width:100%;}
+.pip{
+  height:5px;flex:1;border-radius:99px;background:rgba(255,255,255,.13);
+  transition:background .4s ease, box-shadow .4s ease;
+}
+.pip.done{background:linear-gradient(90deg,var(--teal),var(--green))}
+.pip.now{background:var(--amber);box-shadow:0 0 12px rgba(251,191,36,.6)}
+
+/* ---------- layout ---------- */
+.wrap{max-width:1080px;margin:0 auto;padding:26px 18px 90px}
+.intro{text-align:center;padding:14px 0 26px}
+.intro h1{
+  font-size:clamp(2rem,5.5vw,3.2rem);line-height:1.05;letter-spacing:-.03em;font-weight:850;
+  background:linear-gradient(92deg,#fff,var(--amber) 55%,var(--teal));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.intro p{color:var(--ink-dim);max-width:62ch;margin:10px auto 0}
+.rubric-tag{
+  display:inline-flex;gap:8px;align-items:center;margin-top:14px;
+  border:1px solid rgba(45,212,191,.45);background:rgba(45,212,191,.1);
+  color:#a5f3ec;padding:6px 13px;border-radius:999px;font-size:.78rem;font-weight:600;
+}
+.level{
+  background:var(--card);border:1px solid var(--line);border-radius:22px;
+  padding:clamp(18px,3vw,32px);margin:18px 0;
+  box-shadow:0 24px 60px -30px rgba(0,0,0,.9);
+}
+.hidden{display:none !important}
+
+/* ---------- villain header ---------- */
+.villain{display:flex;gap:16px;align-items:flex-start;padding-bottom:6px}
+.avatar{
+  font-size:2.1rem;line-height:1;flex:0 0 62px;height:62px;display:grid;place-items:center;
+  border-radius:18px;background:var(--card-2);border:1px solid var(--line);
+  animation:bob 3.4s ease-in-out infinite;
+}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.villain h2{font-size:1.5rem;letter-spacing:-.02em;color:var(--rose);line-height:1.2}
+.villain .taunt{color:var(--ink-dim);font-style:italic;margin-top:4px;font-size:.95rem}
+.mark-tag{
+  display:inline-block;margin-top:8px;font-size:.72rem;font-weight:700;letter-spacing:.05em;
+  text-transform:uppercase;color:#c7d2fe;background:rgba(167,139,250,.16);
+  border:1px solid rgba(167,139,250,.4);padding:3px 9px;border-radius:6px;
+}
+
+/* ---------- panels ---------- */
+.power{
+  background:linear-gradient(90deg,rgba(251,191,36,.14),rgba(251,191,36,.03));
+  border-left:3px solid var(--amber);border-radius:0 12px 12px 0;
+  padding:13px 16px;margin:18px 0;font-size:.95rem;
+}
+.power b{color:var(--amber)}
+.challenge{
+  background:rgba(0,0,0,.26);border:1px solid rgba(255,255,255,.08);
+  border-radius:var(--r);padding:clamp(14px,2.4vw,22px);margin:16px 0;
+}
+.challenge > h3{
+  font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);
+  margin-bottom:10px;font-weight:700;
+}
+.q{font-weight:650;margin-bottom:14px;font-size:1.02rem}
+.note{font-size:.86rem;color:var(--ink-dim);margin-top:10px}
+
+/* ---------- options ---------- */
+.opts{display:grid;gap:10px;margin:6px 0 0}
+.opts.two{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.opt{
+  font:inherit;color:inherit;text-align:left;cursor:pointer;
+  background:var(--card);border:1.5px solid transparent;border-radius:11px;
+  padding:13px 15px;transition:.18s ease;position:relative;
+}
+.opt:hover{background:var(--card-2);border-color:rgba(255,255,255,.3);transform:translateY(-1px)}
+.opt:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.opt.correct{background:rgba(52,211,153,.16);border-color:var(--green)}
+.opt.wrong{background:rgba(251,113,133,.14);border-color:var(--rose)}
+.opt.correct::after{content:"✓";position:absolute;top:9px;right:12px;color:var(--green);font-weight:800}
+.opt.wrong::after{content:"✕";position:absolute;top:9px;right:12px;color:var(--rose);font-weight:800}
+.opt[disabled]{cursor:default;opacity:.75}
+
+/* ---------- feedback ---------- */
+.fb{margin-top:13px;padding:12px 14px;border-radius:11px;font-size:.93rem;display:none}
+.fb.show{display:block;animation:pop .25s ease}
+@keyframes pop{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.fb.good{background:rgba(52,211,153,.13);border:1px solid rgba(52,211,153,.5)}
+.fb.bad{background:rgba(251,113,133,.11);border:1px solid rgba(251,113,133,.45)}
+.fb b{display:block;margin-bottom:2px}
+
+/* ---------- buttons ---------- */
+.btn{
+  font:inherit;font-weight:700;cursor:pointer;border:none;border-radius:999px;
+  padding:11px 22px;margin:14px 8px 0 0;transition:.18s ease;color:#0b1020;
+}
+.btn:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.btn-check{background:linear-gradient(92deg,#fbbf24,#f59e0b)}
+.btn-check:hover{transform:translateY(-2px);box-shadow:0 10px 24px -8px rgba(251,191,36,.7)}
+.btn-next{background:linear-gradient(92deg,var(--teal),var(--green))}
+.btn-next:hover:not([disabled]){transform:translateY(-2px);box-shadow:0 10px 24px -8px rgba(45,212,191,.7)}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn-ghost:hover{background:var(--card-2)}
+.btn[disabled]{opacity:.4;cursor:not-allowed;filter:grayscale(.5)}
+
+/* ---------- chips / sorting ---------- */
+.pool{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0 18px;min-height:44px}
+.chip{
+  font:inherit;color:inherit;cursor:pointer;user-select:none;
+  background:var(--card-2);border:1.5px solid var(--line);border-radius:9px;
+  padding:8px 13px;font-size:.9rem;transition:.15s ease;
+}
+.chip:hover{border-color:var(--amber);transform:translateY(-1px)}
+.chip.picked{border-color:var(--amber);background:rgba(251,191,36,.2);box-shadow:0 0 0 3px rgba(251,191,36,.2)}
+.chip.ok{border-color:var(--green);background:rgba(52,211,153,.16)}
+.chip.no{border-color:var(--rose);background:rgba(251,113,133,.15)}
+.chip:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.bucket{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:12px;padding:12px}
+.bucket h4{font-size:.9rem;margin-bottom:8px}
+.zone{
+  min-height:96px;border:2px dashed rgba(255,255,255,.2);border-radius:10px;
+  padding:10px;display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start;transition:.15s;
+}
+.zone.armed{border-color:var(--amber);background:rgba(251,191,36,.07)}
+.zone:empty::before{content:"tap a card, then tap here";color:rgba(255,255,255,.35);font-size:.8rem}
+
+/* ---------- title page builder ---------- */
+.builder{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:820px){.builder{grid-template-columns:1fr}}
+.paper{
+  background:#fdfdf8;color:#1b1b1b;border-radius:8px;padding:30px 26px;
+  font-family:var(--serif);min-height:340px;
+  box-shadow:0 18px 40px -18px rgba(0,0,0,.8);display:flex;flex-direction:column;gap:13px;
+  text-align:center;justify-content:center;
+}
+.paper .pt{font-size:1.22rem;font-weight:700;font-style:italic}
+.paper .line{font-size:.95rem}
+.paper .bad{color:#b91c1c;text-decoration:line-through}
+.paper .slot{
+  border-bottom:2px dashed #9aa0a6;display:inline-block;min-width:120px;
+  color:#6b7280;font-style:italic;
+}
+.paper .empty-hint{color:#9aa0a6;font-style:italic;font-size:.88rem}
+.toggle-list{display:flex;flex-direction:column;gap:8px}
+.toggle{
+  font:inherit;color:inherit;text-align:left;cursor:pointer;
+  display:flex;align-items:center;gap:11px;
+  background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:10px 13px;
+  transition:.15s;font-size:.9rem;
+}
+.toggle:hover{background:var(--card-2)}
+.toggle .box{
+  flex:0 0 20px;height:20px;border-radius:6px;border:1.5px solid rgba(255,255,255,.4);
+  display:grid;place-items:center;font-size:.8rem;font-weight:800;
+}
+.toggle.on{border-color:var(--teal);background:rgba(45,212,191,.13)}
+.toggle.on .box{background:var(--teal);border-color:var(--teal);color:#062725}
+.toggle.on .box::after{content:"✓"}
+.toggle.judged-ok{border-color:var(--green)}
+.toggle.judged-no{border-color:var(--rose)}
+
+/* ---------- spot the error ---------- */
+.doc{
+  background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:12px;
+  padding:18px;font-family:var(--serif);font-size:1rem;
+}
+.doc .row{
+  display:flex;justify-content:space-between;gap:12px;padding:7px 10px;border-radius:7px;
+  cursor:pointer;transition:.15s;border:1.5px solid transparent;
+}
+.doc .row:hover{background:rgba(255,255,255,.07)}
+.doc .row.flag{border-color:var(--amber);background:rgba(251,191,36,.12)}
+.doc .row.hit{border-color:var(--green);background:rgba(52,211,153,.14)}
+.doc .row.miss{border-color:var(--rose);background:rgba(251,113,133,.12)}
+.doc .dots{flex:1;border-bottom:1px dotted rgba(255,255,255,.35);margin:0 6px;transform:translateY(-4px)}
+
+/* ---------- code / examples ---------- */
+.example{
+  background:rgba(0,0,0,.34);border-left:3px solid var(--teal);border-radius:0 12px 12px 0;
+  padding:15px 17px;margin:16px 0;font-size:.93rem;
+}
+.example .ttl{font-size:.72rem;letter-spacing:.13em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:8px}
+.serif{font-family:var(--serif)}
+.hang{padding-left:2.2em;text-indent:-2.2em}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:700px){.split{grid-template-columns:1fr}}
+.yes{border:1px solid rgba(52,211,153,.4);background:rgba(52,211,153,.08);border-radius:11px;padding:13px}
+.no{border:1px solid rgba(251,113,133,.4);background:rgba(251,113,133,.08);border-radius:11px;padding:13px}
+.yes .lbl,.no .lbl{font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;margin-bottom:7px;display:block}
+.yes .lbl{color:var(--green)} .no .lbl{color:var(--rose)}
+input[type=text]{
+  width:100%;font:inherit;color:var(--ink);background:rgba(255,255,255,.09);
+  border:1.5px solid var(--line);border-radius:10px;padding:11px 13px;margin-top:6px;
+}
+input[type=text]:focus{outline:none;border-color:var(--amber)}
+ol.steps{margin:10px 0 0 20px;display:flex;flex-direction:column;gap:6px;font-size:.93rem}
+
+/* ---------- mission checklist ---------- */
+.mission{
+  background:linear-gradient(180deg,rgba(52,211,153,.12),rgba(52,211,153,.04));
+  border:1px solid rgba(52,211,153,.4);border-radius:16px;padding:20px;margin-top:20px;
+}
+.mission h3{font-size:1.1rem;margin-bottom:4px}
+.mission .sub{color:var(--ink-dim);font-size:.88rem;margin-bottom:14px}
+.check{
+  display:flex;gap:12px;align-items:flex-start;padding:9px 11px;border-radius:9px;
+  cursor:pointer;transition:.15s;font-size:.94rem;
+}
+.check:hover{background:rgba(255,255,255,.06)}
+.check input{margin-top:3px;width:19px;height:19px;accent-color:#34d399;flex:0 0 auto;cursor:pointer}
+.check.done{color:var(--ink-dim);text-decoration:line-through;text-decoration-color:rgba(255,255,255,.3)}
+
+/* ---------- boss ---------- */
+.boss{border-color:rgba(251,113,133,.5);background:
+  radial-gradient(700px 300px at 50% 0%,rgba(251,113,133,.16),transparent 70%),var(--card)}
+.timer{
+  font-size:2.4rem;font-weight:850;text-align:center;color:var(--amber);
+  font-variant-numeric:tabular-nums;letter-spacing:.02em;
+}
+.timer.danger{color:var(--rose);animation:pulse .9s infinite}
+@keyframes pulse{50%{opacity:.45}}
+.bossgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px;margin-top:8px}
+
+/* ---------- victory ---------- */
+.victory{
+  border-radius:22px;padding:clamp(20px,4vw,40px);
+  background:linear-gradient(160deg,#fde68a,#fbbf24 45%,#f59e0b);
+  color:#231a02;text-align:center;
+}
+.victory h2{font-size:clamp(1.9rem,5vw,2.8rem);letter-spacing:-.03em}
+.badges{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:22px 0}
+.badge-card{
+  background:rgba(0,0,0,.14);border:1px solid rgba(0,0,0,.22);border-radius:14px;padding:14px;
+  opacity:.32;filter:grayscale(1);transition:.4s;
+}
+.badge-card.earned{opacity:1;filter:none;box-shadow:0 8px 20px -10px rgba(0,0,0,.6)}
+.badge-card .ico{font-size:1.7rem}
+.badge-card b{display:block;margin-top:4px;font-size:.95rem}
+.badge-card span{font-size:.78rem;opacity:.75}
+.final-list{
+  background:rgba(0,0,0,.82);color:var(--ink);border-radius:16px;padding:22px;
+  text-align:left;max-width:680px;margin:22px auto 0;
+}
+.final-list h3{margin-bottom:12px;font-size:1.05rem}
+.final-list li{margin:7px 0 7px 20px;font-size:.94rem}
+.rank{font-size:1.3rem;font-weight:800;margin:6px 0 0}
+
+/* ---------- toast ---------- */
+#toasts{position:fixed;right:16px;bottom:16px;z-index:99;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.toast{
+  background:rgba(11,16,32,.94);border:1px solid var(--amber);color:var(--amber);
+  padding:9px 15px;border-radius:999px;font-weight:700;font-size:.9rem;
+  animation:rise .3s ease, fade .4s ease 1.5s forwards;box-shadow:0 10px 30px -12px #000;
+}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes fade{to{opacity:0;transform:translateY(-6px)}}
+
+@media print{
+  body{background:#fff;color:#000}
+  .hud,.level,.btn,#toasts,.badges{display:none !important}
+  .victory{background:#fff;color:#000}
+  .final-list{background:#fff;color:#000;border:1px solid #000}
+}
+@media (prefers-reduced-motion: reduce){*{animation:none !important;transition:none !important}}
+</style>
 </head>
 <body>
-    <button class="sound-toggle" onclick="toggleSound()" title="Toggle Sound">🔊</button>
-    
-    <div class="game-container">
-        <div class="header">
-            <h1 class="title">Save the EE</h1>
-            <p class="subtitle">Hero's Journey to Perfect Formatting</p>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-            <p id="progressText">Level 1 of 7</p>
-        </div>
 
-        <!-- Level 1: Title Page Terror -->
-        <div class="level-container" id="level1">
-            <div class="villain-intro">
-                <div class="villain-avatar">🎭</div>
-                <h2 class="villain-name">Dr. Anonymous</h2>
-                <p>"I'll make sure everyone includes their names and breaks anonymity! Mwahahaha!"</p>
-            </div>
-            
-            <div class="hero-power">
-                The IB requires complete anonymity in EE submissions. No names, candidate numbers, or school info on the title page!
-            </div>
-            
-            <div class="challenge-area">
-                <div class="question">Battle Challenge: Which title page is correctly formatted?</div>
-                <div class="options">
-                    <div class="option" onclick="selectOption(this, false, 1)">
-                        <strong>The Impact of Social Media</strong><br>
-                        Research Question: How does social media affect teenagers?<br>
-                        Subject: Psychology<br>
-                        By: John Smith, Candidate #12345<br>
-                        Westfield High School<br>
-                        Word Count: 3,847
-                    </div>
-                    <div class="option" onclick="selectOption(this, true, 1)">
-                        <strong>The Impact of Social Media on Teen Mental Health</strong><br>
-                        Research Question: To what extent does social media usage affect teenage mental health outcomes?<br>
-                        Subject: Psychology<br>
-                        Word Count: 3,847
-                    </div>
-                </div>
-                <div id="feedback1" class="feedback hidden"></div>
-            </div>
-            
-            <div class="example-box">
-                <strong>Perfect Title Page Example:</strong><br>
-                <em>The Role of Symbolism in Orwell's 1984</em><br>
-                Research Question: To what extent does Orwell use symbolism in 1984 to critique authoritarian power?<br>
-                Subject: English A: Literature, Category 1<br>
-                Word Count: 3,873
-            </div>
-            
-            <div id="mission1" class="mission-complete hidden">
-                <h3>🎯 Mission Complete! Now fix your own title page:</h3>
-                <div class="checklist">
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check1a"> Clear essay title (not a question)
-                    </div>
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check1b"> Research question ending with "?"
-                    </div>
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check1c"> Subject and category listed
-                    </div>
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check1d"> Exact word count included
-                    </div>
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check1e"> NO personal info (name, school, etc.)
-                    </div>
-                </div>
-                <button class="btn btn-success" onclick="nextLevel(2)" id="next1" disabled>Advance to Level 2</button>
-            </div>
-        </div>
+<div class="hud">
+  <div class="hud-inner">
+    <div class="brand">🛡️ Save the EE <small id="levelName">Mission 1 · Title page</small></div>
+    <div class="stats">
+      <div class="stat xp">XP <b id="xp">0</b></div>
+      <div class="stat streak">🔥 <b id="streak">0</b></div>
+      <div class="stat badge">🎖️ <b id="badgeCount">0</b>/7</div>
+    </div>
+    <div class="pips" id="pips"></div>
+  </div>
+</div>
 
-        <!-- Level 2: Table of Chaos -->
-        <div class="level-container hidden" id="level2">
-            <div class="villain-intro">
-                <div class="villain-avatar">📄</div>
-                <h2 class="villain-name">Page Number Phantom</h2>
-                <p>"I'll scramble all your page numbers and make your table of contents useless!"</p>
-            </div>
-            
-            <div class="hero-power">
-                Your table of contents must list ALL major sections with ACCURATE page numbers that match your actual document!
-            </div>
-            
-            <div class="challenge-area">
-                <div class="question">Battle Challenge: Drag the correct page numbers to match this table of contents:</div>
-                <div style="margin: 20px 0;">
-                    <strong>Available Page Numbers:</strong><br>
-                    <div class="draggable" draggable="true" ondragstart="drag(event)" id="page3">3</div>
-                    <div class="draggable" draggable="true" ondragstart="drag(event)" id="page5">5</div>
-                    <div class="draggable" draggable="true" ondragstart="drag(event)" id="page8">8</div>
-                    <div class="draggable" draggable="true" ondragstart="drag(event)" id="page12">12</div>
-                    <div class="draggable" draggable="true" ondragstart="drag(event)" id="page15">15</div>
-                    <div class="draggable" draggable="true" ondragstart="drag(event)" id="page17">17</div>
-                </div>
-                
-                <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
-                    Introduction .................................. <div class="drag-area" ondrop="drop(event, 'intro')" ondragover="allowDrop(event)" id="intro-drop">Drop here</div>
-                    Section 1: Literature Review ................ <div class="drag-area" ondrop="drop(event, 'lit')" ondragover="allowDrop(event)" id="lit-drop">Drop here</div>
-                    Section 2: Methodology ..................... <div class="drag-area" ondrop="drop(event, 'method')" ondragover="allowDrop(event)" id="method-drop">Drop here</div>
-                    Section 3: Analysis ......................... <div class="drag-area" ondrop="drop(event, 'analysis')" ondragover="allowDrop(event)" id="analysis-drop">Drop here</div>
-                    Conclusion .................................. <div class="drag-area" ondrop="drop(event, 'conclusion')" ondragover="allowDrop(event)" id="conclusion-drop">Drop here</div>
-                    Works Cited ................................. <div class="drag-area" ondrop="drop(event, 'works')" ondragover="allowDrop(event)" id="works-drop">Drop here</div>
-                </div>
-                
-                <button class="btn btn-primary" onclick="checkTableOfContents()">Check My Answers</button>
-                <div id="feedback2" class="feedback hidden"></div>
-            </div>
-            
-            <div id="mission2" class="mission-complete hidden">
-                <h3>📑 Mission Complete! Now check your table of contents:</h3>
-                <div class="checklist">
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check2a"> All major sections listed
-                    </div>
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check2b"> Page numbers match actual document
-                    </div>
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check2c"> Clean, professional formatting
-                    </div>
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check2d"> Includes Introduction, Body, Conclusion, Works Cited
-                    </div>
-                </div>
-                <button class="btn btn-success" onclick="nextLevel(3)" id="next2" disabled>Advance to Level 3</button>
-            </div>
-        </div>
+<div class="wrap">
 
-        <!-- Level 3: Citation Saboteur -->
-        <div class="level-container hidden" id="level3">
-            <div class="villain-intro">
-                <div class="villain-avatar">📚</div>
-                <h2 class="villain-name">Professor Plagiarism</h2>
-                <p>"I'll remove all your citations and mix up your formats! Academic integrity is my enemy!"</p>
-            </div>
-            
-            <div class="hero-power">
-                Use consistent citation style (MLA or APA) and remember: the period ALWAYS comes AFTER the citation!
-            </div>
-            
-            <div class="challenge-area">
-                <div class="question">Battle Challenge 1: Which citation is correctly formatted in MLA style?</div>
-                <div class="options">
-                    <div class="option" onclick="selectOption(this, false, '3a')">
-                        Winston's fear symbolizes internal conflict. (Orwell 245)
-                    </div>
-                    <div class="option" onclick="selectOption(this, true, '3a')">
-                        Winston's fear symbolizes internal conflict (Orwell 245).
-                    </div>
-                    <div class="option" onclick="selectOption(this, false, '3a')">
-                        Winston's fear symbolizes internal conflict (Orwell, 245).
-                    </div>
-                </div>
-                <div id="feedback3a" class="feedback hidden"></div>
-            </div>
-            
-            <div class="challenge-area" id="challenge3b" style="display: none;">
-                <div class="question">Battle Challenge 2: Drag titles to their correct formatting!</div>
-                <div style="margin: 20px 0;">
-                    <strong>Titles to Sort:</strong><br>
-                    <div class="draggable" draggable="true" ondragstart="dragTitle(event)" id="book1">Romeo and Juliet</div>
-                    <div class="draggable" draggable="true" ondragstart="dragTitle(event)" id="article1">The Impact of Social Media on Youth</div>
-                    <div class="draggable" draggable="true" ondragstart="dragTitle(event)" id="book2">To Kill a Mockingbird</div>
-                    <div class="draggable" draggable="true" ondragstart="dragTitle(event)" id="article2">Climate Change in the 21st Century</div>
-                    <div class="draggable" draggable="true" ondragstart="dragTitle(event)" id="book3">The Great Gatsby</div>
-                    <div class="draggable" draggable="true" ondragstart="dragTitle(event)" id="article3">Educational Technology Trends</div>
-                </div>
-                
-                <div style="display: flex; gap: 20px; margin: 20px 0;">
-                    <div style="flex: 1;">
-                        <h4 style="color: #4ECDC4;"><em>Books/Movies = Italics</em></h4>
-                        <div class="drag-area" ondrop="dropTitle(event, 'italics')" ondragover="allowDrop(event)" id="italics-area" style="min-height: 150px;"></div>
-                    </div>
-                    <div style="flex: 1;">
-                        <h4 style="color: #FFD700;">"Articles/Essays = Quotes"</h4>
-                        <div class="drag-area" ondrop="dropTitle(event, 'quotes')" ondragover="allowDrop(event)" id="quotes-area" style="min-height: 150px;"></div>
-                    </div>
-                </div>
-                
-                <button class="btn btn-primary" onclick="checkTitleFormatting()">Check My Formatting</button>
-                <div id="feedback3b" class="feedback hidden"></div>
-            </div>
-            
-            <div class="challenge-area" id="challenge3c" style="display: none;">
-                <div class="question">Battle Challenge 3: Match in-text citations with Works Cited entries!</div>
-                <div style="margin: 20px 0;">
-                    <strong>In-text Citations:</strong><br>
-                    <div class="draggable citation-match" draggable="true" ondragstart="dragCitation(event)" id="cite1">(Smith 45)</div>
-                    <div class="draggable citation-match" draggable="true" ondragstart="dragCitation(event)" id="cite2">(Johnson 123)</div>
-                    <div class="draggable citation-match" draggable="true" ondragstart="dragCitation(event)" id="cite3">(Brown 87)</div>
-                </div>
-                
-                <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
-                    <strong>Works Cited Entries - Drop matching citations here:</strong><br><br>
-                    
-                    <div style="margin: 10px 0; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 5px;">
-                        Brown, Sarah. "Technology in Education." <em>Academic Journal</em>, vol. 12, 2023, pp. 80-95.
-                        <div class="drag-area citation-drop" ondrop="dropCitation(event, 'brown')" ondragover="allowDrop(event)" id="brown-drop" style="min-height: 40px; margin-top: 10px;">Drop citation here</div>
-                    </div>
-                    
-                    <div style="margin: 10px 0; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 5px;">
-                        Johnson, Mark. <em>Modern Research Methods</em>. Academic Press, 2022.
-                        <div class="drag-area citation-drop" ondrop="dropCitation(event, 'johnson')" ondragover="allowDrop(event)" id="johnson-drop" style="min-height: 40px; margin-top: 10px;">Drop citation here</div>
-                    </div>
-                    
-                    <div style="margin: 10px 0; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 5px;">
-                        Smith, Jane. "Climate Policy Analysis." <em>Environmental Studies Quarterly</em>, vol. 8, no. 3, 2023, pp. 40-58.
-                        <div class="drag-area citation-drop" ondrop="dropCitation(event, 'smith')" ondragover="allowDrop(event)" id="smith-drop" style="min-height: 40px; margin-top: 10px;">Drop citation here</div>
-                    </div>
-                </div>
-                
-                <button class="btn btn-primary" onclick="checkCitationMatching()">Check Citation Matches</button>
-                <div id="feedback3c" class="feedback hidden"></div>
-            </div>
-            
-            <div class="challenge-area" id="challenge3d" style="display: none;">
-                <div class="question">Battle Challenge 4: Master Hanging Indents in Google Docs!</div>
-                
-                <div class="hero-power">
-                    Hanging indents make your Works Cited look professional! The first line starts at the margin, but all other lines are indented.
-                </div>
-                
-                <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
-                    <h4>📋 How to Create Hanging Indents in Google Docs:</h4>
-                    <ol style="margin: 15px 0; padding-left: 20px; line-height: 1.6;">
-                        <li><strong>Select your Works Cited entries</strong> (highlight all the text)</li>
-                        <li><strong>Go to Format menu</strong> → Align & indent → Indentation options</li>
-                        <li><strong>Under "Special indent"</strong> select "Hanging"</li>
-                        <li><strong>Set to 0.5 inches</strong> (this is standard)</li>
-                        <li><strong>Click Apply</strong></li>
-                    </ol>
-                    
-                    <div style="background: rgba(255,215,0,0.1); padding: 15px; border-radius: 5px; margin: 15px 0;">
-                        <strong>💡 Pro Tip:</strong> You can also use the ruler at the top! Drag the bottom triangle (hanging indent marker) to the right while keeping the top triangle at the margin.
-                    </div>
-                    
-                    <div style="background: rgba(0,200,81,0.1); padding: 15px; border-radius: 5px; margin: 15px 0;">
-                        <strong>✅ Correctly formatted with hanging indent:</strong><br>
-                        <div style="font-family: 'Times New Roman', serif; margin: 10px 0;">
-                        Smith, Jane. "Climate Policy Analysis." <em>Environmental Studies Quarterly</em>, vol. 8, no. 3,<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2023, pp. 40-58.
-                        </div>
-                    </div>
-                    
-                    <div style="background: rgba(255,107,107,0.1); padding: 15px; border-radius: 5px; margin: 15px 0;">
-                        <strong>❌ Incorrect - no hanging indent:</strong><br>
-                        <div style="font-family: 'Times New Roman', serif; margin: 10px 0;">
-                        Smith, Jane. "Climate Policy Analysis." <em>Environmental Studies Quarterly</em>, vol. 8, no. 3, 2023, pp. 40-58.
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="question">Quick Check: Which shows proper hanging indent?</div>
-                <div class="options">
-                    <div class="option" onclick="selectOption(this, false, '3d')">
-                        <div style="font-family: monospace;">
-                        Brown, Sarah. "Technology in Education." Academic Journal,<br>
-                        vol. 12, 2023, pp. 80-95.
-                        </div>
-                    </div>
-                    <div class="option" onclick="selectOption(this, true, '3d')">
-                        <div style="font-family: monospace;">
-                        Brown, Sarah. "Technology in Education." Academic Journal,<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vol. 12, 2023, pp. 80-95.
-                        </div>
-                    </div>
-                </div>
-                <div id="feedback3d" class="feedback hidden"></div>
-            </div>
-            
-            <div class="citation-builder">
-                <h4>Practice: Build a Works Cited Entry (MLA Format)</h4>
-                <p>Create a citation for: Book "1984" by George Orwell, published by Harvill Secker in 1949</p>
-                <input type="text" class="citation-input" placeholder="Author Last, First. Title. Publisher, Year." id="citationInput">
-                <button class="btn btn-primary" onclick="checkCitation()">Check Citation</button>
-                <div id="citationFeedback" class="feedback hidden"></div>
-            </div>
-            
-            <div class="example-box">
-                <strong>MLA Works Cited Example:</strong><br>
-                Orwell, George. <em>1984</em>. Harvill Secker, 1949.<br>
-                Smith, John. "Symbols in Orwell's Works." <em>Modern Literature Review</em>, vol. 5, no. 2, 2017, pp. 35–49.
-            </div>
-            
-            <div id="mission3" class="mission-complete hidden">
-                <h3>📖 Mission Complete! Now audit your citations:</h3>
-                <div class="checklist">
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check3a"> Consistent citation style throughout
-                    </div>
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check3b"> All in-text citations have periods AFTER
-                    </div>
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check3c"> Book titles in italics, article titles in quotes
-                    </div>
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check3d"> Works Cited has hanging indents (0.5 inches)
-                    </div>
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check3e"> Every in-text citation matches a Works Cited entry
-                    </div>
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check3f"> Works Cited ONLY contains sources actually used
-                    </div>
-                </div>
-                <button class="btn btn-success" onclick="nextLevel(4)" id="next3" disabled>Advance to Level 4</button>
-            </div>
-        </div>
+  <div class="intro">
+    <h1>Save the Extended Essay</h1>
+    <p>Seven formatting villains are trying to bleed marks out of your essay. Beat each one, then run their checklist against <em>your own</em> draft. Formatting is not decoration — it is the <b>Structure</b> strand of Criterion A.</p>
+    <div class="rubric-tag">📘 Anchored to the EE guide, first assessment 2027 — Criterion A: Framework (6 marks)</div>
+  </div>
 
-        <!-- Level 4: Visual Vandal -->
-        <div class="level-container hidden" id="level4">
-            <div class="villain-intro">
-                <div class="villain-avatar">🖼️</div>
-                <h2 class="villain-name">Captain Confusion</h2>
-                <p>"I'll scramble your figures, remove your labels, and make your visuals meaningless!"</p>
-            </div>
-            
-            <div class="hero-power">
-                Every visual element must be labeled with a caption AND referenced in your text. No orphaned figures allowed!
-            </div>
-            
-            <div class="challenge-area">
-                <div class="question">Battle Challenge: How should you reference Figure 1 in your text?</div>
-                <div class="options">
-                    <div class="option" onclick="selectOption(this, false, 4)">
-                        The propaganda poster shows the government's control.
-                    </div>
-                    <div class="option" onclick="selectOption(this, true, 4)">
-                        As seen in Figure 1, the propaganda poster shows the government's control.
-                    </div>
-                    <div class="option" onclick="selectOption(this, false, 4)">
-                        See the attached figure for propaganda examples.
-                    </div>
-                </div>
-                <div id="feedback4" class="feedback hidden"></div>
-            </div>
-            
-            <div class="example-box">
-                <strong>Proper Figure Formatting:</strong><br><br>
-                [Image would appear here]<br>
-                <em>Figure 1.</em> A sample propaganda poster from Orwell's 1984.<br><br>
-                <strong>Text Reference:</strong><br>
-                "As demonstrated in Figure 1, the Party uses visual propaganda to maintain psychological control over citizens."
-            </div>
-            
-            <div id="mission4" class="mission-complete hidden">
-                <h3>🖼️ Mission Complete! Now check your visuals:</h3>
-                <div class="checklist">
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check4a"> All figures/tables have clear captions
-                    </div>
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check4b"> All visuals are referenced in text
-                    </div>
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check4c"> Captions appear below the visual
-                    </div>
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check4d"> Visuals support your argument
-                    </div>
-                </div>
-                <button class="btn btn-success" onclick="nextLevel(5)" id="next4" disabled>Advance to Level 5</button>
-            </div>
-        </div>
-
-        <!-- Level 5: Word Count Wizard -->
-        <div class="level-container hidden" id="level5">
-            <div class="villain-intro">
-                <div class="villain-avatar">🔢</div>
-                <h2 class="villain-name">The Inflator</h2>
-                <p>"I'll make EVERYTHING count toward your word limit! Your bibliography, your table of contents, EVERYTHING!"</p>
-            </div>
-            
-            <div class="hero-power">
-                Only specific parts count toward the 4,000-word limit. Exceeding means examiners stop reading at word 4,000!
-            </div>
-            
-            <div class="challenge-area">
-                <div class="question">Battle Challenge: Sort these items into what COUNTS vs what DOESN'T COUNT toward word limit:</div>
-                
-                <div style="margin: 20px 0;">
-                    <strong>Items to Sort:</strong><br>
-                    <div class="draggable" draggable="true" ondragstart="dragWord(event)" id="intro">Introduction</div>
-                    <div class="draggable" draggable="true" ondragstart="dragWord(event)" id="quotes">Direct Quotations</div>
-                    <div class="draggable" draggable="true" ondragstart="dragWord(event)" id="title">Title Page</div>
-                    <div class="draggable" draggable="true" ondragstart="dragWord(event)" id="toc">Table of Contents</div>
-                    <div class="draggable" draggable="true" ondragstart="dragWord(event)" id="citations">In-text Citations</div>
-                    <div class="draggable" draggable="true" ondragstart="dragWord(event)" id="works">Works Cited</div>
-                    <div class="draggable" draggable="true" ondragstart="dragWord(event)" id="headings">Section Headings</div>
-                    <div class="draggable" draggable="true" ondragstart="dragWord(event)" id="captions">Figure Captions</div>
-                </div>
-                
-                <div style="display: flex; gap: 20px; margin: 20px 0;">
-                    <div style="flex: 1;">
-                        <h4 style="color: #00C851;">✅ COUNTS (toward 4,000)</h4>
-                        <div class="drag-area" ondrop="dropWord(event, 'counts')" ondragover="allowDrop(event)" id="counts-area" style="min-height: 200px;"></div>
-                    </div>
-                    <div style="flex: 1;">
-                        <h4 style="color: #FF6B6B;">❌ DOESN'T COUNT</h4>
-                        <div class="drag-area" ondrop="dropWord(event, 'no-counts')" ondragover="allowDrop(event)" id="no-counts-area" style="min-height: 200px;"></div>
-                    </div>
-                </div>
-                
-                <button class="btn btn-primary" onclick="checkWordCount()">Check My Sorting</button>
-                <div id="feedback5" class="feedback hidden"></div>
-            </div>
-            
-            <div id="mission5" class="mission-complete hidden">
-                <h3>🔢 Mission Complete! Now verify your word count:</h3>
-                <div class="checklist">
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check5a"> Counted only Introduction, Body, and Conclusion
-                    </div>
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check5b"> Included all quotations in count
-                    </div>
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check5c"> Included in-text citations in count
-                    </div>
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check5d"> Under 4,000 words total
-                    </div>
-                </div>
-                <button class="btn btn-success" onclick="nextLevel(6)" id="next5" disabled>Advance to Level 6</button>
-            </div>
-        </div>
-
-        <!-- Level 6: Format Destroyer -->
-        <div class="level-container hidden" id="level6">
-            <div class="villain-intro">
-                <div class="villain-avatar">📝</div>
-                <h2 class="villain-name">Chaos Font</h2>
-                <p>"I'll make your essay look unprofessional with crazy fonts, spacing, and colors!"</p>
-            </div>
-            
-            <div class="hero-power">
-                Professional formatting shows respect for your reader and follows IB standards: 12pt standard font, double-spaced, 1-inch margins!
-            </div>
-            
-            <div class="challenge-area">
-                <div class="question">Battle Challenge: Which formatting follows IB standards?</div>
-                <div class="options">
-                    <div class="option" onclick="selectOption(this, false, 6)">
-                        Comic Sans, 14pt, single-spaced, colorful headings
-                    </div>
-                    <div class="option" onclick="selectOption(this, true, 6)">
-                        Times New Roman, 12pt, double-spaced, 1-inch margins
-                    </div>
-                    <div class="option" onclick="selectOption(this, false, 6)">
-                        Arial, 10pt, 1.5-spaced, decorative borders
-                    </div>
-                </div>
-                <div id="feedback6" class="feedback hidden"></div>
-            </div>
-            
-            <div class="example-box">
-                <strong>Perfect Formatting Checklist:</strong><br>
-                ✅ Font: Times New Roman, Arial, or Calibri<br>
-                ✅ Size: 12 point<br>
-                ✅ Spacing: Double throughout<br>
-                ✅ Margins: 1 inch (2.54 cm)<br>
-                ✅ Page numbers on all pages<br>
-                ✅ Clean, professional appearance
-            </div>
-            
-            <div id="mission6" class="mission-complete hidden">
-                <h3>📝 Mission Complete! Final formatting check:</h3>
-                <div class="checklist">
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check6a"> Standard font (Times New Roman, Arial, or Calibri)
-                    </div>
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check6b"> 12 point font size
-                    </div>
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check6c"> Double-spaced throughout
-                    </div>
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check6d"> 1-inch margins all around
-                    </div>
-                    <div class="checklist-item">
-                        <input type="checkbox" id="check6e"> Page numbers included
-                    </div>
-                </div>
-                <button class="btn btn-success" onclick="nextLevel(7)" id="next6" disabled>Face the Final Boss</button>
-            </div>
-        </div>
-
-        <!-- Final Boss -->
-        <div class="level-container final-boss hidden" id="level7">
-            <div class="villain-intro">
-                <div class="villain-avatar">👹</div>
-                <h2 class="villain-name">The Compliance Commander</h2>
-                <p>"I am the ultimate test! Face me if you dare - can you handle ALL formatting challenges at once?"</p>
-            </div>
-            
-            <div class="challenge-area">
-                <div class="question">💀 FINAL BOSS BATTLE: Complete all challenges within 3 minutes!</div>
-                <div id="timer" style="font-size: 2rem; text-align: center; color: #FFD700; margin: 20px 0;">3:00</div>
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-                    <div class="boss-challenge">
-                        <h4>Challenge 1: Quick Citation</h4>
-                        <p>Fix this citation:</p>
-                        <input type="text" class="citation-input" id="bossCitation" value="Winston feels fear. (Orwell 245)" placeholder="Fix the citation format">
-                    </div>
-                    
-                    <div class="boss-challenge">
-                        <h4>Challenge 2: Word Count</h4>
-                        <p>How many items COUNT toward word limit?</p>
-                        <div class="options">
-                            <div class="option" onclick="setBossAnswer(2, 'A')">5 items</div>
-                            <div class="option" onclick="setBossAnswer(2, 'B')">4 items</div>
-                            <div class="option" onclick="setBossAnswer(2, 'C')">6 items</div>
-                        </div>
-                    </div>
-                    
-                    <div class="boss-challenge">
-                        <h4>Challenge 3: Title Page</h4>
-                        <p>What should NOT be on title page?</p>
-                        <div class="options">
-                            <div class="option" onclick="setBossAnswer(3, 'A')">Research Question</div>
-                            <div class="option" onclick="setBossAnswer(3, 'B')">Student Name</div>
-                            <div class="option" onclick="setBossAnswer(3, 'C')">Word Count</div>
-                        </div>
-                    </div>
-                    
-                    <div class="boss-challenge">
-                        <h4>Challenge 4: Figure Reference</h4>
-                        <p>Complete the text reference:</p>
-                        <input type="text" class="citation-input" id="bossReference" placeholder="As seen in _____, the data shows..." value="As seen in ">
-                    </div>
-                </div>
-                
-                <button class="btn btn-primary" onclick="checkFinalBoss()" style="font-size: 1.5rem; margin: 20px 0;">DEFEAT THE BOSS!</button>
-                <div id="bossFeedback" class="feedback hidden"></div>
-            </div>
-        </div>
-
-        <!-- Victory Screen -->
-        <div class="victory hidden" id="victory">
-            <h2>🏆 VICTORY! 🏆</h2>
-            <p style="font-size: 1.5rem; margin: 20px 0;">You have successfully saved the Extended Essay!</p>
-            <p>Your EE is now protected from all formatting villains and ready for submission.</p>
-            
-            <div style="margin: 30px 0;">
-                <h3>🎖️ Hero Achievements Unlocked:</h3>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
-                    <div style="background: rgba(255,215,0,0.2); padding: 15px; border-radius: 8px;">
-                        <strong>📄 Title Page Master</strong><br>
-                        Defeated Dr. Anonymous
-                    </div>
-                    <div style="background: rgba(255,215,0,0.2); padding: 15px; border-radius: 8px;">
-                        <strong>📑 Organization Expert</strong><br>
-                        Defeated Page Number Phantom
-                    </div>
-                    <div style="background: rgba(255,215,0,0.2); padding: 15px; border-radius: 8px;">
-                        <strong>📚 Citation Champion</strong><br>
-                        Defeated Professor Plagiarism
-                    </div>
-                    <div style="background: rgba(255,215,0,0.2); padding: 15px; border-radius: 8px;">
-                        <strong>🖼️ Visual Virtuoso</strong><br>
-                        Defeated Captain Confusion
-                    </div>
-                    <div style="background: rgba(255,215,0,0.2); padding: 15px; border-radius: 8px;">
-                        <strong>🔢 Word Count Warrior</strong><br>
-                        Defeated The Inflator
-                    </div>
-                    <div style="background: rgba(255,215,0,0.2); padding: 15px; border-radius: 8px;">
-                        <strong>📝 Format Guardian</strong><br>
-                        Defeated Chaos Font
-                    </div>
-                    <div style="background: rgba(255,215,0,0.2); padding: 15px; border-radius: 8px;">
-                        <strong>👹 Boss Slayer</strong><br>
-                        Defeated Compliance Commander
-                    </div>
-                </div>
-            </div>
-            
-            <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 10px; margin: 20px 0;">
-                <h3>📋 Final EE Checklist - Print This!</h3>
-                <div style="text-align: left; max-width: 600px; margin: 0 auto;">
-                    <p>✅ Title page: No personal info, clear research question</p>
-                    <p>✅ Table of contents: Accurate page numbers</p>
-                    <p>✅ Citations: Consistent style, period after citation</p>
-                    <p>✅ Figures: All labeled and referenced in text</p>
-                    <p>✅ Word count: Under 4,000, counted correctly</p>
-                    <p>✅ Formatting: 12pt standard font, double-spaced, 1" margins</p>
-                </div>
-            </div>
-            
-            <button class="btn btn-primary" onclick="restartGame()" style="font-size: 1.2rem;">Play Again</button>
-        </div>
+  <!-- ============ LEVEL 1 ============ -->
+  <section class="level" id="level1">
+    <div class="villain">
+      <div class="avatar">🎭</div>
+      <div>
+        <h2>The Ghost Writer</h2>
+        <p class="taunt">"I'll sign your name all over that title page. Let's see how anonymous you feel then."</p>
+        <span class="mark-tag">Threat: anonymity breach → academic integrity investigation</span>
+      </div>
     </div>
 
-    <script>
-        let currentLevel = 1;
-        let soundEnabled = true;
-        let bossTimer;
-        let timeLeft = 180; // 3 minutes in seconds
-        let bossAnswers = {};
-        
-        // Progress tracking
-        function updateProgress() {
-            const progress = ((currentLevel - 1) / 7) * 100;
-            document.getElementById('progressFill').style.width = progress + '%';
-            document.getElementById('progressText').textContent = `Level ${currentLevel} of 7`;
-        }
-        
-        // Sound toggle
-        function toggleSound() {
-            soundEnabled = !soundEnabled;
-            document.querySelector('.sound-toggle').textContent = soundEnabled ? '🔊' : '🔇';
-        }
-        
-        // Play victory sound (simulated with visual feedback)
-        function playSound(type) {
-            if (!soundEnabled) return;
-            // Visual feedback for sound
-            const button = event.target;
-            if (type === 'correct') {
-                button.style.transform = 'scale(1.1)';
-                setTimeout(() => button.style.transform = '', 200);
-            }
-        }
-        
-        // Option selection for multiple choice questions
-        function selectOption(element, isCorrect, level) {
-            // Remove previous selections
-            const options = element.parentNode.querySelectorAll('.option');
-            options.forEach(opt => {
-                opt.classList.remove('correct', 'incorrect');
-            });
-            
-            // Mark this selection
-            element.classList.add(isCorrect ? 'correct' : 'incorrect');
-            
-            // Show feedback
-            const feedback = document.getElementById(`feedback${level}`);
-            feedback.classList.remove('hidden');
-            feedback.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
-            feedback.textContent = isCorrect ? 
-                '🎉 Correct! You defeated part of the villain!' : 
-                '❌ Try again! The villain is still dangerous!';
-            
-            if (isCorrect) {
-                // For level 3, show next challenge or mission
-                if (level === '3a') {
-                    setTimeout(() => {
-                        document.getElementById('challenge3b').style.display = 'block';
-                    }, 1000);
-                } else if (level === '3d') {
-                    setTimeout(() => {
-                        document.getElementById('mission3').classList.remove('hidden');
-                    }, 1000);
-                } else if (typeof level === 'number') {
-                    setTimeout(() => {
-                        document.getElementById(`mission${level}`).classList.remove('hidden');
-                    }, 1000);
-                }
-            }
-        }
-        
-        // Title formatting functions
-        function dragTitle(ev) {
-            ev.dataTransfer.setData("text", ev.target.id);
-        }
-        
-        function dropTitle(ev, category) {
-            ev.preventDefault();
-            ev.target.classList.remove('drag-over');
-            const data = ev.dataTransfer.getData("text");
-            const draggable = document.getElementById(data);
-            ev.target.appendChild(draggable);
-        }
-        
-        function checkTitleFormatting() {
-            const italicsArea = document.getElementById('italics-area');
-            const quotesArea = document.getElementById('quotes-area');
-            
-            const shouldBeItalics = ['book1', 'book2', 'book3'];
-            const shouldBeQuotes = ['article1', 'article2', 'article3'];
-            
-            let correct = 0;
-            let total = 6;
-            
-            // Check books in italics area
-            shouldBeItalics.forEach(book => {
-                if (italicsArea.querySelector(`#${book}`)) correct++;
-            });
-            
-            // Check articles in quotes area
-            shouldBeQuotes.forEach(article => {
-                if (quotesArea.querySelector(`#${article}`)) correct++;
-            });
-            
-            const feedback = document.getElementById('feedback3b');
-            feedback.classList.remove('hidden');
-            
-            if (correct === total) {
-                feedback.className = 'feedback correct';
-                feedback.textContent = '🎉 Perfect formatting! Books = italics, articles = quotes!';
-                setTimeout(() => {
-                    document.getElementById('challenge3c').style.display = 'block';
-                }, 1000);
-            } else {
-                feedback.className = 'feedback incorrect';
-                feedback.textContent = `❌ ${correct}/${total} correct. Remember: Books/movies = italics, articles/essays = quotes!`;
-            }
-        }
-        
-        // Citation matching functions
-        function dragCitation(ev) {
-            ev.dataTransfer.setData("text", ev.target.id);
-        }
-        
-        function dropCitation(ev, author) {
-            ev.preventDefault();
-            ev.target.classList.remove('drag-over');
-            const data = ev.dataTransfer.getData("text");
-            const draggable = document.getElementById(data);
-            ev.target.appendChild(draggable);
-        }
-        
-        function checkCitationMatching() {
-            const smithDrop = document.getElementById('smith-drop');
-            const johnsonDrop = document.getElementById('johnson-drop');
-            const brownDrop = document.getElementById('brown-drop');
-            
-            let correct = 0;
-            let total = 3;
-            
-            // Check correct matches
-            if (smithDrop.querySelector('#cite1')) correct++; // Smith 45
-            if (johnsonDrop.querySelector('#cite2')) correct++; // Johnson 123
-            if (brownDrop.querySelector('#cite3')) correct++; // Brown 87
-            
-            const feedback = document.getElementById('feedback3c');
-            feedback.classList.remove('hidden');
-            
-            if (correct === total) {
-                feedback.className = 'feedback correct';
-                feedback.textContent = '🎉 Perfect matches! Every citation has a source!';
-                setTimeout(() => {
-                    document.getElementById('challenge3d').style.display = 'block';
-                }, 1000);
-            } else {
-                feedback.className = 'feedback incorrect';
-                feedback.textContent = `❌ ${correct}/${total} correct. Match author names carefully!`;
-            }
-        }
-        
-        // Drag and drop functions
-        function allowDrop(ev) {
-            ev.preventDefault();
-            ev.target.classList.add('drag-over');
-        }
-        
-        function drag(ev) {
-            ev.dataTransfer.setData("text", ev.target.id);
-        }
-        
-        function drop(ev, section) {
-            ev.preventDefault();
-            ev.target.classList.remove('drag-over');
-            const data = ev.dataTransfer.getData("text");
-            const draggable = document.getElementById(data);
-            ev.target.appendChild(draggable);
-            ev.target.style.minHeight = 'auto';
-        }
-        
-        // Check table of contents answers
-        function checkTableOfContents() {
-            const correctAnswers = {
-                'intro-drop': 'page3',
-                'lit-drop': 'page5', 
-                'method-drop': 'page8',
-                'analysis-drop': 'page12',
-                'conclusion-drop': 'page15',
-                'works-drop': 'page17'
-            };
-            
-            let correct = 0;
-            let total = Object.keys(correctAnswers).length;
-            
-            for (let dropZone in correctAnswers) {
-                const zone = document.getElementById(dropZone);
-                const expectedPage = correctAnswers[dropZone];
-                if (zone.querySelector(`#${expectedPage}`)) {
-                    correct++;
-                }
-            }
-            
-            const feedback = document.getElementById('feedback2');
-            feedback.classList.remove('hidden');
-            
-            if (correct === total) {
-                feedback.className = 'feedback correct';
-                feedback.textContent = '🎉 Perfect! You restored the proper page order and defeated Page Number Phantom!';
-                setTimeout(() => {
-                    document.getElementById('mission2').classList.remove('hidden');
-                }, 1000);
-            } else {
-                feedback.className = 'feedback incorrect';
-                feedback.textContent = `❌ ${correct}/${total} correct. Keep trying to defeat the phantom!`;
-            }
-        }
-        
-        // Check citation format
-        function checkCitation() {
-            const input = document.getElementById('citationInput').value.trim();
-            const correct = "Orwell, George. 1984. Harvill Secker, 1949.";
-            const feedback = document.getElementById('citationFeedback');
-            feedback.classList.remove('hidden');
-            
-            if (input.toLowerCase().includes('orwell, george') && input.includes('1984') && input.includes('1949')) {
-                feedback.className = 'feedback correct';
-                feedback.textContent = '🎉 Excellent citation format!';
-            } else {
-                feedback.className = 'feedback incorrect';
-                feedback.textContent = '❌ Check the format: Author Last, First. Title. Publisher, Year.';
-            }
-        }
-        
-        // Word count drag and drop
-        function dragWord(ev) {
-            ev.dataTransfer.setData("text", ev.target.id);
-        }
-        
-        function dropWord(ev, category) {
-            ev.preventDefault();
-            ev.target.classList.remove('drag-over');
-            const data = ev.dataTransfer.getData("text");
-            const draggable = document.getElementById(data);
-            ev.target.appendChild(draggable);
-        }
-        
-        function checkWordCount() {
-            const countsArea = document.getElementById('counts-area');
-            const noCountsArea = document.getElementById('no-counts-area');
-            
-            const shouldCount = ['intro', 'quotes', 'citations', 'headings'];
-            const shouldNotCount = ['title', 'toc', 'works', 'captions'];
-            
-            let correct = 0;
-            let total = 8;
-            
-            // Check items that should count
-            shouldCount.forEach(item => {
-                if (countsArea.querySelector(`#${item}`)) correct++;
-            });
-            
-            // Check items that shouldn't count
-            shouldNotCount.forEach(item => {
-                if (noCountsArea.querySelector(`#${item}`)) correct++;
-            });
-            
-            const feedback = document.getElementById('feedback5');
-            feedback.classList.remove('hidden');
-            
-            if (correct === total) {
-                feedback.className = 'feedback correct';
-                feedback.textContent = '🎉 Perfect sorting! The Inflator has been defeated!';
-                setTimeout(() => {
-                    document.getElementById('mission5').classList.remove('hidden');
-                }, 1000);
-            } else {
-                feedback.className = 'feedback incorrect';
-                feedback.textContent = `❌ ${correct}/${total} correct. Remember: only Introduction, Body, Conclusion, quotations, in-text citations, and headings count!`;
-            }
-        }
-        
-        // Check individual level completion
-        function checkLevelCompletion(level) {
-            const checkboxes = document.querySelectorAll(`#level${level} input[type="checkbox"]`);
-            const nextButton = document.getElementById(`next${level}`);
-            
-            let allChecked = true;
-            checkboxes.forEach(cb => {
-                if (!cb.checked) allChecked = false;
-            });
-            
-            nextButton.disabled = !allChecked;
-        }
-        
-        // Add event listeners for checkboxes
-        for (let level = 1; level <= 6; level++) {
-            const checkboxes = document.querySelectorAll(`#level${level} input[type="checkbox"]`);
-            checkboxes.forEach(cb => {
-                cb.addEventListener('change', () => checkLevelCompletion(level));
-            });
-        }
-        
-        // Advance to next level
-        function nextLevel(level) {
-            document.getElementById(`level${currentLevel}`).classList.add('hidden');
-            document.getElementById(`level${level}`).classList.remove('hidden');
-            currentLevel = level;
-            updateProgress();
-            
-            // Start boss timer if entering final boss
-            if (level === 7) {
-                startBossTimer();
-            }
-        }
-        
-        // Boss battle functions
-        function startBossTimer() {
-            timeLeft = 180; // 3 minutes
-            bossTimer = setInterval(() => {
-                timeLeft--;
-                const minutes = Math.floor(timeLeft / 60);
-                const seconds = timeLeft % 60;
-                document.getElementById('timer').textContent = 
-                    `${minutes}:${seconds.toString().padStart(2, '0')}`;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(bossTimer);
-                    showBossDefeat();
-                }
-            }, 1000);
-        }
-        
-        function setBossAnswer(question, answer) {
-            bossAnswers[question] = answer;
-            // Visual feedback
-            const options = event.target.parentNode.querySelectorAll('.option');
-            options.forEach(opt => opt.classList.remove('correct'));
-            event.target.classList.add('correct');
-        }
-        
-        function checkFinalBoss() {
-            clearInterval(bossTimer);
-            
-            let score = 0;
-            let total = 4;
-            
-            // Check citation fix
-            const citation = document.getElementById('bossCitation').value;
-            if (citation.includes('(Orwell 245).')) score++;
-            
-            // Check word count answer (4 items: intro, quotes, citations, headings)
-            if (bossAnswers[2] === 'B') score++;
-            
-            // Check title page answer (student name shouldn't be there)
-            if (bossAnswers[3] === 'B') score++;
-            
-            // Check figure reference
-            const reference = document.getElementById('bossReference').value;
-            if (reference.toLowerCase().includes('figure 1')) score++;
-            
-            const feedback = document.getElementById('bossFeedback');
-            feedback.classList.remove('hidden');
-            
-            if (score >= 3) {
-                feedback.className = 'feedback correct';
-                feedback.innerHTML = `🎉 BOSS DEFEATED! Score: ${score}/${total}<br>The Compliance Commander has fallen!`;
-                setTimeout(() => {
-                    document.getElementById('level7').classList.add('hidden');
-                    document.getElementById('victory').classList.remove('hidden');
-                    updateProgress();
-                }, 2000);
-            } else {
-                feedback.className = 'feedback incorrect';
-                feedback.innerHTML = `💀 Boss is still fighting! Score: ${score}/${total}<br>You need at least 3/4 to win!`;
-                // Restart timer for another attempt
-                timeLeft = 180;
-                startBossTimer();
-            }
-        }
-        
-        function showBossDefeat() {
-            const feedback = document.getElementById('bossFeedback');
-            feedback.classList.remove('hidden');
-            feedback.className = 'feedback incorrect';
-            feedback.textContent = '⏰ Time\'s up! The Compliance Commander escapes... Try again!';
-            
-            // Allow another attempt
-            setTimeout(() => {
-                feedback.classList.add('hidden');
-                timeLeft = 180;
-                startBossTimer();
-            }, 3000);
-        }
-        
-        function restartGame() {
-            currentLevel = 1;
-            bossAnswers = {};
-            
-            // Hide all levels except first
-            for (let i = 2; i <= 7; i++) {
-                document.getElementById(`level${i}`).classList.add('hidden');
-            }
-            document.getElementById('victory').classList.add('hidden');
-            document.getElementById('level1').classList.remove('hidden');
-            
-            // Reset all checkboxes and buttons
-            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
-            document.querySelectorAll('.btn-success').forEach(btn => btn.disabled = true);
-            
-            // Clear all feedback and selections
-            document.querySelectorAll('.feedback').forEach(fb => fb.classList.add('hidden'));
-            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('correct', 'incorrect'));
-            
-            // Reset inputs
-            document.querySelectorAll('input[type="text"]').forEach(input => input.value = '');
-            
-            updateProgress();
-        }
-        
-        // Initialize
-        updateProgress();
-    </script>
+    <div class="power">
+      <b>⚡ Hero Power:</b> Your EE is marked by an examiner who must not know <em>who</em> you are or <em>where</em> you study.
+      No name. No school. No supervisor. Your <b>personal code</b> is not a name — it's the anonymous ID the IB assigns you,
+      and it arrives from your coordinator around <b>late December</b>. Leave a blank line waiting for it now.
+    </div>
+
+    <div class="challenge" data-id="l1-build">
+      <h3>Challenge 1 · Build the title page</h3>
+      <div class="q">Switch ON only what belongs on an IB-compliant title page. Watch the page rebuild itself.</div>
+      <div class="builder">
+        <div class="toggle-list" id="tpToggles"></div>
+        <div class="paper" id="tpPaper"></div>
+      </div>
+      <button class="btn btn-check" onclick="checkTitlePage()">Check the title page</button>
+      <div class="fb" id="fb-l1-build" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="challenge hidden" data-id="l1-code" id="l1-code">
+      <h3>Challenge 2 · The December problem</h3>
+      <div class="q">It's August. Your personal code doesn't exist yet. What goes on your draft title page right now?</div>
+      <div class="opts">
+        <button class="opt" data-correct="false" data-why="Your candidate/session number from a mock exam is not your IB personal code, and inventing a placeholder that looks real risks submitting the wrong ID. Ask yourself: what do you actually know today?">Type in my exam-room number for now and swap it later</button>
+        <button class="opt" data-correct="true" data-why="Exactly. A labelled blank line — 'Personal code: ______' — holds the space, reminds you it's missing, and can be filled in one keystroke in January without disturbing the layout.">Add a labelled blank line: <b>Personal code: __________</b></button>
+        <button class="opt" data-correct="false" data-why="Leaving it off entirely means you have to remember, in December, that a line is missing — and re-typesetting the page at the deadline is exactly when mistakes happen. What would remind you?">Leave it off — I'll add the whole line in December</button>
+        <button class="opt" data-correct="false" data-why="Your name is the one thing that must never appear. That's the anonymity rule this whole mission exists to protect.">Put my name there for now so my teacher knows whose draft it is</button>
+      </div>
+      <div class="fb" id="fb-l1-code" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="example">
+      <div class="ttl">Model title page</div>
+      <div class="serif" style="text-align:center;line-height:1.9">
+        <em>Engineered Silence: Soundscape as Control in Orwell's <span style="font-style:normal">1984</span></em><br>
+        Research question: To what extent does Orwell use sound and silence to dramatise the Party's psychological control?<br>
+        Subject: English A: Literature (Category 1)<br>
+        Word count: 3,873<br>
+        Personal code: <span style="border-bottom:1px dashed #7dd3fc">__________</span>
+      </div>
+      <p class="note">Some coordinators also ask for the examination session (e.g. May 2027). Follow your school's instruction — it never replaces the four items above.</p>
+    </div>
+
+    <div class="mission hidden" id="mission1">
+      <h3>🎯 Ghost Writer defeated — now audit your own draft</h3>
+      <p class="sub">Open your EE document. Tick each line only when it is true of <em>your</em> file.</p>
+      <div class="checklist"></div>
+      <button class="btn btn-next" id="next1" disabled onclick="goLevel(2)">Advance → Mission 2</button>
+    </div>
+  </section>
+
+  <!-- ============ LEVEL 2 ============ -->
+  <section class="level hidden" id="level2">
+    <div class="villain">
+      <div class="avatar">🧭</div>
+      <div>
+        <h2>The Cartographer of Chaos</h2>
+        <p class="taunt">"Let them wander. A contents page that lies is better than no map at all."</p>
+        <span class="mark-tag">Threat: Criterion A — structure that does not support communication</span>
+      </div>
+    </div>
+
+    <div class="power">
+      <b>⚡ Hero Power:</b> Your contents page is a promise. Every heading listed must exist in the essay, worded identically,
+      on the page number stated. Page numbering runs through the essay (most schools start it after the contents page) — and there is <b>no abstract</b> in the current EE.
+    </div>
+
+    <div class="challenge" data-id="l2-order">
+      <h3>Challenge 1 · Put the essay in order</h3>
+      <div class="q">Tap the sections in the order an examiner should meet them.</div>
+      <div class="pool" id="orderPool"></div>
+      <div class="zone" id="orderZone"></div>
+      <button class="btn btn-check" onclick="checkOrder()">Check the order</button>
+      <button class="btn btn-ghost" onclick="resetOrder()">Reset</button>
+      <div class="fb" id="fb-l2-order" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="challenge hidden" data-id="l2-spot" id="l2-spot">
+      <h3>Challenge 2 · Three things are wrong here</h3>
+      <div class="q">Tap the <b>three</b> lines that would cost this student marks, then check.</div>
+      <div class="doc" id="tocDoc">
+        <div class="row" data-bad="false" data-why="This is fine — a clear, standard opening section on a sensible page.">
+          <span>Introduction</span><span class="dots"></span><span>1</span></div>
+        <div class="row" data-bad="true" data-why="The abstract was removed from the EE. Including one wastes space, breaks the expected structure, and signals you're working from an out-of-date guide.">
+          <span>Abstract</span><span class="dots"></span><span>2</span></div>
+        <div class="row" data-bad="false" data-why="A properly named body section — good.">
+          <span>1. Historical context of the policy</span><span class="dots"></span><span>3</span></div>
+        <div class="row" data-bad="true" data-why="'Stuff about sources' is not a section title an examiner can navigate by. Headings should name the argument the section makes.">
+          <span>2. Stuff about sources</span><span class="dots"></span><span>6</span></div>
+        <div class="row" data-bad="false" data-why="Correct — the conclusion sits after the body.">
+          <span>Conclusion</span><span class="dots"></span><span>11</span></div>
+        <div class="row" data-bad="true" data-why="Page 9 comes after page 11? The contents page no longer matches the document. This is the single most common Criterion A structure error — it happens when you edit the essay and forget to update the contents.">
+          <span>Bibliography</span><span class="dots"></span><span>9</span></div>
+      </div>
+      <button class="btn btn-check" onclick="checkToc()">Check my three</button>
+      <div class="fb" id="fb-l2-spot" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="mission hidden" id="mission2">
+      <h3>🧭 Cartographer defeated — audit your own contents page</h3>
+      <p class="sub">Open your draft next to this list.</p>
+      <div class="checklist"></div>
+      <button class="btn btn-next" id="next2" disabled onclick="goLevel(3)">Advance → Mission 3</button>
+    </div>
+  </section>
+
+  <!-- ============ LEVEL 3 ============ -->
+  <section class="level hidden" id="level3">
+    <div class="villain">
+      <div class="avatar">📚</div>
+      <div>
+        <h2>Professor Plagiarism</h2>
+        <p class="taunt">"Half MLA, half APA, and one source that never made it to the bibliography. Delicious."</p>
+        <span class="mark-tag">Threat: academic misconduct + Criterion A consistency</span>
+      </div>
+    </div>
+
+    <div class="power">
+      <b>⚡ Hero Power:</b> One style, chosen once, applied everywhere. The IB does not care <em>which</em> style —
+      it cares that it is complete and consistent, and that every in-text citation lands in the bibliography and vice versa.
+    </div>
+
+    <div class="challenge" data-id="l3-period">
+      <h3>Wave 1 · Where does the full stop go?</h3>
+      <div class="q">Which sentence is punctuated correctly in MLA?</div>
+      <div class="opts">
+        <button class="opt" data-correct="false" data-why="The sentence ends before the evidence has been credited. Ask yourself: is the citation part of the sentence, or an afterthought floating outside it?">Winston's fear symbolises internal conflict. (Orwell 245)</button>
+        <button class="opt" data-correct="true" data-why="Right. The citation belongs inside the sentence, so the full stop closes everything after it: (Orwell 245).">Winston's fear symbolises internal conflict (Orwell 245).</button>
+        <button class="opt" data-correct="false" data-why="Close — the placement is right, but MLA uses no comma between author and page. (Orwell, 245) is APA-flavoured. Mixing the two is exactly what this villain wants.">Winston's fear symbolises internal conflict (Orwell, 245).</button>
+      </div>
+      <div class="fb" id="fb-l3-period" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="challenge hidden" data-id="l3-titles" id="l3-titles">
+      <h3>Wave 2 · Italics or quotation marks?</h3>
+      <div class="q">Big containers go in <em>italics</em>. Things inside containers go in "quotation marks". Sort them.</div>
+      <div class="pool" id="titlePool"></div>
+      <div class="buckets">
+        <div class="bucket"><h4 style="color:var(--teal)"><em>Italics</em> — whole works</h4><div class="zone" data-bucket="ital"></div></div>
+        <div class="bucket"><h4 style="color:var(--amber)">"Quotes" — parts of works</h4><div class="zone" data-bucket="quot"></div></div>
+      </div>
+      <button class="btn btn-check" onclick="checkSorter('titles')">Check my sorting</button>
+      <div class="fb" id="fb-l3-titles" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="challenge hidden" data-id="l3-match" id="l3-match">
+      <h3>Wave 3 · Every citation needs a home</h3>
+      <div class="q">Drop each in-text citation onto the bibliography entry it points to.</div>
+      <div class="pool" id="matchPool"></div>
+      <div class="buckets" style="grid-template-columns:1fr">
+        <div class="bucket"><h4 class="serif">Brown, Sarah. "Technology in Education." <em>Academic Journal</em>, vol. 12, 2023, pp. 80–95.</h4><div class="zone" data-bucket="brown"></div></div>
+        <div class="bucket"><h4 class="serif">Johnson, Mark. <em>Modern Research Methods</em>. Academic Press, 2022.</h4><div class="zone" data-bucket="johnson"></div></div>
+        <div class="bucket"><h4 class="serif">Smith, Jane. "Climate Policy Analysis." <em>Environmental Studies Quarterly</em>, vol. 8, no. 3, 2023, pp. 40–58.</h4><div class="zone" data-bucket="smith"></div></div>
+      </div>
+      <button class="btn btn-check" onclick="checkSorter('match')">Check the matches</button>
+      <div class="fb" id="fb-l3-match" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="challenge hidden" data-id="l3-hang" id="l3-hang">
+      <h3>Wave 4 · The hanging indent</h3>
+      <div class="power" style="margin-top:0">
+        <b>⚡ Hero Power:</b> First line at the margin, every line after it indented 0.5". It makes surnames scannable —
+        which is the whole point of an alphabetised bibliography.
+      </div>
+      <div class="split">
+        <div class="yes"><span class="lbl">✓ Hanging indent</span>
+          <div class="serif hang">Smith, Jane. "Climate Policy Analysis." <em>Environmental Studies Quarterly</em>, vol. 8, no. 3, 2023, pp. 40–58.</div>
+        </div>
+        <div class="no"><span class="lbl">✕ No indent</span>
+          <div class="serif">Smith, Jane. "Climate Policy Analysis." <em>Environmental Studies Quarterly</em>, vol. 8, no. 3, 2023, pp. 40–58.</div>
+        </div>
+      </div>
+      <p class="note"><b>Google Docs:</b> select the entries → Format → Align &amp; indent → Indentation options → Special indent → <b>Hanging</b> → 0.5" → Apply.
+      <b>Word:</b> select → Ctrl/⌘ + T. Never fake it with the space bar or Enter — it collapses the moment the text reflows.</p>
+
+      <div class="q" style="margin-top:16px">Quick check: your bibliography lists a source you read early on, found useful for background, but never cited in the final essay. What do you do?</div>
+      <div class="opts">
+        <button class="opt" data-correct="false" data-why="A longer bibliography does not read as more research — it reads as padding, and an examiner who spots an uncited entry starts wondering what else is decorative.">Leave it in — it shows how much reading I did</button>
+        <button class="opt" data-correct="true" data-why="Correct. The bibliography documents the sources behind the essay you actually wrote. If it shaped your thinking, cite it in the text; if it didn't, cut it. Consistency both ways.">Cite it in the essay, or remove it from the bibliography</button>
+        <button class="opt" data-correct="false" data-why="Inventing a citation to justify an entry is fabrication — a far bigger problem than a short bibliography. What's the honest version of this move?">Add a citation for it somewhere so the entry is justified</button>
+      </div>
+      <div class="fb" id="fb-l3-hang" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="mission hidden" id="mission3">
+      <h3>📖 Professor Plagiarism defeated — audit your references</h3>
+      <p class="sub">This is the slowest checklist on the page. It is also the one that saves careers.</p>
+      <div class="checklist"></div>
+      <button class="btn btn-next" id="next3" disabled onclick="goLevel(4)">Advance → Mission 4</button>
+    </div>
+  </section>
+
+  <!-- ============ LEVEL 4 ============ -->
+  <section class="level hidden" id="level4">
+    <div class="villain">
+      <div class="avatar">📊</div>
+      <div>
+        <h2>Captain Contextless</h2>
+        <p class="taunt">"A beautiful graph. No title. No units. No mention in the text. Let them guess."</p>
+        <span class="mark-tag">Threat: Criterion A structure + Criterion C analysis you never claim credit for</span>
+      </div>
+    </div>
+
+    <div class="power">
+      <b>⚡ Hero Power:</b> A visual an examiner has to interpret alone is a visual doing no work.
+      Every table, graph and figure needs a number, a title, labelled axes with units, and a source —
+      and the text must point at it and say what it means.
+    </div>
+
+    <div class="challenge" data-id="l4-ref">
+      <h3>Challenge 1 · Make the figure earn its place</h3>
+      <div class="q">Which sentence uses Figure 1 properly?</div>
+      <div class="opts">
+        <button class="opt" data-correct="false" data-why="The reader has to work out for themselves which image you mean and why it's there. An unreferenced figure is decoration.">The propaganda poster shows the government's control.</button>
+        <button class="opt" data-correct="false" data-why="It names the figure — but it only describes. Where is the analysis? Compare this with the option that tells the examiner what the figure proves.">Figure 1 shows a propaganda poster from the era.</button>
+        <button class="opt" data-correct="true" data-why="Yes: it names the figure, then does something with it. Naming + interpreting is what turns an image into evidence for your argument.">As Figure 1 shows, the poster fuses parental imagery with surveillance, making obedience feel like family loyalty rather than coercion.</button>
+      </div>
+      <div class="fb" id="fb-l4-ref" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="challenge hidden" data-id="l4-cap" id="l4-cap">
+      <h3>Challenge 2 · Write the caption</h3>
+      <div class="q">Which caption survives an examiner reading it with no surrounding text?</div>
+      <div class="opts">
+        <button class="opt" data-correct="false" data-why="A number with no title, no units, and no source. What is being measured? Over what period? Says who?">Figure 2.</button>
+        <button class="opt" data-correct="false" data-why="Better — there's a title. But an examiner still cannot tell what the numbers mean or where they came from.">Figure 2. Results of my experiment.</button>
+        <button class="opt" data-correct="true" data-why="Complete: number, descriptive title, units, and source. This figure can be read on its own — which is exactly the test.">Figure 2. Mean reaction time (ms) by sleep duration (hours), n = 40. Data collected by the author, March 2026.</button>
+      </div>
+      <div class="fb" id="fb-l4-cap" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="challenge hidden" data-id="l4-trap" id="l4-trap">
+      <h3>Challenge 3 · The tempting shortcut</h3>
+      <div class="q">You're 300 words over. A friend suggests moving a paragraph of analysis into a table, since tables aren't counted. Is that a solution?</div>
+      <div class="opts">
+        <button class="opt" data-correct="false" data-why="It looks like a loophole, but examiners are explicitly warned about material relocated to dodge the limit — and the guide says tables must not be used this way. What is the honest fix for being over?">Yes — tables don't count, so the problem disappears</button>
+        <button class="opt" data-correct="true" data-why="Right. Argument belongs in the essay body. Tables and footnotes are for data and references, not smuggled analysis — and the same rule applies to explanatory footnotes, which DO count toward 4,000. The real fix is cutting.">No — analysis smuggled into tables or footnotes is still analysis, and it's penalised</button>
+      </div>
+      <div class="fb" id="fb-l4-trap" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="mission hidden" id="mission4">
+      <h3>📊 Captain Contextless defeated — audit your visuals</h3>
+      <p class="sub">Scroll through your essay and stop at every image, table and graph.</p>
+      <div class="checklist"></div>
+      <button class="btn btn-next" id="next4" disabled onclick="goLevel(5)">Advance → Mission 5</button>
+    </div>
+  </section>
+
+  <!-- ============ LEVEL 5 ============ -->
+  <section class="level hidden" id="level5">
+    <div class="villain">
+      <div class="avatar">🔢</div>
+      <div>
+        <h2>The Inflator</h2>
+        <p class="taunt">"Just hit select-all and read the number at the bottom. What could go wrong?"</p>
+        <span class="mark-tag">Threat: examiners stop reading at word 4,000 — every criterion after that point scores blind</span>
+      </div>
+    </div>
+
+    <div class="power">
+      <b>⚡ Hero Power:</b> 4,000 words is a hard ceiling. What lands inside it: the essay's actual prose —
+      introduction, body, conclusion, and every quotation. What sits outside it: the machinery around the prose.
+    </div>
+
+    <div class="challenge" data-id="l5-sort">
+      <h3>Challenge 1 · Inside the 4,000, or outside?</h3>
+      <div class="q">Tap a card, then tap a column.</div>
+      <div class="pool" id="wcPool"></div>
+      <div class="buckets">
+        <div class="bucket"><h4 style="color:var(--rose)">📥 Counts toward 4,000</h4><div class="zone" data-bucket="in"></div></div>
+        <div class="bucket"><h4 style="color:var(--green)">📤 Does not count</h4><div class="zone" data-bucket="out"></div></div>
+      </div>
+      <button class="btn btn-check" onclick="checkSorter('wc')">Check my sorting</button>
+      <div class="fb" id="fb-l5-sort" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="challenge hidden" data-id="l5-myth" id="l5-myth">
+      <h3>Challenge 2 · The footnote trap</h3>
+      <div class="q">Two footnotes. Which one adds to your word count?</div>
+      <div class="opts">
+        <button class="opt" data-correct="false" data-why="This is a pure reference — author, work, page. References don't count, wherever they sit: in brackets, numbered, or in a footnote.">¹ Orwell, George. <em>1984</em>. Harvill Secker, 1949, p. 245.</button>
+        <button class="opt" data-correct="true" data-why="Correct. This footnote makes an argument, so it is essay prose that happens to be at the bottom of the page — it counts. Reference footnotes don't; explanatory ones do.">¹ It is worth noting that Orwell drafted this chapter after the war, which may explain the shift in tone across Part Three.</button>
+      </div>
+      <div class="fb" id="fb-l5-myth" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="challenge hidden" data-id="l5-over" id="l5-over">
+      <h3>Challenge 3 · You are at 4,180 words</h3>
+      <div class="q">Deadline is Friday. What actually happens if you submit it as is?</div>
+      <div class="opts">
+        <button class="opt" data-correct="false" data-why="There is no percentage grace. Ask yourself what the examiner is instructed to do at word 4,000.">Nothing much — there's a 10% tolerance</button>
+        <button class="opt" data-correct="true" data-why="Yes. Examiners are instructed not to read beyond 4,000 words. If your conclusion sits at 4,150, it is invisible — and criteria that depend on it are marked as though it doesn't exist.">The examiner stops reading at 4,000 — anything after that is simply not marked</button>
+        <button class="opt" data-correct="false" data-why="It isn't a fixed deduction, which is worse: the loss depends on what happened to fall past the cut-off. Losing your conclusion costs far more than a flat penalty.">A fixed number of marks is deducted</button>
+      </div>
+      <div class="fb" id="fb-l5-over" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="mission hidden" id="mission5">
+      <h3>🔢 The Inflator defeated — verify your count</h3>
+      <p class="sub">Do this with the document open, not from memory.</p>
+      <div class="checklist"></div>
+      <button class="btn btn-next" id="next5" disabled onclick="goLevel(6)">Advance → Mission 6</button>
+    </div>
+  </section>
+
+  <!-- ============ LEVEL 6 ============ -->
+  <section class="level hidden" id="level6">
+    <div class="villain">
+      <div class="avatar">🖋️</div>
+      <div>
+        <h2>Chaos Font</h2>
+        <p class="taunt">"Papyrus. Nine point. Rainbow headings. It's called personality."</p>
+        <span class="mark-tag">Threat: the cheapest marks in the whole Diploma, thrown away</span>
+      </div>
+    </div>
+
+    <div class="power">
+      <b>⚡ Hero Power:</b> Nobody ever earned a mark for a beautiful font, but plenty have lost the examiner's patience.
+      Readable 12pt, generous spacing, page numbers, consistent headings. Boring is the goal.
+    </div>
+
+    <div class="challenge" data-id="l6-format">
+      <h3>Challenge 1 · Pick the professional setup</h3>
+      <div class="q">Which document setup would an examiner never notice — in the good way?</div>
+      <div class="opts">
+        <button class="opt" data-correct="false" data-why="A decorative font at 14pt with single spacing signals that the writer is thinking about looks rather than the reader. Single spacing also leaves no room for an examiner's eye to rest.">Comic Sans, 14pt, single-spaced, coloured headings</button>
+        <button class="opt" data-correct="true" data-why="Yes — a standard serif or sans at 12pt, double spacing (1.5 is accepted in many schools; check yours), 2.54 cm margins, page numbers running through. Invisible formatting keeps attention on the argument.">Times New Roman, 12pt, double-spaced, 2.54 cm margins, page numbers</button>
+        <button class="opt" data-correct="false" data-why="10pt is below the readable standard and decorative borders add noise. What is the setup that makes the examiner forget the formatting exists?">Arial, 10pt, 1.5-spaced, decorative page borders</button>
+      </div>
+      <div class="fb" id="fb-l6-format" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="challenge hidden" data-id="l6-head" id="l6-head">
+      <h3>Challenge 2 · Consistency, not creativity</h3>
+      <div class="q">Your three body sections are titled in three different ways. Why does that cost you under Criterion A?</div>
+      <div class="opts">
+        <button class="opt" data-correct="false" data-why="It's true that it looks untidy — but 'looks untidy' isn't a strand of the rubric. Push further: what does a heading DO for the reader?">Because untidy work always scores lower</button>
+        <button class="opt" data-correct="true" data-why="Exactly. Criterion A asks whether your structural conventions support communication of the research. Headings at the same level should look and behave the same way, so the reader can tell the shape of your argument at a glance.">Because inconsistent headings stop the reader seeing which sections are equal parts of the argument</button>
+        <button class="opt" data-correct="false" data-why="The IB doesn't mandate one heading style. It's the internal consistency and navigability that's assessed — not obedience to a house style.">Because the IB requires one specific heading style</button>
+      </div>
+      <div class="fb" id="fb-l6-head" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="mission hidden" id="mission6">
+      <h3>🖋️ Chaos Font defeated — final layout sweep</h3>
+      <p class="sub">Five minutes of work. Genuinely the best mark-per-minute rate available to you.</p>
+      <div class="checklist"></div>
+      <button class="btn btn-next" id="next6" disabled onclick="goLevel(7)">⚔️ Face the final boss</button>
+    </div>
+  </section>
+
+  <!-- ============ LEVEL 7 ============ -->
+  <section class="level boss hidden" id="level7">
+    <div class="villain">
+      <div class="avatar">👹</div>
+      <div>
+        <h2>The Compliance Commander</h2>
+        <p class="taunt">"Six villains, one deadline, three minutes. Show me you didn't just click through."</p>
+        <span class="mark-tag">Final trial — 5 challenges, 3:00 on the clock</span>
+      </div>
+    </div>
+
+    <div class="timer" id="timer">3:00</div>
+    <p class="note" style="text-align:center">Running out of time doesn't end the run — it just costs you the speed bonus.</p>
+
+    <div class="bossgrid">
+      <div class="challenge">
+        <h3>1 · Repair the citation</h3>
+        <p class="q" style="font-size:.95rem">Fix the punctuation, MLA style:</p>
+        <input type="text" id="bossCite" value="Winston feels fear. (Orwell 245)" aria-label="Fix the citation">
+      </div>
+      <div class="challenge">
+        <h3>2 · Title page</h3>
+        <p class="q" style="font-size:.95rem">Which one must <b>never</b> appear?</p>
+        <div class="opts" data-boss="q2">
+          <button class="opt" data-val="a">Research question</button>
+          <button class="opt" data-val="b">Your school's name</button>
+          <button class="opt" data-val="c">Personal code</button>
+        </div>
+      </div>
+      <div class="challenge">
+        <h3>3 · Word count</h3>
+        <p class="q" style="font-size:.95rem">Which one <b>counts</b> toward 4,000?</p>
+        <div class="opts" data-boss="q3">
+          <button class="opt" data-val="a">A parenthetical citation</button>
+          <button class="opt" data-val="b">A block quotation</button>
+          <button class="opt" data-val="c">The contents page</button>
+        </div>
+      </div>
+      <div class="challenge">
+        <h3>4 · Figure reference</h3>
+        <p class="q" style="font-size:.95rem">Complete the sentence so it names the figure:</p>
+        <input type="text" id="bossRef" value="As " aria-label="Complete the figure reference">
+      </div>
+      <div class="challenge">
+        <h3>5 · Contents page</h3>
+        <p class="q" style="font-size:.95rem">You cut 400 words from section 2 yesterday. What must you now do?</p>
+        <div class="opts" data-boss="q5">
+          <button class="opt" data-val="a">Nothing — the headings are unchanged</button>
+          <button class="opt" data-val="b">Update the page numbers <em>and</em> the word count on the title page</button>
+          <button class="opt" data-val="c">Add a note explaining the cut</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn btn-check" style="font-size:1.05rem;padding:13px 28px" onclick="checkBoss()">⚔️ Strike the final blow</button>
+    <div class="fb" id="fb-boss" role="status" aria-live="polite"></div>
+  </section>
+
+  <!-- ============ VICTORY ============ -->
+  <section class="victory hidden" id="victory">
+    <h2>🏆 The EE is saved</h2>
+    <p style="font-size:1.1rem;max-width:56ch;margin:10px auto 0">Seven villains down. More importantly, you've now run every formatting check against your own draft — which is the part that actually shows up on the transcript.</p>
+    <p class="rank" id="rankLine"></p>
+
+    <div class="badges" id="badgeWall"></div>
+
+    <div class="final-list">
+      <h3>📋 Your pre-submission sweep — print this</h3>
+      <ol>
+        <li><b>Title page:</b> title, research question, subject (and category), word count, blank line for your personal code. No name, no school, no supervisor.</li>
+        <li><b>Personal code:</b> arrives from your coordinator around late December — fill the blank line the day you get it.</li>
+        <li><b>Contents page:</b> every heading exists in the essay, worded identically, with page numbers that are true today. No abstract.</li>
+        <li><b>References:</b> one style throughout; every in-text citation appears in the bibliography and vice versa; hanging indents; punctuation inside the sentence.</li>
+        <li><b>Visuals:</b> numbered, titled, units labelled, source given, and referred to <em>and interpreted</em> in the text.</li>
+        <li><b>Word count:</b> introduction + body + conclusion + quotations + explanatory footnotes ≤ 4,000. References, contents page, tables, charts, equations, bibliography and appendices sit outside it.</li>
+        <li><b>Layout:</b> 12pt readable font, double spacing, 2.54 cm margins, page numbers, consistent headings.</li>
+        <li><b>Last:</b> re-check the word count and the contents page <em>after</em> your final edit, not before.</li>
+      </ol>
+    </div>
+
+    <button class="btn btn-ghost" style="margin-top:20px;color:#231a02;border-color:rgba(0,0,0,.35)" onclick="window.print()">🖨️ Print the checklist</button>
+    <button class="btn btn-check" style="margin-top:20px" onclick="restart()">↻ Play again</button>
+  </section>
+</div>
+
+<div id="toasts" aria-live="polite"></div>
+
+<script>
+/* ============================================================
+   STATE
+   ============================================================ */
+const LEVEL_NAMES = ["Title page","Contents & structure","Citations","Figures & tables","Word count","Layout","Final boss"];
+const BADGES = [
+  {id:1, ico:"🎭", name:"Anonymity Keeper",   sub:"Beat the Ghost Writer"},
+  {id:2, ico:"🧭", name:"Master Cartographer",sub:"Beat the Cartographer of Chaos"},
+  {id:3, ico:"📚", name:"Citation Champion",  sub:"Beat Professor Plagiarism"},
+  {id:4, ico:"📊", name:"Evidence Handler",   sub:"Beat Captain Contextless"},
+  {id:5, ico:"🔢", name:"Count Keeper",       sub:"Beat The Inflator"},
+  {id:6, ico:"🖋️", name:"Clean Layout",       sub:"Beat Chaos Font"},
+  {id:7, ico:"👑", name:"Compliance Slayer",  sub:"Beat the Commander"}
+];
+const state = {level:1, xp:0, streak:0, best:0, badges:new Set(), tries:{}, solved:new Set()};
+
+/* ============================================================
+   HUD
+   ============================================================ */
+function hud(){
+  document.getElementById('xp').textContent = state.xp;
+  document.getElementById('streak').textContent = state.streak;
+  document.getElementById('badgeCount').textContent = state.badges.size;
+  document.getElementById('levelName').textContent = `Mission ${state.level} · ${LEVEL_NAMES[state.level-1]}`;
+  const pips = document.getElementById('pips');
+  pips.innerHTML='';
+  for(let i=1;i<=7;i++){
+    const d=document.createElement('div');
+    d.className='pip'+(i<state.level?' done':i===state.level?' now':'');
+    pips.appendChild(d);
+  }
+}
+function toast(msg){
+  const t=document.createElement('div');
+  t.className='toast'; t.textContent=msg;
+  document.getElementById('toasts').appendChild(t);
+  setTimeout(()=>t.remove(),2000);
+}
+function award(id, base){
+  if(state.solved.has(id)) return 0;
+  state.solved.add(id);
+  const tries = state.tries[id]||0;
+  const clean = tries===0;
+  state.streak = clean ? state.streak+1 : 0;
+  state.best = Math.max(state.best,state.streak);
+  let pts = clean ? base : Math.max(Math.round(base/2), 10);
+  let bonus = 0;
+  if(clean && state.streak>=2){ bonus = Math.min(state.streak,5)*10; }
+  state.xp += pts+bonus;
+  hud();
+  toast(`+${pts} XP${bonus?`  🔥 +${bonus} streak`:''}${clean?'':'  (retry)'}`);
+  return pts+bonus;
+}
+function miss(id){
+  state.tries[id]=(state.tries[id]||0)+1;
+  if(state.streak>0){ state.streak=0; hud(); }
+}
+function fb(key, ok, html){
+  const el=document.getElementById('fb-'+key);
+  el.className='fb show '+(ok?'good':'bad');
+  el.innerHTML=html;
+}
+function reveal(sel){
+  const el=document.querySelector(sel);
+  if(el){ el.classList.remove('hidden'); setTimeout(()=>el.scrollIntoView({block:'nearest'}),120); }
+}
+
+/* ============================================================
+   MULTIPLE CHOICE ENGINE
+   ============================================================ */
+const MCQ_FLOW = {
+  'l1-code' : ()=>openMission(1),
+  'l2-spot' : ()=>openMission(2),
+  'l3-period': ()=>reveal('#l3-titles'),
+  'l3-hang' : ()=>openMission(3),
+  'l4-ref'  : ()=>reveal('#l4-cap'),
+  'l4-cap'  : ()=>reveal('#l4-trap'),
+  'l4-trap' : ()=>openMission(4),
+  'l5-myth' : ()=>reveal('#l5-over'),
+  'l5-over' : ()=>openMission(5),
+  'l6-format':()=>reveal('#l6-head'),
+  'l6-head' : ()=>openMission(6)
+};
+document.addEventListener('click', e=>{
+  const opt = e.target.closest('.opt');
+  if(!opt || opt.disabled) return;
+  const box = opt.closest('.challenge');
+  if(!box || !box.dataset.id) return;               // boss options handled separately
+  const id = box.dataset.id;
+  const correct = opt.dataset.correct === 'true';
+  const key = id;
+
+  if(correct){
+    box.querySelectorAll('.opt').forEach(o=>{o.disabled=true;});
+    opt.classList.add('correct');
+    const pts = award(id, 60);
+    fb(key, true, `<b>✔ ${pts?`+${pts} XP`:'Already solved'}</b>${opt.dataset.why}`);
+    if(MCQ_FLOW[id]) setTimeout(MCQ_FLOW[id], 900);
+  } else {
+    opt.classList.add('wrong');
+    opt.disabled = true;
+    miss(id);
+    fb(key, false, `<b>Not yet — think it through</b>${opt.dataset.why}`);
+  }
+});
+
+/* ============================================================
+   LEVEL 1 — TITLE PAGE BUILDER
+   ============================================================ */
+const TP_ITEMS = [
+  {id:'title',  label:'The essay title',            belongs:true,  render:()=>`<div class="pt">Engineered Silence: Soundscape as Control in Orwell's 1984</div>`},
+  {id:'rq',     label:'The research question',      belongs:true,  render:()=>`<div class="line">Research question: To what extent does Orwell use sound and silence to dramatise the Party's psychological control?</div>`},
+  {id:'subj',   label:'Subject (and category)',     belongs:true,  render:()=>`<div class="line">Subject: English A: Literature (Category 1)</div>`},
+  {id:'wc',     label:'Word count',                 belongs:true,  render:()=>`<div class="line">Word count: 3,873</div>`},
+  {id:'code',   label:'A blank line for your personal code', belongs:true, render:()=>`<div class="line">Personal code: <span class="slot">&nbsp;</span></div>`},
+  {id:'name',   label:'Your full name',             belongs:false, render:()=>`<div class="line bad">Alex Moreau</div>`},
+  {id:'school', label:"Your school's name",         belongs:false, render:()=>`<div class="line bad">Westfield International School</div>`},
+  {id:'sup',    label:"Your supervisor's name",     belongs:false, render:()=>`<div class="line bad">Supervisor: Ms J. Ferrante</div>`},
+  {id:'logo',   label:'The school crest / a cover image', belongs:false, render:()=>`<div class="line bad">🏫 [school crest]</div>`},
+  {id:'abs',    label:'A 300-word abstract',        belongs:false, render:()=>`<div class="line bad">Abstract: This essay investigates…</div>`}
+];
+const tpOn = new Set(['title']);
+function drawTitlePage(){
+  const list=document.getElementById('tpToggles');
+  list.innerHTML='';
+  TP_ITEMS.forEach(it=>{
+    const b=document.createElement('button');
+    b.className='toggle'+(tpOn.has(it.id)?' on':'');
+    b.innerHTML=`<span class="box"></span><span>${it.label}</span>`;
+    b.onclick=()=>{ tpOn.has(it.id)?tpOn.delete(it.id):tpOn.add(it.id); drawTitlePage(); };
+    b.dataset.k=it.id;
+    list.appendChild(b);
+  });
+  const paper=document.getElementById('tpPaper');
+  const on = TP_ITEMS.filter(i=>tpOn.has(i.id));
+  paper.innerHTML = on.length ? on.map(i=>i.render()).join('') : `<div class="empty-hint">Your title page is empty — switch something on.</div>`;
+}
+function checkTitlePage(){
+  const id='l1-build';
+  let wrong=[];
+  document.querySelectorAll('#tpToggles .toggle').forEach(t=>{
+    const item = TP_ITEMS.find(i=>i.id===t.dataset.k);
+    const on = tpOn.has(item.id);
+    const ok = on===item.belongs;
+    t.classList.remove('judged-ok','judged-no');
+    t.classList.add(ok?'judged-ok':'judged-no');
+    if(!ok) wrong.push(item);
+  });
+  if(wrong.length===0){
+    const pts=award(id,90);
+    fb(id,true,`<b>✔ IB-ready ${pts?`(+${pts} XP)`:''}</b>Four required items plus a waiting slot for your personal code — and nothing that tells the examiner who you are or where you study.`);
+    setTimeout(()=>reveal('#l1-code'),900);
+  } else {
+    miss(id);
+    const missing = wrong.filter(w=>w.belongs).map(w=>w.label);
+    const extra   = wrong.filter(w=>!w.belongs).map(w=>w.label);
+    let msg='';
+    if(extra.length)   msg += `<b>Ask yourself: could an examiner identify you from this page?</b>Still switched on: <em>${extra.join(', ')}</em>.<br>`;
+    if(missing.length) msg += `<b>${extra.length?'':'Something the examiner needs is missing.'}</b>Not yet on the page: <em>${missing.join(', ')}</em>.`;
+    fb(id,false,msg);
+  }
+}
+drawTitlePage();
+
+/* ============================================================
+   LEVEL 2 — ORDERING
+   ============================================================ */
+const ORDER = ['Title page','Contents page','Introduction','Body of the essay','Conclusion','Bibliography / references','Appendices (if any)'];
+let orderPicked=[];
+function drawOrder(){
+  const pool=document.getElementById('orderPool'), zone=document.getElementById('orderZone');
+  pool.innerHTML=''; zone.innerHTML='';
+  ORDER.filter(s=>!orderPicked.includes(s)).sort((a,b)=>a.localeCompare(b)).forEach(s=>{
+    const b=document.createElement('button');
+    b.className='chip'; b.textContent=s;
+    b.onclick=()=>{orderPicked.push(s);drawOrder();};
+    pool.appendChild(b);
+  });
+  orderPicked.forEach((s,i)=>{
+    const b=document.createElement('button');
+    b.className='chip'; b.innerHTML=`<b style="color:var(--amber)">${i+1}.</b> ${s}`;
+    b.onclick=()=>{orderPicked.splice(i,1);drawOrder();};
+    zone.appendChild(b);
+  });
+}
+function resetOrder(){ orderPicked=[]; drawOrder(); }
+function checkOrder(){
+  const id='l2-order';
+  if(orderPicked.length<ORDER.length){ miss(id); fb(id,false,`<b>Not finished</b>Place all ${ORDER.length} sections first.`); return; }
+  const ok = orderPicked.every((s,i)=>s===ORDER[i]);
+  if(ok){
+    const pts=award(id,70);
+    fb(id,true,`<b>✔ Correct order ${pts?`(+${pts} XP)`:''}</b>Front matter, then the argument, then what supports it. Appendices come last — and remember examiners are not required to read them, so nothing essential lives there.`);
+    setTimeout(()=>reveal('#l2-spot'),900);
+  } else {
+    miss(id);
+    const firstWrong = orderPicked.findIndex((s,i)=>s!==ORDER[i]);
+    fb(id,false,`<b>Position ${firstWrong+1} isn't right</b>Ask yourself: what does a reader need <em>before</em> they meet your argument, and what only makes sense <em>after</em> it?`);
+  }
+}
+drawOrder();
+
+/* ============================================================
+   LEVEL 2 — SPOT THE ERROR
+   ============================================================ */
+document.querySelectorAll('#tocDoc .row').forEach(r=>{
+  r.onclick=()=>{ if(r.classList.contains('hit')||r.classList.contains('miss')) return; r.classList.toggle('flag'); };
+});
+function checkToc(){
+  const id='l2-spot';
+  const rows=[...document.querySelectorAll('#tocDoc .row')];
+  const flagged=rows.filter(r=>r.classList.contains('flag'));
+  if(flagged.length!==3){ miss(id); fb(id,false,`<b>Pick exactly three</b>You've flagged ${flagged.length}. Look for: a section that shouldn't exist, a heading that tells the reader nothing, and a number that can't be true.`); return; }
+  const allRight = flagged.every(r=>r.dataset.bad==='true');
+  if(allRight){
+    rows.forEach(r=>{ if(r.dataset.bad==='true') r.classList.add('hit'); r.classList.remove('flag'); });
+    const pts=award(id,80);
+    fb(id,true,`<b>✔ All three found ${pts?`(+${pts} XP)`:''}</b>`+rows.filter(r=>r.dataset.bad==='true').map(r=>'• '+r.dataset.why).join('<br>'));
+    setTimeout(()=>openMission(2),1100);
+  } else {
+    miss(id);
+    const wrongPick = flagged.find(r=>r.dataset.bad==='false');
+    fb(id,false,`<b>One of your three is innocent</b>${wrongPick.dataset.why} Which line makes a promise the document can't keep?`);
+  }
+}
+
+/* ============================================================
+   GENERIC SORTER (tap-to-place + drag)
+   ============================================================ */
+const SORTERS = {
+  titles:{
+    pts:80,
+    items:[
+      {id:'t1',label:'Romeo and Juliet',                   bucket:'ital'},
+      {id:'t2',label:'"The Impact of Social Media on Youth" (journal article)', bucket:'quot'},
+      {id:'t3',label:'To Kill a Mockingbird',              bucket:'ital'},
+      {id:'t4',label:'"Chapter 4: Method" (chapter in a book)', bucket:'quot'},
+      {id:'t5',label:'Environmental Studies Quarterly (the journal)', bucket:'ital'},
+      {id:'t6',label:'"Climate Policy Analysis" (an article in it)',  bucket:'quot'}
+    ],
+    pool:'titlePool',
+    win:'The rule is containers vs contents: a whole book, film, journal or newspaper is italicised; anything published <em>inside</em> one takes quotation marks.',
+    hint:'Ask of each one: is this the container, or something published inside a container?',
+    next:()=>reveal('#l3-match')
+  },
+  match:{
+    pts:70,
+    items:[
+      {id:'m1',label:'(Smith 45)',   bucket:'smith'},
+      {id:'m2',label:'(Johnson 123)',bucket:'johnson'},
+      {id:'m3',label:'(Brown 87)',   bucket:'brown'}
+    ],
+    pool:'matchPool',
+    win:'That is the test an examiner applies in reverse too: every bibliography entry should be traceable to a citation in your text.',
+    hint:'Match on the surname. If a citation has nowhere to land, you have a missing bibliography entry — which is where academic misconduct investigations begin.',
+    next:()=>reveal('#l3-hang')
+  },
+  wc:{
+    pts:110,
+    items:[
+      {id:'w1', label:'Introduction',                         bucket:'in'},
+      {id:'w2', label:'Body paragraphs / analysis',           bucket:'in'},
+      {id:'w3', label:'Conclusion',                           bucket:'in'},
+      {id:'w4', label:'Direct quotations',                    bucket:'in'},
+      {id:'w5', label:'A footnote that explains an idea',     bucket:'in'},
+      {id:'w6', label:'Title page',                           bucket:'out'},
+      {id:'w7', label:'Contents page',                        bucket:'out'},
+      {id:'w8', label:'In-text citations / references',       bucket:'out'},
+      {id:'w9', label:'Bibliography',                         bucket:'out'},
+      {id:'w10',label:'Appendices',                           bucket:'out'},
+      {id:'w11',label:'Tables, charts, diagrams, maps',       bucket:'out'},
+      {id:'w12',label:'Equations, formulas, calculations',    bucket:'out'},
+      {id:'w13',label:'Your 500-word reflection (RPF)',       bucket:'out'}
+    ],
+    pool:'wcPool',
+    win:'The principle: <b>the prose you wrote counts; the apparatus around it does not.</b> Quotations are prose you chose to include, so they count. Citations, the bibliography, tables, equations, appendices and the separate 500-word reflection all sit outside the 4,000.',
+    hint:'Ask of each card: is this me making the argument, or is this machinery pointing at where the argument came from?',
+    next:()=>reveal('#l5-myth')
+  }
+};
+let picked=null;
+function drawSorter(key){
+  const S=SORTERS[key];
+  const pool=document.getElementById(S.pool);
+  const zones=[...pool.closest('.challenge').querySelectorAll('.zone')];
+  pool.innerHTML=''; zones.forEach(z=>z.innerHTML='');
+  S.items.forEach(it=>{
+    const b=document.createElement('button');
+    b.className='chip'+(picked===it.id?' picked':'');
+    b.innerHTML=it.label;
+    b.dataset.k=it.id; b.dataset.sorter=key;
+    b.draggable=true;
+    b.addEventListener('dragstart',e=>{picked=it.id;e.dataTransfer.setData('text',it.id);});
+    b.onclick=(e)=>{
+      e.stopPropagation();
+      // a card is already picked up and you tapped a card sitting in a column → drop it there
+      if(picked && picked!==it.id && it.placed){ place(key,it.placed); return; }
+      if(it.placed){ it.placed=null; picked=null; }
+      else picked = picked===it.id?null:it.id;
+      drawSorter(key);
+    };
+    (it.placed ? zones.find(z=>z.dataset.bucket===it.placed) : pool).appendChild(b);
+  });
+  zones.forEach(z=>{
+    z.ondragover=e=>{e.preventDefault();z.classList.add('armed');};
+    z.ondragleave=()=>z.classList.remove('armed');
+    z.ondrop=e=>{e.preventDefault();z.classList.remove('armed');place(key,z.dataset.bucket);};
+    z.onclick=()=>place(key,z.dataset.bucket);
+  });
+}
+function place(key,bucket){
+  if(!picked) return;
+  const it=SORTERS[key].items.find(i=>i.id===picked);
+  if(it){ it.placed=bucket; picked=null; drawSorter(key); }
+}
+function checkSorter(key){
+  const S=SORTERS[key], id='l'+({titles:'3-titles',match:'3-match',wc:'5-sort'}[key]);
+  const unplaced=S.items.filter(i=>!i.placed);
+  if(unplaced.length){ miss(id); fb(id,false,`<b>${unplaced.length} still waiting</b>Place every card before checking.`); return; }
+  const wrong=S.items.filter(i=>i.placed!==i.bucket);
+  document.querySelectorAll(`.chip[data-sorter="${key}"]`).forEach(c=>{
+    const it=S.items.find(i=>i.id===c.dataset.k);
+    c.classList.remove('ok','no');
+    c.classList.add(it.placed===it.bucket?'ok':'no');
+  });
+  if(!wrong.length){
+    const pts=award(id,S.pts);
+    fb(id,true,`<b>✔ Flawless ${pts?`(+${pts} XP)`:''}</b>${S.win}`);
+    setTimeout(S.next,1100);
+  } else {
+    miss(id);
+    fb(id,false,`<b>${S.items.length-wrong.length}/${S.items.length} in the right place</b>The red cards are misplaced. ${S.hint}`);
+  }
+}
+drawSorter('titles'); drawSorter('match'); drawSorter('wc');
+
+/* ============================================================
+   MISSION CHECKLISTS
+   ============================================================ */
+const CHECKLISTS = {
+  1:["Title, research question, subject (and category), and word count are all on the title page",
+     "There is a labelled blank line waiting for my personal code",
+     "My name appears nowhere — not on the page, not in the header, not in the file name",
+     "My school's name and my supervisor's name appear nowhere",
+     "No abstract, no crest, no cover image"],
+  2:["Every heading in my contents page exists in the essay, worded identically",
+     "Every page number in the contents page is true of the document as it stands today",
+     "Pages are numbered continuously and the numbering is consistent",
+     "Section headings describe what the section argues, not just 'Analysis' or 'Sources'",
+     "There is no abstract"],
+  3:["I have chosen one citation style and used it for every single reference",
+     "Every in-text citation has a matching bibliography entry",
+     "Every bibliography entry is actually cited somewhere in my essay",
+     "Punctuation sits after the citation, inside the sentence",
+     "Book/film/journal titles are italicised; article and chapter titles are in quotation marks",
+     "My bibliography uses real hanging indents (0.5\"), not spaces or line breaks"],
+  4:["Every figure and table is numbered and titled",
+     "Axes, units and sample sizes are labelled",
+     "The source of every visual is given",
+     "Every visual is named in the text AND interpreted, not just described",
+     "No analysis has been hidden in a table or an explanatory footnote to dodge the word limit"],
+  5:["I counted introduction + body + conclusion + quotations + explanatory footnotes",
+     "I excluded the contents page, citations, bibliography, tables, equations and appendices",
+     "My total is 4,000 words or fewer",
+     "The number on my title page matches the number I just calculated",
+     "Nothing essential to my argument sits in an appendix"],
+  6:["Readable 12pt font throughout (Times New Roman, Arial or Calibri)",
+     "Double spacing (or the spacing my school specifies) applied to the whole document",
+     "2.54 cm / 1 inch margins",
+     "Page numbers present and consistent",
+     "Headings at the same level look identical to each other",
+     "I re-checked the word count and contents page AFTER my final edit"]
+};
+function buildChecklists(){
+  for(const lvl in CHECKLISTS){
+    const host=document.querySelector(`#mission${lvl} .checklist`);
+    host.innerHTML='';
+    CHECKLISTS[lvl].forEach((txt,i)=>{
+      const lab=document.createElement('label');
+      lab.className='check';
+      lab.innerHTML=`<input type="checkbox" data-lvl="${lvl}"><span>${txt}</span>`;
+      lab.querySelector('input').addEventListener('change',e=>{
+        lab.classList.toggle('done',e.target.checked);
+        gateLevel(lvl);
+      });
+      host.appendChild(lab);
+    });
+  }
+}
+function gateLevel(lvl){
+  const boxes=[...document.querySelectorAll(`#mission${lvl} input[type=checkbox]`)];
+  const all=boxes.every(b=>b.checked);
+  const btn=document.getElementById('next'+lvl);
+  btn.disabled=!all;
+  if(all && !state.solved.has('audit'+lvl)){
+    award('audit'+lvl, 100);
+    earnBadge(+lvl);
+  }
+}
+function openMission(lvl){
+  const m=document.getElementById('mission'+lvl);
+  m.classList.remove('hidden');
+  m.scrollIntoView({behavior:'smooth',block:'center'});
+}
+function earnBadge(n){
+  if(state.badges.has(n)) return;
+  state.badges.add(n); hud();
+  toast(`🎖️ Badge earned: ${BADGES[n-1].name}`);
+}
+buildChecklists();
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+function goLevel(n){
+  document.getElementById('level'+state.level).classList.add('hidden');
+  document.getElementById('level'+n).classList.remove('hidden');
+  document.querySelector('.intro').classList.toggle('hidden', n>1);
+  state.level=n; hud();
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(n===7) startTimer();
+}
+
+/* ============================================================
+   BOSS
+   ============================================================ */
+let tId=null, tLeft=180, bossAns={}, speedBonus=true;
+function startTimer(){
+  clearInterval(tId); tLeft=180; speedBonus=true;
+  const el=document.getElementById('timer'); el.classList.remove('danger');
+  tId=setInterval(()=>{
+    tLeft--;
+    el.textContent=`${Math.floor(tLeft/60)}:${String(tLeft%60).padStart(2,'0')}`;
+    if(tLeft<=30) el.classList.add('danger');
+    if(tLeft<=0){
+      clearInterval(tId); speedBonus=false;
+      el.textContent="0:00"; el.classList.remove('danger');
+      fb('boss',false,`<b>⏰ Time's up — but you're not out</b>The Commander loses his speed bonus grip on you. Finish the five challenges and strike anyway.`);
+    }
+  },1000);
+}
+document.querySelectorAll('[data-boss]').forEach(g=>{
+  g.addEventListener('click',e=>{
+    const o=e.target.closest('.opt'); if(!o) return;
+    g.querySelectorAll('.opt').forEach(x=>x.classList.remove('correct'));
+    o.classList.add('correct');
+    bossAns[g.dataset.boss]=o.dataset.val;
+  });
+});
+function checkBoss(){
+  const results=[];
+  const cite=document.getElementById('bossCite').value.replace(/\s+/g,' ').trim();
+  results.push([/fear\s*\(orwell 245\)\s*\./i.test(cite),
+    'Citation punctuation','Move the citation inside the sentence: <em>Winston feels fear (Orwell 245).</em>']);
+  results.push([bossAns.q2==='b','Title page','Your school identifies you just as surely as your name does.']);
+  results.push([bossAns.q3==='b','Word count','Quotations are prose in your essay, so they count. Citations and the contents page do not.']);
+  const ref=document.getElementById('bossRef').value.toLowerCase();
+  results.push([/figure\s*\d/.test(ref),'Figure reference','Name the figure explicitly — "As Figure 1 shows, …"']);
+  results.push([bossAns.q5==='b','Editing discipline','Cutting words changes both your pagination and your word count. Both live on documents you must update.']);
+
+  const score=results.filter(r=>r[0]).length;
+  const el=document.getElementById('fb-boss');
+  if(score===5){
+    clearInterval(tId);
+    let pts=200; if(speedBonus) pts+=100;
+    state.xp+=pts; state.streak++; state.best=Math.max(state.best,state.streak); hud();
+    earnBadge(7);
+    el.className='fb show good';
+    el.innerHTML=`<b>⚔️ 5/5 — the Commander falls (+${pts} XP${speedBonus?' incl. speed bonus':''})</b>Every villain in this game exists because a real student lost real marks to it. You just closed all seven doors.`;
+    setTimeout(()=>{
+      document.getElementById('level7').classList.add('hidden');
+      showVictory();
+    },1800);
+  } else {
+    miss('boss');
+    el.className='fb show bad';
+    el.innerHTML=`<b>${score}/5 — he's still standing</b>`+
+      results.filter(r=>!r[0]).map(r=>`• <b>${r[1]}:</b> ${r[2]}`).join('<br>');
+  }
+}
+
+/* ============================================================
+   VICTORY
+   ============================================================ */
+function showVictory(){
+  const v=document.getElementById('victory');
+  v.classList.remove('hidden');
+  const wall=document.getElementById('badgeWall');
+  wall.innerHTML=BADGES.map(b=>`
+    <div class="badge-card ${state.badges.has(b.id)?'earned':''}">
+      <div class="ico">${b.ico}</div><b>${b.name}</b><span>${b.sub}</span>
+    </div>`).join('');
+  const rank = state.xp>=2700 ? 'S — Examiner-proof' :
+               state.xp>=2200 ? 'A — Submission ready' :
+               state.xp>=1600 ? 'B — Solid, tidy the edges' :
+                                'C — Worth a second run';
+  document.getElementById('rankLine').textContent =
+    `${state.xp} XP · longest streak ${state.best} · rank ${rank}`;
+  window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
+}
+function restart(){ location.reload(); }
+
+hud();
+</script>
 </body>
 </html>
