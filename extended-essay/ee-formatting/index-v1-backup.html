@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Save the EE - Hero's Journey</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .game-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .title {
+            font-size: 3rem;
+            font-weight: bold;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #FFD700, #FF6B35);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00C851, #007E33);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .level-container {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .villain-intro {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .villain-avatar {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            animation: float 2s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .villain-name {
+            font-size: 2rem;
+            color: #FF6B6B;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .challenge-area {
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .question {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .option {
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .option:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: #FFD700;
+            transform: translateY(-2px);
+        }
+        
+        .option.correct {
+            background: rgba(0, 200, 81, 0.3);
+            border-color: #00C851;
+        }
+        
+        .option.incorrect {
+            background: rgba(255, 107, 107, 0.3);
+            border-color: #FF6B6B;
+        }
+        
+        .drag-area {
+            min-height: 100px;
+            border: 2px dashed rgba(255,255,255,0.5);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 10px 0;
+            position: relative;
+        }
+        
+        .drag-area.drag-over {
+            border-color: #FFD700;
+            background: rgba(255, 215, 0, 0.1);
+        }
+        
+        .draggable {
+            padding: 10px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 5px;
+            margin: 5px;
+            cursor: move;
+            display: inline-block;
+            user-select: none;
+        }
+        
+        .draggable:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(45deg, #FF6B35, #F7931E);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(247, 147, 30, 0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(45deg, #00C851, #007E33);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 200, 81, 0.4);
+        }
+        
+        .mission-complete {
+            background: rgba(0, 200, 81, 0.2);
+            border: 2px solid #00C851;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .checklist {
+            text-align: left;
+            max-width: 600px;
+            margin: 20px auto;
+        }
+        
+        .checklist-item {
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .checklist-item input[type="checkbox"] {
+            margin-right: 10px;
+            transform: scale(1.5);
+        }
+        
+        .hero-power {
+            background: rgba(255, 215, 0, 0.2);
+            border-left: 4px solid #FFD700;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .hero-power::before {
+            content: "⚡ Hero Power: ";
+            font-weight: bold;
+            color: #FFD700;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .feedback {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .feedback.correct {
+            background: rgba(0, 200, 81, 0.3);
+            border: 2px solid #00C851;
+        }
+        
+        .feedback.incorrect {
+            background: rgba(255, 107, 107, 0.3);
+            border: 2px solid #FF6B6B;
+        }
+        
+        .example-box {
+            background: rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 4px solid #4ECDC4;
+        }
+        
+        .citation-builder {
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .citation-input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+        
+        .citation-match {
+            background: rgba(255,215,0,0.2);
+            border: 2px solid #FFD700;
+            margin: 5px;
+            padding: 8px 12px;
+            font-weight: bold;
+        }
+        
+        .citation-drop {
+            min-height: 40px;
+            border: 2px dashed rgba(255,255,255,0.3);
+            border-radius: 5px;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .citation-drop.drag-over {
+            border-color: #FFD700;
+            background: rgba(255,215,0,0.1);
+        }
+        
+        .challenge-area {
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .challenge-area h4 {
+            margin-bottom: 15px;
+            color: #4ECDC4;
+        }
+        
+        .word-counter {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        
+        .final-boss {
+            background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .victory {
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(135deg, #FFD700, #FFA726);
+            border-radius: 15px;
+            color: #333;
+        }
+        
+        .victory h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .sound-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            color: white;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2rem;
+            }
+            
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            .game-container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="sound-toggle" onclick="toggleSound()" title="Toggle Sound">🔊</button>
+    
+    <div class="game-container">
+        <div class="header">
+            <h1 class="title">Save the EE</h1>
+            <p class="subtitle">Hero's Journey to Perfect Formatting</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p id="progressText">Level 1 of 7</p>
+        </div>
+
+        <!-- Level 1: Title Page Terror -->
+        <div class="level-container" id="level1">
+            <div class="villain-intro">
+                <div class="villain-avatar">🎭</div>
+                <h2 class="villain-name">Dr. Anonymous</h2>
+                <p>"I'll make sure everyone includes their names and breaks anonymity! Mwahahaha!"</p>
+            </div>
+            
+            <div class="hero-power">
+                The IB requires complete anonymity in EE submissions. No names, candidate numbers, or school info on the title page!
+            </div>
+            
+            <div class="challenge-area">
+                <div class="question">Battle Challenge: Which title page is correctly formatted?</div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(this, false, 1)">
+                        <strong>The Impact of Social Media</strong><br>
+                        Research Question: How does social media affect teenagers?<br>
+                        Subject: Psychology<br>
+                        By: John Smith, Candidate #12345<br>
+                        Westfield High School<br>
+                        Word Count: 3,847
+                    </div>
+                    <div class="option" onclick="selectOption(this, true, 1)">
+                        <strong>The Impact of Social Media on Teen Mental Health</strong><br>
+                        Research Question: To what extent does social media usage affect teenage mental health outcomes?<br>
+                        Subject: Psychology<br>
+                        Word Count: 3,847
+                    </div>
+                </div>
+                <div id="feedback1" class="feedback hidden"></div>
+            </div>
+            
+            <div class="example-box">
+                <strong>Perfect Title Page Example:</strong><br>
+                <em>The Role of Symbolism in Orwell's 1984</em><br>
+                Research Question: To what extent does Orwell use symbolism in 1984 to critique authoritarian power?<br>
+                Subject: English A: Literature, Category 1<br>
+                Word Count: 3,873
+            </div>
+            
+            <div id="mission1" class="mission-complete hidden">
+                <h3>🎯 Mission Complete! Now fix your own title page:</h3>
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check1a"> Clear essay title (not a question)
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check1b"> Research question ending with "?"
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check1c"> Subject and category listed
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check1d"> Exact word count included
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check1e"> NO personal info (name, school, etc.)
+                    </div>
+                </div>
+                <button class="btn btn-success" onclick="nextLevel(2)" id="next1" disabled>Advance to Level 2</button>
+            </div>
+        </div>
+
+        <!-- Level 2: Table of Chaos -->
+        <div class="level-container hidden" id="level2">
+            <div class="villain-intro">
+                <div class="villain-avatar">📄</div>
+                <h2 class="villain-name">Page Number Phantom</h2>
+                <p>"I'll scramble all your page numbers and make your table of contents useless!"</p>
+            </div>
+            
+            <div class="hero-power">
+                Your table of contents must list ALL major sections with ACCURATE page numbers that match your actual document!
+            </div>
+            
+            <div class="challenge-area">
+                <div class="question">Battle Challenge: Drag the correct page numbers to match this table of contents:</div>
+                <div style="margin: 20px 0;">
+                    <strong>Available Page Numbers:</strong><br>
+                    <div class="draggable" draggable="true" ondragstart="drag(event)" id="page3">3</div>
+                    <div class="draggable" draggable="true" ondragstart="drag(event)" id="page5">5</div>
+                    <div class="draggable" draggable="true" ondragstart="drag(event)" id="page8">8</div>
+                    <div class="draggable" draggable="true" ondragstart="drag(event)" id="page12">12</div>
+                    <div class="draggable" draggable="true" ondragstart="drag(event)" id="page15">15</div>
+                    <div class="draggable" draggable="true" ondragstart="drag(event)" id="page17">17</div>
+                </div>
+                
+                <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    Introduction .................................. <div class="drag-area" ondrop="drop(event, 'intro')" ondragover="allowDrop(event)" id="intro-drop">Drop here</div>
+                    Section 1: Literature Review ................ <div class="drag-area" ondrop="drop(event, 'lit')" ondragover="allowDrop(event)" id="lit-drop">Drop here</div>
+                    Section 2: Methodology ..................... <div class="drag-area" ondrop="drop(event, 'method')" ondragover="allowDrop(event)" id="method-drop">Drop here</div>
+                    Section 3: Analysis ......................... <div class="drag-area" ondrop="drop(event, 'analysis')" ondragover="allowDrop(event)" id="analysis-drop">Drop here</div>
+                    Conclusion .................................. <div class="drag-area" ondrop="drop(event, 'conclusion')" ondragover="allowDrop(event)" id="conclusion-drop">Drop here</div>
+                    Works Cited ................................. <div class="drag-area" ondrop="drop(event, 'works')" ondragover="allowDrop(event)" id="works-drop">Drop here</div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="checkTableOfContents()">Check My Answers</button>
+                <div id="feedback2" class="feedback hidden"></div>
+            </div>
+            
+            <div id="mission2" class="mission-complete hidden">
+                <h3>📑 Mission Complete! Now check your table of contents:</h3>
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check2a"> All major sections listed
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check2b"> Page numbers match actual document
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check2c"> Clean, professional formatting
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check2d"> Includes Introduction, Body, Conclusion, Works Cited
+                    </div>
+                </div>
+                <button class="btn btn-success" onclick="nextLevel(3)" id="next2" disabled>Advance to Level 3</button>
+            </div>
+        </div>
+
+        <!-- Level 3: Citation Saboteur -->
+        <div class="level-container hidden" id="level3">
+            <div class="villain-intro">
+                <div class="villain-avatar">📚</div>
+                <h2 class="villain-name">Professor Plagiarism</h2>
+                <p>"I'll remove all your citations and mix up your formats! Academic integrity is my enemy!"</p>
+            </div>
+            
+            <div class="hero-power">
+                Use consistent citation style (MLA or APA) and remember: the period ALWAYS comes AFTER the citation!
+            </div>
+            
+            <div class="challenge-area">
+                <div class="question">Battle Challenge 1: Which citation is correctly formatted in MLA style?</div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(this, false, '3a')">
+                        Winston's fear symbolizes internal conflict. (Orwell 245)
+                    </div>
+                    <div class="option" onclick="selectOption(this, true, '3a')">
+                        Winston's fear symbolizes internal conflict (Orwell 245).
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, '3a')">
+                        Winston's fear symbolizes internal conflict (Orwell, 245).
+                    </div>
+                </div>
+                <div id="feedback3a" class="feedback hidden"></div>
+            </div>
+            
+            <div class="challenge-area" id="challenge3b" style="display: none;">
+                <div class="question">Battle Challenge 2: Drag titles to their correct formatting!</div>
+                <div style="margin: 20px 0;">
+                    <strong>Titles to Sort:</strong><br>
+                    <div class="draggable" draggable="true" ondragstart="dragTitle(event)" id="book1">Romeo and Juliet</div>
+                    <div class="draggable" draggable="true" ondragstart="dragTitle(event)" id="article1">The Impact of Social Media on Youth</div>
+                    <div class="draggable" draggable="true" ondragstart="dragTitle(event)" id="book2">To Kill a Mockingbird</div>
+                    <div class="draggable" draggable="true" ondragstart="dragTitle(event)" id="article2">Climate Change in the 21st Century</div>
+                    <div class="draggable" draggable="true" ondragstart="dragTitle(event)" id="book3">The Great Gatsby</div>
+                    <div class="draggable" draggable="true" ondragstart="dragTitle(event)" id="article3">Educational Technology Trends</div>
+                </div>
+                
+                <div style="display: flex; gap: 20px; margin: 20px 0;">
+                    <div style="flex: 1;">
+                        <h4 style="color: #4ECDC4;"><em>Books/Movies = Italics</em></h4>
+                        <div class="drag-area" ondrop="dropTitle(event, 'italics')" ondragover="allowDrop(event)" id="italics-area" style="min-height: 150px;"></div>
+                    </div>
+                    <div style="flex: 1;">
+                        <h4 style="color: #FFD700;">"Articles/Essays = Quotes"</h4>
+                        <div class="drag-area" ondrop="dropTitle(event, 'quotes')" ondragover="allowDrop(event)" id="quotes-area" style="min-height: 150px;"></div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="checkTitleFormatting()">Check My Formatting</button>
+                <div id="feedback3b" class="feedback hidden"></div>
+            </div>
+            
+            <div class="challenge-area" id="challenge3c" style="display: none;">
+                <div class="question">Battle Challenge 3: Match in-text citations with Works Cited entries!</div>
+                <div style="margin: 20px 0;">
+                    <strong>In-text Citations:</strong><br>
+                    <div class="draggable citation-match" draggable="true" ondragstart="dragCitation(event)" id="cite1">(Smith 45)</div>
+                    <div class="draggable citation-match" draggable="true" ondragstart="dragCitation(event)" id="cite2">(Johnson 123)</div>
+                    <div class="draggable citation-match" draggable="true" ondragstart="dragCitation(event)" id="cite3">(Brown 87)</div>
+                </div>
+                
+                <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <strong>Works Cited Entries - Drop matching citations here:</strong><br><br>
+                    
+                    <div style="margin: 10px 0; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 5px;">
+                        Brown, Sarah. "Technology in Education." <em>Academic Journal</em>, vol. 12, 2023, pp. 80-95.
+                        <div class="drag-area citation-drop" ondrop="dropCitation(event, 'brown')" ondragover="allowDrop(event)" id="brown-drop" style="min-height: 40px; margin-top: 10px;">Drop citation here</div>
+                    </div>
+                    
+                    <div style="margin: 10px 0; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 5px;">
+                        Johnson, Mark. <em>Modern Research Methods</em>. Academic Press, 2022.
+                        <div class="drag-area citation-drop" ondrop="dropCitation(event, 'johnson')" ondragover="allowDrop(event)" id="johnson-drop" style="min-height: 40px; margin-top: 10px;">Drop citation here</div>
+                    </div>
+                    
+                    <div style="margin: 10px 0; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 5px;">
+                        Smith, Jane. "Climate Policy Analysis." <em>Environmental Studies Quarterly</em>, vol. 8, no. 3, 2023, pp. 40-58.
+                        <div class="drag-area citation-drop" ondrop="dropCitation(event, 'smith')" ondragover="allowDrop(event)" id="smith-drop" style="min-height: 40px; margin-top: 10px;">Drop citation here</div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="checkCitationMatching()">Check Citation Matches</button>
+                <div id="feedback3c" class="feedback hidden"></div>
+            </div>
+            
+            <div class="challenge-area" id="challenge3d" style="display: none;">
+                <div class="question">Battle Challenge 4: Master Hanging Indents in Google Docs!</div>
+                
+                <div class="hero-power">
+                    Hanging indents make your Works Cited look professional! The first line starts at the margin, but all other lines are indented.
+                </div>
+                
+                <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <h4>📋 How to Create Hanging Indents in Google Docs:</h4>
+                    <ol style="margin: 15px 0; padding-left: 20px; line-height: 1.6;">
+                        <li><strong>Select your Works Cited entries</strong> (highlight all the text)</li>
+                        <li><strong>Go to Format menu</strong> → Align & indent → Indentation options</li>
+                        <li><strong>Under "Special indent"</strong> select "Hanging"</li>
+                        <li><strong>Set to 0.5 inches</strong> (this is standard)</li>
+                        <li><strong>Click Apply</strong></li>
+                    </ol>
+                    
+                    <div style="background: rgba(255,215,0,0.1); padding: 15px; border-radius: 5px; margin: 15px 0;">
+                        <strong>💡 Pro Tip:</strong> You can also use the ruler at the top! Drag the bottom triangle (hanging indent marker) to the right while keeping the top triangle at the margin.
+                    </div>
+                    
+                    <div style="background: rgba(0,200,81,0.1); padding: 15px; border-radius: 5px; margin: 15px 0;">
+                        <strong>✅ Correctly formatted with hanging indent:</strong><br>
+                        <div style="font-family: 'Times New Roman', serif; margin: 10px 0;">
+                        Smith, Jane. "Climate Policy Analysis." <em>Environmental Studies Quarterly</em>, vol. 8, no. 3,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2023, pp. 40-58.
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(255,107,107,0.1); padding: 15px; border-radius: 5px; margin: 15px 0;">
+                        <strong>❌ Incorrect - no hanging indent:</strong><br>
+                        <div style="font-family: 'Times New Roman', serif; margin: 10px 0;">
+                        Smith, Jane. "Climate Policy Analysis." <em>Environmental Studies Quarterly</em>, vol. 8, no. 3, 2023, pp. 40-58.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="question">Quick Check: Which shows proper hanging indent?</div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(this, false, '3d')">
+                        <div style="font-family: monospace;">
+                        Brown, Sarah. "Technology in Education." Academic Journal,<br>
+                        vol. 12, 2023, pp. 80-95.
+                        </div>
+                    </div>
+                    <div class="option" onclick="selectOption(this, true, '3d')">
+                        <div style="font-family: monospace;">
+                        Brown, Sarah. "Technology in Education." Academic Journal,<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vol. 12, 2023, pp. 80-95.
+                        </div>
+                    </div>
+                </div>
+                <div id="feedback3d" class="feedback hidden"></div>
+            </div>
+            
+            <div class="citation-builder">
+                <h4>Practice: Build a Works Cited Entry (MLA Format)</h4>
+                <p>Create a citation for: Book "1984" by George Orwell, published by Harvill Secker in 1949</p>
+                <input type="text" class="citation-input" placeholder="Author Last, First. Title. Publisher, Year." id="citationInput">
+                <button class="btn btn-primary" onclick="checkCitation()">Check Citation</button>
+                <div id="citationFeedback" class="feedback hidden"></div>
+            </div>
+            
+            <div class="example-box">
+                <strong>MLA Works Cited Example:</strong><br>
+                Orwell, George. <em>1984</em>. Harvill Secker, 1949.<br>
+                Smith, John. "Symbols in Orwell's Works." <em>Modern Literature Review</em>, vol. 5, no. 2, 2017, pp. 35–49.
+            </div>
+            
+            <div id="mission3" class="mission-complete hidden">
+                <h3>📖 Mission Complete! Now audit your citations:</h3>
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check3a"> Consistent citation style throughout
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check3b"> All in-text citations have periods AFTER
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check3c"> Book titles in italics, article titles in quotes
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check3d"> Works Cited has hanging indents (0.5 inches)
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check3e"> Every in-text citation matches a Works Cited entry
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check3f"> Works Cited ONLY contains sources actually used
+                    </div>
+                </div>
+                <button class="btn btn-success" onclick="nextLevel(4)" id="next3" disabled>Advance to Level 4</button>
+            </div>
+        </div>
+
+        <!-- Level 4: Visual Vandal -->
+        <div class="level-container hidden" id="level4">
+            <div class="villain-intro">
+                <div class="villain-avatar">🖼️</div>
+                <h2 class="villain-name">Captain Confusion</h2>
+                <p>"I'll scramble your figures, remove your labels, and make your visuals meaningless!"</p>
+            </div>
+            
+            <div class="hero-power">
+                Every visual element must be labeled with a caption AND referenced in your text. No orphaned figures allowed!
+            </div>
+            
+            <div class="challenge-area">
+                <div class="question">Battle Challenge: How should you reference Figure 1 in your text?</div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(this, false, 4)">
+                        The propaganda poster shows the government's control.
+                    </div>
+                    <div class="option" onclick="selectOption(this, true, 4)">
+                        As seen in Figure 1, the propaganda poster shows the government's control.
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 4)">
+                        See the attached figure for propaganda examples.
+                    </div>
+                </div>
+                <div id="feedback4" class="feedback hidden"></div>
+            </div>
+            
+            <div class="example-box">
+                <strong>Proper Figure Formatting:</strong><br><br>
+                [Image would appear here]<br>
+                <em>Figure 1.</em> A sample propaganda poster from Orwell's 1984.<br><br>
+                <strong>Text Reference:</strong><br>
+                "As demonstrated in Figure 1, the Party uses visual propaganda to maintain psychological control over citizens."
+            </div>
+            
+            <div id="mission4" class="mission-complete hidden">
+                <h3>🖼️ Mission Complete! Now check your visuals:</h3>
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check4a"> All figures/tables have clear captions
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check4b"> All visuals are referenced in text
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check4c"> Captions appear below the visual
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check4d"> Visuals support your argument
+                    </div>
+                </div>
+                <button class="btn btn-success" onclick="nextLevel(5)" id="next4" disabled>Advance to Level 5</button>
+            </div>
+        </div>
+
+        <!-- Level 5: Word Count Wizard -->
+        <div class="level-container hidden" id="level5">
+            <div class="villain-intro">
+                <div class="villain-avatar">🔢</div>
+                <h2 class="villain-name">The Inflator</h2>
+                <p>"I'll make EVERYTHING count toward your word limit! Your bibliography, your table of contents, EVERYTHING!"</p>
+            </div>
+            
+            <div class="hero-power">
+                Only specific parts count toward the 4,000-word limit. Exceeding means examiners stop reading at word 4,000!
+            </div>
+            
+            <div class="challenge-area">
+                <div class="question">Battle Challenge: Sort these items into what COUNTS vs what DOESN'T COUNT toward word limit:</div>
+                
+                <div style="margin: 20px 0;">
+                    <strong>Items to Sort:</strong><br>
+                    <div class="draggable" draggable="true" ondragstart="dragWord(event)" id="intro">Introduction</div>
+                    <div class="draggable" draggable="true" ondragstart="dragWord(event)" id="quotes">Direct Quotations</div>
+                    <div class="draggable" draggable="true" ondragstart="dragWord(event)" id="title">Title Page</div>
+                    <div class="draggable" draggable="true" ondragstart="dragWord(event)" id="toc">Table of Contents</div>
+                    <div class="draggable" draggable="true" ondragstart="dragWord(event)" id="citations">In-text Citations</div>
+                    <div class="draggable" draggable="true" ondragstart="dragWord(event)" id="works">Works Cited</div>
+                    <div class="draggable" draggable="true" ondragstart="dragWord(event)" id="headings">Section Headings</div>
+                    <div class="draggable" draggable="true" ondragstart="dragWord(event)" id="captions">Figure Captions</div>
+                </div>
+                
+                <div style="display: flex; gap: 20px; margin: 20px 0;">
+                    <div style="flex: 1;">
+                        <h4 style="color: #00C851;">✅ COUNTS (toward 4,000)</h4>
+                        <div class="drag-area" ondrop="dropWord(event, 'counts')" ondragover="allowDrop(event)" id="counts-area" style="min-height: 200px;"></div>
+                    </div>
+                    <div style="flex: 1;">
+                        <h4 style="color: #FF6B6B;">❌ DOESN'T COUNT</h4>
+                        <div class="drag-area" ondrop="dropWord(event, 'no-counts')" ondragover="allowDrop(event)" id="no-counts-area" style="min-height: 200px;"></div>
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="checkWordCount()">Check My Sorting</button>
+                <div id="feedback5" class="feedback hidden"></div>
+            </div>
+            
+            <div id="mission5" class="mission-complete hidden">
+                <h3>🔢 Mission Complete! Now verify your word count:</h3>
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check5a"> Counted only Introduction, Body, and Conclusion
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check5b"> Included all quotations in count
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check5c"> Included in-text citations in count
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check5d"> Under 4,000 words total
+                    </div>
+                </div>
+                <button class="btn btn-success" onclick="nextLevel(6)" id="next5" disabled>Advance to Level 6</button>
+            </div>
+        </div>
+
+        <!-- Level 6: Format Destroyer -->
+        <div class="level-container hidden" id="level6">
+            <div class="villain-intro">
+                <div class="villain-avatar">📝</div>
+                <h2 class="villain-name">Chaos Font</h2>
+                <p>"I'll make your essay look unprofessional with crazy fonts, spacing, and colors!"</p>
+            </div>
+            
+            <div class="hero-power">
+                Professional formatting shows respect for your reader and follows IB standards: 12pt standard font, double-spaced, 1-inch margins!
+            </div>
+            
+            <div class="challenge-area">
+                <div class="question">Battle Challenge: Which formatting follows IB standards?</div>
+                <div class="options">
+                    <div class="option" onclick="selectOption(this, false, 6)">
+                        Comic Sans, 14pt, single-spaced, colorful headings
+                    </div>
+                    <div class="option" onclick="selectOption(this, true, 6)">
+                        Times New Roman, 12pt, double-spaced, 1-inch margins
+                    </div>
+                    <div class="option" onclick="selectOption(this, false, 6)">
+                        Arial, 10pt, 1.5-spaced, decorative borders
+                    </div>
+                </div>
+                <div id="feedback6" class="feedback hidden"></div>
+            </div>
+            
+            <div class="example-box">
+                <strong>Perfect Formatting Checklist:</strong><br>
+                ✅ Font: Times New Roman, Arial, or Calibri<br>
+                ✅ Size: 12 point<br>
+                ✅ Spacing: Double throughout<br>
+                ✅ Margins: 1 inch (2.54 cm)<br>
+                ✅ Page numbers on all pages<br>
+                ✅ Clean, professional appearance
+            </div>
+            
+            <div id="mission6" class="mission-complete hidden">
+                <h3>📝 Mission Complete! Final formatting check:</h3>
+                <div class="checklist">
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check6a"> Standard font (Times New Roman, Arial, or Calibri)
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check6b"> 12 point font size
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check6c"> Double-spaced throughout
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check6d"> 1-inch margins all around
+                    </div>
+                    <div class="checklist-item">
+                        <input type="checkbox" id="check6e"> Page numbers included
+                    </div>
+                </div>
+                <button class="btn btn-success" onclick="nextLevel(7)" id="next6" disabled>Face the Final Boss</button>
+            </div>
+        </div>
+
+        <!-- Final Boss -->
+        <div class="level-container final-boss hidden" id="level7">
+            <div class="villain-intro">
+                <div class="villain-avatar">👹</div>
+                <h2 class="villain-name">The Compliance Commander</h2>
+                <p>"I am the ultimate test! Face me if you dare - can you handle ALL formatting challenges at once?"</p>
+            </div>
+            
+            <div class="challenge-area">
+                <div class="question">💀 FINAL BOSS BATTLE: Complete all challenges within 3 minutes!</div>
+                <div id="timer" style="font-size: 2rem; text-align: center; color: #FFD700; margin: 20px 0;">3:00</div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                    <div class="boss-challenge">
+                        <h4>Challenge 1: Quick Citation</h4>
+                        <p>Fix this citation:</p>
+                        <input type="text" class="citation-input" id="bossCitation" value="Winston feels fear. (Orwell 245)" placeholder="Fix the citation format">
+                    </div>
+                    
+                    <div class="boss-challenge">
+                        <h4>Challenge 2: Word Count</h4>
+                        <p>How many items COUNT toward word limit?</p>
+                        <div class="options">
+                            <div class="option" onclick="setBossAnswer(2, 'A')">5 items</div>
+                            <div class="option" onclick="setBossAnswer(2, 'B')">4 items</div>
+                            <div class="option" onclick="setBossAnswer(2, 'C')">6 items</div>
+                        </div>
+                    </div>
+                    
+                    <div class="boss-challenge">
+                        <h4>Challenge 3: Title Page</h4>
+                        <p>What should NOT be on title page?</p>
+                        <div class="options">
+                            <div class="option" onclick="setBossAnswer(3, 'A')">Research Question</div>
+                            <div class="option" onclick="setBossAnswer(3, 'B')">Student Name</div>
+                            <div class="option" onclick="setBossAnswer(3, 'C')">Word Count</div>
+                        </div>
+                    </div>
+                    
+                    <div class="boss-challenge">
+                        <h4>Challenge 4: Figure Reference</h4>
+                        <p>Complete the text reference:</p>
+                        <input type="text" class="citation-input" id="bossReference" placeholder="As seen in _____, the data shows..." value="As seen in ">
+                    </div>
+                </div>
+                
+                <button class="btn btn-primary" onclick="checkFinalBoss()" style="font-size: 1.5rem; margin: 20px 0;">DEFEAT THE BOSS!</button>
+                <div id="bossFeedback" class="feedback hidden"></div>
+            </div>
+        </div>
+
+        <!-- Victory Screen -->
+        <div class="victory hidden" id="victory">
+            <h2>🏆 VICTORY! 🏆</h2>
+            <p style="font-size: 1.5rem; margin: 20px 0;">You have successfully saved the Extended Essay!</p>
+            <p>Your EE is now protected from all formatting villains and ready for submission.</p>
+            
+            <div style="margin: 30px 0;">
+                <h3>🎖️ Hero Achievements Unlocked:</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0;">
+                    <div style="background: rgba(255,215,0,0.2); padding: 15px; border-radius: 8px;">
+                        <strong>📄 Title Page Master</strong><br>
+                        Defeated Dr. Anonymous
+                    </div>
+                    <div style="background: rgba(255,215,0,0.2); padding: 15px; border-radius: 8px;">
+                        <strong>📑 Organization Expert</strong><br>
+                        Defeated Page Number Phantom
+                    </div>
+                    <div style="background: rgba(255,215,0,0.2); padding: 15px; border-radius: 8px;">
+                        <strong>📚 Citation Champion</strong><br>
+                        Defeated Professor Plagiarism
+                    </div>
+                    <div style="background: rgba(255,215,0,0.2); padding: 15px; border-radius: 8px;">
+                        <strong>🖼️ Visual Virtuoso</strong><br>
+                        Defeated Captain Confusion
+                    </div>
+                    <div style="background: rgba(255,215,0,0.2); padding: 15px; border-radius: 8px;">
+                        <strong>🔢 Word Count Warrior</strong><br>
+                        Defeated The Inflator
+                    </div>
+                    <div style="background: rgba(255,215,0,0.2); padding: 15px; border-radius: 8px;">
+                        <strong>📝 Format Guardian</strong><br>
+                        Defeated Chaos Font
+                    </div>
+                    <div style="background: rgba(255,215,0,0.2); padding: 15px; border-radius: 8px;">
+                        <strong>👹 Boss Slayer</strong><br>
+                        Defeated Compliance Commander
+                    </div>
+                </div>
+            </div>
+            
+            <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 10px; margin: 20px 0;">
+                <h3>📋 Final EE Checklist - Print This!</h3>
+                <div style="text-align: left; max-width: 600px; margin: 0 auto;">
+                    <p>✅ Title page: No personal info, clear research question</p>
+                    <p>✅ Table of contents: Accurate page numbers</p>
+                    <p>✅ Citations: Consistent style, period after citation</p>
+                    <p>✅ Figures: All labeled and referenced in text</p>
+                    <p>✅ Word count: Under 4,000, counted correctly</p>
+                    <p>✅ Formatting: 12pt standard font, double-spaced, 1" margins</p>
+                </div>
+            </div>
+            
+            <button class="btn btn-primary" onclick="restartGame()" style="font-size: 1.2rem;">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        let currentLevel = 1;
+        let soundEnabled = true;
+        let bossTimer;
+        let timeLeft = 180; // 3 minutes in seconds
+        let bossAnswers = {};
+        
+        // Progress tracking
+        function updateProgress() {
+            const progress = ((currentLevel - 1) / 7) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressText').textContent = `Level ${currentLevel} of 7`;
+        }
+        
+        // Sound toggle
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            document.querySelector('.sound-toggle').textContent = soundEnabled ? '🔊' : '🔇';
+        }
+        
+        // Play victory sound (simulated with visual feedback)
+        function playSound(type) {
+            if (!soundEnabled) return;
+            // Visual feedback for sound
+            const button = event.target;
+            if (type === 'correct') {
+                button.style.transform = 'scale(1.1)';
+                setTimeout(() => button.style.transform = '', 200);
+            }
+        }
+        
+        // Option selection for multiple choice questions
+        function selectOption(element, isCorrect, level) {
+            // Remove previous selections
+            const options = element.parentNode.querySelectorAll('.option');
+            options.forEach(opt => {
+                opt.classList.remove('correct', 'incorrect');
+            });
+            
+            // Mark this selection
+            element.classList.add(isCorrect ? 'correct' : 'incorrect');
+            
+            // Show feedback
+            const feedback = document.getElementById(`feedback${level}`);
+            feedback.classList.remove('hidden');
+            feedback.className = `feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+            feedback.textContent = isCorrect ? 
+                '🎉 Correct! You defeated part of the villain!' : 
+                '❌ Try again! The villain is still dangerous!';
+            
+            if (isCorrect) {
+                // For level 3, show next challenge or mission
+                if (level === '3a') {
+                    setTimeout(() => {
+                        document.getElementById('challenge3b').style.display = 'block';
+                    }, 1000);
+                } else if (level === '3d') {
+                    setTimeout(() => {
+                        document.getElementById('mission3').classList.remove('hidden');
+                    }, 1000);
+                } else if (typeof level === 'number') {
+                    setTimeout(() => {
+                        document.getElementById(`mission${level}`).classList.remove('hidden');
+                    }, 1000);
+                }
+            }
+        }
+        
+        // Title formatting functions
+        function dragTitle(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+        
+        function dropTitle(ev, category) {
+            ev.preventDefault();
+            ev.target.classList.remove('drag-over');
+            const data = ev.dataTransfer.getData("text");
+            const draggable = document.getElementById(data);
+            ev.target.appendChild(draggable);
+        }
+        
+        function checkTitleFormatting() {
+            const italicsArea = document.getElementById('italics-area');
+            const quotesArea = document.getElementById('quotes-area');
+            
+            const shouldBeItalics = ['book1', 'book2', 'book3'];
+            const shouldBeQuotes = ['article1', 'article2', 'article3'];
+            
+            let correct = 0;
+            let total = 6;
+            
+            // Check books in italics area
+            shouldBeItalics.forEach(book => {
+                if (italicsArea.querySelector(`#${book}`)) correct++;
+            });
+            
+            // Check articles in quotes area
+            shouldBeQuotes.forEach(article => {
+                if (quotesArea.querySelector(`#${article}`)) correct++;
+            });
+            
+            const feedback = document.getElementById('feedback3b');
+            feedback.classList.remove('hidden');
+            
+            if (correct === total) {
+                feedback.className = 'feedback correct';
+                feedback.textContent = '🎉 Perfect formatting! Books = italics, articles = quotes!';
+                setTimeout(() => {
+                    document.getElementById('challenge3c').style.display = 'block';
+                }, 1000);
+            } else {
+                feedback.className = 'feedback incorrect';
+                feedback.textContent = `❌ ${correct}/${total} correct. Remember: Books/movies = italics, articles/essays = quotes!`;
+            }
+        }
+        
+        // Citation matching functions
+        function dragCitation(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+        
+        function dropCitation(ev, author) {
+            ev.preventDefault();
+            ev.target.classList.remove('drag-over');
+            const data = ev.dataTransfer.getData("text");
+            const draggable = document.getElementById(data);
+            ev.target.appendChild(draggable);
+        }
+        
+        function checkCitationMatching() {
+            const smithDrop = document.getElementById('smith-drop');
+            const johnsonDrop = document.getElementById('johnson-drop');
+            const brownDrop = document.getElementById('brown-drop');
+            
+            let correct = 0;
+            let total = 3;
+            
+            // Check correct matches
+            if (smithDrop.querySelector('#cite1')) correct++; // Smith 45
+            if (johnsonDrop.querySelector('#cite2')) correct++; // Johnson 123
+            if (brownDrop.querySelector('#cite3')) correct++; // Brown 87
+            
+            const feedback = document.getElementById('feedback3c');
+            feedback.classList.remove('hidden');
+            
+            if (correct === total) {
+                feedback.className = 'feedback correct';
+                feedback.textContent = '🎉 Perfect matches! Every citation has a source!';
+                setTimeout(() => {
+                    document.getElementById('challenge3d').style.display = 'block';
+                }, 1000);
+            } else {
+                feedback.className = 'feedback incorrect';
+                feedback.textContent = `❌ ${correct}/${total} correct. Match author names carefully!`;
+            }
+        }
+        
+        // Drag and drop functions
+        function allowDrop(ev) {
+            ev.preventDefault();
+            ev.target.classList.add('drag-over');
+        }
+        
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+        
+        function drop(ev, section) {
+            ev.preventDefault();
+            ev.target.classList.remove('drag-over');
+            const data = ev.dataTransfer.getData("text");
+            const draggable = document.getElementById(data);
+            ev.target.appendChild(draggable);
+            ev.target.style.minHeight = 'auto';
+        }
+        
+        // Check table of contents answers
+        function checkTableOfContents() {
+            const correctAnswers = {
+                'intro-drop': 'page3',
+                'lit-drop': 'page5', 
+                'method-drop': 'page8',
+                'analysis-drop': 'page12',
+                'conclusion-drop': 'page15',
+                'works-drop': 'page17'
+            };
+            
+            let correct = 0;
+            let total = Object.keys(correctAnswers).length;
+            
+            for (let dropZone in correctAnswers) {
+                const zone = document.getElementById(dropZone);
+                const expectedPage = correctAnswers[dropZone];
+                if (zone.querySelector(`#${expectedPage}`)) {
+                    correct++;
+                }
+            }
+            
+            const feedback = document.getElementById('feedback2');
+            feedback.classList.remove('hidden');
+            
+            if (correct === total) {
+                feedback.className = 'feedback correct';
+                feedback.textContent = '🎉 Perfect! You restored the proper page order and defeated Page Number Phantom!';
+                setTimeout(() => {
+                    document.getElementById('mission2').classList.remove('hidden');
+                }, 1000);
+            } else {
+                feedback.className = 'feedback incorrect';
+                feedback.textContent = `❌ ${correct}/${total} correct. Keep trying to defeat the phantom!`;
+            }
+        }
+        
+        // Check citation format
+        function checkCitation() {
+            const input = document.getElementById('citationInput').value.trim();
+            const correct = "Orwell, George. 1984. Harvill Secker, 1949.";
+            const feedback = document.getElementById('citationFeedback');
+            feedback.classList.remove('hidden');
+            
+            if (input.toLowerCase().includes('orwell, george') && input.includes('1984') && input.includes('1949')) {
+                feedback.className = 'feedback correct';
+                feedback.textContent = '🎉 Excellent citation format!';
+            } else {
+                feedback.className = 'feedback incorrect';
+                feedback.textContent = '❌ Check the format: Author Last, First. Title. Publisher, Year.';
+            }
+        }
+        
+        // Word count drag and drop
+        function dragWord(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+        
+        function dropWord(ev, category) {
+            ev.preventDefault();
+            ev.target.classList.remove('drag-over');
+            const data = ev.dataTransfer.getData("text");
+            const draggable = document.getElementById(data);
+            ev.target.appendChild(draggable);
+        }
+        
+        function checkWordCount() {
+            const countsArea = document.getElementById('counts-area');
+            const noCountsArea = document.getElementById('no-counts-area');
+            
+            const shouldCount = ['intro', 'quotes', 'citations', 'headings'];
+            const shouldNotCount = ['title', 'toc', 'works', 'captions'];
+            
+            let correct = 0;
+            let total = 8;
+            
+            // Check items that should count
+            shouldCount.forEach(item => {
+                if (countsArea.querySelector(`#${item}`)) correct++;
+            });
+            
+            // Check items that shouldn't count
+            shouldNotCount.forEach(item => {
+                if (noCountsArea.querySelector(`#${item}`)) correct++;
+            });
+            
+            const feedback = document.getElementById('feedback5');
+            feedback.classList.remove('hidden');
+            
+            if (correct === total) {
+                feedback.className = 'feedback correct';
+                feedback.textContent = '🎉 Perfect sorting! The Inflator has been defeated!';
+                setTimeout(() => {
+                    document.getElementById('mission5').classList.remove('hidden');
+                }, 1000);
+            } else {
+                feedback.className = 'feedback incorrect';
+                feedback.textContent = `❌ ${correct}/${total} correct. Remember: only Introduction, Body, Conclusion, quotations, in-text citations, and headings count!`;
+            }
+        }
+        
+        // Check individual level completion
+        function checkLevelCompletion(level) {
+            const checkboxes = document.querySelectorAll(`#level${level} input[type="checkbox"]`);
+            const nextButton = document.getElementById(`next${level}`);
+            
+            let allChecked = true;
+            checkboxes.forEach(cb => {
+                if (!cb.checked) allChecked = false;
+            });
+            
+            nextButton.disabled = !allChecked;
+        }
+        
+        // Add event listeners for checkboxes
+        for (let level = 1; level <= 6; level++) {
+            const checkboxes = document.querySelectorAll(`#level${level} input[type="checkbox"]`);
+            checkboxes.forEach(cb => {
+                cb.addEventListener('change', () => checkLevelCompletion(level));
+            });
+        }
+        
+        // Advance to next level
+        function nextLevel(level) {
+            document.getElementById(`level${currentLevel}`).classList.add('hidden');
+            document.getElementById(`level${level}`).classList.remove('hidden');
+            currentLevel = level;
+            updateProgress();
+            
+            // Start boss timer if entering final boss
+            if (level === 7) {
+                startBossTimer();
+            }
+        }
+        
+        // Boss battle functions
+        function startBossTimer() {
+            timeLeft = 180; // 3 minutes
+            bossTimer = setInterval(() => {
+                timeLeft--;
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                document.getElementById('timer').textContent = 
+                    `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(bossTimer);
+                    showBossDefeat();
+                }
+            }, 1000);
+        }
+        
+        function setBossAnswer(question, answer) {
+            bossAnswers[question] = answer;
+            // Visual feedback
+            const options = event.target.parentNode.querySelectorAll('.option');
+            options.forEach(opt => opt.classList.remove('correct'));
+            event.target.classList.add('correct');
+        }
+        
+        function checkFinalBoss() {
+            clearInterval(bossTimer);
+            
+            let score = 0;
+            let total = 4;
+            
+            // Check citation fix
+            const citation = document.getElementById('bossCitation').value;
+            if (citation.includes('(Orwell 245).')) score++;
+            
+            // Check word count answer (4 items: intro, quotes, citations, headings)
+            if (bossAnswers[2] === 'B') score++;
+            
+            // Check title page answer (student name shouldn't be there)
+            if (bossAnswers[3] === 'B') score++;
+            
+            // Check figure reference
+            const reference = document.getElementById('bossReference').value;
+            if (reference.toLowerCase().includes('figure 1')) score++;
+            
+            const feedback = document.getElementById('bossFeedback');
+            feedback.classList.remove('hidden');
+            
+            if (score >= 3) {
+                feedback.className = 'feedback correct';
+                feedback.innerHTML = `🎉 BOSS DEFEATED! Score: ${score}/${total}<br>The Compliance Commander has fallen!`;
+                setTimeout(() => {
+                    document.getElementById('level7').classList.add('hidden');
+                    document.getElementById('victory').classList.remove('hidden');
+                    updateProgress();
+                }, 2000);
+            } else {
+                feedback.className = 'feedback incorrect';
+                feedback.innerHTML = `💀 Boss is still fighting! Score: ${score}/${total}<br>You need at least 3/4 to win!`;
+                // Restart timer for another attempt
+                timeLeft = 180;
+                startBossTimer();
+            }
+        }
+        
+        function showBossDefeat() {
+            const feedback = document.getElementById('bossFeedback');
+            feedback.classList.remove('hidden');
+            feedback.className = 'feedback incorrect';
+            feedback.textContent = '⏰ Time\'s up! The Compliance Commander escapes... Try again!';
+            
+            // Allow another attempt
+            setTimeout(() => {
+                feedback.classList.add('hidden');
+                timeLeft = 180;
+                startBossTimer();
+            }, 3000);
+        }
+        
+        function restartGame() {
+            currentLevel = 1;
+            bossAnswers = {};
+            
+            // Hide all levels except first
+            for (let i = 2; i <= 7; i++) {
+                document.getElementById(`level${i}`).classList.add('hidden');
+            }
+            document.getElementById('victory').classList.add('hidden');
+            document.getElementById('level1').classList.remove('hidden');
+            
+            // Reset all checkboxes and buttons
+            document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+            document.querySelectorAll('.btn-success').forEach(btn => btn.disabled = true);
+            
+            // Clear all feedback and selections
+            document.querySelectorAll('.feedback').forEach(fb => fb.classList.add('hidden'));
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('correct', 'incorrect'));
+            
+            // Reset inputs
+            document.querySelectorAll('input[type="text"]').forEach(input => input.value = '');
+            
+            updateProgress();
+        }
+        
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>
