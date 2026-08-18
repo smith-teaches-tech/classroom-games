@@ -390,11 +390,13 @@ ol.steps{margin:10px 0 0 20px;display:flex;flex-direction:column;gap:6px;font-si
       <div class="serif" style="text-align:center;line-height:1.9">
         <em>Engineered Silence: Soundscape as Control in Orwell's <span style="font-style:normal">1984</span></em><br>
         Research question: To what extent does Orwell use sound and silence to dramatise the Party's psychological control?<br>
-        Subject: English A: Literature (Category 1)<br>
+        Subject: English A: Literature<br>
         Word count: 3,873<br>
         Personal code: <span style="border-bottom:1px dashed #7dd3fc">__________</span>
       </div>
-      <p class="note">Some coordinators also ask for the examination session (e.g. May 2027). Follow your school's instruction — it never replaces the four items above.</p>
+      <p class="note"><b>No categories.</b> Language A and Language B essays used to be labelled Category 1, 2 or 3. The 2027 guide removed them — write the subject alone.</p>
+      <p class="note"><b>Interdisciplinary essay?</b> Then the title page names <em>both</em> subjects and the interdisciplinary framework it is registered under (Power and equality · Culture and identity · Movement and time · Evidence and measurement · Sustainability and development). A subject-focused essay names one subject and no framework.</p>
+      <p class="note">Some coordinators also ask for the examination session (e.g. May 2027). Follow your school's instruction — it never replaces the items above.</p>
     </div>
 
     <div class="mission hidden" id="mission1">
@@ -775,7 +777,7 @@ ol.steps{margin:10px 0 0 20px;display:flex;flex-direction:column;gap:6px;font-si
     <div class="final-list">
       <h3>📋 Your pre-submission sweep — print this</h3>
       <ol>
-        <li><b>Title page:</b> title, research question, subject (and category), word count, blank line for your personal code. No name, no school, no supervisor.</li>
+        <li><b>Title page:</b> title, research question, subject of registration, word count, blank line for your personal code. No categories. No name, no school, no supervisor. <em>Interdisciplinary:</em> name both subjects and the framework.</li>
         <li><b>Personal code:</b> arrives from your coordinator around late December — fill the blank line the day you get it.</li>
         <li><b>Contents page:</b> every heading exists in the essay, worded identically, with page numbers that are true today. No abstract.</li>
         <li><b>References:</b> one style throughout; every in-text citation appears in the bibliography and vice versa; hanging indents; punctuation inside the sentence.</li>
@@ -905,14 +907,15 @@ document.addEventListener('click', e=>{
 const TP_ITEMS = [
   {id:'title',  label:'The essay title',            belongs:true,  render:()=>`<div class="pt">Engineered Silence: Soundscape as Control in Orwell's 1984</div>`},
   {id:'rq',     label:'The research question',      belongs:true,  render:()=>`<div class="line">Research question: To what extent does Orwell use sound and silence to dramatise the Party's psychological control?</div>`},
-  {id:'subj',   label:'Subject (and category)',     belongs:true,  render:()=>`<div class="line">Subject: English A: Literature (Category 1)</div>`},
+  {id:'subj',   label:'Subject of registration',    belongs:true,  render:()=>`<div class="line">Subject: English A: Literature</div>`},
   {id:'wc',     label:'Word count',                 belongs:true,  render:()=>`<div class="line">Word count: 3,873</div>`},
   {id:'code',   label:'A blank line for your personal code', belongs:true, render:()=>`<div class="line">Personal code: <span class="slot">&nbsp;</span></div>`},
   {id:'name',   label:'Your full name',             belongs:false, render:()=>`<div class="line bad">Alex Moreau</div>`},
   {id:'school', label:"Your school's name",         belongs:false, render:()=>`<div class="line bad">Westfield International School</div>`},
   {id:'sup',    label:"Your supervisor's name",     belongs:false, render:()=>`<div class="line bad">Supervisor: Ms J. Ferrante</div>`},
   {id:'logo',   label:'The school crest / a cover image', belongs:false, render:()=>`<div class="line bad">🏫 [school crest]</div>`},
-  {id:'abs',    label:'A 300-word abstract',        belongs:false, render:()=>`<div class="line bad">Abstract: This essay investigates…</div>`}
+  {id:'abs',    label:'A 300-word abstract',        belongs:false, render:()=>`<div class="line bad">Abstract: This essay investigates…</div>`},
+  {id:'cat',    label:'The category (Category 1, 2 or 3)', belongs:false, render:()=>`<div class="line bad">Subject: English A: Literature (Category 1)</div>`}
 ];
 const tpOn = new Set(['title']);
 function drawTitlePage(){
@@ -950,7 +953,7 @@ function checkTitlePage(){
     const missing = wrong.filter(w=>w.belongs).map(w=>w.label);
     const extra   = wrong.filter(w=>!w.belongs).map(w=>w.label);
     let msg='';
-    if(extra.length)   msg += `<b>Ask yourself: could an examiner identify you from this page?</b>Still switched on: <em>${extra.join(', ')}</em>.<br>`;
+    if(extra.length)   msg += `<b>Ask of each one: does the examiner actually need this — and could it identify you?</b>Still switched on: <em>${extra.join(', ')}</em>.<br>`;
     if(missing.length) msg += `<b>${extra.length?'':'Something the examiner needs is missing.'}</b>Not yet on the page: <em>${missing.join(', ')}</em>.`;
     fb(id,false,msg);
   }
@@ -1133,7 +1136,9 @@ drawSorter('titles'); drawSorter('match'); drawSorter('wc');
    MISSION CHECKLISTS
    ============================================================ */
 const CHECKLISTS = {
-  1:["Title, research question, subject (and category), and word count are all on the title page",
+  1:["Title, research question, subject of registration, and word count are all on the title page",
+     "I have NOT written a category — categories were removed for 2027",
+     "If my essay is interdisciplinary, both subjects and the framework are named",
      "There is a labelled blank line waiting for my personal code",
      "My name appears nowhere — not on the page, not in the header, not in the file name",
      "My school's name and my supervisor's name appear nowhere",
