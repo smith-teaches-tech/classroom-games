@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Automatic Table of Contents — Google Docs</title>
+<style>
+  :root{
+    --ink:#12203a;
+    --muted:#4a5b78;
+    --line:#c3cede;
+    --blue:#1a5fb4;
+    --blue-soft:#e8f0fb;
+    --amber:#8a5a00;
+    --amber-soft:#fff5e0;
+    --green:#186a3b;
+    --green-soft:#e6f4ec;
+    --page:#ffffff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    padding:40px 24px 64px;
+    background:var(--page);
+    color:var(--ink);
+    font-family:"Google Sans","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:20px;
+    line-height:1.45;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;}
+
+  header{text-align:center;margin-bottom:38px;}
+  h1{
+    font-size:44px;
+    line-height:1.15;
+    margin:0 0 10px;
+    letter-spacing:-0.5px;
+  }
+  .sub{font-size:22px;color:var(--muted);margin:0;}
+
+  /* ---- flow ---- */
+  .step{
+    border:3px solid var(--line);
+    border-radius:16px;
+    padding:24px 28px;
+    background:#fff;
+  }
+  .step.primary{border-color:var(--blue);background:var(--blue-soft);}
+  .step.start,.step.done{
+    border-color:var(--green);
+    background:var(--green-soft);
+    text-align:center;
+    border-radius:999px;
+    padding:18px 28px;
+  }
+  .step.start .label,.step.done .label{
+    font-size:26px;font-weight:700;color:var(--green);margin:0;
+  }
+
+  .num{
+    display:inline-block;
+    background:var(--blue);
+    color:#fff;
+    font-weight:700;
+    font-size:22px;
+    width:44px;height:44px;
+    border-radius:50%;
+    text-align:center;
+    line-height:44px;
+    margin-right:14px;
+    vertical-align:middle;
+  }
+  .title{
+    font-size:28px;
+    font-weight:700;
+    vertical-align:middle;
+  }
+  .body{margin:16px 0 0 58px;}
+  .body p{margin:0 0 12px;}
+  .body p:last-child{margin-bottom:0;}
+
+  /* ---- menu path chips ---- */
+  .path{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:10px;
+    margin:14px 0;
+  }
+  .chip{
+    display:inline-block;
+    background:#fff;
+    border:2px solid var(--ink);
+    border-radius:8px;
+    padding:8px 16px;
+    font-size:22px;
+    font-weight:600;
+    box-shadow:2px 2px 0 rgba(18,32,58,.18);
+    white-space:nowrap;
+  }
+  .chip.menu{background:var(--ink);color:#fff;}
+  .arrow-r{font-size:26px;color:var(--muted);font-weight:700;}
+
+  .options{
+    display:flex;flex-wrap:wrap;gap:12px;margin-top:6px;
+  }
+  .opt{
+    border:2px dashed var(--blue);
+    border-radius:10px;
+    padding:10px 18px;
+    font-size:20px;
+    font-weight:600;
+    color:var(--blue);
+    background:#fff;
+  }
+
+  .kbd{
+    font-family:"SF Mono",Menlo,Consolas,monospace;
+    background:#f2f5fa;
+    border:2px solid var(--line);
+    border-bottom-width:4px;
+    border-radius:7px;
+    padding:3px 10px;
+    font-size:18px;
+    font-weight:600;
+    white-space:nowrap;
+  }
+
+  .note{font-size:19px;color:var(--muted);}
+
+  /* ---- connector ---- */
+  .connector{
+    display:flex;flex-direction:column;align-items:center;
+    margin:0;
+  }
+  .connector .stem{width:5px;height:26px;background:var(--line);}
+  .connector .head{
+    width:0;height:0;
+    border-left:14px solid transparent;
+    border-right:14px solid transparent;
+    border-top:18px solid var(--line);
+    margin-top:-1px;
+  }
+
+  /* ---- callouts ---- */
+  .callout{
+    border-left:10px solid var(--amber);
+    background:var(--amber-soft);
+    border-radius:0 14px 14px 0;
+    padding:20px 26px;
+    margin-top:34px;
+  }
+  .callout h3{margin:0 0 8px;font-size:24px;color:var(--amber);}
+  .callout p{margin:0;font-size:20px;}
+
+  .loop{
+    border:3px dashed var(--blue);
+    border-radius:16px;
+    padding:22px 28px;
+    margin-top:34px;
+    background:#fff;
+  }
+  .loop h3{margin:0 0 6px;font-size:25px;color:var(--blue);}
+
+  footer{
+    margin-top:44px;text-align:center;font-size:17px;color:var(--muted);
+    border-top:2px solid var(--line);padding-top:18px;
+  }
+
+  @media print{
+    body{padding:12px;font-size:15px;}
+    h1{font-size:30px;}
+    .chip,.title{font-size:17px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Automatic Table of Contents</h1>
+    <p class="sub">Google Docs &middot; built from your headings</p>
+  </header>
+
+  <div class="step start"><p class="label">Your document is written</p></div>
+
+  <div class="connector"><div class="stem"></div><div class="head"></div></div>
+
+  <!-- STEP 1 -->
+  <div class="step primary">
+    <span class="num">1</span><span class="title">Tag every section heading</span>
+    <div class="body">
+      <div class="path">
+        <span class="chip menu">Format</span><span class="arrow-r">&#9654;</span>
+        <span class="chip">Paragraph styles</span><span class="arrow-r">&#9654;</span>
+        <span class="chip">Heading 1</span><span class="arrow-r">&#9654;</span>
+        <span class="chip">Apply 'Heading 1'</span>
+      </div>
+      <p class="note">
+        Faster: the <strong>styles dropdown</strong> in the toolbar (it says &ldquo;Normal text&rdquo;),
+        or <span class="kbd">Ctrl + Alt + 1</span> &nbsp;/&nbsp; <span class="kbd">&#8984; + &#8997; + 1</span>
+      </p>
+      <p><strong>Heading 1</strong> = main sections &nbsp;&middot;&nbsp;
+         <strong>Heading 2</strong> = subsections &nbsp;&middot;&nbsp;
+         <strong>Heading 3</strong> = smaller divisions</p>
+    </div>
+  </div>
+
+  <div class="connector"><div class="stem"></div><div class="head"></div></div>
+
+  <!-- STEP 2 -->
+  <div class="step">
+    <span class="num">2</span><span class="title">Click where the contents page goes</span>
+    <div class="body">
+      <p>Usually a blank page straight after the title page, before the introduction.</p>
+    </div>
+  </div>
+
+  <div class="connector"><div class="stem"></div><div class="head"></div></div>
+
+  <!-- STEP 3 -->
+  <div class="step primary">
+    <span class="num">3</span><span class="title">Insert the table</span>
+    <div class="body">
+      <div class="path">
+        <span class="chip menu">Insert</span><span class="arrow-r">&#9654;</span>
+        <span class="chip">Table of contents</span><span class="arrow-r">&#9654;</span>
+        <span class="chip">choose a style</span>
+      </div>
+      <div class="options">
+        <span class="opt">Plain text &mdash; with page numbers</span>
+        <span class="opt">Dotted &mdash; dotted leader lines</span>
+        <span class="opt">Links &mdash; clickable, no page numbers</span>
+      </div>
+      <p class="note" style="margin-top:14px;">
+        For a printed or PDF essay, pick one of the two <strong>with page numbers</strong>.
+      </p>
+    </div>
+  </div>
+
+  <div class="connector"><div class="stem"></div><div class="head"></div></div>
+
+  <div class="step done"><p class="label">Contents page builds itself &#10003;</p></div>
+
+  <!-- LOOP -->
+  <div class="loop">
+    <h3>&#8635; Changed a heading later?</h3>
+    <p>The table does <strong>not</strong> refresh on its own.</p>
+    <div class="path">
+      <span class="chip menu">Right-click the table</span><span class="arrow-r">&#9654;</span>
+      <span class="chip">Update table of contents</span>
+    </div>
+    <p class="note">Or click the table and press the circular-arrow &#8635; icon that appears beside it.</p>
+  </div>
+
+  <!-- GOTCHA -->
+  <div class="callout">
+    <h3>&#9888; The one mistake that breaks it</h3>
+    <p>Text that is merely <strong>bold and made bigger</strong> is not a heading.
+       Google Docs only reads real heading <em>styles</em>, so hand-formatted titles are
+       invisible to the table and simply will not appear.</p>
+  </div>
+
+  <footer>
+    Check your work with <strong>View &#9654; Show outline</strong> &mdash; every heading Docs recognises is listed there.
+  </footer>
+
+</div>
+</body>
+</html>
