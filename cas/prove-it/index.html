@@ -101,6 +101,18 @@
   .chip-toggle.on[data-strand="s"]{background:var(--nasa);border-color:var(--nasa);}
   .chip-toggle.oc.on{background:var(--nasa);border-color:var(--nasa);}
   .warn{font-size:16px;color:var(--bad);font-style:italic;margin-top:10px;min-height:1.2em;}
+  /* 100-word lock (Make it mine only) */
+  .lockbar{display:none;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px;padding:12px 16px;border:1.5px solid var(--rule);background:rgba(255,255,255,.45);}
+  .lockbar.on{display:flex;}
+  .lockbar.nudge{animation:shake .45s ease;}
+  @keyframes shake{10%,90%{transform:translateX(-2px)}30%,70%{transform:translateX(4px)}50%{transform:translateX(-4px)}}
+  .lockbar .lmsg{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--bad);}
+  .lockbar.met .lmsg{color:var(--growth);}
+  .lockbar .lbar{flex:1;min-width:140px;height:8px;background:var(--paper-2);border:1px solid var(--rule);position:relative;overflow:hidden;}
+  .lockbar .lfill{position:absolute;inset:0 auto 0 0;width:0;background:var(--bad);transition:width .25s ease;}
+  .lockbar.met .lfill{background:var(--growth);}
+  .tcount.short{color:var(--bad);}
+  .tcount.met{color:var(--growth);}
 
   /* evidence add + tag */
   .addrow{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
@@ -116,16 +128,47 @@
   .etally{font-family:"JetBrains Mono",monospace;font-size:14px;color:var(--nasa);margin:16px 0 0;font-style:italic;}
   .etally b{font-style:normal;color:var(--growth);font-size:20px;}
 
-  /* timeline */
-  .timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:6px;position:relative;}
-  @media(max-width:760px){.timeline{grid-template-columns:1fr;}}
-  .tnode{border:1.5px solid var(--rule);background:var(--paper-2);padding:14px;display:flex;flex-direction:column;gap:8px;}
-  .tnode .twhen{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);}
-  .tnode .tlab{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-top:4px;}
-  .tnode input,.tnode textarea{width:100%;font-family:"Cormorant Garamond",serif;font-size:16px;padding:8px 10px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);}
-  .tnode textarea{min-height:66px;resize:vertical;line-height:1.32;}
-  .tnode .evslot input{border-left:3px solid var(--presence);}
-  .tnode .refslot textarea{border-left:3px solid var(--growth);font-style:italic;}
+  /* timeline — vertical entry feed (ManageBac style) */
+  .timeline{display:flex;flex-direction:column;gap:18px;margin-top:6px;position:relative;}
+  .tnode{border:1.5px solid var(--ink);background:var(--paper-2);display:flex;flex-direction:column;box-shadow:0 10px 30px -20px rgba(31,28,23,.5);}
+  .tnode .thead{background:var(--ink);color:var(--paper);padding:10px 16px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;justify-content:space-between;}
+  .tnode .twhen{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);}
+  .tnode .tentry{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;opacity:.65;}
+  .tnode .tbody{padding:16px 18px;display:flex;flex-direction:column;}
+  .tnode .tlab{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:14px 0 7px;}
+  .tnode .tlab:first-child{margin-top:0;}
+  .tnode .tlab .hint{text-transform:none;letter-spacing:0;font-family:"Cormorant Garamond",serif;font-size:15px;font-style:italic;margin-left:8px;}
+  .tnode textarea{width:100%;font-family:"Cormorant Garamond",serif;font-size:17px;padding:11px 13px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);resize:vertical;line-height:1.4;}
+  .tnode textarea:focus{outline:2px solid var(--amber);outline-offset:1px;}
+  .tnode .evslot textarea{min-height:86px;border-left:3px solid var(--presence);}
+  .tnode .refslot textarea{min-height:230px;border-left:3px solid var(--growth);font-style:italic;}
+  /* demo mode: side-by-side weak vs strong */
+  .tnode .evshow{border:1px solid var(--rule);border-left:3px solid var(--presence);background:var(--paper);padding:11px 13px;font-size:17px;line-height:1.4;}
+  .vs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:8px;}
+  @media(max-width:820px){.vs{grid-template-columns:1fr;}}
+  .opt{border:1.5px solid var(--ink);background:var(--paper);display:flex;flex-direction:column;cursor:pointer;transition:transform .12s;}
+  .opt:hover{transform:translateY(-2px);}
+  .opt .ohead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:9px 13px;border-bottom:1.5px solid var(--ink);font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;}
+  .opt .ohead .owords{opacity:.6;letter-spacing:.04em;}
+  .opt .otext{padding:13px;font-size:16.5px;line-height:1.4;font-style:italic;margin:0;}
+  .tnode.done .opt{cursor:default;}
+  .tnode.done .opt.good{border-color:var(--growth);border-width:2.5px;background:rgba(57,86,63,.08);}
+  .tnode.done .opt.good .ohead{background:var(--growth);color:#fff;border-bottom-color:var(--growth);}
+  .tnode.done .opt.bad{border-color:var(--bad);background:rgba(138,51,36,.05);opacity:.85;}
+  .tnode.done .opt.bad .ohead{background:var(--bad);color:#fff;border-bottom-color:var(--bad);}
+  .picker{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px;}
+  .picker .plab{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
+  .picker button{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:9px 18px;border:1.5px solid var(--ink);background:var(--paper-2);color:var(--ink);cursor:pointer;}
+  .picker button:hover{background:var(--paper);}
+  .tnode.done .picker{display:none;}
+  .verdict{display:none;margin-top:14px;padding:14px 16px;border-left:3px solid var(--amber);background:rgba(185,137,47,.12);}
+  .tnode.done .verdict{display:block;animation:fade .3s ease;}
+  .verdict .vres{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 8px;}
+  .verdict .vres.right{color:var(--growth);} .verdict .vres.wrong{color:var(--bad);}
+  .verdict .vtell{font-size:17px;line-height:1.4;margin:0;}
+  .verdict .vask{font-size:17.5px;line-height:1.36;margin:12px 0 0;padding-top:12px;border-top:1px dashed var(--rule);color:var(--nasa);font-weight:600;}
+  .verdict .vask:before{content:"Now ask this of your own";font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);display:block;font-weight:400;margin-bottom:4px;}
+  .tnode .tcount{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;color:var(--ink-soft);text-align:right;margin-top:5px;}
   .threadnote{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink-soft);margin-top:16px;text-transform:uppercase;letter-spacing:.05em;}
 
   /* final reflection */
@@ -145,6 +188,7 @@
   .copybtn{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;padding:11px 20px;border:1.5px solid var(--ink);background:var(--paper-2);color:var(--ink);cursor:pointer;margin-top:12px;}
   .copybtn:hover{background:var(--paper);}
 
+  #justify{min-height:365px;font-size:19px;line-height:1.45;}
   .navbtns{display:flex;justify-content:space-between;gap:12px;margin-top:20px;}
   .navbtns button{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:12px 22px;border:1.5px solid var(--ink);background:var(--paper-2);color:var(--ink);cursor:pointer;}
   .navbtns button.next{background:var(--ink);color:var(--paper);}
@@ -165,7 +209,7 @@
     @page{margin:12mm;}
     body{background:var(--paper);font-size:12pt;}
     .wrap{max-width:none;padding:0;}
-    header,.controls,.legend-strands,.modebar,.dots,.navbtns,#handoffSec,footer,.noprint{display:none !important;}
+    header,.controls,.legend-strands,.modebar,.dots,.navbtns,.lockbar,#handoffSec,footer,.noprint{display:none !important;}
     section{padding:0;}
     .card{perspective:none;min-height:46mm;break-inside:avoid;}
     .card-inner{transform:none !important;min-height:46mm;}
@@ -237,8 +281,9 @@
       <div class="fieldlabel">Learning outcome(s) — one or two, no more</div>
       <div class="chiprow" id="ocRow"></div>
       <div class="warn" id="ocWarn"></div>
-      <div class="fieldlabel">Justify it — why does this experience grow that outcome?</div>
+      <div class="fieldlabel">Justify it &mdash; not <em>that</em> it grows the outcome, but <b>how</b></div><p class="phelp" style="margin:-10px 0 12px">The specific thing you will do that produces the outcome, and what will exist afterwards to show it. Cover the name of your activity: if any other activity could slot into your sentence, you have written a label, not a justification.</p>
       <textarea class="txt" id="justify" placeholder="Because…"></textarea>
+      <div class="lockbar" id="lock1"><span class="lmsg"></span><span class="lbar"><span class="lfill"></span></span></div>
       <div class="navbtns"><button disabled>‹ Back</button><button class="next" data-go="2">Next: evidence ›</button></div>
     </div>
 
@@ -258,9 +303,12 @@
     <!-- STEP 3 -->
     <div class="panel" id="p3">
       <h3>Organize it over time</h3>
-      <p class="phelp">This is the part students miss: an experience isn't one entry. Evidence piles up across weeks, and you reflect <em>each time</em> — not once at the end. Fill each checkpoint with a piece of evidence and a short reflection.</p>
+      <p class="phelp" id="s3demo">Sam wrote <b>two</b> reflections for every checkpoint. They are the same length &mdash; around 95 to 120 words each &mdash; and only one of them earns the outcome. Commit to an answer before you reveal: <b>length is not the variable</b>.</p>
+      <p class="phelp" id="s3mine" style="display:none">This is the part students miss: an experience isn't one entry. Evidence piles up across weeks, and you reflect <em>each time</em> &mdash; not once at the end. Each reflection needs 100 words before you can move on &mdash; not to make you write more, but because under 100 words you will almost always describe what happened instead of what changed.</p>
+      <div class="controls noprint" id="s3controls"><button id="revealPulses">Reveal all four</button><button id="resetPulses">Reset</button><span class="etally" id="s3tally" style="margin:0;align-self:center"></span></div>
       <div class="timeline" id="timeline"></div>
-      <p class="threadnote">↑ Four checkpoints. Notice the reflections building on each other — that's the thread the final reflection will pull together.</p>
+      <p class="threadnote">↑ Four entries, logged as you go — not four boxes filled the night before. The strong ones all do the same three things: name the outcome, show what changed and how you know, then say what you are changing next. That is the thread the final reflection pulls together.</p>
+      <div class="lockbar" id="lock3"><span class="lmsg"></span><span class="lbar"><span class="lfill"></span></span></div>
       <div class="navbtns"><button class="back" data-go="2">‹ Back</button><button class="next" data-go="4">Next: the final reflection ›</button></div>
     </div>
 
@@ -344,7 +392,7 @@ const DEMO={
   activity:"Learning to juggle three balls to perform at the school talent show.",
   strands:["a","c"],
   outcomes:[2,4],
-  justify:"I'd never juggled, so it was a genuine challenge (#2). And the talent-show date meant I had to keep practising on the days I wanted to quit — that's commitment (#4), not just showing up.",
+  justify:"OUTCOME 2 \u2014 CHALLENGE AND NEW SKILL. I have never juggled; on day one I cannot manage two catches in a row. But the new skill isn't really \u2018juggling\u2019 \u2014 it is diagnosing my own technique without a coach. Concretely: every week I film the same thirty seconds from the same angle, watch it back, and name ONE fault to fix before the next session. By week six there will be a folder of clips showing the fault I named, what I changed, and whether it worked.\n\nOUTCOME 4 \u2014 COMMITMENT AND PERSEVERANCE. The talent-show date is fixed, so the evidence for this one is NOT the performance \u2014 anyone can turn up once. It is the eight weeks in between. I log every scheduled practice, including the ones I skip, with the reason. Outcome 4 will be proved by weeks 3 and 4, when the progress flattens out and the log keeps going anyway.\n\nWHY ME, WHY NOW. I quit guitar after three weeks and told myself I \u2018wasn't musical\u2019. I want to find out whether that was true, or whether I just stopped before the part where it starts getting better.",
   evidence:[
     {t:"Week-1 clip: I drop after 2 catches", k:"gr"},
     {t:"Week-6 clip: a 30-catch run", k:"gr"},
@@ -353,10 +401,42 @@ const DEMO={
     {t:"Selfie with the juggling balls", k:"pr"}
   ],
   timeline:[
-    {when:"Week 1",ev:"Clip: drops after 2 catches",ref:"Way harder than I thought — I can't even do two in a row. Tempted to give up already."},
-    {when:"Week 3",ev:"Practice log, ~20 min/day",ref:"Filmed myself: I stare at my hands, not the top of the arc. Going to try fixing my gaze."},
-    {when:"Week 6",ev:"Clip: a 30-catch run",ref:"The gaze fix worked. Now the problem isn't my hands, it's stamina and nerves."},
-    {when:"Talent Show",ev:"Performance video + reaction",ref:"Dropped once, recovered, kept going. A month ago I'd have frozen and walked off."}
+    {
+      "when": "Week 1",
+      "ev": "Video clip (0:32), filmed head-on: 14 attempts, longest run is 2 catches. Practice log started — date, minutes, and the one thing I worked on each session.",
+      "ref": "OUTCOME 2. I assumed the hard part would be my hands, and it isn't. Watching the clip back, I throw the second ball before the first has peaked, so I am always chasing the pattern instead of waiting for it. From the inside it just felt like ‘being bad at it’ — the film is the only reason I can name the actual fault.\n\nWhich tells me the first skill I need isn't juggling. It is being able to watch myself and identify one specific thing, rather than a general feeling of failure. This week's named fault: throw height. Next week I practise the throw alone, no catching at all, until both balls peak at the same point.",
+      "bad": "This week I started learning to juggle for the talent show. I got out three balls and tried lots of times but it was really difficult and I kept dropping them almost straight away. I think juggling is much harder than it looks and I have a lot of respect for people who can actually do it properly. I practised for about twenty minutes each day and I filmed myself doing it on my phone. I have also realised that you need a lot of patience for something like this. My friend said he could juggle when he was younger so I might ask him for some tips at some point. Overall it was a challenging start but I am staying positive and I am going to keep trying my best, and hopefully I will improve over the next few weeks.",
+      "tell": "The weak one is a <b>record</b>, not a reflection: it says what happened and how it felt. Nothing in it could turn out to be false, and nothing in it changes what Sam does on Monday. The strong one names <em>one specific fault</em> — throw height, not hands — says how it was found (the film), and commits to a next action that could fail.",
+      "ask": "Cover the word ‘juggling’ in your own reflection. Does it still make sense? Then it isn't about your experience.",
+      "goodSide": "A"
+    },
+    {
+      "when": "Week 3",
+      "ev": "Practice log: 14 of 18 scheduled sessions completed, ~20 min each — 4 skipped, with reasons written in. Second clip (0:45), same angle as week 1.",
+      "ref": "OUTCOME 4, and this is the week that actually earns it. Progress flattened — still stuck around 6 catches — and I skipped Tuesday and Thursday. Both are in the log, which was uncomfortable to write down.\n\nWhat I want to record is that I nearly rewrote the goal to ‘just two balls, that's fine’. That is exactly what I did with guitar: I didn't quit, I quietly lowered the target until quitting didn't look like quitting. I didn't do it this time, and the reason wasn't willpower — it was that logging the skipped sessions made them visible to me instead of forgettable.\n\nSo commitment isn't the fourteen sessions I wanted to do. It is these four.",
+      "bad": "Week three has taught me a lot about perseverance and commitment. Juggling requires real dedication and you cannot expect results overnight, no matter how much you might want them. I have learned that if you want to achieve something worthwhile you have to be willing to put in the hours and not give up when things get hard or when you do not see immediate progress. This is a lesson that applies not just to juggling but to school, to sport, to friendships and to life in general. I feel that I have really grown as a person over these three weeks and developed important life skills such as patience, determination and resilience, which will definitely help me in the future and in whatever I decide to do after school.",
+      "tell": "This is the swap test failing in slow motion. ‘Perseverance’, ‘dedication’, ‘resilience’ — every sentence survives if you swap juggling for football, or piano, or nothing at all. It is about the <em>topic</em> of commitment rather than an <em>instance</em> of it. The strong one is uncomfortable and specific: the skipped sessions are named, and the honest part is about nearly lowering the goal, not about growth.",
+      "ask": "Which sentence in yours could only have been written by you, about this week?",
+      "goodSide": "B"
+    },
+    {
+      "when": "Week 6",
+      "ev": "Clip (1:10): a 30-catch run, first time. Side-by-side edit of week 1 and week 6 at the identical camera angle.",
+      "ref": "OUTCOME 2, now demonstrable rather than claimed. The gaze fix worked — I stopped watching my hands and started watching the peak of the arc — and the count went from 6 to 30 in about two weeks. The side-by-side clip is the evidence: same angle, same person, visibly different skill.\n\nThe part I didn't expect is that the problem moved rather than disappeared. It isn't coordination any more; it is stamina, and it is nerves. I can do 30 alone and about 8 when my sister stands in the doorway. That means the talent show is a different skill from the one I have spent six weeks training, and I have two weeks to train it.\n\nPlan: practise in front of people deliberately, and practise recovering from a drop instead of only practising not dropping.",
+      "bad": "I am really happy to report that I have hit a thirty-catch run this week, which is a huge improvement from where I started at the very beginning of this experience. All of the practice has clearly paid off and I am genuinely proud of myself for how far I have come in only six weeks of working at it. My family were really impressed when I showed them at home and my friends said it looked really good and asked me to do it again. I feel much more confident now going into the talent show and I think that the performance is going to go well on the night. Practising every day was definitely the right decision and I would tell anyone else to do the same. Hard work really does pay off in the end.",
+      "tell": "This is a results announcement. It reports the thirty-catch run and how people reacted, then stops. The strong one asks <em>why</em> it worked (the gaze fix) and then does the thing that separates reflecting from reporting: it notices the problem has <b>moved</b> — from coordination to nerves — and changes the plan with two weeks left. Progress is the easy part to write about; what surprised you is the hard part.",
+      "ask": "What in your evidence didn't go the way you expected — and have you written that down anywhere?",
+      "goodSide": "B"
+    },
+    {
+      "when": "Talent Show",
+      "ev": "Performance video (2:14). Supervisor sign-off form. Photo of the completed practice log — 8 weeks, 47 sessions, 6 skipped.",
+      "ref": "OUTCOMES 2 AND 4 TOGETHER, which I did not expect to be the same story. I dropped a ball about forty seconds in. At the guitar recital in Grade 9 I stopped and walked off the stage. This time I picked it up, restarted the pattern, and finished.\n\nThe thing I most want to record is that this wasn't bravery. It was rehearsal. Week 6 told me nerves were the real remaining problem, so I practised recovering from drops on purpose — which means the recovery was a technical decision made three weeks earlier, not a feeling I summoned on the night. Commitment turned out to be something you can plan for, not something you either have or don't.\n\nWhat carries forward: I am going for the four-ball pattern next, and I am keeping the film-and-name-one-fault loop — because looking back at the eight weeks, that loop, not the juggling, is the part that transfers to anything else I try.",
+      "bad": "The talent show finally arrived and I performed my juggling routine in front of the whole school, which was something I never imagined I would be doing at the start of this term. I was very nervous beforehand and my hands were shaking a bit, but once I actually got up on the stage I just focused on the balls and did my best. I did drop one at one point during the routine but I carried on anyway, and the audience clapped at the end, which felt absolutely amazing. I would like to thank my family and my friends for supporting me and encouraging me throughout this whole experience, because I could not have done it without them. Overall CAS has been a really valuable experience for me and I would definitely recommend juggling to anyone who is thinking about trying something new.",
+      "tell": "The weak one narrates the event and thanks people. It even contains the drop — the single most interesting thing that happened all term — and does nothing with it. The strong one takes exactly that moment and explains it: the recovery wasn't courage, it was a decision made three weeks earlier. That is the difference between an outcome <em>claimed</em> and an outcome <b>demonstrated</b>.",
+      "ask": "You have named your outcome. Now: what would someone say if they claimed you hadn't achieved it — and can you answer them with evidence?",
+      "goodSide": "A"
+    }
   ],
   weakFinal:"Juggling was fun and I learned patience and commitment. Overall it was a good experience and I'm glad I did it.",
   strongFinal:"In week 1 I couldn't manage two catches and assumed I was just uncoordinated. <em>Filming myself in week 3 showed the real problem was my gaze</em>, and fixing it got me to a 30-catch run by week 6. Performing — <em>dropping once and recovering instead of freezing</em> — showed me that commitment wasn't only the practising; it was staying in it when it went wrong in front of people. Next I want to learn a four-ball pattern."
@@ -392,7 +472,8 @@ function renderStep1(){
     ocRow.appendChild(b);
   });
   const j=document.getElementById('justify'); j.value=S.justify;
-  j.oninput=()=>S.justify=j.value;
+  j.oninput=()=>{S.justify=j.value;gate1();};
+  gate1();
   updateOcWarn();
 }
 document.querySelectorAll('#strandRow .chip-toggle').forEach(b=>{
@@ -442,20 +523,146 @@ function addEvidence(){
 document.getElementById('evAddBtn').addEventListener('click',addEvidence);
 document.getElementById('evAdd').addEventListener('keydown',e=>{if(e.key==='Enter')addEvidence();});
 
+
+/* ---------- 100-word lock (Make it mine only) ---------- */
+const MINWORDS=100;
+function words(t){t=(t||'').trim();return t?t.split(/\s+/).length:0;}
+function lockActive(){return mode==='mine';}
+
+function gate1(){
+  const bar=document.getElementById('lock1');
+  const btn=document.querySelector('#p1 .navbtns button[data-go="2"]');
+  if(!bar||!btn)return;
+  if(!lockActive()){bar.classList.remove('on');btn.disabled=false;return;}
+  bar.classList.add('on');
+  const n=words(S.justify), pct=Math.min(100,Math.round(n/MINWORDS*100));
+  const met=n>=MINWORDS;
+  bar.classList.toggle('met',met);
+  bar.querySelector('.lfill').style.width=pct+'%';
+  bar.querySelector('.lmsg').textContent = met
+    ? n+' words \u2014 unlocked'
+    : n+' / '+MINWORDS+' words \u2014 '+(MINWORDS-n)+' more before you can move on';
+  btn.disabled=!met;
+}
+
+function gate3(){
+  const bar=document.getElementById('lock3');
+  const btn=document.querySelector('#p3 .navbtns button[data-go="4"]');
+  if(!bar||!btn)return;
+  if(!lockActive()){bar.classList.remove('on');btn.disabled=false;return;}
+  bar.classList.add('on');
+  const counts=S.timeline.map(nd=>words(nd.ref));
+  const done=counts.filter(c=>c>=MINWORDS).length;
+  const total=counts.length;
+  const met=done===total;
+  bar.classList.toggle('met',met);
+  bar.querySelector('.lfill').style.width=Math.round(done/total*100)+'%';
+  const shortOnes=counts.map((c,i)=>c>=MINWORDS?null:(i+1)).filter(Boolean);
+  bar.querySelector('.lmsg').textContent = met
+    ? 'All '+total+' reflections at '+MINWORDS+'+ words \u2014 unlocked'
+    : done+' of '+total+' reflections at '+MINWORDS+'+ words \u2014 still short: entry '+shortOnes.join(', entry ');
+  btn.disabled=!met;
+}
+
 /* step 3 */
 function renderStep3(){
   const tl=document.getElementById('timeline'); tl.innerHTML='';
+  const demo = (mode==='demo');
+  document.getElementById('s3demo').style.display = demo?'block':'none';
+  document.getElementById('s3mine').style.display = demo?'none':'block';
+  document.getElementById('s3controls').style.display = demo?'flex':'none';
+  if(demo) demoTally();
+
   S.timeline.forEach((node,i)=>{
     const div=document.createElement('div'); div.className='tnode';
-    div.innerHTML='<span class="twhen">'+esc(node.when)+'</span>'+
-      '<div class="evslot"><span class="tlab">Evidence</span><input data-i="'+i+'" data-f="ev" value="'+esc(node.ev)+'" placeholder="what you captured"></div>'+
-      '<div class="refslot"><span class="tlab">Reflection</span><textarea data-i="'+i+'" data-f="ref" placeholder="what you noticed">'+esc(node.ref)+'</textarea></div>';
+    const head='<div class="thead"><span class="twhen">'+esc(node.when)+'</span>'+
+      '<span class="tentry">Entry '+(i+1)+' of '+S.timeline.length+'</span></div>';
+
+    if(demo){
+      const good=node.goodSide, A = good==='A'?node.ref:node.bad, B = good==='A'?node.bad:node.ref;
+      div.innerHTML = head+'<div class="tbody">'+
+        '<div class="tlab">Evidence logged</div>'+
+        '<div class="evshow">'+esc(node.ev)+'</div>'+
+        '<div class="tlab">Two reflections for this entry<span class="hint">both written by Sam, both about the same week \u2014 one of them earns the outcome</span></div>'+
+        '<div class="vs">'+
+          optHTML('A',A)+optHTML('B',B)+
+        '</div>'+
+        '<div class="picker"><span class="plab">Which one earns the outcome?</span>'+
+          '<button data-pick="A" data-i="'+i+'">A</button><button data-pick="B" data-i="'+i+'">B</button></div>'+
+        '<div class="verdict"><p class="vres"></p><p class="vtell">'+node.tell+'</p><p class="vask">'+esc(node.ask)+'</p></div>'+
+      '</div>';
+    } else {
+      div.innerHTML = head+'<div class="tbody">'+
+        '<div class="evslot"><div class="tlab">Evidence<span class="hint">what you captured \u2014 and why that item shows anything</span></div>'+
+          '<textarea data-i="'+i+'" data-f="ev" placeholder="e.g. Video clip (0:32), same angle each week. Practice log with dates and minutes.">'+esc(node.ev)+'</textarea></div>'+
+        '<div class="refslot"><div class="tlab">Reflection<span class="hint">name the outcome, then show it \u2014 what changed, and how you know</span></div>'+
+          '<textarea data-i="'+i+'" data-f="ref" placeholder="OUTCOME __. What I noticed this week\u2026 What it tells me\u2026 What I am changing next\u2026">'+esc(node.ref)+'</textarea>'+
+          '<div class="tcount" data-count="'+i+'"></div></div>'+
+      '</div>';
+    }
     tl.appendChild(div);
   });
-  tl.querySelectorAll('[data-f]').forEach(el=>{
-    el.addEventListener('input',()=>{S.timeline[+el.dataset.i][el.dataset.f]=el.value;});
-  });
+
+  if(demo){
+    tl.querySelectorAll('.picker button').forEach(b=>{
+      b.addEventListener('click',()=>reveal(+b.dataset.i, b.dataset.pick));
+    });
+  } else {
+    tl.querySelectorAll('[data-f]').forEach(el=>{
+      el.addEventListener('input',()=>{
+        S.timeline[+el.dataset.i][el.dataset.f]=el.value;
+        if(el.dataset.f==='ref'){ wc(+el.dataset.i); gate3(); }
+      });
+    });
+    S.timeline.forEach((n,i)=>wc(i));
+  }
+  gate3();
 }
+
+function wct(t){t=(t||'').trim();return t?t.split(/\s+/).length:0;}
+function optHTML(letter,text){
+  const n=text.trim()?text.trim().split(/\s+/).length:0;
+  return '<div class="opt" data-side="'+letter+'">'+
+    '<div class="ohead"><span>Reflection '+letter+'</span><span class="owords">'+n+' words</span></div>'+
+    '<p class="otext">'+esc(text)+'</p></div>';
+}
+
+function reveal(i,pick){
+  const node=S.timeline[i];
+  const card=document.querySelectorAll('.tnode')[i];
+  card.classList.add('done');
+  card.querySelectorAll('.opt').forEach(o=>{
+    o.classList.add(o.dataset.side===node.goodSide?'good':'bad');
+  });
+  const res=card.querySelector('.vres');
+  const right = pick===node.goodSide;
+  res.className='vres '+(right?'right':'wrong');
+  const wg=wct(node.ref), wb=wct(node.bad);
+  const note = wb>wg ? 'the weaker one is the longer one \u2014 '+wb+' words to '+wg
+                     : 'and they are within '+Math.abs(wg-wb)+' words of each other \u2014 '+wg+' to '+wb;
+  res.textContent = (right?'\u2713 Yes \u2014 ':'\u2717 No \u2014 ')+'Reflection '+node.goodSide+' earns it, '+note+'.';
+  demoTally();
+}
+
+function demoTally(){
+  const done=document.querySelectorAll('.tnode.done').length;
+  const el=document.getElementById('s3tally');
+  if(el) el.textContent = done+' of '+S.timeline.length+' compared';
+}
+
+function wc(i){
+  const box=document.querySelector('[data-count="'+i+'"]'); if(!box)return;
+  const n=words(S.timeline[i].ref);
+  if(lockActive()){
+    const met=n>=MINWORDS;
+    box.className='tcount '+(met?'met':'short');
+    box.textContent=n+' / '+MINWORDS+' words'+(met?' \u2014 ok':'');
+  }else{
+    box.className='tcount';
+    box.textContent=n+' words'+(n>0&&n<60?' \u2014 a reflection this short usually only records what happened':'');
+  }
+}
+
 
 /* step 4 */
 function renderStep4(){
@@ -464,7 +671,7 @@ function renderStep4(){
   const ul=document.getElementById('threadPull'); ul.innerHTML='';
   const ocNames=S.outcomes.map(n=>n+'. '+OUTCOMES[n-1]).join(' + ')||'—';
   ul.innerHTML+='<li><b>Outcome you claimed:</b> '+esc(ocNames)+'</li>';
-  S.timeline.forEach(node=>{ if(node.ref) ul.innerHTML+='<li><b>'+esc(node.when)+':</b> '+esc(node.ref)+'</li>'; });
+  S.timeline.forEach(node=>{ if(node.ref){ let t=node.ref.replace(/\s+/g,' ').trim(); if(t.length>170) t=t.slice(0,170).replace(/\s\S*$/,'')+'\u2026'; ul.innerHTML+='<li><b>'+esc(node.when)+':</b> '+esc(t)+'</li>'; } });
   const fr=document.getElementById('finalRef'); fr.value=S.final||''; fr.oninput=()=>S.final=fr.value;
 }
 document.getElementById('copyFinal').addEventListener('click',()=>{
@@ -477,11 +684,24 @@ document.getElementById('copyFinal').addEventListener('click',()=>{
 
 /* nav */
 let step=1;
+function canLeave(from){
+  if(!lockActive())return true;
+  if(from===1) return words(S.justify)>=MINWORDS;
+  if(from===3) return S.timeline.every(nd=>words(nd.ref)>=MINWORDS);
+  return true;
+}
 function show(n){
+  if(n>step && !canLeave(step)){
+    const bar=document.getElementById(step===1?'lock1':'lock3');
+    if(bar){bar.classList.add('nudge');setTimeout(()=>bar.classList.remove('nudge'),600);
+      bar.scrollIntoView({behavior:'smooth',block:'center'});}
+    return;
+  }
   step=n;
   for(let i=1;i<=4;i++){document.getElementById('p'+i).classList.toggle('on',i===n);}
   document.querySelectorAll('#dots .dot').forEach(d=>d.classList.toggle('on',+d.dataset.step===n));
   if(n===1)renderStep1(); if(n===2)renderStep2(); if(n===3)renderStep3(); if(n===4)renderStep4();
+  gate1(); gate3();
   document.getElementById('builder').scrollIntoView({behavior:'smooth',block:'start'});
 }
 document.querySelectorAll('.navbtns button[data-go]').forEach(b=>b.addEventListener('click',()=>show(+b.dataset.go)));
@@ -495,6 +715,10 @@ function setMode(m){
   S=clone(m==='demo'?DEMO:BLANK); S.final='';
   show(1);
 }
+document.getElementById('revealPulses').addEventListener('click',()=>{
+  S.timeline.forEach((n,i)=>reveal(i,n.goodSide));
+});
+document.getElementById('resetPulses').addEventListener('click',()=>renderStep3());
 document.getElementById('modeDemo').addEventListener('click',()=>setMode('demo'));
 document.getElementById('modeMine').addEventListener('click',()=>setMode('mine'));
 
