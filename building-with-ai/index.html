@@ -1,1 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to Keep Working on a Project — Building with AI</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#171a21; --panel2:#1e222b; --line:#2b303b;
+    --ink:#e8eaf0; --dim:#a3abbb; --accent:#7bd88f; --accent2:#6aa9ff;
+    --warn:#ffb454; --danger:#ff7b72; --code:#0b0d11;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.65 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:0 0 80px}
+  .wrap{max-width:880px;margin:0 auto;padding:0 20px}
+  header{background:linear-gradient(160deg,#1b2431,#12151b);border-bottom:1px solid var(--line);
+    padding:46px 0 38px;margin-bottom:10px}
+  header h1{margin:0 0 8px;font-size:33px;line-height:1.2;letter-spacing:-.5px}
+  header p{margin:0;color:var(--dim);font-size:17px}
+  .thesis{margin-top:20px;padding:14px 18px;border-left:3px solid var(--accent);
+    background:#141922;border-radius:0 8px 8px 0;font-size:17px}
+  h2{font-size:22px;margin:44px 0 6px;letter-spacing:-.3px;display:flex;align-items:center;gap:12px}
+  .num{background:var(--accent);color:#0b0d11;width:31px;height:31px;border-radius:8px;
+    display:grid;place-items:center;font-size:15px;font-weight:700;flex:none}
+  h3{font-size:16px;margin:24px 0 8px;color:var(--accent2)}
+  p{margin:10px 0}
+  .sub{color:var(--dim);margin:0 0 14px 43px;font-size:15px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:16px 0}
+  code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:14px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#ffd9a0}
+  pre{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:16px;
+    overflow-x:auto;margin:12px 0;position:relative}
+  pre code{background:none;padding:0;color:#d6dae4;font-size:13.5px;line-height:1.6}
+  .copy{position:absolute;top:10px;right:10px;background:var(--panel2);color:var(--dim);
+    border:1px solid var(--line);border-radius:7px;padding:5px 11px;font-size:12px;cursor:pointer}
+  .copy:hover{color:var(--ink);border-color:var(--accent)}
+  .copy.done{color:var(--accent);border-color:var(--accent)}
+  .tabs{display:flex;gap:8px;margin:14px 0 0;flex-wrap:wrap}
+  .tab{background:var(--panel2);border:1px solid var(--line);color:var(--dim);
+    padding:9px 16px;border-radius:9px;cursor:pointer;font-size:14px;font-weight:600}
+  .tab:hover{color:var(--ink)}
+  .tab.on{background:var(--accent);color:#0b0d11;border-color:var(--accent)}
+  .pane{display:none;margin-top:14px}
+  .pane.on{display:block}
+  ol,ul{margin:10px 0;padding-left:22px}
+  li{margin:7px 0}
+  .warn{border-left:3px solid var(--warn);background:#241d12;padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0}
+  .warn strong{color:var(--warn)}
+  .bad{border-left:3px solid var(--danger);background:#251519;padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0}
+  .bad strong{color:var(--danger)}
+  .good{border-left:3px solid var(--accent);background:#122018;padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0}
+  .good strong{color:var(--accent)}
+  .tree{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:18px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;line-height:1.9}
+  .tree .f{color:var(--accent2)}
+  .tree .note{color:var(--dim);font-family:inherit}
+  .saver{background:var(--panel2);border:1px dashed var(--accent2);border-radius:12px;padding:18px 20px;margin:16px 0}
+  .saver h4{margin:0 0 4px;font-size:15px;color:var(--accent2)}
+  .saver p{margin:4px 0 12px;font-size:14px;color:var(--dim)}
+  textarea{width:100%;min-height:120px;background:var(--code);color:#d6dae4;border:1px solid var(--line);
+    border-radius:8px;padding:12px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;resize:vertical}
+  .row{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;align-items:center}
+  input[type=text]{background:var(--code);color:var(--ink);border:1px solid var(--line);
+    border-radius:8px;padding:10px 12px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;flex:1;min-width:180px}
+  .btn{background:var(--accent);color:#0b0d11;border:none;border-radius:8px;padding:11px 20px;
+    font-size:14px;font-weight:700;cursor:pointer}
+  .btn:hover{filter:brightness(1.1)}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
+  .msg{font-size:13px;color:var(--accent);min-height:18px;margin-top:8px}
+  .loop{display:grid;gap:9px;margin:16px 0}
+  .step{display:flex;gap:14px;align-items:flex-start;background:var(--panel2);
+    border:1px solid var(--line);border-radius:10px;padding:13px 16px}
+  .step b{color:var(--accent);flex:none;width:20px}
+  label.check{display:flex;gap:12px;align-items:flex-start;background:var(--panel2);
+    border:1px solid var(--line);border-radius:10px;padding:13px 16px;margin:9px 0;cursor:pointer}
+  label.check:hover{border-color:var(--accent2)}
+  label.check input{margin-top:4px;width:17px;height:17px;flex:none;accent-color:var(--accent)}
+  label.check.done{opacity:.5}
+  label.check.done span{text-decoration:line-through}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--accent2);font-size:13px;text-transform:uppercase;letter-spacing:.5px}
+  .reset{background:none;border:1px solid var(--line);color:var(--dim);border-radius:8px;
+    padding:7px 14px;font-size:13px;cursor:pointer;margin-top:6px}
+  .reset:hover{color:var(--ink)}
+  footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--line);color:var(--dim);font-size:14px}
+</style>
+</head>
+<body>
 
+<header>
+  <div class="wrap">
+    <h1>How to Keep Working on a Project</h1>
+    <p>Building with AI — your folder, your project file, and the loop you'll use all year</p>
+    <div class="thesis"><strong>The chat is temporary. Your folder is the project.</strong></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<div class="warn">
+  <strong>Read this first.</strong> There's a lot of saving and downloading in here. That's on purpose — you're doing by hand what real coding software does automatically. Later this year we'll switch to tools that handle it for you. For now, doing it manually is how you'll actually understand what those tools are doing. <strong>This is how you pick up an old project and keep building on it with a fresh, clean chat.</strong>
+</div>
+
+<h2><span class="num">1</span>Make your folder — name it after your game</h2>
+<p class="sub">One folder per project. Name it what the game is called, in lowercase with dashes. Future you will thank present you.</p>
+
+<div class="card">
+  <p><strong>First, turn on file extensions.</strong> Your computer hides the end of file names, and that causes a genuinely annoying problem about three minutes from now. Fix it before you do anything else.</p>
+
+  <div class="tabs" data-group="ext">
+    <button class="tab on" data-t="ext-mac">Mac</button>
+    <button class="tab" data-t="ext-win">Windows</button>
+    <button class="tab" data-t="ext-cb">Chromebook</button>
+  </div>
+
+  <div class="pane on" id="ext-mac">
+    <ol>
+      <li>Open <strong>Finder</strong></li>
+      <li><strong>Finder → Settings</strong> (or <code>⌘ ,</code>) → <strong>Advanced</strong></li>
+      <li>Tick <strong>"Show all filename extensions"</strong></li>
+      <li>Desktop → right-click → <strong>New Folder</strong></li>
+    </ol>
+  </div>
+  <div class="pane" id="ext-win">
+    <ol>
+      <li>Open <strong>File Explorer</strong></li>
+      <li><strong>Windows 11:</strong> View → Show → tick <strong>File name extensions</strong><br>
+          <strong>Windows 10:</strong> the <strong>View</strong> tab → tick <strong>File name extensions</strong></li>
+      <li>Desktop → right-click → <strong>New → Folder</strong></li>
+    </ol>
+  </div>
+  <div class="pane" id="ext-cb">
+    <ol>
+      <li>Chromebooks already show extensions — nothing to change</li>
+      <li><strong>Files</strong> app → <strong>My files</strong> → right-click → <strong>New folder</strong></li>
+    </ol>
+  </div>
+
+  <p style="margin-top:16px"><strong>Now name it.</strong> Your game is called <em>Escape the Science Lab</em>? The folder is <code>escape-the-science-lab</code>. All lowercase, dashes instead of spaces, no capitals, no apostrophes.</p>
+  <p>Put it on your <strong>Desktop</strong>. Not Downloads — things go there to die.</p>
+</div>
+
+<div class="warn">
+  <strong>Why lowercase-with-dashes?</strong> Later this year your project goes on the real internet, and web addresses hate spaces and capital letters. Naming it properly now means you won't have to rename everything later.
+</div>
+
+<h2><span class="num">2</span>Describe your game — and let AI write the project file</h2>
+<p class="sub">You don't have to write Markdown by hand. You describe the game; Gemini writes the file.</p>
+
+<p>Open a chat and describe your game idea in normal language. Then paste this:</p>
+
+<pre><button class="copy">copy</button><code>I'm building a browser game and I need a project file for it.
+
+Ask me any questions you need to understand my idea properly.
+Then write me a project file in Markdown that includes:
+
+- What it is (one sentence)
+- Who it's for
+- How you play
+- Each level: the puzzle, and how you win it
+- Look and feel
+- Rules it must ALWAYS follow
+- What I'm NOT doing on purpose (things I'm leaving out of v1)
+- Where we are right now (nothing built yet)
+- A change log
+
+Give it to me in ONE code block so I can copy the whole thing.</code></pre>
+
+<div class="good">
+  <strong>Answer its questions properly.</strong> This is the one moment where being lazy costs you the most. Every question it asks is a decision you'd otherwise have to make later, in a worse mood, with a half-broken game.
+</div>
+
+<h2><span class="num">3</span>Get that file into your folder</h2>
+<p class="sub">Copy the Markdown it gave you, then use the tool below to save it correctly.</p>
+
+<p>Click the copy button on the code block Gemini gave you (or select it all and copy). Then paste it here:</p>
+
+<div class="saver">
+  <h4>💾 Save your project file</h4>
+  <p>Paste the Markdown below and download it as a properly-named file. Then <strong>move it from Downloads into your game folder.</strong></p>
+  <textarea id="mdIn" placeholder="Paste the Markdown Gemini gave you here..."></textarea>
+  <div class="row">
+    <input type="text" id="mdName" value="project.md">
+    <button class="btn" id="mdBtn">Download</button>
+  </div>
+  <div class="msg" id="mdMsg"></div>
+</div>
+
+<p><strong>Why this tool exists:</strong> if you try to make a <code>.md</code> file by hand in TextEdit or Notepad, they'll quietly save it as <code>project.md.txt</code> or <code>project.rtf</code> and nothing will work properly. This button gets the name right every time.</p>
+
+<h2><span class="num">4</span>Look at your file</h2>
+<p class="sub">Always open a file after you save it. Always.</p>
+
+<div class="tabs" data-group="open">
+  <button class="tab on" data-t="op-quick">Quickest way</button>
+  <button class="tab" data-t="op-mac">Mac</button>
+  <button class="tab" data-t="op-win">Windows</button>
+  <button class="tab" data-t="op-cb">Chromebook</button>
+</div>
+<div class="pane on" id="op-quick">
+  <p><strong>Drag the file into a Chrome tab.</strong> It opens instantly, on any computer, and shows you exactly what's in it.</p>
+</div>
+<div class="pane" id="op-mac">
+  <p>Right-click → <strong>Open With → TextEdit</strong>. If you edit and save from TextEdit, do <strong>Format → Make Plain Text</strong> first.</p>
+</div>
+<div class="pane" id="op-win">
+  <p>Right-click → <strong>Open With → Notepad</strong>. Windows 11 Notepad understands Markdown and can show it formatted or raw — look for the formatting toggle.</p>
+</div>
+<div class="pane" id="op-cb">
+  <p>Double-click it — it opens in the built-in <strong>Text</strong> app.</p>
+</div>
+
+<div class="card">
+  <p><strong>What am I even looking at?</strong> Markdown is just text with a few symbols. <code># </code> means heading, <code>**bold**</code> means bold, <code>- </code> means a list item. That's basically all of it.</p>
+  <p>Open it in a text editor and it looks ugly. Paste it into Gemini and it looks beautiful. <strong>The file didn't change — the reader changed.</strong> That's why this format never breaks: there's nothing in it to break.</p>
+</div>
+
+<div class="bad">
+  <strong>Check the name.</strong> In your folder it must say exactly <code>project.md</code> — not <code>project.md.txt</code>, not <code>project (1).md</code>, not <code>project.rtf</code>. Rename it if it's wrong. This single thing breaks more projects than anything else.
+</div>
+
+<h2><span class="num">5</span>Open a NEW chat and build it</h2>
+<p class="sub">Not the chat where you designed it. A brand new one. This is the whole point.</p>
+
+<p>Start a fresh chat. <strong>Attach or paste your <code>project.md</code></strong>, then send this:</p>
+
+<pre><button class="copy">copy</button><code>Here is the project file for a game I'm building. Read it, then
+tell me in your own words what this game is and what Level 1
+needs to do — and wait. Don't build anything yet.</code></pre>
+
+<p><strong>Read what it says back.</strong> Is that actually your game? If it got something wrong, <strong>your file is wrong</strong> — go fix the file, not the chat. That's the test. That's why the "and wait" is in there.</p>
+
+<p>Once it's got it right:</p>
+
+<pre><button class="copy">copy</button><code>Now build Level 1 only, as ONE self-contained HTML file.
+Structure the code so more levels can be added later.
+Keep it simple.</code></pre>
+
+<h2><span class="num">6</span>Save the game into your folder and test it</h2>
+<p class="sub">Copy all the code — and I mean all of it.</p>
+
+<p>Click inside the code block, press <code>Ctrl+A</code> / <code>⌘A</code>, and copy. Then:</p>
+
+<div class="saver">
+  <h4>💾 Save your game file</h4>
+  <p>Paste the HTML below and download it. Then <strong>move it into your game folder</strong>, next to <code>project.md</code>.</p>
+  <textarea id="htIn" placeholder="Paste the whole HTML file here..."></textarea>
+  <div class="row">
+    <input type="text" id="htName" value="index.html">
+    <button class="btn" id="htBtn">Download</button>
+  </div>
+  <div class="msg" id="htMsg"></div>
+</div>
+
+<p><strong>Now double-click <code>index.html</code>.</strong> Your game opens in the browser.</p>
+
+<div class="card">
+  <p>Look at the address bar. It says <code>file:///</code> — not <code>https://</code>. Turn off your wifi; it still works. This game lives on <em>your</em> computer and nobody else on Earth can open it. That's the difference between a <strong>file</strong> and a <strong>website</strong>, and we'll cross that gap later.</p>
+</div>
+
+<h3>Test it properly</h3>
+<ul>
+  <li>Play it start to finish</li>
+  <li>Click the wrong things on purpose</li>
+  <li>Click the same thing twice, fast</li>
+  <li>Shrink the window until it's phone-shaped</li>
+  <li><strong>Replay the levels you already finished</strong> — new code breaks old levels all the time</li>
+</ul>
+
+<h2><span class="num">7</span>Update your project file, then close the chat</h2>
+<p class="sub">This is the step everyone skips and the one that saves you. Never close a chat without it.</p>
+
+<p>Ask the chat you're in:</p>
+
+<pre><button class="copy">copy</button><code>Update my project file to match what we just built. Fill in
+"Where we are right now" — what's working, what's broken, and
+what I want to add next. Add a change log line. Give me the
+whole updated file in ONE code block.</code></pre>
+
+<p>Then scroll back up to <strong>the project file saver in step 3</strong>, paste the updated version, download it, and <strong>replace the old <code>project.md</code></strong> in your folder. Same for the game file if it changed — the new <code>index.html</code> replaces the old one.</p>
+
+<label class="check"><input type="checkbox"><span>Latest game code saved as <code>index.html</code> in my folder</span></label>
+<label class="check"><input type="checkbox"><span>A backup copy saved too — <code>index-level1.html</code></span></label>
+<label class="check"><input type="checkbox"><span><code>project.md</code> updated and replaced in my folder</span></label>
+<label class="check"><input type="checkbox"><span>"Where we are right now" says what actually works</span></label>
+<label class="check"><input type="checkbox"><span>I wrote down the next thing I want to add</span></label>
+<label class="check"><input type="checkbox"><span>Only now — closed the chat</span></label>
+<button class="reset" id="reset">Reset checklist</button>
+
+<div class="warn">
+  <strong>The test that matters:</strong> if you lost this chat right now and had to finish the game tomorrow with nothing but your folder — could you? If not, your file isn't finished.
+</div>
+
+<h2><span class="num">8</span>Next level? New chat.</h2>
+<p class="sub">Every level gets a fresh chat. By the third time this takes you about two minutes.</p>
+
+<div class="loop">
+  <div class="step"><b>1</b><div>Open a <strong>brand new chat</strong></div></div>
+  <div class="step"><b>2</b><div>Give it <strong>project.md</strong> — what the game is supposed to be</div></div>
+  <div class="step"><b>3</b><div>Give it <strong>index.html</strong> — what the game currently is</div></div>
+  <div class="step"><b>4</b><div>Use the <strong>handoff prompt</strong> below and make it prove it understood</div></div>
+  <div class="step"><b>5</b><div>Ask for <strong>the next level</strong></div></div>
+  <div class="step"><b>6</b><div><strong>Test</strong> — new level and old ones</div></div>
+  <div class="step"><b>7</b><div><strong>Update the file</strong>, save everything, close the chat</div></div>
+</div>
+
+<h3>The handoff prompt — start every new chat with this</h3>
+<pre><button class="copy">copy</button><code>I'm continuing a project in a new chat. Here is my project file
+and my current code. Read both, then tell me in your own words
+what this game does and where I left off — and wait. Don't change
+anything yet.</code></pre>
+
+<h3>Then, once it's played your project back correctly</h3>
+<pre><button class="copy">copy</button><code>Now add Level 2 exactly as described in the project file.
+Change nothing else. Keep it one self-contained HTML file.</code></pre>
+
+<p><strong>"Change nothing else" is doing a lot of work.</strong> Leave it out and AI will cheerfully rewrite your whole game and break the parts you liked.</p>
+
+<h2><span class="num">9</span>Your folder should look like this</h2>
+
+<div class="tree">
+📁 <span class="f">escape-the-science-lab/</span><br>
+&nbsp;&nbsp;&nbsp;📄 <span class="f">project.md</span> &nbsp;&nbsp;<span class="note">← what the game is SUPPOSED to be. You decide this.</span><br>
+&nbsp;&nbsp;&nbsp;📄 <span class="f">index.html</span> &nbsp;<span class="note">← what the game currently IS. AI writes this.</span><br>
+&nbsp;&nbsp;&nbsp;📄 <span class="f">index-level1.html</span> &nbsp;<span class="note">← backups, so you can go back</span><br>
+&nbsp;&nbsp;&nbsp;📄 <span class="f">index-level2.html</span>
+</div>
+
+<p><strong>Two different kinds of thing, and the difference is the whole idea.</strong> <code>project.md</code> is your <em>intent</em> — where you're going. <code>index.html</code> is the current <em>reality</em> — where you are. A new chat needs both: one to know the destination, one to know the starting point.</p>
+
+<h2><span class="num">10</span>When something goes wrong</h2>
+
+<table>
+  <tr><th>What you're seeing</th><th>What to do</th></tr>
+  <tr><td><strong>Blank white page</strong></td>
+      <td>You didn't copy all the code. Click inside the code block, <code>Ctrl+A</code>/<code>⌘A</code>, copy, paste again. This is the most common problem by far.</td></tr>
+  <tr><td><strong>Double-clicking index.html opens a text editor</strong></td>
+      <td>Right-click → <strong>Open With</strong> → <strong>Chrome</strong>.</td></tr>
+  <tr><td><strong>My file is called project.md.txt</strong></td>
+      <td>Turn on file extensions (step 1) and rename it. Or just re-download it using the saver in step 3.</td></tr>
+  <tr><td><strong>It downloaded as index (1).html</strong></td>
+      <td>You already had one in Downloads. Rename it to <code>index.html</code> when you move it into your folder.</td></tr>
+  <tr><td><strong>Level 2 broke Level 1</strong></td>
+      <td>Normal — it's called a <em>regression</em>. Open your backup, or tell the AI exactly what broke. This is why you retest old levels.</td></tr>
+  <tr><td><strong>The new chat has no idea what my game is</strong></td>
+      <td>Your <code>project.md</code> is too thin. That's not failure — it's showing you exactly what you forgot to write down. Fix the file.</td></tr>
+  <tr><td><strong>The AI rewrote my whole game</strong></td>
+      <td>Add <strong>"Change nothing else"</strong> to every request. Then go back to your backup.</td></tr>
+</table>
+
+<h3>The debugging protocol</h3>
+<ol>
+  <li>Say what you <strong>expected</strong>, then what <strong>actually happened</strong>.</li>
+  <li>Paste the <strong>whole</strong> error — not "there's an error," not half a screenshot.</li>
+  <li>Ask it to <strong>explain the problem before fixing it</strong>. Read the explanation. If you don't follow it, ask again simpler.</li>
+  <li>One fix at a time. Test after each one.</li>
+</ol>
+<p>Step 3 is the one everybody skips, and it's the one that makes you good at this. Let AI fix things you don't understand and you end up with a game you can't explain — and explaining it is the actual assignment.</p>
+
+<footer>
+  Building with AI · Keep this open while you work.<br>
+  Your game can't save anything between visits yet. That's not a bug — it's the next thing we build.
+</footer>
+
+</div>
+
+<script>
+  document.querySelectorAll('.tabs').forEach(function(group){
+    group.addEventListener('click', function(e){
+      var btn = e.target.closest('.tab');
+      if(!btn) return;
+      var ids = [];
+      group.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('on'); ids.push(t.dataset.t); });
+      btn.classList.add('on');
+      ids.forEach(function(id){
+        var el = document.getElementById(id);
+        if(el) el.classList.toggle('on', id === btn.dataset.t);
+      });
+    });
+  });
+
+  document.querySelectorAll('.copy').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var text = btn.parentElement.querySelector('code').innerText;
+      navigator.clipboard.writeText(text).then(function(){
+        btn.textContent='copied'; btn.classList.add('done');
+        setTimeout(function(){ btn.textContent='copy'; btn.classList.remove('done'); },1600);
+      }).catch(function(){
+        btn.textContent='select it manually';
+        setTimeout(function(){ btn.textContent='copy'; },2000);
+      });
+    });
+  });
+
+  function wireSaver(taId, nameId, btnId, msgId, fallbackName, mime){
+    var ta = document.getElementById(taId),
+        nm = document.getElementById(nameId),
+        bt = document.getElementById(btnId),
+        ms = document.getElementById(msgId);
+    bt.addEventListener('click', function(){
+      var text = ta.value;
+      if(!text.trim()){ ms.style.color='#ff7b72'; ms.textContent='Nothing pasted yet — paste your content above first.'; return; }
+      var name = (nm.value || '').trim() || fallbackName;
+      var blob = new Blob([text], {type: mime + ';charset=utf-8'});
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url; a.download = name;
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+      ms.style.color='#7bd88f';
+      ms.textContent='Downloaded "' + name + '" — now move it into your game folder.';
+    });
+  }
+  wireSaver('mdIn','mdName','mdBtn','mdMsg','project.md','text/markdown');
+  wireSaver('htIn','htName','htBtn','htMsg','index.html','text/html');
+
+  document.querySelectorAll('label.check').forEach(function(l){
+    var box = l.querySelector('input');
+    box.addEventListener('change', function(){ l.classList.toggle('done', box.checked); });
+  });
+  document.getElementById('reset').addEventListener('click', function(){
+    document.querySelectorAll('label.check').forEach(function(l){
+      l.querySelector('input').checked = false; l.classList.remove('done');
+    });
+  });
+</script>
+</body>
+</html>
