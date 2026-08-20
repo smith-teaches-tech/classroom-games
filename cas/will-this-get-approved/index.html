@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Will This Get Approved? — CAS Experience Approval</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3eee1; --paper-2:#ece5d3;
+    --ink:#1f1c17; --ink-soft:#4a4339; --rule:#cbbfa3;
+    --nasa:#1d3b5c; --green:#39563f; --amber:#b9892f;
+    --hl:rgba(185,137,47,.26); --hl-strong:rgba(185,137,47,.5);
+    --bad:#8a3324; --good:#39563f;
+    --yes:#39563f; --maybe:#b9892f; --no:#8a3324;
+    --shadow:0 18px 50px -22px rgba(31,28,23,.5);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(120% 90% at 80% -10%, rgba(29,59,92,.07), transparent 60%),
+      radial-gradient(120% 90% at 0% 110%, rgba(57,86,63,.08), transparent 55%),
+      var(--paper);
+    color:var(--ink);
+    font-family:"Cormorant Garamond", Georgia, serif;
+    font-size:20px; line-height:1.5; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:940px;margin:0 auto;padding:0 26px 120px;}
+  .mono{font-family:"JetBrains Mono", monospace;}
+
+  header{padding:64px 0 30px;border-bottom:2px solid var(--ink);margin-bottom:8px;}
+  .kicker{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--amber);margin:0 0 18px;}
+  h1{font-size:clamp(38px,6.6vw,64px);line-height:.99;font-weight:600;margin:0;letter-spacing:-.015em;}
+  h1 em{font-style:italic;color:var(--nasa);}
+  .sub{font-size:22px;color:var(--ink-soft);margin:18px 0 0;max-width:60ch;font-style:italic;}
+  .target{font-family:"JetBrains Mono",monospace;font-size:12.5px;line-height:1.6;text-transform:uppercase;letter-spacing:.08em;margin-top:26px;padding:14px 18px;border:1px solid var(--rule);background:rgba(255,255,255,.35);color:var(--ink-soft);}
+  .target b{color:var(--ink);}
+
+  section{padding:52px 0 8px;}
+  .sec-num{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.2em;color:var(--amber);}
+  h2{font-size:clamp(26px,4.2vw,38px);font-weight:600;margin:6px 0 14px;letter-spacing:-.01em;line-height:1.03;}
+  h2 .step-c{color:var(--nasa);}
+  .lede{font-size:21px;color:var(--ink-soft);margin:0 0 26px;max-width:64ch;}
+  h3.mini{font-size:24px;font-weight:600;margin:34px 0 12px;}
+
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 22px;}
+  .controls button{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;padding:10px 16px;border:1.5px solid var(--ink);background:var(--paper-2);color:var(--ink);cursor:pointer;transition:transform .12s, background .15s;}
+  .controls button:hover{transform:translateY(-2px);background:var(--paper);}
+  .controls .primary{background:var(--ink);color:var(--paper);}
+
+  /* ---- THE GATE ---- */
+  .gate{display:grid;gap:12px;}
+  .grow{display:grid;grid-template-columns:120px 1fr;gap:0;border:1.5px solid var(--ink);background:rgba(255,255,255,.5);}
+  @media(max-width:640px){.grow{grid-template-columns:1fr;}}
+  .grow .gq{background:var(--nasa);color:#fff;font-family:"JetBrains Mono",monospace;font-size:13px;letter-spacing:.12em;text-transform:uppercase;display:flex;align-items:center;justify-content:center;padding:16px 10px;text-align:center;}
+  .grow .ga{padding:16px 20px;}
+  .grow .ga p{margin:0;font-size:19.5px;line-height:1.35;}
+  .grow .ga .fail{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.03em;color:var(--bad);margin-top:8px;text-transform:none;}
+  .grow.scope .gq{background:var(--amber);}
+  .gateout{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px;}
+  @media(max-width:640px){.gateout{grid-template-columns:1fr;}}
+  .gout{border:1.5px solid var(--ink);padding:16px 20px;}
+  .gout.y{border-left:6px solid var(--yes);background:rgba(57,86,63,.07);}
+  .gout.n{border-left:6px solid var(--no);background:rgba(138,51,36,.06);}
+  .gout .glab{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;margin:0 0 8px;}
+  .gout.y .glab{color:var(--yes);} .gout.n .glab{color:var(--no);}
+  .gout p{margin:0;font-size:18.5px;line-height:1.35;}
+
+  /* ---- LO CARDS ---- */
+  .los{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;align-items:start;}
+  .lo{border:1.5px solid var(--ink);background:rgba(255,255,255,.5);padding:16px 18px;cursor:pointer;transition:transform .12s, box-shadow .15s;}
+  .lo:hover{transform:translateY(-2px);box-shadow:var(--shadow);}
+  .lo .lonum{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;color:var(--amber);}
+  .lo .lotext{font-size:20px;line-height:1.24;margin:6px 0 0;font-weight:600;}
+  .lo .lomore{display:none;margin-top:12px;padding-top:12px;border-top:1px dashed var(--rule);}
+  .lo.open .lomore{display:block;}
+  .lo .desc{font-size:16.5px;line-height:1.36;color:var(--ink-soft);font-style:italic;margin:0;}
+  .lo .prove{font-size:16.5px;line-height:1.36;margin:10px 0 0;}
+  .lo .prove b{color:var(--nasa);font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:4px;}
+  .lo .tap{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-top:10px;}
+  .lo.open .tap{display:none;}
+
+  /* ---- SWAP TEST ---- */
+  .pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0 0 16px;}
+  @media(max-width:700px){.pair{grid-template-columns:1fr;}}
+  .pc{border:1.5px solid var(--rule);padding:18px 20px;background:var(--paper-2);}
+  .pc .plab{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;margin:0 0 10px;}
+  .pc.weak{border-left:4px solid var(--bad);} .pc.weak .plab{color:var(--bad);}
+  .pc.strong{border-left:4px solid var(--good);} .pc.strong .plab{color:var(--good);}
+  .pc p{font-size:17.5px;line-height:1.4;margin:0;}
+  .pc.strong p em{font-style:italic;background:var(--hl);}
+  .rulebox{border-left:3px solid var(--amber);background:var(--paper-2);padding:16px 20px;font-size:20px;line-height:1.4;margin:6px 0 26px;}
+  .rulebox b{color:var(--nasa);}
+
+  /* ---- VERDICT DECK ---- */
+  .legend{display:flex;flex-wrap:wrap;gap:10px;margin:2px 0 20px;font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;}
+  .badge{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1.5px solid var(--ink);}
+  .badge .swatch{width:12px;height:12px;display:inline-block;}
+  .badge.b-y .swatch{background:var(--yes);} .badge.b-m .swatch{background:var(--maybe);} .badge.b-n .swatch{background:var(--no);}
+  .deck{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;}
+  .card{border:1.5px solid var(--ink);background:rgba(255,255,255,.55);padding:18px;display:flex;flex-direction:column;box-shadow:var(--shadow);}
+  .card .cnum{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--amber);letter-spacing:.14em;}
+  .card .prop{font-size:19px;line-height:1.3;margin:8px 0 14px;font-style:italic;}
+  .card .prop b{font-style:normal;}
+  .guess{display:flex;gap:6px;margin-top:auto;}
+  .guess button{flex:1;font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:9px 4px;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer;}
+  .guess button:hover{background:var(--paper-2);}
+  .guess button.picked{color:#fff;}
+  .guess button.picked[data-v="y"]{background:var(--yes);border-color:var(--yes);}
+  .guess button.picked[data-v="m"]{background:var(--maybe);border-color:var(--maybe);}
+  .guess button.picked[data-v="n"]{background:var(--no);border-color:var(--no);}
+  .reveal{display:none;margin-top:14px;padding-top:14px;border-top:1.5px solid var(--ink);}
+  .card.shown .reveal{display:block;animation:fade .28s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .vbadge{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;padding:4px 10px;border:1.5px solid var(--ink);color:#fff;margin-bottom:10px;}
+  .vbadge.y{background:var(--yes);} .vbadge.m{background:var(--maybe);} .vbadge.n{background:var(--no);}
+  .ask{font-size:17.5px;line-height:1.34;margin:0 0 10px;color:var(--nasa);font-weight:600;}
+  .ask:before{content:"The question you'll be asked";font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);display:block;font-weight:400;margin-bottom:4px;}
+  .ask.ok:before{content:"Now turn this on your own proposal";color:var(--good);}
+  .why{font-size:16.5px;line-height:1.36;margin:0;}
+  .fix{font-size:16.5px;line-height:1.36;margin:10px 0 0;padding:10px 12px;background:rgba(185,137,47,.14);border-left:3px solid var(--amber);}
+  .fix > b:first-child{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:4px;color:var(--ink-soft);}
+  .fix b{color:var(--nasa);}
+  .score{font-family:"JetBrains Mono",monospace;font-size:14px;color:var(--nasa);margin:20px 0 0;font-style:italic;}
+  .score b{font-style:normal;color:var(--green);font-size:20px;}
+
+  /* ---- MODEL PROPOSALS ---- */
+  .model{border:1.5px solid var(--ink);background:rgba(255,255,255,.5);margin:0 0 20px;box-shadow:var(--shadow);}
+  .model .mhead{background:var(--ink);color:var(--paper);padding:14px 20px;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline;}
+  .model .mtitle{font-size:23px;font-weight:600;}
+  .model .mtag{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);}
+  .model .mbody{padding:20px 22px;}
+  .fline{display:grid;grid-template-columns:118px 1fr;gap:0 16px;padding:11px 0;border-bottom:1px dashed var(--rule);}
+  @media(max-width:640px){.fline{grid-template-columns:1fr;gap:4px;}}
+  .fline:last-child{border-bottom:none;}
+  .fline .flab{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-soft);padding-top:5px;}
+  .fline .fval{font-size:18.5px;line-height:1.38;}
+  .fline.how{background:rgba(185,137,47,.13);margin:0 -22px;padding:14px 22px;}
+  .fline.how .flab{color:var(--amber);}
+  .fline.how .fval em{font-style:italic;background:var(--hl);}
+  .lochip{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.06em;background:var(--nasa);color:#fff;padding:3px 8px;margin-right:6px;}
+
+  /* ---- CHECKLIST ---- */
+  .check{border:1.5px solid var(--ink);background:rgba(255,255,255,.55);padding:8px 22px;box-shadow:var(--shadow);}
+  .crow{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px dashed var(--rule);cursor:pointer;}
+  .crow:last-child{border-bottom:none;}
+  .box{flex:0 0 22px;height:22px;border:1.5px solid var(--ink);margin-top:3px;display:flex;align-items:center;justify-content:center;font-family:"JetBrains Mono",monospace;font-size:14px;color:var(--green);}
+  .crow.done .box:after{content:"\2713";}
+  .crow.done .ctext{opacity:.5;text-decoration:line-through;}
+  .ctext{font-size:19px;line-height:1.34;}
+  .ctext b{color:var(--nasa);}
+  .ctally{font-family:"JetBrains Mono",monospace;font-size:14px;color:var(--ink-soft);margin:16px 0 0;font-style:italic;}
+
+  .myth{border:1px dashed var(--rule);background:rgba(255,255,255,.4);padding:16px 20px;margin:26px 0 0;font-size:17.5px;line-height:1.4;}
+  .myth b{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--bad);display:block;margin-bottom:6px;}
+
+  footer{margin-top:70px;padding-top:24px;border-top:2px solid var(--ink);font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);display:flex;flex-wrap:wrap;gap:10px 24px;justify-content:space-between;}
+  footer a{color:var(--nasa);}
+
+  @media print{
+    .noprint{display:none!important;}
+    body{background:#fff;font-size:12pt;}
+    .card .reveal{display:block!important;}
+    .lo .lomore{display:block!important;}
+    .card,.model,.check{box-shadow:none;break-inside:avoid;}
+    section{padding:18px 0 0;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="kicker">CAS &middot; Experience Approval</p>
+    <h1>Will this get <em>approved?</em></h1>
+    <p class="sub">Most proposals aren't rejected because the activity was bad. They're rejected because the proposal never said <em>how</em> the outcome would actually happen. Here is the gate, the standard, and fourteen real verdicts.</p>
+    <p class="target"><b>Use this before you submit:</b> run your proposal through the five questions, apply the swap test to your outcome sentence, then check it against the model on this page.</p>
+  </header>
+
+  <!-- 00 THE GATE -->
+  <section>
+    <span class="sec-num">00 / THE GATE</span>
+    <h2>Five questions. Miss one and it comes <span class="step-c">back to you.</span></h2>
+    <p class="lede">Your coordinator reads every proposal against the same five questions, in this order. If any one of them is missing, the proposal isn't approved — it's returned. Nothing is being judged about you; only about whether the paragraph in front of them answers these.</p>
+
+    <div class="gate">
+      <div class="grow"><div class="gq">What?</div><div class="ga">
+        <p>A clear, specific description of the experience. What exactly will you do, with whom, where, how often?</p>
+        <p class="fail">Fails on: "I will volunteer at a charity." — Which charity? Doing what? How often?</p>
+      </div></div>
+      <div class="grow"><div class="gq">Where?</div><div class="ga">
+        <p>Which strand — Creativity, Activity, Service? One or two. If you claim all three, you probably haven't thought hard about any of them.</p>
+        <p class="fail">Fails on: naming a strand the activity doesn't actually sit in, to make your record look balanced.</p>
+      </div></div>
+      <div class="grow"><div class="gq">So what?</div><div class="ga">
+        <p>At least one of the seven learning outcomes — <b>named by number and official wording</b>, and explained. Not listed. Explained.</p>
+        <p class="fail">Fails on: "This will develop my collaboration skills." That's a label, not an explanation.</p>
+      </div></div>
+      <div class="grow"><div class="gq">Why?</div><div class="ga">
+        <p>Personal significance. Why <em>you</em>, why <em>now</em>? Connect it to growth, a challenge you expect, an ethical question, an emotion, a past success or failure.</p>
+        <p class="fail">Fails on: "Because it will look good on my CAS record."</p>
+      </div></div>
+      <div class="grow"><div class="gq">How?</div><div class="ga">
+        <p>A concrete reflection plan. What will you produce, when, and what will it be about? Journal, voice memo, photo log, blog, supervisor feedback — pick one and say when.</p>
+        <p class="fail">Fails on: "I will reflect at the end." Reflection at the end is a summary, not a reflection.</p>
+      </div></div>
+      <div class="grow scope"><div class="gq">Scope</div><div class="ga">
+        <p>Long enough or deep enough that there is something to reflect <em>on</em>. A single hour rarely changes anyone. A CAS <b>project</b> must run at least one month.</p>
+        <p class="fail">Fails on: one-off attendance, or anything that is already your routine.</p>
+      </div></div>
+    </div>
+
+    <div class="gateout">
+      <div class="gout y"><p class="glab">Approved</p><p>All five answered, scope holds, and at least one learning outcome is connected to the experience with a <b>stated mechanism</b> — the specific thing you will do that produces that outcome.</p></div>
+      <div class="gout n"><p class="glab">Not approved</p><p>Trivial or routine · no connection to an outcome · no opportunity for reflection or growth · passive · too short · already required of you for a DP grade.</p></div>
+    </div>
+
+    <div class="myth">
+      <b>The 150-hours myth</b>
+      There is no hours requirement in CAS. Nobody is counting. What is required is <em>regular, sustained engagement across all three strands over 18 months</em>, evidence, and reflection. Logging forty hours of something you'd do anyway proves less than eight weeks of something that was hard.
+    </div>
+  </section>
+
+  <!-- 01 THE SEVEN -->
+  <section>
+    <span class="sec-num">01 / THE SEVEN OUTCOMES</span>
+    <h2>Use the <span class="step-c">official wording.</span> Every time.</h2>
+    <p class="lede">"Perseverance," "empathy," "planning," "teamwork" are not learning outcomes — they're paraphrases, and a proposal built on a paraphrase is hard to approve because nobody can tell which outcome you mean. There are seven. They have exact names. Tap any card for the IB descriptor and what proving it actually looks like.</p>
+    <div class="controls noprint">
+      <button id="loAll">Open all seven</button>
+      <button id="loNone">Close all</button>
+    </div>
+    <div class="los" id="los"></div>
+  </section>
+
+  <!-- 02 SWAP TEST -->
+  <section>
+    <span class="sec-num">02 / THE STANDARD</span>
+    <h2>Naming the outcome is not <span class="step-c">claiming</span> it</h2>
+    <p class="lede">This is the single thing that separates an approved proposal from a returned one. You must say <b>how</b> — the specific mechanism by which doing this thing produces that outcome, and what it will look like when it has.</p>
+
+    <div class="rulebox">
+      <b>The swap test.</b> Cover the name of your activity. Read your outcome sentence. If you could drop <em>any other activity in the world</em> into it and the sentence would still make sense, you haven't explained how — you've written a label. Rewrite until the sentence only works for your experience.
+    </div>
+
+    <div class="pair">
+      <div class="pc weak"><p class="plab">Label — fails the swap test</p><p>"Tutoring will help me develop collaboration skills and I will learn a lot from working with others."</p></div>
+      <div class="pc strong"><p class="plab">Mechanism — passes</p><p>"LO5. <em>The learning-centre coordinator sets the syllabus and I decide the method, so every session starts with a five-minute negotiation about what my student actually needs next.</em> By week six I'll have a record of three times I gave up my plan for hers, and what happened."</p></div>
+    </div>
+
+    <div class="pair">
+      <div class="pc weak"><p class="plab">Label — fails the swap test</p><p>"Training for the half-marathon will teach me perseverance and commitment."</p></div>
+      <div class="pc strong"><p class="plab">Mechanism — passes</p><p>"LO4. <em>Commitment isn't proved by race day — it's proved by the weeks I don't want to run.</em> I'll log every session for sixteen weeks <em>including the ones I miss, with the reason</em>, so the evidence for LO4 is the missed-week entries and what I changed to get back on schedule."</p></div>
+    </div>
+
+    <div class="pair">
+      <div class="pc weak"><p class="plab">Label — fails the swap test</p><p>"Volunteering at the centre will make me more aware of global issues and more empathetic."</p></div>
+      <div class="pc strong"><p class="plab">Mechanism — passes</p><p>"LO6. <em>By week eight I will be able to explain how the resettlement process works in this country, who decides, and where it stalls — and trace one specific policy to one specific consequence I watched a family live through.</em> That written piece is my evidence."</p></div>
+    </div>
+
+    <p class="lede" style="margin-top:24px">Notice what the strong versions share: a <b>named point in time</b>, a <b>thing that will exist</b> because of the experience, and a claim <b>specific enough to be wrong</b>. If your outcome sentence couldn't turn out to be false, it isn't saying anything.</p>
+  </section>
+
+  <!-- 03 VERDICT DECK -->
+  <section>
+    <span class="sec-num">03 / FOURTEEN VERDICTS</span>
+    <h2>Commit first, <span class="step-c">then</span> find out</h2>
+    <p class="lede">Real proposals, lightly edited. For each one, <b>commit to a verdict before you reveal it</b> — approve, send back for revision, or reject. Guessing and being wrong is how you learn where the line actually is; reading the answer teaches you nothing.</p>
+    <div class="legend">
+      <span class="badge b-y"><span class="swatch"></span>Approve</span>
+      <span class="badge b-m"><span class="swatch"></span>Revise &amp; resubmit</span>
+      <span class="badge b-n"><span class="swatch"></span>Reject</span>
+    </div>
+    <div class="controls noprint">
+      <button id="revealAll">Reveal all</button>
+      <button id="resetAll">Reset</button>
+      <button class="primary" id="printDeck">Print the verdict cards</button>
+    </div>
+    <div class="deck" id="deck"></div>
+    <p class="score" id="score">Verdicts committed: <b>0</b> / 14</p>
+  </section>
+
+  <!-- 04 MODELS -->
+  <section>
+    <span class="sec-num">04 / FOUR MODEL PROPOSALS</span>
+    <h2>What an approved proposal actually <span class="step-c">reads like</span></h2>
+    <p class="lede">Four complete proposals that would be approved as written. The <span style="background:var(--hl);padding:0 4px">highlighted line</span> in each is the one doing the work — the mechanism. Read those four lines first, then read around them.</p>
+    <div id="models"></div>
+  </section>
+
+  <!-- 05 CHECKLIST -->
+  <section>
+    <span class="sec-num">05 / BEFORE YOU SUBMIT</span>
+    <h2>Nine boxes. Tick them <span class="step-c">honestly.</span></h2>
+    <p class="lede">If you can't tick a box, you know exactly what to go and fix. Don't submit at eight out of nine and hope.</p>
+    <div class="check" id="check"></div>
+    <p class="ctally" id="ctally">0 of 9 ticked</p>
+    <div class="controls noprint" style="margin-top:20px">
+      <button class="primary" id="printCheck">Print the checklist</button>
+    </div>
+  </section>
+
+  <footer>
+    <span>CAS &middot; Experience Approval</span>
+    <span>Learning outcomes &amp; descriptors: IB CAS Guide, pp. 11&ndash;12</span>
+  </footer>
+</div>
+
+<script>
+/* ---------------- LEARNING OUTCOMES ---------------- */
+const LOS=[
+ {n:1,t:"Identify own strengths and develop areas for growth",
+  d:"Students are able to see themselves as individuals with various abilities and skills, of which some are more developed than others.",
+  p:"Name the specific weakness before you start, and say how you'll know it moved. “I freeze when I have to speak to adults I don't know” — then the phone calls to venues are the evidence."},
+ {n:2,t:"Demonstrate that challenges have been undertaken, developing new skills in the process",
+  d:"A new challenge may be an unfamiliar experience or an extension of an existing one. The newly acquired or developed skills may be shown through experiences that the student has not previously undertaken or through increased expertise in an established area.",
+  p:"Say what you could not do on day one. If you could already do it, extend it — same activity, harder version, named target."},
+ {n:3,t:"Demonstrate how to initiate and plan a CAS experience",
+  d:"Students can articulate the stages from conceiving an idea to executing a plan for a CAS experience or series of CAS experiences. This may be accomplished in collaboration with other participants.",
+  p:"You started it. Joining something someone else organised does not grow LO3 — the plan, the dates, and the thing that went wrong and got rescheduled are the evidence."},
+ {n:4,t:"Show commitment to and perseverance in CAS experiences",
+  d:"Students demonstrate regular involvement and active engagement in CAS.",
+  p:"Duration plus difficulty. One weekend cannot grow LO4, however intense. The evidence is the weeks it got hard and you kept going — so log those weeks."},
+ {n:5,t:"Demonstrate the skills and recognize the benefits of working collaboratively",
+  d:"Students are able to identify, demonstrate and critically discuss the benefits and challenges of collaboration gained through CAS experiences.",
+  p:"“Critically discuss” means the friction counts too. Name the disagreement, who conceded, and whether the outcome was better for it. Working near other people is not collaboration."},
+ {n:6,t:"Demonstrate engagement with issues of global significance",
+  d:"Students are able to identify and demonstrate their understanding of global issues, make responsible decisions, and take appropriate action in response to the issue either locally, nationally or internationally.",
+  p:"Global does not mean far away. It means an issue that recurs across borders — met locally. Understanding <em>and</em> action; caring about it is not engaging with it."},
+ {n:7,t:"Recognize and consider the ethics of choices and actions",
+  d:"Students show awareness of the consequences of choices and actions in planning and carrying out CAS experiences.",
+  p:"Name the actual dilemma in advance — whose photo you'll post, who gets chosen and who doesn't, whether your help is what was asked for. “I'll be ethical” is not LO7."}
+];
+const losEl=document.getElementById('los');
+LOS.forEach(l=>{
+  const d=document.createElement('div');
+  d.className='lo';
+  d.innerHTML=`<div class="lonum">LO ${l.n}</div>
+    <p class="lotext">${l.t}</p>
+    <p class="tap">Tap for descriptor &rarr;</p>
+    <div class="lomore">
+      <p class="desc">${l.d}</p>
+      <p class="prove"><b>Proving it looks like</b>${l.p}</p>
+    </div>`;
+  d.addEventListener('click',()=>d.classList.toggle('open'));
+  losEl.appendChild(d);
+});
+document.getElementById('loAll').addEventListener('click',()=>document.querySelectorAll('.lo').forEach(x=>x.classList.add('open')));
+document.getElementById('loNone').addEventListener('click',()=>document.querySelectorAll('.lo').forEach(x=>x.classList.remove('open')));
+
+/* ---------------- VERDICT DECK ---------------- */
+const CARDS=[
+ {p:"“Washing my hands properly before every meal. <b>Service</b> — it protects the health of the people around me.”",
+  v:"n",ask:"What could you write in a reflection in week six that you could not write on day one?",
+  why:"Routine self-care. There is no challenge, no plan, no one else involved, and nothing that could change about you. It fails the gate at <b>What</b>, <b>So what</b> and <b>Scope</b> simultaneously."},
+
+ {p:"“Going to the cinema every Friday with my friends. <b>Creativity</b> — I'll analyse the films afterwards.”",
+  v:"n",ask:"What do you make, and what would be different about you at the end?",
+  why:"Consuming is not creating, and a conversation on the way home is not a reflection plan. This is a passive experience you'd have anyway.",
+  fix:"A film club you run — you choose, you book the room, you lead the discussion, you keep it going for a term — is a different proposal entirely, and a strong one (LO3, LO4, LO5)."},
+
+ {p:"“I will donate 1,000 of my own savings to the food bank. <b>Service</b>, LO7 — ethics of choices.”",
+  v:"n",ask:"What are <em>you</em> doing, over time?",
+  why:"Generous, and not CAS. A transfer of money is a single transaction: no skills develop, no relationship forms, nothing unfolds. CAS asks what you did, not what you gave.",
+  fix:"Running the campaign that raises the money — eight weeks, a team, a target, decisions about who to ask and how — is squarely CAS, and now LO7 has a real dilemma in it."},
+
+ {p:"“My Physics IA investigation on solar panel efficiency. <b>Creativity</b> — designing the rig was creative and it's about sustainability.”",
+  v:"n",ask:"Is this being assessed for a Diploma grade?",
+  why:"CAS cannot be any part of your DP course requirements. Work that earns you marks in a subject cannot also be logged as CAS — no exceptions, however good it is.",
+  fix:"The workshop you run for Grade 9 on what you found, on your own time and for no marks, <em>is</em> CAS."},
+
+ {p:"“I attended the school blood drive for one hour on Tuesday. <b>Service</b>, LO6.”",
+  v:"n",ask:"Which of the seven could a single hour of attendance actually grow?",
+  why:"One-off attendance. There's no arc — nothing investigated, planned, or persevered through — so there is nothing for a reflection to be about.",
+  fix:"It could be one session <em>inside</em> a larger experience: if you help organise the drive over six weeks, that hour becomes the act stage of something real."},
+
+ {p:"“My daily exercise routine — I go to the gym every day already. <b>Activity</b>, LO4, perseverance.”",
+  v:"m",ask:"You already do this. What will be different?",
+  why:"As written it's routine, and LO4 asks for growth over time, not repetition of something already automatic. But this is close — the raw material is fine.",
+  fix:"Name a target you currently cannot hit, write the progression plan to reach it, and log the weeks it goes wrong. Now it's <b>LO2</b> (extension of an existing skill) plus <b>LO4</b>, and it's approvable."},
+
+ {p:"“I've played on the school basketball team for three years and I'd like to log it. <b>Activity</b>, LO4 and LO5.”",
+  v:"m",ask:"What is new about year four?",
+  why:"Continuing at the same level in the same role is not a challenge — LO2 needs “an unfamiliar experience or an extension of an existing one.” Playing on a team also isn't automatically LO5; you have to name the collaboration.",
+  fix:"Take a new role — run pre-season conditioning for the Grade 9 squad, planning each session with a teammate (LO3, LO5) — or set a measurable individual target with a written plan (LO2, LO4)."},
+
+ {p:"“I work Saturdays at my uncle's café. <b>Service</b> — I serve customers and I'm learning responsibility.”",
+  v:"m",ask:"Are you paid, and would you be doing it if CAS didn't exist?",
+  why:"Paid employment is not CAS. Neither is anything you'd be doing regardless — CAS has to be chosen, not inherited.",
+  fix:"The unpaid project that grows out of it is: designing a bilingual menu and a staff phrasebook for the new hires over six weeks, then training them on it. That's Creativity + Service, LO3 and LO5, and nobody is paying you for it."},
+
+ {p:"“I'll help my mother with the housework every evening. <b>Service</b> — helping others, LO7.”",
+  v:"m",ask:"Who decided this, and when did it start?",
+  why:"An existing family duty, and routine. CAS service is chosen, planned, and has a beginning and an end — otherwise there's no arc to reflect on.",
+  fix:"Carve a defined project out of family life: teach your grandmother to video-call the relatives abroad over eight weeks and build her an illustrated guide in her language. New skill for both of you, real ethical questions about her privacy and independence — LO2, LO7."},
+
+ {p:"“An hour a week stargazing, then journaling my reflections on the universe. <b>Creativity</b>, global significance.”",
+  v:"m",ask:"What are you creating, and where is the challenge?",
+  why:"This one sits on the approval poster — and it can be approved, but not in this form. Looking at the sky is receptive, not creative, and the journal is your <em>reflection</em>, so it can't also be the <em>experience</em>. LO6 is the wrong outcome: humanity's place in the cosmos is a big question, not a global issue in the CAS sense.",
+  fix:"Make the observing produce something. Learn to use the telescope to a named target — twenty catalogued objects by December — keep an illustrated field log you have to learn to draw, and run one viewing night for the middle school. Now: Creativity + Service, <b>LO2</b> and <b>LO3</b>, with the journal doing its proper job as reflection."},
+
+ {p:"“Model UN conference, one weekend in March. <b>Service</b>, LO6 global significance and LO4 commitment.”",
+  v:"m",ask:"Where is the arc — and can one weekend really show commitment?",
+  why:"The weekend itself is fine; the framing isn't. LO6 is plausible, but LO4 requires “regular involvement and active engagement,” which a single weekend cannot demonstrate however exhausting it was.",
+  fix:"Propose the whole thing: six weeks of position-paper research and delegation prep, name your co-delegate and what you had to negotiate (LO5), keep LO6, and drop LO4."},
+
+ {p:"“Teaching myself bass from scratch to play one song with the school band at the spring concert. 30 minutes, five days a week, four months. I'll film the same eight bars every Sunday. <b>Creativity</b>, LO2 and LO4.”",
+  v:"y",ask:"What will exist in four months that does not exist now — and would it show change, or only attendance?",
+  why:"Everything is here. A skill you demonstrably don't have (LO2), a named end point that can't be fudged, four months of regular engagement (LO4), and a reflection method that <b>makes change visible</b> — the Sunday videos are the growth, not a record of attendance."},
+
+ {p:"“Coaching the Grade 6 football side twice a week for a term with two classmates. We plan each session together on Sunday nights and rotate who leads. <b>Activity + Service</b>, LO3 and LO5.”",
+  v:"y",ask:"Is your outcome the thing your proposal is built around, or a side effect you are hoping for?",
+  why:"A new role, not a continuation. The Sunday planning is the LO3 evidence (initiating and planning, in collaboration) and the rotation creates real LO5 material — someone will disagree about how to run a drill, and that disagreement is the reflection."},
+
+ {p:"“A six-week campaign to get water refill stations installed — audit current bottle use, survey students, cost three options, present to the business manager. <b>Service</b>, LO3, LO6, LO7.”",
+  v:"y",ask:"Can a reader see all five stages — investigate, prepare, act, reflect, demonstrate — in your proposal, before you have done any of it?",
+  why:"Investigate, prepare, act, reflect, demonstrate — all five stages are visible in the proposal itself. LO6 is earned properly: single-use plastic is a global issue met locally, with action attached. LO7 has a genuine dilemma waiting (what if the cheapest option is the worst one?), which is exactly what LO7 wants."}
+];
+
+const deck=document.getElementById('deck');
+let committed=0;
+CARDS.forEach((c,i)=>{
+  const el=document.createElement('div');
+  el.className='card';
+  const vname={y:'Approve',m:'Revise &amp; resubmit',n:'Reject'};
+  el.innerHTML=`<div class="cnum">PROPOSAL ${String(i+1).padStart(2,'0')}</div>
+    <p class="prop">${c.p}</p>
+    <div class="guess noprint">
+      <button data-v="y">Approve</button>
+      <button data-v="m">Revise</button>
+      <button data-v="n">Reject</button>
+    </div>
+    <div class="reveal">
+      <span class="vbadge ${c.v}">${vname[c.v]}</span>
+      <p class="ask${c.v==='y'?' ok':''}">${c.ask}</p>
+      <p class="why">${c.why}</p>
+      ${c.fix?`<p class="fix"><b>What would fix it</b>${c.fix}</p>`:''}
+    </div>`;
+  el.querySelectorAll('.guess button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      if(!el.dataset.picked){committed++;updateScore();}
+      el.dataset.picked='1';
+      el.querySelectorAll('.guess button').forEach(x=>x.classList.remove('picked'));
+      b.classList.add('picked');
+      el.classList.add('shown');
+    });
+  });
+  deck.appendChild(el);
+});
+function updateScore(){
+  document.getElementById('score').innerHTML=`Verdicts committed: <b>${committed}</b> / ${CARDS.length}`;
+}
+document.getElementById('revealAll').addEventListener('click',()=>document.querySelectorAll('.card').forEach(c=>c.classList.add('shown')));
+document.getElementById('resetAll').addEventListener('click',()=>{
+  document.querySelectorAll('.card').forEach(c=>{
+    c.classList.remove('shown');delete c.dataset.picked;
+    c.querySelectorAll('.guess button').forEach(x=>x.classList.remove('picked'));
+  });
+  committed=0;updateScore();
+});
+document.getElementById('printDeck').addEventListener('click',()=>{
+  document.querySelectorAll('.card').forEach(c=>c.classList.add('shown'));window.print();
+});
+
+/* ---------------- MODEL PROPOSALS ---------------- */
+const MODELS=[
+ {title:"Tutoring Grade 8 maths",tag:"Service + Creativity · LO2, LO5",
+  rows:[
+   ["What","Tutoring two Grade 8 students in algebra at the community learning centre, Tuesdays and Thursdays 4–5pm, for twelve weeks from September to November."],
+   ["Where","<b>Service</b> — the tutoring itself. <b>Creativity</b> — I design the practice materials rather than using a textbook."],
+   ["So what","<span class='lochip'>LO2</span> Demonstrate that challenges have been undertaken, developing new skills in the process. <span class='lochip'>LO5</span> Demonstrate the skills and recognize the benefits of working collaboratively."],
+   ["How (LO2)","I have never taught anyone anything. The new skill is explaining one idea more than one way. <em>Every session where a student is still stuck at the end, I write a second explanation of that same concept before the next session — a different representation: a diagram, a worked example, physical objects.</em> By week twelve I'll have a folder of re-explanations and can point to three concepts where the second attempt worked, and say why.",1],
+   ["How (LO5)","<em>The centre's coordinator sets what the students need to cover and I decide how; so every session opens with a negotiation about what actually comes next.</em> The LO5 evidence is the record of the three times I abandoned my plan for hers — and the one time I shouldn't have.",1],
+   ["Why","I failed algebra in Grade 8. I remember being told the same explanation louder and slower and still not understanding it. I want to find out whether being the person on the other side of that is as easy as it looked."],
+   ["Reflection","A ten-minute voice memo in the car after every session answering two questions: where did I lose them, and what did I change? Written supervisor feedback at week six and week twelve."]
+  ]},
+
+ {title:"Training for a half-marathon",tag:"Activity · LO1, LO4",
+  rows:[
+   ["What","Training for and completing the city half-marathon in February — four runs a week for sixteen weeks on a written plan, building from 5km to 21km."],
+   ["Where","<b>Activity</b>."],
+   ["So what","<span class='lochip'>LO1</span> Identify own strengths and develop areas for growth. <span class='lochip'>LO4</span> Show commitment to and perseverance in CAS experiences."],
+   ["How (LO4)","<em>Commitment isn't proved by race day — finishing proves I turned up once. It's proved by the weeks I don't want to run.</em> So I log every scheduled session for sixteen weeks <em>including the ones I miss, with the reason</em>. The evidence for LO4 is the missed-week entries and what I changed to get back on the plan.",1],
+   ["How (LO1)","The weakness I'm naming up front: I quit things privately, where nobody sees. So the plan is public — posted where my training partner can see it — and the growth I'm testing is whether I can keep going without an audience once the novelty is gone, which is what weeks 7 to 11 are for.",0],
+   ["Why","I have started and abandoned three fitness goals. I'd like to know whether that's a fact about me or just a fact about how I've planned things before."],
+   ["Reflection","A weekly blog entry — not what I ran, but what I nearly didn't do and why. A photo of the training log at the end of each month."]
+  ]},
+
+ {title:"Organising a student art exhibition",tag:"Creativity + Service · LO3, LO7",
+  rows:[
+   ["What","Organising an exhibition of student artwork in the school foyer in March: a call for submissions in January, selection in February, hanging and opening night in March."],
+   ["Where","<b>Creativity</b> — the design and curation. <b>Service</b> — it gives other students a platform they don't currently have."],
+   ["So what","<span class='lochip'>LO3</span> Demonstrate how to initiate and plan a CAS experience. <span class='lochip'>LO7</span> Recognize and consider the ethics of choices and actions."],
+   ["How (LO3)","<em>Nobody asked for this exhibition, so every stage exists only if I build it: the dated plan from call-out to opening, the room booking, the budget, and the fallback for when a date collapses.</em> The LO3 evidence is the plan with its revisions visible — I'll keep the original and mark what moved and why.",1],
+   ["How (LO7)","The ethical decision is whose work is shown and how. <em>I will write the selection criteria and publish them before any submissions arrive, so that I cannot quietly favour my friends</em>, and I'll get written consent from each artist about how their piece is labelled and whether it can be photographed.",1],
+   ["Why","I want to find out whether I can lead something where the credit goes to other people."],
+   ["Reflection","Photographs at each stage, and a written piece after the opening on the one decision I'd make differently — plus the selection criteria document itself, which is evidence of an ethical choice made in advance rather than defended afterwards."]
+  ]},
+
+ {title:"Volunteering at the refugee support centre",tag:"Service · LO6, LO7",
+  rows:[
+   ["What","Volunteering at the local refugee support centre every Saturday morning for two months, working in the homework club with primary-age children."],
+   ["Where","<b>Service</b>."],
+   ["So what","<span class='lochip'>LO6</span> Demonstrate engagement with issues of global significance. <span class='lochip'>LO7</span> Recognize and consider the ethics of choices and actions."],
+   ["How (LO6)","Not “I will become more aware.” <em>By week eight I will be able to explain how the resettlement process works here — who decides, how long each stage takes, and where it stalls — and trace one specific policy to one specific consequence I watched a family live through.</em> That written piece is the LO6 evidence.",1],
+   ["How (LO7)","<em>The dilemma I already know is coming: the impulse to photograph this for my CAS record.</em> So the decision is made in advance — I photograph nothing and name nobody. My evidence is my supervisor's sign-off and my own writing. I'll also be watching for the second trap: treating two months of Saturdays as though it makes me an authority on anyone's life.",1],
+   ["Why","My grandparents arrived somewhere as strangers. I've heard that story my whole life from the far end of it, and I've never seen the near end."],
+   ["Reflection","A weekly journal covering three things: what I actually did, one ethical question that came up, and one thing I learned from someone at the centre rather than about them."]
+  ]}
+];
+const modelsEl=document.getElementById('models');
+MODELS.forEach(m=>{
+  const d=document.createElement('div');
+  d.className='model';
+  const rows=m.rows.map(r=>`<div class="fline${r[2]?' how':''}"><div class="flab">${r[0]}</div><div class="fval">${r[1]}</div></div>`).join('');
+  d.innerHTML=`<div class="mhead"><span class="mtitle">${m.title}</span><span class="mtag">${m.tag}</span></div><div class="mbody">${rows}</div>`;
+  modelsEl.appendChild(d);
+});
+
+/* ---------------- CHECKLIST ---------------- */
+const CHECK=[
+ "Someone who has never met me could read my <b>What</b> and picture exactly what I'll be doing, with whom, and how often.",
+ "I named the <b>strand</b> the activity genuinely sits in — not the one my record is missing.",
+ "I cited my learning outcome by <b>number and official wording</b>, not a paraphrase like “teamwork” or “empathy.”",
+ "For each outcome I wrote <b>how</b> — the specific thing I will do that produces it — and my sentence survives the <b>swap test</b>.",
+ "My outcome claim is <b>specific enough to be wrong</b>: there's a named point in time and something that will exist because of this.",
+ "I said <b>why me, why now</b> — a real connection to a challenge, a past failure, an emotion, or an ethical question.",
+ "My reflection plan says <b>what and when</b>, and it happens <b>during</b>, not only at the end.",
+ "This is <b>not</b> routine, not paid, not a family duty, not assessed for a DP grade, and not something I'd be doing anyway.",
+ "The <b>scope</b> is long enough that week six will look different from day one. (A CAS <b>project</b> runs at least a month.)"
+];
+const checkEl=document.getElementById('check');
+CHECK.forEach(c=>{
+  const r=document.createElement('div');
+  r.className='crow';
+  r.innerHTML=`<div class="box"></div><div class="ctext">${c}</div>`;
+  r.addEventListener('click',()=>{r.classList.toggle('done');tally();});
+  checkEl.appendChild(r);
+});
+function tally(){
+  const n=document.querySelectorAll('.crow.done').length;
+  const t=document.getElementById('ctally');
+  t.textContent=n+' of '+CHECK.length+' ticked'+(n===CHECK.length?' — submit it.':(n>=7?' — close. Fix the rest before you submit.':''));
+}
+document.getElementById('printCheck').addEventListener('click',()=>window.print());
+</script>
+</body>
+</html>
