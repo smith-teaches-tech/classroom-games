@@ -155,6 +155,20 @@
   .ctext b{color:var(--nasa);}
   .ctally{font-family:"JetBrains Mono",monospace;font-size:14px;color:var(--ink-soft);margin:16px 0 0;font-style:italic;}
 
+  /* ---- PROJECT ---- */
+  .reqs{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;}
+  .req{border:1.5px solid var(--ink);background:rgba(255,255,255,.5);padding:16px 18px;}
+  .req .rnum{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;color:var(--amber);}
+  .req .rt{font-size:20px;line-height:1.24;font-weight:600;margin:6px 0 8px;}
+  .req p{font-size:16.5px;line-height:1.36;margin:0;color:var(--ink-soft);}
+  .req p b{color:var(--nasa);}
+  .wrongs{border:1.5px solid var(--ink);background:rgba(138,51,36,.05);border-left:6px solid var(--bad);padding:6px 22px;margin-top:20px;}
+  .wrong{padding:14px 0;border-bottom:1px dashed var(--rule);}
+  .wrong:last-child{border-bottom:none;}
+  .wrong .claim{font-size:19px;font-style:italic;color:var(--bad);margin:0 0 5px;}
+  .wrong p{font-size:17px;line-height:1.36;margin:0;}
+  .wrong p b{color:var(--nasa);}
+
   .myth{border:1px dashed var(--rule);background:rgba(255,255,255,.4);padding:16px 20px;margin:26px 0 0;font-size:17.5px;line-height:1.4;}
   .myth b{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--bad);display:block;margin-bottom:6px;}
 
@@ -301,6 +315,37 @@
     <p class="ctally" id="ctally">0 of 9 ticked</p>
     <div class="controls noprint" style="margin-top:20px">
       <button class="primary" id="printCheck">Print the checklist</button>
+    </div>
+  </section>
+
+  <!-- 06 PROJECT -->
+  <section>
+    <span class="sec-num">06 / IF IT'S A PROJECT</span>
+    <h2>A project is a <span class="step-c">different gate</span></h2>
+    <p class="lede">Everything above still applies — a project is made of experiences. But six extra requirements come with it, and two of them are where proposals fail.</p>
+
+    <div class="reqs">
+      <div class="req"><div class="rnum">01</div><p class="rt">Collaborative</p>
+        <p>The defining feature. <b>"Collaboration between a group of students, or with members of the wider community."</b> Working with an outside organisation counts — working alone does not, however ambitious.</p></div>
+      <div class="req"><div class="rnum">02</div><p class="rt">At least one month</p>
+        <p>From <b>planning to completion</b>. The clock starts at investigation, not at the first visible action — so six weeks of planning ending in a one-day event does qualify.</p></div>
+      <div class="req"><div class="rnum">03</div><p class="rt">A sequence, not an event</p>
+        <p><b>"A well-considered series of sequential CAS experiences."</b> One experience repeated isn't a project either — the experiences have to build on each other.</p></div>
+      <div class="req"><div class="rnum">04</div><p class="rt">Built on the five stages</p>
+        <p>Investigation, preparation, action, reflection, demonstration. Projects <b>"should use the CAS stages as a framework"</b> — so your proposal should show all five before you start.</p></div>
+      <div class="req"><div class="rnum">05</div><p class="rt">Any strand, or any mix</p>
+        <p>A project <b>can address a single strand or combine two or all three</b>. Most are Service; none has to be.</p></div>
+      <div class="req"><div class="rnum">06</div><p class="rt">At least one, ever</p>
+        <p>One CAS project is the minimum <b>across the whole eighteen months</b>. You may do more.</p></div>
+    </div>
+
+    <div class="wrongs">
+      <div class="wrong"><p class="claim">"You need three projects — one for each strand."</p>
+        <p>No. <b>One</b> is the minimum. The confusion is with the separate requirement to engage all three <em>strands</em> across the programme.</p></div>
+      <div class="wrong"><p class="claim">"The project has to hit LO3 and LO5."</p>
+        <p>Not an IB rule — the seven outcomes are required across your whole CAS programme, not per project. <b>Your school may still require it</b>, because initiating and collaborating is what a project structurally produces. Ask which you're being held to.</p></div>
+      <div class="wrong"><p class="claim">"It has to be big."</p>
+        <p>Scale isn't the criterion. The guide asks the project to <b>"show initiative, demonstrate perseverance, and develop skills such as collaboration, problem solving and decision making."</b> A small project that does those four things beats a large one that doesn't.</p></div>
     </div>
   </section>
 
