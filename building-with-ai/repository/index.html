@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Repository — Building with AI</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#171a21; --panel2:#1e222b; --line:#2b303b;
+    --ink:#e8eaf0; --dim:#a3abbb; --accent:#7bd88f; --accent2:#6aa9ff;
+    --warn:#ffb454; --danger:#ff7b72; --code:#0b0d11;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.65 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:0 0 80px}
+  .wrap{max-width:880px;margin:0 auto;padding:0 20px}
+  header{background:linear-gradient(160deg,#1b2431,#12151b);border-bottom:1px solid var(--line);
+    padding:46px 0 38px;margin-bottom:10px}
+  header h1{margin:0 0 8px;font-size:33px;line-height:1.2;letter-spacing:-.5px}
+  header p{margin:0;color:var(--dim);font-size:17px}
+  .thesis{margin-top:20px;padding:14px 18px;border-left:3px solid var(--accent);
+    background:#141922;border-radius:0 8px 8px 0;font-size:17px}
+  h2{font-size:22px;margin:44px 0 6px;letter-spacing:-.3px;display:flex;align-items:center;gap:12px}
+  .num{background:var(--accent);color:#0b0d11;min-width:31px;height:31px;padding:0 8px;border-radius:8px;
+    display:grid;place-items:center;font-size:12px;font-weight:700;flex:none;letter-spacing:.5px}
+  h3{font-size:16px;margin:24px 0 8px;color:var(--accent2)}
+  p{margin:10px 0}
+  .sub{color:var(--dim);margin:0 0 14px 43px;font-size:15px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:16px 0}
+  code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:14px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#ffd9a0}
+  pre{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:16px;
+    overflow-x:auto;margin:12px 0;position:relative}
+  pre code{background:none;padding:0;color:#d6dae4;font-size:13.5px;line-height:1.6}
+  .copy{position:absolute;top:10px;right:10px;background:var(--panel2);color:var(--dim);
+    border:1px solid var(--line);border-radius:7px;padding:5px 11px;font-size:12px;cursor:pointer}
+  .copy:hover{color:var(--ink);border-color:var(--accent)}
+  .copy.done{color:var(--accent);border-color:var(--accent)}
+  .tabs{display:flex;gap:8px;margin:14px 0 0;flex-wrap:wrap}
+  .tab{background:var(--panel2);border:1px solid var(--line);color:var(--dim);
+    padding:9px 16px;border-radius:9px;cursor:pointer;font-size:14px;font-weight:600}
+  .tab:hover{color:var(--ink)}
+  .tab.on{background:var(--accent);color:#0b0d11;border-color:var(--accent)}
+  .pane{display:none;margin-top:14px}
+  .pane.on{display:block}
+  ol,ul{margin:10px 0;padding-left:22px}
+  li{margin:7px 0}
+  .warn{border-left:3px solid var(--warn);background:#241d12;padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0}
+  .warn strong{color:var(--warn)}
+  .bad{border-left:3px solid var(--danger);background:#251519;padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0}
+  .bad strong{color:var(--danger)}
+  .good{border-left:3px solid var(--accent);background:#122018;padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0}
+  .good strong{color:var(--accent)}
+  .tree{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:18px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;line-height:1.9;overflow-x:auto}
+  .tree .f{color:var(--accent2)}
+  .tree .note{color:var(--dim);font-family:inherit}
+  .row{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;align-items:center}
+  input[type=text]{background:var(--code);color:var(--ink);border:1px solid var(--line);
+    border-radius:8px;padding:10px 12px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;flex:1;min-width:180px}
+  .btn{background:var(--accent);color:#0b0d11;border:none;border-radius:8px;padding:11px 20px;
+    font-size:14px;font-weight:700;cursor:pointer}
+  .btn:hover{filter:brightness(1.1)}
+  .loop{display:grid;gap:9px;margin:16px 0}
+  .step{display:flex;gap:14px;align-items:flex-start;background:var(--panel2);
+    border:1px solid var(--line);border-radius:10px;padding:13px 16px}
+  .step b{color:var(--accent);flex:none;width:20px}
+  label.check{display:flex;gap:12px;align-items:flex-start;background:var(--panel2);
+    border:1px solid var(--line);border-radius:10px;padding:13px 16px;margin:9px 0;cursor:pointer}
+  label.check:hover{border-color:var(--accent2)}
+  label.check input{margin-top:4px;width:17px;height:17px;flex:none;accent-color:var(--accent)}
+  label.check.done{opacity:.5}
+  label.check.done span{text-decoration:line-through}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--accent2);font-size:13px;text-transform:uppercase;letter-spacing:.5px}
+  .reset{background:none;border:1px solid var(--line);color:var(--dim);border-radius:8px;
+    padding:7px 14px;font-size:13px;cursor:pointer;margin-top:6px}
+  .reset:hover{color:var(--ink)}
+  footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--line);color:var(--dim);font-size:14px}
+
+  /* --- additions for this page --- */
+  .obj{margin:0 0 16px 43px;padding:11px 16px;background:var(--panel2);
+    border:1px solid var(--line);border-left:3px solid var(--accent2);
+    border-radius:0 8px 8px 0;font-size:15px}
+  .obj b{color:var(--accent2);text-transform:uppercase;font-size:11.5px;
+    letter-spacing:.9px;display:block;margin-bottom:3px}
+  .path{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:14px 0;
+    padding:13px 15px;background:var(--code);border:1px solid var(--line);border-radius:10px}
+  .chip{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
+    background:var(--panel2);border:1px solid var(--line);border-radius:6px;
+    padding:5px 10px;color:var(--ink);white-space:nowrap}
+  .chip.ghost{background:none;border-style:dashed;color:var(--dim)}
+  .arw{color:var(--dim);font-size:12px;flex:none}
+  .fields th{color:var(--dim);text-transform:none;letter-spacing:0;
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;width:40%;white-space:nowrap}
+  .fillin{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:16px 0;
+    padding:14px 16px;border:1px dashed var(--accent2);border-radius:12px;background:var(--panel2)}
+  .fillin label{color:var(--accent2);font-size:12px;text-transform:uppercase;
+    letter-spacing:.8px;font-weight:700;white-space:nowrap}
+  mark{background:#4a3a12;color:#ffd9a0;padding:1px 4px;border-radius:4px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>Your Repository</h1>
+    <p>Building with AI — one place that holds every project you make</p>
+    <div class="thesis"><strong>This repository does two jobs at once.</strong> It's where your teacher reads your code, and it's the website where the world clicks your links. Same folder, two audiences.</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<div class="warn">
+  <strong>You set this up once.</strong> Every project after this one is just Part 4 and Part 5 again — a new folder, a new link. You will never rebuild this page, so it's worth getting right the first time.
+</div>
+
+<h3>Two ideas before you start</h3>
+
+<div class="card">
+  <p><strong>Every folder needs a file called <code>index.html</code>.</strong> You never type a filename into a web address — so how does a website know what to show you? One rule: it looks for <code>index.html</code> and shows that. Every folder on the web works this way. It's the front door, and that's the handle.</p>
+</div>
+
+<div class="card">
+  <p><strong>Your folders become your web addresses.</strong> That's the whole trick behind every website you've ever visited. Make a folder, you just made an address:</p>
+  <div class="tree" style="margin-top:14px">
+📁 <span class="f">yourusername.github.io/</span><br>
+&nbsp;&nbsp;&nbsp;📄 <span class="f">README.md</span> &nbsp;&nbsp;<span class="note">← who you are. For people reading your CODE.</span><br>
+&nbsp;&nbsp;&nbsp;📄 <span class="f">index.html</span> &nbsp;&nbsp;<span class="note">← your homepage. For people visiting your SITE.</span><br>
+&nbsp;&nbsp;&nbsp;📁 <span class="f">haunted-library/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;📄 <span class="f">index.html</span> &nbsp;&nbsp;<span class="note">← one project</span><br>
+&nbsp;&nbsp;&nbsp;📁 <span class="f">quiz-master/</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;📄 <span class="f">index.html</span> &nbsp;&nbsp;<span class="note">← the next one</span>
+  </div>
+  <p style="margin-top:14px">Which gives you these addresses, for free, without doing anything else:</p>
+  <div class="tree">
+<span class="f">yourusername.github.io/</span><br>
+<span class="f">yourusername.github.io/haunted-library/</span><br>
+<span class="f">yourusername.github.io/quiz-master/</span>
+  </div>
+</div>
+
+<div class="bad">
+  <strong>Web addresses are case-sensitive. Your computer isn't.</strong> <code>Haunted-Library</code> and <code>haunted-library</code> are the same folder on your laptop and two completely different addresses on the internet. Your link works for you and breaks for everyone else. Lowercase everything, always — same rule as your project folders, same reason.
+</div>
+
+<!-- ============ PART 1 ============ -->
+<h2><span class="num">PART 1</span>Your account</h2>
+<p class="sub">github.com — the site that will host everything you make.</p>
+<div class="obj"><b>Objective</b>An account that still belongs to you after you leave this school.</div>
+
+<p>Go to <strong>github.com</strong> and click <strong>Sign up</strong>. Use your <strong>school email</strong>.</p>
+
+<div class="warn">
+  <strong>Your username becomes your web address — permanently.</strong> Take a minute on this. It's the one decision here you can't undo.<br><br>
+  Good: <code>maya-builds</code> &nbsp; <code>river-makes-things</code> &nbsp; <code>kx-projects</code><br>
+  Bad: your full name, your birth year, anything you'd be embarrassed by at nineteen.
+</div>
+
+<div class="fillin">
+  <label for="u">My username</label>
+  <input type="text" id="u" placeholder="write it here so you don't forget" spellcheck="false">
+</div>
+
+<h3>Then add your personal email — do this now</h3>
+<p>Your school email will stop working one day. Your account shouldn't die with it.</p>
+
+<div class="path">
+  <span class="chip">your profile picture</span><span class="arw">▸</span>
+  <span class="chip">Settings</span><span class="arw">▸</span>
+  <span class="chip ghost">sidebar: Access</span><span class="arw">▸</span>
+  <span class="chip">Emails</span>
+</div>
+
+<p>Type your personal address into <strong>Add email address</strong>, click <strong>Add</strong>, then open that inbox and click the verification link.</p>
+
+<div class="good">
+  <strong>One account, several emails.</strong> When your school address stops working, you make the personal one primary and remove the school one. Your username, your repository, and everything in it stay exactly the same. Nothing to move.
+</div>
+
+<p>If GitHub asks you to set up <strong>two-factor authentication</strong> and you're in the middle of class, choose <strong>remind me later</strong> — but you will have to do it, and when you do, <strong>save the recovery codes somewhere personal.</strong> Save them to a school account and you can lose your GitHub account along with it.</p>
+
+<!-- ============ PART 2 ============ -->
+<h2><span class="num">PART 2</span>Your repository</h2>
+<p class="sub">One repository for everything — not one per project.</p>
+<div class="obj"><b>Objective</b>A public repository, named exactly right, that will hold every project you build.</div>
+
+<div class="path">
+  <span class="chip">＋ top right</span><span class="arw">▸</span>
+  <span class="chip">New repository</span>
+</div>
+
+<table class="fields">
+  <tr><th>Repository name</th><td><code>yourusername.github.io</code> — your exact username, then <code>.github.io</code></td></tr>
+  <tr><th>Description</th><td>Anything. <code>My projects</code> works.</td></tr>
+  <tr><th>Public / Private</th><td><strong>Public.</strong> Required — your site can't go live otherwise.</td></tr>
+  <tr><th>Add a README file</th><td><strong>Tick this box.</strong></td></tr>
+</table>
+
+<p>Click <strong>Create repository</strong>.</p>
+
+<div class="bad">
+  <strong>The name has to be exact.</strong> Username <code>maya-builds</code> means the repository is <code>maya-builds.github.io</code> — not <code>Maya-Builds.github.io</code>, not <code>maya-builds.github.com</code>. That precise name is what gives you a clean address instead of an ugly one. Get it wrong and nothing after this works.
+</div>
+
+<div class="warn">
+  <strong>Public means genuinely public.</strong> Anyone can read this and Google will find it. First name only — no last name, no school name, no city, no email or phone number, no photos of you or anyone else.<br><br>
+  And <strong>deleting something later doesn't erase it.</strong> Every version you save is kept forever. That's the entire point of this tool, and it cuts both ways.
+</div>
+
+<h3>Write your README</h3>
+<p>The README is the first thing anyone sees when they look at your <em>code</em> — including your teacher. Click <code>README.md</code>, then the pencil icon, and replace what's there.</p>
+
+<pre><button class="copy">copy</button><code># Hi, I'm [first name]
+
+This is where everything I build lives.
+
+## What I'm into
+-
+-
+
+## What I'm working on right now
+</code></pre>
+
+<p>Then click <strong>Commit changes…</strong> — a box pops up. Type a short message saying what you did, and click <strong>Commit changes</strong> to confirm.</p>
+
+<div class="card">
+  <p><strong>A commit is a save with a note attached.</strong> That message box isn't decoration — every save is kept forever with your note on it. It's the change log from your project file, except this one keeps itself.</p>
+</div>
+
+<!-- ============ PART 3 ============ -->
+<h2><span class="num">PART 3</span>Turn the website on</h2>
+<p class="sub">Right now you have a repository. Two clicks make it a website.</p>
+<div class="obj"><b>Objective</b>A live web address that anyone can open and that never expires.</div>
+
+<div class="path">
+  <span class="chip">Settings</span><span class="arw">▸</span>
+  <span class="chip ghost">sidebar: Code and automation</span><span class="arw">▸</span>
+  <span class="chip">Pages</span>
+</div>
+
+<p>Under <strong>Build and deployment</strong>:</p>
+<ol>
+  <li>Set <strong>Source</strong> to <strong>Deploy from a branch</strong></li>
+  <li>The branch dropdown says <strong>None</strong> — change it to <strong>main</strong></li>
+  <li>Leave the folder dropdown on <strong>/ (root)</strong></li>
+  <li>Click <strong>Save</strong></li>
+</ol>
+
+<p><strong>Now wait one to three minutes</strong> and refresh the page. A green banner appears with your address. That's your website. It's live, right now, to the entire internet.</p>
+
+<div class="fillin">
+  <label for="site">My address</label>
+  <input type="text" id="site" placeholder="https://yourusername.github.io/" spellcheck="false">
+</div>
+
+<div class="good">
+  <strong>Open it on your phone.</strong> Not connected to your laptop, not on the school wifi — just your phone, anywhere. That address belongs to you now and it doesn't expire in an hour.
+</div>
+
+<!-- ============ PART 4 ============ -->
+<h2><span class="num">PART 4</span>Add a project</h2>
+<p class="sub">One folder per project. You'll do this part again for everything you build.</p>
+<div class="obj"><b>Objective</b>One of your projects living in its own folder, at its own web address.</div>
+
+<h3>First, name the folder</h3>
+<p><strong>Name it after your project.</strong> The name is yours — the format isn't, because it lands in a web address:</p>
+<ul>
+  <li>all <strong>lowercase</strong></li>
+  <li><strong>dashes</strong>, never spaces</li>
+  <li>letters, numbers and dashes only — GitHub won't even let you type anything else here</li>
+  <li>short, because people have to type it</li>
+</ul>
+
+<div class="fillin">
+  <label for="folder">Folder name</label>
+  <input type="text" id="folder" placeholder="haunted-library" spellcheck="false">
+</div>
+
+<h3>Now make it</h3>
+<div class="path">
+  <span class="chip">Add file ▾</span><span class="arw">▸</span>
+  <span class="chip">Create new file</span>
+</div>
+
+<p>In the filename box, type your folder name, then a slash, then <code>index.html</code>:</p>
+
+<pre><button class="copy">copy</button><code>your-folder-name/index.html</code></pre>
+
+<div class="good">
+  <strong>Watch what happens when you type the <code>/</code>.</strong> GitHub builds the folder right in front of you. That slash is how folders get made here — there is no "new folder" button. Now you know.
+</div>
+
+<h3>Then paste your project in</h3>
+
+<div class="tabs" data-group="paste">
+  <button class="tab on" data-t="p-laptop">Laptop</button>
+  <button class="tab" data-t="p-ipad">iPad</button>
+</div>
+<div class="pane on" id="p-laptop">
+  <p>Open your project's <code>index.html</code>, click inside it, press <code>Ctrl+A</code> / <code>⌘A</code> to select <em>all</em> of it, copy, and paste into the big box.</p>
+</div>
+<div class="pane" id="p-ipad">
+  <p>Copying out of the Files app is fiddly. Easier: make the folder first with a placeholder, then use <strong>Add file ▾ → Upload files</strong> and pick your file straight from Files.</p>
+  <p>Also worth knowing — once this is live, <strong>you'll be able to run your own project on your own iPad for the first time.</strong> An iPad can't open an HTML file directly, so until now you've only ever seen it on someone else's screen.</p>
+</div>
+
+<p>Click <strong>Commit changes…</strong>, type a message like <code>Add my project</code>, and confirm.</p>
+
+<div class="bad">
+  <strong>Blank page when you visit it?</strong> You copied only part of the file. It's the most common bug there is. Click inside the code, <code>Ctrl+A</code> / <code>⌘A</code>, copy again. Every time.
+</div>
+
+<div class="warn">
+  <strong><code>index.html</code> is not optional.</strong> The <em>folder</em> name is yours to choose. The <em>file</em> inside it has to be called exactly <code>index.html</code>, or your address opens a page of raw code instead of your project.
+</div>
+
+<!-- ============ PART 5 ============ -->
+<h2><span class="num">PART 5</span>Your homepage</h2>
+<p class="sub">The front page that links to everything. This is what you actually share with people.</p>
+<div class="obj"><b>Objective</b>A homepage at your main address, with a working link to each project.</div>
+
+<div class="path">
+  <span class="chip">Add file ▾</span><span class="arw">▸</span>
+  <span class="chip">Create new file</span><span class="arw">▸</span>
+  <span class="chip ghost">filename: index.html</span>
+</div>
+
+<p><strong>No slash this time.</strong> This one sits at the top level, next to your project folders.</p>
+
+<p>Here's a starter that already works. Copy it, paste it in, and change the <mark>highlighted</mark> parts.</p>
+
+<pre><button class="copy">copy</button><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+&lt;title&gt;Maya — Projects&lt;/title&gt;
+&lt;style&gt;
+  body { font-family: system-ui, sans-serif; max-width: 640px;
+         margin: 0 auto; padding: 2.5rem 1.25rem; line-height: 1.6;
+         background: #14141a; color: #e8e8ee; }
+  h1 { font-size: 2.25rem; margin-bottom: .25rem; }
+  .tag { color: #9a9aa8; margin-top: 0; }
+  .card { display: block; padding: 1.25rem; margin-top: 1.5rem;
+          border: 1px solid #33333f; border-radius: 12px;
+          text-decoration: none; color: inherit; }
+  .card:hover { border-color: #7c6cff; background: #1c1c26; }
+  .card h2 { margin: 0 0 .35rem; font-size: 1.2rem; }
+  .card p { margin: 0; color: #9a9aa8; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+  &lt;h1&gt;Maya&lt;/h1&gt;
+  &lt;p class="tag"&gt;Things I'm building.&lt;/p&gt;
+
+  &lt;a class="card" href="haunted-library/"&gt;
+    &lt;h2&gt;Haunted Library&lt;/h2&gt;
+    &lt;p&gt;A three-room escape game.&lt;/p&gt;
+  &lt;/a&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<p>Four things to change: the name in the title, the heading, and the link, name and description in that <code>&lt;a class="card"&gt;</code> block.</p>
+
+<div class="bad">
+  <strong>The link is the part that breaks.</strong> It has to be your folder name and a slash — <code>haunted-library/</code> — and nothing else. Not <code>https://...</code>, no capital letters.<br><br>
+  That's a <strong>relative link</strong>: it means "the folder sitting right next to this file." Which is why it keeps working no matter what your address is, or where the site moves to.
+</div>
+
+<p>Commit it. Wait a minute or two, then reload your address.</p>
+
+<!-- ============ PART 6 ============ -->
+<h2><span class="num">PART 6</span>Check it like a stranger</h2>
+<p class="sub">It working on your screen is not evidence. Other people's screens are.</p>
+<div class="obj"><b>Objective</b>Proof that your site works for someone who isn't you, on a device that isn't yours.</div>
+
+<p>Open your address in a <strong>new tab</strong> — the real address, not GitHub's preview.</p>
+
+<label class="check"><input type="checkbox"><span>The homepage loads</span></label>
+<label class="check"><input type="checkbox"><span>The link opens my <strong>project</strong>, not a page of code</span></label>
+<label class="check"><input type="checkbox"><span>The project actually <strong>runs</strong> — I played all the way through it</span></label>
+<label class="check"><input type="checkbox"><span>It works on my <strong>phone</strong></span></label>
+<label class="check"><input type="checkbox"><span>Someone else opened it on <strong>their</strong> device and it worked</span></label>
+<label class="check"><input type="checkbox"><span>My <code>README.md</code> says who I am</span></label>
+<button class="reset" id="reset">Reset checklist</button>
+
+<div class="warn">
+  <strong>Changes take a minute or two to appear.</strong> If you just committed something and don't see it yet, wait, then hard-refresh: <code>Ctrl+Shift+R</code> / <code>⌘⇧R</code>.
+</div>
+
+<!-- ============ PART 7 ============ -->
+<h2><span class="num">PART 7</span>Every project after this one</h2>
+<p class="sub">Come back to this page whenever you finish something new.</p>
+<div class="obj"><b>Objective</b>Add any new project to your site in about five minutes, without setting anything up again.</div>
+
+<p>Parts 1 to 3 were one-time setup. You never do them again. Adding your next project is just this:</p>
+
+<div class="loop">
+  <div class="step"><b>1</b><div>Pick a folder name — lowercase, dashes, short</div></div>
+  <div class="step"><b>2</b><div><strong>Add file ▾ → Create new file</strong>, filename <code>new-folder/index.html</code></div></div>
+  <div class="step"><b>3</b><div>Paste the whole project in. Commit.</div></div>
+  <div class="step"><b>4</b><div>Open your top-level <code>index.html</code> and copy the existing <code>&lt;a class="card"&gt;</code> block</div></div>
+  <div class="step"><b>5</b><div>Paste it underneath, change the link, title and description. Commit.</div></div>
+  <div class="step"><b>6</b><div>Reload your site and click the new link</div></div>
+</div>
+
+<div class="good">
+  <strong>That's the payoff for setting it up properly.</strong> Your site grows by one folder and one link at a time. By the end of the year, one address shows everything you've made — and you'll never have rebuilt any of it.
+</div>
+
+<!-- ============ TROUBLE ============ -->
+<h2><span class="num">FIXES</span>When something goes wrong</h2>
+<p class="sub">Find what you're seeing, then read across.</p>
+
+<table>
+  <tr><th>What you're seeing</th><th>What to do</th></tr>
+  <tr><td><strong>404 on my main address</strong></td>
+      <td>The repository name isn't exactly <code>username.github.io</code>. Check it letter by letter in Settings.</td></tr>
+  <tr><td><strong>404, and the name is right</strong></td>
+      <td>Pages isn't switched on, or it's pointing at the wrong branch. <strong>Settings → Pages → main → / (root) → Save</strong>.</td></tr>
+  <tr><td><strong>Homepage works, project link 404s</strong></td>
+      <td>Capital letters. The folder name and the link have to match exactly, all lowercase. This is the most common problem on this page.</td></tr>
+  <tr><td><strong>Project link 404s, no capitals</strong></td>
+      <td>A space in the folder name turned into <code>%20</code>. Rename the folder with dashes.</td></tr>
+  <tr><td><strong>The link shows code, not my project</strong></td>
+      <td>The file inside the folder isn't called <code>index.html</code>. Rename it.</td></tr>
+  <tr><td><strong>My project loads as a blank page</strong></td>
+      <td>You pasted only part of the file. Click inside the code, <code>Ctrl+A</code> / <code>⌘A</code>, copy, paste again.</td></tr>
+  <tr><td><strong>Nothing loads and I just turned Pages on</strong></td>
+      <td>The first build is the slow one. Wait three minutes, then hard-refresh.</td></tr>
+  <tr><td><strong>My edit isn't showing up</strong></td>
+      <td>The site rebuilds on a delay. Wait two minutes, then <code>Ctrl+Shift+R</code> / <code>⌘⇧R</code>.</td></tr>
+  <tr><td><strong>The verification email never arrived</strong></td>
+      <td>Check spam. If it's not there, your school's mail filter blocked it — tell your teacher.</td></tr>
+  <tr><td><strong>README shows raw <code>#</code> symbols</strong></td>
+      <td>The file isn't named <code>README.md</code>. Rename it.</td></tr>
+</table>
+
+<footer>
+  Building with AI · Keep this page open while you work.<br>
+  Your repository is two things at once: the place your code is read, and the place your work is seen. Look after both.
+</footer>
+
+</div>
+
+<script>
+  document.querySelectorAll('.tabs').forEach(function(group){
+    group.addEventListener('click', function(e){
+      var btn = e.target.closest('.tab');
+      if(!btn) return;
+      var ids = [];
+      group.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('on'); ids.push(t.dataset.t); });
+      btn.classList.add('on');
+      ids.forEach(function(id){
+        var el = document.getElementById(id);
+        if(el) el.classList.toggle('on', id === btn.dataset.t);
+      });
+    });
+  });
+
+  document.querySelectorAll('.copy').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var text = btn.parentElement.querySelector('code').innerText;
+      navigator.clipboard.writeText(text).then(function(){
+        btn.textContent='copied'; btn.classList.add('done');
+        setTimeout(function(){ btn.textContent='copy'; btn.classList.remove('done'); },1600);
+      }).catch(function(){
+        btn.textContent='select it manually';
+        setTimeout(function(){ btn.textContent='copy'; },2000);
+      });
+    });
+  });
+
+  document.querySelectorAll('label.check').forEach(function(l){
+    var box = l.querySelector('input');
+    box.addEventListener('change', function(){ l.classList.toggle('done', box.checked); });
+  });
+  document.getElementById('reset').addEventListener('click', function(){
+    document.querySelectorAll('label.check').forEach(function(l){
+      l.querySelector('input').checked = false; l.classList.remove('done');
+    });
+  });
+</script>
+</body>
+</html>
