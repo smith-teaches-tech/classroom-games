@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fix One Thing — The Walk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3eee1; --paper-2:#ece5d3;
+    --ink:#1f1c17; --ink-soft:#4a4339; --rule:#cbbfa3;
+    --nasa:#1d3b5c; --green:#39563f; --amber:#b9892f;
+    --bad:#8a3324;
+    --line:#b9ae94;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:
+      radial-gradient(120% 90% at 80% -10%, rgba(29,59,92,.07), transparent 60%),
+      radial-gradient(120% 90% at 0% 110%, rgba(57,86,63,.08), transparent 55%),
+      var(--paper);
+    color:var(--ink);
+    font-family:"Cormorant Garamond", Georgia, serif;
+    font-size:19px; line-height:1.45; -webkit-font-smoothing:antialiased;
+  }
+  .sheet{max-width:830px;margin:0 auto;padding:0 30px 90px;}
+
+  /* header */
+  header{padding:52px 0 20px;border-bottom:2px solid var(--ink);}
+  .kicker{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--amber);margin:0 0 14px;}
+  h1{font-size:clamp(34px,5.4vw,50px);line-height:1;font-weight:600;margin:0;letter-spacing:-.015em;}
+  h1 em{font-style:italic;color:var(--nasa);}
+  .brief{font-family:"JetBrains Mono",monospace;font-size:12px;line-height:1.6;text-transform:uppercase;letter-spacing:.08em;margin-top:18px;padding:12px 16px;border:1px solid var(--rule);background:rgba(255,255,255,.4);color:var(--ink-soft);}
+  .brief b{color:var(--ink);}
+  .namerow{display:flex;gap:26px;flex-wrap:wrap;margin-top:16px;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);}
+  .namerow span{flex:1;min-width:200px;border-bottom:1.5px solid var(--line);padding-bottom:3px;}
+
+  section{padding:30px 0 0;}
+  .sec-num{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.2em;color:var(--amber);}
+  h2{font-size:26px;font-weight:600;margin:5px 0 6px;letter-spacing:-.01em;line-height:1.1;}
+  h2 .c{color:var(--nasa);}
+  .note{font-size:17px;color:var(--ink-soft);font-style:italic;margin:0 0 16px;}
+
+  /* look-for list */
+  ol.look{counter-reset:l;list-style:none;margin:0;padding:0;}
+  ol.look li{counter-increment:l;position:relative;padding:11px 0 11px 44px;border-bottom:1px dashed var(--rule);font-size:19px;line-height:1.35;}
+  ol.look li:last-child{border-bottom:none;}
+  ol.look li:before{content:counter(l);position:absolute;left:0;top:11px;width:28px;height:28px;border:1.5px solid var(--ink);display:flex;align-items:center;justify-content:center;font-family:"JetBrains Mono",monospace;font-size:12px;}
+  ol.look li b{color:var(--nasa);}
+  ol.look li .aside{display:block;font-size:16px;color:var(--ink-soft);font-style:italic;margin-top:2px;}
+
+  /* capture table */
+  table{width:100%;border-collapse:collapse;margin-top:4px;}
+  th{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--paper);background:var(--ink);padding:9px 12px;text-align:left;font-weight:400;}
+  th:last-child{width:34%;border-left:1px solid var(--paper);}
+  td{border:1px solid var(--line);height:52px;padding:6px 12px;vertical-align:middle;}
+  td.n{width:34px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-soft);background:var(--paper-2);}
+
+  /* test block */
+  .pick{margin:2px 0 20px;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);display:flex;gap:12px;align-items:flex-end;}
+  .pick .fill{flex:1;border-bottom:1.5px solid var(--ink);height:26px;}
+  .q{margin:0 0 16px;}
+  .q .qt{display:flex;gap:12px;font-size:19px;line-height:1.34;margin:0 0 7px;}
+  .q .qn{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--amber);flex:0 0 22px;padding-top:3px;}
+  .q .qt b{color:var(--nasa);}
+  .lines{margin-left:34px;}
+  .lines .ln{height:31px;border-bottom:1px solid var(--line);}
+
+  /* honest test */
+  .honest{border:1.5px solid var(--ink);background:rgba(255,255,255,.45);padding:6px 20px;margin-top:6px;}
+  .honest .hrow{display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-bottom:1px dashed var(--rule);}
+  .honest .hrow:last-child{border-bottom:none;}
+  .honest .circle{flex:0 0 20px;height:20px;border:1.5px solid var(--ink);border-radius:50%;margin-top:3px;}
+  .honest .htext{font-size:18px;line-height:1.32;}
+  .honest .htext b{color:var(--bad);}
+
+  .verdict{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:20px;padding:14px 18px;border:1.5px solid var(--ink);background:var(--paper-2);}
+  .verdict .vlab{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;}
+  .verdict .opt{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;border:1.5px solid var(--ink);padding:8px 20px;}
+  .verdict .opt.y{color:var(--green);} .verdict .opt.m{color:var(--amber);} .verdict .opt.n{color:var(--bad);}
+
+  .lastq{margin-top:22px;border-left:3px solid var(--amber);background:rgba(185,137,47,.13);padding:14px 18px;}
+  .lastq p{margin:0 0 10px;font-size:20px;line-height:1.32;}
+  .lastq p b{color:var(--nasa);}
+  .lastq .lines{margin-left:0;}
+
+  .controls{display:flex;gap:10px;margin:34px 0 0;}
+  .controls button{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;padding:11px 18px;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer;}
+  .controls button:hover{opacity:.85;}
+
+  footer{margin-top:40px;padding-top:16px;border-top:1.5px solid var(--ink);font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+
+  @media print{
+    @page{size:A4;margin:13mm;}
+    body{background:#fff;font-size:11.5pt;line-height:1.35;}
+    .sheet{max-width:none;padding:0;}
+    .noprint{display:none!important;}
+    header{padding:0 0 12px;}
+    h1{font-size:27pt;}
+    .brief{margin-top:11px;padding:8px 11px;font-size:8pt;}
+    .namerow{margin-top:11px;font-size:8pt;}
+    section{padding:16px 0 0;}
+    #test{padding-top:0;}
+    .pick{margin-bottom:12px;}
+    #honestH{margin-top:15px!important;}
+    h2{font-size:16pt;}
+    .note{font-size:10.5pt;margin-bottom:9px;}
+    ol.look li{padding:7px 0 7px 38px;font-size:11.5pt;}
+    ol.look li:before{top:7px;width:24px;height:24px;font-size:9pt;}
+    ol.look li .aside{font-size:9.5pt;}
+    td{height:56px;}
+    th{padding:6px 10px;font-size:8pt;}
+    #test{break-before:page;}
+    .lines .ln{height:24px;border-bottom:1px solid #b0b0b0;}
+    .q{margin-bottom:6px;}
+    .q .qt{margin-bottom:5px;}
+    #test .note{margin-bottom:7px;}
+    .honest{padding:2px 16px;}
+    .honest .hrow{padding:7px 0;}
+    .verdict{margin-top:13px;padding:10px 15px;}
+    .lastq{margin-top:14px;padding:11px 15px;}
+    .lastq p{font-size:12pt;margin-bottom:7px;}
+    .honest,.verdict,.lastq{break-inside:avoid;}
+    footer{margin-top:16px;padding-top:10px;}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header>
+    <p class="kicker">CAS &middot; Class 3 &middot; Fix One Thing</p>
+    <h1>The walk <em>— find something worth fixing</em></h1>
+    <p class="brief"><b>Your group has 15 minutes.</b> Walk quietly. Look, don't fix. Bring back six things and one idea you can defend.</p>
+    <div class="namerow"><span>Group</span><span>Names</span><span>Date</span></div>
+  </header>
+
+  <!-- 1 -->
+  <section>
+    <span class="sec-num">01</span>
+    <h2>Before you go — what to <span class="c">look for</span></h2>
+    <p class="note">You have walked these corridors for years and stopped seeing them. Each question below finds a different kind of thing.</p>
+    <ol class="look">
+      <li>Where do people <b>slow down, hesitate, or look around</b>?
+        <span class="aside">Confusion has body language. Watch for it.</span></li>
+      <li>What has someone already tried to fix with <b>tape, a handwritten sign, or a propped-open door</b>?
+        <span class="aside">Someone got there before you — and it didn't hold. Why not?</span></li>
+      <li>What do you end up <b>explaining to new students every year</b>?
+        <span class="aside">If it needs explaining every September, the building isn't saying it.</span></li>
+      <li>What would you notice if <b>today were your first day here</b>?</li>
+    </ol>
+  </section>
+
+  <!-- 2 -->
+  <section>
+    <span class="sec-num">02</span>
+    <h2>What we <span class="c">saw</span></h2>
+    <p class="note">Write down everything — including the ones you are sure aren't CAS. You'll need them.</p>
+    <table>
+      <thead><tr><th colspan="2">What we saw</th><th>Who does it bother?</th></tr></thead>
+      <tbody>
+        <tr><td class="n">1</td><td></td><td></td></tr>
+        <tr><td class="n">2</td><td></td><td></td></tr>
+        <tr><td class="n">3</td><td></td><td></td></tr>
+        <tr><td class="n">4</td><td></td><td></td></tr>
+        <tr><td class="n">5</td><td></td><td></td></tr>
+        <tr><td class="n">6</td><td></td><td></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 3 -->
+  <section id="test">
+    <span class="sec-num">03</span>
+    <h2>Now pick one. <span class="c">Is it CAS?</span></h2>
+    <p class="note">One idea from your list. Answer in sentences, not words — a one-word answer usually means you haven't checked.</p>
+
+    <div class="pick"><span>We chose</span><span class="fill"></span></div>
+
+    <div class="q">
+      <p class="qt"><span class="qn">1</span><span>Who is affected — and <b>how do you know</b>, other than that it annoys you?</span></p>
+      <div class="lines"><div class="ln"></div><div class="ln"></div></div>
+    </div>
+
+    <div class="q">
+      <p class="qt"><span class="qn">2</span><span>In one sentence <b>with a noun in it</b>: what exactly would we make or do?</span></p>
+      <div class="lines"><div class="ln"></div><div class="ln"></div></div>
+    </div>
+
+    <div class="q">
+      <p class="qt"><span class="qn">3</span><span>What will <b>exist afterwards</b> that doesn't exist now?</span></p>
+      <div class="lines"><div class="ln"></div><div class="ln"></div></div>
+    </div>
+
+    <div class="q">
+      <p class="qt"><span class="qn">4</span><span>What could we check in a week to know it worked — and <b>what result would mean it failed</b>?</span></p>
+      <div class="lines"><div class="ln"></div><div class="ln"></div></div>
+    </div>
+
+    <div class="q">
+      <p class="qt"><span class="qn">5</span><span>What will <b>you</b> be able to do that you couldn't this morning?</span></p>
+      <div class="lines"><div class="ln"></div><div class="ln"></div></div>
+    </div>
+
+    <h2 id="honestH" style="font-size:22px;margin-top:26px">The honest test</h2>
+    <p class="note">Circle any that are true.</p>
+    <div class="honest">
+      <div class="hrow"><span class="circle"></span><span class="htext">This is a <b>request for someone else to act</b>, not an action.</span></div>
+      <div class="hrow"><span class="circle"></span><span class="htext">It would <b>happen anyway</b> without us.</span></div>
+      <div class="hrow"><span class="circle"></span><span class="htext">It's <b>over the moment we finish</b> — nothing to come back to.</span></div>
+    </div>
+
+    <div class="verdict">
+      <span class="vlab">Verdict</span>
+      <span class="opt y">CAS</span>
+      <span class="opt m">Not yet</span>
+      <span class="opt n">No</span>
+    </div>
+
+    <div class="lastq">
+      <p>If <b>"not yet"</b> — what would make it CAS?</p>
+      <div class="lines"><div class="ln"></div><div class="ln"></div><div class="ln"></div></div>
+    </div>
+  </section>
+
+  <div class="controls noprint"><button id="pr">Print this handout</button></div>
+
+  <footer>
+    <span>CAS &middot; Class 3 of 3 &middot; Fix One Thing</span>
+    <span>Investigate &rarr; Prepare &rarr; Act &rarr; Reflect &rarr; Demonstrate</span>
+  </footer>
+</div>
+<script>document.getElementById('pr').addEventListener('click',()=>window.print());</script>
+</body>
+</html>
