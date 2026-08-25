@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Village of Mysteries — TOK History</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ox:#6E2028; --ox-l:#9A4149;
+  --ink:#241F1D; --mute:rgba(36,31,29,.62); --faint:rgba(36,31,29,.40);
+  --paper:#FBF7F1; --card:#FFFDFA;
+  --line:rgba(110,32,40,.22); --line-s:rgba(110,32,40,.42);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:"Cormorant Garamond",Garamond,Georgia,serif;
+  display:flex; flex-direction:column; overflow:hidden;
+}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+
+/* ---------- chrome ---------- */
+header{
+  flex:0 0 auto; display:flex; justify-content:space-between; align-items:center;
+  padding:14px 30px; border-bottom:1px solid var(--line); background:var(--card);
+}
+header .site{
+  font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.22em;
+  text-transform:uppercase; color:var(--ox);
+}
+header .count{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.16em;color:var(--faint)}
+
+main{flex:1 1 auto; overflow-y:auto; overflow-x:hidden; padding:38px 30px 30px}
+.screen{display:none; max-width:1180px; margin:0 auto; animation:fade .35s ease}
+.screen.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+nav{
+  flex:0 0 auto; display:flex; justify-content:space-between; align-items:center;
+  padding:12px 30px; border-top:1px solid var(--line); background:var(--card);
+}
+button{
+  font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.16em;
+  text-transform:uppercase; padding:10px 22px; cursor:pointer;
+  background:none; border:1px solid var(--line-s); color:var(--ox); border-radius:2px;
+  transition:background .15s,color .15s;
+}
+button:hover:not(:disabled){background:var(--ox);color:var(--paper);border-color:var(--ox)}
+button:disabled{opacity:.28;cursor:default}
+.dots{display:flex;gap:7px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--line-s);opacity:.4;transition:opacity .2s,transform .2s}
+.dot.on{opacity:1;transform:scale(1.5)}
+
+/* ---------- type ---------- */
+h1{font-size:56px;font-weight:600;letter-spacing:.04em;line-height:1.05;color:var(--ox)}
+h2{font-size:34px;font-weight:600;line-height:1.15;margin-bottom:16px}
+h3{font-size:23px;font-weight:600;margin-bottom:9px}
+.kicker{
+  font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--ox);margin-bottom:16px;
+}
+p{font-size:19px;line-height:1.55;margin-bottom:14px;max-width:66ch}
+.lead{font-size:23px;line-height:1.5}
+em{font-style:italic}
+strong{font-weight:600}
+.q{font-size:22px;line-height:1.5;font-style:italic;color:var(--ox);max-width:60ch}
+
+.rule{height:1px;background:var(--line);margin:26px 0}
+
+/* ---------- find layout ---------- */
+.find{display:grid;grid-template-columns:minmax(300px,1fr) 1.15fr;gap:44px;align-items:start}
+.plate{
+  background:var(--card);border:1px solid var(--line);border-radius:3px;
+  padding:26px;display:flex;flex-direction:column;align-items:center;
+}
+.plate svg{width:100%;height:auto;max-height:390px}
+.plate .cap{
+  font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--faint);margin-top:16px;text-align:center;
+}
+.scalebar{display:flex;align-items:center;gap:8px;margin-top:14px}
+.scalebar .bar{height:5px;width:70px;background:linear-gradient(90deg,var(--ox) 0 25%,transparent 25% 50%,var(--ox) 50% 75%,transparent 75% 100%);border:.7px solid var(--ox)}
+.scalebar span{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.14em;color:var(--faint)}
+
+dl.dossier{margin-top:4px}
+dl.dossier div{
+  display:grid;grid-template-columns:126px 1fr;gap:16px;
+  padding:11px 0;border-bottom:1px dotted var(--line);
+}
+dl.dossier dt{
+  font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--ox);padding-top:4px;
+}
+dl.dossier dd{font-size:17.5px;line-height:1.45}
+dl.dossier dd b{font-weight:600}
+
+.absence{
+  margin-top:18px;padding:15px 18px;border-left:2.5px solid var(--ox);
+  background:rgba(110,32,40,.045);
+}
+.absence .lab{
+  font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--ox);display:block;margin-bottom:6px;
+}
+.absence p{font-size:17.5px;margin:0}
+
+.task{
+  margin-top:24px;padding:16px 20px;border:1px dashed var(--line-s);border-radius:3px;
+}
+.task .lab{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--ox);display:block;margin-bottom:8px}
+.task p{font-size:17.5px;margin:0 0 7px}
+.task p:last-child{margin-bottom:0}
+
+/* ---------- grids ---------- */
+.four{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:26px}
+.four .cell{background:var(--card);border:1px solid var(--line);border-radius:3px;padding:18px 14px;text-align:center}
+.four .cell svg{width:100%;height:auto;max-height:150px}
+.four .cell .n{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.2em;color:var(--ox);margin-top:12px}
+
+.two{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:start}
+
+/* ---------- gates ---------- */
+.gate{margin-top:24px}
+.gated{display:none;animation:fade .4s ease}
+.gated.open{display:block}
+
+/* ---------- motel ---------- */
+.imgslot{
+  background:var(--card);border:1px solid var(--line);border-radius:3px;
+  height:352px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;
+  padding:10px;
+}
+.imgslot img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;cursor:zoom-in}
+.imgcap{
+  font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--faint);margin-top:8px;text-align:center;
+}
+#lb{
+  position:fixed;inset:0;background:rgba(28,22,20,.94);display:none;
+  align-items:center;justify-content:center;z-index:99;cursor:zoom-out;padding:26px;
+}
+#lb.on{display:flex}
+#lb img{max-width:96%;max-height:96%;object-fit:contain;background:#fff}
+.imgslot .ph{display:none;padding:22px;text-align:center}
+.imgslot.missing{border-style:dashed;border-color:var(--line-s)}
+.imgslot.missing img{display:none}
+.imgslot.missing .ph{display:block}
+.imgslot .ph .t{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ox);margin-bottom:8px}
+.imgslot .ph .s{font-size:16px;font-style:italic;color:var(--mute);line-height:1.4}
+
+.readings{margin-top:22px}
+.reading{
+  display:grid;grid-template-columns:1fr auto 1fr;gap:20px;align-items:center;
+  padding:13px 0;border-bottom:1px dotted var(--line);
+}
+.reading .obj{font-size:18px;text-align:right;color:var(--mute)}
+.reading .arr{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ox)}
+.reading .int{font-size:19px;font-weight:600;color:var(--ox)}
+
+/* ---------- verdicts ---------- */
+.verdict{background:var(--card);border:1px solid var(--line);border-radius:3px;padding:22px 24px;margin-bottom:18px}
+.verdict h4{font-size:20px;font-weight:600;margin-bottom:4px}
+.verdict .real{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ox-l);margin-bottom:12px}
+.verdict ul{list-style:none;margin:0}
+.verdict li{font-size:17px;line-height:1.45;padding:5px 0 5px 20px;position:relative}
+.verdict li::before{content:"—";position:absolute;left:0;color:var(--line-s)}
+.verdict .punch{margin-top:12px;padding-top:12px;border-top:1px dotted var(--line);font-size:17.5px;font-style:italic;color:var(--ox)}
+
+.ladder{list-style:none;counter-reset:s;margin-top:12px}
+.ladder li{counter-increment:s;padding:15px 0 15px 46px;position:relative;border-bottom:1px dotted var(--line);font-size:20px;line-height:1.45}
+.ladder li::before{
+  content:counter(s);position:absolute;left:0;top:16px;
+  font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ox);
+  border:1px solid var(--line-s);width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%;
+}
+.ladder li:last-child{border-bottom:none}
+.ladder li em{color:var(--ox);font-weight:500}
+
+.tnote{
+  margin-top:22px;padding:14px 18px;border:1px solid var(--line);border-radius:3px;
+  background:rgba(110,32,40,.03);font-size:16px;line-height:1.45;color:var(--mute);max-width:74ch;
+}
+.tnote b{color:var(--ox);font-weight:600}
+
+@media(max-width:900px){
+  .find,.two{grid-template-columns:1fr;gap:26px}
+  .four{grid-template-columns:1fr 1fr}
+  h1{font-size:38px}h2{font-size:26px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="site">The Village of Mysteries</div>
+  <div class="count"><span id="cur">1</span> / 11</div>
+</header>
+
+<main>
+
+<!-- ═══════════ 1 — THE SITE ═══════════ -->
+<section class="screen active">
+  <div class="kicker">Theory of Knowledge · History · Lesson 1</div>
+  <h1>The Village<br>of Mysteries</h1>
+  <div class="rule"></div>
+  <p class="lead">A settlement has been excavated. The people who lived here left <strong>no writing that anyone can read</strong>, and no living descendant remembers them.</p>
+  <p class="lead">Four objects were recovered. That is all that survives.</p>
+  <div class="rule"></div>
+  <p><strong>Your job, in groups:</strong> work out what each object was <em>for</em> — and then what the four of them together tell us about the people who made them.</p>
+  <p class="q">You will not be given the answer at the end of this. Neither was anybody else.</p>
+  <div class="tnote"><b>Teacher:</b> do not soften that last line, and do not hint that the objects are real. Devices away before the next screen — one image search ends the lesson. Groups of three, one find each.</div>
+</section>
+
+<!-- ═══════════ 2 — THE FINDS ═══════════ -->
+<section class="screen">
+  <div class="kicker">The assemblage</div>
+  <h2>Four objects</h2>
+  <p>No labels. No names. Nothing was found alongside them that explains what they are.</p>
+  <div class="four">
+    <div class="cell"><svg viewBox="0 0 240 240"><use href="#dodec"/></svg><div class="n">FIND I</div></div>
+    <div class="cell"><svg viewBox="0 0 240 240"><use href="#ball"/></svg><div class="n">FIND II</div></div>
+    <div class="cell"><svg viewBox="0 0 240 240"><use href="#baton"/></svg><div class="n">FIND III</div></div>
+    <div class="cell"><svg viewBox="0 0 240 240"><use href="#drum"/></svg><div class="n">FIND IV</div></div>
+  </div>
+  <div class="tnote"><b>Before moving on:</b> ask for first instincts out loud, and write them on the board. You will come back to this board at the very end — it is the evidence for how fast an interpretation forms.</div>
+</section>
+
+<!-- ═══════════ 3 — FIND I ═══════════ -->
+<section class="screen">
+  <div class="kicker">Find I</div>
+  <div class="find">
+    <div>
+      <div class="plate">
+        <svg viewBox="0 0 240 240"><use href="#dodec"/></svg>
+        <div class="cap">Find I · twelve faces · cast metal</div>
+        <div class="scalebar"><div class="bar"></div><span>0 — 5 cm</span></div>
+      </div>
+    </div>
+    <div>
+      <dl class="dossier">
+        <div><dt>Material</dt><dd>Copper alloy. One example in solid silver.</dd></div>
+        <div><dt>Form</dt><dd>Twelve five-sided faces. A round opening cut into every face — and <b>the openings are all different sizes</b>, from 6&nbsp;mm to 40&nbsp;mm. A small ball at each of the twenty corners.</dd></div>
+        <div><dt>Size</dt><dd>Between 4 and 11 cm across. Weight ranges from 35&nbsp;g to a full kilogram — <b>no two need be alike</b>.</dd></div>
+        <div><dt>Manufacture</dt><dd>Cast in one piece by a skilled method. Outside polished. <b>Inside left rough and unfinished.</b></dd></div>
+        <div><dt>Condition</dt><dd><b>Almost never any sign of wear.</b> No numbers, letters or marks of any kind on any example.</dd></div>
+        <div><dt>Findspots</dt><dd>One from a buried hoard, packed in with coins. Others from graves, a bath-house, a theatre, a riverbed.</dd></div>
+        <div><dt>Distribution</dt><dd>About 130 known. All from the northern edges of this people's territory. <b>Not one from the homeland.</b></dd></div>
+      </dl>
+      <div class="absence">
+        <span class="lab">What is missing</span>
+        <p>These people wrote a great deal, and much of it survives. <strong>Not one text mentions this object. Not one picture shows it.</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 4 — FIND II ═══════════ -->
+<section class="screen">
+  <div class="kicker">Find II</div>
+  <div class="find">
+    <div>
+      <div class="plate">
+        <svg viewBox="0 0 240 240"><use href="#ball"/></svg>
+        <div class="cap">Find II · knobbed stone · carved</div>
+        <div class="scalebar"><div class="bar"></div><span>0 — 5 cm</span></div>
+      </div>
+    </div>
+    <div>
+      <dl class="dossier">
+        <div><dt>Material</dt><dd>Sandstone. Others in greenstone, quartzite, serpentinite — <b>some from stone that had to be carried a long way</b>.</dd></div>
+        <div><dt>Form</dt><dd>A sphere with raised knobs worked out of the surface. Most have exactly six. A few have as many as 160. Some knobs carry carved spirals and concentric rings.</dd></div>
+        <div><dt>Size</dt><dd>About 70 mm across. Of 387 recorded, <b>375 are the same size to within a millimetre or two.</b></dd></div>
+        <div><dt>Weight</dt><dd>Varies considerably — the stones differ in density, so identical size does not mean identical weight.</dd></div>
+        <div><dt>Condition</dt><dd><b>No wear, chipping or damage of the kind a tool or a weapon picks up.</b></dd></div>
+        <div><dt>Findspots</dt><dd>Most turned up in ploughed fields with no record of context. Five came from inside houses. One from a tomb.</dd></div>
+        <div><dt>Distribution</dt><dd>Over 425 known, densely concentrated in one small district and thinning sharply beyond it.</dd></div>
+      </dl>
+      <div class="absence">
+        <span class="lab">What is missing</span>
+        <p>No two are decorated the same way. <strong>And nothing has ever been found that these were used <em>on</em>, <em>with</em>, or <em>inside</em>.</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 5 — FIND III ═══════════ -->
+<section class="screen">
+  <div class="kicker">Find III</div>
+  <div class="find">
+    <div>
+      <div class="plate">
+        <svg viewBox="0 0 240 240"><use href="#baton"/></svg>
+        <div class="cap">Find III · pierced rod · antler</div>
+        <div class="scalebar"><div class="bar"></div><span>0 — 5 cm</span></div>
+      </div>
+    </div>
+    <div>
+      <dl class="dossier">
+        <div><dt>Material</dt><dd>Antler. A few in ivory.</dd></div>
+        <div><dt>Form</dt><dd>A curved shaft, forked at one end, with <b>a hole bored straight through just below the fork</b>. Sometimes a second, smaller hole beside it.</dd></div>
+        <div><dt>Size</dt><dd>15 to 20 cm long. One unusual example carries a row of <b>eight holes, each a different size</b>.</dd></div>
+        <div><dt>Decoration</dt><dd>Frequently engraved with animals — horses, deer — carved with real skill.</dd></div>
+        <div><dt>Condition</dt><dd>Some show wear <b>around the inside of the hole</b>. Others show none at all.</dd></div>
+        <div><dt>Findspots</dt><dd>Cave floors and dwelling sites, mixed in with everyday debris.</dd></div>
+        <div><dt>Age</dt><dd>Far older than the other three finds. These were made over a span of <b>more than twenty thousand years</b>.</dd></div>
+      </dl>
+      <div class="absence">
+        <span class="lab">What is missing</span>
+        <p>The people who made these left paintings on cave walls — animals, hands, signs. <strong>They never painted anyone holding one of these.</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 6 — FIND IV ═══════════ -->
+<section class="screen">
+  <div class="kicker">Find IV</div>
+  <div class="find">
+    <div>
+      <div class="plate">
+        <svg viewBox="0 0 240 240"><use href="#drum"/></svg>
+        <div class="cap">Find IV · chalk cylinder · one of three</div>
+        <div class="scalebar"><div class="bar"></div><span>0 — 5 cm</span></div>
+      </div>
+    </div>
+    <div>
+      <dl class="dossier">
+        <div><dt>Material</dt><dd>Chalk, quarried locally. <b>Soft enough to scratch with a fingernail.</b></dd></div>
+        <div><dt>Form</dt><dd>Three cylinders, found together. Concentric rings carved on the flat top. On two of them, <b>a pair of eyes</b> — enough to read as a face. Chevrons and lozenges around the sides.</dd></div>
+        <div><dt>Size</dt><dd>Three different sizes. Their circumferences are <b>exact whole-number fractions of one longer measurement — in the ratio 10 : 9 : 8.</b></dd></div>
+        <div><dt>Condition</dt><dd>Crisp and undamaged. The material could not have survived being struck, ground, or carried loose.</dd></div>
+        <div><dt>Findspot</dt><dd><b>Placed in the grave of a child.</b> One behind the head, the others by the hips. Nothing else was buried with them.</dd></div>
+        <div><dt>Distribution</dt><dd>Vanishingly rare. A fourth, similar object was found in another child's grave — and nothing else like them anywhere.</dd></div>
+      </dl>
+      <div class="absence">
+        <span class="lab">What is missing</span>
+        <p>Chalk survives. Wood, leather and cloth do not. <strong>We have no way of knowing whether these were rare — or whether thousands like them were made in materials that rotted away.</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 7 — THE VILLAGE ═══════════ -->
+<section class="screen">
+  <div class="kicker">Step two</div>
+  <h2>Now — who were these people?</h2>
+  <p>You have four objects and nothing else. Build the civilisation.</p>
+  <div class="two">
+    <div>
+      <div class="task">
+        <span class="lab">Each group answers</span>
+        <p>What did these people <strong>value</strong>? What did they spend effort on?</p>
+        <p>What did they <strong>believe</strong>?</p>
+        <p>Were some people more important than others? How can you tell?</p>
+        <p>What were they <strong>able to do</strong> that surprised you?</p>
+      </div>
+    </div>
+    <div>
+      <div class="task">
+        <span class="lab">For every claim you make</span>
+        <p>Point at the <strong>specific feature of a specific object</strong> that supports it.</p>
+        <p>Then say what <em>else</em> that same feature could mean.</p>
+      </div>
+      <p style="margin-top:18px" class="q">A claim you cannot anchor to an object is not a finding. It is a preference.</p>
+    </div>
+  </div>
+  <div class="tnote"><b>Watch for:</b> the word <b>ritual</b>. It will arrive within about ninety seconds, and it will be used for whichever object is hardest to explain. Write every use of it on the board — do not comment yet. You need the tally for screen 11.</div>
+</section>
+
+<!-- ═══════════ 8 — PRESENT ═══════════ -->
+<section class="screen">
+  <div class="kicker">Step three</div>
+  <h2>Present, and collide</h2>
+  <p class="lead">Each group presents its object and its civilisation. The class listens for one thing only:</p>
+  <p class="q">Where do two groups disagree — and are they disagreeing about the <em>evidence</em>, or about what the evidence <em>means</em>?</p>
+  <div class="rule"></div>
+  <div class="task">
+    <span class="lab">On the board, in two columns</span>
+    <p><strong>AGREED</strong> — things every group concluded.</p>
+    <p><strong>CONTESTED</strong> — things groups read differently from the same object.</p>
+  </div>
+  <div class="tnote"><b>Keep this board.</b> It is the specimen for the rest of the lesson, and the AGREED column is what stops the whole thing collapsing into "nobody can know anything" at the end.</div>
+</section>
+
+<!-- ═══════════ 9 — MOTEL ═══════════ -->
+<section class="screen">
+  <div class="kicker">Step four · a warning from the future</div>
+  <h2>The Motel of the Mysteries</h2>
+  <p>In 1979 David Macaulay published a book. In it, the year is <strong>4022</strong>. North America was buried by a catastrophe two thousand years earlier, and everything about it has been forgotten.</p>
+  <p>An amateur archaeologist named <strong>Howard Carson</strong> falls down a shaft and finds a sealed chamber, perfectly preserved, its door still hung with an inscribed seal. He excavates it with enormous care and publishes a full catalogue of the sacred burial site he has discovered.</p>
+  <div class="two" style="margin-top:20px">
+    <div>
+      <div class="imgslot"><img src="finds/motel-1.jpg" alt="" onerror="this.closest('.imgslot').classList.add('missing')"><div class="ph"><div class="t">Image slot · finds/motel-1.jpg</div><div class="s">Carson's reconstruction of the burial chamber</div></div></div>
+      <div class="imgcap">Plate 1 — the chamber, as recorded</div>
+    </div>
+    <div>
+      <div class="imgslot"><img src="finds/motel-2.jpg" alt="" onerror="this.closest('.imgslot').classList.add('missing')"><div class="ph"><div class="t">Image slot · finds/motel-2.jpg</div><div class="s">The Sacred Urn, with the ceremonial collar in place</div></div></div>
+      <div class="imgcap">Plate 2 — the excavator, vested, at the Sacred Urn</div>
+    </div>
+  </div>
+  <p style="margin-top:16px;font-size:17px;color:var(--mute)"><em>Click either plate to enlarge.</em></p>
+  <div class="gate"><button onclick="openGate(this)">What Carson found</button></div>
+  <div class="gated">
+    <div class="readings">
+      <div class="reading"><div class="obj">a porcelain basin with a hinged lid</div><div class="arr">&rarr;</div><div class="int">The Sacred Urn</div></div>
+      <div class="reading"><div class="obj">the hinged lid itself</div><div class="arr">&rarr;</div><div class="int">The Sacred Collar, worn by the celebrant</div></div>
+      <div class="reading"><div class="obj">a glass-fronted box facing the platform</div><div class="arr">&rarr;</div><div class="int">The Great Altar</div></div>
+      <div class="reading"><div class="obj">a long basin, sunk into the floor</div><div class="arr">&rarr;</div><div class="int">The ceremonial sarcophagus</div></div>
+      <div class="reading"><div class="obj">a thin translucent cap</div><div class="arr">&rarr;</div><div class="int">A ceremonial headdress</div></div>
+      <div class="reading"><div class="obj">a printed card hung on the door</div><div class="arr">&rarr;</div><div class="int">The sacred seal protecting the tomb</div></div>
+    </div>
+    <p style="margin-top:24px" class="lead">It is a motel room.</p>
+    <div class="rule"></div>
+    <p><strong>Carson is not stupid, and he is not careless.</strong> He measures everything. He records findspots. Every object he catalogues is given a function that fits with every other object he catalogues. His reconstruction is <em>internally consistent</em> and <em>supported by the evidence</em>.</p>
+    <p class="q">He is also completely wrong — and there is nothing available to him, inside his own account, that could tell him so.</p>
+    <div class="tnote"><b>The turn, immediately — do not let the laugh settle:</b> "That was funny because it happened to him. Go back to your sheet. Find the reading <em>you</em> gave that has exactly the same shape."</div>
+  </div>
+</section>
+
+<!-- ═══════════ 10 — THE ARCHAEOLOGISTS ═══════════ -->
+<section class="screen">
+  <div class="kicker">Step five · the reveal</div>
+  <h2>Your four objects are real</h2>
+  <p>Every fact you were given is true. The only thing invented was the village — these come from four different peoples, separated by as much as thirty thousand years and half a continent.</p>
+  <p>And here is what the archaeologists say.</p>
+
+  <div class="gate"><button onclick="openGate(this)">Show the verdicts</button></div>
+  <div class="gated">
+
+    <div class="verdict">
+      <h4>Find I — the Roman dodecahedron</h4>
+      <div class="real">c. 2nd–4th century CE · north-western Roman provinces</div>
+      <ul>
+        <li>A surveying or range-finding instrument</li>
+        <li>A knitting device for glove fingers</li>
+        <li>A gauge for measuring coin diameters</li>
+        <li>A candle holder</li>
+        <li>A fortune-telling or religious object</li>
+        <li>A metalworker's showpiece — or a child's toy</li>
+      </ul>
+      <div class="punch">Over fifty theories have been published. None is accepted. After nearly three hundred years of argument, <strong>nobody knows what it is.</strong></div>
+    </div>
+
+    <div class="verdict">
+      <h4>Find II — Neolithic carved stone balls</h4>
+      <div class="real">c. 3200–2500 BCE · north-east Scotland, mainly Aberdeenshire</div>
+      <ul>
+        <li>Objects of divination</li>
+        <li>Tokens granting the right to speak in council</li>
+        <li>Weapons — thrown, or slung as bolas</li>
+        <li>Standard weights <em>(disproved: the weights vary too much)</em></li>
+        <li>Hide-working tools, or fishing and loom weights</li>
+        <li>Ball bearings for moving megalithic stones</li>
+      </ul>
+      <div class="punch">The ball-bearing theory was <strong>tested experimentally, and it works</strong> — which proves it is possible, and not that it is true. Still unresolved.</div>
+    </div>
+
+    <div class="verdict">
+      <h4>Find III — the perforated baton</h4>
+      <div class="real">c. 35,000–12,000 years ago · Upper Palaeolithic Europe</div>
+      <ul>
+        <li>A spear-thrower — tested, and it increases range by 127%</li>
+        <li>A tool for straightening spear and arrow shafts</li>
+        <li>A rope-making tool <em>(chemical traces support this)</em></li>
+        <li>A fastener, a calendar, a leather smoother</li>
+        <li>A fertility object</li>
+      </ul>
+      <div class="punch">For a century these were called <strong>bâtons de commandement</strong> — "staffs of command" — because the first excavator assumed they were badges of a chieftain. That guess was in the name, and the name shaped everything written afterwards. They are now called <strong>pierced rods</strong>: a name that describes the <em>shape</em> and refuses to guess the use.</div>
+    </div>
+
+    <div class="verdict">
+      <h4>Find IV — the Folkton Drums</h4>
+      <div class="real">c. 2600–2000 BCE · Yorkshire, England · excavated 1889</div>
+      <ul>
+        <li>Ceremonial objects placed with the dead</li>
+        <li>Standard measures — physical templates for laying out monuments</li>
+        <li>Chalk copies of objects normally made in wood</li>
+      </ul>
+      <div class="punch">They are called <strong>drums</strong> because of their shape. Nobody has ever thought they were drums. That is the second object here <strong>named after a guess</strong> — and both names stuck.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════ 11 — THE TURN ═══════════ -->
+<section class="screen">
+  <div class="kicker">The knowledge question</div>
+  <h2>What just happened</h2>
+  <p class="q" style="font-size:25px">If the past is gone, and all that survives is what it left behind — what can a historian actually know, and how would they ever find out they were wrong?</p>
+  <div class="rule"></div>
+  <ol class="ladder">
+    <li>Go back to the board from the second screen. How long did it take the class to form an interpretation — <em>before any evidence had been given at all?</em></li>
+    <li>Every group anchored its claims to real features of real objects. So <em>why did you still disagree?</em> What does that tell you about what evidence can and cannot settle?</li>
+    <li>Count the times "ritual" or "ceremonial" was used today. Why does that word feel like an explanation? <em>What would have to be true for it to be wrong?</em></li>
+    <li>Carson had the objects, the measurements and the findspots. What did he <em>not</em> have — and could he have got it?</li>
+    <li>The pierced rod carried a guess inside its own name for a hundred years. <em>What does a name do to the people who inherit it?</em></li>
+    <li>Your AGREED column survived every group. What made those claims different from the contested ones? <em>The traces do constrain — so what, exactly, do they constrain?</em></li>
+  </ol>
+  <div class="rule"></div>
+  <p><strong>Write, before you leave:</strong> pick one claim you made about these people. State what it rests on, and state what would have to be found for you to give it up.</p>
+  <div class="tnote"><b>Guard the landing.</b> The ditch is "so we can never know anything about the past." Counter it with the AGREED column: these <em>were</em> made by people, they <em>were</em> worked with skill, someone <em>did</em> place three chalk cylinders in a child's grave. The record is thin, not empty. <b>Underdetermined is not unknowable.</b><br><br><b>Forward:</b> next lesson gives you the instrument for saying <em>which</em> of these claims is better supported — and why the Roman dodecahedron may never be settled while other questions about the past have been.</div>
+</section>
+
+</main>
+
+<nav>
+  <button id="prev" onclick="go(-1)">&larr; Back</button>
+  <div class="dots" id="dots"></div>
+  <button id="next" onclick="go(1)">Next &rarr;</button>
+</nav>
+
+<!-- ═══════════ SVG DEFINITIONS ═══════════ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs>
+  <g id="dodec" fill="none" stroke="#6E2028" stroke-width="1.5" stroke-linejoin="round">
+    <!-- silhouette: regular decagon (r=89) -->
+    <polygon points="120,31 67.7,48 35.4,92.5 35.4,147.5 67.7,192 120,209 172.3,192 204.6,147.5 204.6,92.5 172.3,48"
+             fill="#FDF7F2"/>
+    <!-- five side faces -->
+    <polygon points="120,65 120,31 67.7,48 35.4,92.5 67.7,103"    fill="#F9F0E9"/>
+    <polygon points="67.7,103 35.4,92.5 35.4,147.5 67.7,192 87.7,164.5" fill="#F6EAE2"/>
+    <polygon points="87.7,164.5 67.7,192 120,209 172.3,192 152.3,164.5" fill="#F9F0E9"/>
+    <polygon points="152.3,164.5 172.3,192 204.6,147.5 204.6,92.5 172.3,103" fill="#F6EAE2"/>
+    <polygon points="172.3,103 204.6,92.5 172.3,48 120,31 120,65"  fill="#F9F0E9"/>
+    <!-- front face -->
+    <polygon points="120,65 172.3,103 152.3,164.5 87.7,164.5 67.7,103" fill="#F2E1D9"/>
+    <!-- openings, each a different size -->
+    <circle cx="120" cy="120" r="17"/>
+    <circle cx="82"  cy="68"  r="8"/>
+    <circle cx="59"  cy="140" r="12"/>
+    <circle cx="120" cy="184" r="6"/>
+    <circle cx="181" cy="140" r="10"/>
+    <circle cx="158" cy="68"  r="4.5"/>
+    <!-- balls at every visible corner -->
+    <g fill="#6E2028" stroke="none">
+      <circle cx="120" cy="65"  r="4"/><circle cx="172.3" cy="103" r="4"/>
+      <circle cx="152.3" cy="164.5" r="4"/><circle cx="87.7" cy="164.5" r="4"/>
+      <circle cx="67.7" cy="103" r="4"/>
+      <circle cx="120" cy="31"  r="3.6"/><circle cx="67.7" cy="48"  r="3.6"/>
+      <circle cx="35.4" cy="92.5" r="3.6"/><circle cx="35.4" cy="147.5" r="3.6"/>
+      <circle cx="67.7" cy="192" r="3.6"/><circle cx="120" cy="209" r="3.6"/>
+      <circle cx="172.3" cy="192" r="3.6"/><circle cx="204.6" cy="147.5" r="3.6"/>
+      <circle cx="204.6" cy="92.5" r="3.6"/><circle cx="172.3" cy="48" r="3.6"/>
+    </g>
+  </g>
+
+  <g id="ball" fill="none" stroke="#6E2028" stroke-width="1.6">
+    <!-- edge knobs breaking the silhouette -->
+    <circle cx="120" cy="42" r="24" fill="#F7EDE6"/>
+    <circle cx="198" cy="120" r="24" fill="#F7EDE6"/>
+    <circle cx="120" cy="198" r="24" fill="#F7EDE6"/>
+    <circle cx="42" cy="120" r="24" fill="#F7EDE6"/>
+    <!-- body -->
+    <circle cx="120" cy="120" r="72" fill="#FDF7F2"/>
+    <!-- front knob -->
+    <circle cx="120" cy="120" r="34" fill="#F2E3DC"/>
+    <!-- spiral on front knob -->
+    <path d="M120 120 m0 -4 a4 4 0 1 1 -4 4 a8 8 0 1 1 8 8 a12 12 0 1 1 -12 -12 a16 16 0 1 1 16 16" stroke-width="1.2"/>
+    <!-- concentric rings on quadrant knobs -->
+    <circle cx="120" cy="42" r="13" stroke-width="1.1"/><circle cx="120" cy="42" r="6" stroke-width="1.1"/>
+    <circle cx="42" cy="120" r="13" stroke-width="1.1"/><circle cx="42" cy="120" r="6" stroke-width="1.1"/>
+    <!-- hatching between knobs -->
+    <g stroke-width=".8" opacity=".5">
+      <path d="M162 78 L176 64"/><path d="M168 86 L182 72"/>
+      <path d="M78 162 L64 176"/><path d="M72 154 L58 168"/>
+    </g>
+  </g>
+
+  <g id="baton" fill="none" stroke="#6E2028" stroke-width="1.6" stroke-linejoin="round">
+    <!-- shaft, curved and tapering, fork at top -->
+    <path d="M104 34 C96 46 100 58 108 66 C118 76 126 92 128 112 C130 136 128 164 132 196 C133 204 137 209 143 212
+             L160 212 C152 206 148 198 148 188 C147 156 150 130 148 110 C146 88 140 74 132 62 C128 56 128 46 134 36
+             C128 30 122 34 120 44 C118 34 110 28 104 34 Z" fill="#FDF7F2"/>
+    <!-- fork inner line -->
+    <path d="M120 44 C120 52 122 58 126 64" stroke-width="1"/>
+    <!-- the bored hole -->
+    <ellipse cx="134" cy="92" rx="11" ry="13" fill="#F2E3DC"/>
+    <ellipse cx="134" cy="92" rx="7" ry="9" stroke-width=".9" opacity=".6"/>
+    <!-- second smaller hole -->
+    <ellipse cx="137" cy="120" rx="5" ry="6" stroke-width="1.1"/>
+    <!-- engraved horse on the shaft -->
+    <g stroke-width="1" opacity=".85">
+      <path d="M132 152 C136 148 142 148 145 151 C147 154 146 158 143 160 C140 162 134 162 132 158 Z"/>
+      <path d="M145 151 L150 147 L152 150"/>
+      <path d="M134 160 L133 168 M139 161 L140 169 M144 159 L146 167"/>
+    </g>
+    <!-- texture -->
+    <g stroke-width=".7" opacity=".4">
+      <path d="M124 176 L142 176"/><path d="M125 184 L143 184"/><path d="M127 192 L145 192"/>
+    </g>
+  </g>
+
+  <g id="drum" fill="none" stroke="#6E2028" stroke-width="1.6">
+    <!-- cylinder body -->
+    <path d="M62 74 L62 172 C62 186 88 196 120 196 C152 196 178 186 178 172 L178 74 Z" fill="#FDF7F2"/>
+    <!-- top ellipse -->
+    <ellipse cx="120" cy="74" rx="58" ry="22" fill="#F7EDE6"/>
+    <!-- concentric rings on top -->
+    <ellipse cx="120" cy="74" rx="42" ry="15.5" stroke-width="1.1"/>
+    <ellipse cx="120" cy="74" rx="27" ry="10" stroke-width="1.1"/>
+    <ellipse cx="120" cy="74" rx="12" ry="4.5" stroke-width="1.1"/>
+    <!-- eyes -->
+    <ellipse cx="98" cy="122" rx="13" ry="9.5" stroke-width="1.3"/>
+    <circle cx="98" cy="122" r="4" fill="#6E2028" stroke="none"/>
+    <ellipse cx="142" cy="122" rx="13" ry="9.5" stroke-width="1.3"/>
+    <circle cx="142" cy="122" r="4" fill="#6E2028" stroke="none"/>
+    <!-- brow line -->
+    <path d="M80 106 C96 99 144 99 160 106" stroke-width="1.1"/>
+    <!-- chevron band -->
+    <g stroke-width="1.1">
+      <path d="M70 152 L82 143 L94 152 L106 143 L118 152 L130 143 L142 152 L154 143 L166 152"/>
+      <path d="M70 164 L82 155 L94 164 L106 155 L118 164 L130 155 L142 164 L154 155 L166 164"/>
+    </g>
+    <!-- lozenges -->
+    <g stroke-width="1" opacity=".75">
+      <path d="M104 176 L112 182 L104 188 L96 182 Z"/>
+      <path d="M136 176 L144 182 L136 188 L128 182 Z"/>
+    </g>
+  </g>
+</defs>
+</svg>
+
+<div id="lb" onclick="this.classList.remove('on')"><img id="lbimg" src="" alt=""></div>
+
+<script>
+document.querySelectorAll('.imgslot img').forEach(im=>{
+  im.addEventListener('click',e=>{
+    e.stopPropagation();
+    document.getElementById('lbimg').src=im.src;
+    document.getElementById('lb').classList.add('on');
+  });
+});
+const screens=[...document.querySelectorAll('.screen')];
+let i=0;
+const dots=document.getElementById('dots');
+screens.forEach((_,k)=>{const d=document.createElement('div');d.className='dot'+(k?'':' on');d.onclick=()=>jump(k);dots.appendChild(d)});
+function render(){
+  screens.forEach((s,k)=>s.classList.toggle('active',k===i));
+  [...dots.children].forEach((d,k)=>d.classList.toggle('on',k===i));
+  document.getElementById('cur').textContent=i+1;
+  document.getElementById('prev').disabled=i===0;
+  document.getElementById('next').disabled=i===screens.length-1;
+  document.querySelector('main').scrollTop=0;
+}
+function go(d){i=Math.max(0,Math.min(screens.length-1,i+d));render()}
+function jump(k){i=k;render()}
+function openGate(btn){
+  const g=btn.closest('.gate');
+  g.nextElementSibling.classList.add('open');
+  g.style.display='none';
+}
+document.addEventListener('keydown',e=>{
+  const lb=document.getElementById('lb');
+  if(e.key==='Escape'&&lb.classList.contains('on')){lb.classList.remove('on');return}
+  if(lb.classList.contains('on'))return;
+  if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1)}
+  if(e.key==='ArrowLeft'){e.preventDefault();go(-1)}
+});
+render();
+</script>
+</body>
+</html>
