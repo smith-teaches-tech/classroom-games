@@ -86,6 +86,16 @@ strong{font-weight:600}
 .scalebar .bar{height:5px;width:70px;background:linear-gradient(90deg,var(--ox) 0 25%,transparent 25% 50%,var(--ox) 50% 75%,transparent 75% 100%);border:.7px solid var(--ox)}
 .scalebar span{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.14em;color:var(--faint)}
 
+
+/* photo-or-drawing: photo wins when the file exists */
+.pimg{width:100%;display:flex;align-items:center;justify-content:center}
+.pimg img{max-width:100%;max-height:390px;width:auto;height:auto;object-fit:contain;display:block;cursor:zoom-in;border-radius:2px}
+.pimg svg{display:none}
+.plate.nophoto .pimg img,.pimg.nophoto img{display:none}
+.plate.nophoto .pimg svg,.pimg.nophoto svg{display:block}
+.four .pimg img{max-height:150px}
+.four .pimg svg{max-height:150px}
+
 dl.dossier{margin-top:4px}
 dl.dossier div{
   display:grid;grid-template-columns:126px 1fr;gap:16px;
@@ -180,11 +190,27 @@ dl.dossier dd b{font-weight:600}
 .ladder li:last-child{border-bottom:none}
 .ladder li em{color:var(--ox);font-weight:500}
 
-.tnote{
-  margin-top:22px;padding:14px 18px;border:1px solid var(--line);border-radius:3px;
-  background:rgba(110,32,40,.03);font-size:16px;line-height:1.45;color:var(--mute);max-width:74ch;
+/* Teacher notes are HIDDEN by default — this deck is projected.
+   Press T to toggle them on for planning/preview. */
+.tnote{display:none}
+body.notes .tnote{
+  display:block;
+  margin-top:22px;padding:14px 18px;border:1px solid var(--line-s);border-radius:3px;
+  background:rgba(110,32,40,.055);font-size:16px;line-height:1.45;color:var(--mute);max-width:74ch;
+}
+body.notes .tnote::before{
+  content:"TEACHER NOTE — NOT FOR PROJECTION";
+  display:block;font-family:"JetBrains Mono",monospace;font-size:8.5px;
+  letter-spacing:.2em;color:var(--ox);margin-bottom:7px;
 }
 .tnote b{color:var(--ox);font-weight:600}
+
+.notesflag{
+  font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--faint);user-select:none;
+}
+body.notes .notesflag{color:var(--ox);font-weight:500}
+body.notes header{box-shadow:inset 0 3px 0 var(--ox)}
 
 @media(max-width:900px){
   .find,.two{grid-template-columns:1fr;gap:26px}
@@ -212,7 +238,7 @@ dl.dossier dd b{font-weight:600}
   <div class="rule"></div>
   <p><strong>Your job, in groups:</strong> work out what each object was <em>for</em> — and then what the four of them together tell us about the people who made them.</p>
   <p class="q">You will not be given the answer at the end of this. Neither was anybody else.</p>
-  <div class="tnote"><b>Teacher:</b> do not soften that last line, and do not hint that the objects are real. Devices away before the next screen — one image search ends the lesson. Groups of three, one find each.</div>
+  <div class="tnote">Do not soften the line above. <b>Devices away before the next screen</b> — one image search ends the lesson. Groups of three, one find each. Say nothing about where any object came from until screen 10.</div>
 </section>
 
 <!-- ═══════════ 2 — THE FINDS ═══════════ -->
@@ -221,10 +247,10 @@ dl.dossier dd b{font-weight:600}
   <h2>Four objects</h2>
   <p>No labels. No names. Nothing was found alongside them that explains what they are.</p>
   <div class="four">
-    <div class="cell"><svg viewBox="0 0 240 240"><use href="#dodec"/></svg><div class="n">FIND I</div></div>
-    <div class="cell"><svg viewBox="0 0 240 240"><use href="#ball"/></svg><div class="n">FIND II</div></div>
-    <div class="cell"><svg viewBox="0 0 240 240"><use href="#baton"/></svg><div class="n">FIND III</div></div>
-    <div class="cell"><svg viewBox="0 0 240 240"><use href="#drum"/></svg><div class="n">FIND IV</div></div>
+    <div class="cell"><div class="pimg thumb"><img data-base="finds/find-1" alt=""><svg viewBox="0 0 240 240"><use href="#dodec"/></svg></div><div class="n">FIND I</div></div>
+    <div class="cell"><div class="pimg thumb"><img data-base="finds/find-2" alt=""><svg viewBox="0 0 240 240"><use href="#ball"/></svg></div><div class="n">FIND II</div></div>
+    <div class="cell"><div class="pimg thumb"><img data-base="finds/find-3" alt=""><svg viewBox="0 0 240 240"><use href="#baton"/></svg></div><div class="n">FIND III</div></div>
+    <div class="cell"><div class="pimg thumb"><img data-base="finds/find-4" alt=""><svg viewBox="0 0 240 240"><use href="#drum"/></svg></div><div class="n">FIND IV</div></div>
   </div>
   <div class="tnote"><b>Before moving on:</b> ask for first instincts out loud, and write them on the board. You will come back to this board at the very end — it is the evidence for how fast an interpretation forms.</div>
 </section>
@@ -235,7 +261,7 @@ dl.dossier dd b{font-weight:600}
   <div class="find">
     <div>
       <div class="plate">
-        <svg viewBox="0 0 240 240"><use href="#dodec"/></svg>
+        <div class="pimg"><img data-base="finds/find-1" alt=""><svg viewBox="0 0 240 240"><use href="#dodec"/></svg></div>
         <div class="cap">Find I · twelve faces · cast metal</div>
         <div class="scalebar"><div class="bar"></div><span>0 — 5 cm</span></div>
       </div>
@@ -264,7 +290,7 @@ dl.dossier dd b{font-weight:600}
   <div class="find">
     <div>
       <div class="plate">
-        <svg viewBox="0 0 240 240"><use href="#ball"/></svg>
+        <div class="pimg"><img data-base="finds/find-2" alt=""><svg viewBox="0 0 240 240"><use href="#ball"/></svg></div>
         <div class="cap">Find II · knobbed stone · carved</div>
         <div class="scalebar"><div class="bar"></div><span>0 — 5 cm</span></div>
       </div>
@@ -272,7 +298,7 @@ dl.dossier dd b{font-weight:600}
     <div>
       <dl class="dossier">
         <div><dt>Material</dt><dd>Sandstone. Others in greenstone, quartzite, serpentinite — <b>some from stone that had to be carried a long way</b>.</dd></div>
-        <div><dt>Form</dt><dd>A sphere with raised knobs worked out of the surface. Most have exactly six. A few have as many as 160. Some knobs carry carved spirals and concentric rings.</dd></div>
+        <div><dt>Form</dt><dd>A sphere with raised knobs worked out of the surface. <b>Most have exactly six</b> &mdash; the one shown has four. A few have as many as 160. Some knobs carry carved spirals and concentric rings.</dd></div>
         <div><dt>Size</dt><dd>About 70 mm across. Of 387 recorded, <b>375 are the same size to within a millimetre or two.</b></dd></div>
         <div><dt>Weight</dt><dd>Varies considerably — the stones differ in density, so identical size does not mean identical weight.</dd></div>
         <div><dt>Condition</dt><dd><b>No wear, chipping or damage of the kind a tool or a weapon picks up.</b></dd></div>
@@ -293,7 +319,7 @@ dl.dossier dd b{font-weight:600}
   <div class="find">
     <div>
       <div class="plate">
-        <svg viewBox="0 0 240 240"><use href="#baton"/></svg>
+        <div class="pimg"><img data-base="finds/find-3" alt=""><svg viewBox="0 0 240 240"><use href="#baton"/></svg></div>
         <div class="cap">Find III · pierced rod · antler</div>
         <div class="scalebar"><div class="bar"></div><span>0 — 5 cm</span></div>
       </div>
@@ -322,7 +348,7 @@ dl.dossier dd b{font-weight:600}
   <div class="find">
     <div>
       <div class="plate">
-        <svg viewBox="0 0 240 240"><use href="#drum"/></svg>
+        <div class="pimg"><img data-base="finds/find-4" alt=""><svg viewBox="0 0 240 240"><use href="#drum"/></svg></div>
         <div class="cap">Find IV · chalk cylinder · one of three</div>
         <div class="scalebar"><div class="bar"></div><span>0 — 5 cm</span></div>
       </div>
@@ -394,11 +420,11 @@ dl.dossier dd b{font-weight:600}
   <p>An amateur archaeologist named <strong>Howard Carson</strong> falls down a shaft and finds a sealed chamber, perfectly preserved, its door still hung with an inscribed seal. He excavates it with enormous care and publishes a full catalogue of the sacred burial site he has discovered.</p>
   <div class="two" style="margin-top:20px">
     <div>
-      <div class="imgslot"><img src="finds/motel-1.jpg" alt="" onerror="this.closest('.imgslot').classList.add('missing')"><div class="ph"><div class="t">Image slot · finds/motel-1.jpg</div><div class="s">Carson's reconstruction of the burial chamber</div></div></div>
+      <div class="imgslot"><img data-base="finds/motel-1" alt=""><div class="ph"><div class="t">Image slot · finds/motel-1.jpg</div><div class="s">Carson's reconstruction of the burial chamber</div></div></div>
       <div class="imgcap">Plate 1 — the chamber, as recorded</div>
     </div>
     <div>
-      <div class="imgslot"><img src="finds/motel-2.jpg" alt="" onerror="this.closest('.imgslot').classList.add('missing')"><div class="ph"><div class="t">Image slot · finds/motel-2.jpg</div><div class="s">The Sacred Urn, with the ceremonial collar in place</div></div></div>
+      <div class="imgslot"><img data-base="finds/motel-2" alt=""><div class="ph"><div class="t">Image slot · finds/motel-2.jpg</div><div class="s">The Sacred Urn, with the ceremonial collar in place</div></div></div>
       <div class="imgcap">Plate 2 — the excavator, vested, at the Sacred Urn</div>
     </div>
   </div>
@@ -510,7 +536,10 @@ dl.dossier dd b{font-weight:600}
 <nav>
   <button id="prev" onclick="go(-1)">&larr; Back</button>
   <div class="dots" id="dots"></div>
-  <button id="next" onclick="go(1)">Next &rarr;</button>
+  <div style="display:flex;align-items:center;gap:18px">
+    <span class="notesflag" id="nf">T · notes off</span>
+    <button id="next" onclick="go(1)">Next &rarr;</button>
+  </div>
 </nav>
 
 <!-- ═══════════ SVG DEFINITIONS ═══════════ -->
@@ -627,7 +656,25 @@ dl.dossier dd b{font-weight:600}
 <div id="lb" onclick="this.classList.remove('on')"><img id="lbimg" src="" alt=""></div>
 
 <script>
-document.querySelectorAll('.imgslot img').forEach(im=>{
+// Images may be .jpg / .png / .jpeg / .webp — try each, then fall back.
+const EXTS=['jpg','png','jpeg','webp','JPG','PNG','JPEG'];
+document.querySelectorAll('img[data-base]').forEach(img=>{
+  let i=0;
+  const advance=()=>{
+    if(i>=EXTS.length){
+      const slot=img.closest('.imgslot');
+      if(slot){slot.classList.add('missing');return}
+      const p=img.closest('.plate')||img.closest('.pimg');
+      if(p)p.classList.add('nophoto');
+      return;
+    }
+    img.src=img.dataset.base+'.'+EXTS[i++];
+  };
+  img.addEventListener('error',advance);
+  advance();
+});
+
+document.querySelectorAll('.imgslot img, .plate .pimg img').forEach(im=>{
   im.addEventListener('click',e=>{
     e.stopPropagation();
     document.getElementById('lbimg').src=im.src;
@@ -659,6 +706,10 @@ document.addEventListener('keydown',e=>{
   if(lb.classList.contains('on'))return;
   if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(1)}
   if(e.key==='ArrowLeft'){e.preventDefault();go(-1)}
+  if(e.key==='t'||e.key==='T'){
+    const on=document.body.classList.toggle('notes');
+    document.getElementById('nf').textContent='T · notes '+(on?'ON':'off');
+  }
 });
 render();
 </script>
