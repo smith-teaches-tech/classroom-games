@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Two Accounts of Vodou — TOK History L3</title>
+<style>
+:root{
+  --paper:#faf7f2; --ink:#1e1c19; --ink-soft:#5c564e; --rule:#ddd5c8;
+  --apparatus-bg:#eef1f4; --apparatus-ink:#26313a; --apparatus-rule:#c8d2da;
+  --accent:#8a3324; --accent-2:#1f5673; --note-bg:#fffdf8; --note-rule:#cfc4b2;
+  --E:#1f5673; --V:#5b7553; --C:#8a3324; --R:#6a4c7d;
+  --shadow:0 1px 2px rgba(0,0,0,.06),0 4px 14px rgba(0,0,0,.05);
+  --maxw:1240px;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --paper:#17161a; --ink:#e8e3da; --ink-soft:#a49c90; --rule:#3a3630;
+    --apparatus-bg:#1c232a; --apparatus-ink:#d3dde5; --apparatus-rule:#33414c;
+    --accent:#d9705c; --accent-2:#6fb0d4; --note-bg:#20232a; --note-rule:#3d4550;
+    --E:#6fb0d4; --V:#8fb583; --C:#d9705c; --R:#b295c9;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.3);
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  font-size:18px; line-height:1.62;
+}
+.sans{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif}
+
+/* ---------- top bar ---------- */
+header.bar{
+  position:sticky; top:0; z-index:50; background:var(--paper);
+  border-bottom:1px solid var(--rule);
+  display:flex; align-items:center; gap:1rem; flex-wrap:wrap;
+  padding:.6rem 1.2rem;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+}
+.bar h1{font-size:.95rem; margin:0; font-weight:650; letter-spacing:.01em}
+.bar .tag{font-size:.72rem; color:var(--ink-soft); letter-spacing:.09em; text-transform:uppercase}
+.bar .spacer{flex:1}
+button{
+  font:inherit; font-size:.82rem; padding:.4rem .8rem; border-radius:6px;
+  border:1px solid var(--apparatus-rule); background:var(--apparatus-bg);
+  color:var(--apparatus-ink); cursor:pointer;
+}
+button:hover{filter:brightness(.97)}
+button.primary{background:var(--accent-2); border-color:var(--accent-2); color:#fff}
+#saved{font-size:.75rem; color:var(--ink-soft); min-width:7.5em}
+
+/* ---------- layout ---------- */
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 1.2rem 5rem}
+section.text-part{margin-top:3rem}
+h2.part{
+  font-size:1.6rem; margin:0 0 .3rem; line-height:1.2;
+}
+p.byline{margin:0 0 1.4rem; color:var(--ink-soft); font-size:.95rem}
+
+/* provenance card */
+.prov{
+  background:var(--apparatus-bg); color:var(--apparatus-ink);
+  border:1px solid var(--apparatus-rule); border-radius:10px;
+  padding:1rem 1.2rem; margin:0 0 1.6rem; box-shadow:var(--shadow);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  font-size:.9rem; line-height:1.5;
+}
+.prov h3{margin:0 0 .5rem; font-size:.72rem; letter-spacing:.11em; text-transform:uppercase; opacity:.7}
+.prov dl{display:grid; grid-template-columns:max-content 1fr; gap:.3rem .9rem; margin:0}
+.prov dt{font-weight:650; opacity:.75}
+.prov dd{margin:0}
+
+.notice{
+  border-left:3px solid var(--accent); background:transparent;
+  padding:.5rem 0 .5rem .9rem; margin:0 0 1.6rem;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  font-size:.85rem; color:var(--ink-soft); line-height:1.5;
+}
+
+/* block = text + note */
+.block{
+  display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:1.6rem;
+  align-items:start; padding:.2rem 0 .9rem;
+}
+.block .body{position:relative; padding-left:2.1rem}
+.block .num{
+  position:absolute; left:0; top:.28em; font-size:.72rem; color:var(--ink-soft);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  letter-spacing:.03em;
+}
+.block p{margin:0 0 .85rem}
+.block p:last-child{margin-bottom:0}
+.ell{color:var(--ink-soft)}
+.gloss{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  font-size:.78rem; color:var(--ink-soft); border-left:2px solid var(--rule);
+  padding-left:.7rem; margin:.6rem 0 .9rem;
+}
+
+/* note column */
+.note{
+  background:var(--note-bg); border:1px solid var(--note-rule); border-radius:8px;
+  padding:.7rem .8rem;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+}
+.note .prompt{font-size:.8rem; line-height:1.45; margin:0 0 .5rem; color:var(--ink)}
+.note .prompt .cell{
+  display:inline-block; font-size:.62rem; font-weight:750; letter-spacing:.1em;
+  padding:.08rem .35rem; border-radius:3px; color:#fff; margin-right:.4rem;
+  vertical-align:1px;
+}
+.cell.e{background:var(--E)} .cell.v{background:var(--V)}
+.cell.c{background:var(--C)} .cell.r{background:var(--R)}
+textarea{
+  width:100%; border:0; border-top:1px solid var(--note-rule); background:transparent;
+  color:var(--ink); font:inherit; font-size:.84rem; line-height:1.5; padding:.5rem 0 0;
+  resize:vertical; min-height:4.5rem; outline:none;
+}
+textarea::placeholder{color:var(--ink-soft); opacity:.55}
+.note.blank .prompt{color:var(--ink-soft); font-style:italic}
+
+/* stage 2 gate */
+.gate{
+  border:2px dashed var(--apparatus-rule); border-radius:10px; padding:1.3rem;
+  margin:2.2rem 0 1rem; background:transparent;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+}
+.gate h3{margin:0 0 .4rem; font-size:1rem}
+.gate p{margin:0 0 .8rem; font-size:.87rem; color:var(--ink-soft); line-height:1.5}
+.gate input[type=text]{
+  font:inherit; font-size:.85rem; padding:.4rem .6rem; border-radius:6px;
+  border:1px solid var(--apparatus-rule); background:var(--paper); color:var(--ink);
+  width:9rem; text-transform:uppercase; letter-spacing:.1em;
+}
+.gate .err{color:var(--accent); font-size:.8rem; margin-left:.6rem}
+.revealed{display:none}
+.revealed.open{display:block}
+.revealed h4{margin:1.2rem 0 .4rem; font-size:.82rem; letter-spacing:.08em; text-transform:uppercase; color:var(--ink-soft)}
+.revealed ul{margin:.2rem 0 .9rem; padding-left:1.1rem; font-size:.88rem; line-height:1.55}
+.revealed li{margin-bottom:.3rem}
+
+/* grid strip */
+.gridstrip{margin:2.4rem 0 0}
+.gridstrip h3{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  font-size:.75rem; letter-spacing:.11em; text-transform:uppercase; color:var(--ink-soft);
+  margin:0 0 .8rem; padding-bottom:.4rem; border-bottom:1px solid var(--rule);
+}
+.cells{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem}
+.cellbox{
+  border:1px solid var(--note-rule); border-radius:8px; background:var(--note-bg);
+  padding:.8rem .9rem;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+}
+.cellbox .hd{font-size:.8rem; font-weight:650; margin-bottom:.35rem}
+.cellbox .q{font-size:.8rem; color:var(--ink-soft); line-height:1.45; margin-bottom:.35rem}
+
+/* compare table */
+table.compare{width:100%; border-collapse:collapse; margin-top:1rem;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif; font-size:.85rem}
+table.compare th, table.compare td{border:1px solid var(--rule); padding:.55rem .7rem; vertical-align:top; text-align:left}
+table.compare th{background:var(--apparatus-bg); color:var(--apparatus-ink); font-weight:650; font-size:.78rem}
+table.compare td:first-child{width:30%; color:var(--ink-soft); font-size:.82rem}
+table.compare textarea{min-height:3.4rem; border-top:0}
+
+.closer{
+  margin-top:2.6rem; padding:1.3rem 1.4rem; border-radius:10px;
+  background:var(--apparatus-bg); color:var(--apparatus-ink); border:1px solid var(--apparatus-rule);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+}
+.closer .kq{font-size:1.02rem; font-weight:650; line-height:1.4; margin:0 0 .5rem}
+.closer p{font-size:.87rem; margin:0 0 .8rem; opacity:.85; line-height:1.5}
+
+.lead{
+  font-size:1.02rem; line-height:1.55; color:var(--ink-soft); max-width:44rem;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+}
+hr.div{border:0; border-top:1px solid var(--rule); margin:3rem 0 0}
+
+@media (max-width:900px){
+  body{font-size:17px}
+  .block{grid-template-columns:1fr; gap:.7rem}
+  .block .body{padding-left:1.7rem}
+  .cells{grid-template-columns:1fr}
+}
+
+/* ---------- print ---------- */
+@media print{
+  :root{--paper:#fff; --ink:#000; --ink-soft:#444; --rule:#bbb; --note-bg:#fff; --note-rule:#999;
+        --apparatus-bg:#f2f2f2; --apparatus-ink:#000; --apparatus-rule:#bbb; --shadow:none}
+  header.bar{display:none}
+  body{font-size:11pt}
+  .wrap{max-width:none; padding:0}
+  .block{grid-template-columns:minmax(0,1fr) 240px; page-break-inside:avoid; gap:1rem}
+  textarea{border:0; border-top:1px solid #999; min-height:0; height:auto; overflow:visible}
+  .gate{page-break-inside:avoid}
+  section.text-part{page-break-before:always}
+  section.text-part:first-of-type{page-break-before:auto}
+  .noprint{display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div>
+    <div class="tag">TOK · History L3</div>
+    <h1>Two Accounts of Vodou</h1>
+  </div>
+  <div class="spacer"></div>
+  <span id="saved"></span>
+  <button onclick="window.print()">Print / PDF</button>
+  <button class="primary" onclick="clearAll()">Clear my notes</button>
+</header>
+
+<div class="wrap">
+
+  <p class="lead" style="margin-top:2rem">
+    Two men wrote about the same religion, in the same country, and reached opposite conclusions.
+    Read both before class. Your notes are saved in this browser on this device — bring them with you,
+    on screen or printed.
+    <br><br>
+    <strong style="color:var(--ink)">One question runs underneath the whole reading:</strong>
+    each author <em>believed</em> he was describing Vodou accurately. So what, exactly, was each one
+    counting as evidence — and how did he get hold of it?
+  </p>
+
+  <hr class="div">
+
+  <!-- ============================= TEXT A ============================= -->
+  <section class="text-part" id="partA">
+    <h2 class="part">Text A</h2>
+    <p class="byline">From <em>Hayti, or the Black Republic</em>, Chapter V: “Vaudoux Worship and Cannibalism”</p>
+
+    <div class="prov">
+      <h3>What you are told before reading</h3>
+      <dl>
+        <dt>Author</dt><dd>Spenser St. John</dd>
+        <dt>Occupation</dt><dd>British diplomat; British representative in Haiti for roughly twelve years</dd>
+        <dt>Published</dt><dd>1884, London. A second edition followed in 1886.</dd>
+        <dt>Training</dt><dd>None in anthropology, ethnography or religious studies</dd>
+        <dt>Language</dt><dd>Wrote in English. Did not live among the people he describes.</dd>
+      </dl>
+      <p style="margin:.8rem 0 0; opacity:.8">That is all you get for now. Everything else about him is
+      <strong>Stage 2</strong>, at the end of this text.</p>
+    </div>
+
+    <div class="notice">
+      <strong>Before you start.</strong> This text uses openly racist language of its period, and the second
+      half describes the murder of a child in detail. It has not been softened, because the language and the
+      choice of material <em>are</em> the evidence you are being asked to examine. Read it as a document, not
+      as a report of fact. If you need to stop, stop, and tell your teacher — it will not cost you anything.
+    </div>
+
+    <!-- A1 -->
+    <div class="block">
+      <div class="body">
+        <span class="num">§1</span>
+        <p>According to the Arada negroes, who are the true sectaries of the Vaudoux in the colony, who maintain
+        its principles and its rules, Vaudoux signifies an all-powerful and supernatural being, on whom depend
+        all the events which take place in the world. This being is the non-venomous serpent, and it is under
+        its auspices that all those assemble who profess this doctrine. Acquaintance with the past, knowledge
+        of the present, prescience of the future, all appertain to this serpent, that only consents, however,
+        to communicate his power and prescribe his will through the organ of a grand priest, whom the sectaries
+        select, and still more by that of the negress whom the love of the latter has raised to the rank of
+        high priestess.</p>
+      </div>
+      <div class="note">
+        <p class="prompt"><span class="cell e">E</span>Read the first five words again. <em>“According to the
+        Arada negroes…”</em> — how did St. John come to know what they say? He does not tell you. Write down
+        every way he <em>might</em> have got this.</p>
+        <textarea data-k="a1" placeholder="…"></textarea>
+      </div>
+    </div>
+
+    <!-- A2 -->
+    <div class="block">
+      <div class="body">
+        <span class="num">§2</span>
+        <p>These two delegates, who declare themselves inspired by their god, or in whom the gift of inspiration
+        is really manifested in the opinion of their followers, bear the pompous names of King and Queen, or the
+        despotic ones of Master and Mistress, or the touching titles of Papa and Mama. They are during their
+        whole life the chiefs of the great family of the Vaudoux, and they have a right to the unlimited respect
+        of those that compose it. <span class="ell">[…]</span> To disobey them, to resist them, is to disobey
+        God himself, and to expose oneself to the greatest misfortunes.</p>
+        <p>This system of domination on the one hand, and of blind obedience on the other, being well
+        established, they at fixed dates meet together, and the King and Queen of the Vaudoux preside, following
+        the forms which they probably brought from Africa, and to which Creole customs have added many
+        variations <span class="ell">[…]</span></p>
+      </div>
+      <div class="note">
+        <p class="prompt"><span class="cell e">E</span>“Pompous,” “despotic,” “blind obedience,” “probably.”
+        Which words here report something, and which ones judge it? Mark two of each.</p>
+        <textarea data-k="a2" placeholder="…"></textarea>
+      </div>
+    </div>
+
+    <!-- A3 -->
+    <div class="block">
+      <div class="body">
+        <span class="num">§3</span>
+        <p>The reunion for the true Vaudoux worship, for that which has least lost its primitive purity, never
+        takes place except secretly, in the dead of night, and in a secure place safe from any profane eye.
+        There each initiated puts on a pair of sandals and fastens around his body a number, more or less
+        considerable, of red handkerchiefs <span class="ell">[…]</span> The King and Queen place themselves at
+        one end of the room, near a kind of altar, on which is a box where the serpent is kept, and where each
+        adept can see it through the bars of its cage.</p>
+        <p>When they have verified that no curious stranger has penetrated into the place, they commence the
+        ceremony by the adoration of the serpent <span class="ell">[…]</span> They renew, holding the hands of
+        the King and Queen, the oath of secrecy, which is the foundation of the association, and it is
+        accompanied by everything horrible which delirium could imagine to render it more imposing.</p>
+      </div>
+      <div class="note">
+        <p class="prompt"><span class="cell c">C</span>He states twice that the ceremony is closed to outsiders,
+        and that they check. Then he describes what happens inside it. <strong>Can both of those be true at
+        once?</strong> What would have to have happened for both to be true?</p>
+        <textarea data-k="a3" placeholder="…"></textarea>
+      </div>
+    </div>
+
+    <!-- A4 -->
+    <div class="block">
+      <div class="body">
+        <span class="num">§4</span>
+        <p>Then the crowd separates, and each one who may desire it <span class="ell">[…]</span> approaches to
+        implore the aid of the Vaudoux. Most of them ask for the talent to be able to direct the conduct of
+        their masters. But this is not enough: one wants more money; another the gift of being able to please
+        an unfeeling one; another desires to reattach an unfaithful lover; this one wishes for a prompt cure or
+        long life <span class="ell">[…]</span> There is not a passion which does not give vent to its vow, and
+        crime itself does not always disguise those which have for object its success.</p>
+        <p>At each of these invocations the King of the Vaudoux appears absorbed in thought. The spirit seizes
+        him; suddenly he takes hold of the box in which the serpent is confined, places it on the ground, and
+        commands the Queen to get on it. As soon as the sacred ark is beneath her feet, the new Pythoness is
+        filled by the spirit of their god; she trembles, all her body is in a state of convulsion, and the
+        oracle speaks by her mouth. <span class="ell">[…]</span> she dictates as decrees without appeal
+        everything which she is pleased to prescribe, in the name of the serpent, to this imbecile crowd, that
+        never expresses the slightest doubt of the most monstrous absurdity, and that only knows how to obey
+        what is despotically dictated to it.</p>
+      </div>
+      <div class="note">
+        <p class="prompt"><span class="cell e">E</span>Notice what people are asking for: money, health, love,
+        long life, influence. <strong>Hold onto this paragraph.</strong> You will meet the same list in Text B,
+        described by a man who reaches the opposite conclusion. What does St. John add to the list that turns
+        it into something sinister?</p>
+        <textarea data-k="a4" placeholder="…"></textarea>
+      </div>
+    </div>
+
+    <!-- A5 -->
+    <div class="block">
+      <div class="body">
+        <span class="num">§5</span>
+        <p>After all these questions have received some kind of an answer from the oracle <span class="ell">[…]</span>
+        his followers bring as tribute the objects they think most worthy <span class="ell">[…]</span> It is
+        from this collection that the expenses of the meetings are paid, that aid is afforded to absent members,
+        or to those present who may be in want <span class="ell">[…]</span> A fresh oath, as execrable as the
+        first, engages each one to be silent as to what has passed, to aid in what has been settled; and
+        sometimes a vase, in which there is the blood of a goat, still warm, seals on the lips of those present
+        the promise to suffer death rather than reveal anything, and even to inflict it on any one who may
+        forget that he is thus so solemnly bound to secrecy.</p>
+      </div>
+      <div class="note">
+        <p class="prompt"><span class="cell e">E</span>One sentence in this paragraph describes a mutual-aid
+        fund for members who are ill or poor. Find it. Why do you think it passes almost unnoticed?</p>
+        <textarea data-k="a5" placeholder="…"></textarea>
+      </div>
+    </div>
+
+    <!-- A6 -->
+    <div class="block">
+      <div class="body">
+        <span class="num">§6</span>
+        <p>After these ceremonies commences the dance of the Vaudoux. <span class="ell">[…]</span> The King
+        places his hand or his foot on the box in which the serpent is confined, and soon becomes agitated. This
+        impression he communicates to the Queen, and from her it gains the whole circle, and every one commences
+        certain movements, in which the upper part of the body, the head and shoulders, appear to be dislocated.
+        <span class="ell">[…]</span> This is augmented by the use of spirituous liquors, which the adepts do not
+        spare. With some, fainting fits follow, with others a species of fury; but a nervous trembling seizes
+        them all, which they appear unable to master. They go on spinning round, and in their excitement some
+        tear their clothes, others bite their own flesh; then again many fall to the ground utterly deprived of
+        sense, and are dragged into a neighbouring dark apartment. Here in the obscurity is too often a scene of
+        the most disgusting prostitution.</p>
+        <p>At length lassitude puts an end to these demoralising scenes, to be renewed again at a date which is
+        carefully settled beforehand.</p>
+      </div>
+      <div class="note">
+        <p class="prompt"><span class="cell c">C</span>“Too often.” He is now describing a dark room he cannot
+        have been in, at a ceremony that excludes strangers. Ask the awkward question plainly:
+        <strong>on what is this sentence based?</strong></p>
+        <textarea data-k="a6" placeholder="…"></textarea>
+      </div>
+    </div>
+
+    <p class="gloss" style="margin-left:2.1rem"><strong>The text now changes character.</strong> St. John stops
+    describing ceremonies in general and narrates one specific criminal case: the killing of a girl named
+    Claircine in December 1863, tried in Port-au-Prince in February 1864. Watch what kind of source he is now
+    drawing on — and watch for the one moment he tells you where he was standing.</p>
+
+    <!-- A7 -->
+    <div class="block">
+      <div class="body">
+        <span class="num">§7</span>
+        <p>On the 27th December 1863, Jeanne invited her sister, the mother of Claircine, to accompany her to
+        Port-au-Prince, and the child, a girl of about twelve years of age, was left at home with Congo.
+        Immediate advantage was taken of the mother’s absence, and Claircine was conducted to the house of
+        Julien, and from thence to that of Floréal, where she was bound, and hidden under the altar in a
+        neighbouring temple. In the evening, the mother, returning home, asked for her child, when her brother
+        Congo told her it had strayed away; a pretended search was made by those in the plot, and another
+        Papaloi was consulted. This man told the mother not to be uneasy, as the Maître d’Eau, or the spirit of
+        the water, had taken her daughter, but that in a short time her child would be restored to her. The
+        woman believed, or pretended to believe this story, and, by the papa’s recommendation, burnt candles
+        before the altar of the Virgin Mary for the prompt return of her offspring, — another proof of the
+        strange mingling of Catholicism and Vaudoux worship.</p>
+      </div>
+      <div class="note">
+        <p class="prompt"><span class="cell e">E</span>“The woman believed, <em>or pretended to believe</em>.”
+        He cannot know which. Why does he include both — and what does the phrase do to how you read her?</p>
+        <textarea data-k="a7" placeholder="…"></textarea>
+      </div>
+    </div>
+
+    <!-- A8 -->
+    <div class="block">
+      <div class="body">
+        <span class="num">§8</span>
+        <p>On the evening of the 31st of December a large party assembled at the house of Jeanne to await the
+        arrival of the child, who had remained for four days bound under the altar. When the chief members of
+        the plot came to the temple to bring her out, she, guessing the fate reserved for her, gave two or three
+        piercing shrieks, which were soon stifled, and gagged and bound, she was carried to Jeanne’s house,
+        where preparations were made for the human sacrifice. She was thrown on the ground, her aunt holding her
+        by the waist, whilst the Papaloi pressed her throat, and the others held her legs and arms; her
+        struggles soon ceased, as Floréal had succeeded in strangling her. Then Jeanne handed him a large knife,
+        with which he cut off Claircine’s head, the assistants catching the blood in a jar; then Floréal is said
+        to have inserted an instrument under the child’s skin, and detached it from the body. Having succeeded
+        in flaying their victim, the flesh was cut from the bones, and placed in large wooden dishes; the
+        entrails and skin being buried near to the cottage. The whole party then started for Floréal’s house,
+        carrying the remains of their victim with them. On their arrival Jeanne rang a little bell, and a
+        procession was formed, the head borne aloft, and a sacred song sung. Then preparations were made for a
+        feast.</p>
+      </div>
+      <div class="note">
+        <p class="prompt"><span class="cell v">V</span>Find the four words <em>“is said to have.”</em> They
+        appear once, in the middle of a paragraph otherwise written as plain fact. What is that phrase doing
+        there — and why is it not attached to any of the other sentences?</p>
+        <textarea data-k="a8" placeholder="…"></textarea>
+      </div>
+    </div>
+
+    <!-- A9 -->
+    <div class="block">
+      <div class="body">
+        <span class="num">§9</span>
+        <p>Roused by the noise caused by the arrival, a woman and a girl sleeping in another chamber looked
+        through some chinks in the wall and saw all that passed, — Jeanne cooking the flesh with Congo beans,
+        small and rather bitter (pois congo), whilst Floréal put the head into a pot with yams to make some
+        soup. Whilst the others were engaged in the kitchen, one of the women present, Roséide Sumera, urged by
+        the fearful appetite of a cannibal, cut from the child’s palm a piece of flesh and ate it raw
+        <strong>(this I heard her avow in open court).</strong></p>
+        <p>The cooking over, portions of the prepared dish were handed round, of which all present partook; and
+        the soup being ready, it was divided among the assistants, who deliberately drank it. The night was
+        passed in dancing, drinking, and debauchery. In the morning the remains of the flesh were warmed up, and
+        the two witnesses who had watched the proceedings were invited to join in the repast: the two woman
+        [<em>sic</em>] confessed that she had accepted the invitation, but the girl did not.</p>
+      </div>
+      <div class="note">
+        <p class="prompt"><span class="cell c">C</span>This is the one sentence in the whole text where he tells
+        you where he was: <strong>“this I heard her avow in open court.”</strong> A courtroom in Haiti in 1864 —
+        a confession, in a capital trial, from a defendant. Is that a strong source or a weak one? Give a reason
+        either way.</p>
+        <textarea data-k="a9" placeholder="…"></textarea>
+      </div>
+    </div>
+
+    <!-- A10 -->
+    <div class="block">
+      <div class="body">
+        <span class="num">§10</span>
+        <p>Fortunately for her, the inquiries which Claircine’s mother had made on her first arrival home and
+        the disappearance of the second girl had roused the attention of an officer of police, and a search
+        being made, the freshly-boiled skull of the murdered girl was found among the bushes near Floréal’s
+        house <span class="ell">[…]</span> Fourteen persons were arrested, against eight of whom sufficient
+        evidence could be obtained, and these were sent to prison to answer for their crime before a criminal
+        court. The trial commenced on the 4th of February 1864, and lasted two days. Incidents were related in
+        the course of the evidence which showed <strong>how the lower classes are sunk in ignorance and
+        barbarity</strong>, and renewed the proofs, if any fresh proofs were required, that the Vaudoux worship
+        is associated by them with the ceremonies of the Catholic religion <span class="ell">[…]</span></p>
+      </div>
+      <div class="note">
+        <p class="prompt"><span class="cell v">V</span>Watch the size of the claim change in one sentence.
+        Eight people stood trial. What is the conclusion he draws — and about whom? Write down the exact step
+        where the reasoning stops being about eight people.</p>
+        <textarea data-k="a10" placeholder="…"></textarea>
+      </div>
+    </div>
+
+    <!-- grid strip A -->
+    <div class="gridstrip">
+      <h3>Before Stage 2 — fill these in now</h3>
+      <div class="cells">
+        <div class="cellbox">
+          <div class="hd" style="color:var(--E)">E — What counted as evidence for St. John?</div>
+          <div class="q">List every <em>kind</em> of source behind this chapter. For each one, say how he got
+          access to it. Be honest about the ones you can only guess at.</div>
+          <textarea data-k="gA-e" placeholder="…"></textarea>
+        </div>
+        <div class="cellbox">
+          <div class="hd" style="color:var(--C)">C — Who made him an expert?</div>
+          <div class="q">He had no training in the study of religion. So why was he believed? What in his
+          position gave the book its authority in London?</div>
+          <textarea data-k="gA-c" placeholder="…"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- gate A -->
+    <div class="gate" id="gateA">
+      <h3>Stage 2 — do not open until your teacher gives you the word</h3>
+      <p>You now know things about St. John that you worked out from the text itself. Stage 2 tells you things
+      about him that you could not have worked out. Opening it early does not make you cleverer — it makes the
+      next twenty minutes pointless, because you will find yourself repeating a label instead of reading.</p>
+      <p style="margin-bottom:.5rem"><strong>Answer this first, in one line:</strong> what is the single
+      strongest criticism you can make of this chapter using <em>only</em> what is printed above?</p>
+      <textarea data-k="gateA-pre" placeholder="…" style="border-top:1px solid var(--apparatus-rule); margin-bottom:1rem"></textarea>
+      <label class="noprint" style="font-size:.85rem">Code:
+        <input type="text" id="codeA" maxlength="8" autocomplete="off">
+      </label>
+      <button class="noprint" onclick="unlock('A')">Open Stage 2</button>
+      <span class="err noprint" id="errA"></span>
+
+      <div class="revealed" id="revA">
+        <h4>What the text did not tell you</h4>
+        <ul>
+          <li><strong>His stated purpose.</strong> St. John wrote that he had come to “agree with those who deny
+          that the negro could ever originate a civilisation.” The book is an argument that Haiti proves Black
+          people cannot govern themselves.</li>
+          <li><strong>What Haiti was.</strong> Haiti became independent in 1804 through the only successful
+          large-scale slave revolt in history — the first Black republic in the world.</li>
+          <li><strong>What was being done to it.</strong> France demanded 150 million francs in 1825 as
+          “compensation” for lost slave property. The United States refused to recognise Haiti until 1862 —
+          during St. John’s own posting — for fear of encouraging revolt at home. European powers worked to
+          isolate it.</li>
+          <li><strong>Who he worked for.</strong> A British diplomat, at the height of European imperial
+          expansion into Africa and Asia. A Haiti described as barbaric was useful.</li>
+          <li><strong>The intellectual climate.</strong> The 1880s were the height of “scientific racism” —
+          Social Darwinism, phrenology, and theories of biological inferiority presented as science.</li>
+          <li><strong>What happened next.</strong> The book caused a sensation. He repeated and expanded the
+          cannibalism allegations in the 1886 edition. His account shaped Western opinion of Haiti for decades
+          and fed into the US occupation of 1915–34 and a century of film and fiction.</li>
+        </ul>
+
+        <h4>Now the real question</h4>
+        <p style="font-size:.9rem; color:var(--ink); line-height:1.55; margin-bottom:.6rem">
+          The easy move is to say “he was biased, so ignore him.” That is not an analysis, and it is not what a
+          historian does — his book is still a source about <em>something</em>. So:</p>
+        <div class="cells">
+          <div class="cellbox">
+            <div class="hd" style="color:var(--E)">The E question, sharpened</div>
+            <div class="q">Given his purpose, what did his position let him <strong>count</strong> as evidence —
+            and what did it make invisible to him? Name one thing that was happening in front of him that he
+            could not see.</div>
+            <textarea data-k="revA-1" placeholder="…"></textarea>
+          </div>
+          <div class="cellbox">
+            <div class="hd" style="color:var(--C)">The 1890 test</div>
+            <div class="q">A historian in 1890 has only this book. What would they have had to <em>do</em> to
+            catch the problem — and was the material to catch it actually available to them? If not, what
+            follows?</div>
+            <textarea data-k="revA-2" placeholder="…"></textarea>
+          </div>
+        </div>
+        <div class="cellbox" style="margin-top:1rem">
+          <div class="hd">The hardest one</div>
+          <div class="q">Something did happen to Claircine. A trial was held; a skull was found. Does
+          establishing St. John’s purpose tell you the case was invented? Where exactly does his evidence stop
+          supporting his conclusion?</div>
+          <textarea data-k="revA-3" placeholder="…"></textarea>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= TEXT B ============================= -->
+  <section class="text-part" id="partB">
+    <h2 class="part">Text B</h2>
+    <p class="byline">Excerpts from <em>Voodoo in Haiti</em>, translated from the French by Hugo Charteris</p>
+
+    <div class="prov">
+      <h3>What you are told before reading</h3>
+      <dl>
+        <dt>Author</dt><dd>Alfred Métraux (1902–1963)</dd>
+        <dt>Occupation</dt><dd>Swiss anthropologist, working for UNESCO</dd>
+        <dt>Published</dt><dd>1958 in French; English translation 1959</dd>
+        <dt>Training</dt><dd>Professional ethnographer; had studied religion in several societies</dd>
+        <dt>Language</dt><dd>Learned Haitian Creole. Lived in the Marbial Valley and elsewhere in Haiti, 1949–50.</dd>
+      </dl>
+      <p style="margin:.8rem 0 0; opacity:.8">Same deal. Stage 2 comes at the end.</p>
+    </div>
+
+    <div class="notice" style="border-left-color:var(--accent-2)">
+      <strong>How to read this one.</strong> These are excerpts, joined by gaps marked […]. Métraux is not
+      simply “the good one.” He is a European writing about Haitians too, and he says some things you may find
+      cold. Apply exactly the same questions you applied to Text A. Do not let a sympathetic tone do your
+      thinking for you.
+    </div>
+
+    <!-- B1 -->
+    <div class="block">
+      <div class="body">
+        <span class="num">§1</span>
+        <p><em>From the foreword.</em></p>
+        <p>Certain exotic words are charged with evocative power. Voodoo is one. It usually conjures up visions
+        of mysterious deaths, secret rites — or dark saturnalia celebrated by “blood-maddened, sex-maddened,
+        god-maddened” negroes.</p>
+      </div>
+      <div class="note">
+        <p class="prompt"><span class="cell e">E</span>He opens by quoting the thing he is arguing against. Why
+        start there rather than with his own findings? What does it tell you about who he thinks he is writing
+        for?</p>
+        <textarea data-k="b1" placeholder="…"></textarea>
+      </div>
+    </div>
+
+    <!-- B2 -->
+    <div class="block">
+      <div class="body">
+        <span class="num">§2</span>
+        <p>A talented but rather fanciful American writer, W. H. Seabrook, has given the most complete account of
+        the black legend of Voodoo. <span class="ell">[…]</span> Even so, the few allusions to Voodoo which may
+        be found in documents and books little known to the general public, could not have raised this rural
+        paganism into the legendary terror it became, had not a British Consul, Spencer St. John, written a book,
+        <em>Haiti or the Black Republic</em> (published in 1884), in which he described the most blood-curdling
+        crimes committed by the Voodoo sect.</p>
+        <p>Spencer St. John’s revelations of alleged cannibalism in Haiti provoked, according to his own
+        admission, very strong feeling in Europe and the United States. <span class="ell">[…]</span> Although
+        faced with an outcry in Haiti he nevertheless thought good to repeat his allegations in the second
+        edition (1886), and even to add new details.</p>
+      </div>
+      <div class="note">
+        <p class="prompt"><span class="cell v">V</span>Métraux is doing to St. John what you were just doing.
+        Look at the words he chooses: “legend,” “alleged,” “thought good to.” <strong>He does not say St. John
+        lied.</strong> What is the more precise charge he makes — and why is it a stronger move than calling him
+        a liar?</p>
+        <textarea data-k="b2" placeholder="…"></textarea>
+      </div>
+    </div>
+
+    <!-- B3 -->
+    <div class="block">
+      <div class="body">
+        <span class="num">§3</span>
+        <p><em>On how the book was made.</em></p>
+        <p>My information therefore derives to a great extent from what I learnt from Lorgina during my numerous
+        visits to Haiti. <span class="ell">[…]</span> Nor should I forget the young Haitians — Remy Bastien,
+        Lamartinière Honorat, Michelson Hyppolite, R. Mortel, Jeanne G. Sylvain — who went with me to Marbial
+        and took part in research.</p>
+        <p><span class="ell">[…]</span> Certain Haitians will no doubt be saddened that a foreigner whom they
+        welcomed so warmly has, like so many before him, felt the need to write a book on Voodoo
+        <span class="ell">[…]</span></p>
+      </div>
+      <div class="note">
+        <p class="prompt"><span class="cell c">C</span>He names a Vodou priestess and five Haitian researchers.
+        St. John named no informants at all. <strong>What changes when sources have names?</strong> And ask the
+        harder half: whose book is it, if five other people did the research?</p>
+        <textarea data-k="b3" placeholder="…"></textarea>
+      </div>
+    </div>
+
+    <!-- B4 -->
+    <div class="block">
+      <div class="body">
+        <span class="num">§4</span>
+        <p><em>On what the spirits (loa) are asked to do.</em></p>
+        <p>He is expected to effect cures, so he must touch the sick and improvise treatment.
+        <span class="ell">[…]</span> The possessed — or to be more precise, the gods — prophesy, threaten
+        sinners and gladly give advice. <span class="ell">[…]</span> Usually he dispenses small favours among
+        the onlookers — clasping both hands of some rather roughly, anointing the faces of others with his
+        sweat, or shaking their clothes to bring them luck.</p>
+      </div>
+      <div class="note">
+        <p class="prompt"><span class="cell e">E</span>Go back to <strong>§4 of Text A</strong>. Cures, advice,
+        luck, protection, settling disputes. <strong>The two men report almost the same activity.</strong> So
+        where does the difference between the two accounts actually live — in what they saw, or in what they did
+        with it?</p>
+        <textarea data-k="b4" placeholder="…"></textarea>
+      </div>
+    </div>
+
+    <!-- B5 -->
+    <div class="block">
+      <div class="body">
+        <span class="num">§5</span>
+        <p><em>On possession.</em></p>
+        <p>Trance usually occurs during religious ceremonies, private as well as public. Spirits must take part
+        in the homage which is paid to them and must themselves receive the sacrifices offered. Their appearance
+        is expected and takes place at the desired moment. <span class="ell">[…]</span> Song, or more often
+        drumming, has an undeniable effect on certain subjects.</p>
+        <p>The individual in a state of trance is in no way responsible for his deeds or words. He has ceased to
+        exist as a person. <span class="ell">[…]</span> It would be improper to make the “horse” responsible for
+        the actions or utterances of his invisible rider. <span class="ell">[…]</span> Someone possessed can
+        express with impunity thoughts which he would hesitate to utter aloud in normal circumstances.
+        <span class="ell">[…]</span> The possessed hold opinions or give free rein to aggression which can only
+        be explained by repressed grudges. Their indiscretion is sometimes shocking.</p>
+      </div>
+      <div class="note">
+        <p class="prompt"><span class="cell e">E</span>Compare this with St. John’s convulsing “Pythoness”
+        (§4 of Text A). Both describe a person shaking and speaking as a god. <strong>What has Métraux added
+        that St. John did not have?</strong> One word will do it: he explains what possession is <em>for</em>.</p>
+        <textarea data-k="b5" placeholder="…"></textarea>
+      </div>
+    </div>
+
+    <!-- B6 -->
+    <div class="block">
+      <div class="body">
+        <span class="num">§6</span>
+        <p>When a man becomes the vehicle of a god, has he lost all sense of reality, or is he simply an actor
+        speaking a part? <span class="ell">[…]</span> Apart from chaotic preliminaries there is in most cases of
+        possession a theatrical element which unavoidably suggests a certain amount of simulation or at least of
+        intentional delusion. <span class="ell">[…]</span> For a person to admit that he remembers what he said
+        or did as a god, is to admit that he was not genuinely possessed.</p>
+      </div>
+      <div class="note">
+        <p class="prompt"><span class="cell v">V</span>This is the coldest passage in Text B. He is raising the
+        possibility that people are acting. <strong>Is this the same judgement St. John makes, or a different
+        one?</strong> Look at what each man does <em>after</em> the doubt: what does St. John conclude, and what
+        does Métraux conclude?</p>
+        <textarea data-k="b6" placeholder="…"></textarea>
+      </div>
+    </div>
+
+    <!-- B7 -->
+    <div class="block">
+      <div class="body">
+        <span class="num">§7</span>
+        <p><em>Two moments where he tells you where he was standing.</em></p>
+        <p>I shall base my description of this on what I saw at Lorgina’s in 1949.</p>
+        <p>[On possession by the <em>marassa</em>, the divine twins:] She had gone back to being a child. She
+        asked for sweets in childish tones and for a bit of stuff to make a dress for her doll.
+        <span class="ell">[…]</span> Those whom they do seize become like little children, “tyrannical and
+        capricious”. They roll on the ground, get up, walk uncertainly and ask for food.</p>
+      </div>
+      <div class="note">
+        <p class="prompt"><span class="cell c">C</span>Count them across both texts. How many times does each
+        author tell you <em>where he was standing</em> when he saw the thing he is describing? Write the two
+        numbers down. That difference is the whole lesson.</p>
+        <textarea data-k="b7" placeholder="…"></textarea>
+      </div>
+    </div>
+
+    <!-- grid strip B -->
+    <div class="gridstrip">
+      <h3>Before Stage 2 — fill these in now</h3>
+      <div class="cells">
+        <div class="cellbox">
+          <div class="hd" style="color:var(--E)">E — What counted as evidence for Métraux?</div>
+          <div class="q">List the kinds of source behind this book, and how he got access to each. Then: is
+          there anything St. John could reach that Métraux, arriving in 1949, could not?</div>
+          <textarea data-k="gB-e" placeholder="…"></textarea>
+        </div>
+        <div class="cellbox">
+          <div class="hd" style="color:var(--C)">C — Who made him an expert?</div>
+          <div class="q">A university, a discipline, UNESCO, and a priestess who let him in. Which of those four
+          does the most work — and which one would a historian find hardest to check?</div>
+          <textarea data-k="gB-c" placeholder="…"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- gate B -->
+    <div class="gate" id="gateB">
+      <h3>Stage 2 — again, wait for the word</h3>
+      <p style="margin-bottom:.5rem"><strong>Answer first, in one line:</strong> using only what is printed
+      above, what is the strongest criticism you can make of <em>Métraux</em>?</p>
+      <textarea data-k="gateB-pre" placeholder="…" style="border-top:1px solid var(--apparatus-rule); margin-bottom:1rem"></textarea>
+      <label class="noprint" style="font-size:.85rem">Code:
+        <input type="text" id="codeB" maxlength="8" autocomplete="off">
+      </label>
+      <button class="noprint" onclick="unlock('B')">Open Stage 2</button>
+      <span class="err noprint" id="errB"></span>
+
+      <div class="revealed" id="revB">
+        <h4>What the text did not tell you</h4>
+        <ul>
+          <li><strong>He was sent.</strong> Métraux went to Haiti on a UNESCO project, in the years when the UN
+          was building an official position that racial hierarchy had no scientific basis. His conclusions were
+          welcome to his employer.</li>
+          <li><strong>The moment.</strong> 1949–50: the beginning of decolonisation. Anthropology was rebuilding
+          itself in public against exactly the assumptions St. John wrote from.</li>
+          <li><strong>How it was received.</strong> The anthropologist Sidney Mintz called it the most
+          authoritative general account of Vodou available. It became the standard scholarly work — and remains
+          far less widely known than St. John’s.</li>
+          <li><strong>The access.</strong> Métraux was admitted to ceremonies by Lorgina Delorge, a priestess.
+          Someone decided to let him in. That decision is part of his evidence base, and he could not control
+          it.</li>
+        </ul>
+
+        <h4>Now the real question</h4>
+        <div class="cells">
+          <div class="cellbox">
+            <div class="hd" style="color:var(--E)">The symmetry test</div>
+            <div class="q">You have just been told Métraux’s employer, moment and politics — the same kind of
+            information that damaged St. John. <strong>Does it damage Métraux equally?</strong> If not, say
+            precisely why not, without using the words “he was right.”</div>
+            <textarea data-k="revB-1" placeholder="…"></textarea>
+          </div>
+          <div class="cellbox">
+            <div class="hd" style="color:var(--C)">The gatekeeper</div>
+            <div class="q">Lorgina let him in and shaped what he saw. Is that a weakness in his evidence, a
+            strength, or both? What would it take to find out?</div>
+            <textarea data-k="revB-2" placeholder="…"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= BRINGING IT TOGETHER ============================= -->
+  <section class="text-part" id="together">
+    <h2 class="part">Bringing the two together</h2>
+    <p class="byline">Fill this in after both readings. Bring it to class.</p>
+
+    <table class="compare">
+      <thead>
+        <tr><th></th><th>St. John (1884)</th><th>Métraux (1958)</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>E</strong> — What did he count as evidence?</td>
+          <td><textarea data-k="c-e-1" placeholder="…"></textarea></td>
+          <td><textarea data-k="c-e-2" placeholder="…"></textarea></td>
+        </tr>
+        <tr>
+          <td><strong>E</strong> — How did he get access to it?</td>
+          <td><textarea data-k="c-e2-1" placeholder="…"></textarea></td>
+          <td><textarea data-k="c-e2-2" placeholder="…"></textarea></td>
+        </tr>
+        <tr>
+          <td><strong>V</strong> — How would you check his claims? What could be corroborated, and what could not?</td>
+          <td><textarea data-k="c-v-1" placeholder="…"></textarea></td>
+          <td><textarea data-k="c-v-2" placeholder="…"></textarea></td>
+        </tr>
+        <tr>
+          <td><strong>C</strong> — What made him count as someone worth believing?</td>
+          <td><textarea data-k="c-c-1" placeholder="…"></textarea></td>
+          <td><textarea data-k="c-c-2" placeholder="…"></textarea></td>
+        </tr>
+        <tr>
+          <td><strong>R</strong> — What could his method never reach, however well he did it?</td>
+          <td><textarea data-k="c-r-1" placeholder="…"></textarea></td>
+          <td><textarea data-k="c-r-2" placeholder="…"></textarea></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="gridstrip" style="margin-top:2.4rem">
+      <h3>Three questions to arrive with an answer to</h3>
+      <div class="cellbox" style="margin-bottom:1rem">
+        <div class="hd">1. The overlap</div>
+        <div class="q">Find one thing both men describe in roughly the same way. Given that they agree on it,
+        why do they end up so far apart? Locate the exact point where the two accounts separate.</div>
+        <textarea data-k="t1" placeholder="…"></textarea>
+      </div>
+      <div class="cellbox" style="margin-bottom:1rem">
+        <div class="hd">2. The ranking</div>
+        <div class="q">You are going to be tempted to say “they are both just perspectives.” Resist it for one
+        minute and answer instead: <strong>is one of these accounts better than the other?</strong> If yes, say
+        what standard you are using — and where that standard came from.</div>
+        <textarea data-k="t2" placeholder="…"></textarea>
+      </div>
+      <div class="cellbox">
+        <div class="hd">3. The uncomfortable one</div>
+        <div class="q">Métraux had access St. John never had, and 74 more years of method. In 2050, what will
+        someone say about <em>his</em> account that he could not have seen? What does that do to the idea of
+        historical progress?</div>
+        <textarea data-k="t3" placeholder="…"></textarea>
+      </div>
+    </div>
+
+    <div class="closer">
+      <p class="kq">If the past cannot be observed or repeated, what gives historical knowledge its authority —
+      and what can it never reach?</p>
+      <p>Everything above feeds one cell or another of the grid we are building across this unit. Text A and
+      Text B are not a story about a bad man and a good man. They are two answers to the question
+      <em>what counts as evidence</em> — and the difference between those answers is where historical knowledge
+      is actually made.</p>
+    </div>
+
+    <p class="gloss noprint" style="margin-top:2rem; padding-left:.9rem">
+      <strong>Sources.</strong> Text A: Spenser St. John, <em>Hayti, or the Black Republic</em> (London, 1884),
+      ch. V, abridged; omissions marked […]. Text B: Alfred Métraux, <em>Voodoo in Haiti</em> (1958), trans.
+      Hugo Charteris — short excerpts quoted for classroom study, joined by marked omissions; italicised
+      headings within Text B are editorial.
+    </p>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  var KEY='tok-hist-l3-vodou-v1';
+  var saved={}, timer=null, el=document.getElementById('saved');
+
+  try{ saved=JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(e){ saved={}; }
+
+  function autosize(t){ t.style.height='auto'; t.style.height=(t.scrollHeight+2)+'px'; }
+
+  var areas=document.querySelectorAll('textarea[data-k]');
+  areas.forEach(function(t){
+    var k=t.getAttribute('data-k');
+    if(saved[k]){ t.value=saved[k]; }
+    autosize(t);
+    t.addEventListener('input',function(){
+      autosize(t);
+      saved[k]=t.value;
+      flush();
+    });
+  });
+
+  function flush(){
+    clearTimeout(timer);
+    if(el) el.textContent='saving…';
+    timer=setTimeout(function(){
+      try{
+        localStorage.setItem(KEY,JSON.stringify(saved));
+        if(el) el.textContent='saved on this device';
+      }catch(e){
+        if(el) el.textContent='could not save — print or copy out';
+      }
+    },400);
+  }
+
+  // restore unlocked stages
+  try{
+    if(localStorage.getItem(KEY+'-openA')==='1') document.getElementById('revA').classList.add('open');
+    if(localStorage.getItem(KEY+'-openB')==='1') document.getElementById('revB').classList.add('open');
+  }catch(e){}
+
+  window.unlock=function(which){
+    var CODE='TRACE';
+    var input=document.getElementById('code'+which);
+    var err=document.getElementById('err'+which);
+    if(!input) return;
+    if(input.value.trim().toUpperCase()===CODE){
+      document.getElementById('rev'+which).classList.add('open');
+      err.textContent='';
+      try{ localStorage.setItem(KEY+'-open'+which,'1'); }catch(e){}
+      document.querySelectorAll('#rev'+which+' textarea').forEach(autosize);
+    } else {
+      err.textContent='Not that one.';
+    }
+  };
+
+  window.clearAll=function(){
+    if(!confirm('Erase every note on this page? This cannot be undone.')) return;
+    saved={};
+    try{ localStorage.removeItem(KEY); }catch(e){}
+    areas.forEach(function(t){ t.value=''; autosize(t); });
+    if(el) el.textContent='cleared';
+  };
+
+  window.addEventListener('beforeprint',function(){ areas.forEach(autosize); });
+  if(el) el.textContent = Object.keys(saved).length ? 'notes restored' : '';
+})();
+</script>
+</body>
+</html>
