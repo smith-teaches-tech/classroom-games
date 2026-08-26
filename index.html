@@ -1,505 +1,448 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8" />
-<title>Smith Teaches Tech — Classroom Games & Tools</title>
+<title>Smith Teaches Tech — Classroom Tools</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Interactive games and classroom tools for AP Language, AP Research, TOK, CAS, Extended Essay and more." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,500;1,9..144,600&family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --paper:#f4eede; --paper2:#efe7d3; --paper3:#faf6ec;
-    --ink:#241f17; --ink-soft:#615847; --line:#2a241a;
-    --rule:#cdbf9f;
-    --accent:#b9432f;
-    --shadow:5px 5px 0 rgba(36,31,23,.13);
-    --shadow-h:7px 7px 0 rgba(36,31,23,.18);
-    /* subject hues */
-    --ap-lang:#b9432f; --ap-res:#b9841c; --ibcore:#1d6f6a; --tok:#3b4ea0;
-    --ee:#7c4a86; --mock:#8a2c2c; --practice:#46637e; --ai:#3a7a44; --eng:#cf6f1f;
-    --cas:#a8476b; --intro:#6d5aa6;
-  }
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    margin:0;color:var(--ink);
-    font-family:'Hanken Grotesk',system-ui,sans-serif;
-    line-height:1.55;
-    background:
-      repeating-linear-gradient(0deg, rgba(120,100,60,.035) 0 1px, transparent 1px 28px),
-      radial-gradient(circle at 18% 12%, rgba(0,0,0,.022) 0 1.5px, transparent 1.5px) 0 0/6px 6px,
-      linear-gradient(165deg,var(--paper3),var(--paper) 55%,var(--paper2));
-    background-attachment:fixed;
-  }
-  a{color:inherit}
+/* ══════════════ TOKENS ══════════════ */
+:root{
+  --bg:#0c0e13; --bg2:#131720; --bg3:#1a1f2b;
+  --fg:#e6e9f0; --fg2:#9aa3b5; --fg3:#5f6879;
+  --line:#242b39; --line2:#323b4d;
+  --brand:#5eead4;
+  --shadow:0 1px 2px rgba(0,0,0,.4);
+  --ap-lang:#ff7a5c; --ap-res:#f0b429; --ibcore:#2fd4bd; --tok:#8aa4ff;
+  --ee:#c98ade; --mock:#ff6b6b; --practice:#69a8e0; --ai:#5bd075; --eng:#ffa14a;
+  --cas:#f778a8; --intro:#a68cff;
+  --sans:'Inter',system-ui,-apple-system,sans-serif;
+  --disp:'Space Grotesk','Inter',system-ui,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+}
+html[data-theme="light"]{
+  --bg:#f7f8fa; --bg2:#ffffff; --bg3:#eef1f6;
+  --fg:#12151c; --fg2:#59616f; --fg3:#8b94a3;
+  --line:#e0e4eb; --line2:#cdd3dd;
+  --brand:#0d9488;
+  --shadow:0 1px 2px rgba(16,20,28,.06);
+  --ap-lang:#d1462c; --ap-res:#a8760f; --ibcore:#0f766e; --tok:#3b4ea0;
+  --ee:#7c4a86; --mock:#b02a2a; --practice:#3d6288; --ai:#2f7a3f; --eng:#c2610f;
+  --cas:#a8476b; --intro:#5c48a0;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--fg);
+  font-family:var(--sans);font-size:15px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(ellipse 900px 500px at 50% -10%, color-mix(in srgb,var(--brand) 7%, transparent), transparent 70%);
+  background-repeat:no-repeat;
+}
+a{color:inherit;text-decoration:none}
+::selection{background:color-mix(in srgb,var(--brand) 35%,transparent)}
+.shell{max-width:1240px;margin:0 auto;padding:0 20px}
 
-  /* ---------- Masthead ---------- */
-  .mast{max-width:1180px;margin:0 auto;padding:20px 22px 0}
-  .mast-meta{display:flex;justify-content:space-between;align-items:center;
-    font-family:'DM Mono',monospace;font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-soft);
-    border-bottom:2px solid var(--line);padding-bottom:9px;flex-wrap:wrap;gap:6px}
-  .mast-meta .dot{color:var(--accent)}
-  .mast-title{text-align:center;padding:26px 0 6px}
-  .mast-title h1{
-    font-family:'Fraunces',serif;font-weight:900;font-optical-sizing:auto;
-    font-size:clamp(2.6rem,7vw,5.3rem);line-height:.92;margin:0;letter-spacing:-1px;
-  }
-  .mast-title h1 .it{font-style:italic;font-weight:600;color:var(--accent)}
-  .mast-title .tag{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(1rem,2.1vw,1.32rem);
-    color:var(--ink-soft);margin-top:12px;font-weight:500}
-  .doublerule{max-width:1180px;margin:14px auto 0;padding:0 22px}
-  .doublerule .r1{border-top:3px solid var(--line)}
-  .doublerule .r2{border-top:1px solid var(--line);margin-top:3px}
+/* ══════════════ HEADER ══════════════ */
+header{padding:26px 0 0}
+.bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:11px;flex:1;min-width:0}
+.mark{width:36px;height:36px;flex:none;border-radius:9px;background:var(--brand);
+  display:grid;place-items:center;font-family:var(--mono);font-weight:700;font-size:15px;color:var(--bg);letter-spacing:-.5px}
+.logo h1{font-family:var(--disp);font-size:19px;font-weight:700;letter-spacing:-.4px;margin:0;line-height:1.15;white-space:nowrap}
+.logo .sub{font-family:var(--mono);font-size:10.5px;color:var(--fg3);letter-spacing:.06em;text-transform:uppercase;margin-top:1px}
+.iconbtn{width:34px;height:34px;flex:none;border:1px solid var(--line);background:var(--bg2);color:var(--fg2);
+  border-radius:8px;cursor:pointer;display:grid;place-items:center;transition:.14s;font-size:15px;line-height:1}
+.iconbtn:hover{border-color:var(--line2);color:var(--fg);background:var(--bg3)}
 
-  /* ---------- Filter bar (sticky) ---------- */
-  .filterwrap{position:sticky;top:0;z-index:30;background:rgba(244,238,222,.86);backdrop-filter:blur(7px);
-    border-bottom:1.5px solid var(--rule);margin-top:0}
-  .filters{max-width:1180px;margin:0 auto;padding:11px 22px;display:flex;gap:9px;flex-wrap:wrap;align-items:center}
-  .filters .flabel{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-soft);margin-right:3px}
-  .pill{font-family:'Hanken Grotesk';font-weight:600;font-size:14px;cursor:pointer;
-    border:2px solid var(--line);background:var(--paper3);color:var(--ink);
-    border-radius:30px;padding:5px 15px;transition:all .14s;box-shadow:2px 2px 0 rgba(36,31,23,.16)}
-  .pill:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 rgba(36,31,23,.22)}
-  .pill .ct{font-family:'DM Mono',monospace;font-size:11px;opacity:.6;margin-left:5px}
-  .pill.active{background:var(--ink);color:var(--paper3);border-color:var(--ink)}
-  .pill.active .ct{opacity:.7}
+.hero{padding:30px 0 22px;max-width:640px}
+.hero h2{font-family:var(--disp);font-size:clamp(26px,4.2vw,40px);font-weight:700;letter-spacing:-1.2px;line-height:1.08;margin:0 0 9px}
+.hero h2 em{font-style:normal;color:var(--brand)}
+.hero p{color:var(--fg2);font-size:15.5px;margin:0}
 
-  /* ---------- Main ---------- */
-  main{max-width:1180px;margin:0 auto;padding:22px 22px 10px}
+/* ══════════════ SEARCH + FILTERS ══════════════ */
+.sticky{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(12px);border-bottom:1px solid var(--line);margin-bottom:24px}
+.searchrow{display:flex;gap:10px;align-items:center;padding:12px 0 10px}
+.searchbox{flex:1;position:relative;display:flex;align-items:center}
+.searchbox svg{position:absolute;left:12px;width:16px;height:16px;color:var(--fg3);pointer-events:none}
+#q{width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:10px;
+  padding:10px 76px 10px 36px;color:var(--fg);font-family:var(--sans);font-size:14.5px;outline:none;transition:.14s}
+#q::placeholder{color:var(--fg3)}
+#q:focus{border-color:var(--brand);box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 15%,transparent)}
+.kbd{position:absolute;right:11px;font-family:var(--mono);font-size:10.5px;color:var(--fg3);
+  border:1px solid var(--line2);border-radius:5px;padding:2px 6px;pointer-events:none;background:var(--bg3)}
+#q:not(:placeholder-shown)~.kbd{display:none}
+.stat{font-family:var(--mono);font-size:11px;color:var(--fg3);white-space:nowrap}
+@media(max-width:620px){.stat{display:none}}
 
-  /* ---------- Featured ---------- */
-  .featured{display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;
-    border:3px solid var(--line);border-radius:14px;background:var(--paper3);
-    padding:20px 24px;margin-bottom:28px;box-shadow:var(--shadow);position:relative;overflow:hidden;
-    --c:var(--mock)}
-  .featured::before{content:"";position:absolute;left:0;top:0;bottom:0;width:10px;background:var(--c)}
-  .featured .ficon{width:64px;height:64px;color:var(--c);flex:none}
-  .featured .ficon svg{width:100%;height:100%}
-  .featured .fkick{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--c);font-weight:500}
-  .featured .ftitle{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.4rem,3vw,2.05rem);line-height:1.02;margin:3px 0 5px}
-  .featured .fdesc{color:var(--ink-soft);font-size:15px;max-width:62ch}
-  .featured .fgo{font-family:'Hanken Grotesk';font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.5px;
-    text-decoration:none;border:2px solid var(--line);border-radius:30px;padding:10px 20px;white-space:nowrap;
-    background:var(--c);color:#fff;box-shadow:3px 3px 0 rgba(36,31,23,.22);transition:all .14s}
-  .featured .fgo:hover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 rgba(36,31,23,.28)}
-  @media(max-width:680px){.featured{grid-template-columns:1fr;text-align:left}.featured .ficon{width:48px;height:48px}.featured .fgo{justify-self:start}}
+.chiprow{display:flex;gap:6px;flex-wrap:wrap;align-items:center;padding-bottom:11px}
+.fam{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3);
+  padding:0 3px 0 8px;align-self:center}
+.chiprow .fam:first-child{padding-left:0}
+.chip{font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;
+  border:1px solid var(--line);background:var(--bg2);color:var(--fg2);
+  border-radius:7px;padding:5px 11px;transition:.13s;display:inline-flex;align-items:center;gap:7px;white-space:nowrap}
+.chip:hover{border-color:var(--line2);color:var(--fg)}
+.chip .dot{width:6px;height:6px;border-radius:50%;background:var(--c,var(--fg3));flex:none}
+.chip .n{font-family:var(--mono);font-size:10.5px;color:var(--fg3)}
+.chip.on{background:var(--bg3);border-color:var(--c,var(--brand));color:var(--fg)}
+.chip.on .n{color:var(--c,var(--brand))}
+/* on phones the chips scroll sideways instead of stacking — keeps the sticky bar short */
+@media(max-width:700px){
+  .chiprow{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .chiprow::-webkit-scrollbar{display:none}
+  .chip,.fam{flex:none}
+  .hero{padding:22px 0 16px}
+  .searchrow{padding:10px 0 8px}
+}
 
-  /* ---------- Masonry of cards ---------- */
-  .grid{column-count:3;column-gap:22px}
-  @media(max-width:980px){.grid{column-count:2}}
-  @media(max-width:640px){.grid{column-count:1}}
+/* ══════════════ SECTIONS ══════════════ */
+.sec{margin-bottom:34px;scroll-margin-top:130px}
+.sechead{display:flex;align-items:center;gap:11px;padding-bottom:11px;margin-bottom:14px;border-bottom:1px solid var(--line)}
+.sechead .ic{width:30px;height:30px;flex:none;border-radius:8px;display:grid;place-items:center;
+  color:var(--c);background:color-mix(in srgb,var(--c) 13%,transparent);border:1px solid color-mix(in srgb,var(--c) 30%,transparent)}
+.sechead .ic svg{width:17px;height:17px}
+.sechead .t{flex:1;min-width:0}
+.sechead h3{font-family:var(--disp);font-size:17px;font-weight:600;letter-spacing:-.3px;margin:0;line-height:1.2}
+.sechead .tag{font-size:12.5px;color:var(--fg3);margin-top:1px}
+.sechead .cnt{font-family:var(--mono);font-size:11px;color:var(--c);border:1px solid color-mix(in srgb,var(--c) 35%,transparent);
+  border-radius:20px;padding:2px 9px;background:color-mix(in srgb,var(--c) 10%,transparent);white-space:nowrap}
 
-  .card{
-    break-inside:avoid;margin:0 0 22px;display:inline-block;width:100%;
-    background:var(--paper3);border:2.5px solid var(--line);border-radius:13px;
-    padding:0 0 14px;box-shadow:var(--shadow);overflow:hidden;
-    transition:transform .16s ease, box-shadow .16s ease;
-    animation:rise .5s ease backwards;
-  }
-  .card:hover{transform:translate(-2px,-2px);box-shadow:var(--shadow-h)}
-  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-  .card .top{background:var(--c);height:8px}
-  .card .head{display:flex;gap:12px;align-items:flex-start;padding:15px 16px 10px}
-  .card .icon{width:38px;height:38px;flex:none;color:var(--c);
-    border:2px solid var(--c);border-radius:9px;display:grid;place-items:center;background:color-mix(in srgb, var(--c) 9%, transparent)}
-  .card .icon svg{width:23px;height:23px}
-  .card .htext{flex:1;min-width:0}
-  .card .ctitle{font-family:'Fraunces',serif;font-weight:600;font-size:1.22rem;line-height:1.08;letter-spacing:-.2px}
-  .card .ctag{font-size:12.5px;color:var(--ink-soft);font-style:italic;margin-top:2px}
-  .card .count{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--c);
-    border:1.5px solid var(--c);border-radius:20px;padding:2px 9px;white-space:nowrap;align-self:center;
-    background:color-mix(in srgb, var(--c) 8%, transparent)}
+.grouplab{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--fg3);
+  display:flex;align-items:center;gap:9px;margin:16px 0 8px}
+.grouplab:first-child{margin-top:0}
+.grouplab::after{content:"";flex:1;height:1px;background:var(--line)}
 
-  .glist{list-style:none;margin:2px 0 0;padding:0 16px}
-  .glist li{margin:0}
-  .glist a{display:flex;align-items:baseline;gap:8px;text-decoration:none;color:var(--ink);
-    font-size:14.7px;padding:6px 8px;border-radius:7px;border:1px solid transparent;transition:all .12s}
-  .glist a:hover{background:color-mix(in srgb, var(--c) 10%, transparent);border-color:color-mix(in srgb, var(--c) 35%, transparent)}
-  .glist a .lk{flex:1}
-  .glist a:hover .lk{text-decoration:underline;text-decoration-color:var(--c);text-underline-offset:2px}
-  .glist a .ext{font-family:'DM Mono',monospace;font-size:9.5px;font-weight:500;letter-spacing:.5px;
-    color:var(--c);border:1px solid var(--c);border-radius:4px;padding:1px 5px;text-transform:uppercase;flex:none;opacity:.8}
-  .glist a .arrow{color:var(--c);font-size:13px;flex:none;opacity:.55;transition:transform .12s}
-  .glist a:hover .arrow{transform:translateX(3px);opacity:1}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:8px}
+.tile{display:flex;align-items:center;gap:10px;background:var(--bg2);border:1px solid var(--line);
+  border-left:3px solid color-mix(in srgb,var(--c) 55%,transparent);
+  border-radius:8px;padding:10px 12px;transition:.13s;min-width:0;box-shadow:var(--shadow)}
+.tile:hover{border-color:var(--line2);border-left-color:var(--c);background:var(--bg3);transform:translateY(-1px)}
+.tile:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.tile .nm{flex:1;min-width:0;font-size:14px;font-weight:500;line-height:1.35;overflow-wrap:anywhere}
+.tile .badge{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.06em;color:var(--c);
+  border:1px solid color-mix(in srgb,var(--c) 40%,transparent);border-radius:4px;padding:1px 5px;flex:none}
+.tile .go{color:var(--fg3);font-size:14px;flex:none;transition:.13s}
+.tile:hover .go{color:var(--c);transform:translateX(2px)}
+.tile .crumb{display:none;font-family:var(--mono);font-size:10px;color:var(--fg3);margin-top:2px}
+body.searching .tile .crumb{display:block}
+body.searching .tile{align-items:flex-start}
+body.searching .tile .go{margin-top:3px}
+mark{background:color-mix(in srgb,var(--brand) 32%,transparent);color:inherit;border-radius:2px;padding:0 1px}
 
-  .subhead{font-family:'DM Mono',monospace;font-size:10.5px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;
-    color:var(--ink-soft);padding:13px 24px 4px;display:flex;align-items:center;gap:9px}
-  .subhead::after{content:"";flex:1;height:1px;background:var(--rule)}
+.empty{display:none;text-align:center;color:var(--fg3);padding:60px 20px}
+.empty .big{font-family:var(--disp);font-size:19px;color:var(--fg2);margin-bottom:5px}
+.empty code{font-family:var(--mono);color:var(--brand)}
 
-  .empty{display:none;text-align:center;color:var(--ink-soft);font-style:italic;font-family:'Fraunces',serif;padding:30px;font-size:1.1rem}
-
-  footer{text-align:center;font-family:'DM Mono',monospace;font-size:11.5px;letter-spacing:1px;
-    color:var(--ink-soft);padding:24px 0 34px;border-top:1.5px solid var(--rule);margin-top:14px}
-  footer .accent{color:var(--accent)}
+footer{border-top:1px solid var(--line);margin-top:20px;padding:22px 0 40px;
+  font-family:var(--mono);font-size:11px;color:var(--fg3);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+footer a:hover{color:var(--brand)}
 </style>
 </head>
 <body>
 
-  <!-- icon sprite -->
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
-    <g id="i-pencil" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4L15 6l3 3L8 19l-4 1z"/><path d="M13.5 7.5l3 3"/></g>
-    <g id="i-search" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M15.5 15.5L20 20"/></g>
-    <g id="i-dash" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="4" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.2"/></g>
-    <g id="i-bulb" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0 0 12 3z"/><path d="M9.5 19h5M10.5 21.5h3"/></g>
-    <g id="i-doc" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M9.5 12h5M9.5 15.5h5"/></g>
-    <g id="i-gavel" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 3.2l4.3 4.3-2.6 2.6-4.3-4.3z"/><path d="M11.5 6.5l-7 7 2.8 2.8 7-7"/><path d="M5 21h8"/></g>
-    <g id="i-clip" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4.5" width="12" height="16" rx="2"/><path d="M9 4.5h6V7H9z"/><path d="M9 13l2 2 4-4"/></g>
-    <g id="i-spark" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l1.9 5.6 5.6 1.9-5.6 1.9L12 18.5l-1.9-5.6L4.5 11l5.6-1.9z"/></g>
-    <g id="i-chat" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h14v10.5H9.5L5 20z"/><path d="M8 9h8M8 12h5"/></g>
-    <g id="i-cas" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9.2" cy="9.8" r="5"/><circle cx="14.8" cy="9.8" r="5"/><circle cx="12" cy="15" r="5"/></g>
-    <g id="i-present" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="11" rx="1.6"/><path d="M12 15.5V19M9 21l3-2 3 2"/><path d="M8 11l2.5-2.5L13 11l3-3.5"/></g>
-    <g id="i-folder" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 6.5a1.5 1.5 0 0 1 1.5-1.5h4l2 2.2h7a1.5 1.5 0 0 1 1.5 1.5v9.3a1.5 1.5 0 0 1-1.5 1.5H5a1.5 1.5 0 0 1-1.5-1.5z"/><path d="M8 13.5h8"/></g>
-  </defs></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <g id="i-pencil" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4L15 6l3 3L8 19l-4 1z"/><path d="M13.5 7.5l3 3"/></g>
+  <g id="i-search" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M15.5 15.5L20 20"/></g>
+  <g id="i-dash" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="4" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.2"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.2"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.2"/></g>
+  <g id="i-bulb" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0-4 10.5c.8.8 1 1.5 1 2.5h6c0-1 .2-1.7 1-2.5A6 6 0 0 0 12 3z"/><path d="M9.5 19h5M10.5 21.5h3"/></g>
+  <g id="i-doc" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/><path d="M9.5 12h5M9.5 15.5h5"/></g>
+  <g id="i-gavel" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 3.2l4.3 4.3-2.6 2.6-4.3-4.3z"/><path d="M11.5 6.5l-7 7 2.8 2.8 7-7"/><path d="M5 21h8"/></g>
+  <g id="i-clip" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4.5" width="12" height="16" rx="2"/><path d="M9 4.5h6V7H9z"/><path d="M9 13l2 2 4-4"/></g>
+  <g id="i-spark" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l1.9 5.6 5.6 1.9-5.6 1.9L12 18.5l-1.9-5.6L4.5 11l5.6-1.9z"/></g>
+  <g id="i-chat" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h14v10.5H9.5L5 20z"/><path d="M8 9h8M8 12h5"/></g>
+  <g id="i-cas" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9.2" cy="9.8" r="5"/><circle cx="14.8" cy="9.8" r="5"/><circle cx="12" cy="15" r="5"/></g>
+  <g id="i-present" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="11" rx="1.6"/><path d="M12 15.5V19M9 21l3-2 3 2"/><path d="M8 11l2.5-2.5L13 11l3-3.5"/></g>
+  <g id="i-folder" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 6.5a1.5 1.5 0 0 1 1.5-1.5h4l2 2.2h7a1.5 1.5 0 0 1 1.5 1.5v9.3a1.5 1.5 0 0 1-1.5 1.5H5a1.5 1.5 0 0 1-1.5-1.5z"/><path d="M8 13.5h8"/></g>
+</defs></svg>
 
-  <!-- ===== MASTHEAD ===== -->
-  <div class="mast">
-    <div class="mast-meta">
-      <span>The Classroom Toolbox <span class="dot">●</span> Browser Games &amp; Tools</span>
-      <span>Vol. 1 <span class="dot">—</span> Always in Progress</span>
-    </div>
-    <div class="mast-title">
-      <h1>Smith Teaches <span class="it">Tech</span></h1>
-      <div class="tag">Interactive games and classroom tools I build for my students — pick a course to begin.</div>
-    </div>
-  </div>
-  <div class="doublerule"><div class="r1"></div><div class="r2"></div></div>
-
-  <!-- ===== FILTER BAR ===== -->
-  <div class="filterwrap">
-    <div class="filters">
-      <span class="flabel">Browse</span>
-      <button class="pill active" data-filter="all">All <span class="ct">12</span></button>
-      <button class="pill" data-filter="intros">Course Intros <span class="ct">1</span></button>
-      <button class="pill" data-filter="bwai">Building with AI <span class="ct">1</span></button>
-      <button class="pill" data-filter="ap">AP <span class="ct">2</span></button>
-      <button class="pill" data-filter="ibcore">IB Core <span class="ct">4</span></button>
-      <button class="pill" data-filter="english">English <span class="ct">1</span></button>
-      <button class="pill" data-filter="more">More <span class="ct">3</span></button>
-    </div>
-  </div>
-
-  <main>
-    <!-- ===== FEATURED ===== -->
-    <a class="featured filterable" data-group="more" href="mock-trial-materials/objections/" style="text-decoration:none">
-      <span class="ficon"><svg><use href="#i-gavel"/></svg></span>
-      <div>
-        <div class="fkick">New ● Mock Trial</div>
-        <div class="ftitle">I Object, Your Honor!</div>
-        <div class="fdesc">A whole-class courtroom game for <em>State v. Alli</em> — teams decide when to object, name the call, and argue admissibility as the trial unfolds in order.</div>
+<div class="shell">
+  <header>
+    <div class="bar">
+      <div class="logo">
+        <span class="mark">ST</span>
+        <div>
+          <h1>Smith Teaches Tech</h1>
+          <div class="sub">Classroom tools &amp; games</div>
+        </div>
       </div>
-      <span class="fgo">Play ›</span>
-    </a>
-
-    <!-- ===== GRID ===== -->
-    <div class="grid" id="grid">
-
-      <!-- Course Introductions -->
-      <article class="card filterable" data-group="intros" style="--c:var(--intro)">
-        <div class="top"></div>
-        <div class="head">
-          <span class="icon"><svg><use href="#i-present"/></svg></span>
-          <div class="htext">
-            <div class="ctitle">Course Introductions</div>
-            <div class="ctag">10-minute clickable decks for parent night</div>
-          </div>
-          <span class="count">3 decks</span>
-        </div>
-        <ul class="glist">
-          <li><a href="course-intros/ap-language/"><span class="lk">AP Language &amp; Composition</span><span class="arrow">→</span></a></li>
-          <li><a href="course-intros/ib-core/"><span class="lk">IB Core</span><span class="arrow">→</span></a></li>
-          <li><a href="course-intros/building-with-ai/"><span class="lk">Building with AI</span><span class="arrow">→</span></a></li>
-        </ul>
-      </article>
-
-      <!-- Building with AI -->
-      <article class="card filterable" data-group="bwai" style="--c:var(--ai)">
-        <div class="top"></div>
-        <div class="head">
-          <span class="icon"><svg><use href="#i-folder"/></svg></span>
-          <div class="htext">
-            <div class="ctitle">Building with AI</div>
-            <div class="ctag">Design it, direct it, explain it</div>
-          </div>
-          <span class="count">3 tools</span>
-        </div>
-        <div class="subhead">Working Method</div>
-        <ul class="glist">
-          <li><a href="building-with-ai/"><span class="lk">How to Keep Working on a Project</span><span class="arrow">&rarr;</span></a></li>
-          <li><a href="building-with-ai/repository/"><span class="lk">Your Repository</span><span class="arrow">&rarr;</span></a></li>
-        </ul>
-        <div class="subhead">Course Info</div>
-        <ul class="glist">
-          <li><a href="course-intros/building-with-ai/"><span class="lk">Course Introduction</span><span class="arrow">&rarr;</span></a></li>
-        </ul>
-      </article>
-
-      <!-- AP Language -->
-      <article class="card filterable" data-group="ap" style="--c:var(--ap-lang)">
-        <div class="top"></div>
-        <div class="head">
-          <span class="icon"><svg><use href="#i-pencil"/></svg></span>
-          <div class="htext">
-            <div class="ctitle">AP Language &amp; Composition</div>
-            <div class="ctag">Rhetoric, syntax, argument &amp; style</div>
-          </div>
-          <span class="count">9 tools</span>
-        </div>
-        <ul class="glist">
-          <li><a href="ap-lang/line-of-reasoning/"><span class="lk">Line of Reasoning: The Volupides Case</span><span class="arrow">→</span></a></li>
-          <li><a href="ap-lang/hexagonal-thinking/"><span class="lk">Hexagonal Thinking</span><span class="arrow">→</span></a></li>
-          <li><a href="ap-lang/commentary-workshop/"><span class="lk">Commentary Workshop</span><span class="arrow">→</span></a></li>
-          <li><a href="ap-lang/commentary/"><span class="lk">ARG: Claims, Evidence &amp; Commentary</span><span class="arrow">→</span></a></li>
-          <li><a href="ap-lang/high-school-drama/"><span class="lk">High School Drama: Synthesis</span><span class="arrow">→</span></a></li>
-          <li><a href="ap-lang/unpopular-opinions/"><span class="lk">Unpopular Opinion Generator</span><span class="arrow">→</span></a></li>
-          <li><a href="ap-lang/evidence-hunt/"><span class="lk">Evidence Hunt</span><span class="arrow">→</span></a></li>
-          <li><a href="ap-lang/thesis-statements/"><span class="lk">Crafting Thesis Statements</span><span class="arrow">→</span></a></li>
-          <li><a href="ap-lang/ra-review/"><span class="lk">Rhetorical Analysis Review</span><span class="arrow">→</span></a></li>
-        </ul>
-      </article>
-
-      <!-- AP Research -->
-      <article class="card filterable" data-group="ap" style="--c:var(--ap-res)">
-        <div class="top"></div>
-        <div class="head">
-          <span class="icon"><svg><use href="#i-search"/></svg></span>
-          <div class="htext">
-            <div class="ctitle">AP Research</div>
-            <div class="ctag">Methods, reliability, sources &amp; claims</div>
-          </div>
-          <span class="count">2 tools</span>
-        </div>
-        <ul class="glist">
-          <li><a href="ap-research/lit-review-org/"><span class="lk">Organize a Literature Review!</span><span class="arrow">→</span></a></li>
-          <li><a href="https://chatgpt.com/g/g-674c32c885f481918b08a0894c76f775-ap-research-expert-advisor" target="_blank" rel="noopener"><span class="lk">Your AI Expert Advisor</span><span class="ext">GPT ↗</span></a></li>
-        </ul>
-      </article>
-
-      <!-- IB Core -->
-      <article class="card filterable" data-group="ibcore" style="--c:var(--ibcore)">
-        <div class="top"></div>
-        <div class="head">
-          <span class="icon"><svg><use href="#i-dash"/></svg></span>
-          <div class="htext">
-            <div class="ctitle">IB Core</div>
-            <div class="ctag">Logistics, resources &amp; activities</div>
-          </div>
-          <span class="count">5 tools</span>
-        </div>
-        <div class="subhead">First Class</div>
-        <ul class="glist">
-          <li><a href="IB Core/introduction/"><span class="lk">Introduction to IB Core</span><span class="arrow">→</span></a></li>
-          <li><a href="IB Core/ib-dashboard/"><span class="lk">IB Dashboard</span><span class="arrow">→</span></a></li>
-        </ul>
-        <div class="subhead">Dashboard Mockups · Draft</div>
-        <ul class="glist">
-          <li><a href="IB Core/"><span class="lk">Mockups overview</span><span class="arrow">→</span></a></li>
-          <li><a href="IB Core/CAS/"><span class="lk">CAS Dashboard (mockup)</span><span class="arrow">→</span></a></li>
-          <li><a href="IB Core/EE/"><span class="lk">Extended Essay Dashboard (mockup)</span><span class="arrow">→</span></a></li>
-          <li><a href="IB Core/TOK/"><span class="lk">TOK Dashboard (mockup)</span><span class="arrow">→</span></a></li>
-        </ul>
-      </article>
-
-      <!-- TOK -->
-      <article class="card filterable" data-group="ibcore" style="--c:var(--tok)">
-        <div class="top"></div>
-        <div class="head">
-          <span class="icon"><svg><use href="#i-bulb"/></svg></span>
-          <div class="htext">
-            <div class="ctitle">Theory of Knowledge</div>
-            <div class="ctag">Knowledge, perspectives &amp; method</div>
-          </div>
-          <span class="count">22 tools</span>
-        </div>
-        <div class="subhead">AI Coach</div>
-        <ul class="glist">
-          <li><a href="https://chatgpt.com/g/g-692bf1d33ef48191b45434a6a707f0f8-tok-essay-coach-ib-academic-integrity-safe" target="_blank" rel="noopener"><span class="lk">TOK Essay Socratic Coach (Guardrailed)</span><span class="ext">GPT &#8599;</span></a></li>
-        </ul>
-        <div class="subhead">Knowledge &amp; Perspectives</div>
-        <ul class="glist">
-          <li><a href="tok/knower/does-ai-know-you/"><span class="lk">Does the AI Know You?</span><span class="arrow">&rarr;</span></a></li>
-          <li><a href="tok/knower/two-true-maps/"><span class="lk">The Map is Not the Territory</span><span class="arrow">&rarr;</span></a></li>
-          <li><a href="tok/knower/paradigm-shift/"><span class="lk">Paradigm Shifts</span><span class="arrow">&rarr;</span></a></li>
-          <li><a href="tok/knower/who-has-power/"><span class="lk">Power and Knowledge</span><span class="arrow">&rarr;</span></a></li>
-          <li><a href="tok/knower/earthrise/"><span class="lk">Object: Values, Interpretation, Objectivity</span><span class="arrow">&rarr;</span></a></li>
-        </ul>
-        <div class="subhead">Science &amp; Method</div>
-        <ul class="glist">
-          <li><a href="tok/natural-sciences/is-it-scientific/"><span class="lk">Is it Science?</span><span class="arrow">&rarr;</span></a></li>
-          <li><a href="tok/natural-sciences/quark-confinement-sim/"><span class="lk">Quark Confinement Simulator</span><span class="arrow">&rarr;</span></a></li>
-          <li><a href="tok/natural-sciences/method-reach/"><span class="lk">Where the Method Can't Reach</span><span class="arrow">&rarr;</span></a></li>
-          <li><a href="tok/natural-sciences/peer-review/"><span class="lk">What Did Peer Review Actually Check?</span><span class="arrow">&rarr;</span></a></li>
-          <li><a href="tok/natural-sciences/feeling-the-future/"><span class="lk">Feeling the Future: Peer Review Simulation</span><span class="arrow">&rarr;</span></a></li>
-          <li><a href="tok/natural-sciences/science-changes-its-mind/"><span class="lk">How Science Changes its Mind</span><span class="arrow">&rarr;</span></a></li>
-        </ul>
-        <div class="subhead">Religion &amp; Reason</div>
-        <ul class="glist">
-          <li><a href="tok/religion/chain-of-transmission/"><span class="lk">Chain of Transmission</span><span class="arrow">&rarr;</span></a></li>
-          <li><a href="tok/religion/what-counts-as-reason/"><span class="lk">What Counts as a Reason?</span><span class="arrow">&rarr;</span></a></li>
-          <li><a href="tok/religion/one-text-many-readings/"><span class="lk">One Text, Many Readings</span><span class="arrow">&rarr;</span></a></li>
-          <li><a href="tok/religion/what-each-can-reach/"><span class="lk">What Each Can Reach? Science and Religion</span><span class="arrow">&rarr;</span></a></li>
-        </ul>
-        <div class="subhead">Language &amp; Thought</div>
-        <ul class="glist">
-          <li><a href="tok/language/euphemisms/"><span class="lk">Euphemism: Power, Values, Thought</span><span class="arrow">&rarr;</span></a></li>
-          <li><a href="tok/language/signs-convention-authority/"><span class="lk">Signs, Convention, and Authority</span><span class="arrow">&rarr;</span></a></li>
-        </ul>
-        <div class="subhead">History &amp; Evidence</div>
-        <ul class="glist">
-          <li><a href="tok/history/village-of-mysteries/"><span class="lk">The Village of Mysteries</span><span class="arrow">&rarr;</span></a></li>
-        </ul>
-          <div class="subhead">Arts &amp; Math</div>
-        <ul class="glist">
-          <li><a href="tok/art-and-math/knowledge-and-art/"><span class="lk">Where does knowledge live in art?</span><span class="arrow">&rarr;</span></a></li>
-          <li><a href="tok/art-and-math/art-walk/"><span class="lk">The Art Walk</span><span class="arrow">&rarr;</span></a></li>
-          <li><a href="tok/art-and-math/what-counts-as-art/"><span class="lk">What Counts As Art?</span><span class="arrow">&rarr;</span></a></li>
-          <li><a href="tok/art-and-math/disciplined-divergence/"><span class="lk">Disciplined Divergence</span><span class="arrow">&rarr;</span></a></li>
-          <li><a href="tok/art-and-math/certain-about-what/"><span class="lk">Certain About What?</span><span class="arrow">&rarr;</span></a></li>
-        </ul>
-        <div class="subhead">Core &amp; Cross-AOK</div>
-        <ul class="glist">
-          <li><a href="tok/core/the-grid-can-travel/"><span class="lk">The Grid Can Travel</span><span class="arrow">&rarr;</span></a></li>
-          <li><a href="tok/core/single-object-analysis/"><span class="lk">Single Object Analysis Exemplar</span><span class="arrow">&rarr;</span></a></li>
-          <li><a href="tok/core/scoring-calculator/"><span class="lk">Semester 1 Scoring Calculator</span><span class="arrow">&rarr;</span></a></li>
-          <li><a href="tok/core/scoring-calculator-sem2/"><span class="lk">Semester 2 Scoring Calculator</span><span class="arrow">&rarr;</span></a></li>
-        </ul>
-      </article>
-      <!-- Extended Essay -->
-      <article class="card filterable" data-group="ibcore" style="--c:var(--ee)">
-        <div class="top"></div>
-        <div class="head">
-          <span class="icon"><svg><use href="#i-doc"/></svg></span>
-          <div class="htext">
-            <div class="ctitle">Extended Essay</div>
-            <div class="ctag">RQ design, structure &amp; line of reasoning</div>
-          </div>
-          <span class="count">2 tools</span>
-        </div>
-        <ul class="glist">
-          <li><a href="extended-essay/ee-formatting/"><span class="lk">EE Formatting Game</span><span class="arrow">→</span></a></li>
-          <li><a href="extended-essay/table-of-contents-pages/"><span class="lk">Table of Contents Pages</span><span class="arrow">→</span></a></li>
-        </ul>
-      </article>
-
-      <!-- CAS -->
-      <article class="card filterable" data-group="ibcore" style="--c:var(--cas)">
-        <div class="top"></div>
-        <div class="head">
-          <span class="icon"><svg><use href="#i-cas"/></svg></span>
-          <div class="htext">
-            <div class="ctitle">CAS</div>
-            <div class="ctag">Creativity, Activity &amp; Service</div>
-          </div>
-          <span class="count">4 tools</span>
-        </div>
-        <div class="subhead">Onboarding · 3 Classes</div>
-        <ul class="glist">
-          <li><a href="cas/already-doing-it/"><span class="lk">You've Been Doing This the Whole Time</span><span class="arrow">&rarr;</span></a></li>
-          <li><a href="cas/prove-it/"><span class="lk">Prove It: Evidence &amp; Reflection</span><span class="arrow">&rarr;</span></a></li>
-          <li><a href="cas/will-this-get-approved/"><span class="lk">Will This Get Approved? Experience Approval</span><span class="arrow">&rarr;</span></a></li>
-          <li><a href="cas/fix-one-thing/"><span class="lk">Fix One Thing: The Walk (handout)</span><span class="arrow">&rarr;</span></a></li>
-        </ul>
-      </article>
-
-      <!-- Mock Trial -->
-      <article class="card filterable" data-group="more" style="--c:var(--mock)">
-        <div class="top"></div>
-        <div class="head">
-          <span class="icon"><svg><use href="#i-gavel"/></svg></span>
-          <div class="htext">
-            <div class="ctitle">Mock Trial</div>
-            <div class="ctag">Case packets, games &amp; rules</div>
-          </div>
-          <span class="count">1 tool</span>
-        </div>
-        <ul class="glist">
-          <li><a href="mock-trial-materials/objections/"><span class="lk">I Object, Your Honor!</span><span class="arrow">→</span></a></li>
-        </ul>
-      </article>
-
-      <!-- Practice Tests -->
-      <article class="card filterable" data-group="more" style="--c:var(--practice)">
-        <div class="top"></div>
-        <div class="head">
-          <span class="icon"><svg><use href="#i-clip"/></svg></span>
-          <div class="htext">
-            <div class="ctitle">Practice Tests</div>
-            <div class="ctag">IELTS, AP &amp; SAT</div>
-          </div>
-          <span class="count">1 tool</span>
-        </div>
-        <ul class="glist">
-          <li><a href="practice-tests/ielts-reading/"><span class="lk">IELTS Reading Test</span><span class="arrow">→</span></a></li>
-        </ul>
-      </article>
-
-      <!-- AI Teaching Tools -->
-      <article class="card filterable" data-group="more" style="--c:var(--ai)">
-        <div class="top"></div>
-        <div class="head">
-          <span class="icon"><svg><use href="#i-spark"/></svg></span>
-          <div class="htext">
-            <div class="ctitle">AI Teaching Tools</div>
-            <div class="ctag">Custom GPTs with classroom guardrails</div>
-          </div>
-          <span class="count">3 tools</span>
-        </div>
-        <ul class="glist">
-          <li><a href="https://chatgpt.com/g/g-691d4473b73881918e92898207514056-mechanics-coach-quote-syntax-doctor" target="_blank" rel="noopener"><span class="lk">Writing Mechanics Coach (Guardrail AI)</span><span class="ext">GPT ↗</span></a></li>
-          <li><a href="https://chatgpt.com/g/g-674bfd91ffc4819196fb585f6bb59a5d-debate-me" target="_blank" rel="noopener"><span class="lk">Debate Me!</span><span class="ext">GPT ↗</span></a></li>
-          <li><a href="https://chatgpt.com/g/g-XX2c9bppc-the-writing-coach" target="_blank" rel="noopener"><span class="lk">The Writing Coach (Guardrail AI)</span><span class="ext">GPT ↗</span></a></li>
-        </ul>
-      </article>
-
-      <!-- Learning English -->
-      <article class="card filterable" data-group="english" style="--c:var(--eng)">
-        <div class="top"></div>
-        <div class="head">
-          <span class="icon"><svg><use href="#i-chat"/></svg></span>
-          <div class="htext">
-            <div class="ctitle">Learning English</div>
-            <div class="ctag">Vocabulary, grammar &amp; communication</div>
-          </div>
-          <span class="count">4 tools</span>
-        </div>
-        <ul class="glist">
-          <li><a href="learning-english/dating-vocab-game/"><span class="lk">Dating Vocabulary Game</span><span class="arrow">→</span></a></li>
-          <li><a href="learning-english/subordinating-conjunctions/"><span class="lk">Subordinating Conjunctions Game</span><span class="arrow">→</span></a></li>
-          <li><a href="learning-english/car-vocabulary/"><span class="lk">Car Vocabulary</span><span class="arrow">→</span></a></li>
-          <li><a href="learning-english/test-1-review/"><span class="lk">Test 1 Review</span><span class="arrow">→</span></a></li>
-        </ul>
-      </article>
-
+      <button class="iconbtn" id="theme" title="Toggle light / dark" aria-label="Toggle theme"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.2 5.2l1.4 1.4M17.4 17.4l1.4 1.4M18.8 5.2l-1.4 1.4M6.6 17.4l-1.4 1.4"/></svg></button>
     </div>
-    <div class="empty" id="empty">Nothing in this category yet — check back soon.</div>
-  </main>
+    <div class="hero">
+      <h2>Everything I've built, <em>in one place.</em></h2>
+      <p>Interactive games, simulations and study tools for my classes. Search for one, or pick your course below.</p>
+    </div>
+  </header>
+</div>
 
+<div class="sticky">
+  <div class="shell">
+    <div class="searchrow">
+      <label class="searchbox">
+        <svg viewBox="0 0 24 24"><use href="#i-search"/></svg>
+        <input id="q" type="search" placeholder="Search tools…" autocomplete="off" spellcheck="false" aria-label="Search tools">
+        <span class="kbd">/</span>
+      </label>
+      <span class="stat" id="stat"></span>
+    </div>
+    <div class="chiprow" id="chips"></div>
+  </div>
+</div>
+
+<div class="shell">
+  <main id="out"></main>
+  <div class="empty" id="empty">
+    <div class="big">Nothing matches that.</div>
+    <div>Try a shorter word, or press <code>Esc</code> to clear.</div>
+  </div>
   <footer>
-    © <span id="year"></span> Smith Teaches Tech <span class="accent">·</span> built for students, one tool at a time
+    <span>© <span id="yr"></span> Smith Teaches Tech</span>
+    <span>Built for students, one tool at a time</span>
   </footer>
+</div>
 
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   THE CATALOG — this is the only part you edit to add a tool.
+   Add a line to TOOLS. Counts, filters and search update themselves.
+     {c:"<course id>", s:"<optional sub-heading>", n:"<name>", h:"<href>", gpt:true?}
+══════════════════════════════════════════════════════════════════ */
 
-    const pills = document.querySelectorAll('.pill');
-    const cards = document.querySelectorAll('.filterable');
-    const empty = document.getElementById('empty');
+const COURSES = [
+  {id:"ap-lang",  fam:"AP",       name:"AP Language & Composition", short:"AP Lang",   tag:"Rhetoric, syntax, argument & style",   icon:"i-pencil",  col:"var(--ap-lang)"},
+  {id:"ap-res",   fam:"AP",       name:"AP Research",               short:"AP Research",tag:"Methods, reliability, sources & claims",icon:"i-search", col:"var(--ap-res)"},
+  {id:"tok",      fam:"IB",       name:"Theory of Knowledge",       short:"TOK",       tag:"Knowledge, perspectives & method",     icon:"i-bulb",    col:"var(--tok)"},
+  {id:"cas",      fam:"IB",       name:"CAS",                       short:"CAS",       tag:"Creativity, Activity & Service",       icon:"i-cas",     col:"var(--cas)"},
+  {id:"ee",       fam:"IB",       name:"Extended Essay",            short:"EE",        tag:"RQ design, structure & reasoning",     icon:"i-doc",     col:"var(--ee)"},
+  {id:"ibcore",   fam:"IB",       name:"IB Core",                   short:"IB Core",   tag:"Logistics, resources & activities",    icon:"i-dash",    col:"var(--ibcore)"},
+  {id:"bwai",     fam:"More",     name:"Building with AI",          short:"Building w/ AI",tag:"Design it, direct it, explain it",  icon:"i-folder",  col:"var(--ai)"},
+  {id:"mock",     fam:"More",     name:"Mock Trial",                short:"Mock Trial",tag:"Case packets, games & rules",          icon:"i-gavel",   col:"var(--mock)"},
+  {id:"intros",   fam:"Resources",name:"Course Introductions",      short:"Intros",    tag:"Clickable decks for parent night",     icon:"i-present", col:"var(--intro)"},
+  {id:"coaches",  fam:"Resources",name:"AI Coaches",                short:"AI Coaches",tag:"Custom GPTs with classroom guardrails",icon:"i-spark",   col:"var(--ai)"},
+  {id:"practice", fam:"Resources",name:"Practice Tests",            short:"Practice",  tag:"IELTS, AP & SAT",                      icon:"i-clip",    col:"var(--practice)"}
+];
 
-    pills.forEach(p => p.addEventListener('click', () => {
-      pills.forEach(x => x.classList.remove('active'));
-      p.classList.add('active');
-      const f = p.dataset.filter;
-      let shown = 0;
-      cards.forEach((c, i) => {
-        const match = (f === 'all' || c.dataset.group === f);
-        c.style.display = match ? '' : 'none';
-        if (match) { c.style.animation = 'none'; void c.offsetWidth; c.style.animation = `rise .45s ease backwards`; c.style.animationDelay = (shown * 0.04) + 's'; shown++; }
+const TOOLS = [
+  /* ── AP Language ── */
+  {c:"ap-lang", n:"Line of Reasoning: The Volupides Case", h:"ap-lang/line-of-reasoning/"},
+  {c:"ap-lang", n:"Hexagonal Thinking",                    h:"ap-lang/hexagonal-thinking/"},
+  {c:"ap-lang", n:"Commentary Workshop",                   h:"ap-lang/commentary-workshop/"},
+  {c:"ap-lang", n:"ARG: Claims, Evidence & Commentary",    h:"ap-lang/commentary/"},
+  {c:"ap-lang", n:"High School Drama: Synthesis",          h:"ap-lang/high-school-drama/"},
+  {c:"ap-lang", n:"Unpopular Opinion Generator",           h:"ap-lang/unpopular-opinions/"},
+  {c:"ap-lang", n:"Evidence Hunt",                         h:"ap-lang/evidence-hunt/"},
+  {c:"ap-lang", n:"Crafting Thesis Statements",            h:"ap-lang/thesis-statements/"},
+  {c:"ap-lang", n:"Rhetorical Analysis Review",            h:"ap-lang/ra-review/"},
+
+  /* ── AP Research ── */
+  {c:"ap-res", n:"Organize a Literature Review!", h:"ap-research/lit-review-org/"},
+  {c:"ap-res", n:"Your AI Expert Advisor",        h:"https://chatgpt.com/g/g-674c32c885f481918b08a0894c76f775-ap-research-expert-advisor", gpt:true},
+
+  /* ── TOK ── */
+  {c:"tok", s:"AI Coach",              n:"TOK Essay Socratic Coach (Guardrailed)", h:"https://chatgpt.com/g/g-692bf1d33ef48191b45434a6a707f0f8-tok-essay-coach-ib-academic-integrity-safe", gpt:true},
+  {c:"tok", s:"Knowledge & Perspectives", n:"Does the AI Know You?",               h:"tok/knower/does-ai-know-you/"},
+  {c:"tok", s:"Knowledge & Perspectives", n:"The Map is Not the Territory",        h:"tok/knower/two-true-maps/"},
+  {c:"tok", s:"Knowledge & Perspectives", n:"Paradigm Shifts",                     h:"tok/knower/paradigm-shift/"},
+  {c:"tok", s:"Knowledge & Perspectives", n:"Power and Knowledge",                 h:"tok/knower/who-has-power/"},
+  {c:"tok", s:"Knowledge & Perspectives", n:"Object: Values, Interpretation, Objectivity", h:"tok/knower/earthrise/"},
+  {c:"tok", s:"Science & Method",      n:"Is it Science?",                         h:"tok/natural-sciences/is-it-scientific/"},
+  {c:"tok", s:"Science & Method",      n:"Quark Confinement Simulator",            h:"tok/natural-sciences/quark-confinement-sim/"},
+  {c:"tok", s:"Science & Method",      n:"Where the Method Can't Reach",           h:"tok/natural-sciences/method-reach/"},
+  {c:"tok", s:"Science & Method",      n:"What Did Peer Review Actually Check?",   h:"tok/natural-sciences/peer-review/"},
+  {c:"tok", s:"Science & Method",      n:"Feeling the Future: Peer Review Simulation", h:"tok/natural-sciences/feeling-the-future/"},
+  {c:"tok", s:"Science & Method",      n:"How Science Changes its Mind",           h:"tok/natural-sciences/science-changes-its-mind/"},
+  {c:"tok", s:"Religion & Reason",     n:"Chain of Transmission",                  h:"tok/religion/chain-of-transmission/"},
+  {c:"tok", s:"Religion & Reason",     n:"What Counts as a Reason?",               h:"tok/religion/what-counts-as-reason/"},
+  {c:"tok", s:"Religion & Reason",     n:"One Text, Many Readings",                h:"tok/religion/one-text-many-readings/"},
+  {c:"tok", s:"Religion & Reason",     n:"What Each Can Reach? Science and Religion", h:"tok/religion/what-each-can-reach/"},
+  {c:"tok", s:"Language & Thought",    n:"Euphemism: Power, Values, Thought",      h:"tok/language/euphemisms/"},
+  {c:"tok", s:"Language & Thought",    n:"Signs, Convention, and Authority",       h:"tok/language/signs-convention-authority/"},
+  {c:"tok", s:"History & Evidence",    n:"The Village of Mysteries",               h:"tok/history/village-of-mysteries/"},
+  {c:"tok", s:"Arts & Math",           n:"Where does knowledge live in art?",      h:"tok/art-and-math/knowledge-and-art/"},
+  {c:"tok", s:"Arts & Math",           n:"The Art Walk",                           h:"tok/art-and-math/art-walk/"},
+  {c:"tok", s:"Arts & Math",           n:"What Counts As Art?",                    h:"tok/art-and-math/what-counts-as-art/"},
+  {c:"tok", s:"Arts & Math",           n:"Disciplined Divergence",                 h:"tok/art-and-math/disciplined-divergence/"},
+  {c:"tok", s:"Arts & Math",           n:"Certain About What?",                    h:"tok/art-and-math/certain-about-what/"},
+  {c:"tok", s:"Core & Cross-AOK",      n:"The Grid Can Travel",                    h:"tok/core/the-grid-can-travel/"},
+  {c:"tok", s:"Core & Cross-AOK",      n:"Single Object Analysis Exemplar",        h:"tok/core/single-object-analysis/"},
+  {c:"tok", s:"Core & Cross-AOK",      n:"Semester 1 Scoring Calculator",          h:"tok/core/scoring-calculator/"},
+  {c:"tok", s:"Core & Cross-AOK",      n:"Semester 2 Scoring Calculator",          h:"tok/core/scoring-calculator-sem2/"},
+
+  /* ── CAS ── */
+  {c:"cas", s:"Onboarding · 3 Classes", n:"You've Been Doing This the Whole Time", h:"cas/already-doing-it/"},
+  {c:"cas", s:"Onboarding · 3 Classes", n:"Prove It: Evidence & Reflection",       h:"cas/prove-it/"},
+  {c:"cas", s:"Onboarding · 3 Classes", n:"Will This Get Approved?",               h:"cas/will-this-get-approved/"},
+  {c:"cas", s:"Onboarding · 3 Classes", n:"Fix One Thing: The Walk (handout)",     h:"cas/fix-one-thing/"},
+
+  /* ── Extended Essay ── */
+  {c:"ee", n:"EE Formatting Game",      h:"extended-essay/ee-formatting/"},
+  {c:"ee", n:"Table of Contents Pages", h:"extended-essay/table-of-contents-pages/"},
+
+  /* ── IB Core ── */
+  {c:"ibcore", s:"First Class",        n:"Introduction to IB Core",            h:"IB Core/introduction/"},
+  {c:"ibcore", s:"First Class",        n:"IB Dashboard",                       h:"IB Core/ib-dashboard/"},
+  {c:"ibcore", s:"Dashboard Mockups · Draft", n:"Mockups overview",            h:"IB Core/"},
+  {c:"ibcore", s:"Dashboard Mockups · Draft", n:"CAS Dashboard (mockup)",      h:"IB Core/CAS/"},
+  {c:"ibcore", s:"Dashboard Mockups · Draft", n:"Extended Essay Dashboard (mockup)", h:"IB Core/EE/"},
+  {c:"ibcore", s:"Dashboard Mockups · Draft", n:"TOK Dashboard (mockup)",      h:"IB Core/TOK/"},
+
+  /* ── Building with AI ── */
+  {c:"bwai", n:"How to Keep Working on a Project", h:"building-with-ai/"},
+  {c:"bwai", n:"Your Repository",                  h:"building-with-ai/repository/"},
+
+  /* ── Mock Trial ── */
+  {c:"mock", n:"I Object, Your Honor!", h:"mock-trial-materials/objections/"},
+
+  /* ── Course Introductions ── */
+  {c:"intros", n:"AP Language & Composition", h:"course-intros/ap-language/"},
+  {c:"intros", n:"IB Core",                   h:"course-intros/ib-core/"},
+  {c:"intros", n:"Building with AI",          h:"course-intros/building-with-ai/"},
+
+  /* ── AI Coaches ── */
+  {c:"coaches", n:"Writing Mechanics Coach (Guardrail AI)", h:"https://chatgpt.com/g/g-691d4473b73881918e92898207514056-mechanics-coach-quote-syntax-doctor", gpt:true},
+  {c:"coaches", n:"Debate Me!",                             h:"https://chatgpt.com/g/g-674bfd91ffc4819196fb585f6bb59a5d-debate-me", gpt:true},
+  {c:"coaches", n:"The Writing Coach (Guardrail AI)",       h:"https://chatgpt.com/g/g-XX2c9bppc-the-writing-coach", gpt:true},
+
+  /* ── Practice Tests ── */
+  {c:"practice", n:"IELTS Reading Test", h:"practice-tests/ielts-reading/"}
+];
+
+/* ══════════════════════════════════════════════════════════════════
+   RENDERING — you shouldn't need to touch anything below.
+══════════════════════════════════════════════════════════════════ */
+(function(){
+"use strict";
+var out=document.getElementById("out"),chips=document.getElementById("chips"),
+    q=document.getElementById("q"),stat=document.getElementById("stat"),
+    emptyEl=document.getElementById("empty");
+var filter="all", term="";
+
+function esc(s){return String(s).replace(/[&<>"]/g,function(m){return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[m];});}
+function byId(id){for(var i=0;i<COURSES.length;i++) if(COURSES[i].id===id) return COURSES[i]; return null;}
+function count(id){var n=0;TOOLS.forEach(function(t){if(t.c===id)n++;});return n;}
+function hl(text,t){
+  if(!t) return esc(text);
+  var i=text.toLowerCase().indexOf(t);
+  if(i<0) return esc(text);
+  return esc(text.slice(0,i))+"<mark>"+esc(text.slice(i,i+t.length))+"</mark>"+esc(text.slice(i+t.length));
+}
+
+/* ── chips ── */
+(function(){
+  var h='<button class="chip on" data-f="all">All <span class="n">'+TOOLS.length+'</span></button>';
+  var fam=null;
+  COURSES.forEach(function(c){
+    if(c.fam!==fam){fam=c.fam;h+='<span class="fam">'+esc(fam)+'</span>';}
+    h+='<button class="chip" data-f="'+c.id+'" style="--c:'+c.col+'">'+
+       '<span class="dot"></span>'+esc(c.short)+' <span class="n">'+count(c.id)+'</span></button>';
+  });
+  chips.innerHTML=h;
+})();
+
+function tile(t,c){
+  var ext=/^https?:/.test(t.h);
+  return '<a class="tile" href="'+esc(t.h)+'"'+(ext?' target="_blank" rel="noopener"':'')+' style="--c:'+c.col+'">'+
+    '<span class="nm">'+hl(t.n,term)+
+      '<span class="crumb">'+esc(c.name)+(t.s?" · "+esc(t.s):"")+'</span></span>'+
+    (t.gpt?'<span class="badge">GPT</span>':'')+
+    '<span class="go">'+(ext?"↗":"→")+'</span></a>';
+}
+
+function render(){
+  var t=term, hits=0, h="";
+  document.body.classList.toggle("searching",!!t);
+
+  if(t){
+    /* flat search results, ranked: name match first */
+    var res=TOOLS.filter(function(x){
+      var c=byId(x.c);
+      return x.n.toLowerCase().indexOf(t)>=0 ||
+             (x.s&&x.s.toLowerCase().indexOf(t)>=0) ||
+             c.name.toLowerCase().indexOf(t)>=0 || c.short.toLowerCase().indexOf(t)>=0;
+    });
+    res.sort(function(a,b){
+      var ai=a.n.toLowerCase().indexOf(t), bi=b.n.toLowerCase().indexOf(t);
+      if(ai<0)ai=999; if(bi<0)bi=999;
+      return ai-bi || a.n.localeCompare(b.n);
+    });
+    hits=res.length;
+    if(hits) h='<section class="sec"><div class="grouplab">'+hits+' result'+(hits===1?"":"s")+'</div><div class="tiles">'+
+      res.map(function(x){return tile(x,byId(x.c));}).join("")+'</div></section>';
+  }else{
+    COURSES.forEach(function(c){
+      if(filter!=="all"&&filter!==c.id) return;
+      var mine=TOOLS.filter(function(x){return x.c===c.id;});
+      if(!mine.length) return;
+      hits+=mine.length;
+      h+='<section class="sec" id="sec-'+c.id+'" style="--c:'+c.col+'">'+
+         '<div class="sechead"><span class="ic"><svg><use href="#'+c.icon+'"/></svg></span>'+
+         '<div class="t"><h3>'+esc(c.name)+'</h3><div class="tag">'+esc(c.tag)+'</div></div>'+
+         '<span class="cnt">'+mine.length+'</span></div>';
+      var groups=[],map={};
+      mine.forEach(function(x){
+        var k=x.s||"";
+        if(!map[k]){map[k]=[];groups.push(k);}
+        map[k].push(x);
       });
-      empty.style.display = shown ? 'none' : 'block';
-    }));
+      groups.forEach(function(k){
+        if(k) h+='<div class="grouplab">'+esc(k)+'</div>';
+        h+='<div class="tiles">'+map[k].map(function(x){return tile(x,c);}).join("")+'</div>';
+      });
+      h+='</section>';
+    });
+  }
+  out.innerHTML=h;
+  emptyEl.style.display=hits?"none":"block";
+  stat.textContent=t ? hits+" / "+TOOLS.length+" tools"
+                     : (filter==="all" ? TOOLS.length+" tools · "+COURSES.length+" collections"
+                                       : hits+" tools");
+}
 
-    // initial stagger
-    document.querySelectorAll('.grid .card').forEach((c, i) => { c.style.animationDelay = (i * 0.05) + 's'; });
-  </script>
+chips.addEventListener("click",function(e){
+  var b=e.target.closest(".chip"); if(!b) return;
+  filter=b.dataset.f;
+  chips.querySelectorAll(".chip").forEach(function(x){x.classList.toggle("on",x===b);});
+  if(term){term="";q.value="";}
+  render();
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+
+var tmr=null;
+q.addEventListener("input",function(){
+  clearTimeout(tmr);
+  tmr=setTimeout(function(){term=q.value.trim().toLowerCase();render();},90);
+});
+
+document.addEventListener("keydown",function(e){
+  if(e.key==="/"&&document.activeElement!==q){e.preventDefault();q.focus();q.select();}
+  else if(e.key==="Escape"){
+    if(q.value){q.value="";term="";render();}
+    q.blur();
+  }
+  else if(e.key==="Enter"&&document.activeElement===q){
+    var first=out.querySelector(".tile");
+    if(first) first.click();
+  }
+});
+
+/* theme */
+(function(){
+  var root=document.documentElement, btn=document.getElementById("theme");
+  try{var saved=localStorage.getItem("sst-theme"); if(saved) root.dataset.theme=saved;}catch(e){}
+  btn.addEventListener("click",function(){
+    var next=root.dataset.theme==="dark"?"light":"dark";
+    root.dataset.theme=next;
+    try{localStorage.setItem("sst-theme",next);}catch(e){}
+  });
+})();
+
+document.getElementById("yr").textContent=new Date().getFullYear();
+render();
+})();
+</script>
 </body>
 </html>
