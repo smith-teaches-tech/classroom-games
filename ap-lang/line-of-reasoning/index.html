@@ -239,9 +239,7 @@ h3.sub:first-of-type{margin-top:0;}
     <b>3. Chronology is not logic.</b> What happened first that night is rarely what belongs first in the argument.</p>
   </div>
 
-  <div class="callout">
-    <p><strong>How to get through this.</strong> Five gates, in order. Each one stays locked until you've cleared the one before it, and the finished warrant stays sealed until you've cleared them all.</p>
-  </div>
+  <div class="callout" id="howto"></div>
   <div class="teachkey" id="teachkey">— · —</div>
 </div></section>
 
@@ -435,6 +433,14 @@ const BOSS_BANK = [
 ];
 
 /* ═══════════ PROGRESS / GATES ═══════════ */
+/* ────────────────────────────────────────────────────────────────
+   GATES_ON = true   → stages lock until the previous one is cleared
+   GATES_ON = false  → everything open; students can jump to the
+                       finished warrant while drafting their own.
+   Flip this one word to switch modes.
+──────────────────────────────────────────────────────────────── */
+var GATES_ON = false;
+
 const GATES = {case:null, s1:null, s2:"s1", s3:"s2", boss:"s3", model:"boss"};
 var done = {s1:false, s2:false, s3:false, boss:false};
 var teacherMode = false;
@@ -449,10 +455,14 @@ function saveProgress(){
   try{window.localStorage.setItem("volupides-progress",JSON.stringify(done));}catch(e){}
 }
 function unlocked(tab){
-  if(teacherMode) return true;
+  if(!GATES_ON||teacherMode) return true;
   var need=GATES[tab];
   return !need || done[need]===true;
 }
+document.getElementById("howto").innerHTML = GATES_ON
+  ? "<p><strong>How to get through this.</strong> Five gates, in order. Each one stays locked until you've cleared the one before it, and the finished warrant stays sealed until you've cleared them all.</p>"
+  : "<p><strong>Everything is open.</strong> Work the stages in order the first time — each one builds on the last, and a ✓ appears on a tab once you've cleared it.</p>"+
+    "<p>After that, jump wherever you like. <strong>The Model</strong> is the finished warrant with the reasoning marked in the margin — that's the tab to keep open beside you while you draft your own.</p>";
 function refreshTabs(){
   document.querySelectorAll(".top-tab").forEach(function(t){
     var k=t.dataset.tab;
