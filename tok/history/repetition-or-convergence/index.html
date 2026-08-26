@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Repetition or Convergence? — TOK History</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ox:#6E2028;--ox-l:#9A4149;--ink:#241F1D;--mute:rgba(36,31,29,.62);
+--faint:rgba(36,31,29,.40);--paper:#FBF7F1;--card:#FFFDFA;
+--line:rgba(110,32,40,.22);--line-s:rgba(110,32,40,.42);
+--good:#2F6B4F;--good-bg:rgba(47,107,79,.09);--bad:#8C3A2E;--bad-bg:rgba(140,58,46,.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--paper);color:var(--ink);font-family:"Cormorant Garamond",Georgia,serif;
+display:flex;flex-direction:column;overflow:hidden}
+header{flex:0 0 auto;display:flex;justify-content:space-between;align-items:center;
+padding:12px 26px;border-bottom:1px solid var(--line);background:var(--card)}
+.site{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.2em;
+text-transform:uppercase;color:var(--ox)}
+.stepflag{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.14em;color:var(--faint)}
+main{flex:1 1 auto;overflow-y:auto;padding:26px 26px 22px}
+.stage{display:none;max-width:1200px;margin:0 auto}
+.stage.on{display:block}
+h1{font-size:40px;font-weight:600;color:var(--ox);line-height:1.06;letter-spacing:.02em}
+h2{font-size:27px;font-weight:600;margin-bottom:10px}
+.kick{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.22em;
+text-transform:uppercase;color:var(--ox);margin-bottom:12px}
+p{font-size:18px;line-height:1.5;margin-bottom:12px;max-width:70ch}
+.lead{font-size:21px;line-height:1.45}
+.q{font-size:20px;font-style:italic;color:var(--ox);max-width:62ch}
+.rule{height:1px;background:var(--line);margin:20px 0}
+button{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.15em;
+text-transform:uppercase;padding:10px 20px;cursor:pointer;background:none;
+border:1px solid var(--line-s);color:var(--ox);border-radius:2px}
+button:hover:not(:disabled){background:var(--ox);color:var(--paper);border-color:var(--ox)}
+button:disabled{opacity:.3;cursor:default}
+button.solid{background:var(--ox);color:var(--paper);border-color:var(--ox)}
+button.solid:hover{background:#57171e}
+
+/* task bar */
+.taskbar{display:flex;justify-content:space-between;align-items:center;gap:16px;
+background:var(--card);border:1px solid var(--line);border-radius:3px;padding:12px 16px;margin-bottom:16px}
+.taskbar .t{font-size:17.5px;line-height:1.35}
+.taskbar .t b{color:var(--ox)}
+.prog{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;
+color:var(--ox);white-space:nowrap;border:1px solid var(--line-s);padding:6px 11px;border-radius:2px}
+
+/* board */
+.board{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px}
+.src{background:var(--card);border:1.5px solid var(--line-s);border-radius:3px;
+padding:12px 13px;cursor:pointer;transition:all .13s;position:relative}
+.src:hover{border-color:var(--ox);transform:translateY(-1px)}
+.src.sel{border-color:var(--ox);border-width:2.5px;background:#F7EBE4}
+.src.locked{cursor:default;opacity:.55}
+.src.locked:hover{transform:none;border-color:var(--line-s)}
+.src .nm{font-size:18px;font-weight:600;line-height:1.15}
+.src .wh{font-family:"JetBrains Mono",monospace;font-size:7.6px;letter-spacing:.13em;
+text-transform:uppercase;color:var(--ox);margin-top:3px}
+.src .nt{font-size:14.5px;line-height:1.3;color:var(--mute);margin-top:6px}
+.src .more{font-family:"JetBrains Mono",monospace;font-size:7.5px;letter-spacing:.13em;
+text-transform:uppercase;color:var(--ox-l);margin-top:8px;display:inline-block;
+border-bottom:1px dotted var(--line-s);padding-bottom:1px}
+.src .more:hover{color:var(--ox);border-bottom-color:var(--ox)}
+.src .deep{display:none;font-size:14.5px;line-height:1.38;color:var(--ink);
+margin-top:8px;padding-top:8px;border-top:1px dotted var(--line-s)}
+.src.open .deep{display:block}
+.brief{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--ox);
+border-radius:3px;padding:14px 18px;margin-bottom:14px}
+.brief .h{font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.2em;
+text-transform:uppercase;color:var(--ox);margin-bottom:6px}
+.brief p{font-size:17px;line-height:1.45;margin:0;max-width:none}
+.src .badge{position:absolute;top:-8px;right:9px;font-family:"JetBrains Mono",monospace;
+font-size:7.5px;letter-spacing:.12em;padding:2px 7px;border-radius:9px;text-transform:uppercase}
+.src.grouped{background:var(--bad-bg);border-color:var(--bad);border-style:dashed}
+.src.grouped .badge{background:var(--bad);color:#fff}
+.src.counted{background:var(--good-bg);border-color:var(--good)}
+.src.counted .badge{background:var(--good);color:#fff}
+.src.rejected{background:rgba(36,31,29,.05);border-color:var(--faint)}
+.src.rejected .badge{background:var(--faint);color:#fff}
+
+/* feedback */
+.fb{min-height:76px;border-radius:3px;padding:13px 16px;margin-bottom:14px;
+border:1px solid var(--line);background:var(--card);font-size:17px;line-height:1.42}
+.fb.ok{border-color:var(--good);background:var(--good-bg)}
+.fb.no{border-color:var(--bad);background:var(--bad-bg)}
+.fb .vb{font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.18em;
+text-transform:uppercase;display:block;margin-bottom:5px}
+.fb.ok .vb{color:var(--good)}
+.fb.no .vb{color:var(--bad)}
+.fb.idle .vb{color:var(--faint)}
+.fb b{color:var(--ox)}
+
+.tally{display:flex;align-items:baseline;gap:14px;background:var(--card);
+border:1px solid var(--ox);border-radius:3px;padding:14px 18px;margin:14px 0}
+.tally .n{font-size:34px;font-weight:600;color:var(--ox);line-height:1}
+.tally .lab{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.15em;
+text-transform:uppercase;color:var(--mute)}
+.tally .say{font-size:17.5px;font-style:italic;color:var(--ink)}
+
+.verdicts{display:grid;gap:10px;margin:14px 0}
+.vopt{text-align:left;text-transform:none;font-family:"Cormorant Garamond",Georgia,serif;
+font-size:18px;letter-spacing:0;padding:13px 16px;line-height:1.35}
+.sortrow{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;
+background:var(--card);border:1px solid var(--line);border-radius:3px;padding:11px 14px;margin-bottom:9px}
+.sortrow .txt{font-size:17px;line-height:1.35}
+.sortrow button{padding:7px 13px;font-size:9px}
+.sortrow.done{background:var(--good-bg);border-color:var(--good)}
+.wbox{background:var(--card);border-left:3px solid var(--ox);padding:14px 18px;margin-bottom:12px}
+.wbox .h{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.18em;
+text-transform:uppercase;color:var(--ox);margin-bottom:6px}
+.wbox p{font-size:17.5px;margin:0}
+.tnote{display:none}
+body.notes .tnote{display:block;margin-top:16px;padding:12px 16px;border:1px solid var(--line-s);
+border-radius:3px;background:rgba(110,32,40,.055);font-size:15.5px;line-height:1.4;color:var(--mute);max-width:76ch}
+body.notes .tnote::before{content:"TEACHER NOTE — NOT FOR PROJECTION";display:block;
+font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:.2em;color:var(--ox);margin-bottom:5px}
+body.notes header{box-shadow:inset 0 3px 0 var(--ox)}
+nav{flex:0 0 auto;display:flex;justify-content:space-between;align-items:center;
+padding:11px 26px;border-top:1px solid var(--line);background:var(--card)}
+.nf{font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.15em;
+text-transform:uppercase;color:var(--faint)}
+body.notes .nf{color:var(--ox)}
+.lockmsg{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.13em;color:var(--faint)}
+@media(max-width:900px){.board{grid-template-columns:1fr 1fr}h1{font-size:30px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="site">Repetition or Convergence?</div>
+  <div class="stepflag" id="flag">Intro</div>
+</header>
+
+<main>
+
+<!-- 0 INTRO -->
+<section class="stage on" data-s="0">
+  <div class="kick">TOK · History · Lesson 2</div>
+  <h1>Repetition<br>or Convergence?</h1>
+  <div class="rule"></div>
+  <p class="lead">Four sources say Richard III murdered his nephews. Five say Caesar crossed the Rubicon.</p>
+  <p class="lead"><b>Does saying a thing more times make it more likely to be true?</b></p>
+  <div class="rule"></div>
+  <p>In science, when separate labs using separate methods reach the same result, that agreement is worth something. It is called <b>convergence</b>, and it is strong evidence.</p>
+  <p>But convergence only counts if the lines are <b>independent</b> — if they could genuinely have disagreed. Agreement that all flows from one origin isn't convergence at all. It is <b>repetition</b>.</p>
+  <p class="q">Science mostly gets independence for free. Different labs, different instruments. A historian has to prove it — because sources copy each other, share patrons, and descend from originals that no longer exist.</p>
+  <div class="rule"></div>
+  <p><b>Your job:</b> find out whether the agreement in each case is real convergence, or one voice repeated.</p>
+  <button class="solid" onclick="go(1)">Begin with Caesar &rarr;</button>
+  <div class="tnote">Students must pass Caesar before the Princes unlocks. Caesar teaches the tool on a case that survives the test; the Princes applies it to one that doesn't. Do not preview the Pollio result — the collapse of Plutarch+Appian into one line is the moment the lesson turns.</div>
+</section>
+
+<!-- 1 CAESAR : LINK -->
+<section class="stage" data-s="1">
+  <div class="kick">Case 1 · Step 1 of 2</div>
+  <h2>Caesar at the Rubicon</h2>
+  <p class="q" style="margin-bottom:12px">Claim on trial: “Caesar crossed the Rubicon with his army, beginning the civil war.”</p>
+  <div class="brief"><div class="h">What happened</div>
+  <p>In 49 BC Julius Caesar was governor of Gaul, commanding an army loyal to him. The Senate ordered him to give up that command and come back to Rome alone. The Rubicon was the little river marking the edge of his province — to cross it with soldiers was, in law, to make war on his own state. A civil war followed, and the Roman Republic did not survive it.</p></div>
+  <div class="taskbar">
+    <div class="t">Pick an account, then click <b>where its story came from</b>. Wrong guesses will tell you why.</div>
+    <div class="prog" id="p1">Sources traced 0 / 2</div>
+  </div>
+  <div class="fb idle" id="f1"><span class="vb">Feedback</span>Open a few sources with <b>detail</b> first. Then pick an account and click where you think it got its story.</div>
+  <div class="board" id="b1"></div>
+  <button id="n1" disabled onclick="go(2)">Continue &rarr;</button>
+  <div class="tnote">Expect Plutarch↔Appian first — it is the intuitive guess and it is wrong for an instructive reason. The Pollio card is visible from the start but its role is not; students must connect each of the two historians to it separately.</div>
+</section>
+
+<!-- 2 CAESAR : TALLY -->
+<section class="stage" data-s="2">
+  <div class="kick">Case 1 · Step 2 of 2</div>
+  <h2>How many lines are actually left?</h2>
+  <div class="taskbar">
+    <div class="t">Plutarch and Appian have collapsed into <b>one</b> line. Now click every source that counts as an <b>independent line supporting the claim</b>.</div>
+    <div class="prog" id="p2">Lines identified 0 / 3</div>
+  </div>
+  <div class="fb idle" id="f2"><span class="vb">Feedback</span>A line counts only if it is independent <i>and</i> it speaks to this claim.</div>
+  <div class="board" id="b2"></div>
+  <div id="t2"></div>
+  <button id="n2" disabled onclick="go(3)">Continue &rarr;</button>
+</section>
+
+<!-- 3 CAESAR RESULT -->
+<section class="stage" data-s="3">
+  <div class="kick">Case 1 · Result</div>
+  <h2>Caesar survives the test</h2>
+  <div class="tally"><div class="n">3</div><div><div class="lab">Independent lines</div>
+    <div class="say">and one of them has no author to influence</div></div></div>
+  <p>Notice what did <b>not</b> save this claim. Three ancient historians agreeing looked like three lines; two of them turned out to be Pollio, twice. If the narrative tradition were all we had, the case would be far weaker than it looks.</p>
+  <p>What holds it up is the line that <b>could not possibly have read Pollio</b>: coins struck at the time, inscriptions, the recorded careers of men who fought — and a war that unquestionably happened.</p>
+  <p class="q">Real convergence needs lines that could have disagreed. Physical evidence can't be persuaded, bribed, or copied.</p>
+  <div class="rule"></div>
+  <button class="solid" onclick="go(4)">Unlock the Princes in the Tower &rarr;</button>
+  <div class="tnote">Land the transfer before moving on: <i>"You now have a test. Use it on a case where the answer is not comfortable."</i></div>
+</section>
+
+<!-- 4 PRINCES : LINK -->
+<section class="stage" data-s="4">
+  <div class="kick">Case 2 · Step 1 of 2</div>
+  <h2>The Princes in the Tower</h2>
+  <p class="q" style="margin-bottom:12px">Claim on trial: “Richard III had the two princes killed.”</p>
+  <div class="brief"><div class="h">What happened</div>
+  <p>Edward IV died in April 1483, leaving two sons aged twelve and nine. His brother Richard was made Protector, took charge of the boys, and lodged them in the Tower of London. Within weeks Richard was king. The boys were seen less and less often, and then not at all. No body, no confession and no order has ever been produced. Two years later Richard was killed in battle by Henry Tudor, who became Henry VII.</p></div>
+  <div class="taskbar">
+    <div class="t">Same move. Pick an account, then click <b>where its story came from</b>.</div>
+    <div class="prog" id="p4">Sources traced 0 / 2</div>
+  </div>
+  <div class="fb idle" id="f4"><span class="vb">Feedback</span>Two of these accounts are far more detailed than anyone present managed to be. Ask where that detail came from.</div>
+  <div class="board" id="b4"></div>
+  <button id="n4" disabled onclick="go(5)">Continue &rarr;</button>
+</section>
+
+<!-- 5 PRINCES : TALLY -->
+<section class="stage" data-s="5">
+  <div class="kick">Case 2 · Step 2 of 2</div>
+  <h2>How many lines are left here?</h2>
+  <div class="taskbar">
+    <div class="t">Click every source that counts as an <b>independent line supporting the claim</b> — that Richard <i>had them killed</i>.</div>
+    <div class="prog" id="p5">Lines identified 0 / 1</div>
+  </div>
+  <div class="fb idle" id="f5"><span class="vb">Feedback</span>Careful. A source can be perfectly independent and still not support <i>this</i> claim.</div>
+  <div class="board" id="b5"></div>
+  <div id="t5"></div>
+  <button id="n5" disabled onclick="go(6)">Continue &rarr;</button>
+</section>
+
+<!-- 6 PRINCES RESULT + DETERMINATION -->
+<section class="stage" data-s="6">
+  <div class="kick">Case 2 · Result</div>
+  <h2>One line — and it is the interested one</h2>
+  <div class="tally"><div class="n">1</div><div><div class="lab">Independent lines</div>
+    <div class="say">written under the regime that replaced him</div></div></div>
+  <p>The only witness who was actually there says he <b>does not know</b> what happened to them. The physical evidence cannot say who, or when. The Chronicle reports what people were saying, not what was done. And the two detailed accusations are one line, twice.</p>
+  <div class="rule"></div>
+  <h2 style="font-size:22px">Now make a determination.</h2>
+  <p>Given what survived the test — what does the evidence support?</p>
+  <div class="verdicts" id="vd"></div>
+  <div class="fb idle" id="f6"><span class="vb">Feedback</span>Commit to one. There is no trick here — you are being judged on whether your verdict matches your evidence.</div>
+  <button id="n6" disabled onclick="go(7)">Continue &rarr;</button>
+  <div class="tnote">The verdict is theirs; the reasoning is what's marked. Both "not established" answers are defensible. "Proven" ignores the tally; "innocent" over-reads absence of evidence as evidence of absence — the mirror error, and worth naming aloud.</div>
+</section>
+
+<!-- 7 REACH -->
+<section class="stage" data-s="7">
+  <div class="kick">The edge</div>
+  <h2>What could still settle it?</h2>
+  <div class="taskbar">
+    <div class="t">Sort each one: could a future historian actually get this — or is it gone for good?</div>
+    <div class="prog" id="p7">Sorted 0 / 4</div>
+  </div>
+  <div class="fb idle" id="f7"><span class="vb">Feedback</span>Some walls are temporary. Some are permanent. They are not the same kind of limit.</div>
+  <div id="b7"></div>
+  <button id="n7" disabled onclick="go(8)">Continue &rarr;</button>
+</section>
+
+<!-- 8 WRITE -->
+<section class="stage" data-s="8">
+  <div class="kick">Write</div>
+  <h2>What you now know about knowing the past</h2>
+  <div class="wbox"><div class="h">1 · Evidence</div>
+    <p>Two claims about the past. One is settled, the other isn’t — and it isn’t because of how <i>many</i> sources there are. Explain what actually made the difference.</p></div>
+  <div class="wbox"><div class="h">2 · Validation</div>
+    <p>What does a historian have to establish before agreement between sources counts as evidence at all? Use both cases.</p></div>
+  <div class="wbox"><div class="h">3 · Reach</div>
+    <p>Name one thing about the Princes that could still be discovered, and one that could not be discovered by anyone, ever. What makes the second kind different?</p></div>
+  <div class="rule"></div>
+  <p class="q">A scientist who doubts a result runs it again. Explain, in one sentence, what a historian does instead — and what that costs them.</p>
+  <div class="tnote">Q3 is the not-yet / never distinction, which the sort has just taught by hand. The closing sentence is the History/Science line and the essay-facing takeaway. Grid cells filled this lesson: <b>V</b> (corroboration, and the independence it requires) and <b>R</b> (two walls). E was opened at L1.</div>
+</section>
+
+</main>
+
+<nav>
+  <button id="back" onclick="back()">&larr; Back</button>
+  <div class="lockmsg" id="lock"></div>
+  <div style="display:flex;gap:16px;align-items:center">
+    <span class="nf" id="nf">T · notes off</span>
+  </div>
+</nav>
+
+<script>
+/* ============ DATA ============ */
+const CAESAR_SRC=[
+ {id:'pollio',nm:'Asinius Pollio',wh:'contemporary · now lost',nt:'Was standing there when Caesar deliberated. Wrote a history of the civil wars. It has not survived.',deep:"Gaius Asinius Pollio — soldier, politician, writer. He was one of the officers with Caesar's army in 49 BC and was present when Caesar decided to cross. He later wrote a history of the civil wars. No copy survives; we know it existed because later writers refer to it."},
+ {id:'plutarch',nm:'Plutarch',wh:'~150 yrs later',nt:'Life of Caesar. Gives the famous dramatic scene at the river.',deep:"Greek biographer writing around 100 AD, roughly 150 years after the event. His <i>Life of Caesar</i> gives the vivid riverbank scene — Caesar hesitating, the omen, the crossing at first light."},
+ {id:'appian',nm:'Appian',wh:'~200 yrs later',nt:'The Civil Wars. Tells a very similar story.',deep:"Greek historian from Alexandria, writing around the middle of the second century AD. His <i>Civil Wars</i> covers the same period and tells a strikingly similar story."},
+ {id:'suetonius',nm:'Suetonius',wh:'~170 yrs later',nt:'Life of Julius Caesar. Where “the die is cast” comes from. His sources are not established.',deep:"Roman biographer and secretary to the emperor Hadrian, writing around 120 AD. His life of Caesar is where “the die is cast” comes from. Which earlier writers he drew on is not known."},
+ {id:'caesar',nm:'Caesar himself',wh:'contemporary · interested',nt:'His own Commentaries. Notably says almost nothing about the crossing itself.',deep:"Caesar's own <i>Commentaries on the Civil War</i>, written during or just after the fighting and plainly meant to justify it. Oddly, he passes over the crossing almost without comment."},
+ {id:'physical',nm:'The physical record',wh:'non-narrative',nt:'Coins struck at the time, inscriptions, the recorded careers of men who fought — and a war that happened.',deep:"Coins minted by both sides during the war. Inscriptions recording the careers of officers who served. Administrative records that change hands when a government does. And the war itself — armies moved, towns changed sides, people died."}
+];
+const PRINCES_SRC=[
+ {id:'tudor',nm:'The Tudor court',wh:'shared patronage',nt:'The regime that took the throne from Richard, and had every reason to blacken him.',deep:"Henry Tudor defeated and killed Richard at Bosworth in 1485 and became Henry VII. His own claim to the throne was weak, and a Richard who had murdered children was extremely useful to him. Writers working under his patronage had a clear interest in that version of events."},
+ {id:'vergil',nm:'Polydore Vergil',wh:'~27 yrs later',nt:'History of England — commissioned by Henry VII.',deep:"Italian humanist scholar brought to England and commissioned by Henry VII to write a history of the country. He worked on it for years, and his account became the standard one."},
+ {id:'more',nm:'Thomas More',wh:'~30 yrs later',nt:'History of Richard III. Raised in the household of John Morton, Richard’s enemy and Henry VII’s minister.',deep:"Thomas More was about five years old when it happened. He was raised in the household of John Morton — imprisoned by Richard, later Henry VII's Archbishop and chief minister. More's account is vivid and highly detailed. He never finished it, and never published it."},
+ {id:'mancini',nm:'Dominic Mancini',wh:'contemporary',nt:'Italian visitor in London in 1483. Left before the boys vanished, and writes that he could not discover their fate.',deep:"An Italian who was in London through 1483 and wrote a report for a patron in France shortly after leaving. He describes the boys being seen less and less, and the fear in the city. He states plainly that he could not discover what became of them."},
+ {id:'crowland',nm:'Crowland Chronicle',wh:'~3 yrs later',nt:'Monastic, written close to government. Reports that it was rumoured the boys were dead.',deep:"A continuation of the chronicle of Crowland Abbey, written around 1486 by someone with close knowledge of government. It records that a rumour spread that the princes had been put to death — without saying by whom, and without claiming to know."},
+ {id:'bones',nm:'The bones',wh:'found 1674',nt:'Two skeletons under a staircase. Never securely identified, dated, or sexed.',deep:"In 1674 workmen demolishing a staircase in the Tower found two skeletons. They were assumed to be the princes and reburied in Westminster Abbey. They were examined in 1933 using the methods of the day. They have never been securely dated, sexed or identified, and modern testing has not been permitted."}
+];
+const DEPS={
+ caesar:[['plutarch','pollio','<b>Correct.</b> Plutarch drew on Pollio — who was present at the deliberation. This is not a second witness. It is Pollio, relayed.'],
+         ['appian','pollio','<b>Correct.</b> Appian drew on Pollio too. So Plutarch and Appian are not two lines agreeing. They are one line, twice.']],
+ princes:[['vergil','tudor','<b>Correct.</b> Vergil wrote to a commission from Henry VII — the man who took Richard’s throne, and who is himself a suspect.'],
+          ['more','tudor','<b>Correct.</b> More was raised in the household of Richard’s enemy, inside the same Tudor world. Not an independent second account.']]
+};
+const WRONG={
+ 'plutarch|appian':'<b>No — and this is the intuitive mistake.</b> They look alike, but Appian wrote roughly fifty years after Plutarch and shows no sign of using him. Their similarity comes from somewhere <i>behind</i> both of them. Keep looking.',
+ 'caesar|plutarch':'<b>No.</b> Caesar’s own Commentaries say almost nothing about the crossing — the dramatic scene is not in them. Plutarch’s version did not come from Caesar.',
+ 'caesar|appian':'<b>No.</b> Caesar barely mentions the crossing. Whatever Appian is repeating, it did not come from Caesar’s own account.',
+ 'caesar|suetonius':'<b>No.</b> The famous line “the die is cast” appears in Suetonius, not in Caesar. He is not Suetonius’ source for it.',
+ 'caesar|pollio':'<b>No.</b> Pollio was in the room with Caesar — but being present at an event does not make you someone’s source. We are tracing who read whom.',
+ 'suetonius|pollio':'<b>Very close, and worth thinking about.</b> Many historians suspect it. But it has never been established — and <b>a link you cannot establish is not a link you may assume.</b> Leave it. We will deal with Suetonius in a moment.',
+ 'suetonius|plutarch':'<b>No.</b> No dependency between them has been shown. Do not invent one to tidy the picture.',
+ 'suetonius|appian':'<b>No.</b> Nothing establishes that either read the other.',
+ 'physical|*':'<b>No — and notice why.</b> A coin has no author. An inscription cannot have read a book. Physical evidence has nobody to be influenced <i>by</i>, which is exactly what will make it valuable in a moment.',
+ 'vergil|more':'<b>No — close, but you have the shape wrong.</b> The dependency does not run from one to the other. It runs through something they <i>share</i>. Find the thing both of them were writing inside.',
+ 'mancini|*':'<b>No.</b> Mancini left England before the boys disappeared and states plainly that he could not find out what became of them. A man who says he does not know cannot be the source of an account of a murder.',
+ 'bones|*':'<b>No.</b> Bones have no author and repeat nothing. They are evidence of a different kind entirely.',
+ 'crowland|tudor':'<b>No.</b> Crowland was not a Tudor commission — it was written by an insider close to government. Its problem is not who paid for it. Look at <i>what it actually claims to know.</i>',
+ 'crowland|vergil':'<b>No.</b> No dependency has been established between them.',
+ 'crowland|more':'<b>No.</b> More was writing decades later; nothing shows Crowland fed him.'
+};
+const LINES={
+ caesar:{need:3,cards:[
+  {id:'pollio',nm:'The Pollio line',wh:'Pollio → Plutarch → Appian',nt:'Three texts, one origin. Counts once.',ok:true,
+   fb:'<b>Yes — but only once.</b> Pollio was there, and he is a real line. Just remember you are counting him a single time, not three.'},
+  {id:'caesar',nm:'Caesar himself',wh:'contemporary · interested',nt:'His own account of his own war.',ok:true,
+   fb:'<b>Yes.</b> Interested, obviously — but he is a genuinely separate line, and he never denied crossing.'},
+  {id:'suetonius',nm:'Suetonius',wh:'~170 yrs later',nt:'Sources not established.',ok:false,
+   fb:'<b>No — and this is the hard one.</b> We could not show he depends on Pollio, but we also cannot show he doesn’t. <b>Independence you cannot establish is not independence.</b> He does not get counted.'},
+  {id:'physical',nm:'The physical record',wh:'non-narrative',nt:'Coins, inscriptions, careers, a war.',ok:true,
+   fb:'<b>Yes — and this is the strongest one on the board.</b> It could not have read Pollio, could not have been flattered, and could not have changed its story.'}]},
+ princes:{need:1,cards:[
+  {id:'tudor',nm:'The Tudor line',wh:'Tudor court → Vergil → More',nt:'Two detailed accusations, one origin.',ok:true,
+   fb:'<b>Yes — one line.</b> It does support the claim. It is also the line written under the regime that gained most from Richard being guilty. Count it, but know what it is.'},
+  {id:'mancini',nm:'Mancini',wh:'contemporary',nt:'Says he could not discover their fate.',ok:false,
+   fb:'<b>No — and this is the point of the whole lesson.</b> He is beautifully independent: there, at the time, no Tudor patron. And he explicitly says he <i>does not know</i>. Independence is worthless if the source does not speak to the claim.'},
+  {id:'crowland',nm:'Crowland Chronicle',wh:'~3 yrs later',nt:'Reports a rumour.',ok:false,
+   fb:'<b>No.</b> Crowland reports that people were <i>saying</i> the boys were dead. That is evidence about the rumour, not about who did it.'},
+  {id:'bones',nm:'The bones',wh:'found 1674',nt:'Never identified.',ok:false,
+   fb:'<b>No.</b> Two skeletons under a staircase are evidence that someone died. They cannot say who they were, when they died, or by whose order.'}]}
+};
+const VERDICTS=[
+ {t:'Richard’s guilt is proven — four sources say so.',ok:false,
+  fb:'<b>No.</b> You have just spent a lesson showing that four sources are not four sources. Two of them are one line, one says he doesn’t know, and one is a pile of unidentified bones. This answer ignores your own tally.'},
+ {t:'Not established — but Richard remains the most likely suspect.',ok:true,
+  fb:'<b>Defensible.</b> He had custody, motive and opportunity, and the boys were never seen again. Note what you have done: separated <i>what the evidence establishes</i> from <i>what you find likely</i>. Historians live in that gap.'},
+ {t:'Not established — and we cannot say who was responsible.',ok:true,
+  fb:'<b>Also defensible.</b> Henry VII had motive too, and the surviving accusation comes from his own court. The strict reading is that the record will not carry the attribution.'},
+ {t:'Richard is innocent — there is no real evidence against him.',ok:false,
+  fb:'<b>No — this is the mirror of the first error.</b> Weak evidence for a claim is not evidence for its opposite. Absence of proof is not proof of absence; you have over-read the silence.'}
+];
+const REACH=[
+ {t:'Whether the bones under the staircase are the two princes.',yet:true,
+  fb:'<b>Not yet.</b> DNA and modern dating could in principle answer this — the obstacle is permission, not possibility. A wall that could come down.'},
+ {t:'Whether the boys died before or after Richard lost the throne.',yet:true,
+  fb:'<b>Not yet.</b> Physical dating of the remains could narrow it, and this is the question that would decide between the two suspects.'},
+ {t:'What Richard said, and to whom, on the day the order was given.',yet:false,
+  fb:'<b>Never.</b> Nobody wrote it down. Words spoken in a room and never recorded leave no trace — no future technique recovers them. This is not a gap in our research. It is a gap in the record.'},
+ {t:'Whether Richard felt he had a choice.',yet:false,
+  fb:'<b>Never.</b> Even a full confession would give you what he <i>said</i> he felt. The inside of a mind five centuries gone is not a findable object.'}
+];
+
+/* ============ STATE ============ */
+let openCards=new Set();
+let stage=0,sel=null,found={caesar:0,princes:0},picked={caesar:new Set(),princes:new Set()},
+    vdDone=false,reachDone=0;
+const FLAGS=['Intro','Caesar · link','Caesar · count','Caesar · result','Princes · link','Princes · count','Determination','Reach','Write'];
+
+function show(){
+  document.querySelectorAll('.stage').forEach(s=>s.classList.toggle('on',+s.dataset.s===stage));
+  document.getElementById('flag').textContent=FLAGS[stage];
+  document.getElementById('back').disabled=stage===0;
+  document.querySelector('main').scrollTop=0;
+}
+function go(n){stage=n;sel=null;show()}
+function back(){if(stage>0){stage--;sel=null;show()}}
+
+function fb(el,txt,cls){const e=document.getElementById(el);
+  e.className='fb '+(cls||'idle');
+  e.innerHTML='<span class="vb">'+(cls==='ok'?'Correct':cls==='no'?'Not this one':'Feedback')+'</span>'+txt;}
+
+/* ---- linking boards ---- */
+function drawLink(caseKey,boardId,fbId,progId,nextId){
+  const src=caseKey==='caesar'?CAESAR_SRC:PRINCES_SRC;
+  const b=document.getElementById(boardId); b.innerHTML='';
+  src.forEach(s=>{
+    const d=document.createElement('div');
+    d.className='src'+(sel===s.id?' sel':'');
+    const done=DEPS[caseKey].some(([a,bb])=>(a===s.id||bb===s.id)&&isFound(caseKey,a,bb));
+    if(done)d.classList.add('grouped');
+    d.innerHTML=(done?'<span class="badge">same line</span>':'')+
+      '<div class="nm">'+s.nm+'</div><div class="wh">'+s.wh+'</div><div class="nt">'+s.nt+'</div>'+
+      (s.deep?'<span class="more" data-more="1">Detail &#9662;</span><div class="deep">'+s.deep+'</div>':'');
+    if(openCards.has(s.id))d.classList.add('open');
+    d.onclick=(ev)=>{
+      if(ev.target&&ev.target.dataset&&ev.target.dataset.more){
+        ev.stopPropagation();
+        if(openCards.has(s.id))openCards.delete(s.id); else openCards.add(s.id);
+        drawLink(caseKey,boardId,fbId,progId,nextId); return;
+      }
+      clickLink(caseKey,s.id,boardId,fbId,progId,nextId);
+    };
+    b.appendChild(d);
+  });
+  document.getElementById(progId).textContent='Sources traced '+found[caseKey]+' / 2';
+  document.getElementById(nextId).disabled=found[caesarKeyFix(caseKey)]<2;
+}
+function caesarKeyFix(k){return k}
+const foundPairs={caesar:[],princes:[]};
+function isFound(k,a,b){return foundPairs[k].some(p=>(p[0]===a&&p[1]===b)||(p[0]===b&&p[1]===a))}
+
+function clickLink(k,id,boardId,fbId,progId,nextId){
+  if(!sel){sel=id;fb(fbId,'Selected <b>'+nameOf(k,id)+'</b>. Now click where you think this account got its story.','idle');drawLink(k,boardId,fbId,progId,nextId);return}
+  if(sel===id){sel=null;fb(fbId,'Deselected.','idle');drawLink(k,boardId,fbId,progId,nextId);return}
+  const a=sel,b=id; sel=null;
+  const hit=DEPS[k].find(([x,y])=>(x===a&&y===b)||(x===b&&y===a));
+  if(hit){
+    if(!isFound(k,a,b)){foundPairs[k].push([a,b]);found[k]++;}
+    fb(fbId,hit[2],'ok');
+  }else{
+    fb(fbId,lookupWrong(a,b),'no');
+  }
+  drawLink(k,boardId,fbId,progId,nextId);
+}
+function nameOf(k,id){const s=(k==='caesar'?CAESAR_SRC:PRINCES_SRC).find(x=>x.id===id);return s?s.nm:id}
+function lookupWrong(a,b){
+  const keys=[a+'|'+b,b+'|'+a,a+'|*',b+'|*'];
+  for(const key of keys) if(WRONG[key]) return WRONG[key];
+  return '<b>No.</b> Nothing establishes that either of these could have fed the other. Remember what you are hunting: a shared origin, a shared patron, or one author reading the other.';
+}
+
+/* ---- tally boards ---- */
+function drawTally(k,boardId,fbId,progId,nextId,tallyId){
+  const cfg=LINES[k]; const b=document.getElementById(boardId); b.innerHTML='';
+  cfg.cards.forEach(c=>{
+    const d=document.createElement('div');
+    const done=picked[k].has(c.id);
+    d.className='src'+(done?(c.ok?' counted':' rejected'):'');
+    d.innerHTML=(done?'<span class="badge">'+(c.ok?'counts':'does not count')+'</span>':'')+
+      '<div class="nm">'+c.nm+'</div><div class="wh">'+c.wh+'</div><div class="nt">'+c.nt+'</div>';
+    d.onclick=()=>{
+      if(picked[k].has(c.id))return;
+      picked[k].add(c.id); fb(fbId,c.fb,c.ok?'ok':'no');
+      drawTally(k,boardId,fbId,progId,nextId,tallyId);
+    };
+    b.appendChild(d);
+  });
+  const got=cfg.cards.filter(c=>c.ok&&picked[k].has(c.id)).length;
+  const allSeen=cfg.cards.every(c=>picked[k].has(c.id));
+  document.getElementById(progId).textContent='Lines identified '+got+' / '+cfg.need;
+  document.getElementById(nextId).disabled=!(got===cfg.need&&allSeen);
+  document.getElementById(tallyId).innerHTML = allSeen&&got===cfg.need
+    ? '<div class="tally"><div class="n">'+cfg.need+'</div><div><div class="lab">Independent lines supporting the claim</div><div class="say">'+
+      (k==='caesar'?'out of six sources on the board':'out of six sources on the board')+'</div></div></div>' : '';
+  document.getElementById('lock').textContent = allSeen?'':'Check every source before continuing.';
+}
+
+/* ---- verdict ---- */
+function drawVerdicts(){
+  const w=document.getElementById('vd'); w.innerHTML='';
+  VERDICTS.forEach((v,i)=>{
+    const btn=document.createElement('button');
+    btn.className='vopt'; btn.textContent=v.t;
+    btn.onclick=()=>{fb('f6',v.fb,v.ok?'ok':'no');vdDone=true;document.getElementById('n6').disabled=false;};
+    w.appendChild(btn);
+  });
+}
+/* ---- reach ---- */
+function drawReach(){
+  const w=document.getElementById('b7'); w.innerHTML='';
+  REACH.forEach((r,i)=>{
+    const row=document.createElement('div'); row.className='sortrow'; row.id='rr'+i;
+    row.innerHTML='<div class="txt">'+r.t+'</div>';
+    [['Could be found','yet'],['Gone for good','never']].forEach(([lab,val])=>{
+      const bt=document.createElement('button'); bt.textContent=lab;
+      bt.onclick=()=>{
+        const right=(val==='yet')===r.yet;
+        fb('f7',r.fb,right?'ok':'no');
+        if(!row.classList.contains('done')){row.classList.add('done');reachDone++;}
+        document.getElementById('p7').textContent='Sorted '+reachDone+' / 4';
+        document.getElementById('n7').disabled=reachDone<4;
+      };
+      row.appendChild(bt);
+    });
+    w.appendChild(row);
+  });
+}
+
+/* ---- boot ---- */
+function refresh(){
+  drawLink('caesar','b1','f1','p1','n1');
+  drawTally('caesar','b2','f2','p2','n2','t2');
+  drawLink('princes','b4','f4','p4','n4');
+  drawTally('princes','b5','f5','p5','n5','t5');
+}
+document.querySelectorAll('.stage').forEach(s=>{});
+drawVerdicts(); drawReach(); refresh(); show();
+const _origGo=go;
+go=function(n){ _origGo(n); refresh(); document.getElementById('lock').textContent=''; };
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='t'||e.key==='T'){
+    const on=document.body.classList.toggle('notes');
+    document.getElementById('nf').textContent='T · notes '+(on?'ON':'off');
+  }
+});
+</script>
+</body>
+</html>
