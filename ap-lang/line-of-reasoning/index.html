@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Line of Reasoning: The Volupides Case — AP Language</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#1a1a18;--ink-mid:#4a4a44;--ink-light:#8a8a80;
+  --rule:#d4d0c4;--paper:#f7f4ee;--paper-warm:#efe9db;
+  --accent:#8b3a2a;--accent-light:#f5ede9;
+  --ok:#1a5c3a;--ok-bg:#e8f3ed;
+  --bad:#6b2a2a;--bad-bg:#f5e8e8;
+  --warn:#7a5c1a;--warn-bg:#f5f0e2;
+  --serif:'Libre Baskerville',Georgia,serif;
+  --sans:'Barlow',system-ui,sans-serif;
+  --cond:'Barlow Condensed',system-ui,sans-serif;
+  --type:'Special Elite','Courier New',monospace;
+}
+html{font-size:16px;-webkit-text-size-adjust:100%;}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6;min-height:100vh;}
+
+/* ── MASTHEAD ── */
+.masthead{border-bottom:3px double var(--ink);padding:.9rem 1rem .7rem;text-align:center;background:var(--paper);position:sticky;top:0;z-index:200;}
+.masthead-kicker{font-family:var(--cond);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-light);margin-bottom:.15rem;}
+.masthead-title{font-family:var(--serif);font-size:clamp(16px,2.4vw,23px);font-weight:700;line-height:1.15;letter-spacing:-.02em;cursor:default;user-select:none;}
+
+/* ── TABS ── */
+.top-tabs{display:flex;background:var(--paper);border-bottom:1px solid var(--rule);position:sticky;top:62px;z-index:190;overflow-x:auto;}
+.top-tab{flex:1 0 auto;min-width:100px;padding:.6rem .7rem;font-family:var(--cond);font-size:12.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-light);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all .15s;text-align:center;position:relative;}
+.top-tab:hover:not(.locked){color:var(--ink);background:var(--paper-warm);}
+.top-tab.active{color:var(--ink);border-bottom-color:var(--accent);}
+.top-tab.locked{opacity:.42;cursor:not-allowed;}
+.top-tab.cleared::after{content:"✓";position:absolute;top:4px;right:8px;font-size:11px;color:var(--ok);}
+.tab-hint{font-family:var(--sans);font-size:10.5px;font-weight:400;letter-spacing:0;text-transform:none;display:block;color:var(--ink-light);margin-top:1px;}
+.top-tab.active .tab-hint{color:var(--ink-mid);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;animation:fadeIn .2s ease;}
+@media(max-width:560px){.top-tabs{top:78px;}.top-tab{min-width:88px;font-size:11.5px;padding:.55rem .45rem;}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.wrap{max-width:820px;margin:0 auto;padding:1.8rem 1.25rem 4rem;}
+
+/* ── SHARED ── */
+.stage-num{font-family:var(--cond);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-light);margin-bottom:.2rem;}
+h2.stage-title{font-family:var(--serif);font-size:clamp(21px,2.6vw,28px);font-weight:700;line-height:1.15;letter-spacing:-.02em;margin-bottom:.6rem;}
+.lede{font-size:15px;color:var(--ink-mid);line-height:1.7;margin-bottom:1.5rem;padding-bottom:1.2rem;border-bottom:1px solid var(--rule);}
+.lede strong{color:var(--ink);font-weight:600;}
+h3.sub{font-family:var(--cond);font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;border-bottom:2px solid var(--ink);padding-bottom:.3rem;margin:2rem 0 .9rem;}
+h3.sub:first-of-type{margin-top:0;}
+.callout{background:var(--paper-warm);border-left:4px solid var(--accent);padding:.95rem 1.15rem;margin:1.2rem 0;font-size:13.5px;line-height:1.7;color:var(--ink-mid);}
+.callout strong{color:var(--ink);font-weight:600;}
+.callout p+p{margin-top:.6rem;}
+.hintbox{background:#fff;border:1px dashed var(--accent);padding:.85rem 1.1rem;margin-bottom:1.2rem;font-size:13.5px;line-height:1.7;color:var(--ink-mid);}
+.hintbox b{color:var(--accent);font-family:var(--cond);letter-spacing:.08em;text-transform:uppercase;font-size:11.5px;display:block;margin-bottom:.25rem;}
+
+/* ── LOCK SCREEN ── */
+.locked-panel{text-align:center;padding:3.5rem 1.5rem;}
+.locked-panel .lk-icon{font-size:34px;line-height:1;margin-bottom:.7rem;filter:grayscale(1);opacity:.5;}
+.locked-panel h2{font-family:var(--serif);font-size:22px;font-weight:700;margin-bottom:.5rem;}
+.locked-panel p{font-size:14px;color:var(--ink-mid);max-width:420px;margin:0 auto;line-height:1.75;}
+
+/* ── CASE FILE ── */
+.report{background:#fffdf8;border:1px solid var(--rule);box-shadow:2px 3px 0 rgba(26,26,24,.07);padding:1.4rem 1.5rem;margin-bottom:1.5rem;}
+.report-head{border-bottom:2px solid var(--ink);padding-bottom:.6rem;margin-bottom:1rem;display:flex;justify-content:space-between;align-items:baseline;gap:1rem;flex-wrap:wrap;}
+.report-head .rh-title{font-family:var(--type);font-size:15px;}
+.report-head .rh-meta{font-family:var(--cond);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-light);}
+.report p{font-family:var(--serif);font-size:14.5px;line-height:1.85;}
+.stamp{display:inline-block;font-family:var(--cond);font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);border:2px solid var(--accent);padding:3px 9px;transform:rotate(-2deg);margin-bottom:.9rem;}
+.facts{list-style:none;border:1px solid var(--rule);background:#fff;}
+.facts li{padding:.65rem .95rem;font-size:13.5px;line-height:1.6;border-bottom:1px solid var(--rule);display:flex;gap:.7rem;}
+.facts li:last-child{border-bottom:none;}
+.facts .fnum{font-family:var(--cond);font-size:11px;font-weight:700;color:var(--ink-light);min-width:18px;padding-top:2px;}
+
+/* ── SORTABLE STRIPS ── */
+.board{display:flex;flex-direction:column;gap:.55rem;margin-bottom:1.1rem;}
+.strip{display:flex;flex-wrap:wrap;align-items:stretch;background:#fff;border:1px solid var(--rule);border-left:4px solid var(--rule);transition:box-shadow .12s,border-color .12s;}
+.strip.dragging{opacity:.55;border-left-color:var(--accent);box-shadow:0 4px 14px rgba(26,26,24,.16);}
+.strip .grip{flex:0 0 34px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:grab;background:var(--paper-warm);border-right:1px solid var(--rule);touch-action:none;user-select:none;}
+.strip .grip:active{cursor:grabbing;}
+.strip .grip .dots{font-size:13px;color:var(--ink-light);line-height:1;}
+.strip .num{font-family:var(--cond);font-size:12px;font-weight:700;color:var(--ink-mid);}
+.strip .body{flex:1;padding:.75rem .95rem;font-size:13.5px;line-height:1.65;min-width:0;}
+.strip .body .ptitle{font-family:var(--serif);font-size:14px;font-weight:700;line-height:1.5;margin-bottom:.3rem;}
+.strip .body .pmeta{font-size:12px;color:var(--ink-light);line-height:1.5;}
+.strip .arrows{flex:0 0 30px;display:flex;flex-direction:column;border-left:1px solid var(--rule);}
+.strip .arrows button{flex:1;border:none;background:none;color:var(--ink-light);cursor:pointer;font-size:11px;padding:0;transition:background .12s,color .12s;}
+.strip .arrows button:hover{background:var(--paper-warm);color:var(--ink);}
+.strip .arrows button:first-child{border-bottom:1px solid var(--rule);}
+.strip.right{border-left-color:var(--ok);}
+.strip.wrong{border-left-color:var(--bad);}
+.note{width:100%;flex:0 0 100%;font-size:12.5px;line-height:1.6;padding:.6rem .95rem;border-top:1px dashed var(--rule);background:var(--bad-bg);color:var(--bad);}
+.note b{font-weight:600;}
+
+.controls{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-bottom:1rem;}
+.btn{font-family:var(--cond);font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:.55rem 1.05rem;border:1.5px solid var(--ink);background:none;color:var(--ink);cursor:pointer;transition:all .15s;}
+.btn:hover{background:var(--ink);color:var(--paper);}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+.btn.primary:hover{background:#6f2d20;border-color:#6f2d20;}
+.btn.ghost{border-color:var(--rule);color:var(--ink-mid);}
+.btn.ghost:hover{background:var(--paper-warm);color:var(--ink);border-color:var(--ink-light);}
+.btn.go{background:var(--ok);border-color:var(--ok);color:#fff;}
+.btn.go:hover{background:#144a2e;border-color:#144a2e;}
+.scoreline{font-family:var(--cond);font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.5rem 0;}
+.scoreline.ok{color:var(--ok);}
+.scoreline.no{color:var(--bad);}
+.advance{display:none;margin-top:.4rem;}
+.advance.show{display:block;}
+
+.fixedcard{background:var(--paper-warm);border:1px dashed var(--ink-light);padding:.85rem 1rem;margin-bottom:.55rem;}
+.fixedcard .tag{display:inline-block;font-family:var(--cond);font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:.3rem;}
+.fixedcard p{font-family:var(--serif);font-size:13px;line-height:1.7;color:var(--ink-mid);}
+
+.picker{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1.1rem;}
+.pick{font-family:var(--cond);font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.45rem .8rem;border:1.5px solid var(--rule);background:#fff;color:var(--ink-mid);cursor:pointer;transition:all .15s;}
+.pick:hover{border-color:var(--ink-light);color:var(--ink);}
+.pick.active{background:var(--ink);border-color:var(--ink);color:var(--paper);}
+.pick.done::after{content:" ✓";color:var(--ok);}
+.pick.active.done::after{color:#8fd6b0;}
+
+/* ── KEEP / CUT ── */
+.sortcard{background:#fff;border:1px solid var(--rule);border-left:4px solid var(--rule);margin-bottom:.7rem;}
+.sortcard .sc-body{padding:.85rem 1rem;font-family:var(--serif);font-size:13.5px;line-height:1.75;}
+.sortcard .sc-actions{display:flex;gap:.5rem;padding:0 1rem .85rem;}
+.sortcard .sc-actions .btn{padding:.4rem .9rem;font-size:11.5px;}
+.sortcard.keep{border-left-color:var(--ok);}
+.sortcard.cut{border-left-color:var(--bad);}
+.verdict{padding:.75rem 1rem;border-top:1px dashed var(--rule);font-size:12.5px;line-height:1.65;}
+.verdict.keep{background:var(--ok-bg);color:var(--ok);}
+.verdict.cut{background:var(--bad-bg);color:var(--bad);}
+.verdict .vlabel{font-family:var(--cond);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:.25rem;}
+
+/* ── FINAL BOSS ── */
+.keytable{border:1px solid var(--rule);background:#fff;margin-bottom:1.5rem;}
+.keyrow{display:grid;grid-template-columns:150px 1fr;border-bottom:1px solid var(--rule);}
+.keyrow:last-child{border-bottom:none;}
+.keyrow .kl{background:var(--paper-warm);padding:.75rem .9rem;border-right:1px solid var(--rule);}
+.keyrow .kl b{font-family:var(--cond);font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:.2rem;}
+.keyrow .kl span{font-size:11.5px;color:var(--ink-light);line-height:1.45;display:block;}
+.keyrow .kv{padding:.75rem .9rem;font-size:13px;line-height:1.9;color:var(--ink-mid);}
+.keyrow .kv em{font-style:normal;color:var(--ink);font-weight:500;}
+@media(max-width:560px){.keyrow{grid-template-columns:1fr;}.keyrow .kl{border-right:none;border-bottom:1px solid var(--rule);}}
+
+.patterns{margin-bottom:1.5rem;}
+.pat{border:1px solid var(--rule);border-left:4px solid var(--ink-light);background:#fff;padding:.8rem 1rem;margin-bottom:.6rem;}
+.pat .pl{font-family:var(--cond);font-size:10.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-light);margin-bottom:.35rem;}
+.pat .pt{font-family:var(--serif);font-size:13.5px;line-height:1.8;}
+.pat .pt u{text-decoration:none;border-bottom:2px solid var(--accent-light);background:var(--accent-light);}
+
+.drill{background:#fffdf8;border:1px solid var(--rule);padding:1.2rem 1.35rem;font-family:var(--serif);font-size:14.5px;line-height:2.35;margin-bottom:1.1rem;}
+.slot{display:inline-block;min-width:96px;padding:1px 8px;margin:0 1px;border:none;border-bottom:2px solid var(--ink-light);background:var(--paper-warm);font-family:var(--sans);font-size:13px;font-weight:600;color:var(--ink-light);cursor:pointer;text-align:center;vertical-align:baseline;transition:all .12s;}
+.slot:hover{background:var(--accent-light);border-bottom-color:var(--accent);}
+.slot.active{background:var(--accent);border-bottom-color:var(--accent);color:#fff;}
+.slot.filled{color:var(--ink);background:#fff;border-bottom-color:var(--ink);}
+.slot.good{background:var(--ok-bg);border-bottom-color:var(--ok);color:var(--ok);}
+.slot.bad{background:var(--bad-bg);border-bottom-color:var(--bad);color:var(--bad);}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.1rem;}
+.chip{font-family:var(--sans);font-size:13px;font-weight:500;padding:.4rem .8rem;border:1.5px solid var(--rule);background:#fff;color:var(--ink);cursor:pointer;transition:all .12s;}
+.chip:hover{border-color:var(--accent);color:var(--accent);}
+.chip.used{opacity:.3;pointer-events:none;text-decoration:line-through;}
+.chiplab{font-family:var(--cond);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-light);width:100%;margin-bottom:-.1rem;}
+.slotnotes{margin-bottom:1rem;}
+.slotnote{font-size:12.5px;line-height:1.6;padding:.55rem .85rem;background:var(--bad-bg);color:var(--bad);border-left:3px solid var(--bad);margin-bottom:.4rem;}
+.slotnote b{font-weight:600;}
+
+/* ── MODEL ── */
+.model-para{display:grid;grid-template-columns:150px 1fr;gap:1.1rem;margin-bottom:1.6rem;align-items:start;}
+.model-note{font-family:var(--cond);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-light);line-height:1.55;border-right:2px solid var(--rule);padding-right:.9rem;padding-top:.15rem;}
+.model-note b{display:block;font-size:12px;color:var(--accent);letter-spacing:.1em;margin-bottom:.25rem;}
+.model-text{font-family:var(--serif);font-size:14px;line-height:1.9;}
+@media(max-width:660px){.model-para{grid-template-columns:1fr;gap:.5rem;}.model-note{border-right:none;border-left:3px solid var(--rule);padding-right:0;padding-left:.8rem;}}
+.chain{border:1px solid var(--rule);background:#fff;padding:1.2rem 1.3rem;margin-bottom:1.6rem;}
+.chain-step{display:flex;gap:.8rem;align-items:flex-start;padding:.5rem 0;}
+.chain-step+.chain-step{border-top:1px dashed var(--rule);}
+.chain-k{font-family:var(--cond);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);min-width:40px;padding-top:2px;}
+.chain-t{font-size:13.5px;line-height:1.65;color:var(--ink-mid);}
+.chain-t b{color:var(--ink);font-weight:600;}
+.teachkey{text-align:center;font-size:11px;color:var(--ink-light);margin-top:2.5rem;opacity:.6;}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-kicker">AP Language &amp; Composition · Line of Reasoning</div>
+  <div class="masthead-title" id="mast">The Volupides Case: Building an Arrest Warrant</div>
+</header>
+
+<nav class="top-tabs" id="tabs">
+  <button class="top-tab active" data-tab="case">Case File<span class="tab-hint">the facts</span></button>
+  <button class="top-tab" data-tab="s1">Stage 1<span class="tab-hint">paragraphs</span></button>
+  <button class="top-tab" data-tab="s2">Stage 2<span class="tab-hint">sentences</span></button>
+  <button class="top-tab" data-tab="s3">Stage 3<span class="tab-hint">keep or cut</span></button>
+  <button class="top-tab" data-tab="boss">Final Boss<span class="tab-hint">style &amp; keywords</span></button>
+  <button class="top-tab" data-tab="model">The Model<span class="tab-hint">finished warrant</span></button>
+</nav>
+
+<!-- ══════ CASE FILE ══════ -->
+<section class="tab-panel active" id="tab-case"><div class="wrap">
+  <div class="stage-num">Before you begin</div>
+  <h2 class="stage-title">What the officers found</h2>
+  <p class="lede">You already know how to build one syllogism — <strong>data + warrant → claim</strong>. A warrant that will actually convince a judge needs more than that. It needs those claims arranged so each one stands on the ground the last one laid. That arrangement is the <strong>line of reasoning</strong>.</p>
+
+  <h3 class="sub">The opening paragraph — this is given to you</h3>
+  <div class="report">
+    <div class="report-head">
+      <span class="rh-title">INCIDENT REPORT 4471-B</span>
+      <span class="rh-meta">Volupides residence · 1:47 a.m.</span>
+    </div>
+    <span class="stamp">Request for Questioning</span>
+    <p>We arrived at the residence of Arthur and Queenie Volupides at 1:47 a.m. Arthur was at the bottom of the stairs, lying face up, and was declared dead at the scene of a wound to the head. In his hand was an unbroken glass, and he smelled strongly of alcohol. Mrs. Volupides stated that she had returned home from the country club to find her husband unresponsive at the foot of the stairs, and that he had fallen. She telephoned police ten minutes later. On the basis of the findings below, we respectfully request that Mrs. Volupides be brought in for questioning.</p>
+  </div>
+
+  <div class="callout">
+    <p><strong>Notice what the warrant does not say.</strong> It does not say Queenie killed her husband. There is no weapon, no witness, and no evidence of who struck the blow — so no line of reasoning can carry us there. It asks for <em>questioning</em>, and every paragraph that follows has to earn exactly that much and no more.</p>
+    <p>An argument that claims more than its evidence supports doesn't sound stronger. It collapses.</p>
+  </div>
+
+  <h3 class="sub">Evidence available at the scene</h3>
+  <ul class="facts">
+    <li><span class="fnum">01</span><span>Arthur lay face up, feet pointed toward the bottom step.</span></li>
+    <li><span class="fnum">02</span><span>An unbroken glass was still in his hand.</span></li>
+    <li><span class="fnum">03</span><span>No liquid had been spilled on the steps or the carpet.</span></li>
+    <li><span class="fnum">04</span><span>The stair carpet was not ruffled or pulled loose.</span></li>
+    <li><span class="fnum">05</span><span>The mirror and wall lamps along the staircase were undisturbed.</span></li>
+    <li><span class="fnum">06</span><span>The fatal wound was to the back of the skull.</span></li>
+    <li><span class="fnum">07</span><span>No bruising or scrapes on his forearms or palms.</span></li>
+    <li><span class="fnum">08</span><span>The dining table was set for two; two steaks waited in the broiler.</span></li>
+    <li><span class="fnum">09</span><span>The ice in the bowl beside the glasses had melted entirely.</span></li>
+    <li><span class="fnum">10</span><span>Mrs. Volupides was still wearing her outdoor shoes.</span></li>
+    <li><span class="fnum">11</span><span>She waited ten minutes to call police — until her friends arrived.</span></li>
+    <li><span class="fnum">12</span><span>She said Arthur "fell down the stairs," though she says she found him already at the bottom.</span></li>
+  </ul>
+
+  <div class="callout">
+    <p><strong>Three rules the puzzle will teach you.</strong></p>
+    <p><b>1. Nothing before its foundation.</b> If a claim uses an earlier claim as its data, it cannot come first.<br>
+    <b>2. Follow the hooks.</b> A paragraph that opens by naming an earlier finding cannot be that earlier finding.<br>
+    <b>3. Chronology is not logic.</b> What happened first that night is rarely what belongs first in the argument.</p>
+  </div>
+
+  <div class="callout">
+    <p><strong>How to get through this.</strong> Five gates, in order. Each one stays locked until you've cleared the one before it, and the finished warrant stays sealed until you've cleared them all.</p>
+  </div>
+  <div class="teachkey" id="teachkey">— · —</div>
+</div></section>
+
+<!-- ══════ STAGE 1 ══════ -->
+<section class="tab-panel" id="tab-s1"><div class="wrap">
+  <div class="stage-num">Gate 1 of 4</div>
+  <h2 class="stage-title">Order the paragraphs</h2>
+  <p class="lede">Five body paragraphs, scrambled. Each one is already written correctly on the inside — your job is the <strong>order</strong>. Drag by the handle, or use the arrows.</p>
+
+  <div class="hintbox">
+    <b>How to crack it</b>
+    Read only the <em>first sentence</em> of each paragraph. Four of the five begin by naming something that has already been proven — "If Arthur did not fall…", "If another person caused that injury…". A paragraph that leans on an earlier finding cannot come before it. <strong>One paragraph leans on nothing at all.</strong> That one goes first, and the rest fall into place behind it.
+  </div>
+
+  <div class="fixedcard">
+    <span class="tag">Fixed · Paragraph 1</span>
+    <p>We arrived at the residence of Arthur and Queenie Volupides at 1:47 a.m. … On the basis of the findings below, we respectfully request that Mrs. Volupides be brought in for questioning.</p>
+  </div>
+
+  <div class="board" id="board1"></div>
+  <div class="controls">
+    <button class="btn primary" id="check1">Check the order</button>
+    <button class="btn ghost" id="shuffle1">Shuffle again</button>
+  </div>
+  <div class="scoreline" id="score1"></div>
+  <div class="advance" id="adv1"><button class="btn go" data-goto="s2">Gate 2 unlocked → Order the sentences</button></div>
+</div></section>
+
+<!-- ══════ STAGE 2 ══════ -->
+<section class="tab-panel" id="tab-s2"><div class="wrap"></div></section>
+
+<!-- ══════ STAGE 3 ══════ -->
+<section class="tab-panel" id="tab-s3"><div class="wrap"></div></section>
+
+<!-- ══════ FINAL BOSS ══════ -->
+<section class="tab-panel" id="tab-boss"><div class="wrap"></div></section>
+
+<!-- ══════ MODEL ══════ -->
+<section class="tab-panel" id="tab-model"><div class="wrap"></div></section>
+
+<script>
+(function(){
+"use strict";
+
+/* ═══════════ DATA ═══════════ */
+const PARAS = [
+  {
+    key:"p1",
+    title:"Arthur did not fall down the stairs.",
+    meta:"Opens: “The physical evidence at the scene indicates…”",
+    why:"This is the only paragraph whose first sentence leans on nothing. Every other one opens by naming a finding that has already been made — so every other one has to come after something. This paragraph comes after nothing.",
+    goal:"Claim: Arthur did not fall down the stairs.",
+    sents:[
+      {k:"a", t:"The physical evidence at the scene indicates that Arthur did not fall down the stairs.",
+       why:"This is the paragraph's claim. A reader needs to know what you are arguing before you start piling evidence on top of it."},
+      {k:"b", t:"First, Arthur was lying face up, with his feet pointed toward the bottom step. Since people who fall down a staircase almost always land facing forward, it can be concluded that Arthur did not reach the bottom by falling.",
+       why:"“First” puts it at the head of the evidence — and it starts with what an officer sees the second he walks in. The body's position is the most visible evidence and the easiest for a reader to picture."},
+      {k:"c", t:"Additionally, Arthur was still gripping an unbroken glass. Because people release whatever they are holding as they fall, Arthur was probably not carrying this glass down the stairs at all.",
+       why:"“Additionally” adds a second piece to a first one — so something has to come before it. The glass also has to be introduced here before anything can refer to it."},
+      {k:"d", t:"Moreover, no liquid had been spilled on the steps or the carpet. Since a glass carried during a fall empties its contents, the dry staircase further indicates that no such fall occurred.",
+       why:"This sentence is about the glass — but it never names one. Put it before the glass is introduced and the reader has no idea what liquid you mean."},
+      {k:"e", t:"Furthermore, the carpet running down the staircase had not been ruffled or pulled loose. A body tumbling down a carpeted staircase disturbs the carpet; consequently, no body tumbled down these stairs.",
+       why:"The evidence moves outward from the body to the staircase itself. This is the last of the scene evidence before the closer."},
+      {k:"f", t:"Finally, the mirror and the lamps mounted along the staircase wall had not been moved or damaged. People instinctively grab at nearby objects to break a fall, and Arthur grabbed nothing; therefore, Arthur never fell.",
+       why:"“Finally” announces the end, and the sentence restates the paragraph's claim. It is the closer — and it hands the next paragraph its opening."}
+    ]
+  },
+  {
+    key:"p2",
+    title:"The staircase did not cause the wound that killed him.",
+    meta:"Opens: “If Arthur did not fall, then the wound…”",
+    why:"Its first four words are “If Arthur did not fall.” That is not something this paragraph proves — it is something it borrows. Place it any earlier and its opening sentence points at nothing.",
+    goal:"Claim: Something — or someone — else caused the injury.",
+    sents:[
+      {k:"a", t:"If Arthur did not fall, then the wound that killed him requires some other explanation.",
+       why:"The claim, and the hinge. It reaches back to the previous paragraph and points forward into this one."},
+      {k:"b", t:"First, Arthur died of a blow to the back of the skull. When a person pitches forward down a staircase, injuries appear on the front of the body; thus, this wound does not match the fall Mrs. Volupides described.",
+       why:"The wound is the paragraph's subject, so it comes first among the evidence."},
+      {k:"c", t:"Additionally, Arthur's forearms and palms showed no bruising or scrapes. Since people instinctively put their hands out against a hard surface, the absence of these marks indicates that Arthur never struck the stairs.",
+       why:"Second piece of evidence — the absence of the injuries a real fall would have left."},
+      {k:"d", t:"A man does not receive a fatal head wound in his own entryway for no reason. Because the staircase has now been ruled out, someone else must have caused the injury that killed Arthur.",
+       why:"“Has now been ruled out” only makes sense once the ruling-out has happened. This is the closer, and it hands the next paragraph the word it needs: someone."}
+    ]
+  },
+  {
+    key:"p3",
+    title:"Mrs. Volupides was in the house far longer than she claims.",
+    meta:"Opens: “If another person caused that injury…”",
+    why:"It opens by asking who was in the house — a question that only exists once another person has been introduced. The paragraph before it is what introduces that person.",
+    goal:"Claim: She was home for hours, not the few minutes she reported.",
+    sents:[
+      {k:"a", t:"If another person caused that injury, then the question becomes who was inside this house — and Mrs. Volupides was inside it far longer than she has told us.",
+       why:"The claim. It picks up “someone else” from the paragraph before and turns it into a question about time."},
+      {k:"b", t:"First, the dining table had been laid for two, and two steaks were waiting in the broiler. Preparing a meal and setting a table takes far longer than ten minutes; therefore, someone had been working in this house well before the police were called.",
+       why:"“First” puts it at the head of the evidence — and it is the largest, most obvious trace of elapsed time. The reader can measure it against her ten minutes immediately."},
+      {k:"c", t:"Additionally, the ice in the bowl beside the glasses had melted entirely. Ice left standing melts only over a considerable stretch of time, which indicates the drinks had been poured long before Mrs. Volupides says she arrived.",
+       why:"“Additionally” adds a second piece to a first one — so something has to come before it. This is a second, subtler clock in the same room."},
+      {k:"d", t:"Moreover, Mrs. Volupides was still wearing her outdoor shoes when officers arrived. Because people take off their shoes soon after coming inside, she had likely been home much longer than the few minutes she reported.",
+       why:"The evidence moves from the house to her person. This is the first piece that is about her rather than the room."},
+      {k:"e", t:"Finally, the meal, the melted ice, and the shoes on her feet describe an evening of some length. Since a house does not fill up with hours of activity in ten minutes, Mrs. Volupides was at home for most of that evening.",
+       why:"“Finally” announces the end — and “the meal, the melted ice, and the shoes” names three things by their nouns, every one of which has to already be on the page. This is the closer."}
+    ]
+  },
+  {
+    key:"p4",
+    title:"Arthur was alive while she was in the house.",
+    meta:"Opens: “If Mrs. Volupides spent that evening at home…”",
+    why:"It begins from the finding that she was home for hours, and turns it into a claim about her husband. It cannot come before the paragraph that puts her in the house.",
+    goal:"Claim: Arthur was alive when she was there — so she was present at the death.",
+    sents:[
+      {k:"a", t:"If Mrs. Volupides spent that evening at home, then her husband was alive for at least part of it.",
+       why:"The claim. It takes the previous paragraph's conclusion as its starting point and pushes it one step further."},
+      {k:"b", t:"First, the table was laid for two and two steaks waited in the broiler. People do not cook dinner for a man who is already dead; thus, Arthur was alive while that meal was being prepared.",
+       why:"Same evidence as the paragraph before, but a completely different warrant and a different claim. Notice what that does: one piece of evidence can serve two arguments if you attach a new warrant to it."},
+      {k:"c", t:"Moreover, Mrs. Volupides did not telephone emergency services until ten minutes after she says she found her husband, and only once her friends had arrived to see her do it. Since people call for help the moment they discover a body, this delay suggests there was no body to report when she walked in.",
+       why:"Second piece of evidence, and the more damaging one — so it comes after the meal, not before it."},
+      {k:"d", t:"Arthur Volupides was therefore alive and in his wife's company at some point that evening. Because the last person with a dying man is the person best placed to explain his death, Mrs. Volupides can account for what happened here.",
+       why:"“Therefore” signals a conclusion drawn from what came above it. This closer states the finding the last paragraph is built on."}
+    ]
+  },
+  {
+    key:"p5",
+    title:"Therefore she should be brought in for questioning.",
+    meta:"Opens: “Arthur did not fall, and he was alive when…”",
+    why:"Its first sentence names two findings by their content — no fall, and alive when she arrived. It is the request, and it is also the paragraph that states plainly what the warrant does not claim.",
+    goal:"Claim: Bring her in — and nothing further than that.",
+    sents:[
+      {k:"a", t:"Arthur did not fall down the stairs, and he was alive when his wife came home. Mrs. Volupides has told us the opposite of both.",
+       why:"Gathers the two findings the whole warrant has been building toward and sets them against her statement in a single stroke."},
+      {k:"b", t:"A witness may be mistaken about a detail, but she is not mistaken about whether her husband was alive when she last saw him. Since a person who misrepresents the circumstances of a death ordinarily has a reason for doing so, we believe Mrs. Volupides is withholding what happened in this house.",
+       why:"Turns the contradiction into a claim about her: not confused, but withholding. This has to come after the contradiction is stated."},
+      {k:"c", t:"We wish to be clear about the limits of these findings. No weapon has been recovered, and no evidence establishes who caused the wound that killed Arthur Volupides; we therefore make no claim as to responsibility.",
+       why:"The limit has to be stated before the request, so the reader understands exactly how much is being asked for — and how much is not."},
+      {k:"d", t:"For these reasons, we respectfully request that Mrs. Queenie Volupides be brought in for questioning regarding the death of her husband.",
+       why:"The last sentence of the warrant. Everything above it exists to earn this one line."}
+    ]
+  }
+];
+
+const SORTERS = [
+  {k:"s1", verdict:"cut",
+   t:"Mrs. Volupides struck her husband with a heavy object and arranged his body at the foot of the stairs to make his death appear accidental.",
+   why:"No evidence supports a single word of this. It is the conclusion we would <i>like</i> to reach, not one the data earns — no weapon, no witness, nothing. Claiming it doesn't make the warrant stronger; it makes every careful paragraph above it look reckless."},
+  {k:"s2", verdict:"keep",
+   t:"Arthur had been cooking in the kitchen when he died. Because people preparing a meal stay near the kitchen, Arthur had little reason to be climbing the stairs at all.",
+   why:"Clean data, reasonable warrant, modest claim. It belongs in the paragraph about the evening's timeline, beside the table and the steaks — it explains why he was downstairs in the first place."},
+  {k:"s3", verdict:"cut",
+   t:"Mrs. Volupides was wearing an expensive gown and costly jewellery. Since people who dress expensively are frequently deceitful, her statement cannot be trusted.",
+   why:"The <i>form</i> is perfectly logical — data, warrant, claim, all in order. The warrant is simply false. Remember the moon made of cheese: an argument can be valid and still be worthless."},
+  {k:"s4", verdict:"keep",
+   t:"Mrs. Volupides telephoned her friends before she telephoned the police. Since people summon the authorities first in an emergency, the order of her calls suggests she wanted witnesses present.",
+   why:"Modest and well-warranted. It sits naturally beside the ten-minute delay and sharpens it."},
+  {k:"s5", verdict:"cut",
+   t:"Earlier that evening the couple quarrelled loudly in front of a dozen club members before Mrs. Volupides drove home alone.",
+   why:"It is true, and it is the first thing that happened — which is exactly the trap. A quarrel establishes only that they argued. Leading with it makes the warrant look as though it picked a suspect first and went hunting for facts afterward."},
+  {k:"s6", verdict:"cut",
+   t:"People who lie about a death often know more than they admit.",
+   why:"That's a warrant with nothing attached to it. On its own it is a floating generalisation about the world, not a claim about this case. Give it data and it becomes reasoning; leave it alone and it is just an opinion."}
+];
+
+/* ─── FINAL BOSS: connector drill ─── */
+const BOSS_PARTS = [
+  "The physical evidence at the scene indicates that Arthur did not fall down the stairs. ",
+  0,
+  " people who fall down a staircase almost always land facing forward, and Arthur was lying face up with his feet pointed toward the bottom step, he did not reach the bottom by falling. ",
+  1,
+  ", Arthur was still gripping an unbroken glass. People release whatever they are holding as they fall; ",
+  2,
+  ", he was probably not carrying it down the stairs at all. No liquid had been spilled on the steps or the carpet, ",
+  3,
+  " a glass carried during a fall empties its contents. The carpet running down the staircase had not been ruffled or pulled loose; ",
+  4,
+  ", no body tumbled down these stairs. ",
+  5,
+  ", the mirror and the lamps mounted along the staircase wall had not been moved. People instinctively grab at nearby objects to break a fall, and Arthur grabbed nothing; ",
+  6,
+  ", Arthur never fell."
+];
+const BOSS_SLOTS = [
+  {ok:["Since","Because","Given that"], job:"introduce the REASON that leads to a claim, at the head of a sentence"},
+  {ok:["Additionally","Moreover","Furthermore"], job:"ADD another piece of evidence to the ones already given"},
+  {ok:["thus","therefore","consequently","hence"], job:"deliver a CONCLUSION drawn from what just came before it"},
+  {ok:["because","since","due to the fact that"], job:"link a fact backward to the REASON behind it, mid-sentence"},
+  {ok:["thus","therefore","consequently","hence"], job:"deliver a CONCLUSION drawn from what just came before it"},
+  {ok:["Finally"], job:"signal that this is the LAST piece of evidence in the paragraph"},
+  {ok:["thus","therefore","consequently","hence"], job:"deliver a CONCLUSION drawn from what just came before it"}
+];
+const BOSS_BANK = [
+  {g:"Sentence-initial", ws:["Since","Because","Given that","Additionally","Moreover","Furthermore","Finally"]},
+  {g:"Mid-sentence", ws:["thus","therefore","consequently","hence","because","since","due to the fact that"]}
+];
+
+/* ═══════════ PROGRESS / GATES ═══════════ */
+const GATES = {case:null, s1:null, s2:"s1", s3:"s2", boss:"s3", model:"boss"};
+var done = {s1:false, s2:false, s3:false, boss:false};
+var teacherMode = false;
+
+function loadProgress(){
+  try{
+    var raw=window.localStorage.getItem("volupides-progress");
+    if(raw){var o=JSON.parse(raw);["s1","s2","s3","boss"].forEach(function(k){if(o[k])done[k]=true;});}
+  }catch(e){}
+}
+function saveProgress(){
+  try{window.localStorage.setItem("volupides-progress",JSON.stringify(done));}catch(e){}
+}
+function unlocked(tab){
+  if(teacherMode) return true;
+  var need=GATES[tab];
+  return !need || done[need]===true;
+}
+function refreshTabs(){
+  document.querySelectorAll(".top-tab").forEach(function(t){
+    var k=t.dataset.tab;
+    t.classList.toggle("locked",!unlocked(k));
+    t.classList.toggle("cleared",done[k]===true);
+  });
+}
+var LOCKNAME={s2:"Gate 1 — Order the paragraphs",s3:"Gate 2 — Order the sentences",boss:"Gate 3 — Keep or cut",model:"Gate 4 — The Final Boss"};
+function showTab(k){
+  if(!unlocked(k)) return;
+  document.querySelectorAll(".top-tab").forEach(function(t){t.classList.toggle("active",t.dataset.tab===k);});
+  document.querySelectorAll(".tab-panel").forEach(function(p){p.classList.remove("active");});
+  document.getElementById("tab-"+k).classList.add("active");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+function markDone(k){
+  if(done[k]) return;
+  done[k]=true; saveProgress(); refreshTabs();
+}
+
+/* ═══════════ HELPERS ═══════════ */
+function shuffled(arr){
+  var a=arr.slice(),i,j,t;
+  for(i=a.length-1;i>0;i--){j=Math.floor(Math.random()*(i+1));t=a[i];a[i]=a[j];a[j]=t;}
+  if(a.length>1&&a.every(function(x,ix){return x===arr[ix];})){t=a[0];a[0]=a[a.length-1];a[a.length-1]=t;}
+  return a;
+}
+function renumber(box){
+  Array.prototype.forEach.call(box.children,function(el,i){
+    var n=el.querySelector(".num"); if(n) n.textContent=i+1;
+  });
+}
+function clearMarks(box){
+  Array.prototype.forEach.call(box.children,function(el){
+    el.classList.remove("right","wrong");
+    var n=el.querySelector(".note"); if(n) n.remove();
+  });
+}
+function makeSortable(box,onMove){
+  var el=null;
+  function move(e){
+    if(!el) return;
+    if(e.cancelable) e.preventDefault();
+    var y=e.clientY,kids=Array.prototype.slice.call(box.children),i,s,r;
+    for(i=0;i<kids.length;i++){
+      s=kids[i]; if(s===el) continue;
+      r=s.getBoundingClientRect();
+      if(y>=r.top&&y<=r.bottom){
+        if(y<r.top+r.height/2) box.insertBefore(el,s);
+        else box.insertBefore(el,s.nextSibling);
+        renumber(box); break;
+      }
+    }
+  }
+  function end(){
+    document.removeEventListener("pointermove",move);
+    document.removeEventListener("pointerup",end);
+    document.removeEventListener("pointercancel",end);
+    if(el){el.classList.remove("dragging");el=null;renumber(box);}
+  }
+  box.addEventListener("pointerdown",function(e){
+    var g=e.target.closest(".grip"); if(!g||!box.contains(g)) return;
+    el=g.closest(".strip"); if(!el) return;
+    e.preventDefault();
+    el.classList.add("dragging");
+    document.addEventListener("pointermove",move,{passive:false});
+    document.addEventListener("pointerup",end);
+    document.addEventListener("pointercancel",end);
+    if(onMove) onMove();
+  });
+}
+function buildStrip(key,inner){
+  var d=document.createElement("div");
+  d.className="strip"; d.dataset.key=key;
+  d.innerHTML='<div class="grip"><span class="dots">⠿</span><span class="num"></span></div>'+
+              '<div class="body">'+inner+'</div>'+
+              '<div class="arrows"><button type="button" data-dir="-1" aria-label="Move up">▲</button>'+
+              '<button type="button" data-dir="1" aria-label="Move down">▼</button></div>';
+  return d;
+}
+function wireArrows(box,after){
+  box.addEventListener("click",function(e){
+    var b=e.target.closest(".arrows button"); if(!b) return;
+    var el=b.closest(".strip"), dir=parseInt(b.dataset.dir,10);
+    if(dir<0&&el.previousElementSibling) box.insertBefore(el,el.previousElementSibling);
+    if(dir>0&&el.nextElementSibling) box.insertBefore(el.nextElementSibling,el);
+    renumber(box);
+    if(after) after();
+  });
+}
+function check(box,order,scoreEl,lookup,labelSing){
+  clearMarks(box);
+  var kids=Array.prototype.slice.call(box.children),ok=0;
+  kids.forEach(function(el,i){
+    var right=el.dataset.key===order[i];
+    el.classList.add(right?"right":"wrong");
+    if(right){ok++;}
+    else{
+      var n=document.createElement("div");
+      n.className="note";
+      n.innerHTML="<b>Not here.</b> "+lookup(el.dataset.key);
+      el.appendChild(n);
+    }
+  });
+  var all=ok===order.length;
+  scoreEl.className="scoreline "+(all?"ok":"no");
+  scoreEl.textContent=all
+    ? "✓ That's the line of reasoning. Every "+labelSing+" now stands on the one before it."
+    : ok+" of "+order.length+" in place — read the notes on the red ones and try again.";
+  return all;
+}
+
+/* ═══════════ TABS ═══════════ */
+document.getElementById("tabs").addEventListener("click",function(e){
+  var b=e.target.closest(".top-tab"); if(!b) return;
+  if(!unlocked(b.dataset.tab)){
+    var need=LOCKNAME[b.dataset.tab]||"the previous stage";
+    b.animate([{transform:"translateX(0)"},{transform:"translateX(-4px)"},{transform:"translateX(4px)"},{transform:"translateX(0)"}],{duration:220});
+    return;
+  }
+  showTab(b.dataset.tab);
+});
+document.body.addEventListener("click",function(e){
+  var g=e.target.closest("[data-goto]"); if(!g) return;
+  showTab(g.dataset.goto);
+});
+/* teacher bypass: triple-click the title */
+(function(){
+  var n=0,timer=null;
+  document.getElementById("mast").addEventListener("click",function(){
+    n++; clearTimeout(timer); timer=setTimeout(function(){n=0;},700);
+    if(n>=3){
+      n=0; teacherMode=true; refreshTabs();
+      document.getElementById("teachkey").textContent="All gates unlocked (teacher mode).";
+    }
+  });
+})();
+
+/* ═══════════ STAGE 1 ═══════════ */
+var board1=document.getElementById("board1");
+var score1=document.getElementById("score1");
+var adv1=document.getElementById("adv1");
+var ORDER1=PARAS.map(function(p){return p.key;});
+function renderS1(){
+  board1.innerHTML="";
+  shuffled(PARAS).forEach(function(p){
+    board1.appendChild(buildStrip(p.key,'<div class="ptitle">'+p.title+'</div><div class="pmeta">'+p.meta+'</div>'));
+  });
+  renumber(board1);
+  score1.textContent=""; score1.className="scoreline";
+  adv1.classList.remove("show");
+}
+function whyPara(k){
+  for(var i=0;i<PARAS.length;i++) if(PARAS[i].key===k) return PARAS[i].why;
+  return "";
+}
+makeSortable(board1,function(){clearMarks(board1);score1.textContent="";});
+wireArrows(board1,function(){clearMarks(board1);score1.textContent="";});
+document.getElementById("check1").addEventListener("click",function(){
+  if(check(board1,ORDER1,score1,whyPara,"paragraph")){markDone("s1");adv1.classList.add("show");}
+  else adv1.classList.remove("show");
+});
+document.getElementById("shuffle1").addEventListener("click",renderS1);
+renderS1();
+
+/* ═══════════ STAGE 2 ═══════════ */
+document.querySelector("#tab-s2 .wrap").innerHTML=
+  '<div class="stage-num">Gate 2 of 4</div>'+
+  '<h2 class="stage-title">Order the sentences</h2>'+
+  '<p class="lede">Now go inside a paragraph. The same rules apply one level down: the claim comes first, and any sentence that <strong>refers back</strong> to something has to come after the thing it refers to. <strong>Two paragraphs to rebuild — clear both to open the next gate.</strong></p>'+
+  '<div class="hintbox"><b>How to crack it</b>'+
+  'The writer left you a map. One sentence states the claim and uses no signpost at all — that is your opener. After that, follow the words: <em>First</em> → <em>Additionally</em> → <em>Moreover</em> → <em>Furthermore</em> → <em>Finally</em>. '+
+  'That is the whole job of those words — they tell a reader where they are in your reasoning. Use them here, and use them in your own warrant.</div>'+
+  '<div class="picker" id="picker"></div>'+
+  '<div class="fixedcard" id="paraGoal"></div>'+
+  '<div class="board" id="board2"></div>'+
+  '<div class="controls"><button class="btn primary" id="check2">Check the order</button>'+
+  '<button class="btn ghost" id="shuffle2">Shuffle again</button></div>'+
+  '<div class="scoreline" id="score2"></div>'+
+  '<div class="advance" id="adv2"><button class="btn go" data-goto="s3">Gate 3 unlocked → Keep or cut</button></div>';
+
+var board2=document.getElementById("board2");
+var score2=document.getElementById("score2");
+var adv2=document.getElementById("adv2");
+var picker=document.getElementById("picker");
+var goalBox=document.getElementById("paraGoal");
+var current=0, solved={};
+/* only two paragraphs are rebuilt by hand — the clearest example of each move */
+var S2=[
+  {p:PARAS[0], n:2, label:"¶2 · The fall"},
+  {p:PARAS[2], n:4, label:"¶4 · The timeline"}
+];
+function renderPicker(){
+  picker.innerHTML="";
+  S2.forEach(function(o,i){
+    var b=document.createElement("button");
+    b.type="button";
+    b.className="pick"+(i===current?" active":"")+(solved[o.p.key]?" done":"");
+    b.textContent=o.label; b.dataset.i=i;
+    picker.appendChild(b);
+  });
+}
+function renderS2(){
+  var o=S2[current], p=o.p;
+  goalBox.innerHTML='<span class="tag">Paragraph '+o.n+' · what it must prove</span><p>'+p.goal+'</p>';
+  board2.innerHTML="";
+  shuffled(p.sents).forEach(function(s){board2.appendChild(buildStrip(s.k,s.t));});
+  renumber(board2);
+  score2.textContent=""; score2.className="scoreline";
+  adv2.classList.remove("show");
+  renderPicker();
+}
+function whySent(k){
+  var p=S2[current].p,i;
+  for(i=0;i<p.sents.length;i++) if(p.sents[i].k===k) return p.sents[i].why;
+  return "";
+}
+picker.addEventListener("click",function(e){
+  var b=e.target.closest(".pick"); if(!b) return;
+  current=parseInt(b.dataset.i,10); renderS2();
+});
+makeSortable(board2,function(){clearMarks(board2);score2.textContent="";});
+wireArrows(board2,function(){clearMarks(board2);score2.textContent="";});
+document.getElementById("check2").addEventListener("click",function(){
+  var p=S2[current].p;
+  var all=check(board2,p.sents.map(function(s){return s.k;}),score2,whySent,"sentence");
+  if(all){
+    solved[p.key]=true; renderPicker();
+    if(S2.every(function(o){return solved[o.p.key];})){
+      markDone("s2"); adv2.classList.add("show");
+      score2.textContent="✓ Both paragraphs rebuilt. Gate 3 is open.";
+    }else{
+      score2.textContent="✓ Paragraph rebuilt — one more to go. Pick it above.";
+    }
+  }
+});
+document.getElementById("shuffle2").addEventListener("click",renderS2);
+renderS2();
+
+/* ═══════════ STAGE 3 ═══════════ */
+document.querySelector("#tab-s3 .wrap").innerHTML=
+  '<div class="stage-num">Gate 3 of 4</div>'+
+  '<h2 class="stage-title">Keep it or cut it</h2>'+
+  '<p class="lede">Six more sentences turned up in the file after the report was drafted. Two would strengthen the warrant. Four would sink it — because the reasoning is broken, or because they claim more than the evidence can carry. <strong>All six must be judged correctly.</strong></p>'+
+  '<div id="sortbox"></div>'+
+  '<div class="controls"><button class="btn ghost" id="reset3">Reset and try again</button></div>'+
+  '<div class="scoreline" id="score3"></div>'+
+  '<div class="advance" id="adv3"><button class="btn go" data-goto="boss">Gate 4 unlocked → The Final Boss</button></div>';
+
+var sortbox=document.getElementById("sortbox");
+var score3=document.getElementById("score3");
+var adv3=document.getElementById("adv3");
+var answered={};
+function renderS3(){
+  sortbox.innerHTML=""; answered={};
+  shuffled(SORTERS).forEach(function(s){
+    var c=document.createElement("div");
+    c.className="sortcard"; c.dataset.k=s.k;
+    c.innerHTML='<div class="sc-body">'+s.t+'</div>'+
+      '<div class="sc-actions"><button class="btn" type="button" data-v="keep">Keep it</button>'+
+      '<button class="btn" type="button" data-v="cut">Cut it</button></div>';
+    sortbox.appendChild(c);
+  });
+  score3.textContent=""; score3.className="scoreline";
+  adv3.classList.remove("show");
+}
+sortbox.addEventListener("click",function(e){
+  var b=e.target.closest("button[data-v]"); if(!b) return;
+  var card=b.closest(".sortcard"), k=card.dataset.k, s=null,i;
+  for(i=0;i<SORTERS.length;i++) if(SORTERS[i].k===k) s=SORTERS[i];
+  if(!s) return;
+  var chose=b.dataset.v, right=chose===s.verdict;
+  answered[k]=right;
+  card.classList.add(s.verdict);
+  card.querySelector(".sc-actions").remove();
+  var v=document.createElement("div");
+  v.className="verdict "+s.verdict;
+  v.innerHTML='<span class="vlabel">'+(right?"✓ ":"✗ ")+
+    (s.verdict==="keep"?"Keep — it belongs":"Cut it")+
+    (right?"":" · you said "+(chose==="keep"?"keep":"cut"))+'</span>'+s.why;
+  card.appendChild(v);
+  var doneN=Object.keys(answered).length, ok=0;
+  Object.keys(answered).forEach(function(x){if(answered[x])ok++;});
+  if(doneN===SORTERS.length){
+    if(ok===doneN){
+      score3.className="scoreline ok";
+      score3.textContent="✓ Six for six. You can tell a modest claim from an overreach.";
+      markDone("s3"); adv3.classList.add("show");
+    }else{
+      score3.className="scoreline no";
+      score3.textContent=ok+" of "+doneN+" — read the ones you missed, then reset and clear all six.";
+    }
+  }
+});
+document.getElementById("reset3").addEventListener("click",renderS3);
+renderS3();
+
+/* ═══════════ FINAL BOSS ═══════════ */
+(function(){
+  var patterns=[
+    {l:"Pattern 1 · Data → Warrant → Claim",
+     t:"Arthur was still holding an unbroken glass. People release what they are holding as they fall; <u>therefore</u>, Arthur did not fall down the stairs."},
+    {l:"Pattern 2 · Warrant first, in a subordinate clause",
+     t:"<u>Since</u> people release what they are holding as they fall, and Arthur was still holding an unbroken glass, he did not reach the bottom of the stairs by falling."},
+    {l:"Pattern 3 · Claim first, reason after",
+     t:"Arthur did not fall down the stairs, <u>because</u> he was still holding an unbroken glass and people release what they are holding as they fall."},
+    {l:"Pattern 4 · Warrant folded into the middle",
+     t:"Arthur was still holding an unbroken glass — a thing people release as they fall — and <u>so</u> he did not reach the bottom of the stairs by falling."}
+  ];
+  var html=
+   '<div class="stage-num">Gate 4 of 4 · Final Boss</div>'+
+   '<h2 class="stage-title">Say it four different ways</h2>'+
+   '<p class="lede">A line of reasoning can be perfectly ordered and still be unreadable — because every sentence is built the same way and every joint uses the same word. <strong>Vary the structure. Vary the connector. Never repeat one.</strong></p>'+
+   '<h3 class="sub">Reminder · one syllogism, four sentence structures</h3><div class="patterns">';
+  patterns.forEach(function(p){html+='<div class="pat"><div class="pl">'+p.l+'</div><div class="pt">'+p.t+'</div></div>';});
+  html+='</div>'+
+   '<h3 class="sub">Reminder · the logical keywords, by job</h3>'+
+   '<div class="keytable">'+
+     '<div class="keyrow"><div class="kl"><b>Reasoning</b><span>points back to the reason</span></div>'+
+     '<div class="kv"><em>because</em> · <em>since</em> · <em>given that</em> · <em>due to the fact that</em> · <em>as indicated by</em> · <em>as shown by</em> · <em>on the grounds that</em></div></div>'+
+     '<div class="keyrow"><div class="kl"><b>Concluding</b><span>delivers the claim</span></div>'+
+     '<div class="kv"><em>therefore</em> · <em>thus</em> · <em>consequently</em> · <em>hence</em> · <em>accordingly</em> · <em>for this reason</em> · <em>it can be concluded that</em> · <em>it may be inferred that</em></div></div>'+
+     '<div class="keyrow"><div class="kl"><b>Adding &amp; sequencing</b><span>stacks evidence in order</span></div>'+
+     '<div class="kv"><em>additionally</em> · <em>moreover</em> · <em>furthermore</em> · <em>in addition</em> · <em>finally</em></div></div>'+
+   '</div>'+
+   '<h3 class="sub">The boss fight</h3>'+
+   '<p class="lede">Here is your first paragraph with every connector stripped out. Click a blank, then click a word. <strong>Each word can be used only once</strong> — so three conclusions need three different concluding words. Fill all seven and check.</p>'+
+   '<div class="drill" id="drill"></div>'+
+   '<div class="chips" id="chips"></div>'+
+   '<div class="slotnotes" id="slotnotes"></div>'+
+   '<div class="controls"><button class="btn primary" id="checkB">Check the paragraph</button>'+
+   '<button class="btn ghost" id="resetB">Clear all</button></div>'+
+   '<div class="scoreline" id="scoreB"></div>'+
+   '<div class="advance" id="advB"><button class="btn go" data-goto="model">Warrant unsealed → Read the model</button></div>';
+  document.querySelector("#tab-boss .wrap").innerHTML=html;
+})();
+
+var drill=document.getElementById("drill");
+var chipsBox=document.getElementById("chips");
+var slotnotes=document.getElementById("slotnotes");
+var scoreB=document.getElementById("scoreB");
+var advB=document.getElementById("advB");
+var fills=[], activeSlot=-1;
+
+function renderDrill(){
+  var h="";
+  BOSS_PARTS.forEach(function(p){
+    if(typeof p==="number"){
+      var v=fills[p];
+      h+='<button type="button" class="slot'+(v?" filled":"")+'" data-s="'+p+'">'+(v?v:"________")+'</button>';
+    } else h+=p;
+  });
+  drill.innerHTML=h;
+  Array.prototype.forEach.call(drill.querySelectorAll(".slot"),function(b){
+    if(parseInt(b.dataset.s,10)===activeSlot) b.classList.add("active");
+  });
+}
+function renderChips(){
+  var h="",used={};
+  fills.forEach(function(f){if(f)used[f]=true;});
+  BOSS_BANK.forEach(function(g){
+    h+='<div class="chiplab">'+g.g+'</div>';
+    g.ws.forEach(function(w){
+      h+='<button type="button" class="chip'+(used[w]?" used":"")+'" data-w="'+w+'">'+w+'</button>';
+    });
+  });
+  chipsBox.innerHTML=h;
+}
+function nextEmpty(from){
+  var i;
+  for(i=from;i<BOSS_SLOTS.length;i++) if(!fills[i]) return i;
+  for(i=0;i<BOSS_SLOTS.length;i++) if(!fills[i]) return i;
+  return -1;
+}
+function resetB(){
+  fills=new Array(BOSS_SLOTS.length).fill(null);
+  activeSlot=0; slotnotes.innerHTML="";
+  scoreB.textContent=""; scoreB.className="scoreline";
+  advB.classList.remove("show");
+  renderDrill(); renderChips();
+}
+drill.addEventListener("click",function(e){
+  var b=e.target.closest(".slot"); if(!b) return;
+  var i=parseInt(b.dataset.s,10);
+  if(fills[i]){fills[i]=null;activeSlot=i;}
+  else activeSlot=i;
+  slotnotes.innerHTML=""; scoreB.textContent="";
+  renderDrill(); renderChips();
+});
+chipsBox.addEventListener("click",function(e){
+  var b=e.target.closest(".chip"); if(!b) return;
+  if(activeSlot<0||activeSlot>=BOSS_SLOTS.length) activeSlot=nextEmpty(0);
+  if(activeSlot<0) return;
+  fills[activeSlot]=b.dataset.w;
+  activeSlot=nextEmpty(activeSlot+1);
+  slotnotes.innerHTML=""; scoreB.textContent="";
+  renderDrill(); renderChips();
+});
+document.getElementById("resetB").addEventListener("click",resetB);
+document.getElementById("checkB").addEventListener("click",function(){
+  slotnotes.innerHTML="";
+  if(fills.some(function(f){return !f;})){
+    scoreB.className="scoreline no";
+    scoreB.textContent="Fill all seven blanks first.";
+    return;
+  }
+  var seen={},notes=[],ok=0;
+  fills.forEach(function(w,i){
+    var fn=BOSS_SLOTS[i].ok.indexOf(w)>=0;
+    var dup=!!seen[w]; seen[w]=true;
+    var slotEl=drill.querySelector('.slot[data-s="'+i+'"]');
+    if(fn&&!dup){ok++;slotEl.classList.add("good");}
+    else{
+      slotEl.classList.add("bad");
+      notes.push("<b>Blank "+(i+1)+" ("+w+"):</b> "+
+        (!fn ? "wrong job. This blank has to "+BOSS_SLOTS[i].job+"."
+             : "you have already used this word. Three conclusions need three different concluding words — that is the whole point."));
+    }
+  });
+  notes.forEach(function(n){
+    var d=document.createElement("div"); d.className="slotnote"; d.innerHTML=n;
+    slotnotes.appendChild(d);
+  });
+  if(ok===BOSS_SLOTS.length){
+    scoreB.className="scoreline ok";
+    scoreB.textContent="✓ Seven joints, seven different words, every one doing the right job. The warrant is unsealed.";
+    markDone("boss"); advB.classList.add("show");
+  }else{
+    scoreB.className="scoreline no";
+    scoreB.textContent=ok+" of 7 — fix the red blanks and check again.";
+  }
+});
+resetB();
+
+/* ═══════════ MODEL ═══════════ */
+(function(){
+  var h='<div class="stage-num">Cleared</div>'+
+   '<h2 class="stage-title">The finished warrant</h2>'+
+   '<p class="lede">Read it straight through, then read the margin. Every paragraph’s <strong>claim</strong> becomes the next paragraph’s <strong>data</strong>. That is what a line of reasoning is at the level of a whole paper.</p>'+
+   '<h3 class="sub">The chain, stripped bare</h3><div class="chain">'+
+   '<div class="chain-step"><span class="chain-k">¶2</span><span class="chain-t">The scene shows no fall. → <b>Arthur did not fall down the stairs.</b></span></div>'+
+   '<div class="chain-step"><span class="chain-k">¶3</span><span class="chain-t">He didn’t fall, yet he died of a head wound. → <b>Someone else caused the wound.</b></span></div>'+
+   '<div class="chain-step"><span class="chain-k">¶4</span><span class="chain-t">If someone else was here, who? → <b>Queenie was in the house for hours, not minutes.</b></span></div>'+
+   '<div class="chain-step"><span class="chain-k">¶5</span><span class="chain-t">She was here for hours. → <b>Arthur was alive while she was here.</b></span></div>'+
+   '<div class="chain-step"><span class="chain-k">¶6</span><span class="chain-t">She was present, and she says otherwise. → <b>She can account for this death — bring her in.</b></span></div>'+
+   '</div><h3 class="sub">Full text</h3><div id="modelbox"></div>'+
+   '<div class="callout"><p><strong>Why the order can’t be shuffled.</strong> Try opening with ¶4: “If another person caused that injury…” — nobody has said anyone else was involved. Try opening with ¶6: it names two findings in its first sentence that nothing has established. Every paragraph but one carries a hook backward into the paragraph before it. That is the tell: <em>if you can move a paragraph without breaking a sentence, your reasoning probably isn’t doing any work.</em></p></div>'+
+   '<div class="callout"><p><strong>One more thing worth stealing.</strong> The table set for two appears twice — once in ¶4 to prove she was home for hours, and again in ¶5 to prove Arthur was alive. Same data, different warrant, different claim. Good evidence can work twice if you attach a new warrant to it.</p></div>'+
+   '<h3 class="sub">Now do it with your own case</h3>'+
+   '<div class="callout"><p>You have your syllogisms. Before you write a word of your warrant, answer these three:</p>'+
+   '<p><b>1.</b> Which of my claims needs <em>no</em> earlier claim to make sense? That one goes first.<br>'+
+   '<b>2.</b> Which of my claims uses another claim as its data? That one goes after it.<br>'+
+   '<b>3.</b> What is the most my evidence will let me ask for? End there — and not one step past it.</p></div>';
+  document.querySelector("#tab-model .wrap").innerHTML=h;
+
+  var modelbox=document.getElementById("modelbox");
+  var intro=document.createElement("div");
+  intro.className="model-para";
+  intro.innerHTML='<div class="model-note"><b>¶1 · given</b>The scene, her statement, and the request. Nothing is argued yet.</div>'+
+    '<div class="model-text">We arrived at the residence of Arthur and Queenie Volupides at 1:47 a.m. Arthur was at the bottom of the stairs, lying face up, and was declared dead at the scene of a wound to the head. In his hand was an unbroken glass, and he smelled strongly of alcohol. Mrs. Volupides stated that she had returned home from the country club to find her husband unresponsive at the foot of the stairs, and that he had fallen. She telephoned police ten minutes later. On the basis of the findings below, we respectfully request that Mrs. Volupides be brought in for questioning.</div>';
+  modelbox.appendChild(intro);
+  PARAS.forEach(function(p,i){
+    var d=document.createElement("div");
+    d.className="model-para";
+    d.innerHTML='<div class="model-note"><b>¶'+(i+2)+'</b>'+p.why+'</div>'+
+      '<div class="model-text">'+p.sents.map(function(s){return s.t;}).join(" ")+'</div>';
+    modelbox.appendChild(d);
+  });
+})();
+
+/* ═══════════ LOCKED PANEL FILLERS ═══════════ */
+(function(){
+  ["s2","s3","boss","model"].forEach(function(k){
+    var panel=document.getElementById("tab-"+k);
+    var lock=document.createElement("div");
+    lock.className="locked-panel"; lock.dataset.lock=k;
+    lock.innerHTML='<div class="lk-icon">🔒</div><h2>Sealed</h2><p>Clear <strong>'+LOCKNAME[k]+'</strong> first. The gates run in order for a reason — each one is built on the one before it, exactly like the warrant you are assembling.</p>';
+    panel.appendChild(lock);
+  });
+  function sync(){
+    ["s2","s3","boss","model"].forEach(function(k){
+      var panel=document.getElementById("tab-"+k);
+      var open=unlocked(k);
+      panel.querySelector(".wrap").style.display=open?"":"none";
+      panel.querySelector("[data-lock]").style.display=open?"none":"";
+    });
+  }
+  var _refresh=refreshTabs;
+  refreshTabs=function(){_refresh();sync();};
+  loadProgress();
+  refreshTabs();
+})();
+
+})();
+</script>
+</body>
+</html>
