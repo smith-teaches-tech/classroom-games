@@ -408,9 +408,9 @@ const BOSS_PARTS = [
   1,
   ", Arthur was still gripping an unbroken glass. People release whatever they are holding as they fall; ",
   2,
-  ", he was probably not carrying it down the stairs at all. No liquid had been spilled on the steps or the carpet, ",
+  ", he was probably not carrying it down the stairs at all. No liquid had been spilled on the steps or the carpet either, and ",
   3,
-  " a glass carried during a fall empties its contents. The carpet running down the staircase had not been ruffled or pulled loose; ",
+  " a glass carried during a fall empties its contents, the dry staircase points the same way. The carpet running down the staircase had not been ruffled or pulled loose; ",
   4,
   ", no body tumbled down these stairs. ",
   5,
@@ -418,18 +418,21 @@ const BOSS_PARTS = [
   6,
   ", Arthur never fell."
 ];
+/* Every slot accepts any word that does the right job — the words inside
+   one `ok` list are interchangeable. Add synonyms freely; just make sure
+   any word you add to a list also appears in BOSS_BANK below. */
 const BOSS_SLOTS = [
   {ok:["Since","Because","Given that"], job:"introduce the REASON that leads to a claim, at the head of a sentence"},
-  {ok:["Additionally","Moreover","Furthermore"], job:"ADD another piece of evidence to the ones already given"},
+  {ok:["Additionally","Moreover","Furthermore","In addition"], job:"ADD another piece of evidence to the ones already given"},
   {ok:["thus","therefore","consequently","hence"], job:"deliver a CONCLUSION drawn from what just came before it"},
-  {ok:["because","since","due to the fact that"], job:"link a fact backward to the REASON behind it, mid-sentence"},
+  {ok:["because","since","given that","due to the fact that"], job:"give the REASON, in a mid-sentence clause that leads to the claim after it"},
   {ok:["thus","therefore","consequently","hence"], job:"deliver a CONCLUSION drawn from what just came before it"},
-  {ok:["Finally"], job:"signal that this is the LAST piece of evidence in the paragraph"},
+  {ok:["Finally","Lastly"], job:"signal that this is the LAST piece of evidence in the paragraph"},
   {ok:["thus","therefore","consequently","hence"], job:"deliver a CONCLUSION drawn from what just came before it"}
 ];
 const BOSS_BANK = [
-  {g:"Sentence-initial", ws:["Since","Because","Given that","Additionally","Moreover","Furthermore","Finally"]},
-  {g:"Mid-sentence", ws:["thus","therefore","consequently","hence","because","since","due to the fact that"]}
+  {g:"Sentence-initial", ws:["Since","Because","Given that","Additionally","Moreover","Furthermore","In addition","Finally","Lastly"]},
+  {g:"Mid-sentence", ws:["thus","therefore","consequently","hence","because","since","given that","due to the fact that"]}
 ];
 
 /* ═══════════ PROGRESS / GATES ═══════════ */
@@ -789,7 +792,7 @@ renderS3();
      '<div class="kv"><em>additionally</em> · <em>moreover</em> · <em>furthermore</em> · <em>in addition</em> · <em>finally</em></div></div>'+
    '</div>'+
    '<h3 class="sub">The boss fight</h3>'+
-   '<p class="lede">Here is your first paragraph with every connector stripped out. Click a blank, then click a word. <strong>Each word can be used only once</strong> — so three conclusions need three different concluding words. Fill all seven and check.</p>'+
+   '<p class="lede">Here is your first paragraph with every connector stripped out. Click a blank, then click a word. <strong>Each word can be used only once</strong> — so three conclusions need three different concluding words. Several words fit each blank; any one that does the right job counts. Fill all seven and check.</p>'+
    '<div class="drill" id="drill"></div>'+
    '<div class="chips" id="chips"></div>'+
    '<div class="slotnotes" id="slotnotes"></div>'+
