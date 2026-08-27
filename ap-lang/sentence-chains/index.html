@@ -108,6 +108,11 @@ h3.sub{font-family:var(--cond);font-size:12px;letter-spacing:.12em;text-transfor
 .ptr{background:#efe9db;font-weight:600;padding:0 3px;border-radius:2px;}
 .legend{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem;}
 
+.chaphead{text-align:center;border-top:2px solid var(--ink);border-bottom:1px solid var(--rule);padding:1.1rem .8rem;margin:1.8rem 0 .2rem;background:#fff;}
+.chaphead .ck{font-family:var(--cond);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-light);margin-bottom:.35rem;}
+.chaphead .ct{font-family:var(--serif);font-size:clamp(16px,2.1vw,21px);font-weight:700;letter-spacing:.04em;text-transform:uppercase;line-height:1.25;}
+.chaphead .cn{font-size:12.5px;color:var(--ink-mid);margin-top:.6rem;font-style:italic;line-height:1.6;}
+
 .qbox{background:#fff;border:1px solid var(--rule);padding:1rem 1.15rem;margin-bottom:.7rem;border-radius:2px;}
 .qbox .qn{font-family:var(--cond);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.3rem;}
 .qbox p{font-size:15px;font-family:var(--serif);line-height:1.55;}
@@ -191,10 +196,16 @@ h3.sub{font-family:var(--cond);font-size:12px;letter-spacing:.12em;text-transfor
 <!-- ══ TAB 2 : THE PRINCE ══ -->
 <div class="tab-panel" id="p2"><div class="wrap">
   <div class="stage-num">Stage Two</div>
-  <h2 class="stage-title">On Liberality and Stinginess</h2>
-  <p class="lede">Machiavelli, <em>The Prince</em>, Chapter XVI. Same puzzle, no exact repetition. <strong>Paragraphing is not random here</strong> &mdash; you are given the paragraph divisions, and you rebuild each one from the inside. Expect to get some wrong. That is the point; the wrong answers are where the lesson is.</p>
+  <h2 class="stage-title">Machiavelli, <em>The Prince</em></h2>
+  <p class="lede">Same puzzle, almost no repetition. <strong>Paragraphing is not random here</strong> &mdash; you are given the paragraph divisions, and you rebuild each one from the inside. Expect to get some wrong. That is the point; the wrong answers are where the lesson is.</p>
 
-  <div class="hintbox"><b>Before you start</b>Read the <em>first two or three words</em> of every sentence before you place anything. Most of them are pointing at something. Find the one that isn't.</div>
+  <div class="hintbox"><b>Before you start</b>Read the <em>first two or three words</em> of every sentence before you place anything. Nearly all of them are pointing at something. <strong>Read the chapter title too</strong> &mdash; it is part of the text, and one sentence cannot be solved without it.</div>
+
+  <div class="chaphead">
+    <div class="ck">The Prince &middot; Chapter XVI</div>
+    <div class="ct">On Liberality and Stinginess</div>
+    <div class="cn">Two qualities. Remember both of them.</div>
+  </div>
 
   <div id="pstages"></div>
 </div></div>
@@ -306,7 +317,7 @@ l:"This is simply one of the vices that enable him to reign."
 
 var PARA = [
  {id:"P1", label:"Paragraph One", role:"The trap",
-  blurb:"Eight sentences. Machiavelli builds a machine that destroys a generous prince step by step. Find the one sentence that isn't holding on to anything.",
+  blurb:"Eight sentences. Machiavelli builds a machine that destroys a generous prince step by step. Every one of these sentences is holding on to something &mdash; so find the one that is holding on to something <em>not in the pile</em>.",
   order:["g","h","c","d","b","e","f","a"],
   win:"<strong>Eight sentences, one road.</strong> Reputation &rarr; display &rarr; his own money gone &rarr; taxes &rarr; hatred &rarr; collapse &rarr; and the escape hatch nailed shut. Look where he put the word <em>miser</em>: the last two words of the paragraph. That is not decoration. That is the handle the next paragraph reaches for."},
  {id:"P2", label:"Paragraph Two", role:"The reversal",
@@ -317,7 +328,7 @@ var PARA = [
 
 /* Payoff note shown after specific correct placements */
 var WINSTEP = {
- "P1|0":"Seven of those eight sentences were bolted to something before them &mdash; <em>this, Hence, Thus, Then, For</em>. Only one stood free. That is how you find an opening sentence, every time: it is the one that points at nothing behind it.",
+ "P1|0":"<strong>Right &mdash; but this one is trickier than the frog, and you should see why.</strong><br><br>The frog's opening sentence pointed at <em>nothing</em>. This one does not stand free at all. It is referencing something: <q>the first of <strong>the qualities mentioned above</strong>.</q> Which qualities? Look at the chapter title &mdash; <strong>liberality</strong> and <strong>stinginess</strong>. And <q>mentioned above</q> reaches back to the chapter <em>before</em> this one.<br><br>That is exactly why it opens. Its reference points <em>outside</em> the passage you were handed, so nothing in the pile can possibly come before it. Every other sentence points at something <em>inside</em> the pile.<br><br><strong>Now the hard part.</strong> There is far less repetition here than in the frog &mdash; you will almost never catch a word repeated from the sentence before. What you get instead is <em>referencing</em>: <q>this character</q>, <q>This is the first step</q>, <q>Thus</q>, <q>Then</q>, <q>he</q>. Those are the hooks now. Hunt for them.",
  "P1|7":"And there it is: <em>labeled a miser</em>, the last two words. Paragraph two will open by picking that word straight back up."
 };
 
@@ -328,13 +339,13 @@ var HINTS = {
 /* ── P1 slot 0 : needs g ── */
 "P1|0|c":["It does sound like a rule a paragraph could open with. But read its first word out loud.",
  "<q>Hence</q> means <em>therefore</em>. A therefore is an answer &mdash; it needs a reason sitting in front of it. What reason is this concluding from? Nothing has been said yet.",
- "Not this one. <q>Hence</q> can never be a first word. Look for the sentence that reaches backward for nothing at all &mdash; it announces itself: <q>Let me begin&hellip;</q>"],
+ "Not this one. <q>Hence</q> can never be a first word. Every sentence here reaches backward &mdash; so look for the one whose reach lands <em>outside</em> this passage, in the chapter title and the chapter before it. It announces itself: <q>Let me begin&hellip;</q>"],
 "P1|0|h":["Check the first word. <q>For</q> &mdash; in this older sense it means <em>because</em>.",
  "A <em>because</em> is proof of a claim. Which claim? It hasn't been made yet. This sentence is defending something that isn't on the page.",
  "Not this one &mdash; it's the evidence, not the assertion. Find the sentence that makes an announcement instead of an argument."],
 "P1|0|d":["<q>A prince of this character</q> &mdash; which character?",
  "<q>This character</q> points backward at a prince already described. Nobody has been described yet. Somewhere in the pile is the sentence that describes him.",
- "Not this one. <q>This character</q> is a pointer with nothing to point at. Your opener will be the sentence that points at nothing."],
+ "Not this one. <q>This character</q> is a pointer with nothing in the pile to point at. Your opener is the sentence whose pointer reaches <em>past</em> the pile altogether &mdash; out to the chapter title and what came before it."],
 "P1|0|b":["Two of the first four words give it away.",
  "<q>Thus</q> = therefore. <q>In the end</q> = after everything. The sentence is announcing that it is a <em>destination</em>. You are at the start.",
  "Not this one &mdash; it's near the finish. Find the sentence that says it is beginning."],
@@ -441,7 +452,7 @@ var HINTS = {
 var DEVICES = [
 {p:"¶1 &middot; 1", k:"g", tag:"frame", tagname:"Frame reference",
  dev:"the first of the qualities mentioned above",
- back:"Points <em>outside</em> the paragraph, back to the list of princely qualities in the previous chapter. That is exactly why it can open: it reaches past everything here, so nothing here has to come before it."},
+ back:"The one reference in the whole passage that points <em>outside</em> it &mdash; to the chapter title (<em>liberality</em> and stinginess) and to the list of qualities in the previous chapter. That is exactly why it can open: it reaches past everything here, so nothing here can come before it. Note that it is <strong>not</strong> a free-standing sentence. An opener does not have to reference nothing; it has to reference nothing <em>available</em>."},
 {p:"¶1 &middot; 2", k:"h", tag:"conn", tagname:"Logical connector",
  dev:"For", back:"<q>For</q> = <em>because</em>. It supplies the reason for the claim just made &mdash; that generosity <q>can do you great harm.</q> Also note <q>the opposite vice</q>: he names stinginess without ever saying the word."},
 {p:"¶1 &middot; 3", k:"c", tag:"conn", tagname:"Logical connector",
@@ -587,7 +598,7 @@ function fpick(i){
     st.frog++; save();
     fOrder=fOrder.filter(function(x){return x!==i;});
     document.getElementById("ffb").innerHTML = (need===0)
-      ? '<div class="fb good"><span class="lv">Good &mdash; and notice why</span>Twenty-two of those sentences begin by reaching <em>backwards</em> &mdash; <q>Loving the tunes&hellip;</q>, <q>Designing the logo&hellip;</q>, <q>Needing a van&hellip;</q>. Every one of them is holding on to something. Only one sentence starts from nothing at all, and that is always where a line of reasoning begins.</div>'
+      ? '<div class="fb good"><span class="lv">Good &mdash; and notice why</span>Twenty-two of those sentences begin by reaching <em>backwards</em> &mdash; <q>Loving the tunes&hellip;</q>, <q>Designing the logo&hellip;</q>, <q>Needing a van&hellip;</q>. Every one of them is holding on to something. Only one sentence starts from nothing at all &mdash; and that is where the line of reasoning begins. Hold on to that trick. You will need it again shortly, and it will be harder.</div>'
       : "";
     renderFrog();
     return;
