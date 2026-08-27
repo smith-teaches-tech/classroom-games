@@ -108,6 +108,14 @@ h3.sub{font-family:var(--cond);font-size:12px;letter-spacing:.12em;text-transfor
 .ptr{background:#efe9db;font-weight:600;padding:0 3px;border-radius:2px;}
 .legend{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem;}
 
+.dq{background:#fff;border:1px solid var(--rule);border-left:3px solid var(--accent);padding:1rem 1.15rem;margin-bottom:.9rem;border-radius:2px;}
+.dq .dqn{font-family:var(--cond);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-light);margin-bottom:.45rem;}
+.dq .dqs{font-family:var(--serif);font-size:14.5px;line-height:1.75;margin-bottom:.8rem;padding:.6rem .8rem;background:var(--paper);border-radius:2px;}
+.dq .dqq{font-size:14.5px;font-weight:600;margin-bottom:.7rem;line-height:1.55;}
+.foc{background:#f7e6d9;color:#7a3f18;font-weight:700;padding:1px 4px;border-radius:2px;box-shadow:0 1px 0 #d9a06a;}
+.dq.solved{border-left-color:var(--ok);}
+.dq.solved .foc{background:var(--hook-bg);color:var(--hook);box-shadow:0 1px 0 #6fae8c;}
+
 .chaphead{text-align:center;border-top:2px solid var(--ink);border-bottom:1px solid var(--rule);padding:1.1rem .8rem;margin:1.8rem 0 .2rem;background:#fff;}
 .chaphead .ck{font-family:var(--cond);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-light);margin-bottom:.35rem;}
 .chaphead .ct{font-family:var(--serif);font-size:clamp(16px,2.1vw,21px);font-weight:700;letter-spacing:.04em;text-transform:uppercase;line-height:1.25;}
@@ -199,7 +207,7 @@ h3.sub{font-family:var(--cond);font-size:12px;letter-spacing:.12em;text-transfor
   <h2 class="stage-title">Machiavelli, <em>The Prince</em></h2>
   <p class="lede">Same puzzle, almost no repetition. <strong>Paragraphing is not random here</strong> &mdash; you are given the paragraph divisions, and you rebuild each one from the inside. Expect to get some wrong. That is the point; the wrong answers are where the lesson is.</p>
 
-  <div class="hintbox"><b>Before you start</b>Read the <em>first two or three words</em> of every sentence before you place anything. Nearly all of them are pointing at something. <strong>Read the chapter title too</strong> &mdash; it is part of the text, and one sentence cannot be solved without it.</div>
+  <div class="hintbox"><b>Before you start</b>Read the <em>first two or three words</em> of every sentence before you place anything, and ask one question of each: <strong>what is this pointing at?</strong> <q>This character</q> &mdash; which character? <q>Then</q> &mdash; after what? Nearly every sentence here is holding on to something you can name. <strong>Read the chapter title too</strong> &mdash; it is part of the text, and one sentence cannot be solved without it.</div>
 
   <div class="chaphead">
     <div class="ck">The Prince &middot; Chapter XVI</div>
@@ -210,11 +218,36 @@ h3.sub{font-family:var(--cond);font-size:12px;letter-spacing:.12em;text-transfor
   <div id="pstages"></div>
 </div></div>
 
-<!-- ══ TAB 3 : HOW HE DID IT ══ -->
+<!-- ══ TAB 3 : DECODE IT ══ -->
 <div class="tab-panel" id="p3"><div class="wrap">
+  <div class="stage-num">Stage Three</div>
+  <h2 class="stage-title">What Is It Pointing At?</h2>
+  <p class="lede">Go back into the passage. Eight little phrases, each one <strong>standing in for something said earlier</strong>. Your job is to point at what. This is the exact move you were missing when you got sentences in the wrong order &mdash; so expect a few <em>oh, that's what that meant</em> moments.</p>
+
+  <div class="hintbox"><b>How to do this</b>Don't guess from memory. <strong>Find the sentence, then read backwards from it</strong> until you hit something the phrase could be replacing. Then try swapping your answer into the sentence &mdash; if it still makes sense, you've got it.</div>
+
+  <div class="progbar"><i id="dbar" style="width:0%"></i></div>
+  <div class="counter" id="dcount"></div>
+  <div id="dlist"></div>
+
+  <div id="ddone" style="display:none">
+    <div class="callout" style="border-left-color:var(--ok);">
+      <p><strong>There is a word for the thing a phrase points back to: its ANTECEDENT.</strong> You just found eight of them. Notice that nobody had to teach you the word first &mdash; you did the work, and the word is only a label for what you were already doing.</p>
+      <p>And look at the range of them. One reached <em>outside</em> the passage altogether, to the chapter title. One held three sentences at once; another held an entire paragraph. One did its work with a word you had probably never used. And the shortest of them was four letters: <q>This.</q></p>
+    </div>
+    <div class="callout" style="border-left-color:var(--accent);">
+      <p><strong>Now flip it around, because this is the part that changes your writing.</strong> Every time you put down a <em>this</em>, a <em>that</em>, a <em>he</em>, a <em>such</em>, a <em>the opposite</em> &mdash; you are sending your reader on the search you just did eight times.</p>
+      <p>If what you're pointing at isn't findable, the chain snaps and your reader is stranded. If it <em>is</em> findable, you get to move your argument forward without ever sounding like a picture book about a frog.</p>
+    </div>
+    <div class="btnrow"><button class="btn" onclick="go(4)">See the full map &rarr;</button></div>
+  </div>
+</div></div>
+
+<!-- ══ TAB 4 : HOW HE DID IT ══ -->
+<div class="tab-panel" id="p4"><div class="wrap">
   <div class="stage-num">The Payoff</div>
   <h2 class="stage-title">How He Did It</h2>
-  <p class="lede">Every hook Machiavelli used, named. Not one of them is a repeated word &mdash; and yet the chain is as tight as the frog's.</p>
+  <p class="lede">The full map: every hook in the passage, in order, with what it points at. You decoded eight of these yourself &mdash; here are all thirteen. Not one is a repeated word, and the chain is still as tight as the frog's.</p>
 
   <div class="legend">
     <span class="tag demo">Demonstrative</span>
@@ -328,7 +361,7 @@ var PARA = [
 
 /* Payoff note shown after specific correct placements */
 var WINSTEP = {
- "P1|0":"<strong>Right &mdash; but this one is trickier than the frog, and you should see why.</strong><br><br>The frog's opening sentence pointed at <em>nothing</em>. This one does not stand free at all. It is referencing something: <q>the first of <strong>the qualities mentioned above</strong>.</q> Which qualities? Look at the chapter title &mdash; <strong>liberality</strong> and <strong>stinginess</strong>. And <q>mentioned above</q> reaches back to the chapter <em>before</em> this one.<br><br>That is exactly why it opens. Its reference points <em>outside</em> the passage you were handed, so nothing in the pile can possibly come before it. Every other sentence points at something <em>inside</em> the pile.<br><br><strong>Now the hard part.</strong> There is far less repetition here than in the frog &mdash; you will almost never catch a word repeated from the sentence before. What you get instead is <em>referencing</em>: <q>this character</q>, <q>This is the first step</q>, <q>Thus</q>, <q>Then</q>, <q>he</q>. Those are the hooks now. Hunt for them.",
+ "P1|0":"<strong>Right &mdash; but this one is trickier than the frog, and you should see why.</strong><br><br>The frog's opening sentence pointed at <em>nothing</em>. This one does not stand free at all. It is referencing something: <q>the first of <strong>the qualities mentioned above</strong>.</q> Which qualities? Look at the chapter title &mdash; <strong>liberality</strong> and <strong>stinginess</strong>.<br><br>And <q>mentioned above</q> reaches back to the section before this one, where Machiavelli listed a prince's qualities in opposing pairs. The very first pair on that list: <q>some are considered generous, others stingy.</q> <em>The first of the qualities.</em> He means it literally &mdash; he is picking up his own list exactly where he left it.<br><br>That is exactly why it opens. Its reference points <em>outside</em> the passage you were handed, so nothing in the pile can possibly come before it. Every other sentence points at something <em>inside</em> the pile.<br><br><strong>Now the hard part.</strong> There is far less repetition here than in the frog &mdash; you will almost never catch a word repeated from the sentence before. What you get instead is <em>referencing</em>: <q>this character</q>, <q>This is the first step</q>, <q>Thus</q>, <q>Then</q>, <q>he</q>. Those are the hooks now. Hunt for them.",
  "P1|7":"And there it is: <em>labeled a miser</em>, the last two words. Paragraph two will open by picking that word straight back up."
 };
 
@@ -452,7 +485,7 @@ var HINTS = {
 var DEVICES = [
 {p:"¶1 &middot; 1", k:"g", tag:"frame", tagname:"Frame reference",
  dev:"the first of the qualities mentioned above",
- back:"The one reference in the whole passage that points <em>outside</em> it &mdash; to the chapter title (<em>liberality</em> and stinginess) and to the list of qualities in the previous chapter. That is exactly why it can open: it reaches past everything here, so nothing here can come before it. Note that it is <strong>not</strong> a free-standing sentence. An opener does not have to reference nothing; it has to reference nothing <em>available</em>."},
+ back:"The one reference in the whole passage that points <em>outside</em> it &mdash; to the chapter title (<em>liberality</em> and stinginess) and to the previous section, where Machiavelli listed princely qualities in opposing pairs. His first pair was <q>some are considered generous, others stingy</q> &mdash; so <q>the first of the qualities</q> is exact, not vague. That is exactly why it can open: it reaches past everything here, so nothing here can come before it. Note that it is <strong>not</strong> a free-standing sentence. An opener does not have to reference nothing; it has to reference nothing <em>available</em>."},
 {p:"¶1 &middot; 2", k:"h", tag:"conn", tagname:"Logical connector",
  dev:"For", back:"<q>For</q> = <em>because</em>. It supplies the reason for the claim just made &mdash; that generosity <q>can do you great harm.</q> Also note <q>the opposite vice</q>: he names stinginess without ever saying the word."},
 {p:"¶1 &middot; 3", k:"c", tag:"conn", tagname:"Logical connector",
@@ -481,6 +514,116 @@ var DEVICES = [
  dev:"This is simply one of the vices", back:"<q>This</q> = being considered a miser. In Machiavelli's original these two sentences are <em>one</em> sentence joined by a semicolon &mdash; which is why the pointer is so short. He is not starting a new thought; he is putting a verdict on the one he just finished."}
 ];
 
+/* ─────────────── DECODE DRILL ───────────────
+   Each item: the sentence, the phrase to decode, and four candidate
+   antecedents. Wrong answers name what the student was probably
+   thinking and send them back into the text.                        */
+var DECODE=[
+{id:"d1", loc:"Paragraph 1, sentence 2", sent:S.h, foc:"the opposite vice",
+ q:"Machiavelli never tells you which vice this is. Which one does he mean?",
+ opts:[
+  {t:"Stinginess — being thought a miser", ok:true,
+   fb:"Right: the opposite of generosity. Now notice the timing. He does not use the actual word <em>miser</em> for another six sentences &mdash; he expects you to supply it yourself, from the chapter title. That is a lot of trust to put in a reader, and it is why the title had to be on the screen."},
+  {t:"Generosity itself", ok:false,
+   fb:"Generosity is the quality under discussion, so it can't be its own opposite. Look at the chapter title &mdash; it names <em>two</em> things. He has just told you what happens when you give quietly. What do people call you instead?"},
+  {t:"Poverty", ok:false,
+   fb:"Poverty does turn up later in the paragraph, but it is a consequence, not a vice &mdash; nobody blames you for being poor in the way they blame you for a fault. A vice is an accusation. What would people accuse a quiet giver of?"},
+  {t:"Ostentation — showing off", ok:false,
+   fb:"Careful: ostentation is what the prince does to <em>escape</em> this vice, not the vice itself. Reread the sentence &mdash; this is the odium you suffer when nobody sees you give. If nobody ever sees you give, what do they call you?"}],
+ after:"A phrase with no antecedent anywhere in the passage &mdash; the answer is sitting in the title above it."},
+
+{id:"d2", loc:"Paragraph 1, sentence 4", sent:S.d, foc:"this character",
+ q:"Which prince is that? Point at the man being described.",
+ opts:[
+  {t:"The prince who seizes every opportunity to make a big display of his giving", ok:true,
+   fb:"Yes. Two words &mdash; <q>this character</q> &mdash; doing the work of an entire repeated sentence. That is the move the frog made with word-for-word echo, done here in a way no reader would ever call childish."},
+  {t:"The prince who gives virtuously and quietly, so nobody knows", ok:false,
+   fb:"This is the most common mistake in the whole passage, and you may well have made it in the ordering puzzle. That quiet giver <em>is</em> in the sentence just before. But read what <q>this character</q> actually does: he spends everything on <strong>works of ostentation</strong>. Ostentation means showing off. The quiet giver never shows off. Right neighbourhood, wrong man &mdash; go one sentence further back."},
+  {t:"The prince who loads his people with exorbitant taxes", ok:false,
+   fb:"That comes <em>after</em> this sentence &mdash; it is what this character eventually has to do. A pointer word always reaches backwards, never forwards. Read the sentence immediately before instead."},
+  {t:"The prince who is labeled a miser", ok:false,
+   fb:"That prince only appears at the very end of the paragraph, long after this sentence. <q>This</q> can only grab something already on the page."}],
+ after:"Ask it every time you meet a <em>this</em>: <strong>this WHAT?</strong> If you can't finish the noun, you've lost the thread."},
+
+{id:"d3", loc:"Paragraph 1, sentence 5", sent:S.b, foc:"keep a name for generosity",
+ q:"This phrase re-says something from the paragraph's very first sentence. Which words?",
+ opts:[
+  {t:"a reputation for liberality", ok:true,
+   fb:"Identical idea, not one shared word: <em>reputation</em> becomes <em>name</em>, <em>liberality</em> becomes <em>generosity</em>. Four sentences apart and he still hasn't repeated himself.<br><br>And look at the verb: <strong>keep</strong>. You only keep what you already have. One word tells you the prince has already earned the reputation and is now trapped into maintaining it."},
+  {t:"the odium of the opposite vice", ok:false,
+   fb:"That is the thing he is trying to <em>avoid</em>, not the thing he wants to hold on to. The sentence says he wants to <em>keep</em> it. Look for something desirable."},
+  {t:"works of ostentation", ok:false,
+   fb:"Close &mdash; that's what he <em>does</em>. But <q>a name for generosity</q> is what he gets in return for doing it. What did the paragraph's first sentence call the thing generosity earns you?"},
+  {t:"his entire revenue", ok:false,
+   fb:"That's what he spends, not what he keeps. Go back to the paragraph's opening sentence: what does it say a generous prince gets?"}],
+ after:"Same idea, new words, every single time. That is exactly why nothing here sounded repetitive &mdash; and exactly why the chain was so hard to see."},
+
+{id:"d4", loc:"Paragraph 1, sentence 6", sent:S.e, foc:"This",
+ q:"The first step toward what he becomes. Point at the step.",
+ opts:[
+  {t:"Loading his people with taxes and squeezing money out of them", ok:true,
+   fb:"Correct &mdash; and this is the great trap of the ordering puzzle. Plenty of readers put this sentence straight after <q>use up his entire revenue,</q> because <em>broke, therefore despised</em> feels right.<br><br>But look at who does the despising: <strong>his subjects</strong>. The prince's own empty treasury doesn't cost them anything. Taking their money does. The whole placement turns on two words most people skim."},
+  {t:"Using up his entire revenue in works of ostentation", ok:false,
+   fb:"This is the near-miss &mdash; and if you made it during the puzzle, here is precisely what you walked past. He becomes odious <strong>to his subjects</strong>. Him spending his own fortune is his problem, not theirs. What does he do to <em>them</em>? That's the sentence you want."},
+  {t:"Making a big display of his giving", ok:false,
+   fb:"A display <em>pleases</em> his subjects &mdash; he's handing them things. Nothing there could make them hate him. <q>This</q> reaches back to the sentence directly before; read that one again."},
+  {t:"Being poor and unrespected", ok:false,
+   fb:"That's in this very sentence, after the semicolon &mdash; it's the <em>result</em> of the first step, not the step. A pointer can't point at something standing behind it in the same breath."}],
+ after:"One word, <q>This</q>, carrying a full clause. Miss it and the paragraph comes apart in your hands."},
+
+{id:"d5", loc:"Paragraph 1, sentence 8", sent:S.a, foc:"this",
+ q:"What is it that he sees coming?",
+ opts:[
+  {t:"The whole collapse — hated, unrespected, finished at the first sign of trouble", ok:true,
+   fb:"Yes, and notice this one is different from the others. <q>This</q> isn't standing in for a phrase here &mdash; it's holding <em>three whole sentences</em> at once.<br><br>Which is exactly why this sentence must come last. There has to be a complete disaster behind it for the word to have anything to grab."},
+  {t:"The taxes he will have to levy", ok:false,
+   fb:"He has already levied those by this point &mdash; and you can't <em>foresee</em> something you've already done. What is still ahead of him at that moment in the paragraph?"},
+  {t:"Being labeled a miser", ok:false,
+   fb:"Watch the order of events carefully. Being called a miser is what happens <em>because</em> he tries to change his ways. He can't be running from the thing his running causes."},
+  {t:"His reputation for generosity", ok:false,
+   fb:"That's what he already has and enjoys &mdash; nobody tries to escape a thing they want. <q>Foresees</q> means he has spotted something bad on the way."}],
+ after:"A pointer can hold a phrase, a sentence, or a whole disaster. Its size is up to the writer."},
+
+{id:"d6", loc:"Paragraph 2, sentence 1", sent:S.k, foc:"this virtue of liberality",
+ q:"How much of what you've read is packed into those words?",
+ opts:[
+  {t:"The entire first paragraph — everything generosity did to the prince", ok:true,
+   fb:"Eight sentences, compressed into four words. That is how he opens a new paragraph without re-explaining a thing.<br><br>Then look at how the same sentence <em>ends</em>: <q>being known as a miser</q> &mdash; the exact word paragraph one closed on. He hooks the two paragraphs together like train cars, and the coupling is invisible unless you're looking for it."},
+  {t:"Just the chapter title", ok:false,
+   fb:"The title names liberality, true. But <q>this</q> points at something you have been <em>shown</em>, not merely told. What have you just spent eight sentences watching liberality do to a prince?"},
+  {t:"Only the sentence immediately before it", ok:false,
+   fb:"A fair guess &mdash; <q>this</q> usually reaches back one sentence. Not always, though. The sentence before is about being labeled a miser, which is the opposite of liberality. Reach back further."},
+  {t:"The taxes the prince levies", ok:false,
+   fb:"That's one step inside the story, not the whole of it. <q>This virtue of liberality</q> names the quality the entire paragraph was about."}],
+ after:"Pointers don't only reach back one sentence. Sometimes they reach back across a whole page."},
+
+{id:"d7", loc:"Paragraph 2, sentence 2", sent:S.i, foc:"his parsimony",
+ q:"Parsimony is probably a new word. Which word from earlier is it re-naming?",
+ opts:[
+  {t:"Miser", ok:true,
+   fb:"The same trait in better clothes. He says <em>miser</em> when the crowd is sneering and <em>parsimony</em> when he wants you to admire it &mdash; and he never announces the switch.<br><br>Now hold it next to the other direction: <q>a big display of your giving</q> became <q>works of ostentation.</q> Same trait, worse clothes. He is steering your judgment with nothing but his choice of noun. That is an argument being made in the vocabulary."},
+  {t:"Generosity", ok:false,
+   fb:"Read what parsimony <em>does</em> in this sentence: it lets him live on his income and defend himself without taxing anyone. Generosity did the exact opposite &mdash; it emptied him out. This is generosity's opposite."},
+  {t:"His revenue", ok:false,
+   fb:"Revenue is money. Parsimony is a habit &mdash; how a man treats money. Which habit has the prince just accepted being labeled with?"},
+  {t:"Ostentation", ok:false,
+   fb:"Ostentation is spending in order to be seen. Parsimony here lets him <q>live on his income</q> &mdash; the opposite behaviour. Which word from the previous paragraph means that?"}],
+ after:"Re-naming isn't decoration. Each new name smuggles in a judgment, and those judgments <em>are</em> the argument."},
+
+{id:"d8", loc:"Paragraph 3, sentence 2", sent:S.l, foc:"one of the vices",
+ q:"Two small words: ONE OF. What do they tell you about the rest of the essay?",
+ opts:[
+  {t:"There are more coming — he is working through a list", ok:true,
+   fb:"Exactly right, and he is: the very next section is <em>On Cruelty and Clemency</em>.<br><br>Now go back to the first sentence you ever placed: <q><strong>the first of</strong> the qualities mentioned above.</q> FIRST OF at the start. ONE OF at the end. He framed the entire chapter with two tiny pointing phrases, neither of which repeats a single word &mdash; and if you had read those two together at the start, you would have known where you were standing the whole time."},
+  {t:"Miserliness is the worst of the vices", ok:false,
+   fb:"<q>Simply one of</q> is doing the reverse &mdash; playing it <em>down</em>, not up. He's saying: nothing remarkable here, just one item among several."},
+  {t:"The prince has only one vice", ok:false,
+   fb:"<q>One of</q> means there are others alongside it. If there were only one, he'd have written <q>the vice.</q> The little word is doing arithmetic."},
+  {t:"Vices and virtues are really the same thing", ok:false,
+   fb:"That's close to Machiavelli's larger argument, but it isn't what this phrase says. <q>One of</q> is about <em>counting</em>. How many does it imply?"}],
+ after:"FIRST OF at the start, ONE OF at the end. Two pointing phrases holding an entire chapter in place."}
+];
+
 /* ═══════════════════════════════════════════════════════════
    ENGINE
    ═══════════════════════════════════════════════════════════ */
@@ -488,12 +631,13 @@ var TABS=[
  {n:"The Frog",  hint:"Build the chain"},
  {n:"Why It Worked", hint:"Discussion"},
  {n:"The Prince", hint:"Same puzzle, hidden"},
- {n:"How He Did It", hint:"The devices"}
+ {n:"Decode It", hint:"What points where"},
+ {n:"How He Did It", hint:"The full map"}
 ];
 var st = load();
 function load(){
   try{var r=JSON.parse(localStorage.getItem(KEY)); if(r&&r.v===1) return r;}catch(e){}
-  return {v:1, frog:0, frogDone:false, disc:false, P1:0, P2:0, p3:false, princeDone:false, bypass:false};
+  return {v:1, frog:0, frogDone:false, disc:false, P1:0, P2:0, p3:false, princeDone:false, dec:{}, decodeDone:false, bypass:false};
 }
 function save(){ try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){} }
 
@@ -503,12 +647,14 @@ function unlocked(i){
   if(i===1) return st.frogDone;
   if(i===2) return st.frogDone && st.disc;
   if(i===3) return st.princeDone;
+  if(i===4) return st.decodeDone;
   return true;
 }
 function cleared(i){
   if(i===0) return st.frogDone;
   if(i===1) return st.disc;
   if(i===2) return st.princeDone;
+  if(i===3) return st.decodeDone;
   return false;
 }
 var cur=0;
@@ -770,7 +916,7 @@ function renderP3(){
   h+='</div><div id="P3_fb"></div>';
   if(st.p3){
     h+='<div class="fb good"><span class="lv">The whole lesson, in two sentences</span>Machiavelli ends a three-paragraph argument with a one-word pointer. That is the opposite of the frog. The frog repeated everything; Machiavelli repeats nothing and still never lets go of your hand.</div>';
-    h+='<div class="btnrow"><button class="btn" onclick="go(3)">See every device &rarr;</button></div>';
+    h+='<div class="btnrow"><button class="btn" onclick="go(3)">Now go back and decode it &rarr;</button></div>';
   }
   document.getElementById("P3_body").innerHTML=h;
   if(st.p3){
@@ -791,6 +937,51 @@ function p3pick(i){
   } else {
     btn.classList.add("wrong");
     document.getElementById("P3_fb").innerHTML='<div class="fb miss"><span class="lv">Look again</span>'+o.fb+'</div>';
+  }
+}
+
+/* ─────────────── DECODE DRILL ─────────────── */
+function renderDecode(){
+  if(!st.dec) st.dec={};
+  var solved=0, h="";
+  for(var n=0;n<DECODE.length;n++){
+    var D=DECODE[n], done=!!st.dec[D.id];
+    if(done) solved++;
+    var sent=esc(D.sent);
+    var i=sent.indexOf(D.foc);
+    if(i<0){ i=sent.toLowerCase().indexOf(D.foc.toLowerCase()); }
+    if(i>=0) sent=sent.slice(0,i)+'<span class="foc">'+sent.substr(i,D.foc.length)+'</span>'+sent.slice(i+D.foc.length);
+    h+='<div class="dq'+(done?" solved":"")+'" id="dq_'+D.id+'">';
+    h+='<div class="dqn">Question '+(n+1)+' &middot; '+D.loc+'</div>';
+    h+='<div class="dqs">'+sent+'</div>';
+    h+='<div class="dqq">'+D.q+'</div>';
+    h+='<div id="do_'+D.id+'">';
+    for(var o=0;o<D.opts.length;o++){
+      h+='<button class="opt'+(done&&D.opts[o].ok?" right":"")+'" data-o="'+o+'"'+(done?" disabled":"")+
+         ' onclick="dpick(\''+D.id+'\','+o+')">'+D.opts[o].t+'</button>';
+    }
+    h+='</div><div id="df_'+D.id+'">';
+    if(done) h+='<div class="fb good"><span class="lv">Correct</span>'+D.opts.filter(function(x){return x.ok;})[0].fb+
+                '</div><div class="fb note"><span class="lv">Take this with you</span>'+D.after+'</div>';
+    h+='</div></div>';
+  }
+  document.getElementById("dlist").innerHTML=h;
+  document.getElementById("dbar").style.width=Math.round(solved/DECODE.length*100)+"%";
+  document.getElementById("dcount").textContent=solved+" of "+DECODE.length+" decoded";
+  document.getElementById("ddone").style.display = (solved>=DECODE.length) ? "block" : "none";
+  if(solved>=DECODE.length && !st.decodeDone){ st.decodeDone=true; save(); drawTabs(); }
+}
+function dpick(id,o){
+  var D=null; for(var n=0;n<DECODE.length;n++) if(DECODE[n].id===id) D=DECODE[n];
+  var opt=D.opts[o];
+  var btn=document.querySelector('#do_'+id+' .opt[data-o="'+o+'"]');
+  if(opt.ok){
+    st.dec[id]=true; save();
+    renderDecode();
+    var el=document.getElementById("dq_"+id); if(el) el.scrollIntoView({block:"nearest"});
+  } else {
+    if(btn){ btn.classList.add("wrong"); }
+    document.getElementById("df_"+id).innerHTML='<div class="fb miss"><span class="lv">Go back and look</span>'+opt.fb+'</div>';
   }
 }
 
@@ -823,6 +1014,7 @@ drawTabs();
 renderFrog();
 renderSeams();
 renderPrince();
+renderDecode();
 renderDevices();
 go(0);
 </script>
