@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sentence Chains: How Reasoning Moves Forward — AP Language</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#1a1a18;--ink-mid:#4a4a44;--ink-light:#8a8a80;
+  --rule:#d4d0c4;--paper:#f7f4ee;--paper-warm:#efe9db;
+  --accent:#8b3a2a;--accent-light:#f5ede9;
+  --ok:#1a5c3a;--ok-bg:#e8f3ed;
+  --bad:#6b2a2a;--bad-bg:#f5e8e8;
+  --warn:#7a5c1a;--warn-bg:#f5f0e2;
+  --hook:#1a5c3a;--hook-bg:#d9ece2;
+  --serif:'Libre Baskerville',Georgia,serif;
+  --sans:'Barlow',system-ui,sans-serif;
+  --cond:'Barlow Condensed',system-ui,sans-serif;
+  --type:'Special Elite','Courier New',monospace;
+}
+html{font-size:16px;-webkit-text-size-adjust:100%;}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6;min-height:100vh;}
+
+.masthead{border-bottom:3px double var(--ink);padding:.9rem 1rem .7rem;text-align:center;background:var(--paper);position:sticky;top:0;z-index:200;}
+.masthead-kicker{font-family:var(--cond);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-light);margin-bottom:.15rem;}
+.masthead-title{font-family:var(--serif);font-size:clamp(16px,2.4vw,23px);font-weight:700;line-height:1.15;letter-spacing:-.02em;cursor:default;user-select:none;}
+
+.top-tabs{display:flex;background:var(--paper);border-bottom:1px solid var(--rule);position:sticky;top:62px;z-index:190;overflow-x:auto;}
+.top-tab{flex:1 0 auto;min-width:104px;padding:.6rem .7rem;font-family:var(--cond);font-size:12.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-light);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all .15s;text-align:center;position:relative;}
+.top-tab:hover:not(.locked){color:var(--ink);background:var(--paper-warm);}
+.top-tab.active{color:var(--ink);border-bottom-color:var(--accent);}
+.top-tab.locked{opacity:.42;cursor:not-allowed;}
+.top-tab.cleared::after{content:"\2713";position:absolute;top:4px;right:8px;font-size:11px;color:var(--ok);}
+.tab-hint{font-family:var(--sans);font-size:10.5px;font-weight:400;letter-spacing:0;text-transform:none;display:block;color:var(--ink-light);margin-top:1px;}
+.top-tab.active .tab-hint{color:var(--ink-mid);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;animation:fadeIn .2s ease;}
+@media(max-width:560px){.top-tabs{top:78px;}.top-tab{min-width:86px;font-size:11.5px;padding:.55rem .4rem;}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.wrap{max-width:860px;margin:0 auto;padding:1.8rem 1.25rem 4rem;}
+
+.stage-num{font-family:var(--cond);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-light);margin-bottom:.2rem;}
+h2.stage-title{font-family:var(--serif);font-size:clamp(21px,2.6vw,28px);font-weight:700;line-height:1.15;letter-spacing:-.02em;margin-bottom:.6rem;}
+.lede{font-size:15px;color:var(--ink-mid);line-height:1.7;margin-bottom:1.5rem;padding-bottom:1.2rem;border-bottom:1px solid var(--rule);}
+.lede strong{color:var(--ink);font-weight:600;}
+h3.sub{font-family:var(--cond);font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;border-bottom:2px solid var(--ink);padding-bottom:.3rem;margin:2rem 0 .9rem;}
+.callout{background:var(--paper-warm);border-left:4px solid var(--accent);padding:.95rem 1.15rem;margin:1.2rem 0;font-size:13.8px;line-height:1.7;color:var(--ink-mid);}
+.callout strong{color:var(--ink);font-weight:600;}
+.callout p+p{margin-top:.6rem;}
+.hintbox{background:#fff;border:1px dashed var(--accent);padding:.85rem 1.1rem;margin-bottom:1.2rem;font-size:13.5px;line-height:1.7;color:var(--ink-mid);}
+.hintbox b{color:var(--accent);font-family:var(--cond);letter-spacing:.08em;text-transform:uppercase;font-size:11.5px;display:block;margin-bottom:.25rem;}
+
+.locked-panel{text-align:center;padding:3.5rem 1.5rem;}
+.locked-panel .lk-icon{font-size:34px;line-height:1;margin-bottom:.7rem;filter:grayscale(1);opacity:.5;}
+.locked-panel h3{font-family:var(--serif);font-size:19px;margin-bottom:.4rem;}
+.locked-panel p{color:var(--ink-mid);font-size:14px;max-width:420px;margin:0 auto;}
+
+/* ── CHAIN ── */
+.chain{margin-bottom:1.1rem;}
+.chain-row{display:flex;gap:.6rem;align-items:flex-start;margin-bottom:.35rem;}
+.chain-row.fresh{animation:snapIn .28s ease;}
+@keyframes snapIn{from{opacity:0;transform:translateX(-8px);}to{opacity:1;transform:none;}}
+.chain-num{flex:0 0 26px;font-family:var(--type);font-size:12px;color:var(--ink-light);text-align:right;padding-top:.5rem;}
+.chain-text{flex:1;background:#fff;border:1px solid var(--rule);border-left:3px solid var(--ok);padding:.5rem .75rem;font-size:14.2px;line-height:1.6;border-radius:2px;}
+.chain-text.opener{border-left-color:var(--accent);}
+.hook{background:var(--hook-bg);color:var(--hook);font-weight:600;padding:0 3px;border-radius:2px;}
+.slot{border:2px dashed var(--rule);border-radius:3px;padding:.7rem .8rem;font-family:var(--cond);font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-light);text-align:center;margin-left:34px;transition:all .15s;}
+.slot.over{border-color:var(--accent);background:var(--accent-light);color:var(--accent);}
+
+.pool{display:flex;flex-direction:column;gap:.4rem;margin-top:.4rem;}
+.tile{background:#fff;border:1px solid var(--rule);border-radius:3px;padding:.55rem .8rem;font-size:14px;line-height:1.55;cursor:pointer;transition:all .12s;text-align:left;font-family:var(--sans);color:var(--ink);}
+.tile:hover{border-color:var(--accent);background:var(--accent-light);}
+.tile.wrong{animation:shake .32s;border-color:var(--bad);background:var(--bad-bg);}
+.tile.glow{border-color:var(--ok);background:var(--ok-bg);box-shadow:0 0 0 2px rgba(26,92,58,.18);}
+.tile.dragging{opacity:.4;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}75%{transform:translateX(5px);}}
+
+.fb{padding:.85rem 1.05rem;border-radius:3px;font-size:14px;line-height:1.7;margin:.9rem 0;}
+.fb.miss{background:var(--bad-bg);border-left:4px solid var(--bad);color:#4a2020;}
+.fb.good{background:var(--ok-bg);border-left:4px solid var(--ok);color:#14472c;}
+.fb.note{background:var(--warn-bg);border-left:4px solid var(--warn);color:#5a4512;}
+.fb .lv{font-family:var(--cond);font-size:11px;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:.3rem;opacity:.75;}
+.fb q{font-style:italic;quotes:'\201C' '\201D';}
+
+.progbar{height:4px;background:var(--rule);border-radius:2px;overflow:hidden;margin-bottom:1.2rem;}
+.progbar i{display:block;height:100%;background:var(--ok);transition:width .3s;}
+.counter{font-family:var(--type);font-size:12px;color:var(--ink-light);margin-bottom:.5rem;}
+
+.btn{font-family:var(--cond);font-size:13px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:.6rem 1.3rem;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer;border-radius:2px;transition:all .15s;}
+.btn:hover{background:var(--accent);border-color:var(--accent);}
+.btn.ghost{background:none;color:var(--ink);}
+.btn.ghost:hover{background:var(--ink);color:var(--paper);}
+.btnrow{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.4rem;}
+
+/* ── DEVICE REVEAL ── */
+.dev{background:#fff;border:1px solid var(--rule);border-left:3px solid var(--accent);padding:.7rem .9rem;margin-bottom:.5rem;font-size:14px;line-height:1.65;border-radius:2px;}
+.dev .dnum{font-family:var(--type);font-size:11px;color:var(--ink-light);}
+.dev .darrow{display:block;font-size:12.8px;color:var(--ink-mid);margin-top:.4rem;padding-top:.4rem;border-top:1px dotted var(--rule);}
+.dev .darrow b{font-family:var(--cond);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);}
+.tag{display:inline-block;font-family:var(--cond);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:1px 6px;border-radius:2px;background:var(--paper-warm);color:var(--ink-mid);border:1px solid var(--rule);margin-right:.3rem;vertical-align:1px;}
+.tag.demo{background:#e6e3f5;color:#3c3272;border-color:#c9c3ea;}
+.tag.conn{background:#d9ece2;color:#14472c;border-color:#b3d8c5;}
+.tag.syn{background:#f7e6d9;color:#7a3f18;border-color:#e8cbb3;}
+.tag.time{background:#f0e2e2;color:#6b2a2a;border-color:#dcc0c0;}
+.tag.frame{background:#e3e6eb;color:#33404f;border-color:#c4cbd6;}
+.ptr{background:#efe9db;font-weight:600;padding:0 3px;border-radius:2px;}
+.legend{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem;}
+
+.qbox{background:#fff;border:1px solid var(--rule);padding:1rem 1.15rem;margin-bottom:.7rem;border-radius:2px;}
+.qbox .qn{font-family:var(--cond);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.3rem;}
+.qbox p{font-size:15px;font-family:var(--serif);line-height:1.55;}
+
+.opt{display:block;width:100%;text-align:left;background:#fff;border:1px solid var(--rule);border-radius:3px;padding:.6rem .85rem;margin-bottom:.4rem;font-size:14px;font-family:var(--sans);cursor:pointer;color:var(--ink);transition:all .12s;}
+.opt:hover{border-color:var(--accent);background:var(--accent-light);}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg);}
+.opt.right{border-color:var(--ok);background:var(--ok-bg);}
+.opt:disabled{cursor:default;}
+
+.thread{font-size:13.6px;line-height:1.9;background:var(--paper-warm);padding:.9rem 1.1rem;border-radius:2px;margin-bottom:.6rem;}
+.thread b{font-family:var(--cond);font-size:11px;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:.35rem;color:var(--ink);}
+.w1{background:#d9ece2;padding:0 4px;border-radius:2px;font-weight:600;color:#14472c;}
+.w2{background:#f0e2e2;padding:0 4px;border-radius:2px;font-weight:600;color:#6b2a2a;}
+
+.finaltext{font-family:var(--serif);font-size:15px;line-height:1.85;background:#fff;border:1px solid var(--rule);padding:1.2rem 1.4rem;border-radius:2px;}
+.finaltext p+p{margin-top:1rem;text-indent:1.4em;}
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead-kicker">AP English Language &amp; Composition &middot; Line of Reasoning</div>
+  <div class="masthead-title" id="mast">Sentence Chains: How Reasoning Moves Forward</div>
+</div>
+
+<div class="top-tabs" id="tabs"></div>
+
+<!-- ══ TAB 0 : FROG ══ -->
+<div class="tab-panel" id="p0"><div class="wrap">
+  <div class="stage-num">Stage One</div>
+  <h2 class="stage-title">If You Give a Frog a Harmonica</h2>
+  <p class="lede">Every sentence of this story has been shuffled. <strong>Rebuild the chain</strong> &mdash; starting by working out which sentence goes first. Click a sentence to add it, or drag it into the dashed slot. When you are done, we will ask you <em>how</em> you knew.</p>
+
+  <div class="progbar"><i id="fbar" style="width:0%"></i></div>
+  <div class="counter" id="fcount"></div>
+
+  <div class="chain" id="fchain"></div>
+  <div class="slot" id="fslot">Next sentence &mdash; click or drag one below</div>
+  <div id="ffb"></div>
+
+  <h3 class="sub">Remaining sentences</h3>
+  <div class="pool" id="fpool"></div>
+
+  <div id="fdone" style="display:none">
+    <div class="fb good"><span class="lv">Chain complete</span>Twenty-three sentences, and you almost certainly never had to guess twice. Go to <strong>Why It Worked</strong> and we will name the trick you were using.</div>
+    <div class="btnrow"><button class="btn" onclick="go(1)">Why It Worked &rarr;</button></div>
+  </div>
+</div></div>
+
+<!-- ══ TAB 1 : WHY IT WORKED ══ -->
+<div class="tab-panel" id="p1"><div class="wrap">
+  <div class="stage-num">The Discussion</div>
+  <h2 class="stage-title">Why It Worked</h2>
+  <p class="lede">You were not reading for <em>meaning</em>. You were reading for <strong>a hook</strong> &mdash; the words at the start of each sentence that reach back and grab the end of the one before it.</p>
+
+  <h3 class="sub">The hook and eye</h3>
+  <p style="font-size:14.5px;color:var(--ink-mid);margin-bottom:1rem;">Each sentence <em>ends</em> with a new action. The next sentence <em>begins</em> by repeating that action, then adds one more. Watch the seam.</p>
+  <div id="fseams"></div>
+
+  <div class="callout">
+    <p><strong>The name for this is anadiplosis</strong> &mdash; ending one clause and beginning the next with the same word or idea. The whole story is a single unbroken chain of it, twenty-two links long.</p>
+    <p>Notice what it buys the writer: the reader never has to hold anything in memory. Every sentence hands you its successor. That is what a <strong>line of reasoning</strong> feels like from the inside.</p>
+  </div>
+
+  <h3 class="sub">Talk about it</h3>
+  <div class="qbox"><div class="qn">Question One</div><p>What tactics has the speaker used to guide the reader through the line of reasoning?</p></div>
+  <div class="qbox"><div class="qn">Question Two</div><p>Why might repetition be <em>good</em> for developing a line of reasoning?</p></div>
+  <div class="qbox"><div class="qn">Question Three</div><p>What should you do in your own writing to improve your line of reasoning?</p></div>
+
+  <div class="hintbox"><b>The obvious objection</b>If you wrote a body paragraph this way, it would sound like a picture book. Real repetition of exact words gets juvenile fast &mdash; your reader will hear the echo and stop trusting you.</div>
+
+  <div class="callout" style="border-left-color:var(--ink);">
+    <p><strong>So here is the real question.</strong> The hooks are what made the frog chain solvable. If a serious writer cannot repeat the same words over and over &mdash; how does the chain survive?</p>
+    <p>Next you get three paragraphs of Machiavelli. The hooks are all still there. Every single one has been <strong>disguised</strong>.</p>
+  </div>
+
+  <div class="btnrow"><button class="btn" onclick="go(2)">Try Machiavelli &rarr;</button></div>
+</div></div>
+
+<!-- ══ TAB 2 : THE PRINCE ══ -->
+<div class="tab-panel" id="p2"><div class="wrap">
+  <div class="stage-num">Stage Two</div>
+  <h2 class="stage-title">On Liberality and Stinginess</h2>
+  <p class="lede">Machiavelli, <em>The Prince</em>, Chapter XVI. Same puzzle, no exact repetition. <strong>Paragraphing is not random here</strong> &mdash; you are given the paragraph divisions, and you rebuild each one from the inside. Expect to get some wrong. That is the point; the wrong answers are where the lesson is.</p>
+
+  <div class="hintbox"><b>Before you start</b>Read the <em>first two or three words</em> of every sentence before you place anything. Most of them are pointing at something. Find the one that isn't.</div>
+
+  <div id="pstages"></div>
+</div></div>
+
+<!-- ══ TAB 3 : HOW HE DID IT ══ -->
+<div class="tab-panel" id="p3"><div class="wrap">
+  <div class="stage-num">The Payoff</div>
+  <h2 class="stage-title">How He Did It</h2>
+  <p class="lede">Every hook Machiavelli used, named. Not one of them is a repeated word &mdash; and yet the chain is as tight as the frog's.</p>
+
+  <div class="legend">
+    <span class="tag demo">Demonstrative</span>
+    <span class="tag conn">Logical connector</span>
+    <span class="tag syn">Synonym / restatement</span>
+    <span class="tag time">Time marker</span>
+    <span class="tag frame">Frame reference</span>
+  </div>
+
+  <div id="devlist"></div>
+
+  <h3 class="sub">The two words he never stops turning over</h3>
+  <div class="thread"><b>The virtue that becomes a vice</b>
+    <span class="w1">liberality</span> &rarr; <span class="w1">generosity</span> &rarr; <span class="w1">a generous man</span> &rarr; <span class="w1">works of ostentation</span> &rarr; <span class="w1">a name for generosity</span> &rarr; <span class="w1">this virtue of liberality</span> &rarr; <span class="w1">the more liberal man</span> &rarr; <span class="w1">acting liberally</span>
+  </div>
+  <div class="thread"><b>The vice that becomes a virtue</b>
+    <span class="w2">the opposite vice</span> &rarr; <span class="w2">labeled a miser</span> &rarr; <span class="w2">being known as a miser</span> &rarr; <span class="w2">his parsimony</span> &rarr; <span class="w2">in a stingy way</span> &rarr; <span class="w2">consider him a miser</span> &rarr; <span class="w2">one of the vices that enable him to reign</span>
+  </div>
+  <div class="callout">
+    <p><strong>He never repeats a word &mdash; he keeps re-naming the same two ideas.</strong> Each re-naming is slightly different, and the difference is the argument: <em>liberality</em> curdles into <em>ostentation</em>; <em>miser</em> ripens into <em>parsimony</em>. By the final sentence the two words have swapped moral places entirely, and he never once said "as I mentioned earlier."</p>
+  </div>
+
+  <h3 class="sub">The shape of the whole thing</h3>
+  <div class="callout" style="border-left-color:var(--ink);">
+    <p><strong>Eight sentences, then three, then two.</strong> The paragraphs get shorter as the argument tightens. Paragraph one builds the trap at length because a trap needs every step shown. Paragraph two reverses it in three moves. Paragraph three needs only a verdict.</p>
+    <p>That taper is itself a line of reasoning. A reader feels an argument closing.</p>
+  </div>
+
+  <h3 class="sub">Steal these five</h3>
+  <div class="callout">
+    <p><strong>1. Point backwards with a demonstrative.</strong> <em>This</em> step, <em>that</em> failure, a prince of <em>this</em> character. One word does what a whole clause of repetition would.</p>
+    <p><strong>2. Re-name instead of repeat.</strong> Give the same idea a new noun each time &mdash; and make the new noun carry a judgment the old one didn't.</p>
+    <p><strong>3. Let connectors do the reaching.</strong> <em>Hence, Thus, For, Since</em> all point back at the sentence before. If you can't place one, your sentences aren't actually connected.</p>
+    <p><strong>4. Sequence out loud.</strong> "The <em>first step</em>&hellip;" then "<em>Then</em>&hellip;" A reader will follow a numbered road anywhere.</p>
+    <p><strong>5. Close the exits last.</strong> Machiavelli finishes the disaster, <em>then</em> handles the objection. Answering "but couldn't he just&hellip;" is the final move, not a detour.</p>
+  </div>
+
+  <h3 class="sub">The passage, restored</h3>
+  <div class="finaltext" id="fulltext"></div>
+
+  <div class="callout" style="border-left-color:var(--accent);">
+    <p><strong>Now write.</strong> In your own words, explain why liberality &mdash; usually a virtue &mdash; is a vice for a prince, and why stinginess &mdash; usually a vice &mdash; is a virtue. Begin: <em>"Machiavelli believes that&hellip;"</em></p>
+    <p>Don't rush it. Watch your own hooks: how does each of your sentences reach back and grab the one before it?</p>
+  </div>
+</div></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   GATES_ON — true  = stages lock in sequence (teaching the lesson)
+              false = all tabs open (students drafting / reference)
+   Triple-click the masthead title to unlock everything on the fly.
+   ═══════════════════════════════════════════════════════════ */
+var GATES_ON = false;
+
+var KEY = "sentence-chains-v1";
+
+/* ─────────────── FROG DATA ─────────────── */
+var FROG=[
+{t:"If you give a frog a harmonica, he'll want to play it right away.",h:"If you give a frog a harmonica",tail:"play it right away"},
+{t:"And when he starts to play, he might realize he loves making music.",h:"And when he starts to play",tail:"loves making music"},
+{t:"Loving the tunes, he'll probably ask for lessons to improve.",h:"Loving the tunes",tail:"lessons to improve"},
+{t:"Once he begins improving, he'll desire to perform for an audience.",h:"Once he begins improving",tail:"perform for an audience"},
+{t:"Performing for others, he'll feel the thrill of applause, which will make him want to form a band.",h:"Performing for others",tail:"form a band"},
+{t:"As he forms a band, they'll need a name, so he'll spend hours brainstorming with his friends.",h:"As he forms a band",tail:"need a name"},
+{t:"After they choose the perfect name, they'll want to design a logo.",h:"After they choose the perfect name",tail:"design a logo"},
+{t:"Designing the logo, they'll get excited and decide to make T-shirts.",h:"Designing the logo",tail:"make T-shirts"},
+{t:"Making T-shirts leads them to think about selling them, so they'll need to set up a little shop.",h:"Making T-shirts",tail:"set up a little shop"},
+{t:"Setting up the shop, they'll realize they could sell their music too.",h:"Setting up the shop",tail:"sell their music"},
+{t:"Selling their music, they'll want to record an album.",h:"Selling their music",tail:"record an album"},
+{t:"Recording an album will require a studio, and once they're in the studio, they'll want to experiment with different sounds.",h:"Recording an album",tail:"experiment with different sounds"},
+{t:"Experimenting with sounds, they might add more instruments.",h:"Experimenting with sounds",tail:"add more instruments"},
+{t:"Adding more instruments means they'll need more members in the band.",h:"Adding more instruments",tail:"more members in the band"},
+{t:"With more members, they'll dream of going on tour.",h:"With more members",tail:"going on tour"},
+{t:"Dreaming of a tour, they'll start planning concerts far and wide.",h:"Dreaming of a tour",tail:"planning concerts far and wide"},
+{t:"Planning concerts, they'll need a van to travel.",h:"Planning concerts",tail:"need a van to travel"},
+{t:"Needing a van, they'll have to organize a fundraiser.",h:"Needing a van",tail:"organize a fundraiser"},
+{t:"Organizing a fundraiser, they'll perform in their hometown first.",h:"Organizing a fundraiser",tail:"perform in their hometown first"},
+{t:"Performing locally, they'll gather a lot of support and finally hit the road.",h:"Performing locally",tail:"finally hit the road"},
+{t:"Hitting the road, they'll share their music with everyone they meet.",h:"Hitting the road",tail:"share their music with everyone they meet"},
+{t:"Sharing their music, they'll inspire others to follow their dreams.",h:"Sharing their music",tail:"inspire others to follow their dreams"},
+{t:"And all of this, all because you gave a frog a harmonica.",h:"And all of this",tail:""}
+];
+
+/* ─────────────── PRINCE DATA ─────────────── */
+var S = {
+g:"Let me begin, then, with the first of the qualities mentioned above, by saying that a reputation for liberality is doubtless very fine; but the generosity that earns you that reputation can do you great harm.",
+h:"For if you exercise your generosity in a really virtuous way, as you should, nobody will know of it, and you cannot escape the odium of the opposite vice.",
+c:"Hence if you wish to be widely known as a generous man, you must seize every opportunity to make a big display of your giving.",
+d:"A prince of this character is bound to use up his entire revenue in works of ostentation.",
+b:"Thus, in the end, if he wants to keep a name for generosity, he will have to load his people with exorbitant taxes and squeeze money out of them in every way he can.",
+e:"This is the first step in making him odious to his subjects; for when he is poor, nobody will respect him.",
+f:"Then, when his generosity has angered many and brought rewards to a few, the slightest difficulty will trouble him, and at the first approach of danger, down he goes.",
+a:"If by chance he foresees this, and tries to change his ways, he will immediately be labeled a miser.",
+k:"Since a prince cannot use this virtue of liberality in such a way as to become known for it unless he harms his own security, he won't mind if he judges prudently of things, being known as a miser.",
+i:"In due course he will be thought the more liberal man, when people see that his parsimony enables him to live on his income, to defend himself against his enemies, and to undertake major projects without burdening his people with taxes.",
+j:"Thus he will be acting liberally toward all those people from whom he takes nothing (and there are an immense number of them), and in a stingy way toward those people on whom he bestows nothing (and they are very few).",
+m:"Hence a prince who prefers not to rob his subjects, who wants to be able to defend himself, who doesn't want to become a plunderer, who wants to avoid poverty and contempt, should not mind in the least if people consider him a miser.",
+l:"This is simply one of the vices that enable him to reign."
+};
+
+var PARA = [
+ {id:"P1", label:"Paragraph One", role:"The trap",
+  blurb:"Eight sentences. Machiavelli builds a machine that destroys a generous prince step by step. Find the one sentence that isn't holding on to anything.",
+  order:["g","h","c","d","b","e","f","a"],
+  win:"<strong>Eight sentences, one road.</strong> Reputation &rarr; display &rarr; his own money gone &rarr; taxes &rarr; hatred &rarr; collapse &rarr; and the escape hatch nailed shut. Look where he put the word <em>miser</em>: the last two words of the paragraph. That is not decoration. That is the handle the next paragraph reaches for."},
+ {id:"P2", label:"Paragraph Two", role:"The reversal",
+  blurb:"Three sentences. The prince accepts the insult &mdash; and Machiavelli turns it into a compliment.",
+  order:["k","i","j"],
+  win:"<strong>Accept the label &rarr; watch it flip &rarr; show the arithmetic.</strong> He states the surprise before he proves it. If you lead with the proof, there's no surprise left to explain."}
+];
+
+/* Payoff note shown after specific correct placements */
+var WINSTEP = {
+ "P1|0":"Seven of those eight sentences were bolted to something before them &mdash; <em>this, Hence, Thus, Then, For</em>. Only one stood free. That is how you find an opening sentence, every time: it is the one that points at nothing behind it.",
+ "P1|7":"And there it is: <em>labeled a miser</em>, the last two words. Paragraph two will open by picking that word straight back up."
+};
+
+/* ═══ THE HINT MATRIX ═══
+   key: paragraph|slotIndex|wrongKey  →  [nudge, device, answer]           */
+var HINTS = {
+
+/* ── P1 slot 0 : needs g ── */
+"P1|0|c":["It does sound like a rule a paragraph could open with. But read its first word out loud.",
+ "<q>Hence</q> means <em>therefore</em>. A therefore is an answer &mdash; it needs a reason sitting in front of it. What reason is this concluding from? Nothing has been said yet.",
+ "Not this one. <q>Hence</q> can never be a first word. Look for the sentence that reaches backward for nothing at all &mdash; it announces itself: <q>Let me begin&hellip;</q>"],
+"P1|0|h":["Check the first word. <q>For</q> &mdash; in this older sense it means <em>because</em>.",
+ "A <em>because</em> is proof of a claim. Which claim? It hasn't been made yet. This sentence is defending something that isn't on the page.",
+ "Not this one &mdash; it's the evidence, not the assertion. Find the sentence that makes an announcement instead of an argument."],
+"P1|0|d":["<q>A prince of this character</q> &mdash; which character?",
+ "<q>This character</q> points backward at a prince already described. Nobody has been described yet. Somewhere in the pile is the sentence that describes him.",
+ "Not this one. <q>This character</q> is a pointer with nothing to point at. Your opener will be the sentence that points at nothing."],
+"P1|0|b":["Two of the first four words give it away.",
+ "<q>Thus</q> = therefore. <q>In the end</q> = after everything. The sentence is announcing that it is a <em>destination</em>. You are at the start.",
+ "Not this one &mdash; it's near the finish. Find the sentence that says it is beginning."],
+"P1|0|e":["<q>First step</q> is tempting for a first sentence. Look at the word right before it.",
+ "<q><strong>This</strong> is the first step.</q> <em>This</em> what? The sentence names a step but sends you backward to find out what the step was. An opening sentence cannot send you backward.",
+ "Not this one. It's the first step of the prince's <em>ruin</em>, not the first sentence of the paragraph &mdash; and it needs a sentence in front of it saying what he did."],
+"P1|0|a":["<q>Foresees this.</q> Foresees <em>what</em>?",
+ "The sentence assumes you already know what disaster is coming. Nothing has been laid out for him to see coming.",
+ "Not this one &mdash; it's an escape attempt from a trap that hasn't been built yet. It's the paragraph's last sentence."],
+"P1|0|f":["<q>Then</q> is a time word. Then &mdash; <em>after what</em>?",
+ "It also assumes his generosity has already angered people. That damage hasn't happened yet on the page.",
+ "Not this one. <q>Down he goes</q> is the end of the disaster, and the disaster hasn't started."],
+
+/* ── P1 slot 1 : after g, needs h ── */
+"P1|1|c":["You read it as: generosity harms you, <em>therefore</em> make a big display. Does that actually follow?",
+ "<q>Hence</q> has to sit on the reason directly before it. He hasn't yet told you <em>why</em> a display would be necessary. Somewhere in the pile is the sentence that supplies it &mdash; one about what happens when you give quietly and honestly.",
+ "Not yet. First he proves that virtuous generosity is <em>invisible</em>: <q>nobody will know of it.</q> Only then does <q>Hence&hellip; make a big display</q> make sense. Place the proof first."],
+"P1|1|e":["<q>This is the first step</q> &mdash; what would <em>this</em> be pointing at right now?",
+ "It would point at <q>great harm.</q> But harm is where the road <em>ends</em>. A first step has to be something the prince <em>does</em>.",
+ "Not yet &mdash; he hasn't done anything yet. Machiavelli owes you a reason before he gives you a sequence."],
+"P1|1|d":["<q>A prince of this character</q> &mdash; has a character been described?",
+ "So far you have a claim about generosity, not a portrait of a man. Someone has to describe the showy giver before <q>this character</q> means anything.",
+ "Not yet. Save it for after the prince who <q>makes a big display</q> has been introduced."],
+"P1|1|b":["<q>Thus, in the end</q> &mdash; and you're on sentence two of eight.",
+ "This is a conclusion drawn from at least three steps that haven't been taken. It also needs a reason the prince has run out of his own money.",
+ "Not yet &mdash; it's the bottom of the argument, not the second rung."],
+"P1|1|a":["<q>Foresees this</q> &mdash; what has he been shown so far that he'd want to avoid?",
+ "<q>Great harm</q> is vague. He can only <em>foresee</em> a specific fate once that fate has been spelled out.",
+ "Not yet. Hold it until the trap has already shut &mdash; it's the last sentence."],
+"P1|1|f":["You spotted the word <em>generosity</em> repeated. Good instinct, wrong sentence.",
+ "Read what it says about that generosity: it has <q>angered many and brought rewards to a few.</q> Who got angry? Nobody has been taxed yet.",
+ "Not yet &mdash; this is the final consequence. A repeated <em>word</em> is not the same as a continued <em>idea</em>. That's the whole trap of this passage."],
+
+/* ── P1 slot 2 : after h, needs c ── */
+"P1|2|d":["<q>A prince of this character</q> &mdash; you're pointing at the man in the sentence before. Which man is that?",
+ "That man gives <em>virtuously and quietly</em>. But this sentence says he uses up his revenue in <q>works of ostentation.</q> Ostentation is the opposite of quiet. Wrong man.",
+ "Not yet. <q>This character</q> needs the show-off to exist first &mdash; the one who <q>seize[s] every opportunity to make a big display.</q> Place that sentence, then this one."],
+"P1|2|b":["You went straight from <q>nobody will know</q> to <q>load his people with taxes.</q> Two steps are missing.",
+ "Why does he need his subjects' money? Because his own is gone. And why is his own gone? Because he's been buying a reputation. Neither has been said.",
+ "Not yet &mdash; <q>Thus, in the end</q> has to rest on the sentence that makes the taxes unavoidable."],
+"P1|2|e":["<q>This</q> would point at the odium in the sentence before. Whose odium is that?",
+ "That odium is <em>yours</em> &mdash; you get called stingy. <q>Odious to his subjects</q> is a different injury, caused by a different act, and that act hasn't happened.",
+ "Not yet. Something has to make the subjects suffer before they can hate him."],
+"P1|2|a":["<q>Foresees this</q> &mdash; has the disaster been described in enough detail to be foreseen?",
+ "He'd be reforming to dodge a fate you haven't been shown. Machiavelli always builds the trap before he shows the prince trying the door.",
+ "Not yet &mdash; hold it for the very end."],
+"P1|2|f":["<q>Then</q> &mdash; after which moment?",
+ "<q>The slightest difficulty will trouble him</q> only bites once he is poor and hated. Neither is on the page.",
+ "Not yet &mdash; this is the collapse, and nothing has been knocked over."],
+
+/* ── P1 slot 3 : after c, needs d ── */
+"P1|3|b":["A display costs money, so: taxes. Reasonable. But whose money does he spend <em>first</em>?",
+ "<q>Thus, in the end, he will have to load his people with taxes</q> only works if his own treasury is already empty. Machiavelli spends a whole sentence emptying it. Find that sentence.",
+ "Not yet. The order is: display &rarr; his own revenue consumed &rarr; <em>therefore</em> other people's money. You skipped the middle. Look for <q>A prince of this character&hellip;</q>"],
+"P1|3|e":["<q>This is the first step in making him odious to his subjects.</q> Is making a big display an injury to his subjects?",
+ "Not at all &mdash; a display <em>pleases</em> them. What angers them is being squeezed. That sentence isn't down yet, and neither is the one where he burns through his own fortune.",
+ "Not yet &mdash; two sentences of cause come first."],
+"P1|3|a":["Foresees what? He's still enjoying his reputation.",
+ "Nothing has gone wrong yet for him to see coming.",
+ "Not yet &mdash; this is the escape attempt, and it comes last."],
+"P1|3|f":["<q>Then, when his generosity has angered many&hellip;</q> &mdash; has it angered anyone yet?",
+ "So far his generosity has only bought applause. The anger comes later, and it comes from taxes.",
+ "Not yet &mdash; that's the collapse, several steps down the road."],
+
+/* ── P1 slot 4 : after d, needs b ── */
+"P1|4|e":["He's broke, so he's despised. That feels right &mdash; but read exactly <em>who</em> despises him, and for what.",
+ "<q>Odious <strong>to his subjects</strong>.</q> His empty treasury is his problem, not theirs. What does he do to <em>them</em>? That sentence is still in the pile.",
+ "Not yet. He empties his own purse, then reaches into theirs &mdash; <q>exorbitant taxes.</q> <em>That</em> is the first step in making him odious. Place the taxes, then this."],
+"P1|4|a":["<q>Foresees this</q> &mdash; <em>this</em> what? Being out of money?",
+ "He isn't in danger yet, only broke. The danger &mdash; subjects who hate him, a throne that tips &mdash; hasn't been named.",
+ "Not yet. Three sentences to go before the escape attempt."],
+"P1|4|f":["<q>Angered many and brought rewards to a few</q> &mdash; right idea, wrong moment.",
+ "Nobody is angry yet. He has spent his own money, not theirs. Machiavelli still has to tax them, and name the damage, before anything collapses.",
+ "Not yet &mdash; two more steps first."],
+
+/* ── P1 slot 5 : after b, needs e ── */
+"P1|5|f":["Taxes anger people, so he falls. Your causal logic is right. But <q>Then</q> is a sequence word: then &mdash; <em>after what</em>?",
+ "Nothing has been called a step yet. Machiavelli names the damage first, and he names it as a <em>beginning</em>, before he runs the sequence out to its end.",
+ "Not yet. <q>This is the first step in making him odious to his subjects</q> comes next. Only once there is a first step can there be a <q>Then.</q>"],
+"P1|5|a":["<q>Foresees this</q> &mdash; <em>this</em> what? The taxes? He has already levied those.",
+ "You can't foresee what you've already done. He has to be shown the whole disaster &mdash; hatred, contempt, the fall &mdash; before there is anything left to see coming.",
+ "Not yet. This is the very last sentence: the escape hatch, opened only after the trap has shut."],
+
+/* ── P1 slot 6 : after e, needs f ── */
+"P1|6|a":["He sees he is becoming hated, so he changes course. Fair reading &mdash; but look at the sentence you just placed. It called something <q>the first step.</q>",
+ "A first step promises a next step. In the pile is a sentence that begins <q>Then&hellip;</q> &mdash; that is the step he promised you. A hypothetical (<q>If by chance&hellip;</q>) <em>breaks</em> a sequence; it doesn't continue one.",
+ "Not yet. <q>First step&hellip; Then&hellip;</q> lock together. Run the disaster all the way to <q>down he goes</q>, and only then let the prince try to escape it."],
+
+/* ── P2 slot 0 : needs k ── */
+"P2|0|i":["<q>In due course he will be thought the more liberal man.</q> In due course &mdash; after <em>what</em>?",
+ "And <q>his parsimony</q> &mdash; his stinginess &mdash; is treated as an established fact. Who established it? A paragraph can't open by assuming a label it hasn't handed out.",
+ "Not this one. Look for the sentence that gathers up the whole last paragraph and gives the prince the miser label. It begins <q>Since&hellip;</q>"],
+"P2|0|j":["<q>Thus</q> again. Therefore &mdash; from what?",
+ "It's also doing arithmetic: the many he takes nothing from against the few he gives nothing to. That's the <em>proof</em> of a surprising claim, and the claim hasn't been made.",
+ "Not this one &mdash; it's the last sentence of the paragraph. Openers don't conclude."],
+
+/* ── P2 slot 1 : after k, needs i ── */
+"P2|1|j":["You've delivered the explanation before the thing it explains.",
+ "<q>Thus</q> would be concluding from <q>he won't mind being known as a miser.</q> But this sentence isn't about not minding &mdash; it's about him turning out to be genuinely liberal toward the many. Some sentence has to make that claim first.",
+ "Not yet. The order is: accept the miser name &rarr; <em>and yet</em> people will come to think him the more liberal man &rarr; <em>here is the arithmetic that makes that true.</em> You're at step three."]
+};
+
+/* ─────────────── DEVICE REVEAL DATA ─────────────── */
+var DEVICES = [
+{p:"¶1 &middot; 1", k:"g", tag:"frame", tagname:"Frame reference",
+ dev:"the first of the qualities mentioned above",
+ back:"Points <em>outside</em> the paragraph, back to the list of princely qualities in the previous chapter. That is exactly why it can open: it reaches past everything here, so nothing here has to come before it."},
+{p:"¶1 &middot; 2", k:"h", tag:"conn", tagname:"Logical connector",
+ dev:"For", back:"<q>For</q> = <em>because</em>. It supplies the reason for the claim just made &mdash; that generosity <q>can do you great harm.</q> Also note <q>the opposite vice</q>: he names stinginess without ever saying the word."},
+{p:"¶1 &middot; 3", k:"c", tag:"conn", tagname:"Logical connector",
+ dev:"Hence", back:"Therefore &mdash; drawn straight from <q>nobody will know of it.</q> Virtuous giving is invisible, <em>hence</em> you must make it visible. The connector carries the whole inference in one word."},
+{p:"¶1 &middot; 4", k:"d", tag:"demo", tagname:"Demonstrative",
+ dev:"A prince of this character", back:"<q>This character</q> = the man who <q>seize[s] every opportunity to make a big display of your giving.</q> Four words replace a whole sentence of repetition. And <q>works of ostentation</q> re-names <q>a big display</q> &mdash; with contempt added."},
+{p:"¶1 &middot; 5", k:"b", tag:"conn", tagname:"Connector + time",
+ dev:"Thus, in the end", back:"<q>Thus</q> concludes from the emptied treasury; <q>in the end</q> tells you this is where the road arrives. Meanwhile <q>a name for generosity</q> is his third way of saying <em>reputation for liberality</em>."},
+{p:"¶1 &middot; 6", k:"e", tag:"demo", tagname:"Demonstrative",
+ dev:"This is the first step", back:"<q>This</q> = loading his people with taxes and squeezing them. One syllable holds an entire clause. And <q>the first step</q> is a promise to the reader: there will be a next one."},
+{p:"¶1 &middot; 7", k:"f", tag:"time", tagname:"Time marker",
+ dev:"Then", back:"The next step he promised. <q>First step&hellip; Then&hellip;</q> is the tightest lock in the paragraph. Notice too that <q>angered many and brought rewards to a few</q> compresses two earlier sentences &mdash; the taxes on everyone, the gifts to a handful &mdash; into half a line."},
+{p:"¶1 &middot; 8", k:"a", tag:"demo", tagname:"Demonstrative",
+ dev:"If by chance he foresees this", back:"<q>This</q> = the entire collapse just narrated. The paragraph's final move is to shut the exit: even reform gets him <q>labeled a miser.</q> That last word is deliberately left ringing."},
+
+{p:"¶2 &middot; 1", k:"k", tag:"demo", tagname:"Demonstrative + connector",
+ dev:"Since a prince cannot use this virtue of liberality", back:"<q>This virtue of liberality</q> points back at all eight sentences of paragraph one at once, and <q>Since</q> turns them into a premise. Then <q>being known as a miser</q> catches the word paragraph one ended on. That is the hinge between paragraphs."},
+{p:"¶2 &middot; 2", k:"i", tag:"time", tagname:"Time marker + synonym",
+ dev:"In due course &hellip; his parsimony", back:"<q>In due course</q> = later than the label he just accepted. <q>Parsimony</q> is <em>miser</em> re-named upward &mdash; the same trait, now dignified. Same technique as <q>ostentation</q>, run in reverse."},
+{p:"¶2 &middot; 3", k:"j", tag:"conn", tagname:"Logical connector",
+ dev:"Thus", back:"Concludes from the reversal just claimed, and supplies the arithmetic that proves it: liberal toward the immense many, stingy toward the very few. Here the two keywords finally stand in the same sentence."},
+
+{p:"¶3 &middot; 1", k:"m", tag:"conn", tagname:"Connector + summary",
+ dev:"Hence", back:"<q>Hence</q> reaches back over the whole of paragraph two. The four <q>who</q> clauses are a summary-reference: each one recalls a specific danger from paragraph one &mdash; robbing his subjects, defending himself, plunder, poverty and contempt &mdash; without re-narrating any of them."},
+{p:"¶3 &middot; 2", k:"l", tag:"demo", tagname:"Demonstrative",
+ dev:"This is simply one of the vices", back:"<q>This</q> = being considered a miser. In Machiavelli's original these two sentences are <em>one</em> sentence joined by a semicolon &mdash; which is why the pointer is so short. He is not starting a new thought; he is putting a verdict on the one he just finished."}
+];
+
+/* ═══════════════════════════════════════════════════════════
+   ENGINE
+   ═══════════════════════════════════════════════════════════ */
+var TABS=[
+ {n:"The Frog",  hint:"Build the chain"},
+ {n:"Why It Worked", hint:"Discussion"},
+ {n:"The Prince", hint:"Same puzzle, hidden"},
+ {n:"How He Did It", hint:"The devices"}
+];
+var st = load();
+function load(){
+  try{var r=JSON.parse(localStorage.getItem(KEY)); if(r&&r.v===1) return r;}catch(e){}
+  return {v:1, frog:0, frogDone:false, disc:false, P1:0, P2:0, p3:false, princeDone:false, bypass:false};
+}
+function save(){ try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){} }
+
+function unlocked(i){
+  if(!GATES_ON || st.bypass) return true;
+  if(i===0) return true;
+  if(i===1) return st.frogDone;
+  if(i===2) return st.frogDone && st.disc;
+  if(i===3) return st.princeDone;
+  return true;
+}
+function cleared(i){
+  if(i===0) return st.frogDone;
+  if(i===1) return st.disc;
+  if(i===2) return st.princeDone;
+  return false;
+}
+var cur=0;
+function drawTabs(){
+  var h="";
+  for(var i=0;i<TABS.length;i++){
+    h+='<button class="top-tab'+(i===cur?" active":"")+(unlocked(i)?"":" locked")+(cleared(i)?" cleared":"")+
+       '" onclick="go('+i+')">'+TABS[i].n+'<span class="tab-hint">'+TABS[i].hint+'</span></button>';
+  }
+  document.getElementById("tabs").innerHTML=h;
+}
+function go(i){
+  if(!unlocked(i)){ return; }
+  cur=i;
+  if(i===1 && !st.disc){ st.disc=true; save(); }
+  for(var k=0;k<TABS.length;k++){
+    document.getElementById("p"+k).className="tab-panel"+(k===i?" active":"");
+  }
+  drawTabs(); window.scrollTo(0,0);
+}
+
+/* triple-click masthead = bypass */
+var clicks=0,ct=null;
+document.getElementById("mast").addEventListener("click",function(){
+  clicks++; clearTimeout(ct);
+  ct=setTimeout(function(){
+    if(clicks>=3){ st.bypass=true; save(); drawTabs();
+      this_flash("Gates unlocked — all tabs open."); }
+    clicks=0;
+  },420);
+});
+function this_flash(msg){
+  var d=document.createElement("div");
+  d.style.cssText="position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#1a1a18;color:#f7f4ee;padding:.6rem 1.1rem;border-radius:3px;font-family:var(--cond);letter-spacing:.08em;text-transform:uppercase;font-size:12px;z-index:999;";
+  d.textContent=msg; document.body.appendChild(d);
+  setTimeout(function(){d.remove();},2200);
+}
+
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+function markHook(o){
+  if(!o.h) return esc(o.t);
+  return '<span class="hook">'+esc(o.h)+'</span>'+esc(o.t.slice(o.h.length));
+}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+/* ─────────────── FROG ─────────────── */
+var fWrong=0, fOrder=null;
+function renderFrog(){
+  var placed = st.frog;
+  if(st.frogDone) placed = FROG.length;
+  var ch="";
+  for(var i=0;i<placed;i++){
+    ch+='<div class="chain-row'+(i===placed-1?" fresh":"")+'"><div class="chain-num">'+(i+1)+'</div>'+
+        '<div class="chain-text'+(i===0?" opener":"")+'">'+(i===0?esc(FROG[i].t):markHook(FROG[i]))+'</div></div>';
+  }
+  document.getElementById("fchain").innerHTML=ch;
+  var pct=Math.round(placed/FROG.length*100);
+  document.getElementById("fbar").style.width=pct+"%";
+  document.getElementById("fcount").textContent=placed+" of "+FROG.length+" sentences placed";
+
+  if(placed>=FROG.length){
+    document.getElementById("fslot").style.display="none";
+    document.getElementById("fpool").innerHTML="";
+    document.getElementById("fdone").style.display="block";
+    document.querySelector('#p0 h3.sub').style.display="none";
+    if(!st.frogDone){ st.frogDone=true; save(); drawTabs(); }
+    return;
+  }
+  document.getElementById("fslot").style.display="block";
+  if(!fOrder){
+    var rest=[]; for(var q=placed;q<FROG.length;q++) rest.push(q);
+    fOrder=shuffle(rest);
+  }
+  var ph="";
+  for(var n=0;n<fOrder.length;n++){
+    var idx=fOrder[n];
+    ph+='<button class="tile" draggable="true" data-i="'+idx+'" onclick="fpick('+idx+')">'+esc(FROG[idx].t)+'</button>';
+  }
+  document.getElementById("fpool").innerHTML=ph;
+  wireDrag("fpool","fslot",function(i){fpick(i);});
+}
+function fpick(i){
+  var need = st.frog;
+  var tile=document.querySelector('#fpool .tile[data-i="'+i+'"]');
+  if(i===need){
+    fWrong=0;
+    st.frog++; save();
+    fOrder=fOrder.filter(function(x){return x!==i;});
+    document.getElementById("ffb").innerHTML = (need===0)
+      ? '<div class="fb good"><span class="lv">Good &mdash; and notice why</span>Twenty-two of those sentences begin by reaching <em>backwards</em> &mdash; <q>Loving the tunes&hellip;</q>, <q>Designing the logo&hellip;</q>, <q>Needing a van&hellip;</q>. Every one of them is holding on to something. Only one sentence starts from nothing at all, and that is always where a line of reasoning begins.</div>'
+      : "";
+    renderFrog();
+    return;
+  }
+  fWrong++;
+  if(tile){ tile.classList.add("wrong"); setTimeout(function(){tile.classList.remove("wrong");},340); }
+  var chosen=FROG[i];
+  var msg;
+  if(i===FROG.length-1){
+    msg="<q>And all of this, all because you gave a frog a harmonica.</q> That's the punchline &mdash; it can only land after everything else has happened.";
+  } else if(need===0){
+    msg='You picked <q>'+esc(chosen.h)+'&hellip;</q> &mdash; and that phrase is <em>holding on to something</em>. It is reaching back for <strong>'+esc(FROG[i-1].tail)+'</strong>, which nobody has said yet.<br><br>A first sentence cannot reach backwards; there is nothing behind it. Find the one sentence in the pile that picks up <em>nothing</em>.';
+  } else {
+    msg='You picked <q>'+esc(chosen.h)+'&hellip;</q> &mdash; that <em>is</em> a hook, but it is reaching back for <strong>'+esc(FROG[i-1].tail)+'</strong>, which hasn’t happened yet.<br><br>The last thing on the page is <strong>'+esc(FROG[need-1].tail)+'</strong>. Find the sentence that <em>starts</em> by picking that up.';
+  }
+  if(fWrong>=2){
+    msg+='<br><br><em>It begins: <q>'+esc(FROG[need].h.split(" ").slice(0,3).join(" "))+'&hellip;</q></em>';
+    var right=document.querySelector('#fpool .tile[data-i="'+need+'"]');
+    if(right && fWrong>=3) right.classList.add("glow");
+  }
+  document.getElementById("ffb").innerHTML='<div class="fb miss"><span class="lv">Not that one</span>'+msg+'</div>';
+}
+
+/* generic drag wiring */
+function wireDrag(poolId, slotId, cb){
+  var pool=document.getElementById(poolId), slot=document.getElementById(slotId);
+  if(!pool||!slot) return;
+  pool.querySelectorAll(".tile").forEach(function(t){
+    t.addEventListener("dragstart",function(ev){
+      ev.dataTransfer.setData("text/plain",t.getAttribute("data-i"));
+      ev.dataTransfer.effectAllowed="move"; t.classList.add("dragging");
+    });
+    t.addEventListener("dragend",function(){t.classList.remove("dragging");});
+  });
+  slot.ondragover=function(ev){ev.preventDefault();slot.classList.add("over");};
+  slot.ondragleave=function(){slot.classList.remove("over");};
+  slot.ondrop=function(ev){
+    ev.preventDefault(); slot.classList.remove("over");
+    var v=ev.dataTransfer.getData("text/plain");
+    if(v!=="") cb(isNaN(+v)?v:+v);
+  };
+}
+
+/* seam diagram on tab 1 */
+function renderSeams(){
+  var h="";
+  for(var i=1;i<FROG.length;i++){
+    h+='<div class="dev"><span class="dnum">'+i+' &rarr; '+(i+1)+'</span><br>'+
+       '&hellip;'+esc(FROG[i-1].tail)+'. <span style="color:var(--ink-light)">&nbsp;&#9474;&nbsp;</span> <span class="hook">'+esc(FROG[i].h)+'</span>'+esc(FROG[i].t.slice(FROG[i].h.length))+'</div>';
+  }
+  document.getElementById("fseams").innerHTML=h;
+}
+
+/* ─────────────── PRINCE ─────────────── */
+var pState={};
+function renderPrince(){
+  var out="";
+  for(var n=0;n<PARA.length;n++){
+    var P=PARA[n], done=st[P.id]>=P.order.length;
+    var openable = (n===0) || (st[PARA[n-1].id]>=PARA[n-1].order.length) || !GATES_ON || st.bypass;
+    out+='<h3 class="sub">'+P.label+' &mdash; '+P.role+'</h3>';
+    if(!openable){
+      out+='<div class="fb note">Finish '+PARA[n-1].label.toLowerCase()+' first.</div>';
+      continue;
+    }
+    out+='<p style="font-size:14px;color:var(--ink-mid);margin-bottom:.9rem;">'+P.blurb+'</p>';
+    out+='<div id="'+P.id+'_body"></div>';
+  }
+  /* paragraph three */
+  var p2done = st.P2>=PARA[1].order.length;
+  out+='<h3 class="sub">Paragraph Three &mdash; the verdict</h3>';
+  if(!p2done && GATES_ON && !st.bypass){
+    out+='<div class="fb note">Finish paragraph two first.</div>';
+  } else {
+    out+='<div id="P3_body"></div>';
+  }
+  document.getElementById("pstages").innerHTML=out;
+  for(var m=0;m<PARA.length;m++){ if(document.getElementById(PARA[m].id+"_body")) renderPara(PARA[m]); }
+  if(document.getElementById("P3_body")) renderP3();
+}
+
+function renderPara(P){
+  var pos=st[P.id]||0, done=pos>=P.order.length;
+  var h='<div class="progbar"><i style="width:'+Math.round(pos/P.order.length*100)+'%"></i></div>';
+  h+='<div class="counter">'+pos+' of '+P.order.length+' placed</div><div class="chain">';
+  for(var i=0;i<pos;i++){
+    h+='<div class="chain-row'+(i===pos-1?" fresh":"")+'"><div class="chain-num">'+(i+1)+'</div><div class="chain-text'+(i===0?" opener":"")+'">'+esc(S[P.order[i]])+'</div></div>';
+  }
+  h+='</div>';
+  if(done){
+    h+='<div class="fb good"><span class="lv">Paragraph rebuilt</span>'+P.win+'</div>';
+  } else {
+    h+='<div class="slot" id="'+P.id+'_slot">Next sentence &mdash; click or drag one below</div>';
+    h+='<div id="'+P.id+'_fb"></div>';
+    h+='<div class="pool" id="'+P.id+'_pool">';
+    if(!pState[P.id]) pState[P.id]={order:shuffle(P.order.slice()),wrong:0,lastSlot:pos};
+    var pool=pState[P.id].order.filter(function(k){return P.order.indexOf(k)>=pos;});
+    for(var n=0;n<pool.length;n++){
+      h+='<button class="tile" draggable="true" data-i="'+pool[n]+'" onclick="ppick(\''+P.id+'\',\''+pool[n]+'\')">'+esc(S[pool[n]])+'</button>';
+    }
+    h+='</div>';
+  }
+  document.getElementById(P.id+"_body").innerHTML=h;
+  if(!done) wireDrag(P.id+"_pool", P.id+"_slot", function(k){ppick(P.id,k);});
+}
+
+function ppick(pid,k){
+  var P=null; for(var n=0;n<PARA.length;n++) if(PARA[n].id===pid) P=PARA[n];
+  var pos=st[pid]||0, want=P.order[pos];
+  var S_=pState[pid];
+  if(k===want){
+    S_.wrong=0;
+    st[pid]=pos+1; save();
+    var note=WINSTEP[pid+"|"+pos];
+    renderPrince();
+    if(note){
+      var box=document.getElementById(pid+"_fb");
+      if(box) box.innerHTML='<div class="fb good"><span class="lv">Good — and notice</span>'+note+'</div>';
+      else {
+        var body=document.getElementById(pid+"_body");
+        if(body) body.insertAdjacentHTML("beforeend",'<div class="fb good"><span class="lv">Good — and notice</span>'+note+'</div>');
+      }
+    }
+    if(st.P1>=PARA[0].order.length && st.P2>=PARA[1].order.length && st.p3 && !st.princeDone){
+      st.princeDone=true; save(); drawTabs();
+    }
+    return;
+  }
+  S_.wrong++;
+  var tile=document.querySelector('#'+pid+'_pool .tile[data-i="'+k+'"]');
+  if(tile){ tile.classList.add("wrong"); setTimeout(function(){tile.classList.remove("wrong");},340); }
+  var key=pid+"|"+pos+"|"+k;
+  var arr=HINTS[key];
+  var lv=Math.min(S_.wrong,3);
+  var labels=["Look again","The device","Here it is"];
+  var msg;
+  if(arr){ msg=arr[lv-1]; }
+  else { msg="Read the first few words of that sentence again and ask what they are pointing at."; }
+  document.getElementById(pid+"_fb").innerHTML=
+    '<div class="fb miss"><span class="lv">'+labels[lv-1]+'</span>'+msg+'</div>';
+  if(lv>=3){
+    var right=document.querySelector('#'+pid+'_pool .tile[data-i="'+want+'"]');
+    if(right) right.classList.add("glow");
+  }
+}
+
+/* paragraph three — pointer question, not an ordering puzzle */
+var P3OPTS=[
+ {t:"&hellip;if people consider him a miser", ok:true,
+  fb:"<strong>Yes.</strong> <q>This</q> = being considered a miser. And look what the pointer does: it lets Machiavelli deliver his verdict &mdash; that miserliness is <em>one of the vices that enable him to reign</em> &mdash; without repeating the word <em>miser</em> a fourth time in three lines."},
+ {t:"&hellip;who prefers not to rob his subjects", ok:false,
+  fb:"Not quite. Refusing to rob your subjects is a <em>virtue</em> &mdash; and the sentence calls whatever <q>this</q> is <strong>a vice</strong>. Find the thing in that sentence the world would call a fault."},
+ {t:"&hellip;who wants to be able to defend himself", ok:false,
+  fb:"Not quite. Self-defense is hardly <q>one of the <strong>vices</strong>.</q> The pointer has to land on something people <em>disapprove</em> of. Which part of the sentence is an insult?"},
+ {t:"&hellip;who wants to avoid poverty and contempt", ok:false,
+  fb:"Close, but read the grammar: that's something he <em>wants</em>, not something he <em>is called</em>. <q>This</q> is a vice he's willing to be accused of. Which accusation ends the sentence?"}
+];
+function renderP3(){
+  var h='<p style="font-size:14px;color:var(--ink-mid);margin-bottom:.9rem;">Two sentences &mdash; and this one we are handing you assembled, because in Machiavelli’s original it is <em>one</em> sentence, joined by a semicolon. Your teacher’s handout split it in two.</p>';
+  h+='<div class="chain">';
+  h+='<div class="chain-row"><div class="chain-num">1</div><div class="chain-text opener">'+esc(S.m)+'</div></div>';
+  h+='<div class="chain-row"><div class="chain-num">2</div><div class="chain-text">'+esc(S.l)+'</div></div>';
+  h+='</div>';
+  h+='<div class="qbox"><div class="qn">One question</div><p>The last sentence begins <q>This is simply one of the vices&hellip;</q><br>What does <strong>This</strong> point to?</p></div>';
+  h+='<div id="P3_opts">';
+  for(var i=0;i<P3OPTS.length;i++){
+    h+='<button class="opt" data-i="'+i+'" onclick="p3pick('+i+')">'+P3OPTS[i].t+'</button>';
+  }
+  h+='</div><div id="P3_fb"></div>';
+  if(st.p3){
+    h+='<div class="fb good"><span class="lv">The whole lesson, in two sentences</span>Machiavelli ends a three-paragraph argument with a one-word pointer. That is the opposite of the frog. The frog repeated everything; Machiavelli repeats nothing and still never lets go of your hand.</div>';
+    h+='<div class="btnrow"><button class="btn" onclick="go(3)">See every device &rarr;</button></div>';
+  }
+  document.getElementById("P3_body").innerHTML=h;
+  if(st.p3){
+    document.querySelectorAll("#P3_opts .opt").forEach(function(b){
+      b.disabled=true;
+      if(P3OPTS[+b.getAttribute("data-i")].ok) b.classList.add("right");
+    });
+  }
+}
+function p3pick(i){
+  var o=P3OPTS[i];
+  var btn=document.querySelector('#P3_opts .opt[data-i="'+i+'"]');
+  if(o.ok){
+    st.p3=true; save();
+    if(st.P1>=PARA[0].order.length && st.P2>=PARA[1].order.length && !st.princeDone){ st.princeDone=true; save(); }
+    drawTabs(); renderP3();
+    document.getElementById("P3_fb").innerHTML='<div class="fb good"><span class="lv">Correct</span>'+o.fb+'</div>';
+  } else {
+    btn.classList.add("wrong");
+    document.getElementById("P3_fb").innerHTML='<div class="fb miss"><span class="lv">Look again</span>'+o.fb+'</div>';
+  }
+}
+
+/* ─────────────── DEVICE REVEAL ─────────────── */
+function renderDevices(){
+  var h="";
+  for(var i=0;i<DEVICES.length;i++){
+    var D=DEVICES[i];
+    var txt=esc(S[D.k]);
+    var plain=D.dev.replace(/&hellip;/g,"…").replace(/<[^>]+>/g,"");
+    var parts=plain.split("…");
+    for(var q=0;q<parts.length;q++){
+      var frag=parts[q].trim();
+      if(frag && txt.indexOf(frag)>=0){ txt=txt.replace(frag,'<span class="ptr">'+frag+'</span>'); }
+    }
+    h+='<div class="dev"><span class="dnum">'+D.p+'</span> <span class="tag '+D.tag+'">'+D.tagname+'</span><br>'+txt+
+       '<span class="darrow"><b>Points back to</b> &nbsp;'+D.back+'</span></div>';
+  }
+  document.getElementById("devlist").innerHTML=h;
+
+  var ft='<p>';
+  ft+=[S.g,S.h,S.c,S.d,S.b,S.e,S.f,S.a].map(esc).join(" ");
+  ft+='</p><p>'+[S.k,S.i,S.j].map(esc).join(" ");
+  ft+='</p><p>'+[S.m,S.l].map(esc).join(" ")+'</p>';
+  document.getElementById("fulltext").innerHTML=ft;
+}
+
+/* ─────────────── BOOT ─────────────── */
+drawTabs();
+renderFrog();
+renderSeams();
+renderPrince();
+renderDevices();
+go(0);
+</script>
+</body>
+</html>
