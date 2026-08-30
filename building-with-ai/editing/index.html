@@ -101,6 +101,13 @@
   .two h4{margin:0 0 8px;font-size:15px;color:var(--accent2)}
   .two p{font-size:14.5px;margin:6px 0}
 
+  .dl{display:inline-flex;align-items:center;gap:9px;background:var(--accent);color:#0b0d11;
+    text-decoration:none;border-radius:9px;padding:12px 20px;font-size:14.5px;font-weight:700;
+    margin:6px 10px 6px 0}
+  .dl:hover{filter:brightness(1.1)}
+  .dl .ext{font-weight:400;opacity:.65;font-size:12.5px}
+  .dl:focus-visible{outline:2px solid var(--accent2);outline-offset:3px}
+
   .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:16px 0;
     padding:16px;background:var(--code);border:1px solid var(--line);border-radius:12px}
   .fnode{background:var(--panel2);border:1px solid var(--line);border-radius:8px;
@@ -154,23 +161,43 @@
 </div>
 
 <div class="pane on" id="i-laptop">
-  <h3>GitHub Desktop</h3>
-  <p><strong>desktop.github.com</strong> → download → install → open it.</p>
-  <p><strong>Sign in with your GitHub account.</strong> That one sign-in is what lets it read and write your repository. You won't be asked again.</p>
+  <h3>1 · GitHub Desktop</h3>
+  <p>This is what moves files between your computer and GitHub.</p>
 
-  <h3>VS Code</h3>
-  <p><strong>code.visualstudio.com</strong> → download → install → open it.</p>
-  <p>No sign-in needed. Skip any setup questions it asks — you can change all of that later.</p>
+  <a class="dl" href="https://desktop.github.com/download/" target="_blank" rel="noopener">
+    Download GitHub Desktop <span class="ext">desktop.github.com ↗</span>
+  </a>
+
+  <p>Install it, open it, and <strong>sign in with your GitHub account</strong>. That one sign-in is what lets it read and write your repository — you won't be asked again.</p>
+
+  <h3>2 · VS Code</h3>
+  <p>This is where you'll actually edit your files.</p>
+
+  <a class="dl" href="https://code.visualstudio.com/download" target="_blank" rel="noopener">
+    Download VS Code <span class="ext">code.visualstudio.com ↗</span>
+  </a>
+
+  <p>Install it and open it. <strong>No sign-in needed.</strong> Skip any setup questions it asks — all of that can be changed later.</p>
+
+  <div class="warn">
+    <strong>Both pages ask which version you want. Pick right the first time.</strong>
+    <ul>
+      <li><strong>Windows:</strong> the plain <strong>64-bit</strong> option. Not MSI, not Arm.</li>
+      <li><strong>Mac — VS Code:</strong> choose <strong>Universal</strong>. It works on every Mac, so you don't have to know which one you have.</li>
+      <li><strong>Mac — GitHub Desktop:</strong> it makes you choose. <strong>Apple silicon</strong> or <strong>Intel chip</strong>?</li>
+    </ul>
+    <p style="margin-bottom:0"><strong>Don't know which Mac you have?</strong>  menu (top left) → <strong>About This Mac</strong>. If the chip says <strong>M1, M2, M3</strong> or similar, you want <strong>Apple silicon</strong>. If it says <strong>Intel</strong>, you want Intel.</p>
+  </div>
 
   <div class="good">
-    <strong>Same app on Mac and Windows.</strong> Both of these look and work identically on either. When your teacher demonstrates on one, it's the same on the other — only the keyboard shortcuts differ, and this page gives both.
+    <strong>Same apps on Mac and Windows.</strong> Both look and work identically on either platform. When your teacher demonstrates on one, it's the same on the other — only the keyboard shortcuts differ, and this page gives you both.
   </div>
 </div>
 
 <div class="pane" id="i-ipad">
   <h3>Nothing to install</h3>
   <p>Neither of those apps runs on an iPad — but you don't need them, because you get the same tools in the browser.</p>
-  <p><strong>github.dev</strong> is a real code editor. It's the same editor as VS Code, running in Safari, and it can do the GitHub Desktop part too.</p>
+  <p><strong>github.dev</strong> is a real code editor. It's the same editor as VS Code, running in Safari, and it does the GitHub Desktop part too. Nothing to download and nothing to sign into — you're already signed in on GitHub.</p>
 
   <div class="good">
     <strong>This is a promotion.</strong> Until now you've been pasting code into a box on a web page. Today you get the actual editor — files in a sidebar, several open at once, and a proper view of what you've changed.
