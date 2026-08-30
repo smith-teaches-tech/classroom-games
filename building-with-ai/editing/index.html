@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Editing Your Site — Building with AI</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#171a21; --panel2:#1e222b; --line:#2b303b;
+    --ink:#e8eaf0; --dim:#a3abbb; --accent:#7bd88f; --accent2:#6aa9ff;
+    --warn:#ffb454; --danger:#ff7b72; --code:#0b0d11;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.65 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:0 0 80px}
+  .wrap{max-width:880px;margin:0 auto;padding:0 20px}
+  header{background:linear-gradient(160deg,#1b2431,#12151b);border-bottom:1px solid var(--line);
+    padding:46px 0 38px;margin-bottom:10px}
+  header h1{margin:0 0 8px;font-size:33px;line-height:1.2;letter-spacing:-.5px}
+  header p{margin:0;color:var(--dim);font-size:17px}
+  .thesis{margin-top:20px;padding:14px 18px;border-left:3px solid var(--accent);
+    background:#141922;border-radius:0 8px 8px 0;font-size:17px}
+  h2{font-size:22px;margin:44px 0 6px;letter-spacing:-.3px;display:flex;align-items:center;gap:12px}
+  .num{background:var(--accent);color:#0b0d11;min-width:31px;height:31px;padding:0 8px;border-radius:8px;
+    display:grid;place-items:center;font-size:12px;font-weight:700;flex:none;letter-spacing:.5px}
+  h3{font-size:16px;margin:24px 0 8px;color:var(--accent2)}
+  p{margin:10px 0}
+  .sub{color:var(--dim);margin:0 0 14px 43px;font-size:15px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:16px 0}
+  code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:14px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#ffd9a0}
+  pre{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:16px;
+    overflow-x:auto;margin:12px 0;position:relative}
+  pre code{background:none;padding:0;color:#d6dae4;font-size:13.5px;line-height:1.6}
+  .copy{position:absolute;top:10px;right:10px;background:var(--panel2);color:var(--dim);
+    border:1px solid var(--line);border-radius:7px;padding:5px 11px;font-size:12px;cursor:pointer}
+  .copy:hover{color:var(--ink);border-color:var(--accent)}
+  .copy.done{color:var(--accent);border-color:var(--accent)}
+  .tabs{display:flex;gap:8px;margin:14px 0 0;flex-wrap:wrap}
+  .tab{background:var(--panel2);border:1px solid var(--line);color:var(--dim);
+    padding:9px 16px;border-radius:9px;cursor:pointer;font-size:14px;font-weight:600}
+  .tab:hover{color:var(--ink)}
+  .tab.on{background:var(--accent);color:#0b0d11;border-color:var(--accent)}
+  .pane{display:none;margin-top:14px}
+  .pane.on{display:block}
+  ol,ul{margin:10px 0;padding-left:22px}
+  li{margin:7px 0}
+  .warn{border-left:3px solid var(--warn);background:#241d12;padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0}
+  .warn strong{color:var(--warn)}
+  .bad{border-left:3px solid var(--danger);background:#251519;padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0}
+  .bad strong{color:var(--danger)}
+  .good{border-left:3px solid var(--accent);background:#122018;padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0}
+  .good strong{color:var(--accent)}
+  .tree{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:18px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;line-height:1.9;overflow-x:auto}
+  .tree .f{color:var(--accent2)}
+  .tree .note{color:var(--dim);font-family:inherit}
+  .loop{display:grid;gap:9px;margin:16px 0}
+  .step{display:flex;gap:14px;align-items:flex-start;background:var(--panel2);
+    border:1px solid var(--line);border-radius:10px;padding:13px 16px}
+  .step b{color:var(--accent);flex:none;width:20px}
+  label.check{display:flex;gap:12px;align-items:flex-start;background:var(--panel2);
+    border:1px solid var(--line);border-radius:10px;padding:13px 16px;margin:9px 0;cursor:pointer}
+  label.check:hover{border-color:var(--accent2)}
+  label.check input{margin-top:4px;width:17px;height:17px;flex:none;accent-color:var(--accent)}
+  label.check.done{opacity:.5}
+  label.check.done span{text-decoration:line-through}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--accent2);font-size:13px;text-transform:uppercase;letter-spacing:.5px}
+  .reset{background:none;border:1px solid var(--line);color:var(--dim);border-radius:8px;
+    padding:7px 14px;font-size:13px;cursor:pointer;margin-top:6px}
+  .reset:hover{color:var(--ink)}
+  footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--line);color:var(--dim);font-size:14px}
+
+  .obj{margin:0 0 16px 43px;padding:11px 16px;background:var(--panel2);
+    border:1px solid var(--line);border-left:3px solid var(--accent2);
+    border-radius:0 8px 8px 0;font-size:15px}
+  .obj b{color:var(--accent2);text-transform:uppercase;font-size:11.5px;
+    letter-spacing:.9px;display:block;margin-bottom:3px}
+  .path{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:14px 0;
+    padding:13px 15px;background:var(--code);border:1px solid var(--line);border-radius:10px}
+  .chip{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
+    background:var(--panel2);border:1px solid var(--line);border-radius:6px;
+    padding:5px 10px;color:var(--ink);white-space:nowrap}
+  .chip.ghost{background:none;border-style:dashed;color:var(--dim)}
+  .arw{color:var(--dim);font-size:12px;flex:none}
+
+  .diff{background:var(--code);border:1px solid var(--line);border-radius:10px;
+    padding:14px 0;margin:14px 0;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:13.5px;line-height:1.85;overflow-x:auto}
+  .diff div{padding:0 16px;white-space:pre}
+  .diff .del{background:#2d1418;color:#ff9d96}
+  .diff .add{background:#12241a;color:#8ee6a0}
+  .diff .ctx{color:var(--dim)}
+  .diff .mark{display:inline-block;width:14px;opacity:.8}
+
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0}
+  @media (max-width:640px){ .two{grid-template-columns:1fr} }
+  .two .card{margin:0}
+  .two h4{margin:0 0 8px;font-size:15px;color:var(--accent2)}
+  .two p{font-size:14.5px;margin:6px 0}
+
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:16px 0;
+    padding:16px;background:var(--code);border:1px solid var(--line);border-radius:12px}
+  .fnode{background:var(--panel2);border:1px solid var(--line);border-radius:8px;
+    padding:8px 13px;font-size:13.5px;font-weight:600}
+  .fnode small{display:block;color:var(--dim);font-weight:400;font-size:11.5px;letter-spacing:.3px}
+  .fsep{color:var(--accent);font-size:14px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>Editing Your Site</h1>
+    <p>Building with AI — the tools, the loop, and getting your work online</p>
+    <div class="thesis"><strong>Your homepage is still a mockup someone handed you.</strong> Today it becomes yours — and you learn the workflow you'll use for every project after this one.</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<div class="warn">
+  <strong>What you're making today is a homepage you'd actually send someone.</strong> Not a starter template with your name swapped in — colours you chose, words you wrote, a layout you decided on. Everything else here is how you get that safely onto the internet.
+</div>
+
+<h3>The loop, start to finish</h3>
+
+<div class="flow">
+  <span class="fnode">GitHub Desktop<small>copy it down</small></span>
+  <span class="fsep">▸</span>
+  <span class="fnode">VS Code<small>open it</small></span>
+  <span class="fsep">▸</span>
+  <span class="fnode">Gemini<small>redesign it</small></span>
+  <span class="fsep">▸</span>
+  <span class="fnode">VS Code<small>paste &amp; save</small></span>
+  <span class="fsep">▸</span>
+  <span class="fnode">GitHub Desktop<small>check &amp; push</small></span>
+  <span class="fsep">▸</span>
+  <span class="fnode">Your site<small>test it</small></span>
+</div>
+
+<p><strong>Three apps, each doing one job.</strong> GitHub Desktop moves your files between your computer and GitHub. VS Code is where the files get edited. Gemini writes the new version. Nothing overlaps, so when something goes wrong you'll know which window to look at.</p>
+
+<!-- ============ PART 1 ============ -->
+<h2><span class="num">PART 1</span>Install your tools</h2>
+<p class="sub">Two apps. Both free, both quick.</p>
+<div class="obj"><b>Objective</b>GitHub Desktop and VS Code installed and signed in, ready to use.</div>
+
+<div class="tabs" data-group="install">
+  <button class="tab on" data-t="i-laptop">Laptop</button>
+  <button class="tab" data-t="i-ipad">iPad</button>
+</div>
+
+<div class="pane on" id="i-laptop">
+  <h3>GitHub Desktop</h3>
+  <p><strong>desktop.github.com</strong> → download → install → open it.</p>
+  <p><strong>Sign in with your GitHub account.</strong> That one sign-in is what lets it read and write your repository. You won't be asked again.</p>
+
+  <h3>VS Code</h3>
+  <p><strong>code.visualstudio.com</strong> → download → install → open it.</p>
+  <p>No sign-in needed. Skip any setup questions it asks — you can change all of that later.</p>
+
+  <div class="good">
+    <strong>Same app on Mac and Windows.</strong> Both of these look and work identically on either. When your teacher demonstrates on one, it's the same on the other — only the keyboard shortcuts differ, and this page gives both.
+  </div>
+</div>
+
+<div class="pane" id="i-ipad">
+  <h3>Nothing to install</h3>
+  <p>Neither of those apps runs on an iPad — but you don't need them, because you get the same tools in the browser.</p>
+  <p><strong>github.dev</strong> is a real code editor. It's the same editor as VS Code, running in Safari, and it can do the GitHub Desktop part too.</p>
+
+  <div class="good">
+    <strong>This is a promotion.</strong> Until now you've been pasting code into a box on a web page. Today you get the actual editor — files in a sidebar, several open at once, and a proper view of what you've changed.
+  </div>
+
+  <p>You'll open it in the next part. Nothing to do here.</p>
+</div>
+
+<!-- ============ PART 2 ============ -->
+<h2><span class="num">PART 2</span>Get your site into your editor</h2>
+<p class="sub">Copy it down from GitHub, then open the folder.</p>
+<div class="obj"><b>Objective</b>Your repository open in an editor, with your files listed down the side.</div>
+
+<div class="tabs" data-group="open">
+  <button class="tab on" data-t="o-laptop">Laptop</button>
+  <button class="tab" data-t="o-ipad">iPad</button>
+</div>
+
+<div class="pane on" id="o-laptop">
+  <h3>Clone it</h3>
+  <p><strong>Cloning</strong> means copying your repository from GitHub down onto your computer.</p>
+  <div class="path">
+    <span class="chip ghost">your repo on github.com</span><span class="arw">▸</span>
+    <span class="chip">Code ▾</span><span class="arw">▸</span>
+    <span class="chip">Open with GitHub Desktop</span>
+  </div>
+  <p>A <strong>Clone a Repository</strong> window opens with a <strong>Local Path</strong> box. Click <strong>Choose…</strong> and pick somewhere you'll actually find again — your Desktop is fine. Then click <strong>Clone</strong>.</p>
+
+  <div class="bad">
+    <strong>Write down where it went.</strong> The most common problem in this lesson is a student who cloned their repository and then cannot find it. Open the folder right now and look at it before moving on.
+  </div>
+
+  <div class="warn">
+    <strong>You now have two folders and only one counts.</strong> Your old project folder from earlier this term is history — a snapshot of how things were. <strong>The cloned repository is the real one from today onward.</strong> Everything you change happens in there.
+  </div>
+
+  <h3>Open it in VS Code</h3>
+  <p>In GitHub Desktop, click <strong>Open in Visual Studio Code</strong>. (Or in VS Code: <strong>File → Open Folder…</strong> and pick your cloned folder.)</p>
+  <p>VS Code will ask whether you trust the folder. Click <strong>Yes, I trust the authors</strong> — it's your own work.</p>
+
+  <div class="card">
+    <p><strong>What you're looking at.</strong> Down the left is every file in your repository. That sidebar <em>is</em> your repo — the same files you saw on GitHub, now on your machine.</p>
+    <p>Click <code>index.html</code> — the one at the <strong>top</strong> of the list, not the one inside your project folder. That's your homepage.</p>
+  </div>
+</div>
+
+<div class="pane" id="o-ipad">
+  <h3>Open github.dev</h3>
+  <p>Go to your repository on <strong>github.com</strong>, then either:</p>
+  <ul>
+    <li>Press the <strong><code>.</code></strong> key (a full stop), or</li>
+    <li>Change <code>github.com</code> to <code>github.dev</code> in the address bar</li>
+  </ul>
+  <p>Your whole repository opens in an editor. Files down the left, code in the middle.</p>
+
+  <div class="card">
+    <p>Click <code>index.html</code> — the one at the <strong>top</strong> of the list, not the one inside your project folder. That's your homepage.</p>
+  </div>
+
+  <div class="warn">
+    <strong>Nothing gets copied to your iPad.</strong> You're editing GitHub's copy directly, which means there's no folder to lose — but you do need to stay online. If the <code>.</code> shortcut does nothing on your keyboard, type the address by hand.
+  </div>
+</div>
+
+<!-- ============ PART 3 ============ -->
+<h2><span class="num">PART 3</span>Redesign it with Gemini</h2>
+<p class="sub">This is the actual work today. The rest is plumbing.</p>
+<div class="obj"><b>Objective</b>A homepage that looks like somebody designed it on purpose — specifically, you.</div>
+
+<p>What you've got right now is a mockup. It works, and it looks like it works, and that's all it does. Here's what separates a page that was <em>designed</em> from one that was merely finished:</p>
+
+<div class="two">
+  <div class="card">
+    <h4>Colour</h4>
+    <p>Pick your own — two or three, deliberately. A background, a text colour, one accent. The starter's grey was a placeholder, not a decision.</p>
+  </div>
+  <div class="card">
+    <h4>Type</h4>
+    <p>One font choice changes everything. Anything is more interesting than the browser default, which is what you have now.</p>
+  </div>
+  <div class="card">
+    <h4>Space</h4>
+    <p>Crowded pages read as unfinished. Give headings room above them and let things breathe.</p>
+  </div>
+  <div class="card">
+    <h4>Words</h4>
+    <p>"Things I'm building" is filler. Say something true and specific about what you make. This is the part people actually read.</p>
+  </div>
+</div>
+
+<h3>Copy your file into Gemini</h3>
+<p>In your editor, click inside <code>index.html</code>, select everything — <strong>Mac:</strong> <code>⌘A</code> &nbsp;<strong>Windows:</strong> <code>Ctrl+A</code> — and copy.</p>
+<p>Open Gemini, paste it in, and use this:</p>
+
+<pre><button class="copy">copy</button><code>Here is my portfolio homepage. Redesign how it looks.
+
+What I want: [describe the colours, the mood, the font feel,
+and how spacious or dense it should be — be specific,
+"make it look cool" gets you nothing]
+
+RULES — these matter:
+- Keep it ONE self-contained HTML file. No separate CSS files.
+- Do NOT change any of my links or the folder names in them.
+- Keep it working on a phone.
+- Change nothing else about how it works.
+
+Give me the whole file back in one code block.</code></pre>
+
+<h3>Paste it back</h3>
+<ol>
+  <li>Click inside Gemini's code block and copy <strong>all</strong> of it</li>
+  <li>Back in your editor, click into <code>index.html</code></li>
+  <li><strong>Select everything</strong> (<code>⌘A</code> / <code>Ctrl+A</code>) so the new version <em>replaces</em> the old one</li>
+  <li>Paste</li>
+  <li><strong>Save</strong> — <code>⌘S</code> / <code>Ctrl+S</code></li>
+</ol>
+
+<div class="bad">
+  <strong>Don't skip the select-all.</strong> Paste without it and you get the new file jammed on top of the old one — two complete web pages in a single file. It looks like nonsense and it is.
+</div>
+
+<div class="warn">
+  <strong>Check you actually saved.</strong> In VS Code, an unsaved file shows a <strong>●</strong> instead of an <strong>✕</strong> on its tab. Dot means unsaved. Nothing you do next will work if that dot is there. <em>(github.dev saves as you type — nothing to do.)</em>
+</div>
+
+<!-- ============ PART 4 ============ -->
+<h2><span class="num">PART 4</span>Check what changed, then push</h2>
+<p class="sub">Now go and look at what you actually did.</p>
+<div class="obj"><b>Objective</b>Your changes read and understood, saved with a message, and live on the internet.</div>
+
+<div class="tabs" data-group="push">
+  <button class="tab on" data-t="p-laptop">GitHub Desktop</button>
+  <button class="tab" data-t="p-ipad">github.dev</button>
+</div>
+
+<div class="pane on" id="p-laptop">
+  <p>Switch to GitHub Desktop. It already knows what you did — it's been watching the folder the whole time.</p>
+  <p>The <strong>Changes</strong> tab on the left lists every file you touched. Click <code>index.html</code>.</p>
+</div>
+
+<div class="pane" id="p-ipad">
+  <p>Click the <strong>Source Control</strong> icon in the far-left bar — the one shaped like a branching line. It lists every file you changed.</p>
+  <p><strong>Click the file name</strong> to open the comparison view.</p>
+</div>
+
+<h3>What you're looking at is a diff</h3>
+
+<div class="card">
+  <p>When a file changes, Git compares the old version to the new one and shows you <strong>every line that's different.</strong> That's a diff, and it's what fills your screen right now.</p>
+  <div class="diff">
+<div class="ctx"><span class="mark"> </span>  &lt;body&gt;</div>
+<div class="del"><span class="mark">−</span>    &lt;h1&gt;Maya&lt;/h1&gt;</div>
+<div class="del"><span class="mark">−</span>    &lt;p class="tag"&gt;Things I'm building.&lt;/p&gt;</div>
+<div class="add"><span class="mark">+</span>    &lt;h1&gt;maya ✦ makes things&lt;/h1&gt;</div>
+<div class="add"><span class="mark">+</span>    &lt;p class="tag"&gt;Games, mostly. Some of them work.&lt;/p&gt;</div>
+<div class="ctx"><span class="mark"> </span></div>
+  </div>
+  <p><strong>Red with a minus is gone. Green with a plus is new.</strong> Grey lines are untouched, shown so you can see where you are.</p>
+  <p>Nobody writes a diff — it's <em>computed</em>. Git works it out by comparing the two files. Which makes it the only completely honest record of what you did. You can misremember what you changed. This can't.</p>
+</div>
+
+<h3>Read it before you send it</h3>
+<p>Scroll the whole thing. You're looking for three things:</p>
+<ul>
+  <li><strong>Changes you meant to make.</strong> Good — that's your design work.</li>
+  <li><strong>Changes you never asked for.</strong> AI rewriting things you didn't mention. Very common. This is your one chance to catch it.</li>
+  <li><strong>Your project link.</strong> Find it in the diff. Is it still exactly <code>your-folder-name/</code>?</li>
+</ul>
+
+<div class="bad">
+  <strong>The link is what breaks.</strong> Your project link must stay as <code>your-folder-name/</code> — folder name, slash, nothing before it. A redesign that turns it into <code>https://…</code> or changes the capitals will break your site, and everything will look perfectly fine until someone clicks it.
+</div>
+
+<div class="good">
+  <strong>The test:</strong> if you can't explain a green line, you don't yet know what your own site does. Find out before you commit it.
+</div>
+
+<h3>Now send it</h3>
+
+<div class="tabs" data-group="send">
+  <button class="tab on" data-t="x-laptop">GitHub Desktop</button>
+  <button class="tab" data-t="x-ipad">github.dev</button>
+</div>
+
+<div class="pane on" id="x-laptop">
+  <div class="card">
+    <p><strong>Commit</strong> = save this version, with a note about what it is.<br>
+    <strong>Push</strong> = send your saved versions up to GitHub.</p>
+    <p>They're two steps because your repository exists in <strong>two places</strong> — the copy on your computer and the copy on GitHub. Committing writes to yours. Pushing syncs it to theirs.</p>
+  </div>
+  <ol>
+    <li>Bottom left, type a <strong>Summary</strong> — what you changed, in a few words</li>
+    <li>Click <strong>Commit to main</strong></li>
+    <li>The file list empties. That's right — it's saved on your computer now</li>
+    <li>Top of the window, click <strong>Push origin</strong></li>
+  </ol>
+  <div class="warn">
+    <strong>Committing is not publishing.</strong> Stop after committing and your live site is unchanged — you saved to your own computer and told nobody. <strong>Push origin</strong> is what puts it on the internet, and forgetting it is the single most common mistake with this app.
+  </div>
+</div>
+
+<div class="pane" id="x-ipad">
+  <ol>
+    <li>Click the <strong>+</strong> next to your changed file (this is "staging" — choosing what goes in)</li>
+    <li>Type a message in the box — what you changed, in a few words</li>
+    <li>Click <strong>Commit &amp; Push</strong></li>
+  </ol>
+  <div class="good">
+    <strong>Why yours is one button and theirs is two.</strong> There's no copy of your repository on your iPad — you've been editing GitHub's copy all along. So there's nothing to sync: saving and publishing are the same act. On a laptop they're genuinely two separate events, which is why that app has two buttons.
+  </div>
+</div>
+
+<p><strong>Good messages:</strong> <code>Redesign homepage with green palette</code> · <code>New fonts and spacing</code><br>
+<strong>Useless messages:</strong> <code>update</code> · <code>changes</code> · <code>asdf</code></p>
+
+<!-- ============ PART 5 ============ -->
+<h2><span class="num">PART 5</span>Test it like a stranger</h2>
+<p class="sub">Your editor showing the right thing is not evidence.</p>
+<div class="obj"><b>Objective</b>Proof your redesign works for someone who isn't you, on a device that isn't yours.</div>
+
+<p>Wait a minute or two, then open your live address in a new tab.</p>
+
+<label class="check"><input type="checkbox"><span>The new design is showing — not the old one</span></label>
+<label class="check"><input type="checkbox"><span><strong>My project link still opens my project</strong></span></label>
+<label class="check"><input type="checkbox"><span>The project itself still runs, start to finish</span></label>
+<label class="check"><input type="checkbox"><span>It looks right on my <strong>phone</strong></span></label>
+<label class="check"><input type="checkbox"><span>Someone else opened it on their device and it looked right</span></label>
+<label class="check"><input type="checkbox"><span>I can say what my commit message means without looking</span></label>
+<button class="reset" id="reset">Reset checklist</button>
+
+<div class="warn">
+  <strong>New work breaks old work.</strong> You've seen this with levels — you add Level 2 and Level 1 stops working. Redesigning does the same thing to your links. That's why the link check is on this list and not optional.
+</div>
+
+<div class="warn">
+  <strong>Still seeing the old version?</strong> The site rebuilds on a delay. Wait two minutes, then hard-refresh — <strong>Mac:</strong> <code>⌘⇧R</code> &nbsp;<strong>Windows:</strong> <code>Ctrl+Shift+R</code>.
+</div>
+
+<!-- ============ PART 6 ============ -->
+<h2><span class="num">PART 6</span>Your workflow from now on</h2>
+<p class="sub">You just did this once with instructions. Now it's a habit.</p>
+<div class="obj"><b>Objective</b>Change anything on your site, any time, without needing this page open.</div>
+
+<div class="loop">
+  <div class="step"><b>1</b><div><strong>Pull</strong> — in GitHub Desktop, click <strong>Fetch origin</strong> before you start. Two seconds, and it saves you from the worst problem there is</div></div>
+  <div class="step"><b>2</b><div><strong>Edit in VS Code</strong> — one file at a time, save as you go</div></div>
+  <div class="step"><b>3</b><div><strong>Read the diff</strong> — check it's only what you meant</div></div>
+  <div class="step"><b>4</b><div><strong>Commit</strong> — with a message that says something</div></div>
+  <div class="step"><b>5</b><div><strong>Push</strong> — send it up</div></div>
+  <div class="step"><b>6</b><div><strong>Test the live site</strong> — including every link</div></div>
+</div>
+
+<div class="good">
+  <strong>Why step 1 matters.</strong> You can change your site from your computer <em>or</em> from github.com in a browser. Edit the same file in both without syncing and Git can't tell which version you meant. Pulling first takes two seconds and prevents the whole mess.
+</div>
+
+<!-- ============ FIXES ============ -->
+<h2><span class="num">FIXES</span>When something goes wrong</h2>
+<p class="sub">Find what you're seeing, then read across.</p>
+
+<table>
+  <tr><th>What you're seeing</th><th>What to do</th></tr>
+  <tr><td><strong>I can't find the folder I cloned</strong></td>
+      <td>GitHub Desktop → <strong>Repository</strong> menu → <strong>Show in Finder / Show in Explorer</strong>.</td></tr>
+  <tr><td><strong>GitHub Desktop shows no changes</strong></td>
+      <td>You didn't save. Look for the <strong>●</strong> on the VS Code tab and press <code>⌘S</code> / <code>Ctrl+S</code>.</td></tr>
+  <tr><td><strong>My page looks like two pages stacked up</strong></td>
+      <td>You pasted without selecting all first. Select everything, delete, paste the new version cleanly.</td></tr>
+  <tr><td><strong>I committed but the site didn't change</strong></td>
+      <td>You didn't push. Click <strong>Push origin</strong> at the top. This is the big one.</td></tr>
+  <tr><td><strong>Site looks the same after pushing</strong></td>
+      <td>Rebuild delay. Wait two minutes, then hard-refresh.</td></tr>
+  <tr><td><strong>My project link 404s now</strong></td>
+      <td>The redesign changed it. Open the diff, find the link, set it back to <code>your-folder-name/</code> — lowercase, trailing slash, nothing before it.</td></tr>
+  <tr><td><strong>The whole page is blank</strong></td>
+      <td>You pasted only part of the file. Select all of Gemini's code block and paste again.</td></tr>
+  <tr><td><strong>"This branch is behind" / can't push</strong></td>
+      <td>Something changed on GitHub that you don't have. Click <strong>Pull origin</strong> first, then push.</td></tr>
+  <tr><td><strong>The diff is enormous and I didn't do that</strong></td>
+      <td>Gemini reformatted the whole file. Not broken, just noisy — read it before committing, and add "change nothing else" next time.</td></tr>
+  <tr><td><strong>VS Code says it doesn't trust the folder</strong></td>
+      <td>Click <strong>Yes, I trust the authors</strong>. It's your own work.</td></tr>
+  <tr><td><strong>github.dev won't open with <code>.</code></strong></td>
+      <td>Keyboard layout. Type <code>github.dev</code> in the address bar instead.</td></tr>
+</table>
+
+<footer>
+  Building with AI · Keep this page open while you work.<br>
+  A commit message is a note to whoever opens this next — usually you, in three weeks, having forgotten everything.
+</footer>
+
+</div>
+
+<script>
+  document.querySelectorAll('.tabs').forEach(function(group){
+    group.addEventListener('click', function(e){
+      var btn = e.target.closest('.tab');
+      if(!btn) return;
+      var ids = [];
+      group.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('on'); ids.push(t.dataset.t); });
+      btn.classList.add('on');
+      ids.forEach(function(id){
+        var el = document.getElementById(id);
+        if(el) el.classList.toggle('on', id === btn.dataset.t);
+      });
+    });
+  });
+
+  document.querySelectorAll('.copy').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var text = btn.parentElement.querySelector('code').innerText;
+      navigator.clipboard.writeText(text).then(function(){
+        btn.textContent='copied'; btn.classList.add('done');
+        setTimeout(function(){ btn.textContent='copy'; btn.classList.remove('done'); },1600);
+      }).catch(function(){
+        btn.textContent='select it manually';
+        setTimeout(function(){ btn.textContent='copy'; },2000);
+      });
+    });
+  });
+
+  document.querySelectorAll('label.check').forEach(function(l){
+    var box = l.querySelector('input');
+    box.addEventListener('change', function(){ l.classList.toggle('done', box.checked); });
+  });
+  document.getElementById('reset').addEventListener('click', function(){
+    document.querySelectorAll('label.check').forEach(function(l){
+      l.querySelector('input').checked = false; l.classList.remove('done');
+    });
+  });
+</script>
+</body>
+</html>
