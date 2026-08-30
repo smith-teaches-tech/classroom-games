@@ -65,6 +65,16 @@ h3.sub{font-family:var(--cond);font-size:12px;letter-spacing:.12em;text-transfor
 .chain-num{flex:0 0 26px;font-family:var(--type);font-size:12px;color:var(--ink-light);text-align:right;padding-top:.5rem;}
 .chain-text{flex:1;background:#fff;border:1px solid var(--rule);border-left:3px solid var(--ok);padding:.5rem .75rem;font-size:14.2px;line-height:1.6;border-radius:2px;}
 .chain-text.opener{border-left-color:var(--accent);}
+/* free-assembly states (The Prince) */
+.chain-text.pending{border-left-color:var(--rule);}
+.chain-text.ok{border-left-color:var(--ok);background:var(--ok-bg);}
+.chain-text.bad{border-left-color:var(--bad);background:var(--bad-bg);}
+.rowctl{flex:0 0 22px;display:flex;flex-direction:column;gap:2px;padding-top:.4rem;}
+.rowctl button{border:1px solid var(--rule);background:#fff;color:var(--ink-light);font-size:9px;line-height:1;padding:3px 0;cursor:pointer;border-radius:2px;font-family:var(--sans);}
+.rowctl button:hover:not(:disabled){border-color:var(--accent);color:var(--accent);}
+.rowctl button:disabled{opacity:.25;cursor:default;}
+.poollab{font-family:var(--cond);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-light);margin:1.1rem 0 .35rem;display:flex;align-items:center;gap:.6rem;}
+.poollab::after{content:"";flex:1;height:1px;background:var(--rule);}
 .hook{background:var(--hook-bg);color:var(--hook);font-weight:600;padding:0 3px;border-radius:2px;}
 .slot{border:2px dashed var(--rule);border-radius:3px;padding:.7rem .8rem;font-family:var(--cond);font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-light);text-align:center;margin-left:34px;transition:all .15s;}
 .slot.over{border-color:var(--accent);background:var(--accent-light);color:var(--accent);}
@@ -92,6 +102,9 @@ h3.sub{font-family:var(--cond);font-size:12px;letter-spacing:.12em;text-transfor
 .btn:hover{background:var(--accent);border-color:var(--accent);}
 .btn.ghost{background:none;color:var(--ink);}
 .btn.ghost:hover{background:var(--ink);color:var(--paper);}
+.btn:disabled{opacity:.3;cursor:default;}
+.btn:disabled:hover{background:var(--ink);border-color:var(--ink);}
+.btn.ghost:disabled:hover{background:none;color:var(--ink);}
 .btnrow{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.4rem;}
 
 /* ── DEVICE REVEAL ── */
@@ -205,7 +218,9 @@ h3.sub{font-family:var(--cond);font-size:12px;letter-spacing:.12em;text-transfor
 <div class="tab-panel" id="p2"><div class="wrap">
   <div class="stage-num">Stage Two</div>
   <h2 class="stage-title">Machiavelli, <em>The Prince</em></h2>
-  <p class="lede">Same puzzle, almost no repetition. <strong>Paragraphing is not random here</strong> &mdash; you are given the paragraph divisions, and you rebuild each one from the inside. Expect to get some wrong. That is the point; the wrong answers are where the lesson is.</p>
+  <p class="lede">Same puzzle, almost no repetition. <strong>Paragraphing is not random here</strong> &mdash; you are given the paragraph divisions, and you rebuild each one from the inside.</p>
+
+  <div class="hintbox"><b>How this one works</b>Build the <em>whole</em> paragraph before you find out anything. Place the sentences in any order, reorder them with the arrows, pull one back out with <strong>&times;</strong> &mdash; and when every sentence is down, press <strong>Check work</strong>. Nothing is marked right or wrong until you do, so you cannot guess your way through this one. Read first, place second.</div>
 
   <div class="hintbox"><b>Before you start</b>Read the <em>first two or three words</em> of every sentence before you place anything, and ask one question of each: <strong>what is this pointing at?</strong> <q>This character</q> &mdash; which character? <q>Then</q> &mdash; after what? Nearly every sentence here is holding on to something you can name. <strong>Read the chapter title too</strong> &mdash; it is part of the text, and one sentence cannot be solved without it.</div>
 
@@ -365,121 +380,6 @@ var WINSTEP = {
  "P1|7":"And there it is: <em>labeled a miser</em>, the last two words. Paragraph two will open by picking that word straight back up."
 };
 
-/* ═══ THE HINT MATRIX ═══
-   key: paragraph|slotIndex|wrongKey  →  [nudge, device, answer]           */
-var HINTS = {
-
-/* ── P1 slot 0 : needs g ── */
-"P1|0|c":["It does sound like a rule a paragraph could open with. But read its first word out loud.",
- "<q>Hence</q> means <em>therefore</em>. A therefore is an answer &mdash; it needs a reason sitting in front of it. What reason is this concluding from? Nothing has been said yet.",
- "Not this one. <q>Hence</q> can never be a first word. Every sentence here reaches backward &mdash; so look for the one whose reach lands <em>outside</em> this passage, in the chapter title and the chapter before it. It announces itself: <q>Let me begin&hellip;</q>"],
-"P1|0|h":["Check the first word. <q>For</q> &mdash; in this older sense it means <em>because</em>.",
- "A <em>because</em> is proof of a claim. Which claim? It hasn't been made yet. This sentence is defending something that isn't on the page.",
- "Not this one &mdash; it's the evidence, not the assertion. Find the sentence that makes an announcement instead of an argument."],
-"P1|0|d":["<q>A prince of this character</q> &mdash; which character?",
- "<q>This character</q> points backward at a prince already described. Nobody has been described yet. Somewhere in the pile is the sentence that describes him.",
- "Not this one. <q>This character</q> is a pointer with nothing in the pile to point at. Your opener is the sentence whose pointer reaches <em>past</em> the pile altogether &mdash; out to the chapter title and what came before it."],
-"P1|0|b":["Two of the first four words give it away.",
- "<q>Thus</q> = therefore. <q>In the end</q> = after everything. The sentence is announcing that it is a <em>destination</em>. You are at the start.",
- "Not this one &mdash; it's near the finish. Find the sentence that says it is beginning."],
-"P1|0|e":["<q>First step</q> is tempting for a first sentence. Look at the word right before it.",
- "<q><strong>This</strong> is the first step.</q> <em>This</em> what? The sentence names a step but sends you backward to find out what the step was. An opening sentence cannot send you backward.",
- "Not this one. It's the first step of the prince's <em>ruin</em>, not the first sentence of the paragraph &mdash; and it needs a sentence in front of it saying what he did."],
-"P1|0|a":["<q>Foresees this.</q> Foresees <em>what</em>?",
- "The sentence assumes you already know what disaster is coming. Nothing has been laid out for him to see coming.",
- "Not this one &mdash; it's an escape attempt from a trap that hasn't been built yet. It's the paragraph's last sentence."],
-"P1|0|f":["<q>Then</q> is a time word. Then &mdash; <em>after what</em>?",
- "It also assumes his generosity has already angered people. That damage hasn't happened yet on the page.",
- "Not this one. <q>Down he goes</q> is the end of the disaster, and the disaster hasn't started."],
-
-/* ── P1 slot 1 : after g, needs h ── */
-"P1|1|c":["You read it as: generosity harms you, <em>therefore</em> make a big display. Does that actually follow?",
- "<q>Hence</q> has to sit on the reason directly before it. He hasn't yet told you <em>why</em> a display would be necessary. Somewhere in the pile is the sentence that supplies it &mdash; one about what happens when you give quietly and honestly.",
- "Not yet. First he proves that virtuous generosity is <em>invisible</em>: <q>nobody will know of it.</q> Only then does <q>Hence&hellip; make a big display</q> make sense. Place the proof first."],
-"P1|1|e":["<q>This is the first step</q> &mdash; what would <em>this</em> be pointing at right now?",
- "It would point at <q>great harm.</q> But harm is where the road <em>ends</em>. A first step has to be something the prince <em>does</em>.",
- "Not yet &mdash; he hasn't done anything yet. Machiavelli owes you a reason before he gives you a sequence."],
-"P1|1|d":["<q>A prince of this character</q> &mdash; has a character been described?",
- "So far you have a claim about generosity, not a portrait of a man. Someone has to describe the showy giver before <q>this character</q> means anything.",
- "Not yet. Save it for after the prince who <q>makes a big display</q> has been introduced."],
-"P1|1|b":["<q>Thus, in the end</q> &mdash; and you're on sentence two of eight.",
- "This is a conclusion drawn from at least three steps that haven't been taken. It also needs a reason the prince has run out of his own money.",
- "Not yet &mdash; it's the bottom of the argument, not the second rung."],
-"P1|1|a":["<q>Foresees this</q> &mdash; what has he been shown so far that he'd want to avoid?",
- "<q>Great harm</q> is vague. He can only <em>foresee</em> a specific fate once that fate has been spelled out.",
- "Not yet. Hold it until the trap has already shut &mdash; it's the last sentence."],
-"P1|1|f":["You spotted the word <em>generosity</em> repeated. Good instinct, wrong sentence.",
- "Read what it says about that generosity: it has <q>angered many and brought rewards to a few.</q> Who got angry? Nobody has been taxed yet.",
- "Not yet &mdash; this is the final consequence. A repeated <em>word</em> is not the same as a continued <em>idea</em>. That's the whole trap of this passage."],
-
-/* ── P1 slot 2 : after h, needs c ── */
-"P1|2|d":["<q>A prince of this character</q> &mdash; you're pointing at the man in the sentence before. Which man is that?",
- "That man gives <em>virtuously and quietly</em>. But this sentence says he uses up his revenue in <q>works of ostentation.</q> Ostentation is the opposite of quiet. Wrong man.",
- "Not yet. <q>This character</q> needs the show-off to exist first &mdash; the one who <q>seize[s] every opportunity to make a big display.</q> Place that sentence, then this one."],
-"P1|2|b":["You went straight from <q>nobody will know</q> to <q>load his people with taxes.</q> Two steps are missing.",
- "Why does he need his subjects' money? Because his own is gone. And why is his own gone? Because he's been buying a reputation. Neither has been said.",
- "Not yet &mdash; <q>Thus, in the end</q> has to rest on the sentence that makes the taxes unavoidable."],
-"P1|2|e":["<q>This</q> would point at the odium in the sentence before. Whose odium is that?",
- "That odium is <em>yours</em> &mdash; you get called stingy. <q>Odious to his subjects</q> is a different injury, caused by a different act, and that act hasn't happened.",
- "Not yet. Something has to make the subjects suffer before they can hate him."],
-"P1|2|a":["<q>Foresees this</q> &mdash; has the disaster been described in enough detail to be foreseen?",
- "He'd be reforming to dodge a fate you haven't been shown. Machiavelli always builds the trap before he shows the prince trying the door.",
- "Not yet &mdash; hold it for the very end."],
-"P1|2|f":["<q>Then</q> &mdash; after which moment?",
- "<q>The slightest difficulty will trouble him</q> only bites once he is poor and hated. Neither is on the page.",
- "Not yet &mdash; this is the collapse, and nothing has been knocked over."],
-
-/* ── P1 slot 3 : after c, needs d ── */
-"P1|3|b":["A display costs money, so: taxes. Reasonable. But whose money does he spend <em>first</em>?",
- "<q>Thus, in the end, he will have to load his people with taxes</q> only works if his own treasury is already empty. Machiavelli spends a whole sentence emptying it. Find that sentence.",
- "Not yet. The order is: display &rarr; his own revenue consumed &rarr; <em>therefore</em> other people's money. You skipped the middle. Look for <q>A prince of this character&hellip;</q>"],
-"P1|3|e":["<q>This is the first step in making him odious to his subjects.</q> Is making a big display an injury to his subjects?",
- "Not at all &mdash; a display <em>pleases</em> them. What angers them is being squeezed. That sentence isn't down yet, and neither is the one where he burns through his own fortune.",
- "Not yet &mdash; two sentences of cause come first."],
-"P1|3|a":["Foresees what? He's still enjoying his reputation.",
- "Nothing has gone wrong yet for him to see coming.",
- "Not yet &mdash; this is the escape attempt, and it comes last."],
-"P1|3|f":["<q>Then, when his generosity has angered many&hellip;</q> &mdash; has it angered anyone yet?",
- "So far his generosity has only bought applause. The anger comes later, and it comes from taxes.",
- "Not yet &mdash; that's the collapse, several steps down the road."],
-
-/* ── P1 slot 4 : after d, needs b ── */
-"P1|4|e":["He's broke, so he's despised. That feels right &mdash; but read exactly <em>who</em> despises him, and for what.",
- "<q>Odious <strong>to his subjects</strong>.</q> His empty treasury is his problem, not theirs. What does he do to <em>them</em>? That sentence is still in the pile.",
- "Not yet. He empties his own purse, then reaches into theirs &mdash; <q>exorbitant taxes.</q> <em>That</em> is the first step in making him odious. Place the taxes, then this."],
-"P1|4|a":["<q>Foresees this</q> &mdash; <em>this</em> what? Being out of money?",
- "He isn't in danger yet, only broke. The danger &mdash; subjects who hate him, a throne that tips &mdash; hasn't been named.",
- "Not yet. Three sentences to go before the escape attempt."],
-"P1|4|f":["<q>Angered many and brought rewards to a few</q> &mdash; right idea, wrong moment.",
- "Nobody is angry yet. He has spent his own money, not theirs. Machiavelli still has to tax them, and name the damage, before anything collapses.",
- "Not yet &mdash; two more steps first."],
-
-/* ── P1 slot 5 : after b, needs e ── */
-"P1|5|f":["Taxes anger people, so he falls. Your causal logic is right. But <q>Then</q> is a sequence word: then &mdash; <em>after what</em>?",
- "Nothing has been called a step yet. Machiavelli names the damage first, and he names it as a <em>beginning</em>, before he runs the sequence out to its end.",
- "Not yet. <q>This is the first step in making him odious to his subjects</q> comes next. Only once there is a first step can there be a <q>Then.</q>"],
-"P1|5|a":["<q>Foresees this</q> &mdash; <em>this</em> what? The taxes? He has already levied those.",
- "You can't foresee what you've already done. He has to be shown the whole disaster &mdash; hatred, contempt, the fall &mdash; before there is anything left to see coming.",
- "Not yet. This is the very last sentence: the escape hatch, opened only after the trap has shut."],
-
-/* ── P1 slot 6 : after e, needs f ── */
-"P1|6|a":["He sees he is becoming hated, so he changes course. Fair reading &mdash; but look at the sentence you just placed. It called something <q>the first step.</q>",
- "A first step promises a next step. In the pile is a sentence that begins <q>Then&hellip;</q> &mdash; that is the step he promised you. A hypothetical (<q>If by chance&hellip;</q>) <em>breaks</em> a sequence; it doesn't continue one.",
- "Not yet. <q>First step&hellip; Then&hellip;</q> lock together. Run the disaster all the way to <q>down he goes</q>, and only then let the prince try to escape it."],
-
-/* ── P2 slot 0 : needs k ── */
-"P2|0|i":["<q>In due course he will be thought the more liberal man.</q> In due course &mdash; after <em>what</em>?",
- "And <q>his parsimony</q> &mdash; his stinginess &mdash; is treated as an established fact. Who established it? A paragraph can't open by assuming a label it hasn't handed out.",
- "Not this one. Look for the sentence that gathers up the whole last paragraph and gives the prince the miser label. It begins <q>Since&hellip;</q>"],
-"P2|0|j":["<q>Thus</q> again. Therefore &mdash; from what?",
- "It's also doing arithmetic: the many he takes nothing from against the few he gives nothing to. That's the <em>proof</em> of a surprising claim, and the claim hasn't been made.",
- "Not this one &mdash; it's the last sentence of the paragraph. Openers don't conclude."],
-
-/* ── P2 slot 1 : after k, needs i ── */
-"P2|1|j":["You've delivered the explanation before the thing it explains.",
- "<q>Thus</q> would be concluding from <q>he won't mind being known as a miser.</q> But this sentence isn't about not minding &mdash; it's about him turning out to be genuinely liberal toward the many. Some sentence has to make that claim first.",
- "Not yet. The order is: accept the miser name &rarr; <em>and yet</em> people will come to think him the more liberal man &rarr; <em>here is the arithmetic that makes that true.</em> You're at step three."]
-};
 
 /* ─────────────── DEVICE REVEAL DATA ─────────────── */
 var DEVICES = [
@@ -636,8 +536,8 @@ var TABS=[
 ];
 var st = load();
 function load(){
-  try{var r=JSON.parse(localStorage.getItem(KEY)); if(r&&r.v===1) return r;}catch(e){}
-  return {v:1, frog:0, frogDone:false, disc:false, P1:0, P2:0, p3:false, princeDone:false, dec:{}, decodeDone:false, bypass:false};
+  try{var r=JSON.parse(localStorage.getItem(KEY)); if(r&&r.v===2) return r;}catch(e){}
+  return {v:2, frog:0, frogDone:false, disc:false, P1:0, P2:0, arr:{}, shuf:{}, p3:false, princeDone:false, dec:{}, decodeDone:false, bypass:false};
 }
 function save(){ try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){} }
 
@@ -799,7 +699,6 @@ function renderSeams(){
 }
 
 /* ─────────────── PRINCE ─────────────── */
-var pState={};
 function renderPrince(){
   var out="";
   for(var n=0;n<PARA.length;n++){
@@ -826,69 +725,136 @@ function renderPrince(){
   if(document.getElementById("P3_body")) renderP3();
 }
 
+/* ── Free assembly: build the whole paragraph, then Check work. ──
+   No evaluation happens until Check is pressed. Check marks each row
+   right or misplaced and nothing else — it never names the answer. */
+var pMark={};   /* pid -> array of true/false, or null when unchecked */
+
+/* SHOW_WHICH = true  → Check work marks each row right / misplaced.
+   SHOW_WHICH = false → Check work reports only the number correct,
+                        and never says which ones. Harsher again. */
+var SHOW_WHICH = true;
+
+function arrOf(pid){
+  if(!st.arr) st.arr={};
+  if(!st.arr[pid]) st.arr[pid]=[];
+  return st.arr[pid];
+}
+function shufOf(P){
+  if(!st.shuf) st.shuf={};
+  if(!st.shuf[P.id]) { st.shuf[P.id]=shuffle(P.order.slice()); save(); }
+  return st.shuf[P.id];
+}
+function dirty(pid){ pMark[pid]=null; }
+
 function renderPara(P){
-  var pos=st[P.id]||0, done=pos>=P.order.length;
-  var h='<div class="progbar"><i style="width:'+Math.round(pos/P.order.length*100)+'%"></i></div>';
-  h+='<div class="counter">'+pos+' of '+P.order.length+' placed</div><div class="chain">';
-  for(var i=0;i<pos;i++){
-    h+='<div class="chain-row'+(i===pos-1?" fresh":"")+'"><div class="chain-num">'+(i+1)+'</div><div class="chain-text'+(i===0?" opener":"")+'">'+esc(S[P.order[i]])+'</div></div>';
-  }
-  h+='</div>';
+  var done=st[P.id]>=P.order.length;
+  var arr=arrOf(P.id), total=P.order.length, marks=pMark[P.id];
+
   if(done){
-    h+='<div class="fb good"><span class="lv">Paragraph rebuilt</span>'+P.win+'</div>';
-  } else {
-    h+='<div class="slot" id="'+P.id+'_slot">Next sentence &mdash; click or drag one below</div>';
-    h+='<div id="'+P.id+'_fb"></div>';
+    var h='<div class="chain">';
+    for(var i=0;i<total;i++){
+      h+='<div class="chain-row"><div class="chain-num">'+(i+1)+'</div><div class="chain-text'+(i===0?" opener":"")+'">'+esc(S[P.order[i]])+'</div></div>';
+    }
+    h+='</div><div class="fb good"><span class="lv">Paragraph rebuilt</span>'+P.win+'</div>';
+    for(var w=0;w<total;w++){
+      var note=WINSTEP[P.id+"|"+w];
+      if(note) h+='<div class="fb good"><span class="lv">And notice</span>'+note+'</div>';
+    }
+    document.getElementById(P.id+"_body").innerHTML=h;
+    return;
+  }
+
+  var pool=shufOf(P).filter(function(k){return arr.indexOf(k)<0;});
+  var h='<div class="progbar"><i style="width:'+Math.round(arr.length/total*100)+'%"></i></div>';
+  h+='<div class="counter">'+arr.length+' of '+total+' placed</div>';
+
+  h+='<div class="chain" id="'+P.id+'_chain">';
+  for(var i=0;i<arr.length;i++){
+    var cls="chain-text pending";
+    if(marks&&SHOW_WHICH) cls="chain-text "+(marks[i]?"ok":"bad");
+    h+='<div class="chain-row"><div class="chain-num">'+(i+1)+'</div>'+
+       '<div class="rowctl">'+
+         '<button type="button" title="Move up" onclick="pmove(\''+P.id+'\','+i+',-1)"'+(i===0?" disabled":"")+'>&#9650;</button>'+
+         '<button type="button" title="Move down" onclick="pmove(\''+P.id+'\','+i+',1)"'+(i===arr.length-1?" disabled":"")+'>&#9660;</button>'+
+         '<button type="button" title="Take out" onclick="ptake(\''+P.id+'\','+i+')">&times;</button>'+
+       '</div>'+
+       '<div class="'+cls+'">'+esc(S[arr[i]])+'</div></div>';
+  }
+  if(!arr.length) h+='<div class="slot">Click a sentence below to start the paragraph</div>';
+  h+='</div>';
+
+  if(pool.length){
+    h+='<div class="poollab">Still to place &middot; '+pool.length+'</div>';
     h+='<div class="pool" id="'+P.id+'_pool">';
-    if(!pState[P.id]) pState[P.id]={order:shuffle(P.order.slice()),wrong:0,lastSlot:pos};
-    var pool=pState[P.id].order.filter(function(k){return P.order.indexOf(k)>=pos;});
     for(var n=0;n<pool.length;n++){
-      h+='<button class="tile" draggable="true" data-i="'+pool[n]+'" onclick="ppick(\''+P.id+'\',\''+pool[n]+'\')">'+esc(S[pool[n]])+'</button>';
+      h+='<button class="tile" data-i="'+pool[n]+'" onclick="pplace(\''+P.id+'\',\''+pool[n]+'\')">'+esc(S[pool[n]])+'</button>';
     }
     h+='</div>';
   }
+
+  h+='<div class="btnrow"><button class="btn" id="'+P.id+'_check" onclick="pcheck(\''+P.id+'\')"'+
+     (arr.length<total?" disabled":"")+'>Check work</button>'+
+     (arr.length?'<button class="btn ghost" onclick="pclear(\''+P.id+'\')">Start over</button>':'')+'</div>';
+  h+='<div id="'+P.id+'_fb"></div>';
+
   document.getElementById(P.id+"_body").innerHTML=h;
-  if(!done) wireDrag(P.id+"_pool", P.id+"_slot", function(k){ppick(P.id,k);});
+  if(marks) paintFb(P,marks);
 }
 
-function ppick(pid,k){
+function paintFb(P,marks){
+  var right=0; for(var i=0;i<marks.length;i++) if(marks[i]) right++;
+  document.getElementById(P.id+"_fb").innerHTML=
+    '<div class="fb miss"><span class="lv">Not yet</span><strong>'+right+' of '+marks.length+
+    ' sentences are in the right place.</strong><br><br>'+
+    (SHOW_WHICH
+      ? 'The ones marked in red are not where they belong. Go back to their first few words and work out what each one is reaching for.'
+      : 'Read the first few words of each sentence again and work out what each one is reaching for.')+'</div>';
+}
+
+function pplace(pid,k){
+  var arr=arrOf(pid);
+  if(arr.indexOf(k)<0) arr.push(k);
+  dirty(pid); save(); renderPrince();
+}
+function ptake(pid,i){
+  arrOf(pid).splice(i,1);
+  dirty(pid); save(); renderPrince();
+}
+function pmove(pid,i,d){
+  var arr=arrOf(pid), j=i+d;
+  if(j<0||j>=arr.length) return;
+  var t=arr[i]; arr[i]=arr[j]; arr[j]=t;
+  dirty(pid); save(); renderPrince();
+}
+function pclear(pid){
+  st.arr[pid]=[];
+  dirty(pid); save(); renderPrince();
+}
+
+function pcheck(pid){
   var P=null; for(var n=0;n<PARA.length;n++) if(PARA[n].id===pid) P=PARA[n];
-  var pos=st[pid]||0, want=P.order[pos];
-  var S_=pState[pid];
-  if(k===want){
-    S_.wrong=0;
-    st[pid]=pos+1; save();
-    var note=WINSTEP[pid+"|"+pos];
+  var arr=arrOf(pid);
+  if(arr.length<P.order.length) return;
+  var marks=[], all=true;
+  for(var i=0;i<arr.length;i++){
+    var ok=(arr[i]===P.order[i]);
+    marks.push(ok);
+    if(!ok) all=false;
+  }
+  if(all){
+    st[pid]=P.order.length; pMark[pid]=null; save();
     renderPrince();
-    if(note){
-      var box=document.getElementById(pid+"_fb");
-      if(box) box.innerHTML='<div class="fb good"><span class="lv">Good — and notice</span>'+note+'</div>';
-      else {
-        var body=document.getElementById(pid+"_body");
-        if(body) body.insertAdjacentHTML("beforeend",'<div class="fb good"><span class="lv">Good — and notice</span>'+note+'</div>');
-      }
-    }
     if(st.P1>=PARA[0].order.length && st.P2>=PARA[1].order.length && st.p3 && !st.princeDone){
-      st.princeDone=true; save(); drawTabs();
+      st.princeDone=true; save();
     }
+    drawTabs();
     return;
   }
-  S_.wrong++;
-  var tile=document.querySelector('#'+pid+'_pool .tile[data-i="'+k+'"]');
-  if(tile){ tile.classList.add("wrong"); setTimeout(function(){tile.classList.remove("wrong");},340); }
-  var key=pid+"|"+pos+"|"+k;
-  var arr=HINTS[key];
-  var lv=Math.min(S_.wrong,3);
-  var labels=["Look again","The device","Here it is"];
-  var msg;
-  if(arr){ msg=arr[lv-1]; }
-  else { msg="Read the first few words of that sentence again and ask what they are pointing at."; }
-  document.getElementById(pid+"_fb").innerHTML=
-    '<div class="fb miss"><span class="lv">'+labels[lv-1]+'</span>'+msg+'</div>';
-  if(lv>=3){
-    var right=document.querySelector('#'+pid+'_pool .tile[data-i="'+want+'"]');
-    if(right) right.classList.add("glow");
-  }
+  pMark[pid]=marks;
+  renderPrince();
+  var body=document.getElementById(pid+"_body");
+  if(body) body.scrollIntoView({behavior:"smooth",block:"nearest"});
 }
 
 /* paragraph three — pointer question, not an ordering puzzle */
