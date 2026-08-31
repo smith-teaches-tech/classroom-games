@@ -18,7 +18,7 @@
   --shadow:0 1px 2px rgba(0,0,0,.4);
   --ap-lang:#ff7a5c; --ap-res:#f0b429; --ibcore:#2fd4bd; --tok:#8aa4ff;
   --ee:#c98ade; --mock:#ff6b6b; --practice:#69a8e0; --ai:#5bd075; --eng:#ffa14a;
-  --cas:#f778a8; --intro:#a68cff;
+  --cas:#f778a8; --intro:#a68cff; --seat:#a3d94f;
   --sans:'Inter',system-ui,-apple-system,sans-serif;
   --disp:'Space Grotesk','Inter',system-ui,sans-serif;
   --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
@@ -31,7 +31,7 @@ html[data-theme="light"]{
   --shadow:0 1px 2px rgba(16,20,28,.06);
   --ap-lang:#d1462c; --ap-res:#a8760f; --ibcore:#0f766e; --tok:#3b4ea0;
   --ee:#7c4a86; --mock:#b02a2a; --practice:#3d6288; --ai:#2f7a3f; --eng:#c2610f;
-  --cas:#a8476b; --intro:#5c48a0;
+  --cas:#a8476b; --intro:#5c48a0; --seat:#5c8a16;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -158,6 +158,7 @@ footer a:hover{color:var(--brand)}
   <g id="i-cas" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="9.2" cy="9.8" r="5"/><circle cx="14.8" cy="9.8" r="5"/><circle cx="12" cy="15" r="5"/></g>
   <g id="i-present" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4.5" width="17" height="11" rx="1.6"/><path d="M12 15.5V19M9 21l3-2 3 2"/><path d="M8 11l2.5-2.5L13 11l3-3.5"/></g>
   <g id="i-folder" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 6.5a1.5 1.5 0 0 1 1.5-1.5h4l2 2.2h7a1.5 1.5 0 0 1 1.5 1.5v9.3a1.5 1.5 0 0 1-1.5 1.5H5a1.5 1.5 0 0 1-1.5-1.5z"/><path d="M8 13.5h8"/></g>
+  <g id="i-seats" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.2" width="17" height="3.2" rx="1.1"/><rect x="4" y="10" width="6" height="4.2" rx="1.1"/><rect x="14" y="10" width="6" height="4.2" rx="1.1"/><rect x="4" y="16.6" width="6" height="4.2" rx="1.1"/><rect x="14" y="16.6" width="6" height="4.2" rx="1.1"/></g>
 </defs></svg>
 
 <div class="shell">
@@ -213,6 +214,7 @@ footer a:hover{color:var(--brand)}
 ══════════════════════════════════════════════════════════════════ */
 
 const COURSES = [
+  {id:"seating",  fam:"Classroom", name:"Classroom Routines",           short:"Classroom", tag:"Seating, grouping & daily logistics",  icon:"i-seats",   col:"var(--seat)"},
   {id:"ap-lang",  fam:"AP",       name:"AP Language & Composition", short:"AP Lang",   tag:"Rhetoric, syntax, argument & style",   icon:"i-pencil",  col:"var(--ap-lang)"},
   {id:"ap-res",   fam:"AP",       name:"AP Research",               short:"AP Research",tag:"Methods, reliability, sources & claims",icon:"i-search", col:"var(--ap-res)"},
   {id:"tok",      fam:"IB",       name:"Theory of Knowledge",       short:"TOK",       tag:"Knowledge, perspectives & method",     icon:"i-bulb",    col:"var(--tok)"},
@@ -227,6 +229,9 @@ const COURSES = [
 ];
 
 const TOOLS = [
+  /* ── Classroom Routines ── */
+  {c:"seating", n:"The Great Seat Scrambler", h:"seating_scrambler/"},
+
   /* ── AP Language ── */
   {c:"ap-lang", n:"Line of Reasoning: The Volupides Case", h:"ap-lang/line-of-reasoning/"},
   {c:"ap-lang", n:"Sentence Chains: Frog & Machiavelli", h:"ap-lang/sentence-chains/"},

@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Great Seat Scrambler</title>
+<style>
+/* ============================================================
+   THEMES
+   ============================================================ */
+:root{
+  --bg:#f6efe2; --bg2:#efe3cf; --ink:#3b2c1e; --muted:#8a765d;
+  --desk:#d9b98c; --deskEdge:#b5905e; --chair:#e9d9bd; --chairEdge:#c9ab7e;
+  --floor:#fbf5ea; --wall:#c9ab7e;
+  --chip:#fff8ec; --chipInk:#3b2c1e; --chipEdge:#c9a97a;
+  --accent:#e2673b; --accent2:#3f8f7a; --accent3:#e0a92b;
+  --panel:#fffdf8; --panelEdge:#e0cfb2;
+  --font:'Trebuchet MS','Segoe UI',system-ui,sans-serif;
+  --display:'Trebuchet MS','Segoe UI',system-ui,sans-serif;
+  --radius:14px; --chipRadius:11px;
+  --glow:none;
+}
+body[data-theme="arcade"]{
+  --bg:#0a0a1f; --bg2:#141433; --ink:#e8f7ff; --muted:#7d8ec9;
+  --desk:#1e2a63; --deskEdge:#3fe8ff; --chair:#2a1a4d; --chairEdge:#ff4fd8;
+  --floor:#0d0d26; --wall:#3fe8ff;
+  --chip:#12123a; --chipInk:#7dffcf; --chipEdge:#3fe8ff;
+  --accent:#ff4fd8; --accent2:#3fe8ff; --accent3:#ffe14f;
+  --panel:#10102e; --panelEdge:#2b2b66;
+  --font:'Courier New',ui-monospace,monospace;
+  --display:'Courier New',ui-monospace,monospace;
+  --radius:4px; --chipRadius:3px;
+  --glow:0 0 10px currentColor;
+}
+body[data-theme="space"]{
+  --bg:#0b0a1d; --bg2:#1a1440; --ink:#eae6ff; --muted:#9d94d4;
+  --desk:#2c2560; --deskEdge:#6f5fd0; --chair:#3a3080; --chairEdge:#8f7ff0;
+  --floor:#110f2c; --wall:#6f5fd0;
+  --chip:#efeaff; --chipInk:#241b52; --chipEdge:#a596ff;
+  --accent:#ffcf5c; --accent2:#7de0ff; --accent3:#ff86c8;
+  --panel:#171335; --panelEdge:#332a6b;
+  --font:'Trebuchet MS','Segoe UI',system-ui,sans-serif;
+  --display:'Trebuchet MS','Segoe UI',system-ui,sans-serif;
+  --radius:16px; --chipRadius:20px;
+  --glow:0 0 12px rgba(160,140,255,.5);
+}
+body[data-theme="jungle"]{
+  --bg:#e9f5df; --bg2:#d5ebc4; --ink:#22401f; --muted:#5f7d55;
+  --desk:#b98a55; --deskEdge:#8e6635; --chair:#e6d2ab; --chairEdge:#b98a55;
+  --floor:#f3fbec; --wall:#7fae5c;
+  --chip:#ffffff; --chipInk:#22401f; --chipEdge:#8bbf62;
+  --accent:#e2703a; --accent2:#3f9d54; --accent3:#f0b823;
+  --panel:#fbfff6; --panelEdge:#cbe3b8;
+  --font:'Trebuchet MS','Segoe UI',system-ui,sans-serif;
+  --display:'Trebuchet MS','Segoe UI',system-ui,sans-serif;
+  --radius:18px; --chipRadius:14px;
+  --glow:none;
+}
+body[data-theme="candy"]{
+  --bg:#fff0f6; --bg2:#ffe0ee; --ink:#5c2647; --muted:#a87396;
+  --desk:#ffc2dd; --deskEdge:#f088b8; --chair:#fff3c4; --chairEdge:#f5cd6a;
+  --floor:#fff8fb; --wall:#f088b8;
+  --chip:#ffffff; --chipInk:#5c2647; --chipEdge:#ff9ecb;
+  --accent:#ff5fa2; --accent2:#5fd0d8; --accent3:#ffca3a;
+  --panel:#fffafc; --panelEdge:#ffd6e7;
+  --font:'Trebuchet MS','Segoe UI',system-ui,sans-serif;
+  --display:'Trebuchet MS','Segoe UI',system-ui,sans-serif;
+  --radius:20px; --chipRadius:20px;
+  --glow:none;
+}
+body[data-theme="chalk"]{
+  --bg:#1f3a34; --bg2:#162b27; --ink:#f2f6ee; --muted:#a9c2b4;
+  --desk:#2f5049; --deskEdge:#f2f6ee; --chair:#27443e; --chairEdge:#cfe0d4;
+  --floor:#1a332e; --wall:#f2f6ee;
+  --chip:#24413b; --chipInk:#fdfbf0; --chipEdge:#f2f6ee;
+  --accent:#ffd75e; --accent2:#7fd6c1; --accent3:#ff9d8a;
+  --panel:#1b332e; --panelEdge:#33574f;
+  --font:'Trebuchet MS','Segoe UI',system-ui,sans-serif;
+  --display:'Trebuchet MS','Segoe UI',system-ui,sans-serif;
+  --radius:10px; --chipRadius:10px;
+  --glow:none;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  background:radial-gradient(circle at 20% 0%,var(--bg2),var(--bg) 70%);
+  color:var(--ink);font-family:var(--font);overflow:hidden;
+  transition:background .6s ease,color .4s ease;
+}
+button,select,input{font-family:inherit;color:inherit}
+button{cursor:pointer}
+
+#app{display:flex;height:100%;}
+
+/* ---------- Side menu ---------- */
+#menu{
+  width:330px;flex:0 0 330px;background:var(--panel);
+  border-right:3px solid var(--panelEdge);
+  display:flex;flex-direction:column;transition:margin-left .35s cubic-bezier(.6,-0.2,.3,1.4);
+  z-index:40;box-shadow:6px 0 24px rgba(0,0,0,.10);
+}
+body.menu-hidden #menu{margin-left:-333px}
+#menu h1{
+  font-size:19px;margin:0;padding:16px 16px 4px;line-height:1.15;
+  font-family:var(--display);letter-spacing:.3px;
+}
+#menu h1 small{display:block;font-size:11px;font-weight:normal;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px}
+.menuScroll{flex:1;overflow-y:auto;padding:10px 16px 20px}
+.sect{margin-top:16px}
+.sect > label,.sectTitle{
+  display:block;font-size:10.5px;letter-spacing:1.4px;text-transform:uppercase;
+  color:var(--muted);margin-bottom:6px;font-weight:bold;
+}
+select,input[type=text]{
+  width:100%;padding:9px 10px;border-radius:var(--radius);
+  border:2px solid var(--panelEdge);background:var(--chip);color:var(--chipInk);
+  font-size:14px;outline:none;
+}
+select:focus,input[type=text]:focus{border-color:var(--accent)}
+.row{display:flex;gap:6px}
+.row > *{flex:1}
+.btn{
+  border:2px solid var(--panelEdge);background:var(--chip);color:var(--chipInk);
+  border-radius:var(--radius);padding:9px 10px;font-size:13px;font-weight:bold;
+  transition:transform .12s ease,box-shadow .12s ease,background .2s;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 4px 0 var(--panelEdge)}
+.btn:active{transform:translateY(1px);box-shadow:none}
+.btn.mini{padding:6px 8px;font-size:12px;flex:0 0 auto}
+.btn.accent{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.ghost{background:transparent}
+
+#studentList{
+  margin-top:8px;border:2px dashed var(--panelEdge);border-radius:var(--radius);
+  padding:6px;max-height:38vh;overflow-y:auto;background:rgba(125,125,125,.05);
+}
+.stu{
+  display:flex;align-items:center;gap:6px;padding:5px 6px;border-radius:9px;font-size:13.5px;
+}
+.stu:hover{background:rgba(125,125,125,.13)}
+.stu .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stu .x{
+  border:none;background:transparent;color:var(--muted);font-size:16px;line-height:1;
+  padding:2px 5px;border-radius:6px;
+}
+.stu .x:hover{background:var(--accent);color:#fff}
+.count{color:var(--muted);font-size:11.5px;margin-top:6px;text-align:right}
+.hint{font-size:11.5px;color:var(--muted);line-height:1.45;margin-top:8px}
+
+/* ---------- Main ---------- */
+#main{flex:1;display:flex;flex-direction:column;min-width:0;position:relative}
+#topbar{
+  display:flex;align-items:center;gap:10px;padding:12px 16px;flex-wrap:wrap;
+  border-bottom:2px solid rgba(125,125,125,.18);
+}
+#topbar .grow{flex:1}
+#className{font-family:var(--display);font-size:20px;font-weight:bold;letter-spacing:.3px}
+.seg{display:flex;border:2px solid var(--panelEdge);border-radius:var(--radius);overflow:hidden;background:var(--panel)}
+.seg button{
+  border:none;background:transparent;padding:9px 15px;font-size:13px;font-weight:bold;color:var(--muted);
+}
+.seg button.on{background:var(--accent);color:#fff}
+#goBtn{
+  font-size:16px;padding:11px 24px;border-radius:var(--radius);border:none;
+  background:var(--accent);color:#fff;font-weight:bold;letter-spacing:.4px;
+  box-shadow:0 4px 0 rgba(0,0,0,.18);font-family:var(--display);
+}
+#goBtn:hover{transform:translateY(-2px)}
+#goBtn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.18)}
+#goBtn:disabled{opacity:.5;transform:none;cursor:default}
+
+#stageWrap{flex:1;position:relative;overflow:hidden}
+#stage{
+  position:absolute;left:0;top:0;transform-origin:0 0;
+  width:960px;height:700px;
+}
+#room{
+  position:absolute;inset:0;background:var(--floor);
+  border:5px solid var(--wall);border-radius:var(--radius);
+  box-shadow:inset 0 0 60px rgba(0,0,0,.07);
+  overflow:hidden;
+}
+body[data-theme="storybook"] #room, body:not([data-theme]) #room{
+  background-image:radial-gradient(circle,rgba(0,0,0,.05) 1px,transparent 1px);
+  background-size:22px 22px;
+}
+body[data-theme="arcade"] #room{
+  background-image:repeating-linear-gradient(0deg,rgba(63,232,255,.05) 0 1px,transparent 1px 4px);
+}
+body[data-theme="space"] #room{background:radial-gradient(ellipse at 50% 30%,#241c56,#0d0b23)}
+body[data-theme="chalk"] #room{
+  background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.02) 0 8px,transparent 8px 16px);
+}
+
+/* stars for space theme */
+#stars{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .6s}
+body[data-theme="space"] #stars{opacity:1}
+#stars i{position:absolute;width:2px;height:2px;background:#fff;border-radius:50%;animation:twinkle 3s infinite}
+@keyframes twinkle{0%,100%{opacity:.15}50%{opacity:.95}}
+
+/* front banner */
+#frontBanner{
+  position:absolute;left:40px;right:40px;top:14px;height:40px;
+  border-radius:var(--radius);background:var(--wall);color:var(--floor);
+  display:flex;align-items:center;justify-content:center;gap:14px;
+  font-family:var(--display);font-weight:bold;letter-spacing:5px;font-size:15px;
+  box-shadow:0 4px 0 rgba(0,0,0,.12);
+}
+#frontBanner span{opacity:.75;letter-spacing:0;font-size:18px}
+#teacherDesk{
+  position:absolute;left:50%;transform:translateX(-50%);top:64px;
+  width:150px;height:26px;border-radius:6px;background:var(--desk);
+  border:3px solid var(--deskEdge);border-top:none;
+  display:flex;align-items:center;justify-content:center;
+  font-size:9.5px;letter-spacing:2px;color:var(--deskEdge);font-weight:bold;
+}
+
+/* door */
+#door{
+  position:absolute;width:16px;height:96px;background:var(--accent3);
+  border:3px solid var(--deskEdge);border-left:none;border-radius:0 10px 10px 0;
+  left:0;box-shadow:6px 0 16px rgba(0,0,0,.12);
+}
+#door::after{
+  content:"";position:absolute;right:4px;top:50%;width:6px;height:6px;
+  border-radius:50%;background:var(--deskEdge);
+}
+#doorLabel{
+  position:absolute;font-size:10px;letter-spacing:2px;font-weight:bold;color:var(--muted);
+  white-space:nowrap;
+}
+
+.desk{
+  position:absolute;background:var(--desk);border:3px solid var(--deskEdge);
+  border-radius:8px;box-shadow:0 3px 0 rgba(0,0,0,.10);
+}
+.desk::after{
+  content:"";position:absolute;inset:4px;border-radius:5px;
+  border:1px dashed rgba(255,255,255,.28);
+}
+.chair{
+  position:absolute;background:var(--chair);border:2.5px solid var(--chairEdge);
+  border-radius:9px;opacity:.85;
+}
+.chair.empty::after{
+  content:"";position:absolute;inset:0;border-radius:7px;
+  background:repeating-linear-gradient(45deg,transparent 0 5px,rgba(0,0,0,.05) 5px 10px);
+}
+.podRing{
+  position:absolute;border:3px dashed var(--chairEdge);border-radius:22px;opacity:.42;
+}
+.podLabel{
+  position:absolute;font-size:10px;font-weight:bold;letter-spacing:2px;color:var(--muted);
+}
+
+/* name chips */
+#chips{position:absolute;inset:0;pointer-events:none}
+.chip{
+  position:absolute;left:0;top:0;will-change:transform;
+  background:var(--chip);color:var(--chipInk);border:2.5px solid var(--chipEdge);
+  border-radius:var(--chipRadius);padding:6px 11px;font-size:19px;font-weight:bold;
+  white-space:nowrap;box-shadow:0 3px 0 rgba(0,0,0,.14),var(--glow);
+  text-align:center;line-height:1.15;
+}
+.chip .sub{font-size:11px}
+.chip .sub{display:block;font-size:9px;font-weight:normal;opacity:.6;letter-spacing:.4px}
+.chip.walking{animation:waddle .38s infinite ease-in-out}
+@keyframes waddle{0%,100%{margin-top:0}50%{margin-top:-3px}}
+.chip.landed{animation:plop .45s cubic-bezier(.2,1.7,.4,1)}
+@keyframes plop{0%{}30%{transform-origin:center;}}
+.chip.seated{box-shadow:0 3px 0 rgba(0,0,0,.14),0 0 0 3px rgba(255,255,255,.25),var(--glow)}
+
+#overflowNote{
+  position:absolute;left:50%;transform:translateX(-50%);bottom:8px;
+  font-size:11px;color:var(--muted);letter-spacing:1px;
+}
+
+#modeTag{
+  position:absolute;right:18px;bottom:8px;font-size:11px;letter-spacing:2.5px;
+  text-transform:uppercase;color:var(--muted);font-weight:bold;pointer-events:none;
+  opacity:0;transition:opacity .4s;
+}
+#modeTag.show{opacity:1}
+
+#menuToggle{
+  position:absolute;left:10px;bottom:10px;z-index:50;
+  border:2px solid var(--panelEdge);background:var(--panel);color:var(--ink);
+  border-radius:var(--radius);padding:8px 12px;font-size:12px;font-weight:bold;
+}
+
+/* confetti */
+#confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.conf{position:absolute;width:9px;height:14px;border-radius:2px;opacity:.9}
+
+dialog{
+  border:3px solid var(--panelEdge);border-radius:var(--radius);background:var(--panel);
+  color:var(--ink);padding:20px;max-width:460px;font-family:var(--font);
+}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+dialog h3{margin:0 0 10px;font-family:var(--display)}
+dialog p{font-size:13.5px;line-height:1.5;color:var(--muted)}
+textarea{
+  width:100%;height:150px;border-radius:var(--radius);border:2px solid var(--panelEdge);
+  background:var(--chip);color:var(--chipInk);padding:10px;font-family:var(--font);font-size:13px;
+}
+@media print{
+  #menu,#topbar,#menuToggle{display:none!important}
+  body{overflow:visible}
+}
+</style>
+</head>
+<body data-theme="storybook">
+<div id="app">
+
+  <aside id="menu">
+    <h1>The Great Seat Scrambler<small>Roster &amp; Seating Studio</small></h1>
+    <div class="menuScroll">
+
+      <div class="sect">
+        <label>Class</label>
+        <select id="classSel"></select>
+        <div class="row" style="margin-top:6px">
+          <button class="btn mini" id="addClass">+ Class</button>
+          <button class="btn mini" id="renameClass">Rename</button>
+          <button class="btn mini" id="delClass">Delete</button>
+        </div>
+      </div>
+
+      <div class="sect">
+        <label>Students</label>
+        <div class="row">
+          <input type="text" id="newStudent" placeholder="First Last  ↵">
+          <button class="btn mini accent" id="addStudent">Add</button>
+        </div>
+        <div id="studentList"></div>
+        <div class="count" id="countLine"></div>
+      </div>
+
+      <div class="sect">
+        <label>Name style</label>
+        <select id="nameStyle">
+          <option value="firstInitial">First name + last initial</option>
+          <option value="first">First name only</option>
+          <option value="full">Full name</option>
+          <option value="lastFirst">Last, First</option>
+        </select>
+      </div>
+
+      <div class="sect">
+        <label>Look</label>
+        <select id="themeSel">
+          <option value="random">🎲 Surprise me each time</option>
+          <option value="storybook">Storybook</option>
+          <option value="arcade">Retro Arcade</option>
+          <option value="space">Outer Space</option>
+          <option value="jungle">Jungle</option>
+          <option value="candy">Candy Shop</option>
+          <option value="chalk">Chalkboard</option>
+        </select>
+      </div>
+
+      <div class="sect">
+        <label>Arrival style</label>
+        <select id="animSel"><option value="random">🎲 Surprise me each time</option></select>
+      </div>
+
+      <div class="sect">
+        <label>Backup</label>
+        <div class="row">
+          <button class="btn mini" id="exportBtn">Export</button>
+          <button class="btn mini" id="importBtn">Import</button>
+          <button class="btn mini" id="printBtn">Print</button>
+        </div>
+        <div class="hint">Everything saves automatically in this browser. Export now and then so you have a copy you can carry to another computer.</div>
+      </div>
+
+      <div class="sect">
+        <button class="btn ghost" id="resetBtn" style="width:100%">Restore original rosters</button>
+      </div>
+    </div>
+  </aside>
+
+  <main id="main">
+    <div id="topbar">
+      <div id="className">—</div>
+      <div class="grow"></div>
+      <div class="seg" id="layoutSeg">
+        <button data-layout="rows" class="on">Rows</button>
+        <button data-layout="pods">Pods</button>
+      </div>
+      <button id="goBtn">Scramble the Seats!</button>
+    </div>
+    <div id="stageWrap">
+      <div id="stage">
+        <div id="room">
+          <div id="stars"></div>
+          <div id="frontBanner"><span>▲</span> F R O N T &nbsp;O F &nbsp;C L A S S <span>▲</span></div>
+          <div id="teacherDesk">TEACHER</div>
+          <div id="furniture"></div>
+          <div id="door"></div>
+          <div id="doorLabel">D O O R</div>
+          <div id="chips"></div>
+          <div id="confetti"></div>
+          <div id="overflowNote"></div>
+          <div id="modeTag"></div>
+        </div>
+      </div>
+    </div>
+    <button id="menuToggle">☰ Menu</button>
+  </main>
+</div>
+
+<dialog id="ioDlg">
+  <h3 id="ioTitle">Backup</h3>
+  <p id="ioMsg"></p>
+  <textarea id="ioText" spellcheck="false"></textarea>
+  <div class="row" style="margin-top:12px">
+    <button class="btn" id="ioCancel">Close</button>
+    <button class="btn accent" id="ioOk">OK</button>
+  </div>
+</dialog>
+
+<script>
+/* ============================================================
+   0. DATA
+   ============================================================ */
+const DEFAULT_ROSTERS = [
+ {
+  "name": "P1 · IB Core Y2",
+  "students": [
+   [
+    "Rayan",
+    "Ahmed"
+   ],
+   [
+    "Abigail",
+    "Barnard"
+   ],
+   [
+    "Marcos",
+    "Del Rio Ruiz"
+   ],
+   [
+    "Rafi",
+    "Falhum"
+   ],
+   [
+    "Nabiha",
+    "Malik"
+   ],
+   [
+    "Raihan Qistina",
+    "Muhamad Zaki"
+   ],
+   [
+    "Manha",
+    "Nisar"
+   ],
+   [
+    "Temilayo",
+    "Okunola"
+   ],
+   [
+    "Sophie",
+    "Souza Oliveira Dourado Motta"
+   ],
+   [
+    "Emma",
+    "Torielli"
+   ]
+  ]
+ },
+ {
+  "name": "P2 · Building with AI",
+  "students": [
+   [
+    "Muhammad",
+    "Ahmed"
+   ],
+   [
+    "Yara",
+    "Ahmed"
+   ],
+   [
+    "Khalid",
+    "Al-Hussain"
+   ],
+   [
+    "Andrea",
+    "Alfonzo"
+   ],
+   [
+    "Jasmin",
+    "Aljunaidi"
+   ],
+   [
+    "Calista",
+    "Baranta"
+   ],
+   [
+    "Ella",
+    "Catuccio"
+   ],
+   [
+    "Mamoon",
+    "Faisal"
+   ],
+   [
+    "Mohammed",
+    "Gewily"
+   ],
+   [
+    "Apoorva",
+    "Katti"
+   ],
+   [
+    "Rehan",
+    "Nabeel"
+   ],
+   [
+    "Abdul Samad",
+    "Nauman"
+   ],
+   [
+    "Asfa",
+    "Nugroho"
+   ],
+   [
+    "Adrian",
+    "Pena Cardona"
+   ],
+   [
+    "Saif",
+    "Sargis"
+   ],
+   [
+    "Areej",
+    "Umair"
+   ],
+   [
+    "Saskia",
+    "Wibisono"
+   ],
+   [
+    "Ali",
+    "Zahdan"
+   ]
+  ]
+ },
+ {
+  "name": "P4 · IB Core Y1",
+  "students": [
+   [
+    "Joanne",
+    "Ahmed"
+   ],
+   [
+    "Melissa",
+    "Atie"
+   ],
+   [
+    "Adam",
+    "Czapor"
+   ],
+   [
+    "Celia",
+    "Gonzalez Gil"
+   ],
+   [
+    "Aarya",
+    "Gupta"
+   ],
+   [
+    "Mariam",
+    "Khalaf"
+   ],
+   [
+    "Kieran",
+    "Lennane"
+   ],
+   [
+    "Iago",
+    "Lima"
+   ],
+   [
+    "Jayden",
+    "Menezes"
+   ],
+   [
+    "Richard Alberto",
+    "Orta Moussalli"
+   ],
+   [
+    "Beatriz",
+    "Pinho"
+   ],
+   [
+    "Gabriela",
+    "Quijada Sibu"
+   ],
+   [
+    "Joelliane",
+    "Solon"
+   ],
+   [
+    "Alexandru",
+    "Toma"
+   ],
+   [
+    "Emma",
+    "Viloria Bermudez"
+   ]
+  ]
+ },
+ {
+  "name": "P5 · IB Core Y2",
+  "students": [
+   [
+    "Ammar",
+    "Abdelbaki"
+   ],
+   [
+    "Eden",
+    "Bearns"
+   ],
+   [
+    "Hisham",
+    "Dabbousi"
+   ],
+   [
+    "Kayra",
+    "Esmer"
+   ],
+   [
+    "Jessica",
+    "Fernandez"
+   ],
+   [
+    "Hannah",
+    "Fischer"
+   ],
+   [
+    "Mahdi",
+    "Ibrahim"
+   ],
+   [
+    "Hussein",
+    "Kassem"
+   ],
+   [
+    "Joohee",
+    "Kim"
+   ],
+   [
+    "Hyunseung",
+    "Lim"
+   ],
+   [
+    "Carlos",
+    "Orfanidis Cordoba"
+   ],
+   [
+    "Eman",
+    "Zaurayze"
+   ]
+  ]
+ },
+ {
+  "name": "P7 · AP Language",
+  "students": [
+   [
+    "Talia",
+    "Al-Arnaout"
+   ],
+   [
+    "Aleena",
+    "Cheema"
+   ],
+   [
+    "Armaan",
+    "Hyder"
+   ],
+   [
+    "Suffy",
+    "Iqbal"
+   ],
+   [
+    "Jamal",
+    "Kayal"
+   ],
+   [
+    "Alishba",
+    "Kemal"
+   ],
+   [
+    "Ahmed",
+    "Keritam"
+   ],
+   [
+    "Huzayfah",
+    "Khan"
+   ],
+   [
+    "Raahim",
+    "Lone"
+   ],
+   [
+    "Jannat",
+    "Manzoor"
+   ],
+   [
+    "Ibraheem",
+    "Marfani"
+   ],
+   [
+    "Hasan",
+    "Ray"
+   ],
+   [
+    "Saif",
+    "Sargis"
+   ],
+   [
+    "Will",
+    "Swendsen"
+   ],
+   [
+    "Maria",
+    "Tasheva"
+   ]
+  ]
+ },
+ {
+  "name": "P8 · IB Core Y1",
+  "students": [
+   [
+    "Fatimah",
+    "Abussaud"
+   ],
+   [
+    "Charlotte",
+    "Ammon"
+   ],
+   [
+    "Sebastian",
+    "Castellanos Mago"
+   ],
+   [
+    "Nicole",
+    "Couri"
+   ],
+   [
+    "Aaron",
+    "Gonzalez Arencibia"
+   ],
+   [
+    "Eli",
+    "Hall"
+   ],
+   [
+    "Khadija",
+    "Khankhara"
+   ],
+   [
+    "Anaya",
+    "Nisar"
+   ],
+   [
+    "Muhammad Mahad",
+    "Omar"
+   ],
+   [
+    "Muhammad Alkautsa",
+    "Priyadi"
+   ],
+   [
+    "Abdul",
+    "Rahman"
+   ],
+   [
+    "Kavya",
+    "Shukla"
+   ],
+   [
+    "Luca",
+    "Wanigasekara-Mohotti"
+   ]
+  ]
+ }
+];
+const STORE_KEY = 'seatScrambler.v2';
+
+let state = {
+  classes: [],
+  current: 0,
+  layout: 'rows',
+  theme: 'random',
+  anim: 'random',
+  nameStyle: 'firstInitial'
+};
+
+function freshFromDefaults(){
+  return DEFAULT_ROSTERS.map(c=>({
+    name:c.name,
+    students:c.students.map(s=>({first:s[0],last:s[1]}))
+  }));
+}
+let storageOK = true;
+function save(){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }
+  catch(e){
+    if(storageOK){
+      storageOK = false;
+      const h=document.querySelector('#menu .hint');
+      if(h){ h.innerHTML='<b style="color:var(--accent)">Heads up:</b> this browser will not let the page save automatically. Your changes work for today, but use <b>Export</b> before you close the tab. (Chrome handles this best.)'; }
+    }
+  }
+}
+function load(){
+  try{
+    const raw = localStorage.getItem(STORE_KEY);
+    if(raw){ const s = JSON.parse(raw); if(s && Array.isArray(s.classes) && s.classes.length){ state = Object.assign(state, s); return; } }
+  }catch(e){}
+  state.classes = freshFromDefaults();
+}
+
+/* ============================================================
+   1. GEOMETRY
+   ============================================================ */
+const STAGE_W = 960, STAGE_H = 700;
+const DOOR = { x: 8, y: 268, w: 16, h: 96 };   // on the left wall, near the front
+
+function buildRows(){
+  const desks=[], seats=[], decor=[];
+  const cols=3, rows=4, tw=256, th=54, chairW=108, chairH=50;
+  const marginX=40, startY=142, gapY=26;
+  const blockH = th + 6 + chairH;
+  const gapX = (STAGE_W - 2*marginX - cols*tw)/(cols-1);
+  for(let r=0;r<rows;r++){
+    for(let c=0;c<cols;c++){
+      const x = marginX + c*(tw+gapX);
+      const y = startY + r*(blockH+gapY);
+      desks.push({x,y,w:tw,h:th});
+      const cy = y + th + 6 + chairH/2, g = r*cols+c;
+      seats.push({x:x+tw*0.220, y:cy, w:chairW, h:chairH, face:'up', group:g, rank:r, slot:0});
+      seats.push({x:x+tw*0.780, y:cy, w:chairW, h:chairH, face:'up', group:g, rank:r, slot:1});
+    }
+  }
+  return {desks,seats,decor};
+}
+
+function buildPods(){
+  const desks=[], seats=[], decor=[];
+  const cols=3, rows=2, tw=52, th=168, chairW=66, chairH=68;
+  const podW = tw*2 + 2*(chairW+4);
+  const marginX = 48, startY=170, gapY=120;
+  const gapX = (STAGE_W - 2*marginX - cols*podW)/(cols-1);
+  let n=1;
+  for(let r=0;r<rows;r++){
+    for(let c=0;c<cols;c++){
+      const px = marginX + c*(podW+gapX);
+      const py = startY + r*(th+gapY);
+      const t1x = px + chairW + 4;
+      desks.push({x:t1x, y:py, w:tw, h:th});
+      desks.push({x:t1x+tw, y:py, w:tw, h:th});
+      decor.push({type:'ring', x:px-8, y:py-16, w:podW+16, h:th+32});
+      decor.push({type:'label', x:px+podW/2-22, y:py-38, text:'POD '+n});
+      const y1 = py + th*0.27, y2 = py + th*0.73, g = r*cols+c;
+      // slots interleave the two benches so the first pair sits face to face
+      // left bench: students face RIGHT (toward the right-hand wall)
+      seats.push({x:px+chairW/2, y:y1, w:chairW, h:chairH, face:'right', group:g, rank:r, slot:0});
+      seats.push({x:px+chairW/2, y:y2, w:chairW, h:chairH, face:'right', group:g, rank:r, slot:2});
+      // right bench: students face LEFT (toward the left-hand wall)
+      const rx = t1x + tw*2 + 4 + chairW/2;
+      seats.push({x:rx, y:y1, w:chairW, h:chairH, face:'left', group:g, rank:r, slot:1});
+      seats.push({x:rx, y:y2, w:chairW, h:chairH, face:'left', group:g, rank:r, slot:3});
+      n++;
+    }
+  }
+  return {desks,seats,decor};
+}
+
+let LAYOUT = null;   // {desks, seats, decor}
+
+function renderFurniture(){
+  LAYOUT = state.layout==='rows' ? buildRows() : buildPods();
+  const f = document.getElementById('furniture');
+  f.innerHTML = '';
+  LAYOUT.decor.forEach(d=>{
+    const el=document.createElement('div');
+    if(d.type==='ring'){ el.className='podRing'; el.style.cssText=`left:${d.x}px;top:${d.y}px;width:${d.w}px;height:${d.h}px`; }
+    else { el.className='podLabel'; el.style.cssText=`left:${d.x}px;top:${d.y}px`; el.textContent=d.text; }
+    f.appendChild(el);
+  });
+  LAYOUT.desks.forEach(d=>{
+    const el=document.createElement('div'); el.className='desk';
+    el.style.cssText=`left:${d.x}px;top:${d.y}px;width:${d.w}px;height:${d.h}px`;
+    f.appendChild(el);
+  });
+  LAYOUT.seats.forEach((s,i)=>{
+    const el=document.createElement('div'); el.className='chair empty'; el.dataset.seat=i;
+    el.style.cssText=`left:${s.x-s.w/2}px;top:${s.y-s.h/2}px;width:${s.w}px;height:${s.h}px`;
+    f.appendChild(el);
+  });
+  const d=document.getElementById('door');
+  d.style.cssText=`left:0px;top:${DOOR.y}px;width:${DOOR.w}px;height:${DOOR.h}px`;
+  const dl=document.getElementById('doorLabel');
+  dl.style.left = '6px';
+  dl.style.top  = (DOOR.y-16)+'px';
+  buildGrid();
+}
+
+/* ============================================================
+   2. WALKABLE GRID + A*  (so wandering students dodge the desks)
+   ============================================================ */
+const CS = 22;
+let GC=0, GR=0, WALK=null;
+function buildGrid(){
+  GC = Math.floor(STAGE_W/CS); GR = Math.floor(STAGE_H/CS);
+  WALK = new Uint8Array(GC*GR);
+  const pad = 9, bound = 26;
+  for(let r=0;r<GR;r++) for(let c=0;c<GC;c++){
+    const x = c*CS+CS/2, y = r*CS+CS/2;
+    let ok = x>bound && x<STAGE_W-bound && y>96 && y<STAGE_H-bound;
+    if(ok) for(const d of LAYOUT.desks){
+      if(x>d.x-pad && x<d.x+d.w+pad && y>d.y-pad && y<d.y+d.h+pad){ ok=false; break; }
+    }
+    WALK[r*GC+c]=ok?1:0;
+  }
+}
+function cellOf(x,y){ return [Math.max(0,Math.min(GC-1,Math.floor(x/CS))), Math.max(0,Math.min(GR-1,Math.floor(y/CS)))]; }
+function nearestWalkable(cx,cy){
+  if(WALK[cy*GC+cx]) return [cx,cy];
+  for(let rad=1;rad<20;rad++){
+    for(let dy=-rad;dy<=rad;dy++) for(let dx=-rad;dx<=rad;dx++){
+      const nx=cx+dx, ny=cy+dy;
+      if(nx<0||ny<0||nx>=GC||ny>=GR) continue;
+      if(WALK[ny*GC+nx]) return [nx,ny];
+    }
+  }
+  return [cx,cy];
+}
+function astar(ax,ay,bx,by){
+  const [sx,sy]=nearestWalkable(...cellOf(ax,ay));
+  const [gx,gy]=nearestWalkable(...cellOf(bx,by));
+  const N=GC*GR, start=sy*GC+sx, goal=gy*GC+gx;
+  if(start===goal) return [{x:bx,y:by}];
+  const came=new Int32Array(N).fill(-1), g=new Float32Array(N).fill(1e9), open=[start];
+  const inOpen=new Uint8Array(N); g[start]=0; inOpen[start]=1;
+  const h=i=>{const c=i%GC,r=(i/GC)|0;return Math.abs(c-gx)+Math.abs(r-gy);};
+  let guard=0;
+  while(open.length && guard++<20000){
+    let bi=0,bf=1e18;
+    for(let i=0;i<open.length;i++){const f=g[open[i]]+h(open[i]);if(f<bf){bf=f;bi=i;}}
+    const cur=open.splice(bi,1)[0]; inOpen[cur]=0;
+    if(cur===goal) break;
+    const cc=cur%GC, cr=(cur/GC)|0;
+    for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){
+      const nc=cc+dx, nr=cr+dy;
+      if(nc<0||nr<0||nc>=GC||nr>=GR) continue;
+      const ni=nr*GC+nc; if(!WALK[ni]) continue;
+      const ng=g[cur]+1;
+      if(ng<g[ni]){ g[ni]=ng; came[ni]=cur; if(!inOpen[ni]){open.push(ni);inOpen[ni]=1;} }
+    }
+  }
+  const path=[]; let cur=goal;
+  if(came[goal]===-1 && goal!==start) return [{x:bx,y:by}];
+  while(cur!==-1 && cur!==start){ path.push(cur); cur=came[cur]; }
+  path.reverse();
+  // thin out collinear steps so the walk reads as purposeful, not pixel-crawly
+  const pts=path.map(i=>({x:(i%GC)*CS+CS/2, y:((i/GC)|0)*CS+CS/2}));
+  const out=[];
+  for(let i=0;i<pts.length;i++){
+    const a=out[out.length-1], b=pts[i], c=pts[i+1];
+    if(!a||!c){ out.push(b); continue; }
+    if(!((a.x===b.x&&b.x===c.x)||(a.y===b.y&&b.y===c.y))) out.push(b);
+  }
+  out.push({x:bx,y:by});
+  return out;
+}
+function randomWalkablepoint(){
+  for(let i=0;i<300;i++){
+    const c=1+Math.floor(Math.random()*(GC-2)), r=1+Math.floor(Math.random()*(GR-2));
+    if(WALK[r*GC+c]) return {x:c*CS+CS/2, y:r*CS+CS/2};
+  }
+  return {x:STAGE_W/2,y:STAGE_H/2};
+}
+
+/* ============================================================
+   3. TINY TWEEN ENGINE
+   ============================================================ */
+const EASE={
+  linear:t=>t,
+  out:t=>1-Math.pow(1-t,3),
+  in:t=>t*t*t,
+  inOut:t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2,
+  back:t=>{const c1=1.9,c3=c1+1;return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2);},
+  bounce:t=>{const n1=7.5625,d1=2.75;if(t<1/d1)return n1*t*t;if(t<2/d1)return n1*(t-=1.5/d1)*t+.75;if(t<2.5/d1)return n1*(t-=2.25/d1)*t+.9375;return n1*(t-=2.625/d1)*t+.984375;},
+  elastic:t=>{const c4=(2*Math.PI)/3;return t===0?0:t===1?1:Math.pow(2,-10*t)*Math.sin((t*10-.75)*c4)+1;}
+};
+class Chip{
+  constructor(el){ this.el=el; this.s={x:0,y:0,r:0,sc:1,o:1}; this.segs=[]; this.i=0; this.t=0; this.from=null; this.onEnd=null; }
+  set(p){ Object.assign(this.s,p); this.draw(); return this; }
+  to(p,dur,ease='out'){ this.segs.push({p,dur:Math.max(1,dur),ease}); return this; }
+  hold(dur){ return this.to({},dur,'linear'); }
+  call(fn){ this.segs.push({fn}); return this; }
+  get busy(){ return this.i < this.segs.length; }
+  step(dt){
+    if(this.i>=this.segs.length){ if(this.onEnd){const f=this.onEnd;this.onEnd=null;f();} return; }
+    const seg=this.segs[this.i];
+    if(seg.fn){ seg.fn(); this.i++; return this.step(0); }
+    if(this.from===null){ this.from={}; for(const k in seg.p) this.from[k]=this.s[k]; }
+    this.t+=dt;
+    const k=Math.min(1,this.t/seg.dur), e=EASE[seg.ease](k);
+    for(const key in seg.p) this.s[key]=this.from[key]+(seg.p[key]-this.from[key])*e;
+    this.draw();
+    if(k>=1){ this.i++; this.t=0; this.from=null; }
+  }
+  path(pts,speed,ease='linear'){
+    let prev=null;
+    pts.forEach((p,idx)=>{
+      const a = prev||{x:this.pendingX(),y:this.pendingY()};
+      const d = Math.hypot(p.x-a.x,p.y-a.y);
+      this.to({x:p.x,y:p.y}, Math.max(60,(d/speed)*1000), idx===pts.length-1?'out':ease);
+      prev=p;
+    });
+    return this;
+  }
+  pendingX(){ for(let i=this.segs.length-1;i>=0;i--) if(this.segs[i].p&&this.segs[i].p.x!==undefined) return this.segs[i].p.x; return this.s.x; }
+  pendingY(){ for(let i=this.segs.length-1;i>=0;i--) if(this.segs[i].p&&this.segs[i].p.y!==undefined) return this.segs[i].p.y; return this.s.y; }
+  draw(){
+    const s=this.s;
+    this.el.style.opacity=s.o;
+    this.el.style.transform=`translate(${s.x}px,${s.y}px) translate(-50%,-50%) rotate(${s.r}deg) scale(${s.sc})`;
+  }
+}
+let chips=[], rafId=null, lastT=0, running=false;
+function loop(ts){
+  if(!lastT) lastT=ts;
+  const dt=Math.min(50, ts-lastT); lastT=ts;
+  let anyBusy=false;
+  for(const c of chips){ c.step(dt); if(c.busy) anyBusy=true; }
+  if(anyBusy){ rafId=requestAnimationFrame(loop); }
+  else { rafId=null; lastT=0; finishRun(); }
+}
+function startLoop(){ if(!rafId){ lastT=0; rafId=requestAnimationFrame(loop); } }
+
+/* ============================================================
+   4. ARRIVAL ANIMATIONS
+   ============================================================ */
+const rnd=(a,b)=>a+Math.random()*(b-a);
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function shuffled(a){ const x=a.slice(); for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]];} return x; }
+
+const ANIMS = {
+  flutter:{ label:'Flit &amp; Settle', run(c,seat,i,n){
+    c.set({x:rnd(60,STAGE_W-60),y:rnd(120,STAGE_H-60),o:0,sc:.4,r:rnd(-40,40)});
+    c.hold(i*45).to({o:1,sc:1},420,'back');
+    const fakes = 2+Math.floor(Math.random()*2);
+    const others = LAYOUT.seats.filter((_,k)=>k!==i);
+    for(let f=0;f<fakes;f++){
+      const s = pick(others.length?others:LAYOUT.seats);
+      c.to({x:s.x,y:s.y,r:rnd(-8,8),sc:1},rnd(650,950),'inOut').hold(rnd(280,560));
+      c.to({y:s.y-26,r:rnd(-25,25)},260,'out');
+    }
+    c.to({x:seat.x,y:seat.y-40,r:0},rnd(600,850),'inOut');
+    c.to({x:seat.x,y:seat.y,sc:1},420,'bounce');
+  }},
+
+  drop:{ label:'Drop In', run(c,seat,i,n){
+    c.set({x:seat.x,y:-70,r:rnd(-25,25),sc:1,o:1});
+    c.hold(i*90).to({y:seat.y,r:0},760,'bounce');
+  }},
+
+  walk:{ label:'Walk On In', run(c,seat,i,n){
+    const start={x:DOOR.w+18,y:DOOR.y+DOOR.h/2};
+    c.set({x:start.x-60,y:start.y,o:0,sc:1,r:0});
+    c.hold(i*380).call(()=>{c.el.classList.add('walking');});
+    c.to({x:start.x,o:1},520,'out');
+    let from=start;
+    const stops=1+Math.floor(Math.random()*2);
+    for(let s=0;s<stops;s++){
+      const p=randomWalkablePointNear(from);
+      c.path(astar(from.x,from.y,p.x,p.y),210);
+      c.hold(rnd(120,340));
+      from=p;
+    }
+    c.path(astar(from.x,from.y,seat.x,seat.y),240);
+    c.call(()=>{c.el.classList.remove('walking');});
+    c.to({sc:1.14},150,'out').to({sc:1},260,'bounce');
+  }},
+
+  vortex:{ label:'Swirl Storm', run(c,seat,i,n){
+    const cx=STAGE_W/2, cy=STAGE_H/2+30;
+    let ang=rnd(0,Math.PI*2), rad=620;
+    c.set({x:cx+Math.cos(ang)*rad,y:cy+Math.sin(ang)*rad,o:0,sc:.5,r:0});
+    c.hold(i*55).to({o:1},200,'out');
+    const steps=7;
+    for(let s=1;s<=steps;s++){
+      ang+=1.05; rad*=0.66;
+      const t=s/steps;
+      c.to({x:cx+Math.cos(ang)*rad, y:cy+Math.sin(ang)*rad, r:ang*40%360, sc:1-.35*(1-t)},230,'linear');
+    }
+    c.to({x:seat.x,y:seat.y,r:0,sc:1},560,'back');
+  }},
+
+  deal:{ label:'Dealer\'s Choice', run(c,seat,i,n){
+    const dx=STAGE_W/2, dy=110;
+    c.set({x:dx,y:dy,r:0,sc:.7,o:0});
+    c.hold(i*150).to({o:1},80,'linear');
+    c.to({x:seat.x,y:seat.y,r:rnd(-720,720),sc:1},620,'out');
+    c.to({r:0},240,'elastic');
+  }},
+
+  bubble:{ label:'Bubble Up', run(c,seat,i,n){
+    c.set({x:seat.x+rnd(-40,40),y:STAGE_H+60,sc:.6,o:0,r:rnd(-12,12)});
+    c.hold(i*110).to({o:1},260,'out');
+    c.to({x:seat.x+rnd(-30,30),y:seat.y-rnd(70,150),sc:1.05,r:rnd(-14,14)},rnd(1100,1500),'inOut');
+    c.to({x:seat.x+rnd(-14,14),y:seat.y-rnd(20,60),r:rnd(-8,8)},700,'inOut');
+    c.to({x:seat.x,y:seat.y,r:0,sc:1},620,'bounce');
+  }},
+
+  teleport:{ label:'Blink!', run(c,seat,i,n){
+    c.set({x:rnd(80,STAGE_W-80),y:rnd(140,STAGE_H-60),o:0,sc:1,r:0});
+    c.hold(i*70);
+    for(let b=0;b<3;b++){
+      c.to({o:1,sc:1},110,'out').hold(rnd(140,300)).to({o:0,sc:1.5},130,'in');
+      const p=randomWalkablePoint();
+      c.call(()=>{ c.s.x=p.x; c.s.y=p.y; c.s.sc=.5; });
+    }
+    c.call(()=>{ c.s.x=seat.x; c.s.y=seat.y; c.s.sc=.4; });
+    c.to({o:1,sc:1},430,'back');
+  }},
+
+  parachute:{ label:'Parachute Drop', run(c,seat,i,n){
+    c.set({x:seat.x+rnd(-120,120),y:-60,r:rnd(-10,10),sc:1,o:1});
+    c.hold(i*120);
+    let y=-60;
+    const sways=4;
+    for(let s=0;s<sways;s++){
+      y += (seat.y+60)/sways;
+      c.to({x:seat.x+(s%2?1:-1)*rnd(30,80), y:Math.min(y,seat.y-30), r:(s%2?1:-1)*8},rnd(480,700),'inOut');
+    }
+    c.to({x:seat.x,y:seat.y,r:0},560,'bounce');
+  }},
+
+  magnet:{ label:'Magnet Snap', run(c,seat,i,n){
+    c.set({x:rnd(60,STAGE_W-60),y:rnd(130,STAGE_H-60),o:0,sc:.8,r:rnd(-30,30)});
+    c.hold(i*40).to({o:1,sc:1},300,'out');
+    c.to({x:rnd(60,STAGE_W-60),y:rnd(130,STAGE_H-60),r:rnd(-30,30)},900,'inOut');
+    c.hold(600 + (n-i)*20);
+    c.to({x:seat.x,y:seat.y,r:0},340,'in');
+    c.to({sc:1.2},90,'out').to({sc:1},300,'elastic');
+  }},
+
+  parade:{ label:'Conga Line', run(c,seat,i,n){
+    const start={x:DOOR.w+18,y:DOOR.y+DOOR.h/2};
+    c.set({x:start.x-70,y:start.y,o:0,sc:1,r:0});
+    c.hold(i*300).call(()=>{c.el.classList.add('walking');});
+    c.to({x:start.x,o:1},420,'out');
+    const ring=[{x:120,y:STAGE_H-70},{x:STAGE_W-110,y:STAGE_H-70},{x:STAGE_W-110,y:150},{x:120,y:150}];
+    const cut = 1 + (i % 4);
+    let from=start;
+    for(let k=0;k<cut;k++){
+      c.path(astar(from.x,from.y,ring[k].x,ring[k].y),300);
+      from=ring[k];
+    }
+    c.path(astar(from.x,from.y,seat.x,seat.y),300);
+    c.call(()=>{c.el.classList.remove('walking');});
+    c.to({sc:1.15},140,'out').to({sc:1},280,'bounce');
+  }}
+};
+function randomWalkableNear(){ return randomWalkablePoint(); }
+function randomWalkablePoint(){ return randomWalkablePointNear(null); }
+function randomWalkablePointNear(from){
+  for(let i=0;i<400;i++){
+    const c=1+Math.floor(Math.random()*(GC-2)), r=1+Math.floor(Math.random()*(GR-2));
+    if(!WALK[r*GC+c]) continue;
+    const p={x:c*CS+CS/2,y:r*CS+CS/2};
+    if(from && Math.hypot(p.x-from.x,p.y-from.y)<180) continue;
+    return p;
+  }
+  return {x:STAGE_W/2,y:STAGE_H-90};
+}
+
+/* ============================================================
+   5. RUNNING A SCRAMBLE
+   ============================================================ */
+function displayName(s){
+  const f=s.first.trim(), l=s.last.trim(), f1=f.split(/\s+/)[0];
+  switch(state.nameStyle){
+    case 'first': return f1;
+    case 'full': return f+' '+l;
+    case 'lastFirst': return l+', '+f1;
+    default: return f1+' '+(l[0]||'')+'.';
+  }
+}
+function currentClass(){ return state.classes[state.current] || {name:'—',students:[]}; }
+
+/* Pick which seats get used: fill from the front, and keep students paired up
+   (a whole table in Rows, a whole pod in Pods) so nobody is stranded alone.
+   A little slack is left in so it isn't the exact same shape every day. */
+function chooseSeats(n){
+  const seats = LAYOUT.seats;
+  const byGroup = new Map();
+  seats.forEach((s,i)=>{
+    if(!byGroup.has(s.group)) byGroup.set(s.group,{rank:s.rank,seats:[]});
+    byGroup.get(s.group).seats.push(i);
+  });
+  const groups=[...byGroup.values()];
+  groups.forEach(g=>g.seats.sort((a,b)=>seats[a].slot-seats[b].slot));
+  const cap = groups[0].seats.length;                 // 2 at a table, 4 in a pod
+  const need = Math.min(groups.length, Math.ceil(n/cap));
+  const slack = Math.min(state.layout==='rows'?2:1, groups.length-need);
+  const extra = Math.floor(Math.random()*(slack+1));  // breathing space
+
+  // shuffle, then stable-sort by rank => random within a row, front rows first
+  const ranked = shuffled(groups).sort((a,b)=>a.rank-b.rank);
+  const pool = ranked.slice(0, need+extra);
+  const chosen = shuffled(pool).slice(0, need).sort((a,b)=>a.rank-b.rank);
+
+  // spread students over the chosen tables/pods, front ones getting the extras
+  const base = Math.floor(n/chosen.length), rem = n % chosen.length;
+  const out=[];
+  chosen.forEach((g,i)=>{
+    const take = Math.min(g.seats.length, base + (i<rem?1:0));
+    for(let k=0;k<take;k++) out.push(g.seats[k]);
+  });
+  return out;
+}
+
+function clearChips(){
+  document.getElementById('chips').innerHTML='';
+  chips=[];
+  document.querySelectorAll('.chair').forEach(c=>c.classList.add('empty'));
+}
+
+function makeChip(student, seatIdx){
+  const el=document.createElement('div');
+  el.className='chip';
+  const seat = LAYOUT.seats[seatIdx];
+  const arrow = seat.face==='up'?'▲':(seat.face==='left'?'◀':'▶');
+  el.innerHTML = escapeHtml(displayName(student)) + '<span class="sub">'+arrow+'</span>';
+  document.getElementById('chips').appendChild(el);
+  // shrink-to-fit (must run after it is in the document, or offsetWidth reads 0)
+  const maxW = state.layout==='rows' ? 140 : 128;
+  let fs = 19;
+  el.style.fontSize = fs+'px';
+  while(el.offsetWidth > maxW && fs > 12){ fs -= 0.5; el.style.fontSize = fs+'px'; }
+  if(el.offsetWidth > maxW){          // very long names wrap rather than shrink to dust
+    el.style.whiteSpace = 'normal';
+    el.style.width = maxW+'px';
+    while(el.offsetHeight > 62 && fs > 9){ fs -= 0.5; el.style.fontSize = fs+'px'; }
+  }
+  const c=new Chip(el);
+  chips.push(c);
+  return c;
+}
+function escapeHtml(s){ return s.replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); }
+
+function runScramble(){
+  if(running) return;
+  const cls=currentClass();
+  if(!cls.students.length){ alert('This class has no students yet — add some in the menu.'); return; }
+
+  // theme
+  const themes=['storybook','arcade','space','jungle','candy','chalk'];
+  const theme = state.theme==='random' ? pick(themes.filter(t=>t!==document.body.dataset.theme)) : state.theme;
+  document.body.dataset.theme = theme;
+
+  renderFurniture();
+  clearChips();
+
+  const names=['flutter','drop','walk','vortex','deal','bubble','teleport','parachute','magnet','parade'];
+  const key = state.anim==='random' ? pick(names) : state.anim;
+  const anim = ANIMS[key];
+
+  const tag=document.getElementById('modeTag');
+  tag.innerHTML = anim.label; tag.classList.add('show');
+
+  const kids = shuffled(cls.students);
+  const seated = Math.min(kids.length, LAYOUT.seats.length);
+  const seatOrder = chooseSeats(seated);
+
+  for(let i=0;i<seated;i++){
+    const seatIdx=seatOrder[i], seat=LAYOUT.seats[seatIdx];
+    const c=makeChip(kids[i], seatIdx);
+    document.querySelector('.chair[data-seat="'+seatIdx+'"]').classList.remove('empty');
+    anim.run(c, seat, i, seated);
+    c.call(()=>{ c.el.classList.add('seated'); });
+  }
+
+  const note=document.getElementById('overflowNote');
+  if(kids.length>LAYOUT.seats.length){
+    note.textContent = (kids.length-LAYOUT.seats.length)+' more student(s) than seats — grab a chair!';
+  } else {
+    const empty=LAYOUT.seats.length-kids.length;
+    note.textContent = empty? empty+' empty seat'+(empty>1?'s':'') : 'Perfect fit — every seat taken!';
+  }
+
+  running=true;
+  document.getElementById('goBtn').disabled=true;
+  startLoop();
+}
+function finishRun(){
+  if(!running) return;
+  running=false;
+  document.getElementById('goBtn').disabled=false;
+  burstConfetti();
+  setTimeout(()=>document.getElementById('modeTag').classList.remove('show'),2600);
+}
+function burstConfetti(){
+  const box=document.getElementById('confetti');
+  const cols=[getVar('--accent'),getVar('--accent2'),getVar('--accent3'),getVar('--chipEdge')];
+  for(let i=0;i<70;i++){
+    const d=document.createElement('div'); d.className='conf';
+    const x=rnd(0,STAGE_W);
+    d.style.cssText=`left:${x}px;top:-20px;background:${pick(cols)};transform:rotate(${rnd(0,360)}deg)`;
+    box.appendChild(d);
+    const dur=rnd(1600,2900), drift=rnd(-90,90), spin=rnd(360,1400);
+    d.animate([
+      {transform:`translate(0,0) rotate(0deg)`,opacity:1},
+      {transform:`translate(${drift}px,${STAGE_H+60}px) rotate(${spin}deg)`,opacity:.15}
+    ],{duration:dur,easing:'cubic-bezier(.3,.5,.6,1)'}).onfinish=()=>d.remove();
+  }
+}
+function getVar(n){ return getComputedStyle(document.body).getPropertyValue(n).trim(); }
+
+/* ============================================================
+   6. UI
+   ============================================================ */
+function renderMenu(){
+  const sel=document.getElementById('classSel');
+  sel.innerHTML = state.classes.map((c,i)=>`<option value="${i}">${escapeHtml(c.name)} (${c.students.length})</option>`).join('');
+  sel.value = state.current;
+  document.getElementById('className').textContent = currentClass().name;
+
+  const list=document.getElementById('studentList');
+  const cls=currentClass();
+  const sorted = cls.students.map((s,i)=>({s,i})).sort((a,b)=>(a.s.last+a.s.first).localeCompare(b.s.last+b.s.first));
+  list.innerHTML = sorted.map(({s,i})=>
+    `<div class="stu"><span class="nm">${escapeHtml(s.last)}, ${escapeHtml(s.first)}</span><button class="x" data-del="${i}" title="Remove">×</button></div>`
+  ).join('') || '<div class="hint" style="padding:8px">No students yet.</div>';
+
+  document.getElementById('countLine').textContent =
+    cls.students.length+' student'+(cls.students.length===1?'':'s')+' · 24 seats';
+
+  document.getElementById('nameStyle').value=state.nameStyle;
+  document.getElementById('themeSel').value=state.theme;
+  document.getElementById('animSel').value=state.anim;
+  document.querySelectorAll('#layoutSeg button').forEach(b=>b.classList.toggle('on',b.dataset.layout===state.layout));
+}
+
+function parseName(str){
+  str=str.trim(); if(!str) return null;
+  if(str.includes(',')){ const [l,f]=str.split(','); return {first:(f||'').trim(),last:l.trim()}; }
+  const parts=str.split(/\s+/);
+  if(parts.length===1) return {first:parts[0],last:''};
+  return {first:parts.slice(0,-1).join(' '), last:parts[parts.length-1]};
+}
+
+function wire(){
+  // animation dropdown
+  const aSel=document.getElementById('animSel');
+  Object.keys(ANIMS).forEach(k=>{
+    const o=document.createElement('option'); o.value=k; o.innerHTML=ANIMS[k].label; aSel.appendChild(o);
+  });
+
+  document.getElementById('classSel').onchange=e=>{ state.current=+e.target.value; save(); renderMenu(); resetBoard(); };
+  document.getElementById('addClass').onclick=()=>{
+    const n=prompt('Name of the new class?','Period '+(state.classes.length+1));
+    if(!n) return;
+    state.classes.push({name:n,students:[]}); state.current=state.classes.length-1; save(); renderMenu(); resetBoard();
+  };
+  document.getElementById('renameClass').onclick=()=>{
+    const n=prompt('Rename this class:',currentClass().name); if(!n) return;
+    currentClass().name=n; save(); renderMenu();
+  };
+  document.getElementById('delClass').onclick=()=>{
+    if(state.classes.length<2){ alert('Keep at least one class.'); return; }
+    if(!confirm('Delete "'+currentClass().name+'" and its roster?')) return;
+    state.classes.splice(state.current,1); state.current=0; save(); renderMenu(); resetBoard();
+  };
+
+  const addStu=()=>{
+    const box=document.getElementById('newStudent');
+    const p=parseName(box.value); if(!p) return;
+    currentClass().students.push(p); box.value=''; save(); renderMenu();
+  };
+  document.getElementById('addStudent').onclick=addStu;
+  document.getElementById('newStudent').addEventListener('keydown',e=>{ if(e.key==='Enter') addStu(); });
+
+  document.getElementById('studentList').onclick=e=>{
+    const b=e.target.closest('[data-del]'); if(!b) return;
+    const i=+b.dataset.del;
+    if(confirm('Remove '+currentClass().students[i].first+' '+currentClass().students[i].last+' from this class?')){
+      currentClass().students.splice(i,1); save(); renderMenu();
+    }
+  };
+
+  document.getElementById('nameStyle').onchange=e=>{ state.nameStyle=e.target.value; save(); resetBoard(); };
+  document.getElementById('themeSel').onchange=e=>{
+    state.theme=e.target.value; save();
+    if(state.theme!=='random') document.body.dataset.theme=state.theme;
+  };
+  document.getElementById('animSel').onchange=e=>{ state.anim=e.target.value; save(); };
+
+  document.querySelectorAll('#layoutSeg button').forEach(b=>{
+    b.onclick=()=>{ state.layout=b.dataset.layout; save(); renderMenu(); resetBoard(); };
+  });
+
+  document.getElementById('goBtn').onclick=runScramble;
+  document.getElementById('menuToggle').onclick=()=>document.body.classList.toggle('menu-hidden');
+  document.getElementById('printBtn').onclick=()=>window.print();
+
+  // export / import
+  const dlg=document.getElementById('ioDlg');
+  document.getElementById('exportBtn').onclick=()=>{
+    document.getElementById('ioTitle').textContent='Export backup';
+    document.getElementById('ioMsg').textContent='Copy this text somewhere safe, or use the Download button.';
+    document.getElementById('ioText').value=JSON.stringify(state,null,1);
+    document.getElementById('ioOk').textContent='Download file';
+    dlg.dataset.mode='export'; dlg.showModal();
+  };
+  document.getElementById('importBtn').onclick=()=>{
+    document.getElementById('ioTitle').textContent='Import backup';
+    document.getElementById('ioMsg').textContent='Paste a previously exported backup here. This replaces your current rosters.';
+    document.getElementById('ioText').value='';
+    document.getElementById('ioOk').textContent='Import';
+    dlg.dataset.mode='import'; dlg.showModal();
+  };
+  document.getElementById('ioCancel').onclick=()=>dlg.close();
+  document.getElementById('ioOk').onclick=()=>{
+    if(dlg.dataset.mode==='export'){
+      const blob=new Blob([document.getElementById('ioText').value],{type:'application/json'});
+      const a=document.createElement('a');
+      a.href=URL.createObjectURL(blob); a.download='seat-scrambler-backup.json'; a.click();
+      URL.revokeObjectURL(a.href);
+    } else {
+      try{
+        const s=JSON.parse(document.getElementById('ioText').value);
+        if(!s.classes) throw 0;
+        state=Object.assign(state,s); state.current=0; save(); renderMenu(); resetBoard();
+      }catch(e){ alert('That did not look like a valid backup.'); return; }
+    }
+    dlg.close();
+  };
+
+  document.getElementById('resetBtn').onclick=()=>{
+    if(!confirm('Replace all classes with the six original rosters? Any students you added will be lost.')) return;
+    state.classes=freshFromDefaults(); state.current=0; save(); renderMenu(); resetBoard();
+  };
+
+  window.addEventListener('keydown',e=>{
+    if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT') return;
+    if(e.code==='Space'){ e.preventDefault(); runScramble(); }
+    if(e.key==='m'||e.key==='M') document.body.classList.toggle('menu-hidden');
+  });
+  window.addEventListener('resize',fitStage);
+}
+
+function resetBoard(){
+  renderFurniture();
+  clearChips();
+  document.getElementById('overflowNote').textContent='';
+  fitStage();
+}
+
+function fitStage(){
+  const wrap=document.getElementById('stageWrap');
+  const pad=18;
+  const s=Math.min((wrap.clientWidth-pad*2)/STAGE_W,(wrap.clientHeight-pad*2)/STAGE_H);
+  const st=document.getElementById('stage');
+  st.style.transform=`translate(${(wrap.clientWidth-STAGE_W*s)/2}px,${(wrap.clientHeight-STAGE_H*s)/2}px) scale(${s})`;
+}
+
+function makeStars(){
+  const box=document.getElementById('stars');
+  for(let i=0;i<70;i++){
+    const s=document.createElement('i');
+    s.style.left=rnd(0,100)+'%'; s.style.top=rnd(0,100)+'%';
+    s.style.animationDelay=rnd(0,3)+'s';
+    s.style.transform=`scale(${rnd(.6,2)})`;
+    box.appendChild(s);
+  }
+}
+
+load();
+if(state.theme!=='random') document.body.dataset.theme=state.theme;
+makeStars();
+wire();
+renderMenu();
+resetBoard();
+</script>
+</body>
+</html>
