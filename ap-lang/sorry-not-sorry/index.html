@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sorry Not Sorry: Ranking Celebrity Apologies — AP Language</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#1a1a18;--ink-mid:#4a4a44;--ink-light:#8a8a80;
+  --rule:#d4d0c4;--paper:#f7f4ee;--paper-warm:#efe9db;
+  --accent:#8b3a2a;--accent-light:#f5ede9;
+  --ok:#1a5c3a;--ok-bg:#e8f3ed;
+  --bad:#6b2a2a;--bad-bg:#f5e8e8;
+  --warn:#7a5c1a;--warn-bg:#f5f0e2;
+  --mid:#33404f;--mid-bg:#e9edf2;
+  --serif:'Libre Baskerville',Georgia,serif;
+  --sans:'Barlow',system-ui,sans-serif;
+  --cond:'Barlow Condensed',system-ui,sans-serif;
+  --type:'Special Elite','Courier New',monospace;
+}
+html{font-size:16px;-webkit-text-size-adjust:100%;}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6;min-height:100vh;}
+
+/* ══ MASTHEAD ══ */
+.masthead{border-bottom:3px double var(--ink);padding:.75rem 1rem .6rem;background:var(--paper);position:sticky;top:0;z-index:200;display:flex;align-items:center;gap:1rem;}
+.mast-mid{flex:1;text-align:center;min-width:0;}
+.masthead-kicker{font-family:var(--cond);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-light);margin-bottom:.15rem;}
+.masthead-title{font-family:var(--serif);font-size:clamp(15px,2.3vw,22px);font-weight:700;line-height:1.15;letter-spacing:-.02em;user-select:none;}
+.subbtn{flex:none;font-family:var(--cond);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.4rem .7rem;border:1.5px solid var(--rule);background:#fff;color:var(--ink-mid);cursor:pointer;border-radius:2px;transition:all .15s;line-height:1.2;}
+.subbtn:hover{border-color:var(--accent);color:var(--accent);}
+@media(max-width:620px){.masthead{gap:.5rem;padding:.6rem .6rem .5rem;}.subbtn{font-size:10px;padding:.35rem .5rem;}}
+
+/* ══ TABS ══ */
+.top-tabs{display:flex;background:var(--paper);border-bottom:1px solid var(--rule);position:sticky;top:60px;z-index:190;overflow-x:auto;}
+.top-tab{flex:1 0 auto;min-width:112px;padding:.55rem .6rem;font-family:var(--cond);font-size:12.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-light);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all .15s;text-align:center;position:relative;}
+.top-tab:hover{color:var(--ink);background:var(--paper-warm);}
+.top-tab.active{color:var(--ink);border-bottom-color:var(--accent);}
+.top-tab.cleared::after{content:"\2713";position:absolute;top:3px;right:7px;font-size:11px;color:var(--ok);}
+.tab-hint{font-family:var(--sans);font-size:10px;font-weight:400;letter-spacing:0;text-transform:none;display:block;color:var(--ink-light);margin-top:1px;}
+.top-tab.active .tab-hint{color:var(--ink-mid);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;animation:fadeIn .2s ease;}
+@media(max-width:620px){.top-tabs{top:74px;}.top-tab{min-width:92px;font-size:11.5px;padding:.5rem .35rem;}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.wrap{max-width:880px;margin:0 auto;padding:1.7rem 1.25rem 4.5rem;}
+
+/* ══ TYPE ══ */
+.stage-num{font-family:var(--cond);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-light);margin-bottom:.2rem;}
+h2.stage-title{font-family:var(--serif);font-size:clamp(20px,2.6vw,27px);font-weight:700;line-height:1.18;letter-spacing:-.02em;margin-bottom:.6rem;}
+.lede{font-size:15px;color:var(--ink-mid);line-height:1.7;margin-bottom:1.4rem;padding-bottom:1.1rem;border-bottom:1px solid var(--rule);}
+.lede strong{color:var(--ink);font-weight:600;}
+h3.sub{font-family:var(--cond);font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;border-bottom:2px solid var(--ink);padding-bottom:.3rem;margin:2.1rem 0 .9rem;}
+p.body{font-size:14.6px;line-height:1.72;margin-bottom:.85rem;color:var(--ink);}
+p.body.dim{color:var(--ink-mid);font-size:14px;}
+ul.body{margin:.6rem 0 1rem 1.15rem;font-size:14.4px;line-height:1.7;}
+ul.body li{margin-bottom:.5rem;padding-left:.15rem;}
+.callout{background:var(--paper-warm);border-left:4px solid var(--accent);padding:.95rem 1.15rem;margin:1.2rem 0;font-size:14px;line-height:1.72;color:var(--ink-mid);}
+.callout strong{color:var(--ink);font-weight:600;}
+.callout p+p{margin-top:.6rem;}
+em.q{font-style:italic;}
+
+/* ══ APOLOGY TEXT BLOCKS ══ */
+.doc{background:#fff;border:1px solid var(--rule);border-radius:2px;padding:1.05rem 1.25rem;margin-bottom:1rem;}
+.doc .doc-lab{font-family:var(--cond);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:.5rem;padding-bottom:.35rem;border-bottom:1px solid var(--rule);}
+.doc p{font-family:var(--serif);font-size:13.6px;line-height:1.78;margin-bottom:.7rem;color:var(--ink);}
+.doc p:last-child{margin-bottom:0;}
+.doc.alt{background:var(--paper-warm);}
+.doc.alt .doc-lab{color:var(--mid);}
+.ctx{font-size:13.4px;line-height:1.68;color:var(--ink-mid);background:var(--mid-bg);border-left:3px solid var(--mid);padding:.7rem .9rem;margin-bottom:.7rem;border-radius:2px;}
+.swap-pair{display:grid;gap:.9rem;margin-bottom:1.1rem;}
+@media(min-width:820px){.swap-pair{grid-template-columns:1fr 1fr;align-items:start;}}
+
+/* ══ WRITE-THEN-REVEAL ══ */
+.ask{background:#fff;border:1px dashed var(--accent);padding:1rem 1.15rem;margin:1.3rem 0;border-radius:2px;}
+.ask .ask-lab{font-family:var(--cond);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);font-weight:700;display:block;margin-bottom:.4rem;}
+.ask .ask-q{font-size:14.8px;line-height:1.65;font-weight:500;margin-bottom:.75rem;color:var(--ink);}
+.ask textarea{width:100%;min-height:78px;font-family:var(--sans);font-size:14.2px;line-height:1.6;padding:.6rem .7rem;border:1px solid var(--rule);border-radius:2px;background:var(--paper);color:var(--ink);resize:vertical;}
+.ask textarea:focus{outline:none;border-color:var(--accent);background:#fff;}
+.ask .ask-foot{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;margin-top:.7rem;}
+.ask .nudge{font-size:12.5px;color:var(--ink-light);font-style:italic;}
+.reveal{display:none;margin-top:1rem;padding-top:1rem;border-top:2px solid var(--rule);animation:fadeIn .25s ease;}
+.reveal.open{display:block;}
+.reveal .rv-lab{font-family:var(--cond);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ok);font-weight:700;display:block;margin-bottom:.5rem;}
+
+/* ══ BUTTONS ══ */
+.btn{font-family:var(--cond);font-size:13px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:.55rem 1.2rem;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer;border-radius:2px;transition:all .15s;}
+.btn:hover:not(:disabled){background:var(--accent);border-color:var(--accent);}
+.btn.ghost{background:none;color:var(--ink);}
+.btn.ghost:hover:not(:disabled){background:var(--ink);color:var(--paper);}
+.btn:disabled{opacity:.3;cursor:not-allowed;}
+.btn.sm{font-size:11.5px;padding:.4rem .8rem;}
+.btnrow{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.5rem;padding-top:1.2rem;border-top:1px solid var(--rule);}
+.btnrow.tight{margin-top:.9rem;padding-top:0;border-top:none;}
+
+/* ══ NOTEBOOK ══ */
+.nb{background:#fffdf5;border:2px solid var(--ink);border-radius:2px;padding:1rem 1.2rem;margin:1.6rem 0 .5rem;position:relative;}
+.nb::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:repeating-linear-gradient(to bottom,var(--ink) 0 7px,transparent 7px 14px);}
+.nb .nb-lab{font-family:var(--cond);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);font-weight:700;margin-bottom:.5rem;display:flex;align-items:center;gap:.45rem;}
+.nb .nb-lab span.pen{font-family:var(--type);font-size:13px;color:var(--accent);}
+.nb ol{margin:0 0 0 1.15rem;font-size:14.2px;line-height:1.68;}
+.nb ol li{margin-bottom:.4rem;}
+.nb p{font-size:14.2px;line-height:1.68;}
+.nb .nb-head{font-family:var(--type);font-size:13px;color:var(--accent);margin-bottom:.35rem;}
+
+/* ══ MOVES & DODGES ══ */
+.move{background:#fff;border:1px solid var(--rule);border-left:3px solid var(--ok);border-radius:2px;padding:.85rem 1rem;margin-bottom:.7rem;}
+.move .mv-name{font-family:var(--cond);font-size:14px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;color:var(--ok);margin-bottom:.2rem;}
+.move .mv-def{font-size:14.2px;line-height:1.65;color:var(--ink);margin-bottom:.55rem;}
+.dodge{background:var(--bad-bg);border-left:3px solid var(--bad);padding:.55rem .75rem;margin-top:.45rem;border-radius:2px;}
+.dodge .dg-name{font-family:var(--cond);font-size:12px;letter-spacing:.11em;text-transform:uppercase;font-weight:700;color:var(--bad);margin-bottom:.15rem;}
+.dodge .dg-def{font-size:13.5px;line-height:1.6;color:#4a2020;}
+.move.nodge{border-left-color:var(--warn);}
+.move.nodge .mv-name{color:var(--warn);}
+
+/* ══ CLOSE READ ══ */
+.phrase{background:#fff;border:1px solid var(--rule);border-radius:2px;margin-bottom:1rem;overflow:hidden;}
+.phrase .ph-q{font-family:var(--serif);font-size:15px;line-height:1.6;padding:.85rem 1rem;color:var(--ink);font-style:italic;border-bottom:1px dashed var(--rule);}
+.phrase .ph-q::before{content:"\201C";}
+.phrase .ph-q::after{content:"\201D";}
+.phrase .ph-ask{font-family:var(--cond);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-light);font-weight:700;padding:.65rem 1rem .1rem;overflow:hidden;}
+.phrase .ph-tries{float:right;font-family:var(--type);font-size:11px;color:var(--ink-light);text-transform:none;letter-spacing:0;}
+.opts{padding:.5rem 1rem .8rem;display:flex;flex-direction:column;gap:.4rem;}
+.opt{text-align:left;font-family:var(--sans);font-size:14px;line-height:1.55;padding:.6rem .8rem;border:1px solid var(--rule);background:var(--paper);color:var(--ink);border-radius:2px;cursor:pointer;transition:all .13s;}
+.opt:hover:not(:disabled){border-color:var(--accent);background:var(--accent-light);}
+.opt .ltr{font-family:var(--type);font-size:12px;color:var(--ink-light);margin-right:.5rem;}
+.opt.pick-bad{border-color:var(--bad);background:var(--bad-bg);}
+.opt.pick-good{border-color:var(--ok);background:var(--ok-bg);}
+.opt:disabled{cursor:default;opacity:.5;}
+.opt.pick-bad:disabled,.opt.pick-good:disabled{opacity:1;}
+.ph-fb{display:none;padding:.8rem 1rem;font-size:13.8px;line-height:1.68;border-top:1px solid var(--rule);}
+.ph-fb.on{display:block;animation:fadeIn .2s ease;}
+.ph-fb.warm{background:var(--warn-bg);color:#5a4512;}
+.ph-fb.cool{background:var(--ok-bg);color:#14472c;}
+.ph-fb .fb-lab{font-family:var(--cond);font-size:11px;letter-spacing:.11em;text-transform:uppercase;font-weight:700;display:block;margin-bottom:.3rem;}
+.ph-full{display:none;padding:.9rem 1rem;border-top:1px solid var(--rule);background:#fff;font-size:14px;line-height:1.72;color:var(--ink);}
+.ph-full.on{display:block;animation:fadeIn .25s ease;}
+.ph-full p+p{margin-top:.6rem;}
+.tagx{display:inline-block;font-family:var(--cond);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:1px 6px;border-radius:2px;background:var(--bad);color:#fff;margin-bottom:.45rem;}
+
+/* ══ READING LIST ══ */
+.rd{border:1px solid var(--rule);border-radius:2px;margin-bottom:.6rem;background:#fff;}
+.rd summary{font-family:var(--cond);font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.7rem .95rem;cursor:pointer;color:var(--ink);list-style:none;display:flex;align-items:center;gap:.5rem;}
+.rd summary::-webkit-details-marker{display:none;}
+.rd summary::before{content:"\25B8";color:var(--accent);font-size:12px;transition:transform .15s;}
+.rd[open] summary::before{transform:rotate(90deg);}
+.rd summary:hover{background:var(--paper-warm);}
+.rd summary .who{font-family:var(--sans);font-size:12px;font-weight:400;letter-spacing:0;text-transform:none;color:var(--ink-light);margin-left:auto;}
+.rd .rd-body{padding:0 .95rem 1rem;border-top:1px solid var(--rule);}
+
+/* ══ TIER BOARD ══ */
+.tierbar{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:1.3rem;position:sticky;top:106px;z-index:80;background:var(--paper);padding:.5rem 0;}
+@media(max-width:620px){.tierbar{top:118px;}}
+.tierbox{border:1.5px solid var(--rule);border-radius:2px;padding:.55rem .6rem;background:#fff;min-height:76px;}
+.tierbox.t-eff{border-color:var(--ok);}
+.tierbox.t-mix{border-color:var(--warn);}
+.tierbox.t-fail{border-color:var(--bad);}
+.tierbox .tb-lab{font-family:var(--cond);font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;font-weight:700;margin-bottom:.3rem;}
+.tierbox.t-eff .tb-lab{color:var(--ok);}
+.tierbox.t-mix .tb-lab{color:var(--warn);}
+.tierbox.t-fail .tb-lab{color:var(--bad);}
+.tierbox .tb-list{font-size:12.5px;line-height:1.5;color:var(--ink-mid);}
+.tierbox .tb-list span{display:block;}
+.tierbox .tb-empty{font-size:12px;color:var(--ink-light);font-style:italic;}
+
+.card{background:#fff;border:1px solid var(--rule);border-radius:2px;margin-bottom:.8rem;overflow:hidden;}
+.card.set-eff{border-left:4px solid var(--ok);}
+.card.set-mix{border-left:4px solid var(--warn);}
+.card.set-fail{border-left:4px solid var(--bad);}
+.card .cd-head{padding:.75rem .95rem .6rem;}
+.card .cd-name{font-family:var(--cond);font-size:15.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink);}
+.card .cd-what{font-size:12.8px;color:var(--ink-mid);line-height:1.55;margin-top:.15rem;}
+.card .cd-tiers{display:flex;gap:.4rem;padding:0 .95rem .7rem;flex-wrap:wrap;}
+.tbtn{font-family:var(--cond);font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.38rem .75rem;border:1.5px solid var(--rule);background:var(--paper);color:var(--ink-light);cursor:pointer;border-radius:2px;transition:all .13s;}
+.tbtn:hover{border-color:var(--ink-light);color:var(--ink);}
+.tbtn.on.eff{background:var(--ok);border-color:var(--ok);color:#fff;}
+.tbtn.on.mix{background:var(--warn);border-color:var(--warn);color:#fff;}
+.tbtn.on.fail{background:var(--bad);border-color:var(--bad);color:#fff;}
+.tbtn.txt{margin-left:auto;background:none;border-color:transparent;color:var(--accent);text-decoration:underline;}
+.tbtn.txt:hover{border-color:transparent;color:var(--ink);}
+.card .cd-text{display:none;padding:0 .95rem .9rem;}
+.card .cd-text.open{display:block;}
+.card .cd-rat{display:none;padding:.85rem .95rem;border-top:1px dashed var(--rule);background:var(--paper);}
+.card .cd-rat.open{display:block;animation:fadeIn .2s ease;}
+.card .cd-rat label{font-family:var(--cond);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-light);font-weight:700;display:block;margin-bottom:.25rem;}
+.card .cd-rat input[type=text],.card .cd-rat select,.card .cd-rat textarea{width:100%;font-family:var(--sans);font-size:13.8px;padding:.5rem .6rem;border:1px solid var(--rule);border-radius:2px;background:#fff;color:var(--ink);margin-bottom:.7rem;}
+.card .cd-rat textarea{min-height:60px;line-height:1.6;resize:vertical;}
+.card .cd-rat input:focus,.card .cd-rat select:focus,.card .cd-rat textarea:focus{outline:none;border-color:var(--accent);}
+.flag{display:none;background:var(--warn-bg);border-left:3px solid var(--warn);padding:.55rem .7rem;font-size:13px;line-height:1.6;color:#5a4512;border-radius:2px;margin-bottom:.6rem;}
+.flag.on{display:block;animation:fadeIn .2s ease;}
+.rat-done{font-family:var(--cond);font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--ok);font-weight:700;}
+
+/* ══ SUMMARY ══ */
+.summary{background:#fff;border:2px solid var(--ink);border-radius:2px;padding:1.1rem 1.25rem;margin-top:1.5rem;}
+.summary h4{font-family:var(--cond);font-size:13px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.7rem;}
+.summary pre{font-family:var(--type);font-size:12.5px;line-height:1.75;white-space:pre-wrap;word-wrap:break-word;color:var(--ink);background:var(--paper);padding:.9rem;border:1px solid var(--rule);border-radius:2px;max-height:340px;overflow-y:auto;}
+
+/* ══ SUB PANEL ══ */
+.scrim{display:none;position:fixed;inset:0;background:rgba(20,20,16,.55);z-index:400;}
+.scrim.open{display:block;}
+.subpanel{display:none;position:fixed;top:0;right:0;bottom:0;width:min(560px,100%);background:var(--paper);z-index:401;overflow-y:auto;border-left:3px double var(--ink);padding:1.4rem 1.5rem 3rem;}
+.subpanel.open{display:block;}
+.subpanel h3{font-family:var(--serif);font-size:20px;margin-bottom:.2rem;}
+.subpanel .sp-kick{font-family:var(--cond);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-light);margin-bottom:1rem;}
+.subpanel h4{font-family:var(--cond);font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;border-bottom:2px solid var(--ink);padding-bottom:.25rem;margin:1.5rem 0 .7rem;}
+.subpanel p,.subpanel li{font-size:14px;line-height:1.7;color:var(--ink);}
+.subpanel ul,.subpanel ol{margin:0 0 .9rem 1.15rem;}
+.subpanel li{margin-bottom:.45rem;}
+.closebtn{position:absolute;top:1rem;right:1.2rem;background:none;border:none;font-size:22px;color:var(--ink-light);cursor:pointer;line-height:1;}
+.closebtn:hover{color:var(--accent);}
+table.tt{width:100%;border-collapse:collapse;margin-bottom:1rem;font-size:13.5px;}
+table.tt td{border-bottom:1px solid var(--rule);padding:.42rem .3rem;vertical-align:top;}
+table.tt td.min{font-family:var(--type);font-size:12px;color:var(--accent);white-space:nowrap;width:62px;}
+@media print{
+  .top-tabs,.masthead,.subbtn,.scrim{display:none!important;}
+  .subpanel{display:block!important;position:static;width:auto;border:none;padding:0;}
+  .closebtn{display:none;}
+}
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <button class="subbtn" id="openSub">For the<br>Sub</button>
+  <div class="mast-mid">
+    <div class="masthead-kicker">AP Language &amp; Composition &middot; The Rhetorical Situation</div>
+    <div class="masthead-title">Sorry Not Sorry</div>
+  </div>
+  <button class="subbtn" id="resetAll" title="Clears everything on this screen">Start<br>Fresh</button>
+</div>
+
+<div class="top-tabs" id="tabs"></div>
+
+<div class="wrap">
+
+<!-- ═══════════ 1 · THE SWAP ═══════════ -->
+<section class="tab-panel" data-panel="0">
+  <div class="stage-num">Stage One &middot; 12 minutes</div>
+  <h2 class="stage-title">The Swap</h2>
+  <p class="lede">Two apologies. Each one appears twice. In both cases we changed <strong>only the style</strong> &mdash; not a single fact, not a single claim, not one thing the speaker is actually saying. Read carefully and answer before you scroll.</p>
+
+  <h3 class="sub">Pair One &middot; Kanye West, 2009</h3>
+  <div class="ctx">At the 2009 MTV Video Music Awards, Taylor Swift won Best Female Video. During her acceptance speech Kanye West took the microphone and said Beyonc&eacute; deserved it more. He posted this apology on his blog the next day.</div>
+
+  <div class="swap-pair">
+    <div class="doc">
+      <div class="doc-lab">Version A &middot; What he actually wrote</div>
+      <p>I'm sooooo sorry to Taylor Swift and her fans and her mom. I spoke to her mother right after and she said the same thing my mother would've said. She is very talented! I like the lyrics about being a cheerleader and she's in the bleachers! I'm in the wrong for going on stage and taking away from her moment!</p>
+      <p>Beyonc&eacute;'s video was the best of this decade!!!! I'm sorry to my fans if I let you guys down!!!! I'm sorry to my friends at MTV. I will apologize to Taylor 2mrw. Welcome to the real world!!!! Everybody wanna booooo me but I'm a fan of real pop culture!!! No disrespect but we watchin' the show at the crib right now cause ... well you know!!!! I'm still happy for Taylor!!!! Boooyaaawwww!!!! You are very very talented!!! I gave my awards to Outkast when they deserved it over me ... That's what it is!!!!!!! I'm not crazy y'all, i'm just real. Sorry for that!!! I really feel bad for Taylor and I'm sincerely sorry!!! Much respect!!!!!</p>
+    </div>
+    <div class="doc alt">
+      <div class="doc-lab">Version B &middot; Same content, cleaned up</div>
+      <p>I would like to offer my sincere apologies to Taylor Swift, her family, and her supporters. I spoke with her mother shortly after the incident, and she expressed what my own mother would have said. Taylor is a talented artist, and I was wrong to take the stage and diminish her moment.</p>
+      <p>That said, I maintain that Beyonc&eacute;'s video was the finest of the decade. I also apologize to my fans, should I have disappointed them, and to my colleagues at MTV. I intend to speak with Taylor personally tomorrow. I have given awards to other artists when they deserved them over me. I am not unreasonable; I am simply candid. I regret what happened, and I remain happy for Taylor.</p>
+    </div>
+  </div>
+
+  <div class="ask" data-ask="swapA">
+    <span class="ask-lab">Answer with your partner</span>
+    <div class="ask-q">Version B fixes every spelling, grammar and punctuation problem in Version A. Is it a better apology? Explain what did or did not change.</div>
+    <textarea placeholder="Type your answer here. Talk it through first."></textarea>
+    <div class="ask-foot">
+      <button class="btn sm" disabled>Show our answer</button>
+      <span class="nudge">Write something before you reveal. That is the whole point.</span>
+    </div>
+    <div class="reveal">
+      <span class="rv-lab">A stronger answer</span>
+      <p class="body"><strong>No &mdash; and it may be worse.</strong> Nothing that was wrong with this apology was located in the language.</p>
+      <ul class="body">
+        <li>He apologizes and re-argues the verdict in the same breath. <em class="q">I'm in the wrong for going on stage</em> sits a few words away from <em class="q">Beyonc&eacute;'s video was the best of this decade.</em> He is still making his case.</li>
+        <li>He defers the apology that matters: <em class="q">I will apologize to Taylor 2mrw.</em> The one person he wronged is the one audience he has not spoken to yet.</li>
+        <li><em class="q">Welcome to the real world</em> is aimed at his critics, not at Taylor. So is <em class="q">Everybody wanna booooo me.</em></li>
+        <li>He apologizes to his fans for letting <em>them</em> down, which quietly makes him the person who suffered a loss.</li>
+      </ul>
+      <p class="body">Now notice what the cleanup did. In Version A the exclamation points at least read as a man typing fast, genuinely agitated, at one in the morning. In Version B he has clearly had time to sit and compose &mdash; and he <em>still</em> decided to defend himself. The polish makes the self-defense look considered instead of impulsive. The grammar improved and the apology got worse.</p>
+    </div>
+  </div>
+
+  <h3 class="sub">Pair Two &middot; Reese Witherspoon, 2013</h3>
+  <div class="ctx">Reese Witherspoon was arrested in Atlanta in 2013 after her husband was pulled over for drunk driving. She was reported to have asked the arresting officer, <em>&ldquo;Do you know my name?&rdquo;</em> She released a written statement and later apologized on television.</div>
+
+  <div class="swap-pair">
+    <div class="doc">
+      <div class="doc-lab">Version A &middot; What she actually said</div>
+      <p>I clearly had one drink too many and I am deeply embarrassed about the things I said. It was definitely a scary situation and I was frightened for my husband, but that is no excuse. I was disrespectful to the officer who was just doing his job. I have nothing but respect for the police and I'm very sorry for my behavior.</p>
+      <p>It's one of those nights, you know, we went out to dinner in Atlanta and we had one too many glasses of wine and we thought we were fine to drive and we absolutely were not. And it's just completely unacceptable and we are so sorry and embarrassed. And we know better. And we shouldn't have done that.</p>
+    </div>
+    <div class="doc alt">
+      <div class="doc-lab">Version B &middot; Same content, different voice</div>
+      <p>ok so I had like ONE too many drinks!!!! sooooo embarrassed about what I said!!! it was scary!!! I was freaking out about my husband!!! but no excuses!!!!</p>
+      <p>I was rude to that officer who was just doing his job!!!! I love cops!!!! sorry!!!! It's one of those nights y'all!!! we had dinner in Atlanta, had a few glasses of wine, thought we were fine to drive and we were NOT!!!! totally unacceptable!!!! we know better!!!! my bad!!!!!</p>
+    </div>
+  </div>
+
+  <div class="ask" data-ask="swapB">
+    <span class="ask-lab">Answer with your partner</span>
+    <div class="ask-q">Version B keeps every single thing Reese admits to. Only the voice changed. Is it a worse apology? Why should that be, if the content is identical?</div>
+    <textarea placeholder="Type your answer here."></textarea>
+    <div class="ask-foot">
+      <button class="btn sm" disabled>Show our answer</button>
+      <span class="nudge">Write something before you reveal.</span>
+    </div>
+    <div class="reveal">
+      <span class="rv-lab">A stronger answer</span>
+      <p class="body"><strong>Yes &mdash; badly.</strong> Nothing she admits to has changed. But a film actress doing damage control after a drunk driving arrest, speaking to a mainstream audience that includes people who have lost family members to drunk drivers, cannot be breezy about it. Being casual reads as not understanding how serious this was, and not understanding how serious it was is exactly the thing she needs to disprove.</p>
+      <p class="body">Here is the part worth sitting with. That style was <em>available</em> to Kanye. A musician posting on his own blog in 2009, to fans who follow him precisely because he does not sound like a press release &mdash; that voice fits him, his platform, and his audience. The same voice is not available to Reese, in a written statement to the general public, about a criminal offense.</p>
+      <p class="body">Neither version is better writing. They are different sets of options, belonging to different people in different situations.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <p><strong>So here is the definition you are working with for the rest of this unit.</strong></p>
+    <p>Rhetoric is the art of using the means of persuasion that are <em>actually available to you</em>.</p>
+    <p><strong>Available</strong> is the word doing the work. What is available to a speaker depends on who they are, who is listening, what they did, and where they are speaking. Kanye cannot sound like a corporate statement without sounding fake. A CEO cannot say <em class="q">my bad</em> without sounding like he is not taking it seriously.</p>
+    <p>You already know this. You do not ask your mother for something the same way you ask your father, and you did not pick one of those approaches because it was better writing. You picked it because you knew your audience. That instinct is the thing we are about to make formal.</p>
+  </div>
+
+  <div class="nb">
+    <div class="nb-lab"><span class="pen">&#9998;</span> In your notebook &mdash; heading: THE SWAP TEST</div>
+    <ol>
+      <li>One sentence: why did fixing Kanye's grammar fail to fix his apology?</li>
+      <li>One sentence: why did Reese's apology break when <em>only</em> the style changed?</li>
+      <li>Copy the definition: <em>Rhetoric is the art of using the means of persuasion that are actually available to you.</em></li>
+    </ol>
+  </div>
+
+  <div class="btnrow"><button class="btn nextbtn" data-go="1">Next &rarr; Stage Two</button></div>
+</section>
+
+<!-- ═══════════ 2 · PURPOSE ═══════════ -->
+<section class="tab-panel" data-panel="1">
+  <div class="stage-num">Stage Two &middot; 8 minutes</div>
+  <h2 class="stage-title">What Is an Apology Actually For?</h2>
+  <p class="lede">In a few minutes you are going to rank nine public apologies from most to least effective. You cannot judge whether something is effective until you know <strong>what it was trying to do.</strong> So decide that first, before you read a single one.</p>
+
+  <div class="ask" data-ask="purpose">
+    <span class="ask-lab">With your partner &middot; four minutes</span>
+    <div class="ask-q">What is a public apology trying to accomplish? Be specific. &ldquo;To say sorry&rdquo; is not an answer &mdash; that describes the words, not the goal. What does the speaker need to be true when it is over?</div>
+    <textarea placeholder="What is the speaker actually trying to make happen?"></textarea>
+    <div class="ask-foot">
+      <button class="btn sm" disabled>Show our answer</button>
+      <span class="nudge">Commit to an answer first. Then compare.</span>
+    </div>
+    <div class="reveal">
+      <span class="rv-lab">A stronger answer</span>
+      <p class="body"><strong>A public apology tries to restore the speaker's standing with an audience that has lost trust in them.</strong></p>
+      <p class="body">It succeeds when that audience believes two things:</p>
+      <ul class="body">
+        <li><strong>This person understands what they actually did.</strong> Not a softened version of it. The thing itself.</li>
+        <li><strong>This person is not going to do it again.</strong></li>
+      </ul>
+      <p class="body">Everything else is a means to those two ends. Notice what is <em>not</em> on that list: sounding sincere, sounding professional, sounding sorry, sounding polished. Those are impressions, and impressions are easy to fake. The question is whether a specific group of people would actually forgive this specific person.</p>
+      <p class="body dim">Which means every judgment you make from here has to name an audience. Forgiven by whom?</p>
+    </div>
+  </div>
+
+  <div class="nb">
+    <div class="nb-lab"><span class="pen">&#9998;</span> In your notebook &mdash; heading: PURPOSE</div>
+    <ol>
+      <li>Your definition, as you wrote it.</li>
+      <li>The revised definition, and the two things the audience has to believe.</li>
+    </ol>
+  </div>
+
+  <div class="btnrow"><button class="btn nextbtn" data-go="2">Next &rarr; Stage Three</button></div>
+</section>
+
+<!-- ═══════════ 3 · MOVES & DODGES ═══════════ -->
+<section class="tab-panel" data-panel="2">
+  <div class="stage-num">Stage Three &middot; 10 minutes</div>
+  <h2 class="stage-title">Moves and Dodges</h2>
+  <p class="lede">You know the goal. Now: what <strong>choices</strong> can a speaker make to get there? And what does it look like when a speaker performs the choice without actually making it?</p>
+
+  <div class="ask" data-ask="moves">
+    <span class="ask-lab">With your partner &middot; four minutes</span>
+    <div class="ask-q">List as many specific strategies as you can that would make an audience believe a speaker understands what they did and will not do it again. Aim for at least four.</div>
+    <textarea placeholder="1.&#10;2.&#10;3.&#10;4."></textarea>
+    <div class="ask-foot">
+      <button class="btn sm" disabled>Show our answer</button>
+      <span class="nudge">Four strategies, then reveal.</span>
+    </div>
+    <div class="reveal">
+      <span class="rv-lab">Five moves, and the dodge that imitates each one</span>
+
+      <div class="move">
+        <div class="mv-name">1 &middot; Name It</div>
+        <div class="mv-def">Say what you did, specifically, using the words your audience would use for it.</div>
+        <div class="dodge">
+          <div class="dg-name">The Downgrade</div>
+          <div class="dg-def">Apologize for a smaller, vaguer offense than the one you actually committed. The audience knows what you did. You name something adjacent to it and hope that counts.</div>
+        </div>
+      </div>
+
+      <div class="move">
+        <div class="mv-name">2 &middot; Own It</div>
+        <div class="mv-def">Grammatically and morally. Somebody did this, and the sentence should contain them.</div>
+        <div class="dodge">
+          <div class="dg-name">The Agentless Dodge</div>
+          <div class="dg-def">Build a sentence with nobody in it. Things happened. Pain was caused. Events occurred. Watch for passive voice and for verbs that turn a decision into weather.</div>
+        </div>
+        <div class="dodge">
+          <div class="dg-name">The Intent Defense</div>
+          <div class="dg-def">&ldquo;I never meant it that way.&rdquo; This asks to be judged on your intentions instead of on what you did to somebody.</div>
+        </div>
+      </div>
+
+      <div class="move">
+        <div class="mv-name">3 &middot; Center Them</div>
+        <div class="mv-def">The injured party is the subject. Not you, and not what this has cost you.</div>
+        <div class="dodge">
+          <div class="dg-name">The Redemption Pivot</div>
+          <div class="dg-def">Turn the apology into the story of your personal growth. What I've learned. How I've changed. How hard this year has been for me.</div>
+        </div>
+        <div class="dodge">
+          <div class="dg-name">Speaking for the Victim</div>
+          <div class="dg-def">Announce what the injured person wants &mdash; usually that they want it to be over. You are now deciding when their story ends.</div>
+        </div>
+      </div>
+
+      <div class="move">
+        <div class="mv-name">4 &middot; No Excuses</div>
+        <div class="mv-def">Do not re-argue the case inside the apology. An apology and a defense cannot occupy the same paragraph.</div>
+        <div class="dodge">
+          <div class="dg-name">The Re-litigation</div>
+          <div class="dg-def">Apologize, then explain why you were sort of right, or why the other person provoked it, or why everyone else does it too.</div>
+        </div>
+      </div>
+
+      <div class="move nodge">
+        <div class="mv-name">5 &middot; Repair It</div>
+        <div class="mv-def">Offer something concrete, costly and checkable. Money, resignation, cancelled work, a date by which something will be done. Feelings are free; repair is not.</div>
+        <div class="dodge" style="background:var(--warn-bg);border-left-color:var(--warn);">
+          <div class="dg-name" style="color:var(--warn);">No dodge exists for this one</div>
+          <div class="dg-def" style="color:#5a4512;">You cannot fake a concrete commitment. Its absence is the tell. When an apology contains no repair, ask what the speaker is actually willing to lose.</div>
+        </div>
+      </div>
+
+      <p class="body" style="margin-top:1.2rem;"><strong>And two conditions that govern all five:</strong></p>
+      <ul class="body">
+        <li><strong>Right audience, right venue.</strong> Who needs to hear this, and is that who is actually being addressed? Where was it published, and who reads that?</li>
+        <li><strong>Register that fits the speaker.</strong> Stage One. The voice has to be one this person can plausibly use.</li>
+      </ul>
+
+      <div class="callout">
+        <p><strong>Now the warning, and this is the part that separates a real analysis from a checklist.</strong></p>
+        <p>This is not a scoring rubric. Two of the nine apologies you are about to read run the <em>identical</em> Redemption Pivot &mdash; nearly the same sentence &mdash; and only one of them survives it. The other one is sunk by it.</p>
+        <p>A move is not good or bad on its own. It works or fails depending on who is making it, what they did, who is listening, and what surrounds it in the text. Finding the dodge is the beginning of your analysis. Explaining why it lands or fails <em>here, for this speaker, with this audience</em> is the analysis itself.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="nb">
+    <div class="nb-lab"><span class="pen">&#9998;</span> In your notebook &mdash; heading: MOVES AND DODGES</div>
+    <ol>
+      <li>The five moves, in your own words. One line each.</li>
+      <li>The six dodges, by name, with a one-line definition of each. You will be citing these by name for the rest of the period, so get them down properly.</li>
+    </ol>
+  </div>
+
+  <div class="btnrow"><button class="btn nextbtn" data-go="3">Next &rarr; Stage Four</button></div>
+</section>
+
+<!-- ═══════════ 4 · CLOSE READ ═══════════ -->
+<section class="tab-panel" data-panel="3">
+  <div class="stage-num">Stage Four &middot; 12 minutes</div>
+  <h2 class="stage-title">How to Actually Read One</h2>
+  <p class="lede">Watch the tools get used. This is Reese Witherspoon's apology again &mdash; the full version this time. Most people read it as fine. It is not fine, and the reasons are all at the level of the phrase.</p>
+
+  <div class="ctx">Arrested in Atlanta, April 2013, after her husband was pulled over for driving under the influence. She was reported to have asked the arresting officer: <em>&ldquo;Do you know my name?&rdquo;</em> &mdash; an attempt to use her celebrity to avoid arrest. That detail was in every story about the incident. Her audience already knew it when she spoke.</div>
+
+  <div class="doc">
+    <div class="doc-lab">The statement, in full</div>
+    <p>I clearly had one drink too many and I am deeply embarrassed about the things I said. It was definitely a scary situation and I was frightened for my husband, but that is no excuse. I was disrespectful to the officer who was just doing his job. I have nothing but respect for the police and I'm very sorry for my behavior.</p>
+    <p>It's one of those nights, you know, we went out to dinner in Atlanta and we had one too many glasses of wine and we thought we were fine to drive and we absolutely were not. And it's just completely unacceptable and we are so sorry and embarrassed. And we know better. And we shouldn't have done that.</p>
+    <p>I have no idea what I was saying that night. I saw him arresting my husband and I literally panicked. And I said all kinds of crazy things. I told him I was pregnant &mdash; I'm not pregnant! I said crazy things. And if you only hear me laughing it's because I have no idea what I was talking about. And I'm so sorry. I was so disrespectful to him and I have police officers in my family. I work with police officers every day. I know better and it's just unacceptable.</p>
+  </div>
+
+  <p class="body">Four phrases. For each one, work out with your partner what the phrase is <em>doing</em>, then choose. Every option below is something a reasonable person has said about this apology &mdash; more than one of them is even true. Only one names what the phrase <em>accomplishes for her</em>. If you pick wrong you will get told why, and you go again.</p>
+
+  <div id="closeRead"></div>
+
+  <div class="callout">
+    <p>Now read the statement one more time with those four in view, and ask the only question that matters: <strong>after hearing this, would her audience believe she understands what she actually did?</strong></p>
+    <p>Notice what you did <em>not</em> have to say to get here. Nothing about her grammar. Nothing about whether she sounds sincere. You quoted phrases and explained what each one accomplishes. That is the whole method, and it is what you owe every apology in the next stage.</p>
+  </div>
+
+  <div class="nb">
+    <div class="nb-lab"><span class="pen">&#9998;</span> In your notebook &mdash; heading: CLOSE READ &middot; WITHERSPOON</div>
+    <ol>
+      <li>All four phrases, quoted exactly.</li>
+      <li>Beside each: what it is doing, and the name of the dodge if it is one.</li>
+      <li>Any option you chose that turned out to be wrong &mdash; write it down with one line on why it was wrong. Those are the four mistakes everybody makes, and naming yours is worth more than getting it right first try.</li>
+      <li>One sentence answering the question in the box above.</li>
+    </ol>
+  </div>
+
+  <div class="btnrow"><button class="btn nextbtn" data-go="4">Next &rarr; Read the Nine</button></div>
+</section>
+
+<!-- ═══════════ 5 · THE NINE ═══════════ -->
+<section class="tab-panel" data-panel="4">
+  <div class="stage-num">Stage Five &middot; Reference</div>
+  <h2 class="stage-title">The Nine Apologies</h2>
+  <p class="lede">If you read and annotated these for homework, use this tab to find the phrases you marked. If you did not, read them now &mdash; and read for <strong>quotable phrases</strong>, not for a general impression. You will need to cite exact language in the next stage.</p>
+
+  <div class="callout">
+    <p><strong>As you read, mark:</strong> the sentence where the speaker names what they did (or the place where that sentence should be and isn't); any sentence with no person in it; anything the speaker offers to actually give up; and the moment, if it comes, when the apology turns into a story about the speaker.</p>
+  </div>
+
+  <div id="readList"></div>
+
+  <div class="btnrow"><button class="btn nextbtn" data-go="5">Next &rarr; Tier Them</button></div>
+</section>
+
+<!-- ═══════════ 6 · TIER ═══════════ -->
+<section class="tab-panel" data-panel="5">
+  <div class="stage-num">Stage Six &middot; 24 minutes</div>
+  <h2 class="stage-title">Tier and Defend</h2>
+  <p class="lede">Sort all nine into three tiers, and justify every placement with <strong>a quoted phrase and a named move or dodge.</strong> You are not rating how sorry the person seems. You are deciding whether <em>that speaker's audience</em> would forgive them, and pointing at the language that decides it.</p>
+
+  <div class="callout">
+    <p><strong>Effective</strong> &mdash; this audience would likely forgive this speaker, and you can point at why.<br>
+    <strong>Mixed</strong> &mdash; real strengths and real failures. You could argue it either way, and you should be able to argue both.<br>
+    <strong>Failed</strong> &mdash; this audience would not forgive, and the text is the reason.</p>
+  </div>
+
+  <div class="callout" style="border-left-color:var(--bad);background:var(--bad-bg);color:#4a2020;">
+    <p><strong>Reasons that do not count.</strong> Bad grammar. Too short. Too long. Sounds fake. Doesn't sound sincere. They're a bad person. I don't like them.</p>
+    <p><strong>The test:</strong> if your reason would still be true had the speaker done something completely different, it is not a reason about this apology. &ldquo;It's vague&rdquo; is not enough either &mdash; vague about <em>what</em>, and what is the vagueness hiding?</p>
+  </div>
+
+  <div class="tierbar" id="tierbar"></div>
+  <div id="cards"></div>
+
+  <div class="summary">
+    <h4>Your board so far</h4>
+    <pre id="summaryOut">Nothing tiered yet.</pre>
+    <div class="btnrow tight"><button class="btn ghost sm" id="copyBtn">Copy to clipboard</button><span class="nudge" id="copyNote"></span></div>
+  </div>
+
+  <div class="nb">
+    <div class="nb-lab"><span class="pen">&#9998;</span> In your notebook &mdash; heading: TIERS AND RATIONALE</div>
+    <ol>
+      <li>The full tier chart. All nine names under the three headings.</li>
+      <li>For every apology: the phrase you quoted and the move or dodge you named. Both partners copy the whole thing &mdash; you each need your own record.</li>
+      <li><strong>Last, and do not skip this one:</strong> which apology did the two of you argue about most? Write the name, then <em>each</em> of you writes the one sentence you would be willing to defend out loud. If you agreed on everything, pick the placement you were least sure about and write the strongest case against yourselves.</li>
+    </ol>
+    <p style="margin-top:.7rem;font-size:13.5px;color:var(--ink-mid);">Item 3 is where next class starts. Bring it.</p>
+  </div>
+
+  <div class="btnrow"><button class="btn nextbtn" data-go="6">Next &rarr; Exit Slip</button></div>
+</section>
+
+<!-- ═══════════ 7 · EXIT SLIP ═══════════ -->
+<section class="tab-panel" data-panel="6">
+  <div class="stage-num">Exit Slip &middot; last 10 minutes</div>
+  <h2 class="stage-title">The Available Means</h2>
+  <p class="lede">This one you do <strong>on your own</strong> &mdash; not with your partner. It is posted on Google Classroom and you submit it there. Use your notebook and this site; you are supposed to look things up.</p>
+
+  <div class="callout" style="border-left-color:var(--ink);">
+    <p style="font-family:var(--serif);font-size:15px;line-height:1.7;color:var(--ink);">Aristotle defined rhetoric as the ability to see, in any given case, <strong>the available means of persuasion.</strong></p>
+  </div>
+
+  <h3 class="sub">Answer all three</h3>
+  <ol class="body" style="margin-left:1.2rem;">
+    <li style="margin-bottom:.8rem;"><strong>What does &ldquo;available&rdquo; mean in that definition?</strong> What decides which means are available to a particular speaker? Do not just define the word &mdash; explain what limits the options.</li>
+    <li style="margin-bottom:.8rem;"><strong>One apology that used its available means well.</strong> Quote a phrase. Explain why that choice was available to <em>that</em> speaker, and what it accomplished with <em>that</em> audience.</li>
+    <li style="margin-bottom:.8rem;"><strong>One apology that did not.</strong> Quote a phrase. Then explain either what was available to that speaker that they failed to use, or what they reached for that was never available to them in the first place.</li>
+  </ol>
+
+  <div class="callout" style="border-left-color:var(--bad);background:var(--bad-bg);color:#4a2020;">
+    <p><strong>Three rules.</strong></p>
+    <p>You must quote. No quote, no credit.</p>
+    <p>Nothing about grammar, spelling, length, or whether somebody &ldquo;sounds sincere.&rdquo;</p>
+    <p>Name the audience every time. Forgiven by whom?</p>
+  </div>
+
+  <p class="body dim">Six to eight sentences is enough. Write it as a paragraph, not as three answers to three questions.</p>
+</section>
+
+</div>
+
+<!-- ═══════════ SUB PANEL ═══════════ -->
+<div class="scrim" id="scrim"></div>
+<aside class="subpanel" id="subpanel">
+  <button class="closebtn" id="closeSub">&times;</button>
+  <div class="sp-kick">AP Language &middot; Mr. Smith &middot; Substitute Notes</div>
+  <h3>Sorry Not Sorry &mdash; 80 minutes</h3>
+
+  <p style="margin-top:.8rem;"><strong>You do not need to know anything about rhetoric to run this.</strong> The site does the teaching. Your job is pairs, timing, and making sure they are writing.</p>
+
+  <h4>Setup</h4>
+  <ul>
+    <li>Students work in <strong>pairs</strong>, one screen per pair. Pairs matter &mdash; the arguing is the assignment.</li>
+    <li>Everything goes in <strong>notebooks</strong>. Nothing is collected, nothing is submitted, nothing needs to be printed or emailed. Mr. Smith checks notebooks next class.</li>
+    <li>Each stage ends with a boxed instruction telling them exactly what to write down. Point at it if they skip it.</li>
+    <li>If a screen gets reset or a pair takes over a machine from another class, the <strong>Start Fresh</strong> button is top right.</li>
+  </ul>
+
+  <h4>Timing</h4>
+  <table class="tt">
+    <tr><td class="min">0&ndash;5</td><td>Settle, pairs, screens open. Tell them: everything gets written in notebooks.</td></tr>
+    <tr><td class="min">5&ndash;17</td><td><strong>Stage 1 &middot; The Swap.</strong> Two apologies, each shown twice. They must type an answer before the site reveals ours. Do not let them skip to the reveal.</td></tr>
+    <tr><td class="min">17&ndash;25</td><td><strong>Stage 2 &middot; Purpose.</strong> Four minutes writing, then reveal, then notebook.</td></tr>
+    <tr><td class="min">25&ndash;35</td><td><strong>Stage 3 &middot; Moves and Dodges.</strong> Four minutes writing, then reveal. They must copy the five moves and six dodges by name. They need them for the rest of the period.</td></tr>
+    <tr><td class="min">35&ndash;47</td><td><strong>Stage 4 &middot; Close Read.</strong> Four phrases, each a multiple choice. Wrong answers explain why and let them try again. Getting one wrong is useful here &mdash; don't let them rush to the right letter without reading the response.</td></tr>
+    <tr><td class="min">46&ndash;70</td><td><strong>Stage 6 &middot; Tier and Defend.</strong> The main event. Stage 5 is just the nine texts for reference &mdash; they can read from it as they go.</td></tr>
+    <tr><td class="min">70&ndash;80</td><td><strong>Exit slip.</strong> See below. Start this at 70 minutes even if they are not finished tiering.</td></tr>
+  </table>
+
+  <p>If you fall behind, take the time out of Stage 5 reading, not Stage 6. Tiering is the point of the lesson.</p>
+
+  <h4>The last ten minutes</h4>
+  <ul>
+    <li>At 70 minutes, stop the pair work and tell them to open the <strong>last tab</strong> of the site, called Exit Slip.</li>
+    <li>They work <strong>alone</strong> for this part, not in pairs.</li>
+    <li>They may use their notebooks and the website. That is intended &mdash; it is not a test.</li>
+    <li>They submit it on <strong>Google Classroom</strong>, where the same questions are posted. You do not collect anything.</li>
+    <li>Before they leave, just confirm each student has submitted. That is the only thing that has to be handed in today.</li>
+  </ul>
+
+  <h4>Things students will ask you</h4>
+  <ul>
+    <li><strong>&ldquo;Is this one good or bad?&rdquo;</strong> &mdash; Don't answer. Say: &ldquo;Reread the phrase you quoted and tell me whether that speaker's audience would forgive them.&rdquo;</li>
+    <li><strong>&ldquo;We disagree.&rdquo;</strong> &mdash; Perfect. They do not have to agree. Both partners write down their own reason. That is literally the last item in their notebook.</li>
+    <li><strong>&ldquo;Can we just say it's badly written?&rdquo;</strong> &mdash; No. The site lists banned reasons in Stage 6. Point them at that box.</li>
+    <li><strong>&ldquo;Do we have to do all nine?&rdquo;</strong> &mdash; Yes, all nine get a tier. The written rationale is required for every one.</li>
+  </ul>
+
+  <h4>Content note</h4>
+  <p>These are real public apologies for real offenses, and several involve serious misconduct &mdash; a drunk driving arrest, a homophobic slur, sexual misconduct allegations, an invasion of privacy, a political controversy. Students have the context paragraphs. This is an AP course and these texts are part of the unit. If a student raises a concern, let them switch to analyzing a different one and let Mr. Smith know.</p>
+
+  <h4>If a pair finishes early</h4>
+  <p>Send them back to the two apologies they disagreed about and have them write the strongest possible case <em>against</em> their own placement. Or have them find a second quoted phrase for every apology in their Failed tier.</p>
+
+  <div class="btnrow tight"><button class="btn ghost sm" onclick="window.print()">Print these notes</button></div>
+</aside>
+
+<script>
+(function(){
+"use strict";
+
+/* ══════════ DATA ══════════ */
+var APOLOGIES = [
+  {
+    id:"anderson", name:"Ryan Anderson", who:"Businessman &middot; Facebook post",
+    what:"Carved his and his wife's initials into Corona Arch, a national monument in Utah.",
+    ctx:"Ryan Anderson posted this after being publicly exposed for carving his and his wife's initials into Corona Arch, a national monument in southern Utah. The public was outraged, especially after seeing a photo of his family beaming in front of the arch with the initials visible behind them. He is the head of a family company, Andersen Hitches.",
+    text:[
+      "Dear friends and concerned citizens,",
+      "I am very sorry and embarrassed for my recent actions when visiting Corona Arch in southern Utah. While hiking in the Moab area with my family, I drew with a sandstone shard, a heart with my and my wife's initials and the year above it.",
+      "At that moment, I foolishly thought I was conveying my love for my wife when, in fact, I was tarnishing the experience for others who also want to enjoy magnificent scenery. My actions were wrong. I am extremely sorry for my conduct. I acted in the spur of the moment and did not stop to think about what I was doing.",
+      "Sometimes, our biggest mistakes can lead us to become better people. From now on, I will endeavor to leave no trace and help to protect our public lands. As part of that commitment, I have pledged to pay for the BLM's work to restore the damage I caused. I have also pledged to work with the government to speak out on this issue so others do not make the same mistake that I made. I truly believe that all of us have the responsibility to help ensure that our public lands remain pristine.",
+      "I accept full responsibility for my actions. Neither Andersen Hitches nor its hard working employees, who are committed to supporting our loyal customers and their own families, had any involvement in my wrongdoing. To those dedicated employees, I offer my sincere apologies. Going forward, I will do everything I can to show my employees, my community, and the public at large that this conduct is not what I stand for.",
+      "Please understand that my wife and I have wanted to come forward and make a statement from early on, but because the BLM still has an active investigation going on, we felt that we should wait. We have been cooperating with the BLM and await their decision.",
+      "I was in the wrong.",
+      "Help me make this right.",
+      "I have upset a lot of people. I am disappointed in myself too. But I want to make this right. If you would like to leave a comment or you can message me directly here with any suggestions you have for additional work I can do with the BLM or similar groups please do so."
+    ]
+  },
+  {
+    id:"hill", name:"Jonah Hill", who:"Actor &middot; TV interviews",
+    what:"Called a photographer a homophobic slur after being followed and provoked.",
+    ctx:"Actor Jonah Hill said this after he called a paparazzo a homophobic slur. He apologized on several platforms, including an interview with Howard Stern and on The Tonight Show Starring Jimmy Fallon. Below is part of his apology.",
+    text:[
+      "Not excusing what I said in any way, this person had been following me around all day. Had been saying hurtful things about my family, really hurtful things about me personally, and I played into exactly what he wanted and lost my cool.",
+      "And in that moment I said a disgusting word that does not at all reflect how I feel about any group of people.",
+      "I am not at all defending my choice of words, but I am happy to be the poster boy for thinking about what you say and how those words &mdash; even if you don't intend them in how they mean &mdash; they are rooted in hate and that's ... and I shouldn't have said that.",
+      "After hours and hours of it, look, I think I'm pretty good at making movies. I am not good at being a famous person. I'm just not. There are some people who are meant for it. But if you call me ugly, if you call family members of mine drug addicts and maniacs, I am eventually going to lose my cool. Now what I said in that moment was disgusting and a hurtful term, but I in no way intended it as a derogatory term towards anybody in the LGBT community.",
+      "I'm happy to take the heat for using this disgusting word. What I won't allow is for anyone &mdash; it would break my heart to think that anyone would think, especially with all the work that I've done and all the loved ones that I have &mdash; that I would be against anyone for their sexuality. That's absurd to me. So it's been a heartbreaking morning."
+    ]
+  },
+  {
+    id:"reese", name:"Reese Witherspoon", who:"Actress &middot; Statement + TV",
+    what:"Arrested for disorderly conduct; asked the officer &ldquo;Do you know my name?&rdquo;",
+    ctx:"Reese Witherspoon released this public statement after being arrested in 2013 following her husband's arrest for driving under the influence. She later apologized on air. She was reported to have asked the arresting officer, “Do you know my name?”",
+    text:[
+      "I clearly had one drink too many and I am deeply embarrassed about the things I said. It was definitely a scary situation and I was frightened for my husband, but that is no excuse. I was disrespectful to the officer who was just doing his job. I have nothing but respect for the police and I'm very sorry for my behavior.",
+      "It's one of those nights, you know, we went out to dinner in Atlanta and we had one too many glasses of wine and we thought we were fine to drive and we absolutely were not. And it's just completely unacceptable and we are so sorry and embarrassed. And we know better. And we shouldn't have done that.",
+      "I have no idea what I was saying that night. I saw him arresting my husband and I literally panicked. And I said all kinds of crazy things. I told him I was pregnant &mdash; I'm not pregnant! I said crazy things. And if you only hear me laughing it's because I have no idea what I was talking about. And I'm so sorry. I was so disrespectful to him and I have police officers in my family. I work with police officers every day. I know better and it's just unacceptable."
+    ]
+  },
+  {
+    id:"mathers", name:"Dani Mathers", who:"Model &middot; Interviews",
+    what:"Photographed a nude 70-year-old woman in a locker room and posted it publicly.",
+    ctx:"Dani Mathers took a photo of a nude 70-year-old woman in an LA Fitness locker room and posted it to Snapchat with the caption, “If I can't unsee this then you can't either.” The post included her own face looking shocked and disgusted. She was convicted under California law and sentenced to a fine, community service and probation. Playmate of the Year in 2015, she lost all her endorsement deals and was banned from all LA Fitness locations. She claimed she meant the post to be private.",
+    text:[
+      "There is no doubt I regret that stupid choice. I am sorry that it happened to this woman. But I am not sorry about what happened to me. I would not have this push to create positivity and try to change people's minds about how they act without thinking. My life flipped upside down. But it's a blessing in disguise. Going through this past year and making it to the other side, I know I can handle almost anything.",
+      "To hide out at my mother's house at age 30, because of something I've done, it just felt really low.",
+      "I just want her to be able to move on and move forward in her life, and not feel judged or that what she was doing was being ridiculed, because it had nothing to do with that and I'm so sorry.",
+      "A million things have run through my mind. But bottom line is: I'm so sorry. I never intended to hurt her. There was a lot of pain caused, and I think she would like to put this behind her, as would I."
+    ]
+  },
+  {
+    id:"united", name:"United Airlines", who:"CEO Oscar Munoz &middot; Letter to employees",
+    what:"A passenger was dragged off an overbooked flight, bloodied, on video.",
+    ctx:"In 2017 a widely circulated video showed a United Airlines passenger, Dr. David Dao, being dragged off a flight by airport officers because the flight was overbooked. He was injured. This is a public apology from CEO Oscar Munoz, issued after two earlier statements were themselves widely condemned.",
+    text:[
+      "Dear Team,",
+      "The truly horrific event that occurred on this flight has elicited many responses from all of us: outrage, anger, disappointment. I share all of those sentiments, and one above all: my deepest apologies for what happened. Like you, I continue to be disturbed by what happened on this flight and I deeply apologize to the customer forcibly removed and to all the customers aboard. No one should ever be mistreated this way.",
+      "I want you to know that we take full responsibility and we will work to make it right.",
+      "It's never too late to do the right thing. I have committed to our customers and our employees that we are going to fix what's broken so this never happens again. This will include a thorough review of crew movement, our policies for incentivizing volunteers in these situations, how we handle oversold situations and an examination of how we partner with airport authorities and local law enforcement. We'll communicate the results of our review by April 30th.",
+      "I promise you we will do better.",
+      "Sincerely,",
+      "Oscar"
+    ]
+  },
+  {
+    id:"crist", name:"John Crist", who:"Comedian &middot; Written statement",
+    what:"Accused by multiple women of sexual harassment and misconduct.",
+    ctx:"John Crist is a well-known Christian comedian who built his following on videos satirizing clichés within Christian culture. He cancelled his upcoming tour dates after allegations of sexual harassment and misconduct were reported. Netflix put his upcoming special on hold. He claims not all the accusations are true.",
+    text:[
+      "Over the past number of years, various women have accused me of behavior that has been hurtful to them. While I am not guilty of everything I've been accused of, I confess to being guilty of this &mdash; I have treated relationships with women far too casually, in some cases even recklessly. My behavior has been destructive and sinful. I've sinned against God, against women and the people who I love the most. I have violated my own Christian beliefs, convictions and values, and have hurt many people in the process. I am sorry for the hurt and pain I have caused these women and will continue to seek their forgiveness. I have also hurt the name of Jesus and have sought His forgiveness.",
+      "Over several recent years, I have privately sought and received regular professional treatment for my sexual sin and addiction struggles. I'm committed to getting healing and freedom from my sin and have decided to cancel my remaining tour dates this year and to postpone all future commitments in order to devote all my time and energy on getting healthy spiritually, mentally and physically.",
+      "Those closest to me &mdash; my family, team and close friends &mdash; have known about this battle for some time, and now you do too. I'm ashamed of my behavior and I'm so sorry for hurting so many people. I don't blame anyone but myself. I'm responsible for my actions and I've repented and am taking full ownership. I realize it will be difficult for some people to ever forgive me, and I accept that as a result of my bad decisions and actions.",
+      "My entire career has been lived out on stage, and even though I've shared many of my life struggles with my audiences, I've lived in constant fear of the darkest parts of my life being exposed publicly. My greatest fear has been that those who have loved and supported me would hate me if they knew everything about me. I now humbly seek forgiveness and mercy and love &mdash; not just for me, but for those I've hurt along my path. I'm so sorry."
+    ]
+  },
+  {
+    id:"griffin", name:"Kathy Griffin", who:"Comedian &middot; Video, then a press conference",
+    what:"Posed for a photo holding a mask of the President's severed head.",
+    ctx:"In 2017 comedian Kathy Griffin was photographed posing with a mask of Donald Trump's severed head. Her comedy tour was cancelled and CNN cut ties with her. She issued this apology &mdash; and then, days later, rescinded it. Both parts are below.",
+    text:[
+      "I sincerely apologize. I am just now seeing the reaction to these images. I'm a comic. I crossed the line. I moved the line, then I crossed it. I went way too far. My little story is historic. Whether you like it or not, it's the first time a sitting United States president has used the full power of the Oval Office, the first family, the right-wing media and, more importantly, two departments within the Department of Justice to open an investigation on a private citizen who did nothing wrong. Didn't violate the First Amendment, didn't break the law.",
+      "[Days later, rescinding the apology:] I wanted to make a statement about what a misogynist he is, and I remembered the eight years of photos circulated online of an Obama lynching, and nobody said anything, it was all on Facebook ... people were going to rallies with Hillary's head decapitated, they get away with everything ... The First Amendment is important. It's the first for a reason."
+    ]
+  },
+  {
+    id:"smith", name:"Will Smith", who:"Actor &middot; Instagram statement",
+    what:"Walked onstage at the Oscars and slapped Chris Rock on live television.",
+    ctx:"Will Smith slapped comedian Chris Rock onstage at the 2022 Academy Awards after Rock made a joke about Smith's wife, Jada Pinkett Smith, who has a medical condition affecting her hair. Smith then won Best Actor later the same evening. He posted this the following day.",
+    text:[
+      "Violence in all of its forms is poisonous and destructive. My behavior at last night's Academy Awards was unacceptable and inexcusable. Jokes at my expense are a part of the job, but a joke about Jada's medical condition was too much for me to bear and I reacted emotionally.",
+      "I would like to publicly apologize to you, Chris. I was out of line and I was wrong. I am embarrassed and my actions were not indicative of the man I want to be. There is no place for violence in a world of love and kindness.",
+      "I would also like to apologize to the Academy, the producers of the show, all the attendees and everyone watching around the world. I would like to apologize to the Williams Family and my King Richard Family. I deeply regret that my behavior has stained what has been an otherwise gorgeous journey for all of us.",
+      "I am a work in progress.",
+      "Sincerely,",
+      "Will"
+    ]
+  },
+  {
+    id:"ye", name:"Ye (Kanye West)", who:"Musician &middot; Personal blog",
+    what:"Interrupted Taylor Swift's acceptance speech to say someone else deserved it.",
+    ctx:"In 2009 Taylor Swift won the MTV VMA for Best Female Video. During her acceptance speech Kanye West took the microphone and protested her win in support of Beyoncé. He apologized on his blog the next day.",
+    text:[
+      "I'm sooooo sorry to Taylor Swift and her fans and her mom. I spoke to her mother right after and she said the same thing my mother would've said. She is very talented! I like the lyrics about being a cheerleader and she's in the bleachers! I'm in the wrong for going on stage and taking away from her moment!",
+      "Beyoncé's video was the best of this decade!!!! I'm sorry to my fans if I let you guys down!!!! I'm sorry to my friends at MTV. I will apologize to Taylor 2mrw. Welcome to the real world!!!! Everybody wanna booooo me but I'm a fan of real pop culture!!! No disrespect but we watchin' the show at the crib right now cause ... well you know!!!! I'm still happy for Taylor!!!! Boooyaaawwww!!!! You are very very talented!!! I gave my awards to Outkast when they deserved it over me ... That's what it is!!!!!!! I'm not crazy y'all, i'm just real. Sorry for that!!! I really feel bad for Taylor and I'm sincerely sorry!!! Much respect!!!!!"
+    ]
+  }
+];
+
+var MOVES = ["Names It","Owns It","Centers Them","No Excuses","Offers Repair","Right Audience &amp; Venue","Register Fits"];
+var DODGES = ["The Downgrade","The Agentless Dodge","The Intent Defense","The Redemption Pivot","Speaking for the Victim","The Re-litigation","No Repair Offered","Wrong Audience / Wrong Venue","Register Doesn't Fit"];
+
+var TABS = [
+  {t:"The Swap",   h:"12 min"},
+  {t:"Purpose",    h:"8 min"},
+  {t:"Moves",      h:"10 min"},
+  {t:"Close Read", h:"12 min"},
+  {t:"The Nine",   h:"texts"},
+  {t:"Tier Them",  h:"24 min"},
+  {t:"Exit Slip",  h:"10 min"}
+];
+
+var BANNED = [
+  {re:/\b(grammar|grammatical|spelling|spelt|spelled|punctuation|capital letters?|exclamation|typos?|misspell)/i, msg:"That is a comment about the surface of the language. Stage One: fixing the grammar did not fix the apology. What is the sentence <em>doing</em>?"},
+  {re:/\b(too short|too long|not long enough|so short|very short|lengthy)\b/i, msg:"Length is not a reason. A short apology can name the offense exactly; a long one can avoid it for six paragraphs. What is missing, or what is being avoided?"},
+  {re:/\b(sounds? fake|feels? fake|not sincere|insincere|doesn't sound sorry|does not sound sorry|seems fake)\b/i, msg:"&ldquo;Sounds fake&rdquo; is an impression, not an analysis. Which phrase gave you that impression, and what is that phrase actually doing?"},
+  {re:/\b(bad person|terrible person|awful person|i (just )?don'?t like|hate (him|her|them)|he'?s? (just )?(a )?(jerk|creep))/i, msg:"You are judging the speaker, not the apology. The question is whether this text would work on that audience &mdash; even if you personally would never forgive them."},
+  {re:/\b(vague|generic|too general)\b/i, msg:"Vague about <em>what</em>, exactly? Push one step further: what is the vagueness hiding, and which phrase does the hiding?"}
+];
+
+/* ══════════ STATE ══════════ */
+var S = {tab:0, asks:{}, reveals:{}, phrases:{}, tiers:{}, quotes:{}, labels:{}, notes:{}};
+var KEY = "snsv1";
+
+function save(){
+  try{ sessionStorage.setItem(KEY, JSON.stringify(S)); }catch(e){}
+}
+function load(){
+  try{
+    var raw = sessionStorage.getItem(KEY);
+    if(raw){ var o = JSON.parse(raw); for(var k in o){ if(o.hasOwnProperty(k)) S[k]=o[k]; } }
+  }catch(e){}
+}
+
+/* ══════════ TABS ══════════ */
+function stageDone(i){
+  if(i===0) return !!(S.reveals.swapA && S.reveals.swapB);
+  if(i===1) return !!S.reveals.purpose;
+  if(i===2) return !!S.reveals.moves;
+  if(i===3){ var n=0,k; for(k in S.phrases){ if(S.phrases[k] && S.phrases[k].solved) n++; } return n>=4; }
+  if(i===5){ var c=0,j; for(j=0;j<APOLOGIES.length;j++){ if(S.tiers[APOLOGIES[j].id]) c++; } return c===APOLOGIES.length; }
+  return false;
+}
+function renderTabs(){
+  var h="",i;
+  for(i=0;i<TABS.length;i++){
+    h += '<button class="top-tab'+(i===S.tab?" active":"")+(stageDone(i)?" cleared":"")+'" data-tab="'+i+'">'+
+         TABS[i].t+'<span class="tab-hint">'+TABS[i].h+'</span></button>';
+  }
+  document.getElementById("tabs").innerHTML = h;
+  var btns = document.querySelectorAll(".top-tab"), j;
+  for(j=0;j<btns.length;j++){
+    btns[j].addEventListener("click", function(){ go(parseInt(this.getAttribute("data-tab"),10)); });
+  }
+}
+function go(i){
+  S.tab = i; save();
+  var ps = document.querySelectorAll(".tab-panel"), k;
+  for(k=0;k<ps.length;k++){
+    ps[k].classList.toggle("active", parseInt(ps[k].getAttribute("data-panel"),10)===i);
+  }
+  renderTabs();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* ══════════ WRITE-THEN-REVEAL ══════════ */
+function initAsks(){
+  var asks = document.querySelectorAll(".ask"), i;
+  for(i=0;i<asks.length;i++){
+    (function(box){
+      var id  = box.getAttribute("data-ask");
+      var ta  = box.querySelector("textarea");
+      var btn = box.querySelector("button");
+      var rv  = box.querySelector(".reveal");
+      var nudge = box.querySelector(".nudge");
+
+      if(S.asks[id]) ta.value = S.asks[id];
+      function sync(){
+        var ok = ta.value.trim().length >= 40;
+        btn.disabled = !ok;
+        nudge.textContent = ok ? "Good. Now compare." : "Write at least a sentence or two before you reveal.";
+      }
+      sync();
+      if(S.reveals[id]){ rv.classList.add("open"); btn.disabled=true; btn.textContent="Answer shown"; nudge.textContent=""; }
+
+      ta.addEventListener("input", function(){ S.asks[id]=ta.value; save(); sync(); });
+      btn.addEventListener("click", function(){
+        rv.classList.add("open");
+        btn.disabled = true; btn.textContent = "Answer shown"; nudge.textContent = "";
+        S.reveals[id] = true; save(); renderTabs();
+        rv.scrollIntoView({behavior:"smooth", block:"nearest"});
+      });
+    })(asks[i]);
+  }
+}
+
+/* ══════════ CLOSE READ · MULTIPLE CHOICE ══════════ */
+var CLOSEREAD = [
+  {
+    q:"I clearly had one drink too many",
+    ask:"What is this phrase doing for her?",
+    opts:[
+      {t:"She admits she drank too much, which is honest and takes responsibility.", ok:false,
+       fb:"It is built to look exactly like that, which is why it works on most readers. So test it: count the drinks. Nobody is arrested for one drink too many. Go again &mdash; what does that number do to the <em>size</em> of what she did?"},
+      {t:"It shrinks a decision down into a small miscalculation.", ok:true, fb:""},
+      {t:"It is too casual for how serious the situation was.", ok:false,
+       fb:"Not unreasonable &mdash; register matters and you already saw that in Stage One. But this is a claim about <em>tone</em>. Ask instead what the phrase does to the offense itself."},
+      {t:"It suggests she does not remember the evening clearly.", ok:false,
+       fb:"<em>Clearly</em> is not about her memory &mdash; it is aimed at you. It is the sound of a person being frankly self-aware, which is a useful sound to make while you are doing something else."}
+    ],
+    full:"<span class='tagx'>The Downgrade</span>"+
+      "<p><em>One too many</em> is the language of a slightly miscounted evening &mdash; arithmetic that went marginally wrong. She is describing a criminal offense. And <em>clearly</em> adds that note of rueful self-awareness that makes her sound reasonable while she does it.</p>"+
+      "<p>She is not lying. She is choosing the unit of measurement.</p>"
+  },
+  {
+    q:"It's one of those nights, you know",
+    ask:"Two words are doing the work here. What are they doing, and to whom?",
+    opts:[
+      {t:"It is filler. Casual speech, nothing much to analyze.", ok:false,
+       fb:"Filler is a choice too &mdash; and this filler is pointed directly at the listener. <em>You know</em> is addressed to somebody. What is it asking them to do?"},
+      {t:"It shows she is nervous and rambling.", ok:false,
+       fb:"Possibly true about her delivery. But that is a claim about her state of mind, and rhetorical analysis asks what the words do to the <em>audience</em>. Try again."},
+      {t:"It invites the listener to recognize the evening as one they have had themselves.", ok:true, fb:""},
+      {t:"It admits the night got out of her control.", ok:false,
+       fb:"It does close to the opposite. <em>One of those nights</em> turns a specific decision into a familiar type of evening. Look again at what that does to how guilty she is."}
+    ],
+    full:"<span class='tagx'>Normalizing</span>"+
+      "<p><em>You know</em> recruits you. <em>One of those nights</em> makes it a category &mdash; a kind of evening that happens to people &mdash; rather than a thing she chose. If everyone has had one of those nights, then nobody is especially guilty.</p>"+
+      "<p>In eight words she has moved from <em>I did something serious</em> to <em>this is a thing that happens</em>, and she has invited you to agree by nodding along.</p>"
+  },
+  {
+    q:"I was disrespectful to the officer who was just doing his job",
+    ask:"This is the one nearly everybody reads straight past. What is it doing?",
+    opts:[
+      {t:"She takes responsibility by naming exactly what she did wrong.", ok:false,
+       fb:"This is the answer most people give, and the fact that it is convincing is the whole point of the sentence. So test it against the record: <strong>what did everyone listening already know she said to that officer?</strong> Now read the sentence again and ask whether that is what she is apologizing for."},
+      {t:"She apologizes for a smaller offense and lets it stand in for the real one.", ok:true, fb:""},
+      {t:"She is flattering the police in order to win them over.", ok:false,
+       fb:"She does do that &mdash; but two sentences later, with her family in the police. This sentence is doing something else, and the question here is <em>which offense gets named</em>."},
+      {t:"It is a strong moment, because she offers no excuse at all.", ok:false,
+       fb:"True &mdash; there is no excuse in it. But an apology aimed at the wrong offense is not rescued by being excuse-free. What is she apologizing for, and what did she actually do?"}
+    ],
+    full:"<span class='tagx'>The Downgrade &mdash; the big one</span>"+
+      "<p>Everyone listening already knows what she said to that officer: <em>Do you know my name?</em> That is why this was news. It was not news that a celebrity drank too much. It was news that she tried to use <em>being a celebrity</em> to get out of an arrest &mdash; an ordinary person's worst suspicion about famous people, confirmed on the record.</p>"+
+      "<p>And she apologizes for being <strong>disrespectful</strong>. For rudeness.</p>"+
+      "<p>Now go back through the whole statement, all three paragraphs, and find the sentence where she apologizes for trying to place herself above the law. It is not there. It is never mentioned once.</p>"
+  },
+  {
+    q:"I have police officers in my family. I work with police officers every day.",
+    ask:"What is this doing inside an apology?",
+    opts:[
+      {t:"It proves she respects police, which repairs the relationship she damaged.", ok:false,
+       fb:"That is exactly what it is designed to feel like. But look at what it is evidence <em>of</em>. It tells you what kind of person she is. Does it tell you anything at all about what she did?"},
+      {t:"It is irrelevant information she throws in by accident.", ok:false,
+       fb:"It is highly relevant &mdash; just not as an answer to the charge against her. It is doing work. Which work?"},
+      {t:"It is meant to make the arresting officer feel better.", ok:false,
+       fb:"The officer is not the audience. This is a public statement, made to people who read about the arrest. What does it do for <em>them</em>?"},
+      {t:"It offers character evidence in the place where an account of her actions should be.", ok:true, fb:""}
+    ],
+    full:"<span class='tagx'>Borrowed ethos</span>"+
+      "<p>She repairs her standing with the police by producing her credentials as somebody who is fine with police &mdash; and notice that this says nothing whatsoever about what she did.</p>"+
+      "<p><em>What kind of person I am</em> is a different claim from <em>what I did</em>, and a far easier one to make. It arrives at precisely the point where an account of the offense would go.</p>"
+  }
+];
+
+function renderCloseRead(){
+  var h="", i, j, st;
+  for(i=0;i<CLOSEREAD.length;i++){
+    var c = CLOSEREAD[i];
+    st = S.phrases["p"+i] || {picked:[], solved:false};
+    h += '<div class="phrase" data-ph="'+i+'">';
+    h += '<div class="ph-q">'+c.q+'</div>';
+    h += '<div class="ph-ask">'+c.ask+'<span class="ph-tries">'+(st.solved?"solved":(st.picked.length?st.picked.length+" tried":""))+'</span></div>';
+    h += '<div class="opts">';
+    for(j=0;j<c.opts.length;j++){
+      var wrong = st.picked.indexOf(j)>-1 && !c.opts[j].ok;
+      var right = st.solved && c.opts[j].ok;
+      var cls = "opt" + (wrong?" pick-bad":"") + (right?" pick-good":"");
+      var dis = (st.solved || wrong) ? " disabled" : "";
+      h += '<button class="'+cls+'" data-o="'+j+'"'+dis+'><span class="ltr">'+"ABCD".charAt(j)+'</span>'+c.opts[j].t+'</button>';
+    }
+    h += '</div>';
+    h += '<div class="ph-fb"></div>';
+    h += '<div class="ph-full'+(st.solved?" on":"")+'">'+c.full+'</div>';
+    h += '</div>';
+  }
+  document.getElementById("closeRead").innerHTML = h;
+
+  var phs = document.querySelectorAll(".phrase"), k;
+  for(k=0;k<phs.length;k++){
+    (function(p){
+      var idx = parseInt(p.getAttribute("data-ph"),10);
+      var fb = p.querySelector(".ph-fb"), full = p.querySelector(".ph-full");
+      var btns = p.querySelectorAll(".opt"), m;
+      for(m=0;m<btns.length;m++){
+        btns[m].addEventListener("click", function(){
+          var o = parseInt(this.getAttribute("data-o"),10);
+          var c = CLOSEREAD[idx];
+          var st = S.phrases["p"+idx] || {picked:[], solved:false};
+          if(st.solved) return;
+          if(st.picked.indexOf(o)===-1) st.picked.push(o);
+          if(c.opts[o].ok){
+            st.solved = true; S.phrases["p"+idx] = st; save();
+            renderCloseRead(); renderTabs();
+            var np = document.querySelector('.phrase[data-ph="'+idx+'"]');
+            if(np) np.querySelector(".ph-full").scrollIntoView({behavior:"smooth",block:"nearest"});
+          } else {
+            S.phrases["p"+idx] = st; save();
+            this.classList.add("pick-bad"); this.disabled = true;
+            fb.className = "ph-fb warm on";
+            fb.innerHTML = '<span class="fb-lab">Not that one &mdash; keep going</span>' + c.opts[o].fb;
+            var tr = p.querySelector(".ph-tries"); if(tr) tr.textContent = st.picked.length+" tried";
+            renderTabs();
+          }
+        });
+      }
+      if(full && full.classList.contains("on")){ fb.className = "ph-fb"; }
+    })(phs[k]);
+  }
+}
+
+/* ══════════ READING LIST ══════════ */
+function renderRead(){
+  var h="",i,j,a;
+  for(i=0;i<APOLOGIES.length;i++){
+    a = APOLOGIES[i];
+    h += '<details class="rd"><summary>'+a.name+'<span class="who">'+a.who+'</span></summary><div class="rd-body">';
+    h += '<div class="ctx" style="margin-top:.8rem;">'+a.ctx+'</div><div class="doc">';
+    for(j=0;j<a.text.length;j++){ h += "<p>"+a.text[j]+"</p>"; }
+    h += "</div></div></details>";
+  }
+  document.getElementById("readList").innerHTML = h;
+}
+
+/* ══════════ TIER CARDS ══════════ */
+var TIERKEY = {eff:"Effective", mix:"Mixed", fail:"Failed"};
+
+function renderCards(){
+  var h="",i,j,a;
+  for(i=0;i<APOLOGIES.length;i++){
+    a = APOLOGIES[i];
+    var t = S.tiers[a.id] || "";
+    h += '<div class="card'+(t?" set-"+t:"")+'" data-id="'+a.id+'">';
+    h += '<div class="cd-head"><div class="cd-name">'+a.name+'</div><div class="cd-what">'+a.what+'</div></div>';
+    h += '<div class="cd-tiers">';
+    h += '<button class="tbtn eff'+(t==="eff"?" on":"")+'" data-t="eff">Effective</button>';
+    h += '<button class="tbtn mix'+(t==="mix"?" on":"")+'" data-t="mix">Mixed</button>';
+    h += '<button class="tbtn fail'+(t==="fail"?" on":"")+'" data-t="fail">Failed</button>';
+    h += '<button class="tbtn txt" data-t="text">Read the text</button>';
+    h += '</div>';
+    h += '<div class="cd-text"><div class="ctx">'+a.ctx+'</div><div class="doc">';
+    for(j=0;j<a.text.length;j++){ h += "<p>"+a.text[j]+"</p>"; }
+    h += '</div></div>';
+
+    /* rationale */
+    var opts = (t==="eff") ? MOVES : DODGES;
+    var lab  = (t==="eff") ? "Which move does it make?" : "Which dodge is it running?";
+    h += '<div class="cd-rat'+(t?" open":"")+'">';
+    h += '<div class="flag"></div>';
+    h += '<label>Quote the phrase &mdash; exact words</label><input type="text" class="q-in" placeholder="Copy the exact phrase from the text" value="'+esc(S.quotes[a.id]||"")+'">';
+    h += '<label>'+lab+'</label><select class="l-in"><option value="">Choose one</option>';
+    for(j=0;j<opts.length;j++){
+      var sel = (S.labels[a.id]===opts[j]) ? " selected" : "";
+      h += '<option value="'+opts[j]+'"'+sel+'>'+opts[j]+'</option>';
+    }
+    h += '</select>';
+    h += '<label>Why does that matter for <em>this</em> speaker and <em>this</em> audience?</label>';
+    h += '<textarea class="n-in" placeholder="Not what the phrase says. What it does, and why it works or fails here.">'+esc(S.notes[a.id]||"")+'</textarea>';
+    h += '</div></div>';
+  }
+  document.getElementById("cards").innerHTML = h;
+  wireCards();
+  renderBar();
+  renderSummary();
+}
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+function wireCards(){
+  var cards = document.querySelectorAll(".card"), i;
+  for(i=0;i<cards.length;i++){
+    (function(card){
+      var id = card.getAttribute("data-id");
+      var btns = card.querySelectorAll(".tbtn"), k;
+      for(k=0;k<btns.length;k++){
+        btns[k].addEventListener("click", function(){
+          var v = this.getAttribute("data-t");
+          if(v==="text"){
+            var tx = card.querySelector(".cd-text");
+            tx.classList.toggle("open");
+            this.textContent = tx.classList.contains("open") ? "Hide the text" : "Read the text";
+            return;
+          }
+          if(S.tiers[id]===v){ delete S.tiers[id]; delete S.labels[id]; }
+          else { if(S.tiers[id] && ((S.tiers[id]==="eff") !== (v==="eff"))) delete S.labels[id]; S.tiers[id]=v; }
+          save(); renderCards(); renderTabs();
+        });
+      }
+      var q = card.querySelector(".q-in"), l = card.querySelector(".l-in"), n = card.querySelector(".n-in");
+      if(q) q.addEventListener("input", function(){ S.quotes[id]=q.value; save(); renderSummary(); });
+      if(l) l.addEventListener("change", function(){ S.labels[id]=l.value; save(); renderSummary(); });
+      if(n) n.addEventListener("input", function(){
+        S.notes[id]=n.value; save(); checkBanned(card, n.value); renderSummary();
+      });
+      if(n) checkBanned(card, n.value);
+    })(cards[i]);
+  }
+}
+
+function checkBanned(card, txt){
+  var flag = card.querySelector(".flag"); if(!flag) return;
+  var i, hit=null;
+  for(i=0;i<BANNED.length;i++){ if(BANNED[i].re.test(txt)){ hit=BANNED[i]; break; } }
+  if(hit){ flag.innerHTML = "<strong>Hold on.</strong> " + hit.msg; flag.classList.add("on"); }
+  else { flag.classList.remove("on"); }
+}
+
+function renderBar(){
+  var order=["eff","mix","fail"], cls={eff:"t-eff",mix:"t-mix",fail:"t-fail"}, h="",i,j;
+  for(i=0;i<order.length;i++){
+    var t=order[i], names=[];
+    for(j=0;j<APOLOGIES.length;j++){ if(S.tiers[APOLOGIES[j].id]===t) names.push(APOLOGIES[j].name); }
+    h += '<div class="tierbox '+cls[t]+'"><div class="tb-lab">'+TIERKEY[t]+' &middot; '+names.length+'</div><div class="tb-list">';
+    if(names.length===0) h += '<span class="tb-empty">empty</span>';
+    else for(j=0;j<names.length;j++){ h += "<span>"+names[j]+"</span>"; }
+    h += "</div></div>";
+  }
+  document.getElementById("tierbar").innerHTML = h;
+}
+
+function renderSummary(){
+  var order=["eff","mix","fail"], out="", i, j, any=false;
+  for(i=0;i<order.length;i++){
+    var t=order[i], rows=[];
+    for(j=0;j<APOLOGIES.length;j++){
+      var a=APOLOGIES[j];
+      if(S.tiers[a.id]!==t) continue;
+      any=true;
+      var line = "  " + a.name;
+      if(S.labels[a.id]) line += "  [" + S.labels[a.id] + "]";
+      if(S.quotes[a.id]) line += "\n      “" + S.quotes[a.id] + "”";
+      if(S.notes[a.id])  line += "\n      " + S.notes[a.id];
+      rows.push(line);
+    }
+    out += TIERKEY[t].toUpperCase() + "\n";
+    out += rows.length ? rows.join("\n") + "\n\n" : "  (none)\n\n";
+  }
+  var untiered=[];
+  for(j=0;j<APOLOGIES.length;j++){ if(!S.tiers[APOLOGIES[j].id]) untiered.push(APOLOGIES[j].name); }
+  if(untiered.length) out += "STILL UNPLACED\n  " + untiered.join(", ") + "\n";
+  document.getElementById("summaryOut").textContent = any ? out : "Nothing tiered yet.";
+}
+
+/* ══════════ MISC WIRING ══════════ */
+function init(){
+  load();
+  renderTabs(); go(S.tab||0);
+  initAsks(); renderCloseRead(); renderRead(); renderCards();
+
+  var nx = document.querySelectorAll(".nextbtn"), i;
+  for(i=0;i<nx.length;i++){
+    nx[i].addEventListener("click", function(){ go(parseInt(this.getAttribute("data-go"),10)); });
+  }
+
+  document.getElementById("openSub").addEventListener("click", function(){
+    document.getElementById("subpanel").classList.add("open");
+    document.getElementById("scrim").classList.add("open");
+  });
+  function closeSub(){
+    document.getElementById("subpanel").classList.remove("open");
+    document.getElementById("scrim").classList.remove("open");
+  }
+  document.getElementById("closeSub").addEventListener("click", closeSub);
+  document.getElementById("scrim").addEventListener("click", closeSub);
+
+  document.getElementById("resetAll").addEventListener("click", function(){
+    if(!window.confirm("Clear everything on this screen and start over? Anything you have not written in your notebook will be lost.")) return;
+    try{ sessionStorage.removeItem(KEY); }catch(e){}
+    S = {tab:0, asks:{}, reveals:{}, phrases:{}, tiers:{}, quotes:{}, labels:{}, notes:{}};
+    window.location.reload();
+  });
+
+  document.getElementById("copyBtn").addEventListener("click", function(){
+    var txt = document.getElementById("summaryOut").textContent;
+    var note = document.getElementById("copyNote");
+    function ok(){ note.textContent = "Copied. It still goes in your notebook."; setTimeout(function(){note.textContent="";},2600); }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt).then(ok, function(){ note.textContent="Select the text above and copy it."; });
+    } else { note.textContent = "Select the text above and copy it."; }
+  });
+}
+
+if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", init);
+else init();
+
+})();
+</script>
+</body>
+</html>
