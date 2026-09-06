@@ -139,6 +139,18 @@ em.q{font-style:italic;}
 .ph-full p+p{margin-top:.6rem;}
 .tagx{display:inline-block;font-family:var(--cond);font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:1px 6px;border-radius:2px;background:var(--bad);color:#fff;margin-bottom:.45rem;}
 
+/* ══ SAVE BAR ══ */
+.savebar{background:var(--paper-warm);border-bottom:1px solid var(--rule);font-family:var(--cond);font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-light);padding:.35rem 1.25rem;text-align:center;}
+.savebar.warn{background:var(--warn-bg);color:#5a4512;font-weight:700;}
+.restore{display:none;background:var(--mid-bg);border-bottom:2px solid var(--mid);padding:.8rem 1.25rem;}
+.restore.on{display:block;animation:fadeIn .25s ease;}
+.restore .rs-in{max-width:880px;margin:0 auto;display:flex;gap:.7rem;align-items:center;flex-wrap:wrap;}
+.restore .rs-txt{flex:1;min-width:230px;font-size:13.8px;line-height:1.55;color:var(--ink);}
+.namebox{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin-bottom:.9rem;padding-bottom:.9rem;border-bottom:1px solid var(--rule);}
+.namebox label{font-family:var(--cond);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-light);font-weight:700;}
+.namebox input{flex:1;min-width:180px;font-family:var(--sans);font-size:13.8px;padding:.45rem .6rem;border:1px solid var(--rule);border-radius:2px;background:var(--paper);color:var(--ink);}
+.namebox input:focus{outline:none;border-color:var(--accent);background:#fff;}
+
 /* ══ READING LIST ══ */
 .rd{border:1px solid var(--rule);border-radius:2px;margin-bottom:.6rem;background:#fff;}
 .rd summary{font-family:var(--cond);font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.7rem .95rem;cursor:pointer;color:var(--ink);list-style:none;display:flex;align-items:center;gap:.5rem;}
@@ -231,6 +243,14 @@ table.tt td.min{font-family:var(--type);font-size:12px;color:var(--accent);white
 </div>
 
 <div class="top-tabs" id="tabs"></div>
+<div class="savebar" id="savebar"><span id="saveState">Your work saves automatically on this computer</span></div>
+<div class="restore" id="restore">
+  <div class="rs-in">
+    <div class="rs-txt"></div>
+    <button class="btn sm" id="rsYes">Yes &mdash; continue</button>
+    <button class="btn ghost sm" id="rsNo">Not ours &mdash; start fresh</button>
+  </div>
+</div>
 
 <div class="wrap">
 
@@ -534,9 +554,20 @@ table.tt td.min{font-family:var(--type);font-size:12px;color:var(--accent);white
   <div id="cards"></div>
 
   <div class="summary">
+    <div class="namebox">
+      <label for="pairNames">Your names</label>
+      <input type="text" id="pairNames" placeholder="Both partners — so you can find this work next class">
+    </div>
     <h4>Your board so far</h4>
     <pre id="summaryOut">Nothing tiered yet.</pre>
-    <div class="btnrow tight"><button class="btn ghost sm" id="copyBtn">Copy to clipboard</button><span class="nudge" id="copyNote"></span></div>
+    <div class="btnrow tight">
+      <button class="btn ghost sm" id="copyBtn">Copy to clipboard</button>
+      <button class="btn ghost sm" id="backupBtn">Save a backup file</button>
+      <button class="btn ghost sm" id="loadBtn">Restore from a file</button>
+      <input type="file" id="loadFile" accept="application/json,.json" style="display:none">
+      <span class="nudge" id="copyNote"></span>
+    </div>
+    <p class="body dim" style="margin-top:.8rem;margin-bottom:0;font-size:13px;">This page remembers your work on <em>this</em> computer, so you can pick it up next class. If you might be on a different machine, save the backup file and keep it somewhere you'll find it.</p>
   </div>
 
   <div class="nb">
@@ -588,51 +619,28 @@ table.tt td.min{font-family:var(--type);font-size:12px;color:var(--accent);white
   <div class="sp-kick">AP Language &middot; Mr. Smith &middot; Substitute Notes</div>
   <h3>Sorry Not Sorry &mdash; 80 minutes</h3>
 
-  <p style="margin-top:.8rem;"><strong>You do not need to know anything about rhetoric to run this.</strong> The site does the teaching. Your job is pairs, timing, and making sure they are writing.</p>
+  <p style="margin-top:.8rem;"><strong>The website runs the lesson.</strong> There is nothing for you to teach and nothing to collect &mdash; everything students need is on the page.</p>
 
-  <h4>Setup</h4>
-  <ul>
-    <li>Students work in <strong>pairs</strong>, one screen per pair. Pairs matter &mdash; the arguing is the assignment.</li>
-    <li>Everything goes in <strong>notebooks</strong>. Nothing is collected, nothing is submitted, nothing needs to be printed or emailed. Mr. Smith checks notebooks next class.</li>
-    <li>Each stage ends with a boxed instruction telling them exactly what to write down. Point at it if they skip it.</li>
-    <li>If a screen gets reset or a pair takes over a machine from another class, the <strong>Start Fresh</strong> button is top right.</li>
-  </ul>
+  <p>They work in <strong>pairs, one screen each</strong>, ranking nine real celebrity apologies and arguing about which ones actually worked. They are supposed to disagree with each other, so a loud room is a working room. Each stage ends with a box telling them exactly what to copy into their notebooks.</p>
 
-  <h4>Timing</h4>
-  <table class="tt">
-    <tr><td class="min">0&ndash;5</td><td>Settle, pairs, screens open. Tell them: everything gets written in notebooks.</td></tr>
-    <tr><td class="min">5&ndash;17</td><td><strong>Stage 1 &middot; The Swap.</strong> Two apologies, each shown twice. They must type an answer before the site reveals ours. Do not let them skip to the reveal.</td></tr>
-    <tr><td class="min">17&ndash;25</td><td><strong>Stage 2 &middot; Purpose.</strong> Four minutes writing, then reveal, then notebook.</td></tr>
-    <tr><td class="min">25&ndash;35</td><td><strong>Stage 3 &middot; Moves and Dodges.</strong> Four minutes writing, then reveal. They must copy the five moves and six dodges by name. They need them for the rest of the period.</td></tr>
-    <tr><td class="min">35&ndash;47</td><td><strong>Stage 4 &middot; Close Read.</strong> Four phrases, each a multiple choice. Wrong answers explain why and let them try again. Getting one wrong is useful here &mdash; don't let them rush to the right letter without reading the response.</td></tr>
-    <tr><td class="min">46&ndash;70</td><td><strong>Stage 6 &middot; Tier and Defend.</strong> The main event. Stage 5 is just the nine texts for reference &mdash; they can read from it as they go.</td></tr>
-    <tr><td class="min">70&ndash;80</td><td><strong>Exit slip.</strong> See below. Start this at 70 minutes even if they are not finished tiering.</td></tr>
-  </table>
+  <h4>How the period runs</h4>
 
-  <p>If you fall behind, take the time out of Stage 5 reading, not Stage 6. Tiering is the point of the lesson.</p>
+  <p>For the <strong>first 35 minutes</strong> they move through three short stages &mdash; comparing apologies that have been rewritten in a different style, deciding what an apology is supposed to accomplish, and learning eleven names for the choices a speaker can make. The site won't show its own answer until they type theirs, so the one thing worth watching for is a pair trying to skip ahead.</p>
 
-  <h4>The last ten minutes</h4>
-  <ul>
-    <li>At 70 minutes, stop the pair work and tell them to open the <strong>last tab</strong> of the site, called Exit Slip.</li>
-    <li>They work <strong>alone</strong> for this part, not in pairs.</li>
-    <li>They may use their notebooks and the website. That is intended &mdash; it is not a test.</li>
-    <li>They submit it on <strong>Google Classroom</strong>, where the same questions are posted. You do not collect anything.</li>
-    <li>Before they leave, just confirm each student has submitted. That is the only thing that has to be handed in today.</li>
-  </ul>
+  <p><strong>Around 35 minutes</strong> they answer four multiple-choice questions about phrases from a single apology. Wrong answers explain themselves and let them try again, which is the point. If a pair is clicking letters until something turns green, tell them to read what came up.</p>
 
-  <h4>Things students will ask you</h4>
-  <ul>
-    <li><strong>&ldquo;Is this one good or bad?&rdquo;</strong> &mdash; Don't answer. Say: &ldquo;Reread the phrase you quoted and tell me whether that speaker's audience would forgive them.&rdquo;</li>
-    <li><strong>&ldquo;We disagree.&rdquo;</strong> &mdash; Perfect. They do not have to agree. Both partners write down their own reason. That is literally the last item in their notebook.</li>
-    <li><strong>&ldquo;Can we just say it's badly written?&rdquo;</strong> &mdash; No. The site lists banned reasons in Stage 6. Point them at that box.</li>
-    <li><strong>&ldquo;Do we have to do all nine?&rdquo;</strong> &mdash; Yes, all nine get a tier. The written rationale is required for every one.</li>
-  </ul>
+  <p><strong>From about 46 to 70 minutes</strong> is the real work. Pairs sort all nine apologies into Effective, Mixed and Failed, and type a reason for each placement that quotes the apology directly. All nine need a placement and a reason, and both partners copy the chart into their own notebooks. If the clock gets tight, take the time out of the reading tab, not this one.</p>
 
-  <h4>Content note</h4>
-  <p>These are real public apologies for real offenses, and several involve serious misconduct &mdash; a drunk driving arrest, a homophobic slur, sexual misconduct allegations, an invasion of privacy, a political controversy. Students have the context paragraphs. This is an AP course and these texts are part of the unit. If a student raises a concern, let them switch to analyzing a different one and let Mr. Smith know.</p>
+  <p><strong>At 70 minutes</strong> stop them whether or not they have finished. The last ten minutes are the exit slip on the final tab &mdash; done alone rather than in pairs, notebooks and website allowed, submitted on Google Classroom. Nothing for you to collect; just check everyone has submitted before they leave.</p>
 
-  <h4>If a pair finishes early</h4>
-  <p>Send them back to the two apologies they disagreed about and have them write the strongest possible case <em>against</em> their own placement. Or have them find a second quoted phrase for every apology in their Failed tier.</p>
+  <h4>If they ask you something</h4>
+
+  <p>If a pair asks whether an apology is good or bad, don't answer it &mdash; tell them to reread the phrase they quoted and decide whether that speaker's audience would forgive them. If they say they disagree with each other, that's fine and expected: they each write down their own reason. If they want to say an apology is just badly written, the site lists the reasons that don't count.</p>
+
+  <p>Their work saves automatically on the computer they are using. If the page asks whether earlier work belongs to them and it doesn't, they click <strong>Not ours</strong>.</p>
+
+  <h4>Note</h4>
+  <p>These are real apologies for real offenses, including a DUI arrest, a slur, and sexual misconduct allegations. Context is on screen. If a student objects to one, let them analyze a different one and tell Mr. Smith.</p>
 
   <div class="btnrow tight"><button class="btn ghost sm" onclick="window.print()">Print these notes</button></div>
 </aside>
@@ -772,17 +780,59 @@ var BANNED = [
 ];
 
 /* ══════════ STATE ══════════ */
-var S = {tab:0, asks:{}, reveals:{}, phrases:{}, tiers:{}, quotes:{}, labels:{}, notes:{}};
-var KEY = "snsv1";
+var S = {tab:0, names:"", savedAt:0, asks:{}, reveals:{}, phrases:{}, tiers:{}, quotes:{}, labels:{}, notes:{}};
+var KEY = "sns_v2";
+var storageOK = true;
+var pending = null;
 
-function save(){
-  try{ sessionStorage.setItem(KEY, JSON.stringify(S)); }catch(e){}
-}
-function load(){
+function stamp(ts){
+  var d = new Date(ts);
   try{
-    var raw = sessionStorage.getItem(KEY);
-    if(raw){ var o = JSON.parse(raw); for(var k in o){ if(o.hasOwnProperty(k)) S[k]=o[k]; } }
-  }catch(e){}
+    return d.toLocaleDateString(undefined,{weekday:"long",month:"short",day:"numeric"}) +
+           " at " + d.toLocaleTimeString(undefined,{hour:"numeric",minute:"2-digit"});
+  }catch(e){ return d.toString(); }
+}
+function markSaved(){
+  var el = document.getElementById("saveState"), bar = document.getElementById("savebar");
+  if(!el || !bar) return;
+  if(!storageOK){
+    bar.className = "savebar warn";
+    el.textContent = "This browser is not letting the page save — write everything in your notebook";
+    return;
+  }
+  bar.className = "savebar";
+  el.textContent = S.savedAt ? ("Saved on this computer · " + stamp(S.savedAt))
+                             : "Your work saves automatically on this computer";
+}
+function save(){
+  S.savedAt = Date.now();
+  try{ localStorage.setItem(KEY, JSON.stringify(S)); }
+  catch(e){ storageOK = false; }
+  markSaved();
+}
+function adopt(o){ for(var k in o){ if(o.hasOwnProperty(k)) S[k]=o[k]; } }
+function load(){
+  var raw = null;
+  try{ raw = localStorage.getItem(KEY); }
+  catch(e){ storageOK = false; return; }
+  if(!raw) return;
+  var o; try{ o = JSON.parse(raw); }catch(e){ return; }
+  if(!o || typeof o !== "object") return;
+  var now = Date.now();
+  var fresh = o.savedAt && (new Date(o.savedAt).toDateString() === new Date(now).toDateString())
+                        && (now - o.savedAt < 4*60*60*1000);
+  if(fresh){ adopt(o); } else { pending = o; }
+}
+function showRestore(){
+  var el = document.getElementById("restore");
+  if(!el || !pending) return;
+  var who = pending.names ? ("<strong>"+esc(pending.names)+"</strong>") : "A pair";
+  var n = 0, j;
+  for(j=0;j<APOLOGIES.length;j++){ if(pending.tiers && pending.tiers[APOLOGIES[j].id]) n++; }
+  el.querySelector(".rs-txt").innerHTML =
+    who + " left work on this computer, last saved " + stamp(pending.savedAt||0) +
+    (n ? (" &mdash; " + n + " of 9 apologies tiered") : "") + ". Is that yours?";
+  el.classList.add("on");
 }
 
 /* ══════════ TABS ══════════ */
@@ -1126,10 +1176,66 @@ function init(){
   document.getElementById("scrim").addEventListener("click", closeSub);
 
   document.getElementById("resetAll").addEventListener("click", function(){
-    if(!window.confirm("Clear everything on this screen and start over? Anything you have not written in your notebook will be lost.")) return;
-    try{ sessionStorage.removeItem(KEY); }catch(e){}
-    S = {tab:0, asks:{}, reveals:{}, phrases:{}, tiers:{}, quotes:{}, labels:{}, notes:{}};
+    if(!window.confirm("Delete the saved work on this computer and start over? This cannot be undone.")) return;
+    try{ localStorage.removeItem(KEY); }catch(e){}
     window.location.reload();
+  });
+
+  markSaved();
+  if(pending) showRestore();
+
+  document.getElementById("rsYes").addEventListener("click", function(){
+    adopt(pending); pending = null; S.savedAt = Date.now();
+    try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){}
+    window.location.reload();
+  });
+  document.getElementById("rsNo").addEventListener("click", function(){
+    try{ localStorage.removeItem(KEY); }catch(e){}
+    window.location.reload();
+  });
+
+  var nm = document.getElementById("pairNames");
+  if(nm){
+    nm.value = S.names || "";
+    nm.addEventListener("input", function(){ S.names = nm.value; save(); });
+  }
+
+  document.getElementById("backupBtn").addEventListener("click", function(){
+    var note = document.getElementById("copyNote");
+    try{
+      var blob = new Blob([JSON.stringify(S,null,2)], {type:"application/json"});
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      var who = (S.names || "our-work").replace(/[^a-z0-9]+/gi,"-").replace(/^-|-$/g,"").toLowerCase() || "our-work";
+      a.href = url; a.download = "sorry-not-sorry-" + who + ".json";
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
+      note.textContent = "Backup saved to your downloads.";
+    }catch(e){ note.textContent = "This browser blocked the download."; }
+    setTimeout(function(){ note.textContent=""; }, 3200);
+  });
+
+  document.getElementById("loadBtn").addEventListener("click", function(){
+    document.getElementById("loadFile").click();
+  });
+  document.getElementById("loadFile").addEventListener("change", function(ev){
+    var f = ev.target.files && ev.target.files[0];
+    var note = document.getElementById("copyNote");
+    if(!f) return;
+    var r = new FileReader();
+    r.onload = function(){
+      var o = null;
+      try{ o = JSON.parse(r.result); }catch(e){ o = null; }
+      if(!o || typeof o !== "object" || !o.tiers){
+        note.textContent = "That file could not be read — use the backup file this page saved.";
+        setTimeout(function(){ note.textContent=""; }, 4000);
+        return;
+      }
+      adopt(o); S.savedAt = Date.now();
+      try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){}
+      window.location.reload();
+    };
+    r.readAsText(f);
   });
 
   document.getElementById("copyBtn").addEventListener("click", function(){
