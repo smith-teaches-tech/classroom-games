@@ -117,8 +117,18 @@
   .vote button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
 
   /* ---------- cards ---------- */
-  .pairnav{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 16px}
-  .pairnav .count{font:500 12px/1 var(--mono);color:var(--ink-soft)}
+  .progress{
+    position:sticky;top:var(--barh,62px);z-index:40;
+    font:500 12px/1 var(--mono);letter-spacing:.06em;
+    background:var(--paper-deep);border:1px solid var(--line);border-radius:99px;
+    padding:9px 14px;margin:0 0 18px;display:inline-block;
+    box-shadow:0 2px 10px rgba(26,24,20,.14);
+  }
+  .pairhead{
+    font:500 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+    color:var(--accent-red);margin:34px 0 10px;padding-top:16px;border-top:2px solid var(--line);
+  }
+  .pairhead:first-child{margin-top:0;border-top:none;padding-top:0}
   .pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
   @media(max-width:680px){.pair{grid-template-columns:1fr}}
   .claimcard{
@@ -414,17 +424,13 @@
 
   <div class="box task">
     <h4>How to run this</h4>
-    <p>For each pair: read both cards aloud → agree as a group → <strong>write your letters in the worksheet grid</strong> → then click to check. Put the actual answer in the next column, and if you got it wrong, write why in the last one.</p>
+    <p><strong>All 18 cards are below, in 9 pairs. Scroll down the page and work through every one of them in order.</strong> Don't stop after the first pair — you are not finished with Part 3 until you reach the box at the very bottom headed <em>Now find the cows</em>.</p>
+    <p>For each pair: read both cards aloud → agree as a group → <strong>write your two letters in the worksheet grid</strong> → then click A, B or C on each card to check. Put the actual answer in the next column, and if you got it wrong, write why in the last one.</p>
     <p style="margin-bottom:10px">You are aiming to be able to say <em>why</em>, not to get a high score.</p>
     <span class="wsq">WORKSHEET — the card grid, page 3</span>
   </div>
 
-  <div class="pairnav">
-    <button class="btn ghost" onclick="pairStep(-1)">← Previous pair</button>
-    <span class="count" id="paircount"></span>
-    <button class="btn ghost" onclick="pairStep(1)">Next pair →</button>
-    <span class="count" id="score"></span>
-  </div>
+  <div class="progress" id="progress"></div>
 
   <div id="pairhost"></div>
 
@@ -882,37 +888,48 @@ var PAIRS=[
  ]}
 ];
 
-var pi=0, answered={}, right=0, done=0;
-function renderPair(){
-  var p=PAIRS[pi], host=document.getElementById('pairhost');
+var answered={}, right=0, done=0;
+var CORE=16; // cards 1-16; pair 9 is the optional extra
+
+function renderAll(){
+  var host=document.getElementById('pairhost');
   host.innerHTML='';
-  var h=document.createElement('h3'); h.textContent=p.label; h.style.marginTop='0'; host.appendChild(h);
-  var grid=document.createElement('div'); grid.className='pair';
-  p.cards.forEach(function(c){
-    var d=document.createElement('div'); d.className='claimcard';
-    d.innerHTML='<div class="num">CARD '+c.n+'</div>'+
-      '<div class="claim">'+c.claim+'</div>'+
-      '<div class="because">because…</div>'+
-      '<div class="reason">'+c.reason+'</div>'+
-      '<div class="sortrow">'+
-        '<button data-t="A">A<br>Reaches</button>'+
-        '<button data-t="B">B<br>Hollow</button>'+
-        '<button data-t="C">C<br>Lucky</button>'+
-      '</div>'+
-      '<div class="verdict" id="v'+c.n+'"></div>'+
-      '<div class="aok">'+c.aok+'</div>';
-    var btns=d.querySelectorAll('.sortrow button');
-    for(var i=0;i<btns.length;i++){
-      (function(b){ b.onclick=function(){ pick(c,b,d); }; })(btns[i]);
+  PAIRS.forEach(function(p,idx){
+    var h=document.createElement('div');
+    h.className='pairhead';
+    h.textContent=p.label;
+    host.appendChild(h);
+
+    var grid=document.createElement('div'); grid.className='pair';
+    p.cards.forEach(function(c){
+      var d=document.createElement('div'); d.className='claimcard';
+      d.innerHTML='<div class="num">CARD '+c.n+'</div>'+
+        '<div class="claim">'+c.claim+'</div>'+
+        '<div class="because">because…</div>'+
+        '<div class="reason">'+c.reason+'</div>'+
+        '<div class="sortrow">'+
+          '<button data-t="A">A<br>Reaches</button>'+
+          '<button data-t="B">B<br>Hollow</button>'+
+          '<button data-t="C">C<br>Lucky</button>'+
+        '</div>'+
+        '<div class="verdict"></div>'+
+        '<div class="aok">'+c.aok+'</div>';
+      var btns=d.querySelectorAll('.sortrow button');
+      for(var i=0;i<btns.length;i++){
+        (function(b){ b.onclick=function(){ pick(c,b,d); }; })(btns[i]);
+      }
+      grid.appendChild(d);
+    });
+    host.appendChild(grid);
+
+    if(idx===PAIRS.length-2){
+      var note=document.createElement('p');
+      note.className='small';
+      note.style.margin='22px 0 0';
+      note.innerHTML='<strong>That is all sixteen of the main cards.</strong> If your group still has time, do the extra pair below. If the sub has called time, scroll past it to the box headed <em>Now find the cows</em>.';
+      host.appendChild(note);
     }
-    if(answered[c.n]){ // restore
-      for(var j=0;j<btns.length;j++){ if(btns[j].getAttribute('data-t')===answered[c.n]) btns[j].classList.add('pick'); }
-      paint(c,d);
-    }
-    grid.appendChild(d);
   });
-  host.appendChild(grid);
-  document.getElementById('paircount').textContent='Pair '+(pi+1)+' of '+PAIRS.length;
   updateScore();
 }
 function pick(c,b,d){
@@ -923,7 +940,7 @@ function pick(c,b,d){
   done++;
   paint(c,d);
   updateScore();
-  if(done>=14){ document.getElementById('cardsdone').classList.add('on'); }
+  if(done>=CORE-2){ document.getElementById('cardsdone').classList.add('on'); }
 }
 function paint(c,d){
   var v=d.querySelector('.verdict');
@@ -933,15 +950,20 @@ function paint(c,d){
   v.innerHTML='<span class="tag">'+(correct?'✓ Yes — ':'Actually: ')+names[c.tier]+'</span>'+c.why;
 }
 function updateScore(){
-  var el=document.getElementById('score');
-  el.textContent = done? (right+' / '+done+' so far') : '';
+  var el=document.getElementById('progress');
+  if(!done){ el.textContent='18 CARDS BELOW — NONE CHECKED YET'; return; }
+  var left=CORE-done;
+  el.textContent = done+' of 18 checked · '+right+' right'+(left>0? ' · '+left+' of the main 16 still to do' : ' · main 16 done');
 }
-function pairStep(d){
-  pi=(pi+d+PAIRS.length)%PAIRS.length;
-  renderPair();
-  document.getElementById('pairhost').scrollIntoView({block:'start'});
+renderAll();
+
+/* keep the sticky progress pill clear of the (wrapping) header bar */
+function setBarHeight(){
+  var h=document.querySelector('header.bar');
+  if(h){ document.documentElement.style.setProperty('--barh',(h.offsetHeight+8)+'px'); }
 }
-renderPair();
+setBarHeight();
+window.addEventListener('resize',setBarHeight);
 </script>
 </body>
 </html>
