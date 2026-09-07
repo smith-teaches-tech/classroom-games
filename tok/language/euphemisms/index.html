@@ -20,6 +20,7 @@
     --mark:#e8dcc2;
     --plain-bg:#eef1ea;
     --plain-rule:#c5cdba;
+    --green:#3f5340;
   }
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
@@ -67,229 +68,294 @@
   .how b{color:var(--oxblood);font-weight:500}
   .rule{height:1px;background:var(--rule);border:0;margin:40px 0}
 
-  /* ---- article card ---- */
-  .article{margin:0 0 8px}
-  .a-head{
-    display:flex;align-items:baseline;gap:14px;
-    margin:0 0 4px;
+  /* ---- stages ---- */
+  .stage{margin:0 0 20px;scroll-margin-top:18px}
+  .s-head{
+    display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+    border-top:2px solid var(--oxblood);
+    padding:16px 0 0;
+    margin:48px 0 14px;
   }
-  .a-tag{
+  .s-num{
     font-family:'JetBrains Mono',monospace;
-    font-weight:700;
-    font-size:13px;
-    letter-spacing:.12em;
-    color:var(--paper);
-    background:var(--oxblood);
-    padding:4px 9px;
-    border-radius:2px;
-    flex:none;
+    font-weight:700;font-size:13px;letter-spacing:.12em;
+    color:var(--paper);background:var(--oxblood);
+    padding:4px 9px;border-radius:2px;flex:none;
   }
-  .a-kind{
+  .s-title{font-weight:600;font-size:31px;line-height:1.1;margin:0}
+  .s-time{
     font-family:'JetBrains Mono',monospace;
-    font-size:11px;
-    letter-spacing:.18em;
-    text-transform:uppercase;
-    color:var(--muted);
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--muted);margin-left:auto;
   }
-  .a-title{
-    font-weight:600;
-    font-size:30px;
-    line-height:1.1;
-    margin:6px 0 16px;
+  .s-sub{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;line-height:1.7;color:var(--muted);
+    margin:0 0 20px;max-width:62ch;
   }
+  .s-sub b{color:var(--oxblood);font-weight:500}
+  .stage > p{max-width:64ch}
 
-  /* ---- mode toggle ---- */
-  .toggle{
-    display:inline-flex;
-    border:1px solid var(--rule);
-    border-radius:3px;
-    overflow:hidden;
-    margin:0 0 22px;
-    background:var(--card);
-  }
-  .toggle button{
-    font-family:'JetBrains Mono',monospace;
-    font-size:11.5px;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    padding:9px 18px;
-    border:0;
-    background:transparent;
-    color:var(--muted);
-    cursor:pointer;
-    transition:background .18s,color .18s;
-  }
-  .toggle button + button{border-left:1px solid var(--rule)}
-  .toggle button[aria-pressed="true"]{
-    background:var(--ink);
-    color:var(--paper);
-  }
-  .toggle button[data-mode="plain"][aria-pressed="true"]{background:#3f5340}
-
-  /* ---- the prose ---- */
-  .release{
+  /* ---- generic card ---- */
+  .card{
     background:var(--card);
     border:1px solid var(--rule);
     border-left:3px solid var(--oxblood);
-    padding:30px 34px;
+    padding:26px 30px;
+    border-radius:2px;
+    margin:0 0 18px;
+  }
+  .card.green{border-left-color:var(--green)}
+  .card p{margin:0 0 14px;max-width:60ch}
+  .card p:last-child{margin-bottom:0}
+  .c-lab{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--muted);margin:0 0 10px!important;
+  }
+  ol.steps{margin:0;padding-left:1.3em;max-width:60ch}
+  ol.steps li{margin:0 0 12px}
+  ol.steps li:last-child{margin-bottom:0}
+
+  /* ---- the instrument box ---- */
+  .instrument{
+    background:var(--decode-bg);
+    border:1px solid var(--rule);
+    border-left:3px solid var(--ink);
+    padding:24px 28px;border-radius:2px;margin:0 0 18px;
+  }
+  .instrument ol{margin:0;padding-left:1.25em}
+  .instrument li{margin:0 0 9px;font-size:23px}
+  .instrument li:last-child{margin-bottom:0}
+  .instrument .qnote{color:var(--muted);font-size:19px}
+
+  /* ---- forced-choice poll ---- */
+  .pair{
+    display:grid;gap:12px;margin:0 0 18px;
+  }
+  .pairline{
+    background:var(--card);border:1px solid var(--rule);
+    border-radius:2px;padding:16px 20px;
+  }
+  .pairline .pl-tag{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;letter-spacing:.16em;color:var(--oxblood);
+    display:block;margin:0 0 6px;
+  }
+  .pairline .pl-text{margin:0;font-size:22px;line-height:1.35}
+  .choices{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}
+  .choices button{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;
+    padding:10px 16px;border:1px solid var(--rule);
+    background:var(--card);color:var(--ink);
+    border-radius:2px;cursor:pointer;transition:background .18s,color .18s;
+  }
+  .choices button:hover{background:var(--mark)}
+  .choices button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+  /* ---- reveal blocks ---- */
+  .revealbtn{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;
+    padding:10px 18px;background:var(--oxblood);color:var(--paper);
+    border:0;border-radius:2px;cursor:pointer;transition:background .18s;
+  }
+  .revealbtn:hover{background:#5e1c26}
+  .revealbtn[disabled]{background:var(--rule);color:var(--muted);cursor:not-allowed}
+  .revealed{
+    margin:16px 0 0;padding:18px 22px;
+    background:var(--card);border-left:3px solid var(--green);
     border-radius:2px;
   }
-  .release.plainmode{
-    background:var(--plain-bg);
-    border-left-color:#3f5340;
-  }
-  .release .dateline{
+  .revealed .r-lab{
     font-family:'JetBrains Mono',monospace;
-    font-size:11px;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    color:var(--muted);
-    margin:0 0 16px;
+    font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--green);margin:0 0 8px;
   }
-  .release h4{
-    font-weight:700;
-    font-size:23px;
-    margin:0 0 18px;
-    line-height:1.15;
+  .revealed p{margin:0 0 12px;max-width:60ch}
+  .revealed p:last-child{margin-bottom:0}
+  .lock{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;color:var(--muted);margin:8px 0 0;
   }
+
+  /* ---- punch line ---- */
+  .punch{
+    background:var(--ink);color:var(--paper);
+    padding:22px 26px;border-radius:2px;margin:18px 0 0;
+  }
+  .punch p{margin:0;font-size:25px;line-height:1.35;max-width:56ch}
+  .punch .p-lab{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--mark);margin:0 0 10px;
+  }
+
+  /* ---- write-here box ---- */
+  .writebox{margin:0 0 18px}
+  .writebox label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;color:var(--ink);display:block;margin:0 0 8px;
+  }
+  textarea.tx{
+    width:100%;
+    font-family:'Cormorant Garamond',serif;
+    font-size:19px;color:var(--ink);background:var(--card);
+    border:1px solid var(--rule);border-radius:2px;
+    padding:10px 12px;resize:vertical;min-height:58px;line-height:1.4;
+  }
+  textarea.tx:focus-visible{outline:2px solid var(--oxblood-soft);outline-offset:1px}
+
+  /* ---- article card ---- */
+  .article{margin:0 0 8px}
+  .a-head{display:flex;align-items:baseline;gap:14px;margin:0 0 4px}
+  .a-tag{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;
+    letter-spacing:.12em;color:var(--paper);background:var(--oxblood);
+    padding:4px 9px;border-radius:2px;flex:none;
+  }
+  .a-kind{
+    font-family:'JetBrains Mono',monospace;font-size:11px;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--muted);
+  }
+  .a-title{font-weight:600;font-size:30px;line-height:1.1;margin:6px 0 16px}
+
+  .toggle{
+    display:inline-flex;border:1px solid var(--rule);border-radius:3px;
+    overflow:hidden;margin:0 0 22px;background:var(--card);
+  }
+  .toggle button{
+    font-family:'JetBrains Mono',monospace;font-size:11.5px;
+    letter-spacing:.14em;text-transform:uppercase;padding:9px 18px;
+    border:0;background:transparent;color:var(--muted);cursor:pointer;
+    transition:background .18s,color .18s;
+  }
+  .toggle button + button{border-left:1px solid var(--rule)}
+  .toggle button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+  .toggle button[data-mode="plain"][aria-pressed="true"]{background:var(--green)}
+
+  .release{
+    background:var(--card);border:1px solid var(--rule);
+    border-left:3px solid var(--oxblood);padding:30px 34px;border-radius:2px;
+  }
+  .release.plainmode{background:var(--plain-bg);border-left-color:var(--green)}
+  .release .dateline{
+    font-family:'JetBrains Mono',monospace;font-size:11px;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 16px;
+  }
+  .release h4{font-weight:700;font-size:23px;margin:0 0 18px;line-height:1.15}
   .release p{margin:0 0 15px}
   .release p:last-child{margin-bottom:0}
   .release .quote{font-style:italic}
 
-  /* ---- euphemism chips ---- */
   .euph{
-    font:inherit;
-    color:var(--oxblood);
-    background:transparent;
-    border:0;
-    border-bottom:1.5px dotted var(--oxblood-soft);
-    padding:0 1px;
-    margin:0;
-    cursor:pointer;
-    transition:background .15s;
+    font:inherit;color:var(--oxblood);background:transparent;border:0;
+    border-bottom:1.5px dotted var(--oxblood-soft);padding:0 1px;margin:0;
+    cursor:pointer;transition:background .15s;
   }
   .euph:hover{background:var(--mark)}
   .euph:focus-visible{outline:2px solid var(--oxblood);outline-offset:2px}
   .euph[data-active="true"]{background:var(--mark);border-bottom-style:solid}
-  .euph[data-done="true"]{
-    color:var(--ink);
-    border-bottom:1.5px solid var(--plain-rule);
-    background:transparent;
-  }
+  .euph[data-done="true"]{color:var(--ink);border-bottom:1.5px solid var(--plain-rule);background:transparent}
   .euph[data-done="true"]::after{
-    content:"✓";
-    font-family:'JetBrains Mono',monospace;
-    font-size:10px;
-    color:#3f5340;
-    vertical-align:super;
-    margin-left:1px;
+    content:"✓";font-family:'JetBrains Mono',monospace;font-size:10px;
+    color:var(--green);vertical-align:super;margin-left:1px;
   }
 
-  /* ---- decode console ---- */
   .console{
-    margin:18px 0 0;
-    border:1px solid var(--rule);
-    border-radius:2px;
-    background:var(--decode-bg);
-    padding:20px 22px;
+    margin:18px 0 0;border:1px solid var(--rule);border-radius:2px;
+    background:var(--decode-bg);padding:20px 22px;
   }
   .console.empty{background:transparent;border-style:dashed}
-  .c-label{
-    font-family:'JetBrains Mono',monospace;
-    font-size:10.5px;
-    letter-spacing:.18em;
-    text-transform:uppercase;
-    color:var(--muted);
-    margin:0 0 8px;
-  }
-  .c-phrase{
-    font-weight:600;
-    font-size:24px;
-    color:var(--oxblood);
-    margin:0 0 16px;
-    line-height:1.2;
-  }
-  .c-prompt{
-    font-family:'JetBrains Mono',monospace;
-    font-size:12px;
-    color:var(--ink);
-    margin:0 0 8px;
-  }
+  .c-phrase{font-weight:600;font-size:24px;color:var(--oxblood);margin:0 0 16px;line-height:1.2}
+  .c-prompt{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink);margin:0 0 8px}
   textarea.c-input{
-    width:100%;
-    font-family:'Cormorant Garamond',serif;
-    font-size:19px;
-    color:var(--ink);
-    background:var(--card);
-    border:1px solid var(--rule);
-    border-radius:2px;
-    padding:10px 12px;
-    resize:vertical;
-    min-height:54px;
-    line-height:1.4;
+    width:100%;font-family:'Cormorant Garamond',serif;font-size:19px;
+    color:var(--ink);background:var(--card);border:1px solid var(--rule);
+    border-radius:2px;padding:10px 12px;resize:vertical;min-height:54px;line-height:1.4;
   }
   textarea.c-input:focus-visible{outline:2px solid var(--oxblood-soft);outline-offset:1px}
-  .c-reveal{
-    margin-top:12px;
-    font-family:'JetBrains Mono',monospace;
-    font-size:11.5px;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-    padding:9px 18px;
-    background:var(--oxblood);
-    color:var(--paper);
-    border:0;border-radius:2px;
-    cursor:pointer;
-    transition:background .18s;
-  }
-  .c-reveal:hover{background:#5e1c26}
+  .c-reveal{margin-top:12px}
   .c-answer{
-    margin:16px 0 0;
-    padding:14px 16px;
-    background:var(--card);
-    border-left:3px solid #3f5340;
-    border-radius:2px;
+    margin:16px 0 0;padding:14px 16px;background:var(--card);
+    border-left:3px solid var(--green);border-radius:2px;
   }
   .c-answer .a-lab{
-    font-family:'JetBrains Mono',monospace;
-    font-size:10px;letter-spacing:.18em;text-transform:uppercase;
-    color:#3f5340;margin:0 0 5px;
+    font-family:'JetBrains Mono',monospace;font-size:10px;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--green);margin:0 0 5px;
   }
   .c-answer .a-text{font-size:21px;line-height:1.4;margin:0}
-  .c-empty-msg{
-    font-family:'JetBrains Mono',monospace;
-    font-size:12px;color:var(--muted);margin:0;line-height:1.6;
-  }
-
-  .progress{
-    font-family:'JetBrains Mono',monospace;
-    font-size:11px;letter-spacing:.1em;
-    color:var(--muted);
-    margin:14px 0 0;
-  }
+  .c-empty-msg{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);margin:0;line-height:1.6}
+  .progress{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;color:var(--muted);margin:14px 0 0}
   .progress b{color:var(--oxblood);font-weight:700}
 
-  /* ---- closing turn ---- */
-  .turn{
-    margin:44px 0 0;
-    border-top:2px solid var(--oxblood);
-    padding:24px 0 0;
+  /* ---- word sort ---- */
+  .sort{border:1px solid var(--rule);border-radius:2px;background:var(--card);padding:8px 0;margin:0 0 16px}
+  .sortrow{
+    display:flex;align-items:center;gap:12px;
+    padding:9px 20px;border-bottom:1px solid var(--rule);
   }
+  .sortrow:last-child{border-bottom:0}
+  .sortrow .w{font-size:23px;flex:1;min-width:0}
+  .sortrow .sbtn{
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;
+    letter-spacing:.1em;text-transform:uppercase;padding:6px 12px;
+    border:1px solid var(--rule);background:transparent;color:var(--muted);
+    border-radius:2px;cursor:pointer;flex:none;
+  }
+  .sortrow .sbtn[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .sortrow .origin{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+    flex:none;min-width:15ch;text-align:right;
+  }
+  .sortrow[data-correct="yes"] .w{color:var(--green)}
+  .sortrow[data-correct="no"] .w{color:var(--oxblood)}
+
+  /* ---- exit ticket ---- */
+  .exit{
+    border:2px solid var(--ink);border-radius:2px;
+    padding:28px 32px;margin:0 0 18px;background:var(--card);
+  }
+  .exit .x-lab{
+    font-family:'JetBrains Mono',monospace;font-size:11px;
+    letter-spacing:.2em;text-transform:uppercase;color:var(--oxblood);margin:0 0 12px;
+  }
+  .exit .x-q{font-size:27px;line-height:1.3;margin:0 0 18px;max-width:56ch}
+  .exit ul{margin:0;padding-left:1.2em;max-width:60ch}
+  .exit li{margin:0 0 8px}
+
+  .turn{margin:44px 0 0;border-top:2px solid var(--oxblood);padding:24px 0 0}
   .turn .t-lab{
-    font-family:'JetBrains Mono',monospace;
-    font-size:11px;letter-spacing:.2em;text-transform:uppercase;
-    color:var(--oxblood);margin:0 0 10px;
+    font-family:'JetBrains Mono',monospace;font-size:11px;
+    letter-spacing:.2em;text-transform:uppercase;color:var(--oxblood);margin:0 0 10px;
   }
   .turn p{font-size:24px;line-height:1.4;margin:0;max-width:60ch}
+
+  .toolbar{
+    display:flex;gap:10px;flex-wrap:wrap;margin:26px 0 0;
+  }
+  .toolbar button{
+    font-family:'JetBrains Mono',monospace;font-size:11px;
+    letter-spacing:.12em;text-transform:uppercase;padding:9px 16px;
+    border:1px solid var(--rule);background:var(--card);color:var(--muted);
+    border-radius:2px;cursor:pointer;
+  }
+  .toolbar button:hover{background:var(--mark);color:var(--ink)}
 
   @media (max-width:560px){
     body{font-size:19px;padding:32px 16px 72px}
     h1{font-size:40px}
-    .release{padding:22px 20px}
-    .a-title{font-size:25px}
+    .release,.card{padding:22px 20px}
+    .a-title,.s-title{font-size:25px}
+    .s-time{margin-left:0;width:100%}
+    .sortrow{flex-wrap:wrap}
+    .sortrow .origin{text-align:left;min-width:0;width:100%}
   }
-  @media (prefers-reduced-motion:reduce){
-    *{transition:none!important}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  @media print{
+    body{background:#fff;padding:0;font-size:12pt}
+    .toolbar,.toggle,.revealbtn,.choices,.console{display:none!important}
   }
 </style>
 </head>
@@ -298,99 +364,332 @@
 
   <p class="eyebrow">TOK · Language · Lesson 2</p>
   <h1>The Decoder</h1>
-  <p class="lede">Two real-sounding releases, written entirely in the language institutions use when they would rather you didn't picture the thing.</p>
+  <p class="lede">Two releases written entirely in the language institutions use when they would rather you didn't picture the thing. Nothing in either one is false. That is the problem.</p>
   <p class="how">
-    <b>Click any underlined phrase.</b> Write what you think is actually being said — then reveal the plain version.<br>
-    <b>Flip the whole release to Plain</b> with the toggle. Same events. Read them in both languages, and watch what the words were doing.
+    <b>Work in pairs.</b> One device between two is better than one each.<br>
+    <b>Follow the stages in order.</b> Each one is timed, and each one is built on the one before it.<br>
+    <b>Write before you reveal.</b> The reveals are locked until you have written something.
   </p>
 
-  <hr class="rule">
+  <div class="toolbar">
+    <button onclick="window.print()">Print this page</button>
+    <button id="runsheet">Teacher run sheet</button>
+  </div>
 
-  <!-- ============ ARTICLE A ============ -->
-  <section class="article" data-article="A">
-    <div class="a-head">
-      <span class="a-tag">A</span>
-      <span class="a-kind">Corporate communication</span>
+  <!-- ============ STAGE 1 ============ -->
+  <section class="stage" id="s1">
+    <div class="s-head">
+      <span class="s-num">1</span>
+      <h2 class="s-title">Where we left Orwell</h2>
+      <span class="s-time">10 minutes · pairs</span>
+    </div>
+    <p class="s-sub">Take out the essay you annotated. You marked passages <b>K</b> where Orwell was making a claim about knowing, and <b>T</b> where he was complaining about ugly writing. You need the K ones now.</p>
+
+    <div class="card">
+      <ol class="steps">
+        <li>Read each other your K passages. Where you marked different ones, say why.</li>
+        <li>Between you, choose the single passage that makes the strongest claim about what language does to a reader.</li>
+        <li>Turn it into a prediction, in your own words, and write it down:<br>
+          <em>"If Orwell is right, then language of this kind should ______________ to a reader."</em></li>
+        <li>Keep that sentence where you can see it. Everything after this stage is a test of it.</li>
+      </ol>
     </div>
 
-    <div class="toggle" role="group" aria-label="Article A version">
+    <div class="writebox">
+      <label for="w-pred">Your prediction (type it here or write it on paper)</label>
+      <textarea class="tx" id="w-pred" placeholder="If Orwell is right, then language of this kind should…"></textarea>
+    </div>
+
+    <button class="revealbtn" data-reveal="r1" data-requires="w-pred">Three ways other pairs finished that sentence</button>
+    <p class="lock" data-lockfor="w-pred">Write your prediction first.</p>
+    <div class="revealed" id="r1" hidden>
+      <p class="r-lab">Not answers — comparisons</p>
+      <p>"…should make a reader feel calm about something they would otherwise be angry about."</p>
+      <p>"…should stop a reader picturing anything at all."</p>
+      <p>"…should make a reader accept a judgement without noticing they were handed one."</p>
+      <p><strong>These three are not the same claim.</strong> The second and third can be tested on a page of writing. The first is about how a reader <em>feels</em>, and feeling is not knowing. If your prediction is about feelings, add a second one that isn't.</p>
+    </div>
+  </section>
+
+  <!-- ============ STAGE 2 ============ -->
+  <section class="stage" id="s2">
+    <div class="s-head">
+      <span class="s-num">2</span>
+      <h2 class="s-title">Which one is false?</h2>
+      <span class="s-time">8 minutes · pairs</span>
+    </div>
+    <p class="s-sub">Two sentences. Same company, same decision, same 850 people. Decide together, commit, then reveal.</p>
+
+    <div class="pair">
+      <div class="pairline">
+        <span class="pl-tag">Sentence A</span>
+        <p class="pl-text">"Approximately 850 team members will be affected by this reduction in force."</p>
+      </div>
+      <div class="pairline">
+        <span class="pl-tag">Sentence B</span>
+        <p class="pl-text">"We are firing 850 people."</p>
+      </div>
+    </div>
+
+    <div class="choices" role="group" aria-label="Which sentence is false">
+      <button data-poll="p1">A is false</button>
+      <button data-poll="p1">B is false</button>
+      <button data-poll="p1">Both are false</button>
+      <button data-poll="p1">Neither is false</button>
+    </div>
+
+    <button class="revealbtn" data-reveal="r2" data-requirespoll="p1">Reveal</button>
+    <p class="lock" data-lockforpoll="p1">Commit to an answer first.</p>
+    <div class="revealed" id="r2" hidden>
+      <p class="r-lab">Answer</p>
+      <p><strong>Neither.</strong> Both sentences are true. The same 850 people, the same decision, the same company. "Reduction in force" is the standard term for cutting headcount, and headcount is being cut. Nothing false has been said.</p>
+      <p>So if you were expecting to catch someone lying, that option has just closed. Something else is happening, and naming it is the rest of this lesson.</p>
+    </div>
+
+    <p style="margin-top:26px">Now the same test on the second release.</p>
+
+    <div class="pair">
+      <div class="pairline">
+        <span class="pl-tag">Sentence A</span>
+        <p class="pl-text">"Our forces have maintained operational superiority while minimizing collateral damage."</p>
+      </div>
+      <div class="pairline">
+        <span class="pl-tag">Sentence B</span>
+        <p class="pl-text">"Our forces stayed in control while killing and wounding fewer civilians than they might have."</p>
+      </div>
+    </div>
+
+    <div class="choices" role="group" aria-label="Which sentence is false, second pair">
+      <button data-poll="p2">A is false</button>
+      <button data-poll="p2">B is false</button>
+      <button data-poll="p2">Both are false</button>
+      <button data-poll="p2">Neither is false</button>
+    </div>
+
+    <button class="revealbtn" data-reveal="r3" data-requirespoll="p2">Reveal</button>
+    <p class="lock" data-lockforpoll="p2">Commit to an answer first.</p>
+    <div class="revealed" id="r3" hidden>
+      <p class="r-lab">Answer</p>
+      <p><strong>Neither, again.</strong> "Collateral damage" does mean dead and injured civilians and destroyed civilian property. The official sentence is not a lie. It is a true sentence about dead civilians that does not contain a dead civilian.</p>
+    </div>
+
+    <div class="writebox" style="margin-top:26px">
+      <label for="w-diff">Both sentences in each pair are true. Write one thing you can do with sentence B that you cannot do with sentence A.</label>
+      <textarea class="tx" id="w-diff" placeholder="With sentence B I can…"></textarea>
+    </div>
+
+    <button class="revealbtn" data-reveal="r4" data-requires="w-diff">What most pairs write</button>
+    <p class="lock" data-lockfor="w-diff">Write your answer first.</p>
+    <div class="revealed" id="r4" hidden>
+      <p class="r-lab">Three answers that keep coming up</p>
+      <p><strong>You can picture it.</strong> B puts a person in a room. A puts a category in a report.</p>
+      <p><strong>You can count it.</strong> B tells you there are bodies to count. A does not tell you there is anything countable at all.</p>
+      <p><strong>You can judge it.</strong> Once you can picture and count it, you can decide what you think about it. Until then there is nothing to have a view about.</p>
+    </div>
+
+    <div class="instrument" style="margin-top:26px">
+      <p class="c-lab">The three questions — use these for the rest of the lesson</p>
+      <ol>
+        <li>Is it false? <span class="qnote">Usually no. Check anyway.</span></li>
+        <li>Can you picture what happened? <span class="qnote">An actual scene, with people in it.</span></li>
+        <li>Could you go and count or check it? <span class="qnote">If a journalist wanted the number, do these words give it?</span></li>
+      </ol>
+    </div>
+
+    <div class="punch">
+      <p class="p-lab">Hold on to this</p>
+      <p>A euphemism does not lie. It blurs. Question 1 lets it through, and questions 2 and 3 catch it.</p>
+    </div>
+  </section>
+
+  <!-- ============ STAGE 3 ============ -->
+  <section class="stage" id="s3">
+    <div class="s-head">
+      <span class="s-num">3</span>
+      <h2 class="s-title">One worked example</h2>
+      <span class="s-time">6 minutes · read together</span>
+    </div>
+    <p class="s-sub">Read this one all the way through before you start decoding. It is the pattern you will use nineteen more times.</p>
+
+    <div class="card">
+      <p class="c-lab">The phrase</p>
+      <p style="font-size:25px;color:var(--oxblood);font-weight:600">"involuntary career transition"</p>
+      <p><strong>1. Is it false?</strong> No. These people's careers are changing, and it is not their choice. Every word of it is accurate. There is nothing here to fact-check.</p>
+      <p><strong>2. Can you picture it?</strong> No. A "transition" is a movement from one state to another — you cannot see one. Compare <em>fired</em>: a meeting, a badge handed over, a box carried to a car. One of these has a picture in it and one does not.</p>
+      <p><strong>3. Could you count or check it?</strong> Much harder than it looks. If a journalist wanted to know how many people were dismissed, "career transition" does not distinguish between people who were fired, people who left, people who retired, and people who moved departments. The number has not been hidden. The category that would let you ask for the number has been dissolved.</p>
+    </div>
+
+    <div class="punch">
+      <p class="p-lab">The finding</p>
+      <p>Nothing false was said, and a reader has still lost the picture and the count. That is what these phrases do, and it is why calling them lies gets it wrong.</p>
+    </div>
+  </section>
+
+  <!-- ============ STAGE 4 · ARTICLE A ============ -->
+  <section class="stage" id="s4">
+    <div class="s-head">
+      <span class="s-num">4</span>
+      <h2 class="s-title">Article A — together</h2>
+      <span class="s-time">14 minutes · pairs</span>
+    </div>
+    <p class="s-sub">Eight phrases. For each one: ask question 1 in your head, then <b>write the plain version</b>. The reveal is locked until you have written something. Do not flip to Plain — that comes later.</p>
+
+    <div class="article" data-article="A">
+      <div class="a-head">
+        <span class="a-tag">A</span>
+        <span class="a-kind">Corporate communication</span>
+      </div>
+
+      <div class="release official">
+        <p class="dateline">For immediate release</p>
+        <h4>TechFlow Solutions Announces <button class="euph" data-id="a1">Strategic Restructuring Initiative</button></h4>
+        <p>DALLAS, TX — TechFlow Solutions today announced a <button class="euph" data-id="a2">comprehensive organizational optimization</button> designed to enhance operational efficiency and strengthen our market position for sustainable growth.</p>
+        <p class="quote">"As we navigate the evolving economic landscape, we are implementing <button class="euph" data-id="a3">strategic rightsizing measures</button> that will allow us to operate with greater agility and focus on core value drivers," said CEO Sarah Martinez. "These structural changes reflect our commitment to building a leaner, more competitive organization."</p>
+        <p>The initiative includes the consolidation of overlapping functions and the <button class="euph" data-id="a4">optimization of our workforce</button> to align with current market conditions. Approximately 850 team members will be affected by this <button class="euph" data-id="a5">involuntary career transition</button> as part of our <button class="euph" data-id="a6">reduction in force</button>.</p>
+        <p class="quote">"While these decisions are never easy, they are necessary to ensure TechFlow's long-term viability," Martinez explained. "We are providing <button class="euph" data-id="a7">comprehensive career transition support and outplacement services</button> to all impacted associates."</p>
+        <p>The company expects to realize annualized cost savings of $45 million through this <button class="euph" data-id="a8">organizational simplification</button>. The restructuring will be substantially completed by Q2 2025.</p>
+      </div>
+
+      <div class="release plainmode" hidden>
+        <p class="dateline">Plain version · same events</p>
+        <h4>TechFlow Solutions Is Laying Off 850 People</h4>
+        <p>DALLAS, TX — TechFlow Solutions today announced it is cutting jobs so the company spends less money and makes more profit.</p>
+        <p class="quote">"As the economy changes, we are cutting staff so we can spend less and compete harder," said CEO Sarah Martinez. "We are becoming a smaller company."</p>
+        <p>The plan merges departments and cuts staff. About 850 people will lose their jobs.</p>
+        <p class="quote">"These decisions are hard, but we need them to keep TechFlow profitable," Martinez explained. "We are offering laid-off employees some help finding new work."</p>
+        <p>The company expects to save $45 million a year by cutting these jobs. The layoffs will be mostly finished by mid-2025.</p>
+      </div>
+
+      <div class="console empty" aria-live="polite">
+        <p class="c-empty-msg">No phrase selected. Click an underlined phrase above to decode it.</p>
+      </div>
+      <p class="progress"><b class="done">0</b> of <span class="total">8</span> phrases decoded</p>
+    </div>
+  </section>
+
+  <!-- ============ STAGE 5 · ARTICLE B ============ -->
+  <section class="stage" id="s5">
+    <div class="s-head">
+      <span class="s-num">5</span>
+      <h2 class="s-title">Article B — on your own</h2>
+      <span class="s-time">14 minutes · pairs</span>
+    </div>
+    <p class="s-sub">Twelve phrases, no worked example, no help. Same three questions. Work it out before you check it.</p>
+
+    <div class="article" data-article="B">
+      <div class="a-head">
+        <span class="a-tag">B</span>
+        <span class="a-kind">Government statement</span>
+      </div>
+
+      <div class="release official">
+        <p class="dateline">Ministry of Defense briefing</p>
+        <h4>Operation Guardian Shield: Monthly Progress Report</h4>
+        <p>The Ministry of Defense reports continued success in our <button class="euph" data-id="b1">humanitarian intervention</button> to restore stability and protect civilian populations in the contested region.</p>
+        <p>Our <button class="euph" data-id="b2">precision-guided assets</button> have conducted multiple <button class="euph" data-id="b3">surgical strikes</button> against high-value targets, successfully <button class="euph" data-id="b4">neutralizing hostile combatants</button> who were utilizing civilian infrastructure as human shields. Despite the enemy's asymmetrical warfare tactics, our forces have maintained operational superiority while minimizing <button class="euph" data-id="b5">collateral damage</button>.</p>
+        <p class="quote">"We are committed to proportional response measures that distinguish between legitimate military objectives and protected civilian areas," stated Defense Secretary James Crawford. "Our <button class="euph" data-id="b6">enhanced interrogation protocols</button> have yielded valuable intelligence that has prevented numerous planned attacks against <button class="euph" data-id="b7">soft targets</button>."</p>
+        <p>Recent <button class="euph" data-id="b8">kinetic operations</button> have resulted in the elimination of several insurgent command structures. While we experienced limited <button class="euph" data-id="b9">friendly fire incidents</button> during complex urban operations, our medical personnel provided immediate life support to affected personnel.</p>
+        <p>The <button class="euph" data-id="b10">pacification efforts</button> have successfully established secure zones in three district areas. Enemy forces continue to exploit civilian populations, but our <button class="euph" data-id="b11">pre-emptive strikes</button> have significantly degraded their operational capacity.</p>
+        <p class="quote">"We remain committed to this <button class="euph" data-id="b12">police action</button> until democratic governance is restored and the threat to regional security is permanently addressed," Crawford concluded.</p>
+      </div>
+
+      <div class="release plainmode" hidden>
+        <p class="dateline">Plain version · same events</p>
+        <h4>Operation Guardian Shield: Monthly Report</h4>
+        <p>The Ministry of Defense reports continued progress in the war it is fighting in the contested region — a war it describes as protecting civilians.</p>
+        <p>Our guided missiles and bombs have repeatedly bombed targets we judged important, killing enemy fighters we say were hiding among civilians. The enemy fought in ways we did not expect, but our forces kept the upper hand — while still killing and wounding some civilians and destroying some of their property.</p>
+        <p class="quote">"We try to hit military targets and avoid civilian areas," stated Defense Secretary James Crawford. "Information taken from prisoners we tortured has helped us stop planned attacks on undefended civilians."</p>
+        <p>Recent attacks killed several enemy leaders. We also accidentally killed or wounded some of our own soldiers during fighting in cities; our medics treated them immediately.</p>
+        <p>We have forced the population into compliance and set up controlled zones in three districts. The enemy keeps operating among civilians, but our first-strike attacks have badly weakened them.</p>
+        <p class="quote">"We will keep fighting this war — which we are choosing not to call a war — until a friendly government is in place and the threat is gone for good," Crawford concluded.</p>
+      </div>
+
+      <div class="console empty" aria-live="polite">
+        <p class="c-empty-msg">No phrase selected. Click an underlined phrase above to decode it.</p>
+      </div>
+      <p class="progress"><b class="done">0</b> of <span class="total">12</span> phrases decoded</p>
+    </div>
+  </section>
+
+  <!-- ============ STAGE 6 · THE LINE ============ -->
+  <section class="stage" id="s6">
+    <div class="s-head">
+      <span class="s-num">6</span>
+      <h2 class="s-title">Where is the line?</h2>
+      <span class="s-time">6 minutes · pairs</span>
+    </div>
+    <p class="s-sub">Everything so far has been true and blurred. These three may not be. There is <b>no answer key</b> for this stage.</p>
+
+    <div class="card">
+      <p style="font-size:24px;color:var(--oxblood);font-weight:600;margin-bottom:16px">"humanitarian intervention" &nbsp;·&nbsp; "enhanced interrogation protocols" &nbsp;·&nbsp; "police action"</p>
+      <p>Each of these does something the others in the release do not: it puts the event in a <em>category</em>. Not a blurrier word for the same act — a different kind of act altogether.</p>
+      <p>Take a position on each. Is it still a true description at a blurry level of detail? Or has it crossed over and become simply false?</p>
+      <p>Pick the one you feel most confident about and be ready to defend it against the pair next to you.</p>
+    </div>
+
+    <div class="writebox">
+      <label for="w-line">The one you chose, and your position on it</label>
+      <textarea class="tx" id="w-line" placeholder="I think “…” is / is not simply false, because…"></textarea>
+    </div>
+  </section>
+
+  <!-- ============ STAGE 7 · ENGLISH ============ -->
+  <section class="stage" id="s7">
+    <div class="s-head">
+      <span class="s-num">7</span>
+      <h2 class="s-title">Why English is so good at this</h2>
+      <span class="s-time">10 minutes · pairs</span>
+    </div>
+    <p class="s-sub">Twelve words. For each one, decide whether it is a <b>plain</b> word or a <b>grand</b> word. Go on instinct — it takes about ninety seconds. Then check.</p>
+
+    <div class="sort" id="wordsort"></div>
+    <button class="revealbtn" id="sortcheck">Check</button>
+    <p class="lock" id="sortlock">Sort all twelve first.</p>
+
+    <div class="revealed" id="r7" hidden>
+      <p class="r-lab">The pattern</p>
+      <p>The plain words are Old English. The grand words came in from Latin and French, most of them after 1066. English never chose between them — it kept both.</p>
+      <p>So the language now carries <strong>two words for almost everything</strong>: a short one you can see, and a long one you cannot. <em>Kill</em> and <em>neutralize</em>. <em>Burn</em> and <em>incinerate</em>. <em>Death</em> and <em>casualty</em>. Nobody has to invent a euphemism. The grand twin is already sitting there, and it is free.</p>
+      <p style="border-left:3px solid var(--oxblood);padding-left:16px;font-style:italic">"Bad writers, and especially scientific, political, and sociological writers, are nearly always haunted by the notion that Latin or Greek words are grander than Saxon ones."<br>— Orwell, under PRETENTIOUS DICTION</p>
+      <p><strong>Go and look at that passage in your essay. Did you mark it T?</strong> Most people do. It reads like snobbery about word choice — a complaint about taste. It isn't. It is the mechanism for everything you decoded today, and Orwell filed it under a heading about style.</p>
+    </div>
+
+    <div class="card green" style="margin-top:22px">
+      <p class="c-lab">Before next class</p>
+      <p><strong>Toki Pona has 137 words.</strong> No grand twins. No Latin layer. If you want to say something, there is one way to say it and everyone can see what you said.</p>
+      <p>Could Article B be written in Toki Pona? Try one sentence of it in your head. What happens to the release?</p>
+      <p>Don't answer that here. Bring it next class.</p>
+    </div>
+  </section>
+
+  <!-- ============ STAGE 8 · EXIT ============ -->
+  <section class="stage" id="s8">
+    <div class="s-head">
+      <span class="s-num">8</span>
+      <h2 class="s-title">Exit ticket</h2>
+      <span class="s-time">10 minutes · on paper, individually</span>
+    </div>
+    <p class="s-sub">Hand this in before you leave. Your own paper, your own words, no device.</p>
+
+    <div class="exit">
+      <p class="x-lab">The question</p>
+      <p class="x-q">Nothing in Article A or Article B is false. Using two specimens from today, explain how the language still changes what a reader can know.</p>
+      <ul>
+        <li>Quote your two specimens exactly.</li>
+        <li>Use at least two core concepts, and name them.</li>
+        <li>At least one of those concepts must <strong>not</strong> be power, culture, or perspective.</li>
+        <li>If you want to argue that one of your specimens <em>is</em> false, you may — but then you have to prove it.</li>
+      </ul>
+    </div>
+
+    <p class="s-sub">Now flip both releases to <b>Plain</b> and read them end to end. Same events, twice. That is the last thing to look at before you write.</p>
+
+    <div class="toggle" role="group" aria-label="Show plain versions" id="finaltoggle">
       <button data-mode="official" aria-pressed="true">Official</button>
       <button data-mode="plain" aria-pressed="false">Plain</button>
     </div>
-
-    <!-- OFFICIAL -->
-    <div class="release official">
-      <p class="dateline">For immediate release</p>
-      <h4>TechFlow Solutions Announces <button class="euph" data-id="a1">Strategic Restructuring Initiative</button></h4>
-      <p>DALLAS, TX — TechFlow Solutions today announced a <button class="euph" data-id="a2">comprehensive organizational optimization</button> designed to enhance operational efficiency and strengthen our market position for sustainable growth.</p>
-      <p class="quote">"As we navigate the evolving economic landscape, we are implementing <button class="euph" data-id="a3">strategic rightsizing measures</button> that will allow us to operate with greater agility and focus on core value drivers," said CEO Sarah Martinez. "These structural changes reflect our commitment to building a leaner, more competitive organization."</p>
-      <p>The initiative includes the consolidation of overlapping functions and the <button class="euph" data-id="a4">optimization of our workforce</button> to align with current market conditions. Approximately 850 team members will be affected by this <button class="euph" data-id="a5">involuntary career transition</button> as part of our <button class="euph" data-id="a6">reduction in force</button>.</p>
-      <p class="quote">"While these decisions are never easy, they are necessary to ensure TechFlow's long-term viability," Martinez explained. "We are providing <button class="euph" data-id="a7">comprehensive career transition support and outplacement services</button> to all impacted associates."</p>
-      <p>The company expects to realize annualized cost savings of $45 million through this <button class="euph" data-id="a8">organizational simplification</button>. The restructuring will be substantially completed by Q2 2025.</p>
-    </div>
-
-    <!-- PLAIN -->
-    <div class="release plainmode" hidden>
-      <p class="dateline">Plain version · same events</p>
-      <h4>TechFlow Solutions Is Laying Off 850 People</h4>
-      <p>DALLAS, TX — TechFlow Solutions today announced it is cutting jobs so the company spends less money and makes more profit.</p>
-      <p class="quote">"As the economy changes, we are cutting staff so we can spend less and compete harder," said CEO Sarah Martinez. "We are becoming a smaller company."</p>
-      <p>The plan merges departments and cuts staff. About 850 people will lose their jobs.</p>
-      <p class="quote">"These decisions are hard, but we need them to keep TechFlow profitable," Martinez explained. "We are offering laid-off employees some help finding new work."</p>
-      <p>The company expects to save $45 million a year by cutting these jobs. The layoffs will be mostly finished by mid-2025.</p>
-    </div>
-
-    <div class="console empty" aria-live="polite">
-      <p class="c-empty-msg">No phrase selected. Click an underlined phrase above to decode it.</p>
-    </div>
-    <p class="progress"><b class="done">0</b> of <span class="total">8</span> phrases decoded</p>
   </section>
 
-  <hr class="rule">
-
-  <!-- ============ ARTICLE B ============ -->
-  <section class="article" data-article="B">
-    <div class="a-head">
-      <span class="a-tag">B</span>
-      <span class="a-kind">Government statement</span>
-    </div>
-
-    <div class="toggle" role="group" aria-label="Article B version">
-      <button data-mode="official" aria-pressed="true">Official</button>
-      <button data-mode="plain" aria-pressed="false">Plain</button>
-    </div>
-
-    <!-- OFFICIAL -->
-    <div class="release official">
-      <p class="dateline">Ministry of Defense briefing</p>
-      <h4>Operation Guardian Shield: Monthly Progress Report</h4>
-      <p>The Ministry of Defense reports continued success in our <button class="euph" data-id="b1">humanitarian intervention</button> to restore stability and protect civilian populations in the contested region.</p>
-      <p>Our <button class="euph" data-id="b2">precision-guided assets</button> have conducted multiple <button class="euph" data-id="b3">surgical strikes</button> against high-value targets, successfully <button class="euph" data-id="b4">neutralizing hostile combatants</button> who were utilizing civilian infrastructure as human shields. Despite the enemy's asymmetrical warfare tactics, our forces have maintained operational superiority while minimizing <button class="euph" data-id="b5">collateral damage</button>.</p>
-      <p class="quote">"We are committed to proportional response measures that distinguish between legitimate military objectives and protected civilian areas," stated Defense Secretary James Crawford. "Our <button class="euph" data-id="b6">enhanced interrogation protocols</button> have yielded valuable intelligence that has prevented numerous planned attacks against <button class="euph" data-id="b7">soft targets</button>."</p>
-      <p>Recent <button class="euph" data-id="b8">kinetic operations</button> have resulted in the elimination of several insurgent command structures. While we experienced limited <button class="euph" data-id="b9">friendly fire incidents</button> during complex urban operations, our medical personnel provided immediate life support to affected personnel.</p>
-      <p>The <button class="euph" data-id="b10">pacification efforts</button> have successfully established secure zones in three district areas. Enemy forces continue to exploit civilian populations, but our <button class="euph" data-id="b11">pre-emptive strikes</button> have significantly degraded their operational capacity.</p>
-      <p class="quote">"We remain committed to this <button class="euph" data-id="b12">police action</button> until democratic governance is restored and the threat to regional security is permanently addressed," Crawford concluded.</p>
-    </div>
-
-    <!-- PLAIN -->
-    <div class="release plainmode" hidden>
-      <p class="dateline">Plain version · same events</p>
-      <h4>Operation Guardian Shield: Monthly Report</h4>
-      <p>The Ministry of Defense reports continued progress in the war it is fighting in the contested region — a war it describes as protecting civilians.</p>
-      <p>Our guided missiles and bombs have repeatedly bombed targets we judged important, killing enemy fighters we say were hiding among civilians. The enemy fought in ways we did not expect, but our forces kept the upper hand — while still killing and wounding some civilians and destroying some of their property.</p>
-      <p class="quote">"We try to hit military targets and avoid civilian areas," stated Defense Secretary James Crawford. "Information taken from prisoners we tortured has helped us stop planned attacks on undefended civilians."</p>
-      <p>Recent attacks killed several enemy leaders. We also accidentally killed or wounded some of our own soldiers during fighting in cities; our medics treated them immediately.</p>
-      <p>We have forced the population into compliance and set up controlled zones in three districts. The enemy keeps operating among civilians, but our first-strike attacks have badly weakened them.</p>
-      <p class="quote">"We will keep fighting this war — which we are choosing not to call a war — until a friendly government is in place and the threat is gone for good," Crawford concluded.</p>
-    </div>
-
-    <div class="console empty" aria-live="polite">
-      <p class="c-empty-msg">No phrase selected. Click an underlined phrase above to decode it.</p>
-    </div>
-    <p class="progress"><b class="done">0</b> of <span class="total">12</span> phrases decoded</p>
-  </section>
-
-  <!-- ============ THE TURN ============ -->
   <div class="turn">
     <p class="t-lab">The TOK turn</p>
     <p>This language doesn't decorate a reality everyone already sees — it decides which reality a reader can assemble. Whoever controls the words holds that power.</p>
@@ -400,33 +699,42 @@
 
 <script>
 (function(){
+  /* ---------- decode data ---------- */
   const EUPH = {
     a1:{phrase:"Strategic Restructuring Initiative", decode:"Layoffs. The whole memo is an announcement that people are being fired."},
     a2:{phrase:"comprehensive organizational optimization", decode:"A plan to cut jobs and costs."},
-    a3:{phrase:"strategic rightsizing measures", decode:"Cutting jobs. \u201cRightsizing\u201d frames firing people as correcting a size that was somehow wrong."},
+    a3:{phrase:"strategic rightsizing measures", decode:"Cutting jobs. “Rightsizing” frames firing people as correcting a size that was somehow wrong."},
     a4:{phrase:"optimization of our workforce", decode:"Cutting staff."},
-    a5:{phrase:"involuntary career transition", decode:"Being fired. \u201cTransition\u201d implies movement toward something; \u201cinvoluntary\u201d quietly admits it isn't the employee's choice."},
-    a6:{phrase:"reduction in force", decode:"Layoffs \u2014 the standard HR term (RIF) for cutting headcount."},
-    a7:{phrase:"comprehensive career transition support and outplacement services", decode:"Limited help finding a new job after being fired \u2014 often a r\u00e9sum\u00e9 workshop and a job-board login."},
-    a8:{phrase:"organizational simplification", decode:"Layoffs, again \u2014 the fourth different phrase for the same act in one release."}
+    a5:{phrase:"involuntary career transition", decode:"Being fired. “Transition” implies movement toward something; “involuntary” quietly admits it isn't the employee's choice."},
+    a6:{phrase:"reduction in force", decode:"Layoffs — the standard HR term (RIF) for cutting headcount."},
+    a7:{phrase:"comprehensive career transition support and outplacement services", decode:"Limited help finding a new job after being fired — often a résumé workshop and a job-board login."},
+    a8:{phrase:"organizational simplification", decode:"Layoffs, again — the fourth different phrase for the same act in one release."}
   };
   const EUPB = {
     b1:{phrase:"humanitarian intervention", decode:"A military operation, framed as helping civilians. The frame decides who is the rescuer before any fighting is described."},
     b2:{phrase:"precision-guided assets", decode:"Guided missiles and bombs."},
-    b3:{phrase:"surgical strikes", decode:"Bombing attacks. \u201cSurgical\u201d borrows the language of medicine to suggest clean, life-saving precision."},
-    b4:{phrase:"neutralizing hostile combatants", decode:"Killing enemy fighters. \u201cNeutralizing\u201d removes the word \u201ckilling.\u201d"},
+    b3:{phrase:"surgical strikes", decode:"Bombing attacks. “Surgical” borrows the language of medicine to suggest clean, life-saving precision."},
+    b4:{phrase:"neutralizing hostile combatants", decode:"Killing enemy fighters. “Neutralizing” removes the word “killing.”"},
     b5:{phrase:"collateral damage", decode:"Civilians killed or wounded, and civilian homes and property destroyed."},
-    b6:{phrase:"enhanced interrogation protocols", decode:"Torture. The phrase files the act under \u201cinterrogation procedure\u201d so the word \u201ctorture\u201d never has to be judged."},
+    b6:{phrase:"enhanced interrogation protocols", decode:"Torture. The phrase files the act under “interrogation procedure” so the word “torture” never has to be judged."},
     b7:{phrase:"soft targets", decode:"Undefended civilians and civilian places."},
-    b8:{phrase:"kinetic operations", decode:"Combat \u2014 the use of lethal force. \u201cKinetic\u201d means, literally, \u201cinvolving motion,\u201d and hides the shooting and killing."},
-    b9:{phrase:"friendly fire incidents", decode:"Accidentally killing or wounding your own soldiers. \u201cFriendly\u201d sits oddly next to the deaths it names."},
-    b10:{phrase:"pacification efforts", decode:"Forcing a population into compliance. \u201cPacify\u201d makes coercion sound like bringing peace."},
+    b8:{phrase:"kinetic operations", decode:"Combat — the use of lethal force. “Kinetic” means, literally, “involving motion,” and hides the shooting and killing."},
+    b9:{phrase:"friendly fire incidents", decode:"Accidentally killing or wounding your own soldiers. “Friendly” sits oddly next to the deaths it names."},
+    b10:{phrase:"pacification efforts", decode:"Forcing a population into compliance. “Pacify” makes coercion sound like bringing peace."},
     b11:{phrase:"pre-emptive strikes", decode:"Attacking first, before being attacked."},
-    b12:{phrase:"police action", decode:"War \u2014 conducted without formally declaring war, which carries different legal and political consequences."}
+    b12:{phrase:"police action", decode:"War — conducted without formally declaring war, which carries different legal and political consequences."}
   };
   const DATA = {A:EUPH, B:EUPB};
   const state = {A:{active:null,revealed:new Set(),notes:{}}, B:{active:null,revealed:new Set(),notes:{}}};
+  const MIN_CHARS = 12;
 
+  function escapeHtml(s){
+    return s.replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  /* ---------- articles ---------- */
   document.querySelectorAll('.article').forEach(function(section){
     const key = section.dataset.article;
     const map = DATA[key];
@@ -437,22 +745,6 @@
     const totalEl = section.querySelector('.progress .total');
     totalEl.textContent = Object.keys(map).length;
 
-    // mode toggle
-    section.querySelectorAll('.toggle button').forEach(function(btn){
-      btn.addEventListener('click', function(){
-        const mode = btn.dataset.mode;
-        section.querySelectorAll('.toggle button').forEach(function(b){
-          b.setAttribute('aria-pressed', String(b===btn));
-        });
-        const isPlain = (mode==='plain');
-        plainEl.hidden = !isPlain;
-        officialEl.hidden = isPlain;
-        consoleEl.style.display = isPlain ? 'none' : '';
-        section.querySelector('.progress').style.display = isPlain ? 'none' : '';
-      });
-    });
-
-    // euphemism clicks
     officialEl.querySelectorAll('.euph').forEach(function(sp){
       sp.addEventListener('click', function(){ selectPhrase(sp.dataset.id); });
     });
@@ -474,19 +766,31 @@
       const note = state[key].notes[id] || '';
       consoleEl.classList.remove('empty');
       consoleEl.innerHTML =
-        '<p class="c-label">Decoding</p>' +
-        '<p class="c-phrase">\u201c'+item.phrase+'\u201d</p>' +
+        '<p class="c-lab">Decoding</p>' +
+        '<p class="c-phrase">“'+item.phrase+'”</p>' +
         '<p class="c-prompt">What is actually being said here? Write it before you reveal.</p>' +
-        '<textarea class="c-input" placeholder="Your plain-English read\u2026">'+escapeHtml(note)+'</textarea>' +
+        '<textarea class="c-input" placeholder="Your plain-English read…">'+escapeHtml(note)+'</textarea>' +
         (isRevealed
           ? '<div class="c-answer"><p class="a-lab">Plain English</p><p class="a-text">'+item.decode+'</p></div>'
-          : '<button class="c-reveal">Reveal plain English</button>');
+          : '<button class="revealbtn c-reveal">Reveal plain English</button><p class="lock c-lock">Write your version first.</p>');
 
       const ta = consoleEl.querySelector('.c-input');
-      ta.addEventListener('input', function(){ state[key].notes[id] = ta.value; });
       const rv = consoleEl.querySelector('.c-reveal');
+      const lk = consoleEl.querySelector('.c-lock');
+
+      function sync(){
+        if(!rv) return;
+        const ok = ta.value.trim().length >= MIN_CHARS;
+        rv.disabled = !ok;
+        if(lk) lk.style.display = ok ? 'none' : '';
+      }
+      if(ta){
+        ta.addEventListener('input', function(){ state[key].notes[id] = ta.value; sync(); });
+        sync();
+      }
       if(rv){
         rv.addEventListener('click', function(){
+          if(rv.disabled) return;
           state[key].revealed.add(id);
           const sp = officialEl.querySelector('.euph[data-id="'+id+'"]');
           if(sp) sp.dataset.done = 'true';
@@ -495,13 +799,199 @@
         });
       }
     }
+
+    section._showPlain = function(isPlain){
+      plainEl.hidden = !isPlain;
+      officialEl.hidden = isPlain;
+      consoleEl.style.display = isPlain ? 'none' : '';
+      section.querySelector('.progress').style.display = isPlain ? 'none' : '';
+    };
   });
 
-  function escapeHtml(s){
-    return s.replace(/[&<>"']/g, function(c){
-      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  /* ---------- final plain toggle (both articles at once) ---------- */
+  const ft = document.getElementById('finaltoggle');
+  if(ft){
+    ft.querySelectorAll('button').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        const isPlain = btn.dataset.mode === 'plain';
+        ft.querySelectorAll('button').forEach(function(b){
+          b.setAttribute('aria-pressed', String(b===btn));
+        });
+        document.querySelectorAll('.article').forEach(function(sec){
+          if(sec._showPlain) sec._showPlain(isPlain);
+        });
+      });
     });
   }
+
+  /* ---------- text-gated reveals ---------- */
+  document.querySelectorAll('.revealbtn[data-requires]').forEach(function(btn){
+    const ta = document.getElementById(btn.dataset.requires);
+    const target = document.getElementById(btn.dataset.reveal);
+    const lock = document.querySelector('.lock[data-lockfor="'+btn.dataset.requires+'"]');
+    function sync(){
+      const ok = ta.value.trim().length >= MIN_CHARS;
+      btn.disabled = !ok;
+      if(lock) lock.style.display = ok ? 'none' : '';
+    }
+    ta.addEventListener('input', sync);
+    btn.addEventListener('click', function(){
+      if(btn.disabled) return;
+      target.hidden = false;
+      btn.style.display = 'none';
+      target.scrollIntoView({behavior:'smooth', block:'nearest'});
+    });
+    sync();
+  });
+
+  /* ---------- poll-gated reveals ---------- */
+  const polls = {};
+  document.querySelectorAll('button[data-poll]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      const name = btn.dataset.poll;
+      polls[name] = btn.textContent;
+      document.querySelectorAll('button[data-poll="'+name+'"]').forEach(function(b){
+        b.setAttribute('aria-pressed', String(b===btn));
+      });
+      document.querySelectorAll('.revealbtn[data-requirespoll="'+name+'"]').forEach(function(r){
+        r.disabled = false;
+      });
+      const lk = document.querySelector('.lock[data-lockforpoll="'+name+'"]');
+      if(lk) lk.style.display = 'none';
+    });
+  });
+  document.querySelectorAll('.revealbtn[data-requirespoll]').forEach(function(btn){
+    btn.disabled = true;
+    const target = document.getElementById(btn.dataset.reveal);
+    btn.addEventListener('click', function(){
+      if(btn.disabled) return;
+      target.hidden = false;
+      btn.style.display = 'none';
+      target.scrollIntoView({behavior:'smooth', block:'nearest'});
+    });
+  });
+
+  /* ---------- word sort ---------- */
+  const WORDS = [
+    {w:"neutralize", kind:"grand", origin:"Latin neuter"},
+    {w:"kill",       kind:"plain", origin:"Old English"},
+    {w:"conceal",    kind:"grand", origin:"Latin celare"},
+    {w:"burn",       kind:"plain", origin:"Old English"},
+    {w:"casualty",   kind:"grand", origin:"Latin casus"},
+    {w:"help",       kind:"plain", origin:"Old English"},
+    {w:"terminate",  kind:"grand", origin:"Latin terminare"},
+    {w:"death",      kind:"plain", origin:"Old English"},
+    {w:"incinerate", kind:"grand", origin:"Latin cinis, ash"},
+    {w:"hide",       kind:"plain", origin:"Old English"},
+    {w:"facilitate", kind:"grand", origin:"Latin facilis"},
+    {w:"fire",       kind:"plain", origin:"Old English"}
+  ];
+  const sortEl = document.getElementById('wordsort');
+  const picks = {};
+  if(sortEl){
+    WORDS.forEach(function(item, i){
+      const row = document.createElement('div');
+      row.className = 'sortrow';
+      row.innerHTML =
+        '<span class="w">'+item.w+'</span>' +
+        '<button class="sbtn" data-i="'+i+'" data-k="plain" aria-pressed="false">Plain</button>' +
+        '<button class="sbtn" data-i="'+i+'" data-k="grand" aria-pressed="false">Grand</button>' +
+        '<span class="origin"></span>';
+      sortEl.appendChild(row);
+    });
+    sortEl.querySelectorAll('.sbtn').forEach(function(b){
+      b.addEventListener('click', function(){
+        const i = b.dataset.i;
+        picks[i] = b.dataset.k;
+        sortEl.querySelectorAll('.sbtn[data-i="'+i+'"]').forEach(function(x){
+          x.setAttribute('aria-pressed', String(x===b));
+        });
+        syncSort();
+      });
+    });
+    const checkBtn = document.getElementById('sortcheck');
+    const sortLock = document.getElementById('sortlock');
+    function syncSort(){
+      const ok = Object.keys(picks).length === WORDS.length;
+      checkBtn.disabled = !ok;
+      sortLock.style.display = ok ? 'none' : '';
+    }
+    syncSort();
+    checkBtn.addEventListener('click', function(){
+      if(checkBtn.disabled) return;
+      sortEl.querySelectorAll('.sortrow').forEach(function(row, i){
+        const right = picks[i] === WORDS[i].kind;
+        row.dataset.correct = right ? 'yes' : 'no';
+        row.querySelector('.origin').textContent = WORDS[i].origin;
+      });
+      document.getElementById('r7').hidden = false;
+      checkBtn.style.display = 'none';
+    });
+  }
+
+  /* ---------- run sheet ---------- */
+  const RUN = [
+    ['Before class', 'Devices for one per pair. Students need the Orwell essay they annotated, with their T/K marks and their three written answers. Paper for the exit ticket.'],
+    ['1 · Where we left Orwell', '10 min. Pairs. They turn a K passage into a testable prediction. Watch for predictions about how a reader feels rather than what a reader knows — the reveal addresses this, but it is worth saying again in the room.'],
+    ['2 · Which one is false?', '8 min. The key stage. Both sentences in each pair are true, and the answer is "neither." If this lands, the rest of the lesson works. If a pair insists the official sentence is a lie, ask them which word in it is untrue.'],
+    ['3 · One worked example', '6 min. Read on the page, no teaching required. Do not let pairs skip it — everything after depends on the three questions.'],
+    ['4 · Article A', '14 min. Eight phrases. Reveals are locked until they write. Circulate and read what they type, not whether they finished.'],
+    ['5 · Article B', '14 min. Twelve phrases, harder and heavier. No new instruction needed.'],
+    ['6 · Where is the line?', '6 min. No answer key. This is the first stage to cut if you are behind.'],
+    ['7 · Why English is so good at this', '10 min. The word sort takes 90 seconds; the payoff is the Orwell PRETENTIOUS DICTION passage they almost certainly marked T. Make sure they physically look back at their essay.'],
+    ['8 · Exit ticket', '10 min. On paper, individually, collected. This is the assessed piece.']
+  ];
+  const WATCH = [
+    'The commonest wrong turn is "they are lying." Stage 2 closes it, but it comes back in Stage 5 because the military language is more charged. Redirect: which word is untrue?',
+    'The second commonest is stopping at "this makes it sound nicer." That is about feeling. Push to questions 2 and 3: what can you no longer picture, and what can you no longer count?',
+    'Stage 5 can turn into an argument about a real war. Redirect to the release on the screen: we are not deciding whether the operation was right, we are asking what these words let a reader know about it.',
+    'If devices fail: both releases print from this page in full, and the three questions in Stage 2 work on paper without any of the interactive parts.'
+  ];
+  document.getElementById('runsheet').addEventListener('click', function(){
+    let h = '<!DOCTYPE html><meta charset="utf-8"><title>Run sheet · The Decoder · TOK Language L2</title>';
+    h += '<style>body{font-family:Georgia,serif;max-width:44em;margin:2em auto;padding:0 1.5em;line-height:1.45;color:#222}'
+      +  'h1{font-size:22pt;margin:0 0 .2em}.sub{color:#666;font-size:10.5pt;margin:0 0 1.6em;font-family:monospace}'
+      +  'h2{font-size:12pt;margin:1.8em 0 .5em;border-bottom:1px solid #ccc;padding-bottom:.2em}'
+      +  'table{width:100%;border-collapse:collapse;font-size:10.5pt}'
+      +  'td{vertical-align:top;padding:.55em .6em;border-bottom:1px solid #e3e3e3}'
+      +  'td.k{width:14em;font-weight:bold}ul{font-size:10.5pt;padding-left:1.2em}li{margin:0 0 .55em}'
+      +  '@media print{body{margin:0;max-width:none}}</style>';
+    h += '<h1>The Decoder — run sheet</h1><p class="sub">TOK · Language · Lesson 2 · 78 minutes</p>';
+    h += '<h2>Run of play</h2><table>';
+    RUN.forEach(function(r){ h += '<tr><td class="k">'+r[0]+'</td><td>'+r[1]+'</td></tr>'; });
+    h += '</table><h2>What to watch for</h2><ul>';
+    WATCH.forEach(function(x){ h += '<li>'+x+'</li>'; });
+    h += '</ul><h2>Exit ticket — the assessed piece</h2>'
+      +  '<p style="font-size:11.5pt"><em>Nothing in Article A or Article B is false. Using two specimens from today, '
+      +  'explain how the language still changes what a reader can know.</em></p>'
+      +  '<ul><li>Two specimens, quoted exactly.</li><li>At least two core concepts, named.</li>'
+      +  '<li>At least one concept that is not power, culture or perspective.</li>'
+      +  '<li>A student may argue a specimen is false, but must prove it.</li></ul>'
+      +  '<h2>Next lesson</h2><p style="font-size:10.5pt">Toki Pona (137 words, no synonyms). Stage 7 ends by asking whether Article B could be written in it. Collect that answer at the start of L3.</p>';
+    const w = window.open('', '_blank');
+    if(w){
+      w.document.write(h);
+      w.document.close();
+      return;
+    }
+    // popup blocked — render inline instead so the run sheet is never unreachable
+    let inline = document.getElementById('runsheet-inline');
+    if(!inline){
+      inline = document.createElement('section');
+      inline.id = 'runsheet-inline';
+      inline.className = 'stage';
+      document.querySelector('.wrap').appendChild(inline);
+    }
+    inline.innerHTML =
+      '<div class="s-head"><span class="s-num">RS</span><h2 class="s-title">Run sheet</h2>'
+      + '<span class="s-time">78 minutes</span></div>'
+      + '<div class="card">'
+      + RUN.map(function(r){ return '<p><strong>'+r[0]+'</strong> — '+r[1]+'</p>'; }).join('')
+      + '</div><div class="card green"><p class="c-lab">What to watch for</p><ul>'
+      + WATCH.map(function(x){ return '<li style="margin-bottom:10px">'+x+'</li>'; }).join('')
+      + '</ul></div>';
+    inline.scrollIntoView({behavior:'smooth'});
+  });
 })();
 </script>
 </body>
