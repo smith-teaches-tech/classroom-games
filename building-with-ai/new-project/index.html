@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adding a New Project — Building with AI</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#171a21; --panel2:#1e222b; --line:#2b303b;
+    --ink:#e8eaf0; --dim:#a3abbb; --accent:#7bd88f; --accent2:#6aa9ff;
+    --warn:#ffb454; --danger:#ff7b72; --code:#0b0d11;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.65 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:0 0 80px}
+  .wrap{max-width:880px;margin:0 auto;padding:0 20px}
+  header{background:linear-gradient(160deg,#1b2431,#12151b);border-bottom:1px solid var(--line);
+    padding:46px 0 38px;margin-bottom:10px}
+  header h1{margin:0 0 8px;font-size:33px;line-height:1.2;letter-spacing:-.5px}
+  header p{margin:0;color:var(--dim);font-size:17px}
+  .thesis{margin-top:20px;padding:14px 18px;border-left:3px solid var(--accent);
+    background:#141922;border-radius:0 8px 8px 0;font-size:17px}
+  h2{font-size:22px;margin:44px 0 6px;letter-spacing:-.3px;display:flex;align-items:center;gap:12px}
+  .num{background:var(--accent);color:#0b0d11;min-width:31px;height:31px;padding:0 8px;border-radius:8px;
+    display:grid;place-items:center;font-size:12px;font-weight:700;flex:none;letter-spacing:.5px}
+  h3{font-size:16px;margin:24px 0 8px;color:var(--accent2)}
+  h4{margin:0 0 8px;font-size:15px;color:var(--accent2)}
+  p{margin:10px 0}
+  .sub{color:var(--dim);margin:0 0 14px 43px;font-size:15px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:16px 0}
+  code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:14px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#ffd9a0}
+  pre{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:16px;
+    overflow-x:auto;margin:12px 0;position:relative}
+  pre code{background:none;padding:0;color:#d6dae4;font-size:13.5px;line-height:1.6}
+  .copy{position:absolute;top:10px;right:10px;background:var(--panel2);color:var(--dim);
+    border:1px solid var(--line);border-radius:7px;padding:5px 11px;font-size:12px;cursor:pointer}
+  .copy:hover{color:var(--ink);border-color:var(--accent)}
+  .copy.done{color:var(--accent);border-color:var(--accent)}
+  .tabs{display:flex;gap:8px;margin:14px 0 0;flex-wrap:wrap}
+  .tab{background:var(--panel2);border:1px solid var(--line);color:var(--dim);
+    padding:9px 16px;border-radius:9px;cursor:pointer;font-size:14px;font-weight:600}
+  .tab:hover{color:var(--ink)}
+  .tab.on{background:var(--accent);color:#0b0d11;border-color:var(--accent)}
+  .tab:focus-visible{outline:2px solid var(--accent2);outline-offset:3px}
+  .pane{display:none;margin-top:14px}
+  .pane.on{display:block}
+  ol,ul{margin:10px 0;padding-left:22px}
+  li{margin:7px 0}
+  .warn{border-left:3px solid var(--warn);background:#241d12;padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0}
+  .warn strong{color:var(--warn)}
+  .bad{border-left:3px solid var(--danger);background:#251519;padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0}
+  .bad strong{color:var(--danger)}
+  .good{border-left:3px solid var(--accent);background:#122018;padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0}
+  .good strong{color:var(--accent)}
+  .tree{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:18px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;line-height:1.9;overflow-x:auto}
+  .tree .f{color:var(--accent2)}
+  .tree .note{color:var(--dim);font-family:inherit}
+  label.check{display:flex;gap:12px;align-items:flex-start;background:var(--panel2);
+    border:1px solid var(--line);border-radius:10px;padding:13px 16px;margin:9px 0;cursor:pointer}
+  label.check:hover{border-color:var(--accent2)}
+  label.check input{margin-top:4px;width:17px;height:17px;flex:none;accent-color:var(--accent)}
+  label.check.done{opacity:.5}
+  label.check.done span{text-decoration:line-through}
+  label.check b{color:var(--accent);flex:none}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--accent2);font-size:13px;text-transform:uppercase;letter-spacing:.5px}
+  .tblwrap{overflow-x:auto}
+  .reset{background:none;border:1px solid var(--line);color:var(--dim);border-radius:8px;
+    padding:7px 14px;font-size:13px;cursor:pointer;margin-top:6px}
+  .reset:hover{color:var(--ink)}
+  footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--line);color:var(--dim);font-size:14px}
+  footer a{color:var(--accent2)}
+
+  .obj{margin:0 0 16px 43px;padding:11px 16px;background:var(--panel2);
+    border:1px solid var(--line);border-left:3px solid var(--accent2);
+    border-radius:0 8px 8px 0;font-size:15px}
+  .obj b{color:var(--accent2);text-transform:uppercase;font-size:11.5px;
+    letter-spacing:.9px;display:block;margin-bottom:3px}
+  .path{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:14px 0;
+    padding:13px 15px;background:var(--code);border:1px solid var(--line);border-radius:10px}
+  .chip{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:13px;
+    background:var(--panel2);border:1px solid var(--line);border-radius:6px;
+    padding:5px 10px;color:var(--ink);white-space:nowrap}
+  .chip.ghost{background:none;border-style:dashed;color:var(--dim)}
+  .arw{color:var(--dim);font-size:12px;flex:none}
+
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0}
+  @media (max-width:640px){ .two{grid-template-columns:1fr} }
+  .two .card{margin:0}
+  .two p{font-size:14.5px;margin:6px 0}
+
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:16px 0;
+    padding:16px;background:var(--code);border:1px solid var(--line);border-radius:12px}
+  .fnode{background:var(--panel2);border:1px solid var(--line);border-radius:8px;
+    padding:8px 13px;font-size:13.5px;font-weight:600}
+  .fnode small{display:block;color:var(--dim);font-weight:400;font-size:11.5px;letter-spacing:.3px}
+  .fsep{color:var(--accent);font-size:14px}
+
+  .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;
+    background:var(--panel2);border:1px solid var(--line);border-bottom-width:2px;
+    border-radius:5px;padding:2px 7px;color:var(--ink);white-space:nowrap}
+
+  /* objectives gate */
+  .gate{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent2);
+    border-radius:0 12px 12px 0;padding:22px 24px;margin:18px 0}
+  .gate h3{margin:0 0 4px;color:var(--accent2);font-size:13px;
+    text-transform:uppercase;letter-spacing:.9px}
+  .gate .lede{margin:0 0 16px;font-size:17px}
+  .gate ol{margin:0;padding-left:20px}
+  .gate li{margin:11px 0}
+  .gate li b{color:var(--ink)}
+  .gate li span{display:block;color:var(--dim);font-size:14.5px;margin-top:2px}
+  .ack{display:flex;gap:13px;align-items:flex-start;margin:20px 0 0;padding:15px 17px;
+    background:#122018;border:1px solid var(--accent);border-radius:10px;cursor:pointer}
+  .ack input{margin-top:3px;width:19px;height:19px;flex:none;accent-color:var(--accent)}
+  .ack b{color:var(--accent)}
+  .ack small{display:block;color:var(--dim);font-size:13.5px;margin-top:3px}
+  .locked{display:none;padding:20px;margin:18px 0;text-align:center;color:var(--dim);
+    background:var(--panel2);border:1px dashed var(--line);border-radius:12px;font-size:15px}
+  body.js #steps{display:none}
+  body.js #locked{display:block}
+  body.js.open #steps{display:block}
+  body.js.open #locked{display:none}
+  @media (prefers-reduced-motion:no-preference){
+    body.js.open #steps{animation:fade .35s ease}
+    @keyframes fade{from{opacity:0}to{opacity:1}}
+  }
+</style>
+</head>
+<body>
+<script>document.body.className='js';</script>
+
+<header>
+  <div class="wrap">
+    <h1>Adding a New Project</h1>
+    <p>Building with AI — making folders and files on your own computer</p>
+    <div class="thesis"><strong>Until now you've only edited files that were already there.</strong> Today you make your own — a new folder, new files, from nothing — and push them up. This is the workflow you'll use for every project for the rest of the year.</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<div class="gate">
+  <h3>Read this first</h3>
+  <p class="lede">By the end of the period your app has its own web address and a card on your homepage.</p>
+
+  <ol>
+    <li><b>Make a folder and files on your own computer — not on github.com.</b>
+      <span>Every project you've touched so far already existed. Starting one from nothing is the step you've never done, and it's the one that unlocks working on your own.</span></li>
+
+    <li><b>Understand that saving and pushing are two different things.</b>
+      <span>Saving puts a file on your computer. Pushing puts it on the internet. You'll save thirty times and push three times today, and knowing which one you just did is how you'll fix things when they break.</span></li>
+
+    <li><b>See your app before you push it.</b>
+      <span>Waiting for GitHub to rebuild after every tiny change will eat your whole period. You'll set up a two-window loop instead — edit, save, refresh — and only push when something actually works.</span></li>
+
+    <li><b>Link the new project from your homepage.</b>
+      <span>A folder nobody can find isn't finished. One more folder, one more address, one more card — the same move you'll repeat for every build this year.</span></li>
+
+    <li><b>Keep <code>project.md</code> current before you close anything.</b>
+      <span>Your next chat with Gemini knows nothing about your project except what's in that file. Whatever you don't write down, you'll have to explain again from scratch.</span></li>
+  </ol>
+
+  <label class="ack" for="ack">
+    <input type="checkbox" id="ack">
+    <span><b>I've read the objectives above.</b>
+    <small>Everything below assumes you have. The steps are short on purpose — the reasons are up here.</small></span>
+  </label>
+</div>
+
+<div class="locked" id="locked">Tick the box above to open the steps.</div>
+
+<div id="steps">
+
+<h3>Today's loop</h3>
+
+<div class="flow">
+  <span class="fnode">GitHub Desktop<small>fetch &amp; open</small></span>
+  <span class="fsep">&#9656;</span>
+  <span class="fnode">VS Code<small>new folder, new files</small></span>
+  <span class="fsep">&#9656;</span>
+  <span class="fnode">Gemini<small>the code</small></span>
+  <span class="fsep">&#9656;</span>
+  <span class="fnode">VS Code<small>paste &amp; save</small></span>
+  <span class="fsep">&#9656;</span>
+  <span class="fnode">Browser<small>refresh &amp; check</small></span>
+  <span class="fsep">&#9656;</span>
+  <span class="fnode">GitHub Desktop<small>commit &amp; push</small></span>
+</div>
+
+<p><strong>Same three apps as last time, one new job.</strong> The only genuinely new thing today is the second box: making a folder and files that didn't exist before.</p>
+
+<!-- ============ PART 1 ============ -->
+<h2><span class="num">PART 1</span>Open your repo</h2>
+<p class="sub">Get your whole site open in VS Code before you touch anything.</p>
+<div class="obj"><b>Objective</b>Your repository is up to date and open in VS Code, with the file list showing in the sidebar.</div>
+
+<div class="tabs" data-group="open">
+  <button class="tab on" data-t="o-laptop">Laptop</button>
+  <button class="tab" data-t="o-ipad">iPad</button>
+</div>
+
+<div class="pane on" id="o-laptop">
+  <p>Open <strong>GitHub Desktop</strong>. Check the repository name at the top left — it should say <code>yourusername.github.io</code>. If it doesn't, click it and pick the right one.</p>
+
+  <label class="check"><input type="checkbox"><span><b>1</b> Click <strong>Fetch origin</strong> at the top. Always do this first — it pulls down anything that changed on GitHub since last time. Skipping it is how you get a mess you can't undo.</span></label>
+
+  <label class="check"><input type="checkbox"><span><b>2</b> Go to <strong>Repository &rarr; Open in default editor</strong> &nbsp;<span class="kbd">&#8679;&#8984;A</span> <span class="kbd">Ctrl+Shift+A</span></span></label>
+
+  <div class="warn">
+    <strong>If that opens the wrong app,</strong> your default editor isn't set. Go to <strong>GitHub Desktop &rarr; Settings</strong> (Windows: <strong>File &rarr; Options</strong>) &rarr; <strong>Integrations</strong> &rarr; set <strong>External editor</strong> to <strong>Visual Studio Code</strong>. Then try again.
+  </div>
+
+  <p>You should now see your whole site in VS Code's left sidebar — <code>index.html</code>, your game folder, <code>README.md</code>. <strong>That's your website, sitting on your computer.</strong></p>
+</div>
+
+<div class="pane" id="o-ipad">
+  <p>No GitHub Desktop and no VS Code on iPad, so you work in <strong>github.dev</strong> — which is the same editor, running in your browser.</p>
+
+  <label class="check"><input type="checkbox"><span><b>1</b> Open your repository on <strong>github.com</strong>.</span></label>
+  <label class="check"><input type="checkbox"><span><b>2</b> Press the <strong>full stop key</strong> <span class="kbd">.</span> &nbsp;The editor opens in the same tab. (Or change <code>github.com</code> to <code>github.dev</code> in the address bar.)</span></label>
+
+  <p>You don't need to fetch — you're editing the real repository directly, so it's always current. Everything else on this page works the same, except the preview in Part 5. Read the iPad tab there.</p>
+</div>
+
+<!-- ============ PART 2 ============ -->
+<h2><span class="num">PART 2</span>Make the folder</h2>
+<p class="sub">This is the step you've never done before.</p>
+<div class="obj"><b>Objective</b>A new, correctly named folder sitting inside your repository.</div>
+
+<label class="check"><input type="checkbox"><span><b>1</b> In the VS Code sidebar, click the <strong>empty space below your files</strong>. This makes sure the new folder goes at the top level and not inside your game folder.</span></label>
+
+<label class="check"><input type="checkbox"><span><b>2</b> Hover over the top of the sidebar. A row of small icons appears. Click <strong>New Folder</strong> — the folder icon with a <strong>+</strong> on it.</span></label>
+
+<label class="check"><input type="checkbox"><span><b>3</b> Type your folder name and press <strong>Enter</strong>.</span></label>
+
+<div class="card">
+  <h4>The naming rules are not suggestions</h4>
+  <p>This folder name becomes part of a web address, so it has to survive on the internet:</p>
+  <ul>
+    <li>all <strong>lowercase</strong></li>
+    <li><strong>dashes</strong>, never spaces</li>
+    <li>letters, numbers and dashes only</li>
+    <li>short, because people have to type it</li>
+  </ul>
+  <div class="two">
+    <div class="card good"><strong>Yes</strong><p><code>shoutout-board</code><br><code>study-spots</code><br><code>song-picks</code></p></div>
+    <div class="card bad"><strong>No</strong><p><code>Shoutout Board</code><br><code>Study_Spots</code><br><code>songPicks</code></p></div>
+  </div>
+</div>
+
+<div class="bad">
+  <strong>This is still the number one bug in this room.</strong> Your laptop thinks <code>Study-Spots</code> and <code>study-spots</code> are the same folder. The web does not. Your link will work perfectly on your machine and 404 for everyone else.
+</div>
+
+<p>Remember what a folder actually gets you:</p>
+
+<div class="path">
+  <span class="chip">study-spots/</span>
+  <span class="arw">&rarr;</span>
+  <span class="chip ghost">yourname.github.io/study-spots/</span>
+</div>
+
+<!-- ============ PART 3 ============ -->
+<h2><span class="num">PART 3</span>Make the files</h2>
+<p class="sub">Empty files first. Code goes in next.</p>
+<div class="obj"><b>Objective</b>Every file your app needs, created and correctly named, inside your new folder.</div>
+
+<label class="check"><input type="checkbox"><span><b>1</b> Click <strong>once</strong> on your new folder to select it. It has to be highlighted, or the file lands in the wrong place.</span></label>
+
+<label class="check"><input type="checkbox"><span><b>2</b> Click <strong>New File</strong> — the page icon with a <strong>+</strong>. Type the filename, press <strong>Enter</strong>. Repeat for every file.</span></label>
+
+<div class="warn">
+  <strong>Your looking view has to be called <code>index.html</code>.</strong> Not <code>home.html</code>, not <code>Index.html</code>. It's the front door — the file a server shows when someone types your address with nothing after it. Same magic name as your game folder.
+</div>
+
+<p>A typical project folder:</p>
+
+<div class="tree">
+<span class="f">study-spots/</span>
+   index.html      <span class="note">your looking view — where visitors land</span>
+   add.html        <span class="note">your adding view — name it whatever fits</span>
+   style.css       <span class="note">how it looks, if you have one</span>
+   app.js          <span class="note">what it does, if you have one</span>
+   project.md      <span class="note">your plan. Yes, it lives here too</span>
+</div>
+
+<div class="card">
+  <h4>Which view should be <code>index.html</code>?</h4>
+  <p>Think about the Tuesday test from your plan. The person who opens your app with nothing to add is the one who lands on the front door.</p>
+  <p>For almost every project that means <strong>the looking view is <code>index.html</code></strong>, with a link across to the adding view. If you're doing it the other way round, you should be able to say why.</p>
+</div>
+
+<!-- ============ PART 4 ============ -->
+<h2><span class="num">PART 4</span>Paste your app in, and save</h2>
+<p class="sub">Two keystrokes, and one of them is the one everybody forgets.</p>
+<div class="obj"><b>Objective</b>Your code is in the files and saved to disk.</div>
+
+<label class="check"><input type="checkbox"><span><b>1</b> Click a file in the sidebar to open it. Paste the matching code from Gemini.</span></label>
+
+<label class="check"><input type="checkbox"><span><b>2</b> <strong>Save.</strong> <span class="kbd">&#8984;S</span> <span class="kbd">Ctrl+S</span> &nbsp;Do this after every single change.</span></label>
+
+<div class="warn">
+  <strong>Copy the whole thing.</strong> Click inside the code block, then <span class="kbd">&#8984;A</span> / <span class="kbd">Ctrl+A</span>, then copy. Half a file pasted gives you a blank page, and that is still the most common bug in this room.
+</div>
+
+<div class="bad">
+  <strong>Look at the file's tab.</strong> A white dot instead of an <strong>&times;</strong> means unsaved. <strong>GitHub Desktop cannot see unsaved changes.</strong> If you push and nothing happens, this is why, nine times out of ten.
+</div>
+
+<!-- ============ PART 5 ============ -->
+<h2><span class="num">PART 5</span>Look at it before you push</h2>
+<p class="sub">Stop waiting for GitHub. You don't have to.</p>
+<div class="obj"><b>Objective</b>A browser tab showing your app from your own computer, that you refresh instead of pushing.</div>
+
+<p>Pushing and waiting for the site to rebuild takes a couple of minutes. If you do that after every change you will get through about six changes today. Here's the alternative.</p>
+
+<div class="tabs" data-group="prev">
+  <button class="tab on" data-t="p-laptop">Laptop</button>
+  <button class="tab" data-t="p-ipad">iPad</button>
+</div>
+
+<div class="pane on" id="p-laptop">
+  <label class="check"><input type="checkbox"><span><b>1</b> In the VS Code sidebar, <strong>right-click <code>index.html</code></strong> &rarr; <strong>Reveal in Finder</strong> (Mac) or <strong>Reveal in File Explorer</strong> (Windows).</span></label>
+
+  <label class="check"><input type="checkbox"><span><b>2</b> <strong>Double-click the file.</strong> It opens in your browser at an address starting <code>file:///</code> — your own machine, no internet involved. Same as the escape room in Class 4.</span></label>
+
+  <label class="check"><input type="checkbox"><span><b>3</b> <strong>Leave that browser tab open</strong> for the rest of the period.</span></label>
+
+  <p>Your loop from here on:</p>
+
+  <div class="flow">
+    <span class="fnode">VS Code<small>edit</small></span>
+    <span class="fsep">&#9656;</span>
+    <span class="fnode">&#8984;S / Ctrl+S<small>save</small></span>
+    <span class="fsep">&#9656;</span>
+    <span class="fnode">Browser<small>refresh</small></span>
+  </div>
+
+  <div class="good">
+    <strong>Push only when something actually works.</strong> Not after every change. This loop takes about two seconds; pushing takes about two minutes.
+  </div>
+</div>
+
+<div class="pane" id="p-ipad">
+  <p>An iPad can't open a local file and run it — you already know this from the escape rooms. There's no local preview in github.dev either.</p>
+  <p>So your options are the same two as always:</p>
+  <ul>
+    <li><strong>Cloudflare Drop</strong> for a quick check — upload, open the link, test it.</li>
+    <li><strong>Push and wait</strong> — which is fine, as long as you do it in bigger chunks than everyone else.</li>
+  </ul>
+  <p>Get several things done, then check. You'll make fewer round trips than the people refreshing every ten seconds.</p>
+</div>
+
+<!-- ============ PART 6 ============ -->
+<h2><span class="num">PART 6</span>Push it</h2>
+<p class="sub">Now it goes on the internet.</p>
+<div class="obj"><b>Objective</b>Your project is live at its own web address.</div>
+
+<div class="tabs" data-group="push">
+  <button class="tab on" data-t="u-laptop">Laptop</button>
+  <button class="tab" data-t="u-ipad">iPad</button>
+</div>
+
+<div class="pane on" id="u-laptop">
+  <p>Back to <strong>GitHub Desktop</strong>. Your new files are all listed on the left — every one of them, because every one of them is new.</p>
+
+  <label class="check"><input type="checkbox"><span><b>1</b> Summary box, bottom left: <code>Add my memory app</code></span></label>
+  <label class="check"><input type="checkbox"><span><b>2</b> Click <strong>Commit to main</strong></span></label>
+  <label class="check"><input type="checkbox"><span><b>3</b> Click <strong>Push origin</strong></span></label>
+</div>
+
+<div class="pane" id="u-ipad">
+  <label class="check"><input type="checkbox"><span><b>1</b> Click <strong>Source Control</strong> in the bar on the far left — the branching icon.</span></label>
+  <label class="check"><input type="checkbox"><span><b>2</b> Click the <strong>+</strong> next to <strong>Changes</strong> to stage everything.</span></label>
+  <label class="check"><input type="checkbox"><span><b>3</b> Type a message, then click <strong>Commit &amp; Push</strong>.</span></label>
+</div>
+
+<p>Wait 1&ndash;3 minutes, then open your new address:</p>
+
+<div class="path">
+  <span class="chip">https://yourusername.github.io/your-folder-name/</span>
+</div>
+
+<div class="card">
+  <h4>Saving and pushing are two different things</h4>
+  <p><strong>Saving</strong> writes the file to your computer. <strong>Pushing</strong> copies it to GitHub, which then puts it on the web.</p>
+  <p>You'll save thirty times and push three times today. When something isn't showing up, the first question is always: did I save it, or did I push it?</p>
+</div>
+
+<!-- ============ PART 7 ============ -->
+<h2><span class="num">PART 7</span>Link it from your homepage</h2>
+<p class="sub">A folder nobody can find isn't finished.</p>
+<div class="obj"><b>Objective</b>A second card on your homepage that opens your new app.</div>
+
+<label class="check"><input type="checkbox"><span><b>1</b> Open the <code>index.html</code> at the <strong>top</strong> of the sidebar — the one that isn't inside any folder. That's your homepage.</span></label>
+
+<label class="check"><input type="checkbox"><span><b>2</b> Find the card block for your game. Copy the whole block, paste it underneath, and change it to match your new app.</span></label>
+
+<label class="check"><input type="checkbox"><span><b>3</b> Save, then commit and push again: <code>Add link to my memory app</code></span></label>
+
+<p>The link is just your folder name and a slash:</p>
+
+<pre><button class="copy">copy</button><code>href="your-folder-name/"</code></pre>
+
+<div class="good">
+  <strong>Not a full <code>https://</code> address.</strong> That's a relative link — it means "the folder sitting next to this file" — and it keeps working no matter what your site's address is.
+</div>
+
+<!-- ============ PART 8 ============ -->
+<h2><span class="num">PART 8</span>Test it properly</h2>
+<p class="sub">Five checks. Do them now, not next week.</p>
+<div class="obj"><b>Objective</b>Evidence it works for someone who isn't you, on a device that isn't yours.</div>
+
+<label class="check"><input type="checkbox"><span>Homepage loads, and the new card is there</span></label>
+<label class="check"><input type="checkbox"><span>The card opens your app</span></label>
+<label class="check"><input type="checkbox"><span>Your two views link to each other, <strong>both directions</strong></span></label>
+<label class="check"><input type="checkbox"><span>It works on your <strong>phone</strong> — check right now</span></label>
+<label class="check"><input type="checkbox"><span>Trade addresses with someone and try to break theirs</span></label>
+<label class="check"><input type="checkbox"><span>Your row in the class sheet has the new project URL in it</span></label>
+
+<!-- ============ PART 9 ============ -->
+<h2><span class="num">PART 9</span>Update <code>project.md</code></h2>
+<p class="sub">Before you close a single tab.</p>
+<div class="obj"><b>Objective</b>Your plan file describes the app as it is right now, and it's pushed.</div>
+
+<div class="warn">
+  <strong>Your next chat with Gemini knows nothing.</strong> Not what your app is, not what you built today, not what's broken. Whatever isn't in <code>project.md</code> is gone, and you'll spend the first twenty minutes of next class explaining your own project back to a machine.
+</div>
+
+<p>Ask the chat that just did the work, while it still remembers everything:</p>
+
+<pre><button class="copy">copy</button><code>Update my project file. Fill in "Where we are right now", add a line to
+the change log, and give me the whole file back in one code block.</code></pre>
+
+<label class="check"><input type="checkbox"><span><b>1</b> Paste it into <code>project.md</code> in VS Code and save.</span></label>
+<label class="check"><input type="checkbox"><span><b>2</b> Commit and push: <code>Update project plan</code></span></label>
+
+<div class="good">
+  <strong>Your plan now lives in the same folder as the app it describes</strong>, and every version of it is kept. This is the Close-Out you've been doing since Class 4 — it just runs through GitHub now.
+</div>
+
+<!-- ============ TROUBLE ============ -->
+<h2><span class="num">FIX</span>When something breaks</h2>
+<p class="sub">Work down the list. It's in order of how often it's the answer.</p>
+
+<div class="tblwrap">
+<table>
+  <thead><tr><th>What you see</th><th>Why</th><th>Fix</th></tr></thead>
+  <tbody>
+    <tr><td>GitHub Desktop shows no changes</td><td>Files aren't saved</td><td><span class="kbd">&#8984;S</span> / <span class="kbd">Ctrl+S</span>. Check every tab for white dots</td></tr>
+    <tr><td>404 on your new address</td><td>Capital letter or space in the folder name</td><td>Rename it &mdash; all lowercase, dashes</td></tr>
+    <tr><td>404 on your new address</td><td>The push is still building</td><td>Wait 3 min, then <span class="kbd">&#8984;&#8679;R</span> / <span class="kbd">Ctrl+Shift+R</span></td></tr>
+    <tr><td>Link opens code instead of the app</td><td>The file in the folder isn't <code>index.html</code></td><td>Rename it</td></tr>
+    <tr><td>Blank page</td><td>Only part of the code got pasted</td><td>Click in the block &rarr; select all &rarr; copy &rarr; repaste</td></tr>
+    <tr><td>Second view won't open from the first</td><td>Filename in the link doesn't match the file</td><td>Check it character by character, capitals included</td></tr>
+    <tr><td>Works on your computer, breaks on GitHub</td><td>Almost always a capital letter in a filename</td><td>Lowercase everything</td></tr>
+    <tr><td>File went in the wrong folder</td><td>Wrong thing was selected when you clicked New File</td><td>Drag it to the right folder in the sidebar</td></tr>
+    <tr><td>&quot;Push rejected&quot; or push won't go</td><td>The repo changed on GitHub since you last fetched</td><td>Click <strong>Fetch origin</strong>, then push. Still stuck? Ask &mdash; don't guess</td></tr>
+  </tbody>
+</table>
+</div>
+
+<div class="card">
+  <h4>Before you ask for help</h4>
+  <p>Say <strong>what you expected</strong> and <strong>what actually happened</strong>. "It doesn't work" isn't something anyone can act on. "I pushed, waited three minutes, and the address still 404s" is.</p>
+</div>
+
+<h2><span class="num">END</span>Exit ticket</h2>
+<p class="sub">One sentence, on paper, before you leave.</p>
+
+<div class="card">
+  <p style="font-size:18px;margin:0"><strong>What's the difference between saving a file and pushing it?</strong></p>
+</div>
+
+<button class="reset" id="reset">Clear all checkboxes</button>
+
+<footer>
+  <p><strong>Building with AI</strong> &mdash; Adding a New Project.
+  Related: <a href="../repository/">Your Repository</a> &middot; <a href="../editing/">Editing Your Site</a> &middot; <a href="../">How to Keep Working on a Project</a></p>
+</footer>
+
+</div><!-- /steps -->
+
+</div><!-- /wrap -->
+
+<script>
+  document.querySelectorAll('.tabs').forEach(function(group){
+    group.addEventListener('click', function(e){
+      var btn = e.target.closest('.tab');
+      if(!btn) return;
+      var ids = [];
+      group.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('on'); ids.push(t.dataset.t); });
+      btn.classList.add('on');
+      ids.forEach(function(id){
+        var el = document.getElementById(id);
+        if(el) el.classList.toggle('on', id === btn.dataset.t);
+      });
+    });
+  });
+
+  document.querySelectorAll('.copy').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var text = btn.parentElement.querySelector('code').innerText;
+      navigator.clipboard.writeText(text).then(function(){
+        btn.textContent='copied'; btn.classList.add('done');
+        setTimeout(function(){ btn.textContent='copy'; btn.classList.remove('done'); },1600);
+      }).catch(function(){
+        btn.textContent='select it manually';
+        setTimeout(function(){ btn.textContent='copy'; },2000);
+      });
+    });
+  });
+
+  document.querySelectorAll('label.check').forEach(function(l){
+    var box = l.querySelector('input');
+    box.addEventListener('change', function(){ l.classList.toggle('done', box.checked); });
+  });
+
+  var ack = document.getElementById('ack');
+  ack.addEventListener('change', function(){
+    document.body.classList.toggle('open', ack.checked);
+    if(ack.checked){
+      document.getElementById('steps').scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  });
+
+  document.getElementById('reset').addEventListener('click', function(){
+    document.querySelectorAll('label.check').forEach(function(l){
+      l.querySelector('input').checked = false; l.classList.remove('done');
+    });
+  });
+</script>
+
+</body>
+</html>
