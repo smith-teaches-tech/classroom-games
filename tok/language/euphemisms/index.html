@@ -332,6 +332,19 @@
   }
   .turn p{font-size:24px;line-height:1.4;margin:0;max-width:60ch}
 
+  /* ---- notebook prompt ---- */
+  .nb{
+    border-left:3px solid var(--ink);
+    background:var(--decode-bg);
+    padding:18px 22px;border-radius:2px;margin:0 0 16px;
+  }
+  .nb .nb-lab{
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--ink);margin:0 0 8px;
+  }
+  .nb p{margin:0;font-size:22px;line-height:1.4;max-width:58ch}
+  .nb p + p{margin-top:10px}
+
   .toolbar{
     display:flex;gap:10px;flex-wrap:wrap;margin:26px 0 0;
   }
@@ -368,8 +381,14 @@
   <p class="how">
     <b>Work in pairs.</b> One device between two is better than one each.<br>
     <b>Follow the stages in order.</b> Each one is timed, and each one is built on the one before it.<br>
-    <b>Write before you reveal.</b> The reveals are locked until you have written something.
+    <b>Write before you reveal.</b> Every reveal on this page is locked until you have written your own version first.
   </p>
+
+  <div class="nb">
+    <p class="nb-lab">Notebooks open before you start</p>
+    <p>Decoding happens on the screen — that is rough working and it disappears when you close the tab, which is fine. <strong>The takeaways go in your notebook</strong>, and that is the part you keep.</p>
+    <p>Head a page <em>L2 · The Decoder</em> and leave room for six numbered takeaways. The page tells you when each one is due.</p>
+  </div>
 
   <div class="toolbar">
     <button onclick="window.print()">Print this page</button>
@@ -395,13 +414,12 @@
       </ol>
     </div>
 
-    <div class="writebox">
-      <label for="w-pred">Your prediction (type it here or write it on paper)</label>
-      <textarea class="tx" id="w-pred" placeholder="If Orwell is right, then language of this kind should…"></textarea>
+    <div class="nb">
+      <p class="nb-lab">In your notebook — takeaway 1</p>
+      <p>Write your prediction out in full. You will come back to it twice today and again when you write the exit slip, so give it a line of its own.</p>
     </div>
 
-    <button class="revealbtn" data-reveal="r1" data-requires="w-pred">Three ways other pairs finished that sentence</button>
-    <p class="lock" data-lockfor="w-pred">Write your prediction first.</p>
+    <button class="revealbtn" data-reveal="r1" data-confirm="1">We've written ours — reveal</button>
     <div class="revealed" id="r1" hidden>
       <p class="r-lab">Not answers — comparisons</p>
       <p>"…should make a reader feel calm about something they would otherwise be angry about."</p>
@@ -473,13 +491,12 @@
       <p><strong>Neither, again.</strong> "Collateral damage" does mean dead and injured civilians and destroyed civilian property. The official sentence is not a lie. It is a true sentence about dead civilians that does not contain a dead civilian.</p>
     </div>
 
-    <div class="writebox" style="margin-top:26px">
-      <label for="w-diff">Both sentences in each pair are true. Write one thing you can do with sentence B that you cannot do with sentence A.</label>
-      <textarea class="tx" id="w-diff" placeholder="With sentence B I can…"></textarea>
+    <div class="nb" style="margin-top:26px">
+      <p class="nb-lab">In your notebook — takeaway 2</p>
+      <p>Both sentences in each pair are true. Write one thing you can do with sentence B that you cannot do with sentence A.</p>
     </div>
 
-    <button class="revealbtn" data-reveal="r4" data-requires="w-diff">What most pairs write</button>
-    <p class="lock" data-lockfor="w-diff">Write your answer first.</p>
+    <button class="revealbtn" data-reveal="r4" data-confirm="1">We've written ours — reveal</button>
     <div class="revealed" id="r4" hidden>
       <p class="r-lab">Three answers that keep coming up</p>
       <p><strong>You can picture it.</strong> B puts a person in a room. A puts a category in a report.</p>
@@ -487,7 +504,12 @@
       <p><strong>You can judge it.</strong> Once you can picture and count it, you can decide what you think about it. Until then there is nothing to have a view about.</p>
     </div>
 
-    <div class="instrument" style="margin-top:26px">
+    <div class="nb" style="margin-top:26px">
+      <p class="nb-lab">In your notebook — takeaway 3</p>
+      <p>Copy the three questions below. You need them for the next forty minutes, and you need them again in the exit slip.</p>
+    </div>
+
+    <div class="instrument">
       <p class="c-lab">The three questions — use these for the rest of the lesson</p>
       <ol>
         <li>Is it false? <span class="qnote">Usually no. Check anyway.</span></li>
@@ -627,9 +649,9 @@
       <p>Pick the one you feel most confident about and be ready to defend it against the pair next to you.</p>
     </div>
 
-    <div class="writebox">
-      <label for="w-line">The one you chose, and your position on it</label>
-      <textarea class="tx" id="w-line" placeholder="I think “…” is / is not simply false, because…"></textarea>
+    <div class="nb">
+      <p class="nb-lab">In your notebook — takeaway 4</p>
+      <p>Write the phrase you chose and your position on it, in a sentence you would be willing to defend out loud.</p>
     </div>
   </section>
 
@@ -658,7 +680,7 @@
       <p class="c-lab">Before next class</p>
       <p><strong>Toki Pona has 137 words.</strong> No grand twins. No Latin layer. If you want to say something, there is one way to say it and everyone can see what you said.</p>
       <p>Could Article B be written in Toki Pona? Try one sentence of it in your head. What happens to the release?</p>
-      <p>Don't answer that here. Bring it next class.</p>
+      <p><strong>Takeaway 5 — in your notebook.</strong> One sentence on what you think happens. Don't answer it here. Bring it next class.</p>
     </div>
   </section>
 
@@ -667,12 +689,12 @@
     <div class="s-head">
       <span class="s-num">8</span>
       <h2 class="s-title">Exit ticket</h2>
-      <span class="s-time">10 minutes · on paper, individually</span>
+      <span class="s-time">10 minutes · notebook, individually</span>
     </div>
-    <p class="s-sub">Hand this in before you leave. Your own paper, your own words, no device.</p>
+    <p class="s-sub">In your notebook, under the four takeaways you already have. Your own words, no device, and leave the notebook open on your desk when you finish.</p>
 
     <div class="exit">
-      <p class="x-lab">The question</p>
+      <p class="x-lab">The question — takeaway 6</p>
       <p class="x-q">Nothing in Article A or Article B is false. Using two specimens from today, explain how the language still changes what a reader can know.</p>
       <ul>
         <li>Quote your two specimens exactly.</li>
@@ -824,24 +846,14 @@
     });
   }
 
-  /* ---------- text-gated reveals ---------- */
-  document.querySelectorAll('.revealbtn[data-requires]').forEach(function(btn){
-    const ta = document.getElementById(btn.dataset.requires);
+  /* ---------- notebook-confirm reveals ---------- */
+  document.querySelectorAll('.revealbtn[data-confirm]').forEach(function(btn){
     const target = document.getElementById(btn.dataset.reveal);
-    const lock = document.querySelector('.lock[data-lockfor="'+btn.dataset.requires+'"]');
-    function sync(){
-      const ok = ta.value.trim().length >= MIN_CHARS;
-      btn.disabled = !ok;
-      if(lock) lock.style.display = ok ? 'none' : '';
-    }
-    ta.addEventListener('input', sync);
     btn.addEventListener('click', function(){
-      if(btn.disabled) return;
       target.hidden = false;
       btn.style.display = 'none';
       target.scrollIntoView({behavior:'smooth', block:'nearest'});
     });
-    sync();
   });
 
   /* ---------- poll-gated reveals ---------- */
@@ -931,15 +943,15 @@
 
   /* ---------- run sheet ---------- */
   const RUN = [
-    ['Before class', 'Devices for one per pair. Students need the Orwell essay they annotated, with their T/K marks and their three written answers. Paper for the exit ticket.'],
-    ['1 · Where we left Orwell', '10 min. Pairs. They turn a K passage into a testable prediction. Watch for predictions about how a reader feels rather than what a reader knows — the reveal addresses this, but it is worth saying again in the room.'],
+    ['Before class', 'Devices for one per pair. Students need the Orwell essay they annotated, with their T/K marks and their three written answers, plus their notebooks. Decoding is typed on screen and is rough working; the six takeaways and the exit slip go in notebooks.'],
+    ['1 · Where we left Orwell', '10 min. Pairs. They turn a K passage into a testable prediction, written in the notebook. Watch for predictions about how a reader feels rather than what a reader knows — the reveal addresses this, but it is worth saying again in the room.'],
     ['2 · Which one is false?', '8 min. The key stage. Both sentences in each pair are true, and the answer is "neither." If this lands, the rest of the lesson works. If a pair insists the official sentence is a lie, ask them which word in it is untrue.'],
     ['3 · One worked example', '6 min. Read on the page, no teaching required. Do not let pairs skip it — everything after depends on the three questions.'],
-    ['4 · Article A', '14 min. Eight phrases. Reveals are locked until they write. Circulate and read what they type, not whether they finished.'],
+    ['4 · Article A', '14 min. Eight phrases, typed on screen. Reveals are locked until they type something. Circulate and read what they write, not whether they finished.'],
     ['5 · Article B', '14 min. Twelve phrases, harder and heavier. No new instruction needed.'],
-    ['6 · Where is the line?', '6 min. No answer key. This is the first stage to cut if you are behind.'],
+    ['6 · Where is the line?', '6 min. No answer key. Position goes in the notebook. This is the first stage to cut if you are behind.'],
     ['7 · Why English is so good at this', '10 min. The word sort takes 90 seconds; the payoff is the Orwell PRETENTIOUS DICTION passage they almost certainly marked T. Make sure they physically look back at their essay.'],
-    ['8 · Exit ticket', '10 min. On paper, individually, collected. This is the assessed piece.']
+    ['8 · Exit slip', '10 min. In the notebook, individually. Notebooks left open on desks — collect them, or check the six takeaways at the start of L3. This is the assessed piece.']
   ];
   const WATCH = [
     'The commonest wrong turn is "they are lying." Stage 2 closes it, but it comes back in Stage 5 because the military language is more charged. Redirect: which word is untrue?',
@@ -961,7 +973,14 @@
     RUN.forEach(function(r){ h += '<tr><td class="k">'+r[0]+'</td><td>'+r[1]+'</td></tr>'; });
     h += '</table><h2>What to watch for</h2><ul>';
     WATCH.forEach(function(x){ h += '<li>'+x+'</li>'; });
-    h += '</ul><h2>Exit ticket — the assessed piece</h2>'
+    h += '</ul><h2>The six notebook takeaways</h2>'
+      +  '<ol style="font-size:10.5pt"><li>The Orwell prediction (Stage 1)</li>'
+      +  '<li>One thing the plain sentence lets you do that the official one does not (Stage 2)</li>'
+      +  '<li>The three questions, copied out (Stage 2)</li>'
+      +  '<li>Where the line is, with a position (Stage 6)</li>'
+      +  '<li>What happens to Article B in Toki Pona (Stage 7)</li>'
+      +  '<li>The exit slip (Stage 8)</li></ol>'
+      +  '<h2>Exit slip — the assessed piece</h2>'
       +  '<p style="font-size:11.5pt"><em>Nothing in Article A or Article B is false. Using two specimens from today, '
       +  'explain how the language still changes what a reader can know.</em></p>'
       +  '<ul><li>Two specimens, quoted exactly.</li><li>At least two core concepts, named.</li>'
