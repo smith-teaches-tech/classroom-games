@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Move the Situation: Apology Debate — AP Language</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#1a1a18;--ink-mid:#4a4a44;--ink-light:#8a8a80;
+  --rule:#d4d0c4;--paper:#f7f4ee;--paper-warm:#efe9db;
+  --accent:#8b3a2a;--accent-light:#f5ede9;
+  --ok:#1a5c3a;--ok-bg:#e8f3ed;
+  --bad:#6b2a2a;--bad-bg:#f5e8e8;
+  --warn:#7a5c1a;--warn-bg:#f5f0e2;
+  --mid:#33404f;--mid-bg:#e9edf2;
+  --serif:'Libre Baskerville',Georgia,serif;
+  --sans:'Barlow',system-ui,sans-serif;
+  --cond:'Barlow Condensed',system-ui,sans-serif;
+  --type:'Special Elite','Courier New',monospace;
+}
+html{font-size:16px;-webkit-text-size-adjust:100%;}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6;min-height:100vh;}
+
+.masthead{border-bottom:3px double var(--ink);padding:.75rem 1rem .6rem;background:var(--paper);position:sticky;top:0;z-index:200;display:flex;align-items:center;gap:1rem;}
+.mast-mid{flex:1;text-align:center;min-width:0;}
+.masthead-kicker{font-family:var(--cond);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-light);margin-bottom:.15rem;}
+.masthead-title{font-family:var(--serif);font-size:clamp(15px,2.3vw,22px);font-weight:700;line-height:1.15;letter-spacing:-.02em;}
+.subbtn{flex:none;font-family:var(--cond);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.4rem .7rem;border:1.5px solid var(--rule);background:#fff;color:var(--ink-mid);cursor:pointer;border-radius:2px;transition:all .15s;line-height:1.2;}
+.subbtn:hover{border-color:var(--accent);color:var(--accent);}
+
+.top-tabs{display:flex;background:var(--paper);border-bottom:1px solid var(--rule);position:sticky;top:60px;z-index:190;overflow-x:auto;}
+.top-tab{flex:1 0 auto;min-width:118px;padding:.55rem .6rem;font-family:var(--cond);font-size:12.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-light);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all .15s;text-align:center;}
+.top-tab:hover{color:var(--ink);background:var(--paper-warm);}
+.top-tab.active{color:var(--ink);border-bottom-color:var(--accent);}
+.tab-hint{font-family:var(--sans);font-size:10px;font-weight:400;letter-spacing:0;text-transform:none;display:block;color:var(--ink-light);margin-top:1px;}
+.top-tab.active .tab-hint{color:var(--ink-mid);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;animation:fadeIn .2s ease;}
+@media(max-width:620px){.top-tabs{top:74px;}.top-tab{min-width:96px;font-size:11.5px;padding:.5rem .35rem;}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.wrap{max-width:880px;margin:0 auto;padding:1.7rem 1.25rem 4.5rem;}
+
+.stage-num{font-family:var(--cond);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-light);margin-bottom:.2rem;}
+h2.stage-title{font-family:var(--serif);font-size:clamp(20px,2.6vw,27px);font-weight:700;line-height:1.18;letter-spacing:-.02em;margin-bottom:.6rem;}
+.lede{font-size:15px;color:var(--ink-mid);line-height:1.7;margin-bottom:1.4rem;padding-bottom:1.1rem;border-bottom:1px solid var(--rule);}
+.lede strong{color:var(--ink);font-weight:600;}
+h3.sub{font-family:var(--cond);font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;border-bottom:2px solid var(--ink);padding-bottom:.3rem;margin:2rem 0 .9rem;}
+p.body{font-size:14.6px;line-height:1.72;margin-bottom:.85rem;}
+p.body.dim{color:var(--ink-mid);font-size:14px;}
+ul.body,ol.body{margin:.6rem 0 1rem 1.2rem;font-size:14.4px;line-height:1.7;}
+ul.body li,ol.body li{margin-bottom:.5rem;}
+.callout{background:var(--paper-warm);border-left:4px solid var(--accent);padding:.95rem 1.15rem;margin:1.2rem 0;font-size:14px;line-height:1.72;color:var(--ink-mid);}
+.callout strong{color:var(--ink);font-weight:600;}
+.callout p+p{margin-top:.6rem;}
+.big{background:#fff;border:2px solid var(--ink);padding:1.2rem 1.35rem;margin:1.3rem 0;}
+.big p{font-family:var(--serif);font-size:16px;line-height:1.7;}
+.big p+p{margin-top:.7rem;}
+
+/* ── TALLY ── */
+.tally{border:1px solid var(--rule);border-radius:2px;overflow:hidden;margin-bottom:1.2rem;background:#fff;}
+.trow{display:flex;align-items:center;gap:.6rem;padding:.6rem .8rem;border-bottom:1px solid var(--rule);flex-wrap:wrap;}
+.trow:last-child{border-bottom:none;}
+.trow.lead{background:var(--warn-bg);}
+.tname{font-family:var(--cond);font-size:14.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;flex:0 0 152px;}
+.tsplit{font-family:var(--type);font-size:10.5px;color:var(--warn);flex:0 0 auto;}
+.tbtns{display:flex;gap:.35rem;margin-left:auto;}
+.cbtn{font-family:var(--cond);font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.3rem .55rem;border:1.5px solid var(--rule);background:var(--paper);color:var(--ink-mid);cursor:pointer;border-radius:2px;min-width:56px;}
+.cbtn:hover{border-color:var(--ink-light);}
+.cbtn b{font-family:var(--type);font-size:12px;margin-left:.3rem;}
+.cbtn.eff:hover{border-color:var(--ok);color:var(--ok);}
+.cbtn.mix:hover{border-color:var(--warn);color:var(--warn);}
+.cbtn.fail:hover{border-color:var(--bad);color:var(--bad);}
+.bar{flex:1 1 100%;height:9px;display:flex;border-radius:2px;overflow:hidden;background:var(--paper-warm);margin-top:.15rem;}
+.bar i{display:block;height:100%;transition:width .2s;}
+.bar .b-eff{background:var(--ok);} .bar .b-mix{background:var(--warn);} .bar .b-fail{background:var(--bad);}
+
+/* ── CARDS ── */
+.card{background:#fff;border:1px solid var(--rule);border-left:4px solid var(--mid);border-radius:2px;margin-bottom:1.1rem;overflow:hidden;}
+.card .cd-top{padding:.85rem 1.1rem .7rem;}
+.card .cd-kick{font-family:var(--cond);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-light);font-weight:700;}
+.card .cd-name{font-family:var(--serif);font-size:19px;font-weight:700;margin:.1rem 0 .5rem;}
+.card .cd-change{background:var(--mid-bg);border-left:3px solid var(--mid);padding:.7rem .9rem;font-size:14.6px;line-height:1.65;border-radius:2px;}
+.card .cd-change b{font-family:var(--cond);font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--mid);display:block;margin-bottom:.25rem;}
+.card .cd-ask{padding:.8rem 1.1rem;font-size:14.4px;line-height:1.7;border-top:1px dashed var(--rule);}
+.card .cd-ask ol{margin:.4rem 0 0 1.1rem;}
+.card .cd-ask li{margin-bottom:.35rem;}
+.card .cd-btn{width:100%;font-family:var(--cond);font-size:11.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;padding:.6rem;border:none;border-top:1px solid var(--rule);background:var(--paper-warm);color:var(--accent);cursor:pointer;}
+.card .cd-btn:hover{background:var(--accent-light);}
+.card .cd-ans{display:none;padding:.95rem 1.1rem;border-top:1px solid var(--rule);background:var(--ok-bg);font-size:14.2px;line-height:1.72;color:#14472c;}
+.card .cd-ans.on{display:block;animation:fadeIn .25s ease;}
+.card .cd-ans p+p{margin-top:.6rem;}
+.card .cd-ans em{font-style:italic;}
+
+.nb{background:#fffdf5;border:2px solid var(--ink);border-radius:2px;padding:1rem 1.2rem;margin:1.6rem 0 .5rem;position:relative;}
+.nb::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:repeating-linear-gradient(to bottom,var(--ink) 0 7px,transparent 7px 14px);}
+.nb .nb-lab{font-family:var(--cond);font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:.5rem;}
+.nb .nb-lab span{font-family:var(--type);color:var(--accent);}
+.nb ol{margin:0 0 0 1.15rem;font-size:14.2px;line-height:1.68;}
+.nb ol li{margin-bottom:.45rem;}
+
+.btn{font-family:var(--cond);font-size:13px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:.55rem 1.2rem;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer;border-radius:2px;}
+.btn:hover{background:var(--accent);border-color:var(--accent);}
+.btn.ghost{background:none;color:var(--ink);}
+.btn.ghost:hover{background:var(--ink);color:var(--paper);}
+.btn.sm{font-size:11.5px;padding:.4rem .8rem;}
+.btnrow{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.5rem;padding-top:1.2rem;border-top:1px solid var(--rule);}
+
+.scrim{display:none;position:fixed;inset:0;background:rgba(20,20,16,.55);z-index:400;}
+.scrim.open{display:block;}
+.subpanel{display:none;position:fixed;top:0;right:0;bottom:0;width:min(560px,100%);background:var(--paper);z-index:401;overflow-y:auto;border-left:3px double var(--ink);padding:1.4rem 1.5rem 3rem;}
+.subpanel.open{display:block;}
+.subpanel h3{font-family:var(--serif);font-size:20px;margin-bottom:.2rem;}
+.subpanel .sp-kick{font-family:var(--cond);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-light);margin-bottom:1rem;}
+.subpanel h4{font-family:var(--cond);font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;border-bottom:2px solid var(--ink);padding-bottom:.25rem;margin:1.5rem 0 .7rem;}
+.subpanel p{font-size:14px;line-height:1.7;margin-bottom:.8rem;}
+.closebtn{position:absolute;top:1rem;right:1.2rem;background:none;border:none;font-size:22px;color:var(--ink-light);cursor:pointer;}
+@media print{.top-tabs,.masthead,.scrim{display:none!important;}.subpanel{display:block!important;position:static;width:auto;border:none;padding:0;}.closebtn{display:none;}}
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <button class="subbtn" id="openSub">For the<br>Sub</button>
+  <div class="mast-mid">
+    <div class="masthead-kicker">AP Language &middot; Day Two &middot; 45 Minutes</div>
+    <div class="masthead-title">Move the Situation</div>
+  </div>
+  <button class="subbtn" id="resetTally">Reset<br>Poll</button>
+</div>
+
+<div class="top-tabs" id="tabs"></div>
+
+<div class="wrap">
+
+<!-- 1 · POLL -->
+<section class="tab-panel" data-panel="0">
+  <div class="stage-num">First &middot; 5 minutes</div>
+  <h2 class="stage-title">Where the Room Stands</h2>
+  <p class="lede">Five of the nine, hands up, one at a time. Your teacher or sub taps the counts in as they go. We are looking for the ones we <strong>disagree</strong> about &mdash; those are the ones worth arguing over.</p>
+
+  <div class="tally" id="tally"></div>
+  <p class="body dim">The row highlighted in yellow is the most divided one in the room.</p>
+
+  <div class="btnrow"><button class="btn nextbtn" data-go="1">Next &rarr; Warm-Up</button></div>
+</section>
+
+<!-- 2 · WARM UP -->
+<section class="tab-panel" data-panel="1">
+  <div class="stage-num">Second &middot; 5 minutes &middot; whole class</div>
+  <h2 class="stage-title">Warm-Up: One Change</h2>
+  <p class="lede">Before you argue about tiers, one quick experiment. Nothing about the words below changes. Only the man saying them.</p>
+  <div id="warm"></div>
+  <div class="btnrow"><button class="btn nextbtn" data-go="2">Next &rarr; Build Both Cases</button></div>
+</section>
+
+<!-- 3 · DEBATE -->
+<section class="tab-panel" data-panel="2">
+  <div class="stage-num">Third &middot; 12 minutes to build, 10 to share</div>
+  <h2 class="stage-title">Build Both Cases</h2>
+  <p class="lede">Your group gets <strong>one</strong> apology. You are not arguing for your own opinion. You are building the <strong>strongest possible case both ways</strong> &mdash; so that whatever anyone else says, you have already thought of it.</p>
+
+  <div class="callout">
+    <p><strong>In your notebook, two headings.</strong></p>
+    <p><strong>Best case for EFFECTIVE.</strong> Two choices this speaker made that work. Quote both. For each, name who it works on and why it was available to this speaker.</p>
+    <p><strong>Best case for FAILED.</strong> Two choices that fail. Quote both. Name the dodge.</p>
+    <p>Then, at the bottom: <strong>which case is stronger, and what would have to change about the situation for the other one to win?</strong> Hold on to that last sentence. You will need it in ten minutes.</p>
+  </div>
+
+  <h3 class="sub">The four up for debate</h3>
+  <ul class="body">
+    <li><strong>United Airlines</strong> &mdash; Oscar Munoz, letter to employees</li>
+    <li><strong>John Crist</strong> &mdash; written statement to a Christian audience</li>
+    <li><strong>Reese Witherspoon</strong> &mdash; statement and TV interview</li>
+    <li><strong>Will Smith</strong> &mdash; Instagram, the morning after</li>
+  </ul>
+  <p class="body dim">Ninety seconds per group when you share: the strongest case each way, and which one you landed on.</p>
+
+  <div class="btnrow"><button class="btn nextbtn" data-go="3">Next &rarr; The Twist</button></div>
+</section>
+
+<!-- 4 · TWIST -->
+<section class="tab-panel" data-panel="3">
+  <div class="stage-num">Fourth &middot; 10 minutes</div>
+  <h2 class="stage-title">Now Move the Situation</h2>
+  <p class="lede">Open the card for <strong>your</strong> apology. Every word of the original stays exactly as it was written. One thing about the <strong>situation</strong> changes. Decide, with your group, whether your tier still holds &mdash; and be ready to name the exact choice that started working, or stopped.</p>
+
+  <div id="cards"></div>
+
+  <div class="big">
+    <p>You just moved rankings up and down without changing a single word.</p>
+    <p>So a tier is not a property of the text. It is a <strong>relationship between a text and its situation</strong> &mdash; the speaker, the audience, the offense, the place it was published, the moment it was said.</p>
+    <p>That is what the definition has been getting at the whole time. <em>Available</em> is not a fixed list of good writing moves. It is whatever this particular speaker, in this particular situation, in front of these particular people, can actually reach for and be believed.</p>
+  </div>
+
+  <div class="nb">
+    <div class="nb-lab"><span>&#9998;</span> In your notebook</div>
+    <ol>
+      <li>Your apology, and the one thing that changed about its situation.</li>
+      <li>Did your tier move? One sentence naming the exact choice that started working or stopped working &mdash; quote it.</li>
+      <li>One sentence: finish this &mdash; <em>&ldquo;A choice is available to a speaker when&hellip;&rdquo;</em></li>
+    </ol>
+  </div>
+
+  <div class="btnrow"><button class="btn nextbtn" data-go="4">Next &rarr; Thursday</button></div>
+</section>
+
+<!-- 5 · ASSIGN -->
+<section class="tab-panel" data-panel="4">
+  <div class="stage-num">Last &middot; 5 minutes</div>
+  <h2 class="stage-title">Thursday: You Fix One</h2>
+  <p class="lede">Two classes telling me what is broken. Thursday you repair one of them, and then you explain your own choices the same way you have been explaining theirs.</p>
+
+  <div class="callout">
+    <p><strong>What you will do Thursday.</strong> Choose one apology you put in Failed or Mixed. Rewrite it &mdash; in that person's voice, as if you were writing it for them. Then analyse two or three of your own choices using Choice, Unpacking, Effect on the Audience.</p>
+  </div>
+
+  <div class="nb">
+    <div class="nb-lab"><span>&#9998;</span> Before you leave &mdash; write these two things</div>
+    <ol>
+      <li><strong>Which apology you are rewriting.</strong> It has to be one you tiered Failed or Mixed.</li>
+      <li><strong>The one specific failure you are repairing.</strong> Not &ldquo;make it better.&rdquo; Quote the phrase that fails and name the dodge. For example: <em>&ldquo;I was disrespectful to the officer&rdquo; &mdash; the Downgrade. She never names the actual offense.</em></li>
+    </ol>
+    <p class="body dim" style="margin:.7rem 0 0;">Come Thursday with those two lines written and you spend the whole period writing instead of deciding.</p>
+  </div>
+</section>
+
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="subpanel" id="subpanel">
+  <button class="closebtn" id="closeSub">&times;</button>
+  <div class="sp-kick">AP Language &middot; Mr. Smith &middot; Substitute Notes</div>
+  <h3>Move the Situation &mdash; 45 minutes</h3>
+
+  <p style="margin-top:.8rem;"><strong>Students run the arguing. You run the clock and the poll.</strong> There is nothing to teach and nothing to collect &mdash; it all goes in notebooks.</p>
+
+  <p>They spent last class sorting nine celebrity apologies into Effective, Mixed and Failed. Today they argue about the ones they disagreed on, and then find out that the answer changes when the situation changes.</p>
+
+  <h4>How the period runs</h4>
+
+  <p><strong>First five minutes</strong>, you run a poll from the front. The first tab lists five apologies. For each one, ask for hands &mdash; who put it in Effective, who in Mixed, who in Failed &mdash; and tap the numbers into the buttons on screen. The row that turns yellow is the one the class disagrees about most. It takes about a minute per apology, so keep it moving.</p>
+
+  <p><strong>Next five minutes</strong> is a whole-class warm-up on the second tab. Read the card, give them a minute to talk to a partner, take a couple of answers, then press the reveal button. You don't need to add anything to it.</p>
+
+  <p><strong>Then about twenty-two minutes</strong> of group work. Put them in groups of four and give each group one of the four apologies listed on the third tab &mdash; if the class is large, two groups can take the same one. Each group builds the best argument <em>both</em> ways, for and against, which means nobody has to be right and you never have to referee. Twelve minutes to prepare, then ninety seconds per group to share.</p>
+
+  <p><strong>Last ten minutes or so</strong>, each group opens the card on the fourth tab for their own apology. It changes one thing about the situation &mdash; who was speaking, or where it was posted &mdash; and asks whether their ranking still holds. They discuss, press the reveal, and write three lines in their notebooks. If there is time, ask a couple of groups whether their ranking moved.</p>
+
+  <p><strong>Final few minutes</strong>, the fifth tab. They write down which apology they are rewriting on Thursday and the one failure they are fixing. Both lines go in the notebook. That is the only thing that has to happen before they leave.</p>
+
+  <h4>If they ask you something</h4>
+
+  <p>If a group asks whether they have the right answer, tell them there isn't one and the reveal button will give them our reasoning to argue with. If a group finishes early, have them build the case for a second apology. If two groups disagree loudly, that is the lesson working.</p>
+
+  <div class="btnrow"><button class="btn ghost sm" onclick="window.print()">Print these notes</button></div>
+</aside>
+
+<script>
+(function(){
+"use strict";
+
+var POLL = ["United Airlines","John Crist","Reese Witherspoon","Will Smith","Ye (Kanye West)"];
+
+var WARM = {
+  kick:"Whole class",
+  name:"Ye (Kanye West), 2009",
+  change:"Every word stays the same, and it is still posted on his own blog. But he is not a musician. He is the chief executive of a company, apologising to shareholders and staff.",
+  ask:"<ol><li>Which of his choices stop working the moment you change who is speaking?</li><li>Which ones were <strong>already</strong> broken, and stay broken?</li></ol>",
+  ans:"<p>The slang and the exclamation points stop working immediately. Those were genuinely available to a musician posting on his own blog to fans who follow him <em>because</em> he does not sound like a press release. They are not available to a chief executive, and from a chief executive they would read as someone who does not understand what he has done.</p>"+
+      "<p>But look at what does <strong>not</strong> change. Apologising and re-arguing the verdict in the same breath &mdash; <em>I'm in the wrong for going on stage</em>, then <em>Beyonc&eacute;'s video was the best of this decade</em>. Deferring the real apology to tomorrow. Aiming <em>Welcome to the real world</em> at his critics instead of at Taylor. Those fail in both situations, for both speakers, in front of any audience.</p>"+
+      "<p>So there are two different kinds of failure, and you need to be able to tell them apart. Some choices <strong>don't fit</strong> the situation. Others <strong>don't work</strong> in any situation. Most people only ever notice the first kind, because it is the one you can hear."
+};
+
+var CARDS = [
+  {
+    kick:"Group card",
+    name:"United Airlines &middot; Oscar Munoz",
+    change:"Every word is identical. But Munoz posts it publicly under his own name, addressed to Dr. David Dao directly &mdash; not as a letter that opens &ldquo;Dear Team.&rdquo;",
+    ask:"<ol><li>Does your tier move? The audience problem is now fixed &mdash; is the apology fixed?</li><li>Then read this sentence once more, slowly: <em>&ldquo;The truly horrific event that occurred on this flight.&rdquo;</em> Who did it? Find the person inside that sentence.</li></ol>",
+    ans:"<p>Fixing the address fixes something real. In the original, the man he is apologising to is not the person receiving the letter &mdash; Munoz apologises to Dr. Dao in a memo that Dr. Dao will never be sent. That is a straightforward failure of audience, and moving it to a public post repairs it.</p>"+
+        "<p>And the apology still does not work, because the second problem is untouched. <em>The truly horrific event that occurred on this flight.</em> There is nobody in that sentence. Nothing was done by anyone. A man was pulled bleeding down an aisle by officers United called, and the grammar has turned that into weather &mdash; an event that occurred, the way a storm occurs.</p>"+
+        "<p>So now the sentence lands on the right person. Dr. Dao gets to read a public apology that refuses to say who hurt him. Arguably that is worse.</p>"
+  },
+  {
+    kick:"Group card",
+    name:"John Crist",
+    change:"Every word is identical. But he is not a Christian comedian &mdash; he is a secular stand-up, and this statement goes out to a general audience with no shared faith in it at all.",
+    ask:"<ol><li>Which of his <strong>strongest</strong> choices stop working? Quote one.</li><li>Which of his choices survive the change completely? Why those?</li></ol>",
+    ans:"<p><em>&ldquo;I've sinned against God, against women and the people who I love the most&rdquo;</em> is the most precise naming in the entire statement &mdash; and it only carries that weight because his audience shares the vocabulary. To a Christian audience, <em>sin</em> is a heavier word than <em>mistake</em>; it means a wrong against a person and against God, and it comes with an expectation of repentance. Strip the audience out and the same sentence reads as evasion &mdash; a religious frame standing in for an account of what he actually did.</p>"+
+        "<p>Now look at what survives. He cancelled his remaining tour dates and postponed everything else. That works on <em>any</em> audience, because cost is legible to everybody. You do not need to share his beliefs to understand that he gave up money and a career year.</p>"+
+        "<p>One of his moves depended entirely on who was listening. The other did not. That is worth writing down.</p>"
+  },
+  {
+    kick:"Group card",
+    name:"Reese Witherspoon",
+    change:"Every word is identical, delivered exactly the same way &mdash; laughing at the pregnancy line and all. But she is not a film actress. She is a state senator, running for re-election in six weeks.",
+    ask:"<ol><li>What stops being available to her the moment she is a politician instead of a movie star?</li><li>Does the phrase <em>&ldquo;I was disrespectful to the officer&rdquo;</em> get better or worse? Careful with this one.</li></ol>",
+    ans:"<p>The charm goes first. Laughing while she tells the story about claiming to be pregnant is genuinely available to a film star &mdash; her audience enjoys her being flustered and human, and being likeable is a large part of what they want from her in the first place. It is not available to somebody asking to be trusted with power. The same laugh reads as not taking it seriously.</p>"+
+        "<p>And the second one is the interesting half. <em>I was disrespectful to the officer</em> does not stay the same &mdash; it gets <strong>worse</strong>. From an actress, naming a smaller offence than the one she committed reads as minimising. From a politician who tried to pull rank on a police officer and then apologised only for rudeness, the identical sentence reads as a cover-up.</p>"+
+        "<p>Same words. Same dodge. Heavier consequence, because of who is saying it and what her audience is being asked to hand her.</p>"
+  },
+  {
+    kick:"Group card",
+    name:"Will Smith",
+    change:"Every word is identical. But he says them from the podium that night, roughly ten minutes after the slap, to the room and the cameras &mdash; instead of posting them on Instagram the following morning.",
+    ask:"<ol><li>Better or worse? Say why, and be specific about what changed.</li><li>What happens to <em>&ldquo;I am a work in progress&rdquo;</em> in a room that has just watched it happen?</li></ol>",
+    ans:"<p>Mostly better, and the reason is <strong>timing</strong> &mdash; which is an available means just like word choice or venue. The next-day post is free. He had a night to see how the world reacted, to find out whether he would get away with it, and to have it written or checked. Saying the same words from the podium costs something, because he would be apologising before he knew the answer to any of that.</p>"+
+        "<p>The second question is the sharper one. <em>I am a work in progress</em> is a Redemption Pivot &mdash; it turns the apology into the story of his own growth. On Instagram the next day, most readers slide past it. Said aloud to a stunned room ten minutes after he hit somebody, with Chris Rock still standing there, the same six words are much harder to accept, because the audience can see exactly how recent the progress is.</p>"+
+        "<p>Notice that this card did not change the speaker or the audience. It changed <em>when</em>. That counts too.</p>"
+  }
+];
+
+var TABS=[{t:"The Poll",h:"5 min"},{t:"Warm-Up",h:"5 min"},{t:"Both Cases",h:"22 min"},{t:"The Twist",h:"10 min"},{t:"Thursday",h:"5 min"}];
+var counts={}, cur=0;
+var KEY="apdebate_v1";
+
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(counts)); }catch(e){} }
+function load(){ try{ var r=localStorage.getItem(KEY); if(r) counts=JSON.parse(r)||{}; }catch(e){} }
+
+function renderTabs(){
+  var h="",i;
+  for(i=0;i<TABS.length;i++){
+    h+='<button class="top-tab'+(i===cur?" active":"")+'" data-tab="'+i+'">'+TABS[i].t+'<span class="tab-hint">'+TABS[i].h+'</span></button>';
+  }
+  document.getElementById("tabs").innerHTML=h;
+  var b=document.querySelectorAll(".top-tab"),j;
+  for(j=0;j<b.length;j++) b[j].addEventListener("click",function(){ go(parseInt(this.getAttribute("data-tab"),10)); });
+}
+function go(i){
+  cur=i;
+  var ps=document.querySelectorAll(".tab-panel"),k;
+  for(k=0;k<ps.length;k++) ps[k].classList.toggle("active",parseInt(ps[k].getAttribute("data-panel"),10)===i);
+  renderTabs(); window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function spread(c){
+  var t=c.eff+c.mix+c.fail;
+  if(t<3) return -1;
+  var mx=Math.max(c.eff,c.mix,c.fail);
+  return 1-(mx/t); /* higher = more divided */
+}
+function renderTally(){
+  var i,best=-1,bestI=-1;
+  for(i=0;i<POLL.length;i++){
+    var c=counts[POLL[i]]||{eff:0,mix:0,fail:0};
+    var s=spread(c);
+    if(s>best){ best=s; bestI=i; }
+  }
+  var h="";
+  for(i=0;i<POLL.length;i++){
+    var c=counts[POLL[i]]||{eff:0,mix:0,fail:0};
+    var t=c.eff+c.mix+c.fail;
+    var lead=(i===bestI && best>0.35);
+    h+='<div class="trow'+(lead?" lead":"")+'"><div class="tname">'+POLL[i]+'</div>';
+    h+=lead?'<div class="tsplit">most divided</div>':'';
+    h+='<div class="tbtns">'+
+       '<button class="cbtn eff" data-n="'+i+'" data-k="eff">Eff<b>'+c.eff+'</b></button>'+
+       '<button class="cbtn mix" data-n="'+i+'" data-k="mix">Mix<b>'+c.mix+'</b></button>'+
+       '<button class="cbtn fail" data-n="'+i+'" data-k="fail">Fail<b>'+c.fail+'</b></button></div>';
+    h+='<div class="bar">'+
+       '<i class="b-eff" style="width:'+(t?c.eff/t*100:0)+'%"></i>'+
+       '<i class="b-mix" style="width:'+(t?c.mix/t*100:0)+'%"></i>'+
+       '<i class="b-fail" style="width:'+(t?c.fail/t*100:0)+'%"></i></div></div>';
+  }
+  document.getElementById("tally").innerHTML=h;
+  var bs=document.querySelectorAll(".cbtn"),j;
+  for(j=0;j<bs.length;j++){
+    bs[j].addEventListener("click",function(ev){
+      var n=POLL[parseInt(this.getAttribute("data-n"),10)], k=this.getAttribute("data-k");
+      if(!counts[n]) counts[n]={eff:0,mix:0,fail:0};
+      counts[n][k] += ev.shiftKey ? -1 : 1;
+      if(counts[n][k]<0) counts[n][k]=0;
+      save(); renderTally();
+    });
+  }
+}
+
+function cardHTML(c,id){
+  return '<div class="card" data-c="'+id+'">'+
+    '<div class="cd-top"><div class="cd-kick">'+c.kick+'</div><div class="cd-name">'+c.name+'</div>'+
+    '<div class="cd-change"><b>What changes</b>'+c.change+'</div></div>'+
+    '<div class="cd-ask">'+c.ask+'</div>'+
+    '<button class="cd-btn">Discuss it first &mdash; then reveal our reading</button>'+
+    '<div class="cd-ans">'+c.ans+'</div></div>';
+}
+function wireCards(scope){
+  var cs=scope.querySelectorAll(".card"),i;
+  for(i=0;i<cs.length;i++){
+    (function(el){
+      var b=el.querySelector(".cd-btn"), a=el.querySelector(".cd-ans");
+      b.addEventListener("click",function(){
+        a.classList.toggle("on");
+        b.textContent = a.classList.contains("on") ? "Hide" : "Discuss it first — then reveal our reading";
+      });
+    })(cs[i]);
+  }
+}
+
+function init(){
+  load();
+  renderTabs(); go(0); renderTally();
+  document.getElementById("warm").innerHTML = cardHTML(WARM,"warm");
+  wireCards(document.getElementById("warm"));
+  var h="",i;
+  for(i=0;i<CARDS.length;i++) h+=cardHTML(CARDS[i],"c"+i);
+  document.getElementById("cards").innerHTML=h;
+  wireCards(document.getElementById("cards"));
+
+  var nx=document.querySelectorAll(".nextbtn"),j;
+  for(j=0;j<nx.length;j++) nx[j].addEventListener("click",function(){ go(parseInt(this.getAttribute("data-go"),10)); });
+
+  document.getElementById("openSub").addEventListener("click",function(){
+    document.getElementById("subpanel").classList.add("open");
+    document.getElementById("scrim").classList.add("open");
+  });
+  function cs(){ document.getElementById("subpanel").classList.remove("open"); document.getElementById("scrim").classList.remove("open"); }
+  document.getElementById("closeSub").addEventListener("click",cs);
+  document.getElementById("scrim").addEventListener("click",cs);
+  document.getElementById("resetTally").addEventListener("click",function(){
+    if(!window.confirm("Clear the poll numbers?")) return;
+    counts={}; save(); renderTally();
+  });
+}
+if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",init); else init();
+})();
+</script>
+</body>
+</html>

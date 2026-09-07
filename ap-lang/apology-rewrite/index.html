@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fix the Apology: Rewrite and Analyse — AP Language</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#1a1a18;--ink-mid:#4a4a44;--ink-light:#8a8a80;
+  --rule:#d4d0c4;--paper:#f7f4ee;--paper-warm:#efe9db;
+  --accent:#8b3a2a;--accent-light:#f5ede9;
+  --ok:#1a5c3a;--ok-bg:#e8f3ed;
+  --bad:#6b2a2a;--bad-bg:#f5e8e8;
+  --warn:#7a5c1a;--warn-bg:#f5f0e2;
+  --mid:#33404f;--mid-bg:#e9edf2;
+  --serif:'Libre Baskerville',Georgia,serif;
+  --sans:'Barlow',system-ui,sans-serif;
+  --cond:'Barlow Condensed',system-ui,sans-serif;
+  --type:'Special Elite','Courier New',monospace;
+}
+html{font-size:16px;-webkit-text-size-adjust:100%;}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6;min-height:100vh;}
+
+.masthead{border-bottom:3px double var(--ink);padding:.75rem 1rem .6rem;background:var(--paper);position:sticky;top:0;z-index:200;text-align:center;}
+.masthead-kicker{font-family:var(--cond);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-light);margin-bottom:.15rem;}
+.masthead-title{font-family:var(--serif);font-size:clamp(15px,2.3vw,22px);font-weight:700;line-height:1.15;letter-spacing:-.02em;}
+
+.top-tabs{display:flex;background:var(--paper);border-bottom:1px solid var(--rule);position:sticky;top:56px;z-index:190;overflow-x:auto;}
+.top-tab{flex:1 0 auto;min-width:112px;padding:.55rem .6rem;font-family:var(--cond);font-size:12.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-light);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all .15s;text-align:center;}
+.top-tab:hover{color:var(--ink);background:var(--paper-warm);}
+.top-tab.active{color:var(--ink);border-bottom-color:var(--accent);}
+.tab-hint{font-family:var(--sans);font-size:10px;font-weight:400;letter-spacing:0;text-transform:none;display:block;color:var(--ink-light);margin-top:1px;}
+.top-tab.active .tab-hint{color:var(--ink-mid);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;animation:fadeIn .2s ease;}
+@media(max-width:620px){.top-tabs{top:70px;}.top-tab{min-width:94px;font-size:11.5px;padding:.5rem .35rem;}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.wrap{max-width:900px;margin:0 auto;padding:1.7rem 1.25rem 4.5rem;}
+
+.stage-num{font-family:var(--cond);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-light);margin-bottom:.2rem;}
+h2.stage-title{font-family:var(--serif);font-size:clamp(20px,2.6vw,27px);font-weight:700;line-height:1.18;letter-spacing:-.02em;margin-bottom:.6rem;}
+.lede{font-size:15px;color:var(--ink-mid);line-height:1.7;margin-bottom:1.4rem;padding-bottom:1.1rem;border-bottom:1px solid var(--rule);}
+.lede strong{color:var(--ink);font-weight:600;}
+h3.sub{font-family:var(--cond);font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;border-bottom:2px solid var(--ink);padding-bottom:.3rem;margin:2rem 0 .9rem;}
+p.body{font-size:14.6px;line-height:1.72;margin-bottom:.85rem;}
+p.body.dim{color:var(--ink-mid);font-size:14px;}
+ul.body,ol.body{margin:.6rem 0 1rem 1.2rem;font-size:14.4px;line-height:1.7;}
+ul.body li,ol.body li{margin-bottom:.5rem;}
+.callout{background:var(--paper-warm);border-left:4px solid var(--accent);padding:.95rem 1.15rem;margin:1.2rem 0;font-size:14px;line-height:1.72;color:var(--ink-mid);}
+.callout strong{color:var(--ink);font-weight:600;}
+.callout p+p{margin-top:.6rem;}
+.doc{background:#fff;border:1px solid var(--rule);border-radius:2px;padding:1rem 1.2rem;margin-bottom:1rem;}
+.doc .doc-lab{font-family:var(--cond);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700;margin-bottom:.5rem;padding-bottom:.35rem;border-bottom:1px solid var(--rule);}
+.doc p{font-family:var(--serif);font-size:13.8px;line-height:1.8;margin-bottom:.7rem;}
+.doc p:last-child{margin-bottom:0;}
+.doc.alt{background:var(--ok-bg);}
+.doc.alt .doc-lab{color:var(--ok);border-bottom-color:#b3d8c5;}
+.doc.was{background:var(--bad-bg);}
+.doc.was .doc-lab{color:var(--bad);border-bottom-color:#dcc0c0;}
+
+/* ── POV ── */
+.pov{display:grid;gap:.8rem;margin:1.2rem 0;}
+@media(min-width:760px){.pov{grid-template-columns:1fr 1fr;}}
+.povbox{background:#fff;border:1px solid var(--rule);border-top:4px solid var(--mid);border-radius:2px;padding:.9rem 1.05rem;}
+.povbox .pv-lab{font-family:var(--cond);font-size:12px;letter-spacing:.11em;text-transform:uppercase;font-weight:700;color:var(--mid);margin-bottom:.35rem;}
+.povbox .pv-i{font-family:var(--type);font-size:22px;color:var(--accent);line-height:1;margin-bottom:.4rem;}
+.povbox p{font-size:14px;line-height:1.68;}
+.povbox .ex{font-family:var(--serif);font-size:13.4px;font-style:italic;color:var(--ink-mid);margin-top:.5rem;padding-top:.5rem;border-top:1px dotted var(--rule);}
+
+/* ── TABLE ── */
+.tbl{width:100%;border-collapse:collapse;margin:1rem 0 1.3rem;font-size:13.6px;background:#fff;border:1px solid var(--rule);}
+.tbl th{font-family:var(--cond);font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;text-align:left;padding:.6rem .7rem;background:var(--paper-warm);border-bottom:2px solid var(--ink);vertical-align:top;font-weight:700;}
+.tbl th span{display:block;font-family:var(--sans);font-size:10.5px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink-light);margin-top:.15rem;line-height:1.4;}
+.tbl td{padding:.7rem;border-bottom:1px solid var(--rule);vertical-align:top;line-height:1.65;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl td.n{font-family:var(--type);font-size:12px;color:var(--ink-light);width:26px;text-align:center;}
+.tblwrap{overflow-x:auto;}
+@media(max-width:700px){.tbl{min-width:640px;}}
+
+.nb{background:#fffdf5;border:2px solid var(--ink);border-radius:2px;padding:1rem 1.2rem;margin:1.6rem 0 .5rem;position:relative;}
+.nb::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:repeating-linear-gradient(to bottom,var(--ink) 0 7px,transparent 7px 14px);}
+.nb .nb-lab{font-family:var(--cond);font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;margin-bottom:.5rem;}
+.nb .nb-lab span{font-family:var(--type);color:var(--accent);}
+.nb ol,.nb ul{margin:0 0 0 1.15rem;font-size:14.2px;line-height:1.68;}
+.nb li{margin-bottom:.45rem;}
+
+.check{background:#fff;border:1px solid var(--rule);border-radius:2px;padding:.4rem 0;margin:1rem 0;}
+.ck{display:flex;gap:.7rem;align-items:flex-start;padding:.6rem .95rem;border-bottom:1px solid var(--rule);cursor:pointer;}
+.ck:last-child{border-bottom:none;}
+.ck:hover{background:var(--paper-warm);}
+.ck input{margin-top:.28rem;width:16px;height:16px;flex:none;accent-color:#1a5c3a;}
+.ck span{font-size:14.2px;line-height:1.62;}
+.ck.done span{color:var(--ink-light);text-decoration:line-through;}
+
+.clock{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.2rem;}
+.ct{flex:1 1 130px;background:#fff;border:1px solid var(--rule);border-top:3px solid var(--accent);border-radius:2px;padding:.6rem .7rem;}
+.ct b{font-family:var(--type);font-size:12px;color:var(--accent);display:block;}
+.ct span{font-size:13.2px;line-height:1.5;color:var(--ink-mid);display:block;margin-top:.15rem;}
+
+.btn{font-family:var(--cond);font-size:13px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:.55rem 1.2rem;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer;border-radius:2px;}
+.btn:hover{background:var(--accent);border-color:var(--accent);}
+.btnrow{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.5rem;padding-top:1.2rem;border-top:1px solid var(--rule);}
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead-kicker">AP Language &middot; Day Three &middot; 80 Minutes</div>
+  <div class="masthead-title">Fix the Apology</div>
+</div>
+
+<div class="top-tabs" id="tabs"></div>
+
+<div class="wrap">
+
+<!-- 1 · TASK -->
+<section class="tab-panel" data-panel="0">
+  <div class="stage-num">The Assignment</div>
+  <h2 class="stage-title">What You Are Doing Today</h2>
+  <p class="lede">You have spent two classes explaining why other people's apologies fail. Today you repair one, and then you analyse <strong>your own</strong> choices exactly the way you have been analysing theirs.</p>
+
+  <h3 class="sub">Two pieces of writing</h3>
+  <ol class="body">
+    <li><strong>The rewrite.</strong> Take one apology you put in Failed or Mixed and rewrite it. Not a note about how it should go &mdash; the actual apology, in that person's voice, ready for them to publish. It does not have to be long. It has to work.</li>
+    <li><strong>The analysis.</strong> One paragraph explaining <strong>two or three</strong> of the choices you made, using Choice &rarr; Unpacking &rarr; Effect on the Audience. This is the piece that is assessed.</li>
+  </ol>
+
+  <div class="callout">
+    <p><strong>The rule that decides everything:</strong> you are not making the apology <em>nicer</em>. You are making it work on <em>that speaker's audience</em>, using only what was actually available to <em>that speaker</em>. A rewrite that turns Ye into a press release has not fixed anything &mdash; it has just changed who is talking.</p>
+  </div>
+
+  <h3 class="sub">The clock</h3>
+  <div class="clock">
+    <div class="ct"><b>0–10</b><span>Read the model. All of it.</span></div>
+    <div class="ct"><b>10–20</b><span>Plan in the table.</span></div>
+    <div class="ct"><b>20–45</b><span>Write the rewrite.</span></div>
+    <div class="ct"><b>45–70</b><span>Write the analysis.</span></div>
+    <div class="ct"><b>70–80</b><span>Check, then upload.</span></div>
+  </div>
+
+  <p class="body">Everything is handwritten in your notebook. At the end, photograph both pages and upload them to Google Classroom before you leave.</p>
+
+  <div class="btnrow"><button class="btn nextbtn" data-go="1">Next &rarr; Who Is &ldquo;I&rdquo;?</button></div>
+</section>
+
+<!-- 2 · POV -->
+<section class="tab-panel" data-panel="1">
+  <div class="stage-num">Read this before you write anything</div>
+  <h2 class="stage-title">There Are Two Different &ldquo;I&rdquo;s</h2>
+  <p class="lede">This is the one thing that goes wrong every year, and it is worth thirty seconds now to save you rewriting later. You are producing two pieces of writing, and the word <strong>I</strong> means a different person in each of them.</p>
+
+  <div class="pov">
+    <div class="povbox">
+      <div class="pv-i">I</div>
+      <div class="pv-lab">In the rewrite</div>
+      <p><strong>&ldquo;I&rdquo; is the celebrity.</strong> You are ghostwriting. Every word is theirs, in their voice, as if they were about to post it.</p>
+      <p class="ex">&ldquo;I asked that officer whether he knew who I was, and I meant it as a threat.&rdquo;</p>
+    </div>
+    <div class="povbox">
+      <div class="pv-i">I</div>
+      <div class="pv-lab">In the analysis</div>
+      <p><strong>&ldquo;I&rdquo; is you.</strong> You are explaining the choices you made and why. The celebrity is <em>he</em> or <em>she</em> &mdash; never &ldquo;I&rdquo;.</p>
+      <p class="ex">&ldquo;I cut that line because her audience needed to see her as the person who created the danger.&rdquo;</p>
+    </div>
+  </div>
+
+  <div class="callout" style="border-left-color:var(--bad);background:var(--bad-bg);color:#4a2020;">
+    <p><strong>The mistake to avoid.</strong> Writing the new lines yourself and then giving the credit to the celebrity: <em>&ldquo;Through these lines, Reese is assuming full accountability&hellip;&rdquo;</em></p>
+    <p>Reese did not choose those lines. <strong>You</strong> did. So say so: <em>&ldquo;I had her name the offence directly, so that her audience&hellip;&rdquo;</em> The analysis is about your decisions, not hers.</p>
+  </div>
+
+  <div class="btnrow"><button class="btn nextbtn" data-go="2">Next &rarr; The Model</button></div>
+</section>
+
+<!-- 3 · MODEL -->
+<section class="tab-panel" data-panel="2">
+  <div class="stage-num">10 minutes &middot; read all of it</div>
+  <h2 class="stage-title">A Worked Example</h2>
+  <p class="lede">Reese Witherspoon. The failure being repaired is the one we close-read on Monday.</p>
+
+  <h3 class="sub">Step one &middot; name the failure</h3>
+  <div class="doc was">
+    <div class="doc-lab">What she wrote &mdash; and why it fails</div>
+    <p>&ldquo;I was disrespectful to the officer who was just doing his job.&rdquo;</p>
+    <p style="font-family:var(--sans);font-size:13.6px;font-style:normal;color:#4a2020;">The Downgrade. Everyone listening already knew she had asked, <em>&ldquo;Do you know my name?&rdquo;</em> She apologises for rudeness and never once for trying to use her fame to escape an arrest &mdash; which is the offence the audience was actually angry about.</p>
+  </div>
+
+  <h3 class="sub">Step two &middot; the rewrite (I = Reese)</h3>
+  <div class="doc alt">
+    <div class="doc-lab">The replacement passage</div>
+    <p>I want to be specific about what I did, because everybody already knows it. When that officer was arresting my husband, I asked him whether he knew my name. I said it to make him back off. I was trying to use the fact that people recognise me to get out of something that anyone else would have been arrested for, and that is the part I am ashamed of. I was not simply rude to him. I tried to put myself above the law he was there to enforce.</p>
+  </div>
+
+  <h3 class="sub">Step three &middot; unpack your own choices</h3>
+  <div class="tblwrap">
+  <table class="tbl">
+    <tr>
+      <th class="n"></th>
+      <th style="width:26%">Choice<span>What did I actually do? Quote it.</span></th>
+      <th style="width:37%">Unpacking<span>What does that choice suggest, and why was it available to this speaker?</span></th>
+      <th style="width:37%">Effect on the Audience &amp; Link to Purpose<span>What does it do to them, and how does it move toward forgiveness?</span></th>
+    </tr>
+    <tr>
+      <td class="n">1</td>
+      <td>I had her quote her own worst line back: <em>&ldquo;I asked him whether he knew my name. I said it to make him back off.&rdquo;</em></td>
+      <td>The original works around the one sentence the entire country had already read. Repeating it in her own voice removes any suggestion that she is hoping it gets forgotten, and commits her to the exact wording rather than a summary of it.</td>
+      <td>Her audience already has that sentence in their heads, so an apology that leaves it out invites them to notice the gap. Volunteering the most damaging fact instead of managing it makes everything after it believable, and belief is the thing she needs before forgiveness is possible.</td>
+    </tr>
+    <tr>
+      <td class="n">2</td>
+      <td>I replaced <em>&ldquo;disrespectful&rdquo;</em> with <em>&ldquo;I tried to put myself above the law.&rdquo;</em></td>
+      <td><em>Disrespectful</em> describes a tone. <em>Above the law</em> describes an act. Swapping the small adjacent offence for the real one shows she understands the accusation rather than a softened version of it.</td>
+      <td>What her audience resented was not rudeness &mdash; it was the idea that fame buys exemption. Naming that directly answers the grievance they actually had, instead of apologising for something nobody was angry about.</td>
+    </tr>
+    <tr>
+      <td class="n">3</td>
+      <td>I cut <em>&ldquo;I was frightened for my husband.&rdquo;</em></td>
+      <td>Offered as context, it functions as an excuse, and it arrives before she has named what she did. It quietly casts Reese as a person in danger.</td>
+      <td>Removing it keeps her in the position of the person who caused the problem rather than someone it happened to, so the audience is never asked to feel sorry for her in the middle of an apology.</td>
+    </tr>
+  </table>
+  </div>
+
+  <h3 class="sub">Step four &middot; turn the table into a paragraph (I = you)</h3>
+  <div class="doc">
+    <div class="doc-lab">The analysis &mdash; this is what gets assessed</div>
+    <p style="font-family:var(--sans);font-size:14.2px;line-height:1.78;">Reese apologises for being &ldquo;disrespectful to the officer,&rdquo; which downgrades what she did, since everyone listening already knew she had asked, &ldquo;Do you know my name?&rdquo; So I had her quote that line back herself: &ldquo;I asked him whether he knew my name. I said it to make him back off.&rdquo; I chose to make her repeat the most damaging sentence in the story because her audience already had it in their heads, and an apology that avoids the thing everyone is thinking about invites them to notice the omission; volunteering it instead of managing it makes everything after it believable. I also replaced &ldquo;disrespectful&rdquo; with &ldquo;I tried to put myself above the law,&rdquo; because &ldquo;disrespectful&rdquo; describes a tone while the real offence was an act. Her audience &mdash; ordinary people who could never talk their way out of an arrest &mdash; resented exactly that, so naming it is the only choice that answers the grievance they actually had. Both of these are available to her <em>because</em> she is famous: the offence was an abuse of fame, so only naming it plainly can settle the account.</p>
+  </div>
+
+  <div class="callout">
+    <p><strong>Notice what that paragraph never does.</strong> It never says the original was badly written. It never says the new one sounds more sincere. Every sentence names a choice, says what the choice does, and ties it to a specific audience with a specific reason to be angry.</p>
+  </div>
+
+  <div class="btnrow"><button class="btn nextbtn" data-go="3">Next &rarr; Plan Yours</button></div>
+</section>
+
+<!-- 4 · PLAN -->
+<section class="tab-panel" data-panel="3">
+  <div class="stage-num">10 minutes</div>
+  <h2 class="stage-title">Plan It Before You Write It</h2>
+  <p class="lede">Copy this table into your notebook and fill it in <strong>before</strong> you draft. Two rows minimum, three if you can. Ten minutes here will save you twenty later.</p>
+
+  <div class="tblwrap">
+  <table class="tbl">
+    <tr>
+      <th class="n"></th>
+      <th style="width:26%">Choice<span>What did I do? Quote your own new words.</span></th>
+      <th style="width:37%">Unpacking<span>What does it suggest? Why is it available to this speaker?</span></th>
+      <th style="width:37%">Effect on the Audience &amp; Link to Purpose<span>What does it do to them? How does it move toward forgiveness?</span></th>
+    </tr>
+    <tr><td class="n">1</td><td style="height:64px"></td><td></td><td></td></tr>
+    <tr><td class="n">2</td><td style="height:64px"></td><td></td><td></td></tr>
+    <tr><td class="n">3</td><td style="height:64px"></td><td></td><td></td></tr>
+  </table>
+  </div>
+
+  <div class="nb">
+    <div class="nb-lab"><span>&#9998;</span> Answer these three first &mdash; they decide everything else</div>
+    <ol>
+      <li><strong>Who has to forgive this person?</strong> Be specific. Not &ldquo;the public.&rdquo; Which people, and what do they already know?</li>
+      <li><strong>What do they already believe about this speaker</strong> before a word is said? That is what you are working with or against.</li>
+      <li><strong>What is available to this speaker that is not available to anyone else</strong> &mdash; and what is closed off to them because of who they are?</li>
+    </ol>
+  </div>
+
+  <div class="callout">
+    <p><strong>A sentence frame, if you need one to start.</strong></p>
+    <p>I <em>[choice]</em> because <em>[speaker]</em>'s audience <em>[already knows / needs / believes X]</em>, which <em>[effect]</em>, and that moves them toward forgiving <em>[him / her]</em>.</p>
+    <p class="dim" style="font-size:13.4px;">Use it to get going, then write your way out of it. Three sentences in a row with the same shape will read as a form.</p>
+  </div>
+
+  <div class="btnrow"><button class="btn nextbtn" data-go="4">Next &rarr; Check &amp; Upload</button></div>
+</section>
+
+<!-- 5 · CHECK -->
+<section class="tab-panel" data-panel="4">
+  <div class="stage-num">Last 10 minutes</div>
+  <h2 class="stage-title">Check It, Then Upload</h2>
+  <p class="lede">Swap notebooks with a partner and read theirs against this list. Tick as you go. It is easier to catch these in someone else's writing than your own.</p>
+
+  <div class="check" id="check"></div>
+
+  <div class="nb">
+    <div class="nb-lab"><span>&#9998;</span> Before you leave</div>
+    <ul>
+      <li>Photograph <strong>both</strong> pages &mdash; the rewrite and the analysis.</li>
+      <li>Upload to Google Classroom.</li>
+      <li>If your partner flagged something on the list, fix it first.</li>
+    </ul>
+  </div>
+
+  <div class="callout">
+    <p><strong>If you finish early:</strong> add a fourth row to your table &mdash; something you chose <em>not</em> to change, and why leaving it alone was the right call. Restraint is a rhetorical choice too, and it is the hardest one to defend well.</p>
+  </div>
+</section>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+var TABS=[{t:"The Task",h:"read first"},{t:"Two I's",h:"POV rule"},{t:"The Model",h:"10 min"},{t:"Plan Yours",h:"10 min"},{t:"Check",h:"10 min"}];
+var CHECKS=[
+  "The rewrite is in the <strong>speaker's</strong> voice. Every &ldquo;I&rdquo; in it is the celebrity, not the writer.",
+  "The analysis is in the <strong>writer's</strong> voice. Every &ldquo;I&rdquo; in it is you, and the celebrity is <em>he</em> or <em>she</em>.",
+  "The original failing phrase is <strong>quoted</strong>, and the dodge is named.",
+  "The new words are <strong>quoted</strong> too &mdash; not just described.",
+  "A specific audience is named. Not &ldquo;the public.&rdquo; Who, and what do they already know?",
+  "Every choice has all three parts: what I did, what it suggests, what it does to that audience.",
+  "Nothing anywhere about grammar, spelling, length, or sounding sincere.",
+  "The rewrite still sounds like a person that speaker could plausibly be. It has not turned into somebody else."
+];
+var cur=0;
+function renderTabs(){
+  var h="",i;
+  for(i=0;i<TABS.length;i++) h+='<button class="top-tab'+(i===cur?" active":"")+'" data-tab="'+i+'">'+TABS[i].t+'<span class="tab-hint">'+TABS[i].h+'</span></button>';
+  document.getElementById("tabs").innerHTML=h;
+  var b=document.querySelectorAll(".top-tab"),j;
+  for(j=0;j<b.length;j++) b[j].addEventListener("click",function(){ go(parseInt(this.getAttribute("data-tab"),10)); });
+}
+function go(i){
+  cur=i;
+  var ps=document.querySelectorAll(".tab-panel"),k;
+  for(k=0;k<ps.length;k++) ps[k].classList.toggle("active",parseInt(ps[k].getAttribute("data-panel"),10)===i);
+  renderTabs(); window.scrollTo({top:0,behavior:"smooth"});
+}
+function init(){
+  renderTabs(); go(0);
+  var h="",i;
+  for(i=0;i<CHECKS.length;i++) h+='<label class="ck"><input type="checkbox"><span>'+CHECKS[i]+'</span></label>';
+  document.getElementById("check").innerHTML=h;
+  var cks=document.querySelectorAll(".ck"),j;
+  for(j=0;j<cks.length;j++){
+    (function(el){
+      var box=el.querySelector("input");
+      box.addEventListener("change",function(){ el.classList.toggle("done",box.checked); });
+    })(cks[j]);
+  }
+  var nx=document.querySelectorAll(".nextbtn"),m;
+  for(m=0;m<nx.length;m++) nx[m].addEventListener("click",function(){ go(parseInt(this.getAttribute("data-go"),10)); });
+}
+if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",init); else init();
+})();
+</script>
+</body>
+</html>
