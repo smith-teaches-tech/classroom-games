@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Does a Reason Reach? — TOK Knowledge &amp; the Knower, Lesson 2</title>
+<meta name="description" content="TOK Unit 1 Lesson 2: justified true belief, Gettier cases, and the Authority Repair. Self-paced group activity.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4ede0;
+    --paper-deep:#ebe1cf;
+    --ink:#1a1814;
+    --ink-soft:#4a4438;
+    --ink-faint:#8a8275;
+    --line:#c9bfa9;
+    --card:#fbf7ef;
+    --accent:#2a4d7a;
+    --accent-red:#b8392e;
+    --accent-soft:#e6ecf3;
+    --good:#2f6b45;
+    --good-soft:#e6efe7;
+    --hollow:#8a6100;
+    --hollow-soft:#f6ecd6;
+    --lucky:#b8392e;
+    --lucky-soft:#f7e6e3;
+    --ui:'Inter',ui-sans-serif,system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    --radius:4px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font:20px/1.55 'Cormorant Garamond',Georgia,serif;
+  }
+  .wrap{max-width:820px;margin:0 auto;padding:0 20px 100px}
+
+  /* ---------- top bar ---------- */
+  header.bar{
+    position:sticky;top:0;z-index:50;
+    background:var(--paper);
+    border-bottom:1px solid var(--line);
+    padding:10px 0;
+  }
+  .bar-inner{max-width:820px;margin:0 auto;padding:0 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .bar h1{font:600 13px/1.3 var(--ui);margin:0;letter-spacing:.01em;flex:1;min-width:180px}
+  .bar h1 span{color:var(--ink-faint);font-weight:400}
+  .steps{display:flex;gap:6px;flex-wrap:wrap;list-style:none;margin:0;padding:0}
+  .steps button{
+    font:500 11px/1 var(--mono);
+    border:1px solid var(--line);background:var(--card);color:var(--ink-soft);
+    padding:7px 10px;border-radius:99px;cursor:pointer;
+  }
+  .steps button[aria-current="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+  .steps button:hover{border-color:var(--ink)}
+  .printbtn{
+    font:500 11px/1 var(--mono);
+    border:1px solid var(--accent);background:var(--accent);color:#fff;
+    padding:8px 12px;border-radius:99px;cursor:pointer;
+  }
+
+  /* ---------- sections ---------- */
+  section.screen{display:none;padding-top:30px}
+  section.screen.on{display:block}
+  .eyebrow{
+    font:500 11px/1 var(--mono);
+    letter-spacing:.13em;text-transform:uppercase;color:var(--accent);margin:0 0 8px
+  }
+  h2{font-size:40px;line-height:1.2;margin:0 0 6px;letter-spacing:-.01em}
+  h3{font-size:27px;margin:30px 0 8px}
+  .lede{font-size:23px;color:var(--ink-soft);margin:0 0 24px}
+  p{margin:0 0 14px}
+  .small{font-size:17px;color:var(--ink-soft)}
+  ul,ol{margin:0 0 14px;padding-left:22px}
+  li{margin-bottom:7px}
+  strong{font-weight:700}
+
+  .box{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px 20px;margin:0 0 18px;
+  }
+  .box h4{margin:0 0 8px;font-size:15px;font-weight:600;font-family:var(--ui);letter-spacing:.02em}
+  .task{border-left:4px solid var(--accent);background:var(--accent-soft);border-color:#cfe0ec}
+  .warn{border-left:4px solid var(--hollow);background:var(--hollow-soft);border-color:#eddcb4}
+  .task,.warn{font:400 16px/1.6 var(--ui)}
+  .task .small,.warn .small{font-size:15px}
+  .task strong,.warn strong{font-weight:600}
+  .big{font-size:25px;line-height:1.45}
+  .rule{
+    border:2px solid var(--ink);border-radius:var(--radius);padding:18px 20px;margin:22px 0;background:#fff;
+  }
+  .rule p:last-child{margin-bottom:0}
+
+  .story{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;margin-bottom:20px}
+  .story p:last-child{margin-bottom:0}
+
+  .btn{
+    font:600 14px/1 var(--ui);
+    border:1px solid var(--ink);background:var(--ink);color:#fff;
+    padding:12px 18px;border-radius:8px;cursor:pointer;margin:4px 6px 4px 0;
+  }
+  .btn.ghost{background:#fff;color:var(--ink)}
+  .btn:hover{opacity:.88}
+  .reveal{display:none}
+  .reveal.on{display:block}
+
+  .vote{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 14px}
+  .vote button{
+    font:600 15px/1 var(--ui);
+    border:1px solid var(--line);background:#fff;padding:14px 22px;border-radius:8px;cursor:pointer;
+  }
+  .vote button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+  /* ---------- cards ---------- */
+  .pairnav{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 16px}
+  .pairnav .count{font:500 12px/1 var(--mono);color:var(--ink-soft)}
+  .pair{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:680px){.pair{grid-template-columns:1fr}}
+  .claimcard{
+    background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;
+    display:flex;flex-direction:column;
+  }
+  .claimcard .num{font:500 10px/1 var(--mono);letter-spacing:.12em;color:var(--ink-soft);margin-bottom:8px}
+  .claimcard .claim{font-size:21px;font-weight:700;margin-bottom:8px;line-height:1.3}
+  .claimcard .because{font-size:10px;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px}
+  .claimcard .reason{margin-bottom:14px}
+  .claimcard .aok{margin-top:auto;font:500 10px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);padding-top:10px;border-top:1px solid var(--line)}
+  .sortrow{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+  .sortrow button{
+    flex:1;min-width:74px;
+    font:600 12px/1.3 var(--ui);
+    border:1px solid var(--line);background:#fbfaf8;padding:10px 6px;border-radius:7px;cursor:pointer;
+  }
+  .sortrow button:hover{border-color:var(--ink)}
+  .sortrow button.pick{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .verdict{display:none;border-radius:4px;padding:12px 14px;font-size:17px}
+  .verdict.on{display:block}
+  .verdict.A{background:var(--good-soft);border:1px solid #bcdcc8}
+  .verdict.B{background:var(--hollow-soft);border:1px solid #eddcb4}
+  .verdict.C{background:var(--lucky-soft);border:1px solid #eec4c4}
+  .verdict .tag{font:500 10px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:6px}
+  .verdict.A .tag{color:var(--good)} .verdict.B .tag{color:var(--hollow)} .verdict.C .tag{color:var(--lucky)}
+  .key{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:0 0 20px}
+  @media(max-width:680px){.key{grid-template-columns:1fr}}
+  .key div{border-radius:4px;padding:12px 14px;font-size:17px}
+  .key .kA{background:var(--good-soft);border:1px solid #bcdcc8}
+  .key .kB{background:var(--hollow-soft);border:1px solid #eddcb4}
+  .key .kC{background:var(--lucky-soft);border:1px solid #eec4c4}
+  .key b{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px}
+
+  /* ---------- moves ---------- */
+  .move{border:1px solid var(--line);background:#fff;border-radius:var(--radius);padding:16px 18px;margin-bottom:12px}
+  .move .h{font:500 10px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+  .move .q{font-size:21px;font-weight:700;margin-bottom:10px}
+  .punch{
+    background:var(--ink);color:#fff;border-radius:var(--radius);padding:22px 24px;margin:20px 0;
+    font-size:25px;line-height:1.4;
+  }
+  .punch small{display:block;font:500 10px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;opacity:.6;margin-bottom:10px}
+  .chain{font:500 15px/1.9 var(--ui);color:var(--ink)}
+
+  .footnav{display:flex;justify-content:space-between;gap:10px;margin-top:38px;padding-top:20px;border-top:1px solid var(--line)}
+
+  .timing{font:400 12px/1.6 var(--mono);color:var(--ink-soft);letter-spacing:.04em;margin-bottom:18px}
+
+  /* ---------- print ---------- */
+  #worksheet,#runsheet{display:none}
+  @media print{
+    header.bar,section.screen,.footnav{display:none !important}
+    body{background:#fff;font-size:11.5pt;line-height:1.5}
+    .wrap{max-width:none;padding:0}
+    #worksheet{display:block}
+    body.print-sub #worksheet{display:none}
+    body.print-sub #runsheet{display:block}
+    .ws-h{font-family:var(--ui)}
+    .page{page-break-after:always}
+    .page:last-child{page-break-after:auto}
+    .lines{border-bottom:1px solid #999;height:22px;margin-bottom:6px}
+    h2,h3,h4{page-break-after:avoid}
+    table{page-break-inside:avoid}
+  }
+  /* worksheet styling (also used if someone previews it) */
+  #worksheet h2{font-size:19pt;margin-bottom:2px}
+  #worksheet h3{font-size:13.5pt;margin:16px 0 6px;border-bottom:1px solid #000;padding-bottom:3px}
+  #worksheet .namebar{font-size:11pt;margin-bottom:14px}
+  #worksheet .qn{font-weight:700}
+  #worksheet table{width:100%;border-collapse:collapse;font-size:10pt;margin-bottom:10px}
+  #worksheet th,#worksheet td{border:1px solid #333;padding:5px 6px;text-align:left;vertical-align:top}
+  #worksheet th{background:#eee;font-family:var(--ui);font-size:9pt;letter-spacing:.04em;text-transform:uppercase}
+  #worksheet .frame{border:1.5px solid #000;padding:10px 12px;margin:10px 0}
+  #runsheet h2{font-size:17pt;margin-bottom:4px}
+  #runsheet h3{font-size:13pt;margin:14px 0 5px}
+  #runsheet table{width:100%;border-collapse:collapse;font-size:10pt}
+  #runsheet th,#runsheet td{border:1px solid #333;padding:5px 6px;text-align:left;vertical-align:top}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="bar-inner">
+    <h1>Does a Reason Reach? <span>· TOK · Knowledge &amp; the Knower · Lesson 2</span></h1>
+    <ul class="steps" id="steps"></ul>
+    <button class="printbtn" onclick="printWorksheet()">Print worksheet</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- ============ 0. START ============ -->
+<section class="screen on" id="s0">
+  <p class="eyebrow">Start here</p>
+  <h2>Today you are getting a tool.</h2>
+  <p class="lede">Last class we could not agree on who knew the most. Today we work out what actually makes something count as knowledge — and how to tell a good reason from a reason that only sounds good.</p>
+
+  <div class="box task">
+    <h4>How today works</h4>
+    <ul>
+      <li>Work in your group. One person drives the screen. <strong>Everyone writes on their own worksheet.</strong></li>
+      <li>Never click a <em>Reveal</em> button until every person in the group has written something down. That is the whole deal.</li>
+      <li>Four parts. Move through them in order using the buttons at the top.</li>
+    </ul>
+  </div>
+
+  <p class="timing">Part 1 Farmer John · 15 min &nbsp;|&nbsp; Part 2 The Elder · 10 min &nbsp;|&nbsp; Part 3 The Cards · 20 min &nbsp;|&nbsp; Part 4 The Repair · 30 min &nbsp;|&nbsp; Exit · 5 min</p>
+
+  <p class="small">Substitute teacher: there is a one-page run sheet for you — <a href="#" onclick="printRunSheet();return false;">print it here</a>.</p>
+
+  <div class="footnav"><span></span><button class="btn" onclick="go(1)">Start Part 1 →</button></div>
+</section>
+
+<!-- ============ 1. FARMER JOHN ============ -->
+<section class="screen" id="s1">
+  <p class="eyebrow">Part 1 · 15 minutes</p>
+  <h2>Farmer John and the cow</h2>
+  <p class="lede">Read this out loud in your group. All of it. Then argue about it before you touch a button.</p>
+
+  <div class="story">
+    <p>A farmer called John owns a cow named Betsy.</p>
+    <p>A neighbour walks past and says, <em>“I didn't see Betsy in the field just now.”</em></p>
+    <p>John goes to the window and looks. In the distance he sees a brown-and-white shape. <em>Fine,</em> he thinks. <em>Betsy is in the field after all.</em></p>
+    <p><strong>Now the twist.</strong> The brown-and-white shape John saw was not Betsy. It was a bush. But Betsy <em>was</em> in the field — standing out of sight, behind a hill.</p>
+  </div>
+
+  <div class="box task">
+    <h4>Do this before you reveal anything</h4>
+    <p><strong>Question:</strong> Did John <em>know</em> that Betsy was in the field?</p>
+    <p class="small">Vote as a group, then each person writes their reason on the worksheet, Part 1.</p>
+    <div class="vote" role="group">
+      <button onclick="vote(this)" aria-pressed="false">Yes, he knew</button>
+      <button onclick="vote(this)" aria-pressed="false">No, he didn't</button>
+      <button onclick="vote(this)" aria-pressed="false">We're split</button>
+    </div>
+  </div>
+
+  <button class="btn" onclick="show('r1a',this)">Everyone has written. Reveal the answer.</button>
+
+  <div class="reveal" id="r1a">
+    <div class="rule">
+      <p class="big"><strong>No. John did not know.</strong></p>
+      <p>Go through it slowly:</p>
+      <ul>
+        <li><strong>Was it true?</strong> Yes. Betsy really was in the field.</li>
+        <li><strong>Did he believe it?</strong> Yes.</li>
+        <li><strong>Did he have a reason?</strong> Yes — he saw a brown-and-white shape and it looked like a cow.</li>
+      </ul>
+      <p>All three boxes are ticked. And he still didn't know.</p>
+      <p><strong>Here is why.</strong> The thing John looked at was a bush. The thing that made his belief true was Betsy, hidden behind a hill. The bush and Betsy have nothing to do with each other. His reason and the truth ended up in the same place <em>by accident</em>. They never touched.</p>
+      <p class="big"><strong>Being right by accident is not knowing. Luck is not knowledge.</strong></p>
+    </div>
+
+    <h3>The tool you just earned</h3>
+    <p>For about two thousand years the standard answer to “what is knowledge?” was three conditions. It is usually called <strong>justified true belief</strong>, or <strong>JTB</strong>. You know something when:</p>
+    <div class="rule">
+      <p><strong>1. It is true.</strong> (You can't know something false.)</p>
+      <p><strong>2. You believe it.</strong> (You can't know something you don't think is so.)</p>
+      <p><strong>3. You have a good reason.</strong> (A lucky guess doesn't count.)</p>
+    </div>
+    <p>Farmer John ticks all three boxes and still fails. So the three conditions are not quite enough. Something is missing, and it is this:</p>
+    <div class="punch">
+      <small>The move for the whole lesson</small>
+      Your reason has to <strong>reach</strong> the claim. It has to connect to the thing that makes the claim true — not just happen to land nearby.
+    </div>
+    <p class="small">The man who first pointed out this crack was Edmund Gettier, in a three-page paper in 1963. Philosophers have argued about it ever since. We are not going to. We are going to use it.</p>
+
+    <div class="box warn">
+      <h4>Two more of the same shape — read them, they take 30 seconds each</h4>
+      <p><strong>The stopped clock.</strong> You look at the wall clock. It says 3:00. You believe it is 3:00. It <em>is</em> 3:00 — but the clock stopped twelve hours ago and nobody noticed. You did not know the time. You read a broken clock at the one moment it was accidentally right.</p>
+      <p><strong>The aching knee.</strong> Your knee aches. You say it will rain tomorrow. It rains. But the ache came from a long walk and the rain came from a weather system. Nothing joined them. You guessed and got lucky.</p>
+      <p class="small" style="margin-bottom:0"><strong>Write this down:</strong> in all three cases — the bush, the clock, the knee — the belief was <em>true</em> and the reason was <em>useless</em>. Same shape every time.</p>
+    </div>
+  </div>
+
+  <div class="footnav"><button class="btn ghost" onclick="go(0)">← Back</button><button class="btn" onclick="go(2)">Part 2: The Elder →</button></div>
+</section>
+
+<!-- ============ 2. THE ELDER ============ -->
+<section class="screen" id="s2">
+  <p class="eyebrow">Part 2 · 10 minutes</p>
+  <h2>Back to the Elder</h2>
+  <p class="lede">You met him last class. Now you have a tool, so look at him again.</p>
+
+  <div class="story">
+    <p>The Elder can recite four hundred years of his family's history from memory — who was born to whom, in what order, going back generation by generation. He learned it from the elder before him, who learned it from the elder before her.</p>
+    <p>The Committee checked the whole thing against the written archive. <strong>Every name matched.</strong> The Committee was very pleased with itself.</p>
+    <p>Then one member ruined the mood: <em>“So did the archive make it knowledge? Or did he know it all along, and the archive just agreed with him?”</em></p>
+  </div>
+
+  <div class="box task">
+    <h4>Do this before you reveal anything</h4>
+    <p><strong>Question:</strong> <em>Before</em> the archive was checked, did the Elder have a justified true belief?</p>
+    <p class="small">Run all three boxes: true? believed? good reason? Write your group's answer on the worksheet, Part 2, before anyone clicks.</p>
+    <div class="vote" role="group">
+      <button onclick="vote(this)" aria-pressed="false">Yes — JTB</button>
+      <button onclick="vote(this)" aria-pressed="false">No — not yet</button>
+      <button onclick="vote(this)" aria-pressed="false">We're split</button>
+    </div>
+  </div>
+
+  <button class="btn" onclick="show('r2a',this)">Everyone has written. Reveal the answer.</button>
+
+  <div class="reveal" id="r2a">
+    <div class="rule">
+      <p class="big"><strong>Not yet.</strong></p>
+      <p><strong>True?</strong> Yes — we found that out afterwards. <strong>Believed?</strong> Absolutely. <strong>Good reason?</strong> This is where it breaks.</p>
+      <p>Ask the Elder how he knows. The honest answer is: <em>“I was told.”</em></p>
+      <p>Ask who told him. <em>“Someone who was told.”</em> Ask who told <em>them</em>. Same answer, four hundred years deep.</p>
+      <p>The chain never lands on anything you could go and check. It just keeps handing you back to another person saying the same thing. That is a <strong>full stop</strong>: it ends the conversation instead of sending you somewhere.</p>
+      <p>The archive changed that. Now there is a second source — written down, made by different hands — that agrees. Suddenly the reason points at something outside the Elder's head that you could actually go and look at.</p>
+      <p class="big">The Elder was <strong>right</strong> the whole time. He was not <strong>justified</strong> until his reason had somewhere to point.</p>
+    </div>
+
+    <div class="box warn">
+      <h4>But notice — one line on your worksheet, please</h4>
+      <p style="margin-bottom:0">Nothing inside the Elder's head changed on the day of the check. He knew exactly the same names on Wednesday as he did on Tuesday. So if the archive is what turned it into knowledge — does that mean a community that keeps no written records holds no knowledge at all? <em>Write what you think. Don't be lazy about it. Mr. Smith will ask.</em></p>
+    </div>
+
+    <p>Hold on to that word <strong>full stop</strong>. You will need it in Part 4.</p>
+  </div>
+
+  <div class="footnav"><button class="btn ghost" onclick="go(1)">← Back</button><button class="btn" onclick="go(3)">Part 3: The Cards →</button></div>
+</section>
+
+<!-- ============ 3. CARDS ============ -->
+<section class="screen" id="s3">
+  <p class="eyebrow">Part 3 · 20 minutes</p>
+  <h2>Sort the cards</h2>
+  <p class="lede">Each card makes a claim and gives a reason. <strong>Judge the reason, not the claim.</strong> The cards come in pairs — same claim, different reason. That's deliberate.</p>
+
+  <div class="key">
+    <div class="kA"><b>A — Reaches</b>The reason connects to the thing that makes the claim true. This is knowledge.</div>
+    <div class="kB"><b>B — Hollow</b>The reason sounds impressive but points at nothing you could check. It's a full stop.</div>
+    <div class="kC"><b>C — Lucky</b>A Farmer John. The claim may well be true — but this reason is not what makes it true. It only stands nearby.</div>
+  </div>
+
+  <div class="box warn">
+    <h4>Stuck between B and C?</h4>
+    <p style="margin-bottom:0">Ask: <em>if the claim turns out to be true, was this reason the thing that made it true — or was it just standing nearby when it happened?</em> Standing nearby is <strong>C</strong>. Pointing at nothing at all is <strong>B</strong>. Some cards are arguable. Argue about them.</p>
+  </div>
+
+  <div class="box task">
+    <h4>How to run this</h4>
+    <p style="margin-bottom:0">For each pair: read both cards aloud → agree as a group → <strong>write your letters on the worksheet grid</strong> → then click to check. Score yourselves. You are aiming to be able to say <em>why</em>, not to get a high score.</p>
+  </div>
+
+  <div class="pairnav">
+    <button class="btn ghost" onclick="pairStep(-1)">← Previous pair</button>
+    <span class="count" id="paircount"></span>
+    <button class="btn ghost" onclick="pairStep(1)">Next pair →</button>
+    <span class="count" id="score"></span>
+  </div>
+
+  <div id="pairhost"></div>
+
+  <div class="reveal" id="cardsdone" style="margin-top:24px">
+    <div class="rule">
+      <p class="big"><strong>Now find the cows.</strong></p>
+      <p>Look back over the pairs. Every card you marked <strong>C</strong> is a Farmer John: someone looking at a bush and calling it a cow. The bridge that held yesterday. The team that wins on Tuesdays. The clock that stopped. The knee.</p>
+      <p>And look at what the <strong>A</strong> cards have in common. Not one of them says “trust me.” Every single one points at something a stranger could go and check: a test, a second source, a record, a mechanism.</p>
+      <p style="margin-bottom:0"><strong>Write one line on your worksheet:</strong> what do all the A cards have that none of the others do?</p>
+    </div>
+  </div>
+
+  <div class="footnav"><button class="btn ghost" onclick="go(2)">← Back</button><button class="btn" onclick="go(4)">Part 4: The Repair →</button></div>
+</section>
+
+<!-- ============ 4. AUTHORITY REPAIR ============ -->
+<section class="screen" id="s4">
+  <p class="eyebrow">Part 4 · 30 minutes</p>
+  <h2>The Authority Repair</h2>
+  <p class="lede">“Because an expert said so” is the most common reason anyone gives for anything. Sometimes it's a brilliant reason. Sometimes it's worthless. Here is how to tell the difference — and how to fix it.</p>
+
+  <div class="rule">
+    <p><strong>A full stop</strong> says: <em>the textbook says so.</em> Full stop. End of conversation. It doesn't matter whether the source is a textbook, a sacred text, a scientist, a teacher or your mother — if the reason stops at the source, no checking has happened.</p>
+    <p style="margin-bottom:0"><strong>A pointer</strong> says: <em>the textbook says so, AND here is why this textbook is trusted on this particular topic, AND here is what would show it to be wrong.</em> A pointer points <em>past itself</em> to something you could check.</p>
+  </div>
+
+  <div class="box task">
+    <h4>The three moves — you will use these three times</h4>
+    <ol style="margin-bottom:0">
+      <li><strong>Name the authority, specifically.</strong> A vague authority can't be checked.</li>
+      <li><strong>Say why that authority is trusted <em>on this kind of claim</em>.</strong> This is the hard one, and it is the one that matters.</li>
+      <li><strong>Say what would show the authority is wrong.</strong> A real authority can be corrected.</li>
+    </ol>
+  </div>
+
+  <!-- I DO -->
+  <h3>Stage 1 — Watch it done · the Harvard MBA</h3>
+  <p class="small">Read this together. Don't skim it. Stage 3 gives you no help at all, so take what you need now.</p>
+
+  <div class="box">
+    <p style="margin-bottom:0"><strong>The claim:</strong> <em>This stock will go up this year, because the man giving the advice has a Harvard MBA.</em></p>
+  </div>
+
+  <div class="move">
+    <div class="h">Move 1 — Name the authority</div>
+    <div class="q">Who exactly is being trusted here?</div>
+    <button class="btn ghost" onclick="show('m1',this)">Show the worked answer</button>
+    <div class="reveal" id="m1"><p style="margin-bottom:0">A Harvard MBA — a two-year graduate degree in business from a very selective university. Note what we are <em>not</em> doing: we're not laughing at it. It is a real qualification and hard to get. If we want to reject this appeal, we have to actually show why it fails, not sneer at it.</p></div>
+  </div>
+
+  <div class="move">
+    <div class="h">Move 2 — Why trusted <em>on this claim</em>?</div>
+    <div class="q">Does the qualification actually cover the thing being claimed?</div>
+    <button class="btn ghost" onclick="show('m2',this)">Show the worked answer</button>
+    <div class="reveal" id="m2"><p style="margin-bottom:0">Here's where it falls apart. An MBA trains you to read financial statements, analyse a business, and run a company. It does not train you to predict which particular stock will rise in the next twelve months — nobody is trained to do that reliably, because if anyone could do it reliably they would already be extremely rich and extremely quiet about it. <strong>The qualification is real. It just doesn't cover this claim.</strong></p></div>
+  </div>
+
+  <div class="move">
+    <div class="h">Move 3 — What would show it's wrong?</div>
+    <div class="q">Is there anything we could check?</div>
+    <button class="btn ghost" onclick="show('m3',this)">Show the worked answer</button>
+    <div class="reveal" id="m3"><p style="margin-bottom:0">Pull his last twenty stock predictions and see how they did. If they're no better than flipping a coin, the appeal is dead. And notice: the person making the appeal didn't offer us that record. They offered us the degree instead.</p></div>
+  </div>
+
+  <button class="btn" onclick="show('m4',this)">Show the verdict</button>
+  <div class="reveal" id="m4">
+    <div class="punch">
+      <small>Say this out loud in your group</small>
+      A pointer is an <strong>evaluation</strong>, not an <strong>endorsement</strong>. Sometimes it shows the appeal works. Sometimes it shows it fails. Either way you've done the work that “because he said so” refused to do.
+    </div>
+    <p>The three moves did not make the stock advice sound better. They killed it. That is what the tool is <em>for</em>. If you find yourself rewriting sentences to make them sound more reasonable, you have misunderstood the task.</p>
+    <p class="small"><strong>Look back at Part 3:</strong> the physicist card and the “scientifically formulated” card fail in exactly this way. Real expertise, wrong subject. Same move.</p>
+  </div>
+
+  <!-- WE DO -->
+  <h3>Stage 2 — Do it together · the approved medicine</h3>
+  <div class="box">
+    <p style="margin-bottom:0"><strong>The claim:</strong> <em>This new medicine is safe, because the national health authority approved it.</em></p>
+  </div>
+  <p>Same three moves, different shape of authority. Last time it was one person with a qualification. This time it is an <strong>institution</strong> — and institutions are trusted because of the <em>process</em> running underneath them.</p>
+  <p class="box task" style="margin-bottom:18px"><strong>Rule for this stage:</strong> every person writes an answer on the worksheet <em>first</em>. Then reveal. If you reveal first you have learned nothing and you'll be found out in Stage 3.</p>
+
+  <div class="move">
+    <div class="h">Move 1 — Name the authority</div>
+    <div class="q">Which health authority? Approved when? On the basis of what?</div>
+    <button class="btn ghost" onclick="show('w1',this)">We've all written. Reveal.</button>
+    <div class="reveal" id="w1"><p style="margin-bottom:0">“The government” is not good enough — you couldn't go and look at that. Something like: <em>the national medicines regulator, which approved this drug in a named year after reviewing the trial data submitted by the manufacturer.</em> A pointer has to point somewhere a stranger could actually go.</p></div>
+  </div>
+
+  <div class="move">
+    <div class="h">Move 2 — Why trusted on this claim?</div>
+    <div class="q">Is the institution itself the thing that knows — or does it know <em>because of something behind it</em>?</div>
+    <button class="btn ghost" onclick="show('w2',this)">We've all written. Reveal.</button>
+    <div class="reveal" id="w2">
+      <p>The institution isn't authoritative because it's the institution. It's authoritative because of the chain behind it. Copy this chain onto your worksheet:</p>
+      <p class="chain">the regulator → its approval process → clinical trials → how those trials were designed → published results → checked by other scientists</p>
+      <p style="margin-bottom:0">Every arrow is a place you could stop and look. That is the difference between an institution and a rumour.</p>
+    </div>
+  </div>
+
+  <div class="move">
+    <div class="h">Move 3 — What would show it's wrong?</div>
+    <div class="q">List as many as you can. Don't stop at one.</div>
+    <button class="btn ghost" onclick="show('w3',this)">We've all written. Reveal.</button>
+    <div class="reveal" id="w3">
+      <ul style="margin-bottom:8px">
+        <li>Reports of harm appearing after the drug went on sale</li>
+        <li>Other laboratories running the trial again and not getting the same result</li>
+        <li>Finding the company that makes the drug also paid for the trial</li>
+        <li>The approval being withdrawn somewhere else</li>
+      </ul>
+      <p style="margin-bottom:0">Every item on that list is something you could <em>in principle</em> check. That is exactly what makes this an authority worth appealing to.</p>
+    </div>
+  </div>
+
+  <button class="btn" onclick="show('w4',this)">Show the verdict</button>
+  <div class="reveal" id="w4">
+    <div class="punch">
+      <small>The pairing that matters</small>
+      With the MBA, the three moves <strong>rejected</strong> the appeal. Here they <strong>accepted</strong> it — with conditions. The moves didn't change. The chain did.
+    </div>
+    <p style="margin-bottom:0">We are not training you to trust authorities, and we are not training you to distrust them. We are training you to trace <em>what they are standing on</em>.</p>
+  </div>
+
+  <!-- YOU DO -->
+  <h3>Stage 3 — On your own · Jupiter</h3>
+  <p>Two sentences. They make the same kind of claim and back it the same way, from two different sources.</p>
+  <div class="box">
+    <p><strong>Sentence A.</strong> <em>The planet Jupiter has 79 moons, because the textbook says so.</em></p>
+    <p style="margin-bottom:0"><strong>Sentence B.</strong> <em>The planet Jupiter has 79 moons, because the sacred text says so.</em></p>
+  </div>
+  <div class="box warn">
+    <h4>First: do not argue about Jupiter</h4>
+    <p style="margin-bottom:0">Whether Jupiter has 79 moons is not the point (the count keeps changing as astronomers find more, which is a hint you may want later). The point is the <strong>shape</strong> of each sentence. Both make a factual claim. Both back it with three words: <em>X says so.</em> Both treat the source as a full stop. They fail in the same way.</p>
+  </div>
+
+  <div class="box task">
+    <h4>Your task — on the worksheet, on your own, no reveal button</h4>
+    <p><strong>Pick ONE sentence. Rewrite it so the appeal to authority becomes a pointer instead of a full stop.</strong> You may keep the claim about Jupiter exactly as it is. What has to change is whether the sentence shows that any evaluating happened.</p>
+    <p style="margin-bottom:0" class="small">If you pick Sentence B: a strong answer talks about the community's tradition of interpretation and who is qualified to interpret the text. It does not argue about whether the religion is true. That is not what is being asked and it is not what TOK does.</p>
+  </div>
+
+  <button class="btn" onclick="show('y1',this)">I've written my rewrite — check it</button>
+  <div class="reveal" id="y1">
+    <div class="rule">
+      <p><strong>Check yourself honestly.</strong> Does your rewrite explain <em>why this source is trusted on this particular kind of claim</em>?</p>
+      <p>That's Move 2, and it is the one people skip. A rewrite like <em>“the textbook says Jupiter has 79 moons, and if astronomers find more the textbook would be wrong”</em> has Move 1 and Move 3 and a hole where the thinking should be.</p>
+      <p style="margin-bottom:0">What Move 2 sounds like: <em>“Textbooks are treated as authoritative on settled astronomical facts because they summarise observations made by professional astronomers using telescopes and spacecraft.”</em> That sentence explains the trust instead of assuming it.</p>
+    </div>
+    <p><strong>If your rewrite is missing Move 2, fix it now.</strong> Move 1 and Move 3 are housekeeping. Move 2 is the lesson.</p>
+  </div>
+
+  <div class="footnav"><button class="btn ghost" onclick="go(3)">← Back</button><button class="btn" onclick="go(5)">Exit question →</button></div>
+</section>
+
+<!-- ============ 5. EXIT ============ -->
+<section class="screen" id="s5">
+  <p class="eyebrow">Exit · 5 minutes</p>
+  <h2>One question before you go</h2>
+  <div class="punch" style="font-size:28px">
+    <small>Answer on your worksheet. On your own.</small>
+    What makes a reason <strong>good enough</strong> — rather than just <strong>convincing</strong>?
+  </div>
+  <p class="small">(The formal version, for your notes: <em>what makes a justification adequate, rather than merely convincing?</em>)</p>
+  <div class="box task">
+    <h4>Before you answer, look back</h4>
+    <ul style="margin-bottom:0">
+      <li>Farmer John was convincing. He was not good enough. Why not?</li>
+      <li>The Elder was right for four hundred years. What did the archive add?</li>
+      <li>“Scientifically formulated” is convincing. What is it missing?</li>
+    </ul>
+  </div>
+  <p>A good answer will name at least one of these two ideas. A strong answer names both:</p>
+  <div class="rule">
+    <p><strong>1.</strong> A good enough reason <strong>reaches the claim through a chain you could trace</strong> — it doesn't just sit near it.</p>
+    <p style="margin-bottom:0"><strong>2.</strong> A good enough reason <strong>can be corrected</strong> — it tells you what would show it to be wrong.</p>
+  </div>
+  <p class="small">Careful: “it has evidence” is not yet an answer. Everyone in Part 3 had evidence. The knee had evidence. The question is what makes evidence <em>reach</em>.</p>
+
+  <div class="box">
+    <h4>Hand in</h4>
+    <p style="margin-bottom:0">Worksheets to your substitute teacher before you leave — name and class on the top. Next class we start with the map that is not the territory.</p>
+  </div>
+
+  <div class="footnav"><button class="btn ghost" onclick="go(4)">← Back</button><button class="btn" onclick="printWorksheet()">Print worksheet</button></div>
+</section>
+
+<!-- ============ PRINT: STUDENT WORKSHEET ============ -->
+<div id="worksheet">
+  <div class="page">
+    <h2 class="ws-h">Does a Reason Reach?</h2>
+    <div class="namebar ws-h">TOK · Knowledge &amp; the Knower · Lesson 2 &nbsp;&nbsp;|&nbsp;&nbsp; Name: ______________________ &nbsp; Class: ________ &nbsp; Group: ________</div>
+
+    <h3 class="ws-h">Part 1 — Farmer John</h3>
+    <p><span class="qn">1.</span> Before the reveal: did John <em>know</em> Betsy was in the field? Circle one — <strong>YES / NO / SPLIT</strong> — and give your reason.</p>
+    <div class="lines"></div><div class="lines"></div>
+    <p><span class="qn">2.</span> After the reveal. Fill in the three boxes for Farmer John.</p>
+    <table>
+      <tr><th style="width:26%">Was it true?</th><th style="width:26%">Did he believe it?</th><th style="width:48%">What was his reason — and what was wrong with it?</th></tr>
+      <tr><td style="height:52px"></td><td></td><td></td></tr>
+    </table>
+    <p><span class="qn">3.</span> Finish this sentence in your own words: <em>John's reason and the truth ended up in the same place, but…</em></p>
+    <div class="lines"></div><div class="lines"></div>
+    <p><span class="qn">4.</span> The stopped clock and the aching knee have the same shape as the cow. In one sentence, what is that shape?</p>
+    <div class="lines"></div><div class="lines"></div>
+    <div class="frame">
+      <strong>The tool.</strong> You know something when (1) it is true, (2) you believe it, (3) you have a good reason — <em>and</em> (4) your reason <strong>reaches</strong> the claim: it connects to the thing that makes the claim true, instead of landing nearby by accident.
+    </div>
+
+  </div>
+
+  <div class="page">
+    <div class="namebar ws-h" style="text-align:right;color:#555">Does a Reason Reach? · page 2 &nbsp;&nbsp; Name: ____________________</div>
+    <h3 class="ws-h">Part 2 — The Elder</h3>
+    <p><span class="qn">5.</span> Before the reveal: <em>before</em> the archive was checked, did the Elder have a justified true belief? Run the three boxes.</p>
+    <table>
+      <tr><th style="width:22%">True?</th><th style="width:22%">Believed?</th><th style="width:56%">Good reason? Say why or why not.</th></tr>
+      <tr><td style="height:52px"></td><td></td><td></td></tr>
+    </table>
+    <p><span class="qn">6.</span> What exactly did the archive add that the Elder did not already have?</p>
+    <div class="lines"></div><div class="lines"></div>
+    <p><span class="qn">7. Think hard about this one.</span> Nothing inside the Elder's head changed on the day of the check. If the archive is what turned his belief into knowledge, does that mean a community that keeps no written records holds no knowledge? Answer in three or four sentences.</p>
+    <div class="lines"></div><div class="lines"></div><div class="lines"></div><div class="lines"></div>
+    <div class="lines"></div><div class="lines"></div><div class="lines"></div>
+    <p style="font-size:10pt">Before you write: the Elder had the right names for four hundred years. Ask yourself what you think the archive <em>added</em> — a new fact, or something else?</p>
+  </div>
+
+  <div class="page">
+    <h3 class="ws-h">Part 3 — Sort the cards</h3>
+    <p style="font-size:10.5pt">Write your group's letter for each card <strong>before</strong> you check it on screen. <strong>A</strong> = the reason reaches. <strong>B</strong> = hollow, points at nothing checkable. <strong>C</strong> = lucky, a Farmer John.</p>
+    <table>
+      <tr><th style="width:9%">Card</th><th style="width:41%">The reason, in three or four words</th><th style="width:9%">Ours</th><th style="width:9%">Actual</th><th style="width:32%">If we got it wrong — why?</th></tr>
+      <tr><td>1</td><td style="height:26px"></td><td></td><td></td><td></td></tr>
+      <tr><td>2</td><td style="height:26px"></td><td></td><td></td><td></td></tr>
+      <tr><td>3</td><td style="height:26px"></td><td></td><td></td><td></td></tr>
+      <tr><td>4</td><td style="height:26px"></td><td></td><td></td><td></td></tr>
+      <tr><td>5</td><td style="height:26px"></td><td></td><td></td><td></td></tr>
+      <tr><td>6</td><td style="height:26px"></td><td></td><td></td><td></td></tr>
+      <tr><td>7</td><td style="height:26px"></td><td></td><td></td><td></td></tr>
+      <tr><td>8</td><td style="height:26px"></td><td></td><td></td><td></td></tr>
+      <tr><td>9</td><td style="height:26px"></td><td></td><td></td><td></td></tr>
+      <tr><td>10</td><td style="height:26px"></td><td></td><td></td><td></td></tr>
+      <tr><td>11</td><td style="height:26px"></td><td></td><td></td><td></td></tr>
+      <tr><td>12</td><td style="height:26px"></td><td></td><td></td><td></td></tr>
+      <tr><td>13</td><td style="height:26px"></td><td></td><td></td><td></td></tr>
+      <tr><td>14</td><td style="height:26px"></td><td></td><td></td><td></td></tr>
+      <tr><td>15</td><td style="height:26px"></td><td></td><td></td><td></td></tr>
+      <tr><td>16</td><td style="height:26px"></td><td></td><td></td><td></td></tr>
+      <tr><td>17*</td><td style="height:26px"></td><td></td><td></td><td></td></tr>
+      <tr><td>18*</td><td style="height:26px"></td><td></td><td></td><td></td></tr>
+    </table>
+    <p style="font-size:9.5pt">* Pair 9 (cards 17 and 18) only if you have time.</p>
+    <p><span class="qn">8.</span> List the card numbers you marked <strong>C</strong>. These are your Farmer Johns.</p>
+    <div class="lines"></div>
+    <p><span class="qn">9.</span> What do all the <strong>A</strong> cards have that none of the others do? One sentence.</p>
+    <div class="lines"></div><div class="lines"></div>
+  </div>
+
+  <div class="page">
+    <h3 class="ws-h">Part 4 — The Authority Repair</h3>
+    <div class="frame">
+      <strong>Full stop:</strong> <em>the textbook says so.</em> End of conversation.<br>
+      <strong>Pointer:</strong> <em>the textbook says so, AND here is why it is trusted on this topic, AND here is what would show it to be wrong.</em><br><br>
+      <strong>Move 1.</strong> Name the authority, specifically.<br>
+      <strong>Move 2.</strong> Say why it is trusted <em>on this kind of claim</em>. ← the one that matters<br>
+      <strong>Move 3.</strong> Say what would show the authority is wrong.
+    </div>
+
+    <p><span class="qn">10. Stage 1 — the Harvard MBA (watch it done).</span> After the worked example: in one sentence, why did the three moves <em>reject</em> this appeal even though the qualification is real?</p>
+    <div class="lines"></div><div class="lines"></div><div class="lines"></div>
+    <p style="font-size:10.5pt"><strong>Copy this down and keep it:</strong> a pointer is an evaluation, not an endorsement.</p>
+
+    <p><span class="qn">11. Stage 2 — the approved medicine (do it together).</span> <em>This new medicine is safe, because the national health authority approved it.</em> Write your own answer to each move <strong>before</strong> your group reveals.</p>
+    <table>
+      <tr><th style="width:30%">Move</th><th>Your answer</th></tr>
+      <tr><td><strong>1.</strong> Name the authority specifically</td><td style="height:54px"></td></tr>
+      <tr><td><strong>2.</strong> Why trusted on <em>this</em> claim? Show the chain behind it</td><td style="height:80px"></td></tr>
+      <tr><td><strong>3.</strong> What would show it is wrong? (list as many as you can)</td><td style="height:80px"></td></tr>
+    </table>
+    <p><span class="qn">12.</span> The moves rejected the MBA appeal and accepted this one. The moves did not change. What did?</p>
+    <div class="lines"></div><div class="lines"></div>
+  </div>
+
+  <div class="page">
+    <p><span class="qn">13. Stage 3 — Jupiter (on your own).</span> Circle the sentence you are repairing:</p>
+    <p style="font-size:10.5pt"><strong>A.</strong> The planet Jupiter has 79 moons, because the textbook says so. &nbsp;&nbsp;|&nbsp;&nbsp; <strong>B.</strong> The planet Jupiter has 79 moons, because the sacred text says so.</p>
+    <p>Work the three moves first:</p>
+    <table>
+      <tr><td style="width:30%"><strong>1.</strong> Name the authority</td><td style="height:48px"></td></tr>
+      <tr><td><strong>2.</strong> Why trusted on this claim?</td><td style="height:72px"></td></tr>
+      <tr><td><strong>3.</strong> What would show it wrong?</td><td style="height:48px"></td></tr>
+    </table>
+    <p>Now write the repaired sentence. Keep the claim about Jupiter; change what the sentence <em>shows</em>.</p>
+    <div class="lines"></div><div class="lines"></div><div class="lines"></div><div class="lines"></div><div class="lines"></div>
+    <p style="font-size:10.5pt"><strong>Self-check:</strong> does your sentence explain <em>why this source is trusted on this kind of claim</em>? If it jumps from naming the source straight to what would prove it wrong, you have skipped Move 2 — go back and put it in.</p>
+
+    <h3 class="ws-h">Exit question</h3>
+    <p><span class="qn">14.</span> What makes a reason <strong>good enough</strong>, rather than just <strong>convincing</strong>? (Formal version: what makes a justification <em>adequate</em>, rather than merely convincing?)</p>
+    <div class="lines"></div><div class="lines"></div><div class="lines"></div><div class="lines"></div><div class="lines"></div>
+    <p style="font-size:10pt">Warning: “it has evidence” is not yet an answer. The aching knee had evidence.</p>
+  </div>
+</div>
+
+<!-- ============ PRINT: SUB RUN SHEET ============ -->
+<div id="runsheet">
+  <h2 class="ws-h">Substitute run sheet — TOK Lesson 2</h2>
+  <p style="font-size:10.5pt"><strong>The site does the teaching.</strong> Students work in groups of 3–4, one device per group, at <em>this page</em>. Your job is grouping, timing, circulating, and collecting worksheets. You do not need to know any philosophy — but if you want the one-line version: <em>a lucky guess is not knowledge, and a reason has to actually connect to the thing it's claiming.</em></p>
+
+  <h3 class="ws-h">Before they start</h3>
+  <ul style="font-size:10.5pt">
+    <li>Hand out one worksheet per student (5 pages — double-sided is 3 sheets). Groups of 3–4. One person per group drives the device.</li>
+    <li>Say this: <em>“Everything is on the website. The one rule is that nobody clicks a Reveal button until every person in the group has written something down.”</em></li>
+    <li>Write the four part names and their times on the board.</li>
+  </ul>
+
+  <h3 class="ws-h">Timing — call these out</h3>
+  <table>
+    <tr><th style="width:16%">Time</th><th style="width:26%">Part</th><th>What you should see</th></tr>
+    <tr><td>0–15</td><td>Part 1 · Farmer John</td><td>Loud argument, then quiet writing. Most groups vote “yes he knew.” That's meant to happen.</td></tr>
+    <tr><td>15–25</td><td>Part 2 · The Elder</td><td>Callback to last lesson. Q7 on the worksheet is the hard one — push them to write four sentences, not one.</td></tr>
+    <tr><td>25–45</td><td>Part 3 · The Cards</td><td>Nine pairs, self-checking on screen. Pair 9 is optional. <strong>Cut this first if you're behind.</strong></td></tr>
+    <tr><td>45–75</td><td>Part 4 · The Repair</td><td>Three stages. Stage 3 (Jupiter) is silent individual writing — protect it.</td></tr>
+    <tr><td>75–80</td><td>Exit question</td><td>Individual. Collect worksheets on the way out.</td></tr>
+  </table>
+
+  <h3 class="ws-h">Two things to watch for while you circulate</h3>
+  <ul style="font-size:10.5pt">
+    <li><strong>Clicking ahead.</strong> If a group has revealed an answer with blank worksheets, send them back to write it before moving on. This is the single thing that ruins the lesson.</li>
+    <li><strong>Stage 3 scaffolding.</strong> Some student will ask you to help them with the Jupiter rewrite. Don't — that stage is deliberately unsupported. Say: <em>“Look at how the medicine example did move 2 and do the same thing here.”</em> That's all the help they get.</li>
+  </ul>
+
+  <h3 class="ws-h">If something goes wrong</h3>
+  <ul style="font-size:10.5pt">
+    <li><strong>Devices won't work.</strong> The worksheet stands alone for Parts 1, 2 and 4 — read the stories aloud from the screen at the front instead. Skip Part 3.</li>
+    <li><strong>They finish early.</strong> Pair 9 of the cards, then: <em>“Write a card of your own — a claim with a reason that sounds excellent and is worthless.”</em></li>
+    <li><strong>A discussion turns into an argument about religion (Stage 3, Sentence B).</strong> Redirect once: <em>“Nobody is being asked whether the text is true. You're being asked why a community treats it as an authority.”</em> Then move on.</li>
+  </ul>
+
+  <h3 class="ws-h">Collect</h3>
+  <p style="font-size:10.5pt">All worksheets, named, in one pile. Leave them on the desk.</p>
+</div>
+
+</div><!-- /wrap -->
+
+<script>
+/* ---------- navigation ---------- */
+var TITLES=["Start","1 · Farmer John","2 · The Elder","3 · Cards","4 · Repair","Exit"];
+var cur=0;
+(function buildSteps(){
+  var ul=document.getElementById('steps');
+  TITLES.forEach(function(t,i){
+    var li=document.createElement('li');
+    var b=document.createElement('button');
+    b.textContent=t; b.onclick=function(){go(i)};
+    li.appendChild(b); ul.appendChild(li);
+  });
+})();
+function go(i){
+  cur=i;
+  for(var n=0;n<TITLES.length;n++){
+    document.getElementById('s'+n).classList.toggle('on',n===i);
+  }
+  var btns=document.querySelectorAll('#steps button');
+  for(var k=0;k<btns.length;k++){btns[k].setAttribute('aria-current',k===i?'true':'false');}
+  window.scrollTo(0,0);
+}
+go(0);
+
+function show(id,btn){
+  document.getElementById(id).classList.add('on');
+  if(btn){btn.style.display='none';}
+}
+function vote(b){
+  var sibs=b.parentNode.querySelectorAll('button');
+  for(var i=0;i<sibs.length;i++){sibs[i].setAttribute('aria-pressed','false');}
+  b.setAttribute('aria-pressed','true');
+}
+function printWorksheet(){document.body.classList.remove('print-sub');window.print();}
+function printRunSheet(){document.body.classList.add('print-sub');window.print();setTimeout(function(){document.body.classList.remove('print-sub');},500);}
+
+/* ---------- the deck ---------- */
+var PAIRS=[
+ {label:"Pair 1 — the bridge", cards:[
+  {n:1,claim:"This bridge is safe to cross.",reason:"An independent engineering firm tested its load capacity last month and certified it.",aok:"Natural Sciences",tier:"A",
+   why:"The reason tests the exact property being claimed — and it was tested by someone with no stake in the answer. You could go and read the certificate."},
+  {n:2,claim:"This bridge is safe to cross.",reason:"I crossed it yesterday in heavy traffic and nothing happened.",aok:"Natural Sciences",tier:"C",
+   why:"The bridge may well be safe. But yesterday holding up is not what makes today safe — a bridge fails on the day it fails. If you cross safely, the reason was standing nearby, not doing the work. This is Farmer John."}
+ ]},
+ {label:"Pair 2 — the founding date", cards:[
+  {n:3,claim:"This city was founded in 1490.",reason:"Three independent chronicles from neighbouring regions all record the founding in that year.",aok:"History",tier:"A",
+   why:"Three sources that did not copy each other, all landing on the same year. Independence is what does the work — one chronicle could be wrong or lying; three separate ones agreeing is much harder to explain away."},
+  {n:4,claim:"This city was founded in 1490.",reason:"It says so in the standard secondary-school history textbook.",aok:"History",tier:"C",
+   why:"The textbook is probably right. But 'it says so' gives you no access to WHY — you can't see what the textbook is standing on. You've got a true belief on borrowed authority: right, without the reason being yours. (If you said B, that's fair — this card sits on the line, and the argument is the point.)"}
+ ]},
+ {label:"Pair 3 — the fever remedy", cards:[
+  {n:5,claim:"This remedy treats fever.",reason:"Communities across the region have used it for fever for generations and kept records of who recovered and who did not; the pattern holds.",aok:"Human Sciences",tier:"A",
+   why:"Notice this is the STRONG card, and it isn't from a laboratory. Generations of use plus records of who did and didn't recover is a real body of evidence you could go and examine. Where knowledge comes from doesn't decide whether it's justified — the structure underneath does."},
+  {n:6,claim:"This remedy treats fever.",reason:"The packaging says \"scientifically formulated\" and the company that makes it has a research division.",aok:"Natural Sciences",tier:"B",
+   why:"Hollow. 'Scientifically formulated' names no method, no test and no result. Having a research division is not the same as having done research on this. Sounding like science is not science — and compare card 5, which sounds like folklore and is far better justified."}
+ ]},
+ {label:"Pair 4 — the painting", cards:[
+  {n:7,claim:"This painting was made by the master, not a student of her workshop.",reason:"Pigment analysis dates the paint to her lifetime, and the brushwork matches signed works held in two separate museums.",aok:"The Arts",tier:"A",
+   why:"Physical evidence about the object itself, plus comparison with works we already know are hers. Two different kinds of check pointing the same way."},
+  {n:8,claim:"This painting was made by the master, not a student of her workshop.",reason:"It looks exactly like her style — the colours, the composition, the subject.",aok:"The Arts",tier:"C",
+   why:"A skilled student in her own workshop could produce exactly that. The painting might genuinely be hers — but 'it looks like her work' would be equally true if it weren't. The reason can't tell the two situations apart, so it isn't reaching."}
+ ]},
+ {label:"Pair 5 — the match", cards:[
+  {n:9,claim:"Our team will win the match today.",reason:"We have analysed the opposing team's last ten games and their defence is weak in exactly the area we attack best.",aok:"Human Sciences",tier:"A",
+   why:"This points at something that would actually cause a win — their weakness meeting our strength. It could still be wrong (sport is like that), but the reason is connected to the outcome rather than sitting beside it."},
+  {n:10,claim:"Our team will win the match today.",reason:"We have won every Tuesday this season, and today is a Tuesday.",aok:"Human Sciences",tier:"C",
+   why:"Tuesdays do not cause wins. If the team wins today, the reason merely coincided with the result — same as the knee and the rain. A pattern is not a mechanism."}
+ ]},
+ {label:"Pair 6 — the weather", cards:[
+  {n:11,claim:"It will rain tomorrow.",reason:"The national weather service forecasts an 80% chance, based on a low-pressure system already over the coast.",aok:"Natural Sciences",tier:"A",
+   why:"It names the thing that actually produces rain — a pressure system that already exists and can be observed. That's a mechanism, and it points somewhere checkable."},
+  {n:12,claim:"It will rain tomorrow.",reason:"My knee aches today, and my knee always aches the day before it rains.",aok:"Everyday",tier:"C",
+   why:"Straight out of Part 1. Even when it does rain, the ache is not what produced the rain. Coincidence, not connection."}
+ ]},
+ {label:"Pair 7 — the ruler", cards:[
+  {n:13,claim:"This ruler was a great leader.",reason:"Records from rival kingdoms — not his own — describe stability, growth, and skilled diplomacy during his reign.",aok:"History",tier:"A",
+   why:"The sources come from outside his power structure. His rivals had every reason to describe him badly and didn't. That controls for the obvious bias, which is exactly what card 14 fails to do."},
+  {n:14,claim:"This ruler was a great leader.",reason:"The most detailed surviving account of his reign describes him as wise, just, and beloved.",aok:"History",tier:"B",
+   why:"Hollow — and it sounds so historical. The most detailed account is very likely his own court's account, written by people paid by him. 'Most detailed' is not the same as 'most reliable'. Ask who wrote it and why it survived."}
+ ]},
+ {label:"Pair 8 — the time", cards:[
+  {n:15,claim:"It is 3 o'clock right now.",reason:"I just checked the time on my phone, which syncs to the national time server.",aok:"Everyday",tier:"A",
+   why:"The reason points past the device to a standard outside it. If the phone were wrong, the sync would correct it — that's what makes it a pointer rather than a full stop."},
+  {n:16,claim:"It is 3 o'clock right now.",reason:"The clock on the wall reads 3 o'clock, and it has been there as long as I can remember.",aok:"Everyday",tier:"C",
+   why:"The stopped clock, in its purest form. 'It's been there forever' is a reason to trust the furniture, not the time. A broken clock is right twice a day and this might be one of them."}
+ ]},
+ {label:"Pair 9 — the policy  (extra — only if you have time)", cards:[
+  {n:17,claim:"This policy will reduce crime.",reason:"Three cities introduced it and crime fell in all three, tracked over five years against comparable cities that did not.",aok:"Human Sciences",tier:"A",
+   why:"It was tried, measured over a long enough period, and compared against cities that didn't try it. The comparison is what stops this being a Tuesday-pattern."},
+  {n:18,claim:"This policy will reduce crime.",reason:"A famous physicist has publicly endorsed it.",aok:"Human Sciences",tier:"B",
+   why:"The physicist is genuinely expert — at physics. Crime policy is not physics. Expertise does not transfer between subjects just because the person is clever. Remember this card in Part 4; you are about to meet it again wearing a different hat."}
+ ]}
+];
+
+var pi=0, answered={}, right=0, done=0;
+function renderPair(){
+  var p=PAIRS[pi], host=document.getElementById('pairhost');
+  host.innerHTML='';
+  var h=document.createElement('h3'); h.textContent=p.label; h.style.marginTop='0'; host.appendChild(h);
+  var grid=document.createElement('div'); grid.className='pair';
+  p.cards.forEach(function(c){
+    var d=document.createElement('div'); d.className='claimcard';
+    d.innerHTML='<div class="num">CARD '+c.n+'</div>'+
+      '<div class="claim">'+c.claim+'</div>'+
+      '<div class="because">because…</div>'+
+      '<div class="reason">'+c.reason+'</div>'+
+      '<div class="sortrow">'+
+        '<button data-t="A">A<br>Reaches</button>'+
+        '<button data-t="B">B<br>Hollow</button>'+
+        '<button data-t="C">C<br>Lucky</button>'+
+      '</div>'+
+      '<div class="verdict" id="v'+c.n+'"></div>'+
+      '<div class="aok">'+c.aok+'</div>';
+    var btns=d.querySelectorAll('.sortrow button');
+    for(var i=0;i<btns.length;i++){
+      (function(b){ b.onclick=function(){ pick(c,b,d); }; })(btns[i]);
+    }
+    if(answered[c.n]){ // restore
+      for(var j=0;j<btns.length;j++){ if(btns[j].getAttribute('data-t')===answered[c.n]) btns[j].classList.add('pick'); }
+      paint(c,d);
+    }
+    grid.appendChild(d);
+  });
+  host.appendChild(grid);
+  document.getElementById('paircount').textContent='Pair '+(pi+1)+' of '+PAIRS.length;
+  updateScore();
+}
+function pick(c,b,d){
+  if(answered[c.n]) return;
+  answered[c.n]=b.getAttribute('data-t');
+  b.classList.add('pick');
+  if(answered[c.n]===c.tier) right++;
+  done++;
+  paint(c,d);
+  updateScore();
+  if(done>=14){ document.getElementById('cardsdone').classList.add('on'); }
+}
+function paint(c,d){
+  var v=d.querySelector('.verdict');
+  var correct=(answered[c.n]===c.tier);
+  var names={A:'A — the reason reaches',B:'B — hollow',C:'C — lucky (a Farmer John)'};
+  v.className='verdict on '+c.tier;
+  v.innerHTML='<span class="tag">'+(correct?'✓ Yes — ':'Actually: ')+names[c.tier]+'</span>'+c.why;
+}
+function updateScore(){
+  var el=document.getElementById('score');
+  el.textContent = done? (right+' / '+done+' so far') : '';
+}
+function pairStep(d){
+  pi=(pi+d+PAIRS.length)%PAIRS.length;
+  renderPair();
+  document.getElementById('pairhost').scrollIntoView({block:'start'});
+}
+renderPair();
+</script>
+</body>
+</html>
