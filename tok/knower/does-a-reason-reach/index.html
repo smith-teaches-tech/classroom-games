@@ -168,6 +168,20 @@
 
   .timing{font:400 12px/1.6 var(--mono);color:var(--ink-soft);letter-spacing:.04em;margin-bottom:18px}
 
+  /* ---------- worksheet cues ---------- */
+  .wsq{
+    display:inline-block;font:500 11px/1 var(--mono);letter-spacing:.08em;
+    color:#fff;background:var(--accent-red);
+    padding:6px 9px;border-radius:3px;margin:0 0 10px;white-space:nowrap;
+  }
+  .wsq::before{content:"✎ ";}
+  .wsq.solo{margin:2px 0 14px}
+  .wsmap{width:100%;border-collapse:collapse;font:400 15px/1.5 var(--ui);margin:0 0 18px}
+  .wsmap td,.wsmap th{border-bottom:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  .wsmap th{font:600 11px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+  .wsmap td:first-child{white-space:nowrap;font-weight:600}
+  .wsmap td:nth-child(2){font-family:var(--mono);font-size:13px;color:var(--accent-red);white-space:nowrap}
+
   /* ---------- print ---------- */
   #worksheet,#runsheet{display:none}
   @media print{
@@ -226,9 +240,18 @@
     </ul>
   </div>
 
-  <p class="timing">Part 1 Farmer John · 15 min &nbsp;|&nbsp; Part 2 The Elder · 10 min &nbsp;|&nbsp; Part 3 The Cards · 20 min &nbsp;|&nbsp; Part 4 The Repair · 30 min &nbsp;|&nbsp; Exit · 5 min</p>
+  <h3>Where you write</h3>
+  <p>Your worksheet has 14 numbered questions. Whenever this screen shows a red tag like <span class="wsq">WORKSHEET Q3</span> that is the question you fill in, right then. Don't run ahead of the tags and don't skip them.</p>
+  <table class="wsmap">
+    <tr><th>On screen</th><th>Worksheet</th><th>Time</th></tr>
+    <tr><td>Part 1 · Farmer John</td><td>Q1 – Q4</td><td>15 min</td></tr>
+    <tr><td>Part 2 · The Elder</td><td>Q5 – Q7</td><td>10 min</td></tr>
+    <tr><td>Part 3 · The Cards</td><td>the grid, then Q8 – Q9</td><td>20 min</td></tr>
+    <tr><td>Part 4 · The Repair</td><td>Q10 – Q13</td><td>30 min</td></tr>
+    <tr><td>Exit question</td><td>Q14</td><td>5 min</td></tr>
+  </table>
 
-  <p class="small">Substitute teacher: there is a one-page run sheet for you — <a href="#" onclick="printRunSheet();return false;">print it here</a>.</p>
+  <p class="small">Substitute teacher: there is a run sheet for you — <a href="#" onclick="printRunSheet();return false;">print it here</a>.</p>
 
   <div class="footnav"><span></span><button class="btn" onclick="go(1)">Start Part 1 →</button></div>
 </section>
@@ -249,7 +272,8 @@
   <div class="box task">
     <h4>Do this before you reveal anything</h4>
     <p><strong>Question:</strong> Did John <em>know</em> that Betsy was in the field?</p>
-    <p class="small">Vote as a group, then each person writes their reason on the worksheet, Part 1.</p>
+    <p class="small">Vote as a group. Then <strong>every person</strong> circles the same answer and writes their own reason.</p>
+      <span class="wsq">WORKSHEET Q1</span>
     <div class="vote" role="group">
       <button onclick="vote(this)" aria-pressed="false">Yes, he knew</button>
       <button onclick="vote(this)" aria-pressed="false">No, he didn't</button>
@@ -273,6 +297,13 @@
       <p class="big"><strong>Being right by accident is not knowing. Luck is not knowledge.</strong></p>
     </div>
 
+    <div class="box task">
+      <h4>Stop and write — two questions</h4>
+      <p><strong>Q2.</strong> Fill in the three boxes for Farmer John: was it true, did he believe it, and what was his reason — plus what was wrong with that reason.</p>
+      <p style="margin-bottom:10px"><strong>Q3.</strong> Finish the sentence in your own words: <em>John's reason and the truth ended up in the same place, but…</em></p>
+      <span class="wsq">WORKSHEET Q2</span> <span class="wsq">WORKSHEET Q3</span>
+    </div>
+
     <h3>The tool you just earned</h3>
     <p>For about two thousand years the standard answer to “what is knowledge?” was three conditions. It is usually called <strong>justified true belief</strong>, or <strong>JTB</strong>. You know something when:</p>
     <div class="rule">
@@ -291,7 +322,8 @@
       <h4>Two more of the same shape — read them, they take 30 seconds each</h4>
       <p><strong>The stopped clock.</strong> You look at the wall clock. It says 3:00. You believe it is 3:00. It <em>is</em> 3:00 — but the clock stopped twelve hours ago and nobody noticed. You did not know the time. You read a broken clock at the one moment it was accidentally right.</p>
       <p><strong>The aching knee.</strong> Your knee aches. You say it will rain tomorrow. It rains. But the ache came from a long walk and the rain came from a weather system. Nothing joined them. You guessed and got lucky.</p>
-      <p class="small" style="margin-bottom:0"><strong>Write this down:</strong> in all three cases — the bush, the clock, the knee — the belief was <em>true</em> and the reason was <em>useless</em>. Same shape every time.</p>
+      <p class="small"><strong>Q4.</strong> In all three cases — the bush, the clock, the knee — the belief was <em>true</em> and the reason was <em>useless</em>. Same shape every time. Put that shape into one sentence of your own.</p>
+      <span class="wsq solo">WORKSHEET Q4</span>
     </div>
   </div>
 
@@ -302,18 +334,28 @@
 <section class="screen" id="s2">
   <p class="eyebrow">Part 2 · 10 minutes</p>
   <h2>Back to the Elder</h2>
-  <p class="lede">You met him last class. Now you have a tool, so look at him again.</p>
+  <p class="lede">You met him last class and you already wrote about him. Now you have a tool you didn't have then. Use it on him.</p>
+
+  <div class="box warn">
+    <h4>If you were away last class, this is everything you need</h4>
+    <p style="margin-bottom:0">A Committee sat for four hours trying to decide which of six knowers knew the most — among them a sushi chef, a satnav, a physicist, a four-year-old, a sheepdog, and the Elder. They never managed to agree, because they never agreed on what they were measuring. That was the point of last lesson. Today only the Elder matters.</p>
+  </div>
 
   <div class="story">
-    <p>The Elder can recite four hundred years of his family's history from memory — who was born to whom, in what order, going back generation by generation. He learned it from the elder before him, who learned it from the elder before her.</p>
-    <p>The Committee checked the whole thing against the written archive. <strong>Every name matched.</strong> The Committee was very pleased with itself.</p>
-    <p>Then one member ruined the mood: <em>“So did the archive make it knowledge? Or did he know it all along, and the archive just agreed with him?”</em></p>
+    <p>The Elder can recite four hundred years of his family's history from memory — who was born to whom, in what order, generation by generation, all the way back.</p>
+    <p>He never read it anywhere. There was nothing to read. He learned it from the elder before him, who learned it from the elder before her, who learned it from the one before <em>her</em>. That is how it has always been passed on.</p>
+    <p>The Committee decided to test him. They checked his whole recitation against the village's written archive, line by line. <strong>Every single name matched.</strong> The Committee was very pleased with itself.</p>
+    <p>Then the Fourth Member ruined the mood:</p>
+    <p><em>“So did the archive make it knowledge? Or did he know it all along, and the archive just agreed with him? Because those are not the same, and I'd like it minuted that they are not the same.”</em></p>
   </div>
+
+  <p>Last lesson you were allowed to argue for any answer you liked. Today there is a right one, and you now have the tool that finds it.</p>
 
   <div class="box task">
     <h4>Do this before you reveal anything</h4>
     <p><strong>Question:</strong> <em>Before</em> the archive was checked, did the Elder have a justified true belief?</p>
-    <p class="small">Run all three boxes: true? believed? good reason? Write your group's answer on the worksheet, Part 2, before anyone clicks.</p>
+    <p class="small">Run all three boxes: true? believed? good reason? Everyone writes before anyone clicks.</p>
+      <span class="wsq">WORKSHEET Q5</span>
     <div class="vote" role="group">
       <button onclick="vote(this)" aria-pressed="false">Yes — JTB</button>
       <button onclick="vote(this)" aria-pressed="false">No — not yet</button>
@@ -334,9 +376,17 @@
       <p class="big">The Elder was <strong>right</strong> the whole time. He was not <strong>justified</strong> until his reason had somewhere to point.</p>
     </div>
 
+    <div class="box task">
+      <h4>Stop and write</h4>
+      <p style="margin-bottom:10px"><strong>Q6.</strong> What exactly did the archive add that the Elder did not already have? (Careful — it was not a new fact. He had all the names already.)</p>
+      <span class="wsq">WORKSHEET Q6</span>
+    </div>
+
     <div class="box warn">
-      <h4>But notice — one line on your worksheet, please</h4>
-      <p style="margin-bottom:0">Nothing inside the Elder's head changed on the day of the check. He knew exactly the same names on Wednesday as he did on Tuesday. So if the archive is what turned it into knowledge — does that mean a community that keeps no written records holds no knowledge at all? <em>Write what you think. Don't be lazy about it. Mr. Smith will ask.</em></p>
+      <h4>Now the hard one — three or four sentences, not one line</h4>
+      <p>Nothing inside the Elder's head changed on the day of the check. He knew exactly the same names on Wednesday as he did on Tuesday. So if the archive is what turned it into knowledge — does that mean a community that keeps no written records holds no knowledge at all?</p>
+      <p><em>Write what you actually think. Don't be lazy about it. Mr. Smith will ask, and he will know.</em></p>
+      <span class="wsq solo">WORKSHEET Q7</span>
     </div>
 
     <p>Hold on to that word <strong>full stop</strong>. You will need it in Part 4.</p>
@@ -364,7 +414,9 @@
 
   <div class="box task">
     <h4>How to run this</h4>
-    <p style="margin-bottom:0">For each pair: read both cards aloud → agree as a group → <strong>write your letters on the worksheet grid</strong> → then click to check. Score yourselves. You are aiming to be able to say <em>why</em>, not to get a high score.</p>
+    <p>For each pair: read both cards aloud → agree as a group → <strong>write your letters in the worksheet grid</strong> → then click to check. Put the actual answer in the next column, and if you got it wrong, write why in the last one.</p>
+    <p style="margin-bottom:10px">You are aiming to be able to say <em>why</em>, not to get a high score.</p>
+    <span class="wsq">WORKSHEET — the card grid, page 3</span>
   </div>
 
   <div class="pairnav">
@@ -381,7 +433,9 @@
       <p class="big"><strong>Now find the cows.</strong></p>
       <p>Look back over the pairs. Every card you marked <strong>C</strong> is a Farmer John: someone looking at a bush and calling it a cow. The bridge that held yesterday. The team that wins on Tuesdays. The clock that stopped. The knee.</p>
       <p>And look at what the <strong>A</strong> cards have in common. Not one of them says “trust me.” Every single one points at something a stranger could go and check: a test, a second source, a record, a mechanism.</p>
-      <p style="margin-bottom:0"><strong>Write one line on your worksheet:</strong> what do all the A cards have that none of the others do?</p>
+      <p><strong>Q8.</strong> List the card numbers you marked <strong>C</strong>. Those are your Farmer Johns.</p>
+      <p style="margin-bottom:10px"><strong>Q9.</strong> One sentence: what do all the <strong>A</strong> cards have that none of the others do?</p>
+      <span class="wsq">WORKSHEET Q8</span> <span class="wsq">WORKSHEET Q9</span>
     </div>
   </div>
 
@@ -445,6 +499,11 @@
     </div>
     <p>The three moves did not make the stock advice sound better. They killed it. That is what the tool is <em>for</em>. If you find yourself rewriting sentences to make them sound more reasonable, you have misunderstood the task.</p>
     <p class="small"><strong>Look back at Part 3:</strong> the physicist card and the “scientifically formulated” card fail in exactly this way. Real expertise, wrong subject. Same move.</p>
+    <div class="box task">
+      <h4>Stop and write</h4>
+      <p style="margin-bottom:10px"><strong>Q10.</strong> In one sentence: why did the three moves <em>reject</em> this appeal even though the qualification is real? And copy down the line about evaluation and endorsement — you will want it.</p>
+      <span class="wsq">WORKSHEET Q10</span>
+    </div>
   </div>
 
   <!-- WE DO -->
@@ -453,7 +512,11 @@
     <p style="margin-bottom:0"><strong>The claim:</strong> <em>This new medicine is safe, because the national health authority approved it.</em></p>
   </div>
   <p>Same three moves, different shape of authority. Last time it was one person with a qualification. This time it is an <strong>institution</strong> — and institutions are trusted because of the <em>process</em> running underneath them.</p>
-  <p class="box task" style="margin-bottom:18px"><strong>Rule for this stage:</strong> every person writes an answer on the worksheet <em>first</em>. Then reveal. If you reveal first you have learned nothing and you'll be found out in Stage 3.</p>
+  <div class="box task">
+    <h4>Rule for this stage</h4>
+    <p><strong>Q11 has a row for each of the three moves.</strong> Every person writes their own answer to a move <em>before</em> the group reveals it. If you reveal first you have learned nothing, and you will be found out in Stage 3.</p>
+    <span class="wsq">WORKSHEET Q11</span>
+  </div>
 
   <div class="move">
     <div class="h">Move 1 — Name the authority</div>
@@ -494,7 +557,12 @@
       <small>The pairing that matters</small>
       With the MBA, the three moves <strong>rejected</strong> the appeal. Here they <strong>accepted</strong> it — with conditions. The moves didn't change. The chain did.
     </div>
-    <p style="margin-bottom:0">We are not training you to trust authorities, and we are not training you to distrust them. We are training you to trace <em>what they are standing on</em>.</p>
+    <p>We are not training you to trust authorities, and we are not training you to distrust them. We are training you to trace <em>what they are standing on</em>.</p>
+    <div class="box task">
+      <h4>Stop and write</h4>
+      <p style="margin-bottom:10px"><strong>Q12.</strong> The moves rejected the MBA appeal and accepted this one. The moves did not change. What did?</p>
+      <span class="wsq">WORKSHEET Q12</span>
+    </div>
   </div>
 
   <!-- YOU DO -->
@@ -512,7 +580,9 @@
   <div class="box task">
     <h4>Your task — on the worksheet, on your own, no reveal button</h4>
     <p><strong>Pick ONE sentence. Rewrite it so the appeal to authority becomes a pointer instead of a full stop.</strong> You may keep the claim about Jupiter exactly as it is. What has to change is whether the sentence shows that any evaluating happened.</p>
-    <p style="margin-bottom:0" class="small">If you pick Sentence B: a strong answer talks about the community's tradition of interpretation and who is qualified to interpret the text. It does not argue about whether the religion is true. That is not what is being asked and it is not what TOK does.</p>
+    <p class="small">If you pick Sentence B: a strong answer talks about the community's tradition of interpretation and who is qualified to interpret the text. It does not argue about whether the religion is true. That is not what is being asked and it is not what TOK does.</p>
+    <p style="margin-bottom:10px" class="small">Q13 gives you a box for each of the three moves first, then space for the rewritten sentence. Work the moves before you write the sentence.</p>
+    <span class="wsq">WORKSHEET Q13</span>
   </div>
 
   <button class="btn" onclick="show('y1',this)">I've written my rewrite — check it</button>
@@ -533,7 +603,7 @@
   <p class="eyebrow">Exit · 5 minutes</p>
   <h2>One question before you go</h2>
   <div class="punch" style="font-size:28px">
-    <small>Answer on your worksheet. On your own.</small>
+    <small>Worksheet Q14 · on your own · no discussion</small>
     What makes a reason <strong>good enough</strong> — rather than just <strong>convincing</strong>?
   </div>
   <p class="small">(The formal version, for your notes: <em>what makes a justification adequate, rather than merely convincing?</em>)</p>
@@ -551,6 +621,7 @@
     <p style="margin-bottom:0"><strong>2.</strong> A good enough reason <strong>can be corrected</strong> — it tells you what would show it to be wrong.</p>
   </div>
   <p class="small">Careful: “it has evidence” is not yet an answer. Everyone in Part 3 had evidence. The knee had evidence. The question is what makes evidence <em>reach</em>.</p>
+  <span class="wsq solo">WORKSHEET Q14</span>
 
   <div class="box">
     <h4>Hand in</h4>
@@ -684,7 +755,7 @@
   <h3 class="ws-h">Before they start</h3>
   <ul style="font-size:10.5pt">
     <li>Hand out one worksheet per student (5 pages — double-sided is 3 sheets). Groups of 3–4. One person per group drives the device.</li>
-    <li>Say this: <em>“Everything is on the website. The one rule is that nobody clicks a Reveal button until every person in the group has written something down.”</em></li>
+    <li>Say this: <em>“Everything is on the website. Red tags on the screen tell you which worksheet question to fill in. The one rule is that nobody clicks a Reveal button until every person in the group has written something down.”</em></li>
     <li>Write the four part names and their times on the board.</li>
   </ul>
 
@@ -700,7 +771,7 @@
 
   <h3 class="ws-h">Two things to watch for while you circulate</h3>
   <ul style="font-size:10.5pt">
-    <li><strong>Clicking ahead.</strong> If a group has revealed an answer with blank worksheets, send them back to write it before moving on. This is the single thing that ruins the lesson.</li>
+    <li><strong>Clicking ahead.</strong> The screen shows a red <strong>WORKSHEET Q_</strong> tag at every point where they are meant to write. If a group has revealed an answer and the matching question is blank, send them back to write it before they move on. This is the single thing that ruins the lesson.</li>
     <li><strong>Stage 3 scaffolding.</strong> Some student will ask you to help them with the Jupiter rewrite. Don't — that stage is deliberately unsupported. Say: <em>“Look at how the medicine example did move 2 and do the same thing here.”</em> That's all the help they get.</li>
   </ul>
 
