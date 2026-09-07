@@ -27,13 +27,14 @@ body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-heigh
 .mast-mid{flex:1;text-align:center;min-width:0;}
 .masthead-kicker{font-family:var(--cond);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-light);margin-bottom:.15rem;}
 .masthead-title{font-family:var(--serif);font-size:clamp(15px,2.3vw,22px);font-weight:700;line-height:1.15;letter-spacing:-.02em;}
-.subbtn{flex:none;font-family:var(--cond);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.4rem .7rem;border:1.5px solid var(--rule);background:#fff;color:var(--ink-mid);cursor:pointer;border-radius:2px;transition:all .15s;line-height:1.2;}
+.subbtn{flex:none;font-family:var(--cond);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.4rem .7rem;border:1.5px solid var(--rule);background:#fff;color:var(--ink-mid);cursor:pointer;border-radius:2px;line-height:1.2;}
 .subbtn:hover{border-color:var(--accent);color:var(--accent);}
 
 .top-tabs{display:flex;background:var(--paper);border-bottom:1px solid var(--rule);position:sticky;top:60px;z-index:190;overflow-x:auto;}
-.top-tab{flex:1 0 auto;min-width:118px;padding:.55rem .6rem;font-family:var(--cond);font-size:12.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-light);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all .15s;text-align:center;}
+.top-tab{flex:1 0 auto;min-width:118px;padding:.55rem .6rem;font-family:var(--cond);font-size:12.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-light);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all .15s;text-align:center;position:relative;}
 .top-tab:hover{color:var(--ink);background:var(--paper-warm);}
 .top-tab.active{color:var(--ink);border-bottom-color:var(--accent);}
+.top-tab.cleared::after{content:"\2713";position:absolute;top:3px;right:7px;font-size:11px;color:var(--ok);}
 .tab-hint{font-family:var(--sans);font-size:10px;font-weight:400;letter-spacing:0;text-transform:none;display:block;color:var(--ink-light);margin-top:1px;}
 .top-tab.active .tab-hint{color:var(--ink-mid);}
 .tab-panel{display:none;}
@@ -49,14 +50,16 @@ h2.stage-title{font-family:var(--serif);font-size:clamp(20px,2.6vw,27px);font-we
 h3.sub{font-family:var(--cond);font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;border-bottom:2px solid var(--ink);padding-bottom:.3rem;margin:2rem 0 .9rem;}
 p.body{font-size:14.6px;line-height:1.72;margin-bottom:.85rem;}
 p.body.dim{color:var(--ink-mid);font-size:14px;}
-ul.body,ol.body{margin:.6rem 0 1rem 1.2rem;font-size:14.4px;line-height:1.7;}
-ul.body li,ol.body li{margin-bottom:.5rem;}
+ol.body,ul.body{margin:.6rem 0 1rem 1.2rem;font-size:14.4px;line-height:1.7;}
+ol.body li,ul.body li{margin-bottom:.5rem;}
 .callout{background:var(--paper-warm);border-left:4px solid var(--accent);padding:.95rem 1.15rem;margin:1.2rem 0;font-size:14px;line-height:1.72;color:var(--ink-mid);}
 .callout strong{color:var(--ink);font-weight:600;}
 .callout p+p{margin-top:.6rem;}
 .big{background:#fff;border:2px solid var(--ink);padding:1.2rem 1.35rem;margin:1.3rem 0;}
 .big p{font-family:var(--serif);font-size:16px;line-height:1.7;}
 .big p+p{margin-top:.7rem;}
+.big .elems{display:flex;gap:.5rem;flex-wrap:wrap;margin:.9rem 0;}
+.big .elems span{font-family:var(--cond);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:.3rem .7rem;background:var(--mid-bg);color:var(--mid);border:1px solid var(--mid);border-radius:2px;}
 
 /* ── TALLY ── */
 .tally{border:1px solid var(--rule);border-radius:2px;overflow:hidden;margin-bottom:1.2rem;background:#fff;}
@@ -64,7 +67,7 @@ ul.body li,ol.body li{margin-bottom:.5rem;}
 .trow:last-child{border-bottom:none;}
 .trow.lead{background:var(--warn-bg);}
 .tname{font-family:var(--cond);font-size:14.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;flex:0 0 152px;}
-.tsplit{font-family:var(--type);font-size:10.5px;color:var(--warn);flex:0 0 auto;}
+.tsplit{font-family:var(--type);font-size:10.5px;color:var(--warn);}
 .tbtns{display:flex;gap:.35rem;margin-left:auto;}
 .cbtn{font-family:var(--cond);font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.3rem .55rem;border:1.5px solid var(--rule);background:var(--paper);color:var(--ink-mid);cursor:pointer;border-radius:2px;min-width:56px;}
 .cbtn:hover{border-color:var(--ink-light);}
@@ -76,22 +79,38 @@ ul.body li,ol.body li{margin-bottom:.5rem;}
 .bar i{display:block;height:100%;transition:width .2s;}
 .bar .b-eff{background:var(--ok);} .bar .b-mix{background:var(--warn);} .bar .b-fail{background:var(--bad);}
 
+/* ── PROGRESS ── */
+.prog{display:flex;align-items:center;gap:.6rem;background:var(--paper-warm);border:1px solid var(--rule);border-radius:2px;padding:.55rem .85rem;margin-bottom:1.2rem;flex-wrap:wrap;}
+.prog .pl{font-family:var(--cond);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--ink-mid);}
+.prog .dots{display:flex;gap:.35rem;margin-left:auto;}
+.prog .dot{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--rule);background:#fff;font-family:var(--type);font-size:11px;display:grid;place-items:center;color:var(--ink-light);}
+.prog .dot.on{background:var(--ok);border-color:var(--ok);color:#fff;}
+
 /* ── CARDS ── */
-.card{background:#fff;border:1px solid var(--rule);border-left:4px solid var(--mid);border-radius:2px;margin-bottom:1.1rem;overflow:hidden;}
-.card .cd-top{padding:.85rem 1.1rem .7rem;}
+.card{background:#fff;border:1px solid var(--rule);border-left:4px solid var(--mid);border-radius:2px;margin-bottom:1.3rem;overflow:hidden;}
+.card.done{border-left-color:var(--ok);}
+.card .cd-top{padding:.85rem 1.1rem .75rem;}
 .card .cd-kick{font-family:var(--cond);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-light);font-weight:700;}
-.card .cd-name{font-family:var(--serif);font-size:19px;font-weight:700;margin:.1rem 0 .5rem;}
+.card .cd-el{display:inline-block;font-family:var(--cond);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:.15rem .5rem;background:var(--mid);color:#fff;border-radius:2px;margin-left:.4rem;vertical-align:1px;}
+.card .cd-name{font-family:var(--serif);font-size:19px;font-weight:700;margin:.15rem 0 .5rem;}
 .card .cd-change{background:var(--mid-bg);border-left:3px solid var(--mid);padding:.7rem .9rem;font-size:14.6px;line-height:1.65;border-radius:2px;}
 .card .cd-change b{font-family:var(--cond);font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--mid);display:block;margin-bottom:.25rem;}
-.card .cd-ask{padding:.8rem 1.1rem;font-size:14.4px;line-height:1.7;border-top:1px dashed var(--rule);}
-.card .cd-ask ol{margin:.4rem 0 0 1.1rem;}
-.card .cd-ask li{margin-bottom:.35rem;}
-.card .cd-btn{width:100%;font-family:var(--cond);font-size:11.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;padding:.6rem;border:none;border-top:1px solid var(--rule);background:var(--paper-warm);color:var(--accent);cursor:pointer;}
-.card .cd-btn:hover{background:var(--accent-light);}
-.card .cd-ans{display:none;padding:.95rem 1.1rem;border-top:1px solid var(--rule);background:var(--ok-bg);font-size:14.2px;line-height:1.72;color:#14472c;}
-.card .cd-ans.on{display:block;animation:fadeIn .25s ease;}
-.card .cd-ans p+p{margin-top:.6rem;}
-.card .cd-ans em{font-style:italic;}
+
+.step{border-top:1px dashed var(--rule);}
+.step .st-lab{font-family:var(--cond);font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--accent);padding:.7rem 1.1rem .1rem;}
+.step .st-q{padding:.15rem 1.1rem .7rem;font-size:14.4px;line-height:1.7;}
+.step .st-q em{font-style:italic;}
+.step .st-do{margin:.5rem 1.1rem .8rem;background:var(--warn-bg);border-left:3px solid var(--warn);padding:.55rem .8rem;font-size:13.6px;line-height:1.6;color:#5a4512;border-radius:2px;}
+.step .st-btn{width:100%;font-family:var(--cond);font-size:11.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;padding:.55rem;border:none;border-top:1px solid var(--rule);background:var(--paper-warm);color:var(--accent);cursor:pointer;}
+.step .st-btn:hover{background:var(--accent-light);}
+.step .st-ans{display:none;padding:.9rem 1.1rem;border-top:1px solid var(--rule);background:var(--ok-bg);font-size:14.2px;line-height:1.72;color:#14472c;}
+.step .st-ans.on{display:block;animation:fadeIn .25s ease;}
+.step .st-ans p+p{margin-top:.65rem;}
+.instead{background:#fff;border:1px solid #b3d8c5;border-left:3px solid var(--ok);padding:.7rem .85rem;margin-top:.75rem;border-radius:2px;}
+.instead b{font-family:var(--cond);font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;display:block;margin-bottom:.3rem;color:var(--ok);}
+.instead q{font-family:var(--serif);font-style:italic;}
+.push{background:var(--bad-bg);border-top:1px solid var(--rule);border-left:3px solid var(--bad);padding:.7rem 1.1rem;font-size:13.6px;line-height:1.65;color:#4a2020;}
+.push b{font-family:var(--cond);font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;display:block;margin-bottom:.25rem;}
 
 .nb{background:#fffdf5;border:2px solid var(--ink);border-radius:2px;padding:1rem 1.2rem;margin:1.6rem 0 .5rem;position:relative;}
 .nb::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:repeating-linear-gradient(to bottom,var(--ink) 0 7px,transparent 7px 14px);}
@@ -127,7 +146,7 @@ ul.body li,ol.body li{margin-bottom:.5rem;}
     <div class="masthead-kicker">AP Language &middot; Day Two &middot; 45 Minutes</div>
     <div class="masthead-title">Move the Situation</div>
   </div>
-  <button class="subbtn" id="resetTally">Reset<br>Poll</button>
+  <button class="subbtn" id="resetAll">Start<br>Fresh</button>
 </div>
 
 <div class="top-tabs" id="tabs"></div>
@@ -136,70 +155,83 @@ ul.body li,ol.body li{margin-bottom:.5rem;}
 
 <!-- 1 · POLL -->
 <section class="tab-panel" data-panel="0">
-  <div class="stage-num">First &middot; 5 minutes</div>
+  <div class="stage-num">First &middot; 5 minutes &middot; whole class, together</div>
   <h2 class="stage-title">Where the Room Stands</h2>
-  <p class="lede">Five of the nine, hands up, one at a time. Your teacher or sub taps the counts in as they go. We are looking for the ones we <strong>disagree</strong> about &mdash; those are the ones worth arguing over.</p>
+  <p class="lede">Hands up, five apologies, one at a time. Your teacher runs this from the front and taps the numbers in. We want to see which apologies <strong>split the room</strong> &mdash; a split means the ranking was never as obvious as it felt when you did it.</p>
 
   <div class="tally" id="tally"></div>
-  <p class="body dim">The row highlighted in yellow is the most divided one in the room.</p>
+  <p class="body dim">The row highlighted in yellow is the apology this class disagrees about most. Write it down &mdash; you will want it later.</p>
+
+  <div class="callout">
+    <p><strong>After the poll, you are on your own.</strong> Everything from here you work through with your partner, at your own pace. Read carefully, argue properly, and do not press a reveal button until you have both committed to an answer out loud.</p>
+  </div>
 
   <div class="btnrow"><button class="btn nextbtn" data-go="1">Next &rarr; Warm-Up</button></div>
 </section>
 
 <!-- 2 · WARM UP -->
 <section class="tab-panel" data-panel="1">
-  <div class="stage-num">Second &middot; 5 minutes &middot; whole class</div>
-  <h2 class="stage-title">Warm-Up: One Change</h2>
-  <p class="lede">Before you argue about tiers, one quick experiment. Nothing about the words below changes. Only the man saying them.</p>
+  <div class="stage-num">Second &middot; 6 minutes &middot; with your partner</div>
+  <h2 class="stage-title">Warm-Up: Change One Thing</h2>
+  <p class="lede">Kanye West's blog post from 2009, word for word as he wrote it. Nothing in the text changes. The only thing that changes is <strong>who is saying it</strong>. Work through both steps before you reveal anything.</p>
   <div id="warm"></div>
-  <div class="btnrow"><button class="btn nextbtn" data-go="2">Next &rarr; Build Both Cases</button></div>
+  <div class="btnrow"><button class="btn nextbtn" data-go="2">Next &rarr; The Four Cards</button></div>
 </section>
 
-<!-- 3 · DEBATE -->
+<!-- 3 · CARDS -->
 <section class="tab-panel" data-panel="2">
-  <div class="stage-num">Third &middot; 12 minutes to build, 10 to share</div>
-  <h2 class="stage-title">Build Both Cases</h2>
-  <p class="lede">Your group gets <strong>one</strong> apology. You are not arguing for your own opinion. You are building the <strong>strongest possible case both ways</strong> &mdash; so that whatever anyone else says, you have already thought of it.</p>
+  <div class="stage-num">Third &middot; about 24 minutes &middot; with your partner</div>
+  <h2 class="stage-title">Four Situations, Four Apologies</h2>
+  <p class="lede">Each card keeps one apology exactly as its speaker wrote it and changes <strong>one element of the rhetorical situation</strong>. Work through them in any order. <strong>Do at least two properly</strong> &mdash; properly beats quickly, and rushing all four is worth less than arguing your way through two.</p>
 
-  <div class="callout">
-    <p><strong>In your notebook, two headings.</strong></p>
-    <p><strong>Best case for EFFECTIVE.</strong> Two choices this speaker made that work. Quote both. For each, name who it works on and why it was available to this speaker.</p>
-    <p><strong>Best case for FAILED.</strong> Two choices that fail. Quote both. Name the dodge.</p>
-    <p>Then, at the bottom: <strong>which case is stronger, and what would have to change about the situation for the other one to win?</strong> Hold on to that last sentence. You will need it in ten minutes.</p>
+  <div class="prog" id="prog">
+    <span class="pl">Cards worked through</span>
+    <div class="dots" id="dots"></div>
   </div>
 
-  <h3 class="sub">The four up for debate</h3>
-  <ul class="body">
-    <li><strong>United Airlines</strong> &mdash; Oscar Munoz, letter to employees</li>
-    <li><strong>John Crist</strong> &mdash; written statement to a Christian audience</li>
-    <li><strong>Reese Witherspoon</strong> &mdash; statement and TV interview</li>
-    <li><strong>Will Smith</strong> &mdash; Instagram, the morning after</li>
-  </ul>
-  <p class="body dim">Ninety seconds per group when you share: the strongest case each way, and which one you landed on.</p>
-
-  <div class="btnrow"><button class="btn nextbtn" data-go="3">Next &rarr; The Twist</button></div>
-</section>
-
-<!-- 4 · TWIST -->
-<section class="tab-panel" data-panel="3">
-  <div class="stage-num">Fourth &middot; 10 minutes</div>
-  <h2 class="stage-title">Now Move the Situation</h2>
-  <p class="lede">Open the card for <strong>your</strong> apology. Every word of the original stays exactly as it was written. One thing about the <strong>situation</strong> changes. Decide, with your group, whether your tier still holds &mdash; and be ready to name the exact choice that started working, or stopped.</p>
+  <div class="callout">
+    <p><strong>How to work a card.</strong> Read what changed. Answer Step One out loud with your partner and write your answer down &mdash; then reveal ours and see whether you agree. Then answer Step Two by <em>actually writing the new line</em>, not describing it, and reveal ours only after your line exists on paper.</p>
+    <p>Our reading is not the answer key. If you disagree with it, say why in your notebook. Each card has a box at the bottom for exactly that.</p>
+  </div>
 
   <div id="cards"></div>
 
+  <div class="nb">
+    <div class="nb-lab"><span>&#9998;</span> In your notebook, for each card you work</div>
+    <ol>
+      <li>The apology, and which element of the situation changed.</li>
+      <li>The quoted words that stop working, and one sentence on why they stop working.</li>
+      <li>Your replacement line, written out in full.</li>
+      <li>If you disagreed with our reading anywhere, one sentence saying where and why.</li>
+    </ol>
+  </div>
+
+  <div class="btnrow"><button class="btn nextbtn" data-go="3">Next &rarr; What That Proves</button></div>
+</section>
+
+<!-- 4 · TAKEAWAY -->
+<section class="tab-panel" data-panel="3">
+  <div class="stage-num">Fourth &middot; 5 minutes</div>
+  <h2 class="stage-title">The Rhetorical Situation Is Not Static</h2>
+
   <div class="big">
-    <p>You just moved rankings up and down without changing a single word.</p>
-    <p>So a tier is not a property of the text. It is a <strong>relationship between a text and its situation</strong> &mdash; the speaker, the audience, the offense, the place it was published, the moment it was said.</p>
-    <p>That is what the definition has been getting at the whole time. <em>Available</em> is not a fixed list of good writing moves. It is whatever this particular speaker, in this particular situation, in front of these particular people, can actually reach for and be believed.</p>
+    <p>Four apologies. Not one word of any original text was changed.</p>
+    <p>What changed each time was a single element of the situation the apology was made in:</p>
+    <div class="elems"><span>Speaker</span><span>Audience</span><span>Venue</span><span>Timing</span></div>
+    <p>And every time, choices that had been working stopped working, or choices that had been failing suddenly held.</p>
+    <p>So the rhetorical situation is not background you describe once and then set aside before the real analysis starts. It is <strong>the thing that decides whether a choice works.</strong> One sentence can be the strongest line in an apology and the weakest line in that same apology, depending on who says it, to whom, where, and when.</p>
+  </div>
+
+  <div class="callout">
+    <p><strong>Which is why an apology cannot be judged on its own.</strong> There is no such thing as a well-written apology in general. There is only an apology that fits the person who has to give it, the people who have to accept it, and the moment it arrives in.</p>
+    <p>Rhetoric is the use of the means of persuasion <em>available</em> to you. You have now watched what counts as available change four times in twenty minutes.</p>
   </div>
 
   <div class="nb">
     <div class="nb-lab"><span>&#9998;</span> In your notebook</div>
     <ol>
-      <li>Your apology, and the one thing that changed about its situation.</li>
-      <li>Did your tier move? One sentence naming the exact choice that started working or stopped working &mdash; quote it.</li>
-      <li>One sentence: finish this &mdash; <em>&ldquo;A choice is available to a speaker when&hellip;&rdquo;</em></li>
+      <li>Finish this sentence in your own words: <em>&ldquo;A choice is available to a speaker when&hellip;&rdquo;</em></li>
+      <li>One sentence on what changed in your thinking today. If nothing changed, write the strongest objection you and your partner could not answer.</li>
     </ol>
   </div>
 
@@ -210,19 +242,19 @@ ul.body li,ol.body li{margin-bottom:.5rem;}
 <section class="tab-panel" data-panel="4">
   <div class="stage-num">Last &middot; 5 minutes</div>
   <h2 class="stage-title">Thursday: You Fix One</h2>
-  <p class="lede">Two classes telling me what is broken. Thursday you repair one of them, and then you explain your own choices the same way you have been explaining theirs.</p>
+  <p class="lede">You have just written replacement lines for other people's apologies under situations we invented. On Thursday you do it properly, for the real situation, and then you explain your own choices the way you have been explaining theirs.</p>
 
   <div class="callout">
-    <p><strong>What you will do Thursday.</strong> Choose one apology you put in Failed or Mixed. Rewrite it &mdash; in that person's voice, as if you were writing it for them. Then analyse two or three of your own choices using Choice, Unpacking, Effect on the Audience.</p>
+    <p><strong>Thursday's task.</strong> Choose one apology you put in Failed or Mixed. Rewrite it in that person's voice. Then analyse two or three of your own choices using Choice, Unpacking, and Effect on the Audience.</p>
   </div>
 
   <div class="nb">
     <div class="nb-lab"><span>&#9998;</span> Before you leave &mdash; write these two things</div>
     <ol>
-      <li><strong>Which apology you are rewriting.</strong> It has to be one you tiered Failed or Mixed.</li>
-      <li><strong>The one specific failure you are repairing.</strong> Not &ldquo;make it better.&rdquo; Quote the phrase that fails and name the dodge. For example: <em>&ldquo;I was disrespectful to the officer&rdquo; &mdash; the Downgrade. She never names the actual offense.</em></li>
+      <li><strong>Which apology you are rewriting.</strong> It must be one you tiered Failed or Mixed.</li>
+      <li><strong>The one specific failure you are repairing.</strong> Not &ldquo;make it better.&rdquo; Quote the phrase that fails and name the dodge. For example: <em>&ldquo;I was disrespectful to the officer&rdquo; &mdash; the Downgrade. Reese never names the actual offence.</em></li>
     </ol>
-    <p class="body dim" style="margin:.7rem 0 0;">Come Thursday with those two lines written and you spend the whole period writing instead of deciding.</p>
+    <p class="body dim" style="margin:.7rem 0 0;">Arrive Thursday with those two lines already written and you spend the whole period writing instead of deciding.</p>
   </div>
 </section>
 
@@ -234,25 +266,27 @@ ul.body li,ol.body li{margin-bottom:.5rem;}
   <div class="sp-kick">AP Language &middot; Mr. Smith &middot; Substitute Notes</div>
   <h3>Move the Situation &mdash; 45 minutes</h3>
 
-  <p style="margin-top:.8rem;"><strong>Students run the arguing. You run the clock and the poll.</strong> There is nothing to teach and nothing to collect &mdash; it all goes in notebooks.</p>
+  <p style="margin-top:.8rem;"><strong>You run one poll at the front for five minutes. After that the website runs itself and students work in pairs at their own screens.</strong> Nothing to teach, nothing to collect &mdash; it all goes in notebooks.</p>
 
-  <p>They spent last class sorting nine celebrity apologies into Effective, Mixed and Failed. Today they argue about the ones they disagreed on, and then find out that the answer changes when the situation changes.</p>
+  <p>Last class they sorted nine celebrity apologies into Effective, Mixed and Failed. Today they discover that those rankings change when the situation around the apology changes, and they practise writing a replacement line.</p>
 
-  <h4>How the period runs</h4>
+  <h4>The only part you run</h4>
 
-  <p><strong>First five minutes</strong>, you run a poll from the front. The first tab lists five apologies. For each one, ask for hands &mdash; who put it in Effective, who in Mixed, who in Failed &mdash; and tap the numbers into the buttons on screen. The row that turns yellow is the one the class disagrees about most. It takes about a minute per apology, so keep it moving.</p>
+  <p>Open the first tab on the projector. It lists five apologies. For each one, ask for hands &mdash; who put it in Effective, who in Mixed, who in Failed &mdash; and tap the numbers into the buttons on screen. About a minute each. One row will turn yellow, which simply means the class was most divided about that apology. Point it out and move on; you do not need to discuss it.</p>
 
-  <p><strong>Next five minutes</strong> is a whole-class warm-up on the second tab. Read the card, give them a minute to talk to a partner, take a couple of answers, then press the reveal button. You don't need to add anything to it.</p>
+  <p>Then tell them to work through the rest of the tabs with their partner at their own pace, and that they have roughly thirty minutes before the last tab.</p>
 
-  <p><strong>Then about twenty-two minutes</strong> of group work. Put them in groups of four and give each group one of the four apologies listed on the third tab &mdash; if the class is large, two groups can take the same one. Each group builds the best argument <em>both</em> ways, for and against, which means nobody has to be right and you never have to referee. Twelve minutes to prepare, then ninety seconds per group to share.</p>
+  <h4>What they are doing after that</h4>
 
-  <p><strong>Last ten minutes or so</strong>, each group opens the card on the fourth tab for their own apology. It changes one thing about the situation &mdash; who was speaking, or where it was posted &mdash; and asks whether their ranking still holds. They discuss, press the reveal, and write three lines in their notebooks. If there is time, ask a couple of groups whether their ranking moved.</p>
+  <p>A short warm-up about Kanye West's apology, then four cards. Each card takes one apology, keeps the words exactly as written, and changes one thing about the situation &mdash; who is speaking, who is listening, where it was posted, or when it was said. Students work out which words stop working, then write a replacement line themselves. They are told to do at least two cards properly rather than rushing all four.</p>
 
-  <p><strong>Final few minutes</strong>, the fifth tab. They write down which apology they are rewriting on Thursday and the one failure they are fixing. Both lines go in the notebook. That is the only thing that has to happen before they leave.</p>
+  <p>The last two tabs are a short conclusion and Thursday's assignment. Make sure everybody reaches the final tab with about five minutes left, because the two lines they write there are what Mr. Smith needs on Thursday.</p>
 
   <h4>If they ask you something</h4>
 
-  <p>If a group asks whether they have the right answer, tell them there isn't one and the reveal button will give them our reasoning to argue with. If a group finishes early, have them build the case for a second apology. If two groups disagree loudly, that is the lesson working.</p>
+  <p>If a pair asks whether they have the right answer, tell them there is no single right answer and that each step has a reveal button giving our reasoning for them to argue with. If a pair says the replacement line is too hard to write, tell them one sentence is enough. If a pair finishes all four cards early, have them write a second replacement line for a different part of the same apology.</p>
+
+  <p>Their work saves automatically on the computer they are using. If a screen is carrying another class's work, the Start Fresh button at the top right clears it.</p>
 
   <div class="btnrow"><button class="btn ghost sm" onclick="window.print()">Print these notes</button></div>
 </aside>
@@ -264,72 +298,104 @@ ul.body li,ol.body li{margin-bottom:.5rem;}
 var POLL = ["United Airlines","John Crist","Reese Witherspoon","Will Smith","Ye (Kanye West)"];
 
 var WARM = {
-  kick:"Whole class",
+  id:"warm", kick:"Warm-up", el:"Speaker",
   name:"Ye (Kanye West), 2009",
-  change:"Every word stays the same, and it is still posted on his own blog. But he is not a musician. He is the chief executive of a company, apologising to shareholders and staff.",
-  ask:"<ol><li>Which of his choices stop working the moment you change who is speaking?</li><li>Which ones were <strong>already</strong> broken, and stay broken?</li></ol>",
-  ans:"<p>The slang and the exclamation points stop working immediately. Those were genuinely available to a musician posting on his own blog to fans who follow him <em>because</em> he does not sound like a press release. They are not available to a chief executive, and from a chief executive they would read as someone who does not understand what he has done.</p>"+
-      "<p>But look at what does <strong>not</strong> change. Apologising and re-arguing the verdict in the same breath &mdash; <em>I'm in the wrong for going on stage</em>, then <em>Beyonc&eacute;'s video was the best of this decade</em>. Deferring the real apology to tomorrow. Aiming <em>Welcome to the real world</em> at his critics instead of at Taylor. Those fail in both situations, for both speakers, in front of any audience.</p>"+
-      "<p>So there are two different kinds of failure, and you need to be able to tell them apart. Some choices <strong>don't fit</strong> the situation. Others <strong>don't work</strong> in any situation. Most people only ever notice the first kind, because it is the one you can hear."
+  change:"Every word stays the same, and it is still posted on his own blog. But he is not a musician any more. He is the chief executive of a company, and the people reading are his shareholders and his staff.",
+  q1:"Which of Kanye's choices stop working the moment a chief executive is the one saying them? Name two, and quote them.",
+  do1:"Say your two out loud to each other before anyone touches the button. Write them down.",
+  a1:"<p>The slang and the exclamation points go first. Those were genuinely available to a musician posting on his own blog to fans who follow him <em>because</em> he does not sound like a press release. They are not available to a chief executive, and from one they would read as a man who has not understood what he did.</p>"+
+     "<p>The direct address to his own supporters goes too &mdash; <em>I'm sorry to my fans if I let you guys down</em>. A musician has fans. A chief executive has customers and staff, and telling them he is sorry they are disappointed <em>in him</em> puts his reputation at the centre of somebody else's injury.</p>",
+  q2:"Now the harder half. Which of his choices were <strong>already</strong> failing in 2009, and go on failing no matter who says them? Find at least two.",
+  do2:"This is the question that matters. Do not reveal until you have two written down.",
+  a2:"<p>Three of them survive the change completely, because they have nothing to do with how he sounds.</p>"+
+     "<p>He apologises and re-argues the verdict in the same breath: <em>I'm in the wrong for going on stage</em>, and then <em>Beyonc&eacute;'s video was the best of this decade</em>. He defers the apology that actually matters: <em>I will apologize to Taylor 2mrw</em> &mdash; the one person he wronged is the one audience he has not spoken to. And <em>Welcome to the real world</em> is aimed at his critics rather than at Taylor.</p>"+
+     "<p>So there are two different kinds of failure, and telling them apart is most of this unit. Some choices <strong>do not fit</strong> the situation. Other choices <strong>do not work</strong> in any situation. Most people only ever notice the first kind, because the first kind is the one you can hear.</p>",
+  push:"Kanye's apology is the one nearly everybody ranks last, and nearly everybody gives the wrong reason for it. If you wrote &ldquo;bad grammar&rdquo; on Monday, this card is why that answer was never good enough."
 };
 
 var CARDS = [
   {
-    kick:"Group card",
+    id:"c1", kick:"Card one", el:"Venue &amp; Audience",
     name:"United Airlines &middot; Oscar Munoz",
-    change:"Every word is identical. But Munoz posts it publicly under his own name, addressed to Dr. David Dao directly &mdash; not as a letter that opens &ldquo;Dear Team.&rdquo;",
-    ask:"<ol><li>Does your tier move? The audience problem is now fixed &mdash; is the apology fixed?</li><li>Then read this sentence once more, slowly: <em>&ldquo;The truly horrific event that occurred on this flight.&rdquo;</em> Who did it? Find the person inside that sentence.</li></ol>",
-    ans:"<p>Fixing the address fixes something real. In the original, the man he is apologising to is not the person receiving the letter &mdash; Munoz apologises to Dr. Dao in a memo that Dr. Dao will never be sent. That is a straightforward failure of audience, and moving it to a public post repairs it.</p>"+
-        "<p>And the apology still does not work, because the second problem is untouched. <em>The truly horrific event that occurred on this flight.</em> There is nobody in that sentence. Nothing was done by anyone. A man was pulled bleeding down an aisle by officers United called, and the grammar has turned that into weather &mdash; an event that occurred, the way a storm occurs.</p>"+
-        "<p>So now the sentence lands on the right person. Dr. Dao gets to read a public apology that refuses to say who hurt him. Arguably that is worse.</p>"
+    change:"Every word is identical. But Munoz posts it publicly under his own name, addressed directly to Dr. David Dao &mdash; instead of sending it as an internal letter that opens &ldquo;Dear Team.&rdquo;",
+    q1:"Moving the letter fixes one real problem. Name the problem it fixes &mdash; and then name the problem that survives the move completely untouched.",
+    do1:"Two problems, two answers. Write both before revealing.",
+    a1:"<p>Moving it fixes a real failure of audience. In the original, the man Munoz is apologising to is not the person receiving the letter &mdash; he apologises to Dr. Dao inside a memo Dr. Dao will never be sent. Addressing it to Dao publicly repairs that completely.</p>"+
+       "<p>The second problem does not move at all. Read this sentence again: <em>&ldquo;The truly horrific event that occurred on this flight.&rdquo;</em> There is nobody inside it. Nothing was done by anyone. A man was pulled bleeding up an aisle by officers United called, and that grammar turns the whole thing into weather &mdash; an event that occurred, the way a storm occurs.</p>"+
+       "<p>So the apology now lands on exactly the right person, and what Dr. Dao gets to read is a public statement that still refuses to say who hurt him. Fixing the audience made the evasion easier to see, not harder.</p>",
+    q2:"Write the sentence Munoz would have to put in place of <em>&ldquo;the truly horrific event that occurred on this flight.&rdquo;</em>",
+    do2:"Actually write it. One or two sentences. Put a person in it.",
+    a2:"<p>Any version works if somebody is doing something in it. The test is whether a reader could answer &ldquo;who did this?&rdquo; from your sentence alone.</p>"+
+       "<div class='instead'><b>One possible replacement</b><q>Our staff called airport officers to remove you from your seat, and they dragged you up the aisle until you were bleeding. We decided that. I am not going to describe it as something that happened.</q></div>",
+    push:"Some people argue the vagueness is not evasion at all &mdash; that United's lawyers would never let a chief executive admit fault in writing while a lawsuit is coming. That is a serious argument. If you believe it, write down what it means: that the situation made an honest apology unavailable to him."
   },
   {
-    kick:"Group card",
+    id:"c2", kick:"Card two", el:"Audience",
     name:"John Crist",
-    change:"Every word is identical. But he is not a Christian comedian &mdash; he is a secular stand-up, and this statement goes out to a general audience with no shared faith in it at all.",
-    ask:"<ol><li>Which of his <strong>strongest</strong> choices stop working? Quote one.</li><li>Which of his choices survive the change completely? Why those?</li></ol>",
-    ans:"<p><em>&ldquo;I've sinned against God, against women and the people who I love the most&rdquo;</em> is the most precise naming in the entire statement &mdash; and it only carries that weight because his audience shares the vocabulary. To a Christian audience, <em>sin</em> is a heavier word than <em>mistake</em>; it means a wrong against a person and against God, and it comes with an expectation of repentance. Strip the audience out and the same sentence reads as evasion &mdash; a religious frame standing in for an account of what he actually did.</p>"+
-        "<p>Now look at what survives. He cancelled his remaining tour dates and postponed everything else. That works on <em>any</em> audience, because cost is legible to everybody. You do not need to share his beliefs to understand that he gave up money and a career year.</p>"+
-        "<p>One of his moves depended entirely on who was listening. The other did not. That is worth writing down.</p>"
+    change:"Same man, same words, same statement. But it goes out to a general audience with no shared faith in it &mdash; people who do not use religious language and grant it no particular weight.",
+    q1:"Which of Crist's <strong>strongest</strong> choices stops working with this audience? Quote it. And which of his choices survives the change completely?",
+    do1:"One that breaks, one that survives. Both quoted.",
+    a1:"<p><em>&ldquo;I've sinned against God, against women and the people who I love the most&rdquo;</em> is the most precise naming anywhere in his statement &mdash; and it is precise only because his original audience shares the vocabulary. To a Christian audience, <em>sin</em> is heavier than <em>mistake</em>: it names a wrong against a person and against God, and it carries an expectation of repentance. Remove that audience and the identical sentence reads as evasion, a religious frame standing in for an account of what he actually did.</p>"+
+       "<p>What survives is the cancelled tour. He called off his remaining dates and postponed everything else. That works on <strong>any</strong> audience, because cost is legible to everybody &mdash; nobody needs to share his beliefs to understand that he gave up money and a year of his career.</p>"+
+       "<p>One choice depended entirely on who was listening. The other did not depend on the audience at all. Write that difference down; it is the whole lesson in one card.</p>",
+    q2:"Write the sentence Crist would need in place of the one that stopped working.",
+    do2:"It has to name conduct that any audience can weigh, without borrowing a vocabulary they do not share.",
+    a2:"<p>The replacement has to do the work the religious language was doing &mdash; naming the wrong precisely &mdash; using terms that carry weight for anybody.</p>"+
+       "<div class='instead'><b>One possible replacement</b><q>I used the trust people put in me to pressure women into situations they had not chosen. I did it repeatedly, over years, and I knew what I was doing while I did it.</q></div>",
+    push:"Push back on us if you want to: you could argue the religious language was never doing real work even for his own audience, and that it let him describe harm to women as a matter between himself and God. That is a strong reading. Write it down if it is yours."
   },
   {
-    kick:"Group card",
+    id:"c3", kick:"Card three", el:"Speaker",
     name:"Reese Witherspoon",
     change:"Every word is identical, delivered exactly the same way &mdash; laughing at the pregnancy line and all. But she is not a film actress. She is a state senator, running for re-election in six weeks.",
-    ask:"<ol><li>What stops being available to her the moment she is a politician instead of a movie star?</li><li>Does the phrase <em>&ldquo;I was disrespectful to the officer&rdquo;</em> get better or worse? Careful with this one.</li></ol>",
-    ans:"<p>The charm goes first. Laughing while she tells the story about claiming to be pregnant is genuinely available to a film star &mdash; her audience enjoys her being flustered and human, and being likeable is a large part of what they want from her in the first place. It is not available to somebody asking to be trusted with power. The same laugh reads as not taking it seriously.</p>"+
-        "<p>And the second one is the interesting half. <em>I was disrespectful to the officer</em> does not stay the same &mdash; it gets <strong>worse</strong>. From an actress, naming a smaller offence than the one she committed reads as minimising. From a politician who tried to pull rank on a police officer and then apologised only for rudeness, the identical sentence reads as a cover-up.</p>"+
-        "<p>Same words. Same dodge. Heavier consequence, because of who is saying it and what her audience is being asked to hand her.</p>"
+    q1:"What stops being available to her the moment a senator is saying these words instead of a movie star?",
+    do1:"Name the specific thing she can no longer do, not just &ldquo;it sounds worse.&rdquo;",
+    a1:"<p>The charm goes first. Laughing while she tells the story about claiming to be pregnant is genuinely available to a film star &mdash; her audience enjoys her being flustered and human, and being likeable is much of what they want from her anyway. It is not available to somebody asking to be trusted with power. The identical laugh now reads as failing to take the offence seriously.</p>"+
+       "<p>Notice that nothing about the laugh changed. What changed is what her audience is being asked to do with it. Fans are being asked to keep liking her. Voters are being asked to hand her authority over other people.</p>",
+    q2:"Does <em>&ldquo;I was disrespectful to the officer&rdquo;</em> get better, worse, or stay the same when a politician says it? Be careful &mdash; the words have not changed at all. Then write the replacement.",
+    do2:"Decide better, worse or unchanged, and commit, before you reveal.",
+    a2:"<p>It gets <strong>worse</strong>, which surprises most people, since the sentence is identical.</p>"+
+       "<p>From an actress, naming a smaller offence than the one she committed reads as minimising. From a politician who tried to pull rank on a police officer and then apologised only for rudeness, the same eight words read as a cover-up &mdash; because a politician's relationship to the law is the thing being judged. Same words, same dodge, heavier consequence, entirely because of who is speaking.</p>"+
+       "<div class='instead'><b>One possible replacement</b><q>I asked that officer whether he knew my name. I was trying to use my position to escape a consequence that applies to everybody else, and anyone asking to hold office should be disqualified by that instinct, not excused for it.</q></div>",
+    push:"Here is the uncomfortable part. Reese's real apology largely worked &mdash; she stayed popular, the story faded. So you have to decide what you are measuring: whether an apology succeeded with its audience, or whether it was adequate to what she did. Those are not the same question, and rhetorical analysis is usually asking the first one."
   },
   {
-    kick:"Group card",
+    id:"c4", kick:"Card four", el:"Timing",
     name:"Will Smith",
     change:"Every word is identical. But he says them from the podium that night, roughly ten minutes after the slap, to the room and the cameras &mdash; instead of posting them on Instagram the following morning.",
-    ask:"<ol><li>Better or worse? Say why, and be specific about what changed.</li><li>What happens to <em>&ldquo;I am a work in progress&rdquo;</em> in a room that has just watched it happen?</li></ol>",
-    ans:"<p>Mostly better, and the reason is <strong>timing</strong> &mdash; which is an available means just like word choice or venue. The next-day post is free. He had a night to see how the world reacted, to find out whether he would get away with it, and to have it written or checked. Saying the same words from the podium costs something, because he would be apologising before he knew the answer to any of that.</p>"+
-        "<p>The second question is the sharper one. <em>I am a work in progress</em> is a Redemption Pivot &mdash; it turns the apology into the story of his own growth. On Instagram the next day, most readers slide past it. Said aloud to a stunned room ten minutes after he hit somebody, with Chris Rock still standing there, the same six words are much harder to accept, because the audience can see exactly how recent the progress is.</p>"+
-        "<p>Notice that this card did not change the speaker or the audience. It changed <em>when</em>. That counts too.</p>"
+    q1:"Better or worse? Be specific about what the change in timing actually does &mdash; the words are the same, so what is different?",
+    do1:"Commit to better or worse, then justify it, then reveal.",
+    a1:"<p>Mostly better, and the reason is that <strong>timing is an available means</strong>, exactly like word choice or venue.</p>"+
+       "<p>The next-morning post is free. He had a night to watch the reaction, to find out whether he would get away with it, and to have the words checked by other people. Saying the identical sentences from the podium costs him something real, because he would be apologising before he knew the answer to any of that. An apology that costs the speaker something is more believable than one that does not, and nothing about the wording had to change for that to be true.</p>",
+    q2:"What happens to <em>&ldquo;I am a work in progress&rdquo;</em> in a room that watched him do it ten minutes ago? Then write what he should say at that podium in place of that line.",
+    do2:"Write the podium version. Out loud first, then on paper.",
+    a2:"<p><em>I am a work in progress</em> is a Redemption Pivot &mdash; it turns an apology into the story of his own growth. Posted the next morning, most readers slide straight past it. Said aloud to a stunned room ten minutes after he hit somebody, with Chris Rock standing a few feet away, the same six words become very hard to accept, because everybody present can see exactly how recent the progress is.</p>"+
+       "<div class='instead'><b>One possible replacement</b><q>Chris, I am saying this now rather than tomorrow, while everyone is still here and while it still costs me something. I hit you. Nothing you said justified it, and I am not going to stand here and explain it.</q></div>",
+    push:"Notice what this card did <em>not</em> change: not the speaker, not the audience, not one word of the text. Only when it was said. If timing alone can move a ranking, then the situation really is more than a label you write at the top of an essay."
   }
 ];
 
-var TABS=[{t:"The Poll",h:"5 min"},{t:"Warm-Up",h:"5 min"},{t:"Both Cases",h:"22 min"},{t:"The Twist",h:"10 min"},{t:"Thursday",h:"5 min"}];
-var counts={}, cur=0;
-var KEY="apdebate_v1";
+var TABS=[{t:"The Poll",h:"5 min"},{t:"Warm-Up",h:"6 min"},{t:"Four Cards",h:"24 min"},{t:"Takeaway",h:"5 min"},{t:"Thursday",h:"5 min"}];
+var S={counts:{},steps:{},tab:0};
+var KEY="apdebate_v2";
 
-function save(){ try{ localStorage.setItem(KEY, JSON.stringify(counts)); }catch(e){} }
-function load(){ try{ var r=localStorage.getItem(KEY); if(r) counts=JSON.parse(r)||{}; }catch(e){} }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function load(){ try{ var r=localStorage.getItem(KEY); if(r){ var o=JSON.parse(r); for(var k in o) if(o.hasOwnProperty(k)) S[k]=o[k]; } }catch(e){} }
+function cardDone(id){ return !!(S.steps[id+"_1"] && S.steps[id+"_2"]); }
 
 function renderTabs(){
-  var h="",i;
+  var h="",i,cl;
   for(i=0;i<TABS.length;i++){
-    h+='<button class="top-tab'+(i===cur?" active":"")+'" data-tab="'+i+'">'+TABS[i].t+'<span class="tab-hint">'+TABS[i].h+'</span></button>';
+    cl = (i===2 && CARDS.filter(function(c){return cardDone(c.id);}).length>=2) ? " cleared"
+       : (i===1 && cardDone("warm")) ? " cleared" : "";
+    h+='<button class="top-tab'+(i===S.tab?" active":"")+cl+'" data-tab="'+i+'">'+TABS[i].t+'<span class="tab-hint">'+TABS[i].h+'</span></button>';
   }
   document.getElementById("tabs").innerHTML=h;
   var b=document.querySelectorAll(".top-tab"),j;
   for(j=0;j<b.length;j++) b[j].addEventListener("click",function(){ go(parseInt(this.getAttribute("data-tab"),10)); });
 }
 function go(i){
-  cur=i;
+  S.tab=i; save();
   var ps=document.querySelectorAll(".tab-panel"),k;
   for(k=0;k<ps.length;k++) ps[k].classList.toggle("active",parseInt(ps[k].getAttribute("data-panel"),10)===i);
   renderTabs(); window.scrollTo({top:0,behavior:"smooth"});
@@ -338,19 +404,17 @@ function go(i){
 function spread(c){
   var t=c.eff+c.mix+c.fail;
   if(t<3) return -1;
-  var mx=Math.max(c.eff,c.mix,c.fail);
-  return 1-(mx/t); /* higher = more divided */
+  return 1-(Math.max(c.eff,c.mix,c.fail)/t);
 }
 function renderTally(){
   var i,best=-1,bestI=-1;
   for(i=0;i<POLL.length;i++){
-    var c=counts[POLL[i]]||{eff:0,mix:0,fail:0};
-    var s=spread(c);
+    var s=spread(S.counts[POLL[i]]||{eff:0,mix:0,fail:0});
     if(s>best){ best=s; bestI=i; }
   }
   var h="";
   for(i=0;i<POLL.length;i++){
-    var c=counts[POLL[i]]||{eff:0,mix:0,fail:0};
+    var c=S.counts[POLL[i]]||{eff:0,mix:0,fail:0};
     var t=c.eff+c.mix+c.fail;
     var lead=(i===bestI && best>0.35);
     h+='<div class="trow'+(lead?" lead":"")+'"><div class="tname">'+POLL[i]+'</div>';
@@ -369,44 +433,68 @@ function renderTally(){
   for(j=0;j<bs.length;j++){
     bs[j].addEventListener("click",function(ev){
       var n=POLL[parseInt(this.getAttribute("data-n"),10)], k=this.getAttribute("data-k");
-      if(!counts[n]) counts[n]={eff:0,mix:0,fail:0};
-      counts[n][k] += ev.shiftKey ? -1 : 1;
-      if(counts[n][k]<0) counts[n][k]=0;
+      if(!S.counts[n]) S.counts[n]={eff:0,mix:0,fail:0};
+      S.counts[n][k] += ev.shiftKey ? -1 : 1;
+      if(S.counts[n][k]<0) S.counts[n][k]=0;
       save(); renderTally();
     });
   }
 }
 
-function cardHTML(c,id){
-  return '<div class="card" data-c="'+id+'">'+
-    '<div class="cd-top"><div class="cd-kick">'+c.kick+'</div><div class="cd-name">'+c.name+'</div>'+
-    '<div class="cd-change"><b>What changes</b>'+c.change+'</div></div>'+
-    '<div class="cd-ask">'+c.ask+'</div>'+
-    '<button class="cd-btn">Discuss it first &mdash; then reveal our reading</button>'+
-    '<div class="cd-ans">'+c.ans+'</div></div>';
+function stepHTML(id,n,lab,q,dodo,ans){
+  var on = S.steps[id+"_"+n];
+  return '<div class="step" data-step="'+id+'_'+n+'">'+
+    '<div class="st-lab">'+lab+'</div>'+
+    '<div class="st-q">'+q+'</div>'+
+    '<div class="st-do">'+dodo+'</div>'+
+    '<button class="st-btn">'+(on?"Hide our reading":"Reveal our reading")+'</button>'+
+    '<div class="st-ans'+(on?" on":"")+'">'+ans+'</div></div>';
 }
-function wireCards(scope){
-  var cs=scope.querySelectorAll(".card"),i;
-  for(i=0;i<cs.length;i++){
+function cardHTML(c){
+  return '<div class="card'+(cardDone(c.id)?" done":"")+'" data-card="'+c.id+'">'+
+    '<div class="cd-top"><div class="cd-kick">'+c.kick+'<span class="cd-el">'+c.el+' changes</span></div>'+
+    '<div class="cd-name">'+c.name+'</div>'+
+    '<div class="cd-change"><b>What changes</b>'+c.change+'</div></div>'+
+    stepHTML(c.id,1,"Step one",c.q1,c.do1,c.a1)+
+    stepHTML(c.id,2,"Step two",c.q2,c.do2,c.a2)+
+    '<div class="push"><b>Argue with us</b>'+c.push+'</div>'+
+    '</div>';
+}
+function wireSteps(scope){
+  var st=scope.querySelectorAll(".step"),i;
+  for(i=0;i<st.length;i++){
     (function(el){
-      var b=el.querySelector(".cd-btn"), a=el.querySelector(".cd-ans");
+      var key=el.getAttribute("data-step");
+      var b=el.querySelector(".st-btn"), a=el.querySelector(".st-ans");
       b.addEventListener("click",function(){
-        a.classList.toggle("on");
-        b.textContent = a.classList.contains("on") ? "Hide" : "Discuss it first — then reveal our reading";
+        var on=!a.classList.contains("on");
+        a.classList.toggle("on",on);
+        b.textContent = on ? "Hide our reading" : "Reveal our reading";
+        S.steps[key]=on; save();
+        renderDots(); renderTabs();
+        var card=el.closest ? el.closest(".card") : null;
+        if(card) card.classList.toggle("done", cardDone(card.getAttribute("data-card")));
       });
-    })(cs[i]);
+    })(st[i]);
   }
+}
+function renderDots(){
+  var el=document.getElementById("dots"); if(!el) return;
+  var h="",i;
+  for(i=0;i<CARDS.length;i++) h+='<div class="dot'+(cardDone(CARDS[i].id)?" on":"")+'">'+(i+1)+'</div>';
+  el.innerHTML=h;
 }
 
 function init(){
   load();
-  renderTabs(); go(0); renderTally();
-  document.getElementById("warm").innerHTML = cardHTML(WARM,"warm");
-  wireCards(document.getElementById("warm"));
+  renderTabs(); go(S.tab||0); renderTally();
+  document.getElementById("warm").innerHTML = cardHTML(WARM);
+  wireSteps(document.getElementById("warm"));
   var h="",i;
-  for(i=0;i<CARDS.length;i++) h+=cardHTML(CARDS[i],"c"+i);
+  for(i=0;i<CARDS.length;i++) h+=cardHTML(CARDS[i]);
   document.getElementById("cards").innerHTML=h;
-  wireCards(document.getElementById("cards"));
+  wireSteps(document.getElementById("cards"));
+  renderDots();
 
   var nx=document.querySelectorAll(".nextbtn"),j;
   for(j=0;j<nx.length;j++) nx[j].addEventListener("click",function(){ go(parseInt(this.getAttribute("data-go"),10)); });
@@ -415,12 +503,13 @@ function init(){
     document.getElementById("subpanel").classList.add("open");
     document.getElementById("scrim").classList.add("open");
   });
-  function cs(){ document.getElementById("subpanel").classList.remove("open"); document.getElementById("scrim").classList.remove("open"); }
-  document.getElementById("closeSub").addEventListener("click",cs);
-  document.getElementById("scrim").addEventListener("click",cs);
-  document.getElementById("resetTally").addEventListener("click",function(){
-    if(!window.confirm("Clear the poll numbers?")) return;
-    counts={}; save(); renderTally();
+  function closeSub(){ document.getElementById("subpanel").classList.remove("open"); document.getElementById("scrim").classList.remove("open"); }
+  document.getElementById("closeSub").addEventListener("click",closeSub);
+  document.getElementById("scrim").addEventListener("click",closeSub);
+  document.getElementById("resetAll").addEventListener("click",function(){
+    if(!window.confirm("Clear the poll numbers and all revealed answers on this computer?")) return;
+    try{ localStorage.removeItem(KEY); }catch(e){}
+    window.location.reload();
   });
 }
 if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",init); else init();
