@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Database — Building with AI</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#171a21; --panel2:#1e222b; --line:#2b303b;
+    --ink:#e8eaf0; --dim:#a3abbb; --accent:#7bd88f; --accent2:#6aa9ff;
+    --warn:#ffb454; --danger:#ff7b72; --code:#0b0d11;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.65 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:0 0 80px}
+  .wrap{max-width:880px;margin:0 auto;padding:0 20px}
+  header{background:linear-gradient(160deg,#1b2431,#12151b);border-bottom:1px solid var(--line);
+    padding:46px 0 38px;margin-bottom:10px}
+  header h1{margin:0 0 8px;font-size:33px;line-height:1.2;letter-spacing:-.5px}
+  header p{margin:0;color:var(--dim);font-size:17px}
+  .thesis{margin-top:20px;padding:14px 18px;border-left:3px solid var(--accent);
+    background:#141922;border-radius:0 8px 8px 0;font-size:17px}
+  h2{font-size:22px;margin:48px 0 6px;letter-spacing:-.3px;display:flex;align-items:center;gap:12px}
+  .num{background:var(--accent);color:#0b0d11;min-width:31px;height:31px;padding:0 8px;border-radius:8px;
+    display:grid;place-items:center;font-size:12px;font-weight:700;flex:none;letter-spacing:.5px}
+  h3{font-size:16px;margin:24px 0 8px;color:var(--accent2)}
+  h4{margin:0 0 8px;font-size:15px;color:var(--accent2)}
+  p{margin:10px 0}
+  .sub{color:var(--dim);margin:0 0 14px 43px;font-size:15px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:16px 0}
+  code{background:var(--code);padding:2px 7px;border-radius:5px;font-size:14px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#ffd9a0}
+  pre{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:16px;
+    overflow-x:auto;margin:12px 0;position:relative}
+  pre code{background:none;padding:0;color:#d6dae4;font-size:13.5px;line-height:1.6}
+  .copy{position:absolute;top:10px;right:10px;background:var(--panel2);color:var(--dim);
+    border:1px solid var(--line);border-radius:7px;padding:5px 11px;font-size:12px;cursor:pointer}
+  .copy:hover{color:var(--ink);border-color:var(--accent)}
+  .copy.done{color:var(--accent);border-color:var(--accent)}
+  ol,ul{margin:10px 0;padding-left:22px}
+  li{margin:7px 0}
+  .warn{border-left:3px solid var(--warn);background:#241d12;padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0}
+  .warn strong{color:var(--warn)}
+  .bad{border-left:3px solid var(--danger);background:#251519;padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0}
+  .bad strong{color:var(--danger)}
+  .good{border-left:3px solid var(--accent);background:#122018;padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0}
+  .good strong{color:var(--accent)}
+  label.check{display:flex;gap:12px;align-items:flex-start;background:var(--panel2);
+    border:1px solid var(--line);border-radius:10px;padding:13px 16px;margin:9px 0;cursor:pointer}
+  label.check:hover{border-color:var(--accent2)}
+  label.check input{margin-top:4px;width:17px;height:17px;flex:none;accent-color:var(--accent)}
+  label.check.done{opacity:.5}
+  label.check.done span{text-decoration:line-through}
+  label.check b{color:var(--accent);flex:none}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--accent2);font-size:13px;text-transform:uppercase;letter-spacing:.5px}
+  .tblwrap{overflow-x:auto}
+  .reset{background:none;border:1px solid var(--line);color:var(--dim);border-radius:8px;
+    padding:7px 14px;font-size:13px;cursor:pointer;margin-top:6px}
+  .reset:hover{color:var(--ink)}
+  footer{margin-top:60px;padding-top:24px;border-top:1px solid var(--line);color:var(--dim);font-size:14px}
+  footer a{color:var(--accent2)}
+  .obj{margin:0 0 16px 43px;padding:11px 16px;background:var(--panel2);
+    border:1px solid var(--line);border-left:3px solid var(--accent2);
+    border-radius:0 8px 8px 0;font-size:15px}
+  .obj b{color:var(--accent2);text-transform:uppercase;font-size:11.5px;
+    letter-spacing:.9px;display:block;margin-bottom:3px}
+  .kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;
+    background:var(--panel2);border:1px solid var(--line);border-bottom-width:2px;
+    border-radius:5px;padding:2px 7px;color:var(--ink);white-space:nowrap}
+
+  /* discussion prompt */
+  .ask{border:1px solid var(--accent2);background:#111a26;border-radius:12px;
+    padding:17px 20px;margin:20px 0}
+  .ask > b{display:block;color:var(--accent2);text-transform:uppercase;font-size:11.5px;
+    letter-spacing:.9px;margin-bottom:6px}
+  .ask .q{font-size:18px;margin:0;line-height:1.45}
+  .ask details{margin-top:13px;border-top:1px solid #23344a;padding-top:11px}
+  .ask summary{cursor:pointer;color:var(--dim);font-size:14px;list-style:none;
+    display:inline-flex;align-items:center;gap:7px}
+  .ask summary::-webkit-details-marker{display:none}
+  .ask summary::before{content:"▸";color:var(--accent2);font-size:12px}
+  details[open] > summary::before{content:"▾"}
+  .ask summary:hover{color:var(--ink)}
+  .ask details p{font-size:15.5px;color:var(--ink)}
+  .ask details p:first-of-type{margin-top:10px}
+
+  /* diagram */
+  .figure{background:var(--code);border:1px solid var(--line);border-radius:12px;
+    padding:18px 14px;margin:18px 0;overflow-x:auto}
+  .figure svg{display:block;margin:0 auto;min-width:660px}
+  .figcap{color:var(--dim);font-size:14px;text-align:center;margin:10px 0 0}
+
+  /* key anatomy */
+  .anat{display:grid;gap:12px;margin:16px 0}
+  .anat .row{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+  .anat .lbl{color:var(--accent2);font-size:11.5px;text-transform:uppercase;
+    letter-spacing:.9px;font-weight:700;margin-bottom:5px}
+  .anat .val{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:13.5px;color:#ffd9a0;word-break:break-all}
+  .anat .exp{color:var(--dim);font-size:14.5px;margin-top:6px}
+
+  /* playground */
+  .exp{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    padding:0;margin:18px 0;overflow:hidden}
+  .exp > .head{display:flex;gap:13px;align-items:baseline;padding:16px 20px 0}
+  .exp .tagn{background:var(--accent2);color:#0b0d11;border-radius:7px;padding:3px 10px;
+    font-size:12px;font-weight:700;flex:none}
+  .exp h4{margin:0;font-size:17px;color:var(--ink)}
+  .exp .body{padding:4px 20px 18px}
+  .exp .predict{color:var(--warn);font-size:15px;margin:10px 0 0}
+  .exp .proves{border-top:1px solid var(--line);margin-top:14px;padding-top:12px;
+    color:var(--dim);font-size:14.5px}
+  .exp .proves b{color:var(--accent)}
+  .danger-exp{border-color:#5a2b2b}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>Your Database</h1>
+    <p>Building with AI — the key, the rules, and who's allowed to do what</p>
+    <div class="thesis"><strong>Your app has been running on fake rows typed into your own code.</strong> Today you build the place that actually remembers — and you decide, in writing, what strangers are allowed to do to it.</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- ============ PART 1 ============ -->
+<h2><span class="num">PART 1</span>How do these even talk to each other?</h2>
+<p class="sub">Start here. Everything else on this page depends on getting this right.</p>
+<div class="obj"><b>Objective</b>You can say which machine talks to which, and what travels between them.</div>
+
+<p>Your code lives on <strong>GitHub</strong>. Your data is about to live on <strong>Supabase</strong>. Those are two different companies, two different servers, in two different places.</p>
+
+<div class="ask">
+  <b>Discuss</b>
+  <p class="q">GitHub has your website. Supabase has your data. So how does GitHub send your data to the person visiting your site?</p>
+  <details>
+    <summary>Answer</summary>
+    <p><strong>It doesn't. GitHub and Supabase never speak to each other at all.</strong></p>
+    <p>Almost everyone gets this wrong the first time, and the wrong version makes everything afterwards confusing. Here's what actually happens.</p>
+  </details>
+</div>
+
+<div class="figure">
+<svg viewBox="0 0 820 300" width="100%" height="auto" role="img" aria-label="Diagram: the browser talks to GitHub and to Supabase separately; GitHub and Supabase never talk to each other">
+  <rect x="14" y="46" width="200" height="86" rx="12" fill="#1e222b" stroke="#2b303b" stroke-width="1.5"/>
+  <text x="114" y="80" text-anchor="middle" fill="#e8eaf0" font-family="system-ui,sans-serif" font-size="17" font-weight="600">GitHub</text>
+  <text x="114" y="103" text-anchor="middle" fill="#a3abbb" font-family="system-ui,sans-serif" font-size="13">your code lives here</text>
+
+  <rect x="310" y="46" width="200" height="86" rx="12" fill="#1b2431" stroke="#6aa9ff" stroke-width="2"/>
+  <text x="410" y="80" text-anchor="middle" fill="#e8eaf0" font-family="system-ui,sans-serif" font-size="15" font-weight="600">The visitor's browser</text>
+  <text x="410" y="103" text-anchor="middle" fill="#6aa9ff" font-family="system-ui,sans-serif" font-size="13">someone's phone</text>
+
+  <rect x="606" y="46" width="200" height="86" rx="12" fill="#1e222b" stroke="#2b303b" stroke-width="1.5"/>
+  <text x="706" y="80" text-anchor="middle" fill="#e8eaf0" font-family="system-ui,sans-serif" font-size="17" font-weight="600">Supabase</text>
+  <text x="706" y="103" text-anchor="middle" fill="#a3abbb" font-family="system-ui,sans-serif" font-size="13">your data lives here</text>
+
+  <line x1="222" y1="89" x2="302" y2="89" stroke="#7bd88f" stroke-width="2"/>
+  <polygon points="302,89 292,84 292,94" fill="#7bd88f"/>
+  <polygon points="222,89 232,84 232,94" fill="#7bd88f"/>
+  <text x="262" y="154" text-anchor="middle" fill="#7bd88f" font-family="system-ui,sans-serif" font-size="12.5" font-weight="600">1 · sends the code</text>
+  <text x="262" y="172" text-anchor="middle" fill="#a3abbb" font-family="system-ui,sans-serif" font-size="12">HTML, CSS, JavaScript</text>
+
+  <line x1="518" y1="89" x2="598" y2="89" stroke="#7bd88f" stroke-width="2"/>
+  <polygon points="598,89 588,84 588,94" fill="#7bd88f"/>
+  <polygon points="518,89 528,84 528,94" fill="#7bd88f"/>
+  <text x="558" y="154" text-anchor="middle" fill="#7bd88f" font-family="system-ui,sans-serif" font-size="12.5" font-weight="600">2 · asks for the rows</text>
+  <text x="558" y="172" text-anchor="middle" fill="#a3abbb" font-family="system-ui,sans-serif" font-size="12">using the URL + key</text>
+
+  <path d="M 114 210 C 114 268, 706 268, 706 210" fill="none" stroke="#ff7b72" stroke-width="2" stroke-dasharray="7 7" opacity="0.85"/>
+  <circle cx="410" cy="252" r="17" fill="#251519" stroke="#ff7b72" stroke-width="2"/>
+  <line x1="402" y1="244" x2="418" y2="260" stroke="#ff7b72" stroke-width="2.5"/>
+  <line x1="418" y1="244" x2="402" y2="260" stroke="#ff7b72" stroke-width="2.5"/>
+  <text x="410" y="292" text-anchor="middle" fill="#ff7b72" font-family="system-ui,sans-serif" font-size="13" font-weight="600">these two never talk to each other</text>
+</svg>
+</div>
+<p class="figcap">The browser is in the middle of everything. It is the only thing that talks to both.</p>
+
+<p>So the order is: someone opens your link &rarr; <strong>GitHub sends them your code</strong> &rarr; their browser runs that code &rarr; <strong>the code tells their browser to go ask Supabase for the rows</strong> &rarr; Supabase sends the rows back &rarr; the browser draws them on the screen.</p>
+
+<div class="ask">
+  <b>Discuss</b>
+  <p class="q">Supabase hosts thousands of databases and has never heard of you. When that browser turns up asking for rows, how does Supabase know <em>which</em> database to look in, and whether to answer at all?</p>
+  <details>
+    <summary>Answer</summary>
+    <p>Two pieces of information, and they have to be written inside your code, because your code is the only thing the browser has.</p>
+    <p><strong>The project URL</strong> — which database. <strong>The publishable key</strong> — who's asking. That's Part 2.</p>
+  </details>
+</div>
+
+<!-- ============ PART 2 ============ -->
+<h2><span class="num">PART 2</span>The two things your code carries</h2>
+<p class="sub">An address and a name tag. Neither is a secret.</p>
+<div class="obj"><b>Objective</b>You can explain what the publishable key does, and why it being public isn't a mistake.</div>
+
+<p>Supabase gives every project these two values. You'll paste both into your code.</p>
+
+<div class="anat">
+  <div class="row">
+    <div class="lbl">Project URL — which database</div>
+    <div class="val">https://abcdefghijklm.supabase.co</div>
+    <p class="exp">Every Supabase project gets its own web address, built from a random ID. This is how the browser knows which of Supabase's thousands of databases to knock on. It's just an address, the same way your GitHub Pages URL is just an address.</p>
+  </div>
+  <div class="row">
+    <div class="lbl">Publishable key — who's asking</div>
+    <div class="val">sb_publishable_xxxxxxxxxxxxxxxxxxxx</div>
+    <p class="exp">A long string that says one thing: <strong>"I'm a member of the public."</strong> Not who you are. Not that you're allowed anything. Just that you're an ordinary visitor rather than the owner.</p>
+  </div>
+</div>
+
+<div class="ask">
+  <b>Discuss</b>
+  <p class="q">That key is going to sit in your JavaScript, which sits in your public GitHub repo, which anyone on earth can read. Is that a mistake?</p>
+  <details>
+    <summary>Answer</summary>
+    <p><strong>No. It's exactly what that key is for.</strong></p>
+    <p>Think about where your code actually runs. Not on your laptop — on the phone of whoever opened your link. GitHub hands them a complete copy of your HTML, your CSS and your JavaScript. It's on their device now. Right-click, View Source, and every character of it is there.</p>
+    <p><strong>You cannot hide anything in a website's front end.</strong> Not a key, not a password, not a comment about your teacher. So the publishable key was never a secret that leaked — it's an address label, and labels are meant to be read.</p>
+  </details>
+</div>
+
+<div class="good">
+  <strong>The sentence worth remembering:</strong> your app doesn't run on your computer. It runs on theirs. Anything your app needs in order to work, they have.
+</div>
+
+<div class="ask">
+  <b>Discuss</b>
+  <p class="q">If every single visitor gets that key handed to them, what stops one of them deleting everything in your table?</p>
+  <details>
+    <summary>Answer</summary>
+    <p>Right now? <strong>Nothing.</strong> That's Part 4, and it's the actual problem this lesson exists to solve.</p>
+    <p>The answer isn't hiding the key better. It's that the key only gets you to the door. Something else decides what you're allowed to do once you're through it.</p>
+  </details>
+</div>
+
+<!-- ============ PART 3 ============ -->
+<h2><span class="num">PART 3</span>Make your project and your table</h2>
+<p class="sub">Roughly fifteen minutes, and the project takes a couple of those on its own.</p>
+<div class="obj"><b>Objective</b>A live Supabase project with your table in it, holding your rows.</div>
+
+<label class="check"><input type="checkbox"><span><b>1</b> Go to <strong>supabase.com</strong> and <strong>Sign in with GitHub</strong>. One less password, and it keeps GitHub as your single identity.</span></label>
+
+<label class="check"><input type="checkbox"><span><b>2</b> Create an <strong>organisation</strong> (your name is fine), then a <strong>New project</strong>. It asks for a project name, a region, and a database password.</span></label>
+
+<div class="warn">
+  <strong>Save the database password somewhere.</strong> You won't need it this year, but "I'll remember it" is how people lose a project. Put it wherever you keep passwords.
+</div>
+
+<label class="check"><input type="checkbox"><span><b>3</b> It takes 1&ndash;3 minutes to build. Look around the dashboard while you wait &mdash; find <strong>Table Editor</strong>, <strong>SQL Editor</strong>, and <strong>Advisors</strong> in the left sidebar. You'll use all three today.</span></label>
+
+<h3>Now make your table — with SQL</h3>
+
+<p>SQL is how you write instructions to a database instead of clicking. You'll use about five sentences of it today. Gemini writes the two long ones; you write the short ones, because those are where the understanding is.</p>
+
+<div class="tblwrap">
+<table>
+  <thead><tr><th>Word</th><th>What it does</th><th>Who writes it</th></tr></thead>
+  <tbody>
+    <tr><td><code>create table</code></td><td>makes the column headings</td><td>Gemini</td></tr>
+    <tr><td><code>insert</code></td><td>adds rows</td><td>Gemini</td></tr>
+    <tr><td><code>select</code></td><td>asks a question</td><td>You</td></tr>
+    <tr><td><code>create policy</code></td><td>sets a rule about who may do what</td><td>You</td></tr>
+  </tbody>
+</table>
+</div>
+
+<label class="check"><input type="checkbox"><span><b>4</b> Give Gemini your <code>project.md</code> and ask for the <code>create table</code> statement. Paste it into the <strong>SQL Editor</strong> and click <strong>Run</strong>.</span></label>
+
+<pre><button class="copy">copy</button><code>Here is my project plan. Write me one PostgreSQL CREATE TABLE statement
+for Supabase that matches the columns in it exactly. Add an id column
+and a created_at timestamp that fills itself in. Nothing else — no
+sample data, no extra tables, no explanation.</code></pre>
+
+<label class="check"><input type="checkbox"><span><b>5</b> Now the fake rows you invented last week. Ask Gemini to turn them into an <code>insert</code> statement, run it, then open the <strong>Table Editor</strong> and look at them sitting there.</span></label>
+
+<pre><button class="copy">copy</button><code>Here is the fake data block from my app. Write me one PostgreSQL INSERT
+statement that puts every one of these rows into the table you just
+made. Match the column names exactly.</code></pre>
+
+<div class="good">
+  <strong>The rows you made up are now real rows in a real database</strong>, sitting on a server in another country. Nothing about your app has changed yet. It still can't see them.
+</div>
+
+<h3>Ask it three questions yourself</h3>
+
+<p>Your plan file says your app does three things with the saved rows — filter, sort, count, whatever you chose. <strong>Do all three by hand, right now.</strong> When your app connects next week, it'll be doing exactly this.</p>
+
+<pre><button class="copy">copy</button><code>select * from your_table_name;
+
+select * from your_table_name where kind = 'quiet';
+
+select * from your_table_name order by rating desc;
+
+select count(*) from your_table_name;</code></pre>
+
+<label class="check"><input type="checkbox"><span><b>6</b> Run all four. Then write your own three &mdash; the ones that match your app's three moves.</span></label>
+
+<!-- ============ PART 4 ============ -->
+<h2><span class="num">PART 4</span>The problem</h2>
+<p class="sub">Supabase is about to tell you off. It's right to.</p>
+<div class="obj"><b>Objective</b>You can state, in one sentence, what is currently wrong with your table.</div>
+
+<label class="check"><input type="checkbox"><span><b>1</b> In the left sidebar, open <strong>Advisors &rarr; Security</strong>.</span></label>
+
+<p>Your table is sitting there with a red <strong>ERROR</strong> on it:</p>
+
+<div class="bad">
+  <strong>Table publicly accessible</strong><br>
+  Anyone with your project URL can read, edit, and delete all data in this table because Row-Level Security is not enabled.
+</div>
+
+<div class="ask">
+  <b>Discuss</b>
+  <p class="q">You just made this table thirty seconds ago and you've told nobody about it. Why does that warning matter?</p>
+  <details>
+    <summary>Answer</summary>
+    <p>Because of what happens next week. The moment you paste your project URL and publishable key into <code>config.js</code> and push it, both of those values are public — and the warning says <strong>anyone with your project URL</strong>.</p>
+    <p>Right now it's a locked room nobody knows about. Next week you print the address on the front of your website.</p>
+  </details>
+</div>
+
+<!-- ============ PART 5 ============ -->
+<h2><span class="num">PART 5</span>Row Level Security</h2>
+<p class="sub">Three states. Yours is currently the first one.</p>
+<div class="obj"><b>Objective</b>You can explain why turning security on breaks everything, and why that's correct.</div>
+
+<div class="card">
+  <h4>State 1 — the door is open</h4>
+  <p>A table made with SQL has no security on it at all. Anyone holding your key can read every row, add rows, change rows, and delete the lot. <strong>This is where your table is right now.</strong></p>
+</div>
+
+<div class="card">
+  <h4>State 2 — the door is locked</h4>
+  <p>You switch Row Level Security on. Now <em>nobody</em> can do anything — not strangers, not your app, not you. A locked table with no rules answers every request with nothing at all.</p>
+  <p>This surprises everyone, and it's the correct behaviour. <strong>The database refuses by default.</strong></p>
+</div>
+
+<div class="card">
+  <h4>State 3 — you cut exactly the keys you want</h4>
+  <p>You write rules, called <strong>policies</strong>. Each one names one action and who may do it. This unit you write exactly two: anyone may <strong>read</strong>, anyone may <strong>add</strong>.</p>
+  <p>You never write "anyone may delete." So nobody can — including you, from your own app.</p>
+</div>
+
+<div class="ask">
+  <b>Discuss</b>
+  <p class="q">Why would a database be built to refuse everything by default? Wouldn't it be friendlier to allow everything and let you switch off the bits you don't want?</p>
+  <details>
+    <summary>Answer</summary>
+    <p>Because of what each mistake costs you.</p>
+    <p>If the default is "refuse" and you forget a rule, <strong>your app doesn't work</strong> — annoying, obvious, fixed in a minute. If the default is "allow" and you forget a rule, <strong>your data is public</strong> — and nothing looks wrong at all. You find out when someone tells you.</p>
+    <p>One mistake announces itself. The other hides. Sensible systems are built so the loud mistake is the one you make.</p>
+  </details>
+</div>
+
+<div class="good">
+  <strong>Put this one in your notes:</strong> you don't get what you forgot to forbid. You get what you explicitly allowed.
+</div>
+
+<!-- ============ PART 6 ============ -->
+<h2><span class="num">PART 6</span>Lock it, then open two doors</h2>
+<p class="sub">Three statements. Read each one before you run it.</p>
+<div class="obj"><b>Objective</b>RLS on, two policies written, and the red error gone.</div>
+
+<p>Swap <code>your_table_name</code> for your actual table name in all three.</p>
+
+<pre><button class="copy">copy</button><code>alter table public.your_table_name enable row level security;</code></pre>
+
+<label class="check"><input type="checkbox"><span><b>1</b> Run that. Your table is now locked to everyone. Go back to <strong>Advisors &rarr; Security</strong> &mdash; the red error is gone, and so is all access.</span></label>
+
+<pre><button class="copy">copy</button><code>create policy "Anyone can read"
+on your_table_name for select
+to anon
+using ( true );</code></pre>
+
+<pre><button class="copy">copy</button><code>create policy "Anyone can add"
+on your_table_name for insert
+to anon
+with check ( true );</code></pre>
+
+<label class="check"><input type="checkbox"><span><b>2</b> Run both policies.</span></label>
+
+<div class="card">
+  <h4>Reading those out loud</h4>
+  <ul>
+    <li><code>for select</code> / <code>for insert</code> &mdash; <strong>which action</strong> this rule is about. One rule, one action.</li>
+    <li><code>to anon</code> &mdash; <strong>who</strong> it applies to. <code>anon</code> means anonymous: anyone who hasn't signed in, which this unit is everybody. Next unit you'll meet <code>authenticated</code>.</li>
+    <li><code>using ( true )</code> &mdash; <strong>which rows</strong> they may see. <code>true</code> means all of them.</li>
+    <li><code>with check ( true )</code> &mdash; <strong>which rows</strong> they're allowed to add. <code>true</code> means anything.</li>
+  </ul>
+  <p>Reading rules use <code>using</code>. Adding rules use <code>with check</code>. Swap them and you get an error &mdash; it's the most common typo on this page.</p>
+</div>
+
+<div class="warn">
+  <strong>The dashboard is signed in as you, the owner.</strong> It can see your rows whatever your policies say, so it can't honestly tell you whether a policy works. To test as an ordinary visitor, say so explicitly:
+</div>
+
+<pre><button class="copy">copy</button><code>set role anon;
+select * from your_table_name;
+reset role;</code></pre>
+
+<p>That runs the query as a stranger would. <strong>This is your test bench for everything in Part 7</strong> — and don't forget <code>reset role;</code> at the end, or the rest of your queries keep pretending to be a visitor.</p>
+
+<!-- ============ PART 7 ============ -->
+<h2><span class="num">PART 7</span>The policy playground</h2>
+<p class="sub">Break it on purpose. It's your database and there's nothing in it but rows you invented.</p>
+<div class="obj"><b>Objective</b>You've seen a rule change what's possible, without touching a single line of your app.</div>
+
+<p><strong>Predict before you run.</strong> Say out loud what you think will happen, then run it and see whether you were right. Being wrong is the part that teaches you something.</p>
+
+<p>Test each one with the <code>set role anon;</code> block from Part 6.</p>
+
+<div class="exp">
+  <div class="head"><span class="tagn">A</span><h4>Take away the reading rule</h4></div>
+  <div class="body">
+    <pre><button class="copy">copy</button><code>drop policy "Anyone can read" on your_table_name;</code></pre>
+    <p class="predict">Predict: what does a visitor see now — an error, or something else?</p>
+    <div class="proves"><b>What it proves:</b> no policy means no access, and it fails <em>silently</em> — you get zero rows, not an error message. An app with no reading rule looks empty, not broken. Put it back before moving on.</div>
+  </div>
+</div>
+
+<div class="exp">
+  <div class="head"><span class="tagn">B</span><h4>Only let people see some of the rows</h4></div>
+  <div class="body">
+    <p>Change <code>kind = 'quiet'</code> to a column and value that exist in your own table.</p>
+    <pre><button class="copy">copy</button><code>drop policy "Anyone can read" on your_table_name;
+
+create policy "Anyone can read"
+on your_table_name for select
+to anon
+using ( kind = 'quiet' );</code></pre>
+    <p class="predict">Predict: your app's code still says "get everything." So what comes back?</p>
+    <div class="proves"><b>What it proves:</b> the filtering happens at the database, before anything is sent. Your app asked for all the rows and was handed some of them, and it has no way of knowing the others exist. <strong>This is how Unit 3 works</strong> — swap that rule for "only rows belonging to whoever is signed in" and you've built private data.</div>
+  </div>
+</div>
+
+<div class="exp danger-exp">
+  <div class="head"><span class="tagn">C</span><h4>Let anyone delete anything</h4></div>
+  <div class="body">
+    <pre><button class="copy">copy</button><code>create policy "Anyone can delete"
+on your_table_name for delete
+to anon
+using ( true );</code></pre>
+    <p class="predict">Predict: you haven't changed your app at all. Can a stranger now empty your board?</p>
+    <div class="proves"><b>What it proves:</b> the rule is the permission — not whether your page has a delete button. Anyone can send a delete request by hand; your buttons are a suggestion, not a lock. <strong>Drop this policy before you leave.</strong> You do not want it on a public board.</div>
+    <pre><button class="copy">copy</button><code>drop policy "Anyone can delete" on your_table_name;</code></pre>
+  </div>
+</div>
+
+<div class="exp">
+  <div class="head"><span class="tagn">D</span><h4>Refuse anything too long</h4></div>
+  <div class="body">
+    <p>Use one of your own text columns instead of <code>comment</code>.</p>
+    <pre><button class="copy">copy</button><code>drop policy "Anyone can add" on your_table_name;
+
+create policy "Anyone can add"
+on your_table_name for insert
+to anon
+with check ( char_length(comment) &lt; 100 );</code></pre>
+    <p class="predict">Predict: your app has no length limit anywhere in it. Try inserting a 300-character row as <code>anon</code>.</p>
+    <div class="proves"><b>What it proves:</b> the database enforces this, and a visitor cannot get round it — not by editing your page, not by turning off your JavaScript, not by sending the request themselves. This is the first rule you've written that <em>can't</em> be bypassed, and it's only because it lives somewhere the visitor can't reach.</div>
+  </div>
+</div>
+
+<div class="exp">
+  <div class="head"><span class="tagn">E</span><h4>Make it read-only</h4></div>
+  <div class="body">
+    <pre><button class="copy">copy</button><code>drop policy "Anyone can add" on your_table_name;</code></pre>
+    <p class="predict">Predict: can people still read the board? Can they still post to it?</p>
+    <div class="proves"><b>What it proves:</b> reading and adding are separate permissions and don't imply each other. An archive that anyone can read and nobody can add to is one dropped policy away.</div>
+  </div>
+</div>
+
+<div class="exp">
+  <div class="head"><span class="tagn">F</span><h4>Put it back the way it should be</h4></div>
+  <div class="body">
+    <p>End the period here. Your table should have RLS on and exactly two policies: read, and add.</p>
+    <pre><button class="copy">copy</button><code>select policyname, cmd
+from pg_policies
+where tablename = 'your_table_name';</code></pre>
+    <label class="check"><input type="checkbox"><span>That query returns <strong>exactly two rows</strong> &mdash; one SELECT, one INSERT. If it returns anything else, fix it now.</span></label>
+    <label class="check"><input type="checkbox"><span><strong>Advisors &rarr; Security</strong> shows no red error on your table.</span></label>
+  </div>
+</div>
+
+<!-- ============ END ============ -->
+<h2><span class="num">END</span>Exit ticket</h2>
+<p class="sub">On paper. Two sentences.</p>
+
+<div class="card">
+  <p style="font-size:18px;margin:0 0 10px"><strong>Your publishable key is going to sit in your public code where anyone can read it.</strong></p>
+  <p style="font-size:18px;margin:0">What can a stranger do with it — and what stops them doing more?</p>
+</div>
+
+<div class="ask">
+  <b>Next class</b>
+  <p class="q">The project URL and the key go into <code>config.js</code>, your app connects, and the fake rows come out of your code for good.</p>
+</div>
+
+<button class="reset" id="reset">Clear all checkboxes</button>
+
+<footer>
+  <p><strong>Building with AI</strong> &mdash; Your Database.
+  Related: <a href="../new-project/">Adding a New Project</a> &middot; <a href="../repository/">Your Repository</a> &middot; <a href="../editing/">Editing Your Site</a> &middot; <a href="../">How to Keep Working on a Project</a></p>
+</footer>
+
+</div>
+
+<script>
+  document.querySelectorAll('.copy').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var text = btn.parentElement.querySelector('code').innerText;
+      navigator.clipboard.writeText(text).then(function(){
+        btn.textContent='copied'; btn.classList.add('done');
+        setTimeout(function(){ btn.textContent='copy'; btn.classList.remove('done'); },1600);
+      }).catch(function(){
+        btn.textContent='select it manually';
+        setTimeout(function(){ btn.textContent='copy'; },2000);
+      });
+    });
+  });
+
+  document.querySelectorAll('label.check').forEach(function(l){
+    var box = l.querySelector('input');
+    box.addEventListener('change', function(){ l.classList.toggle('done', box.checked); });
+  });
+
+  document.getElementById('reset').addEventListener('click', function(){
+    document.querySelectorAll('label.check').forEach(function(l){
+      l.querySelector('input').checked = false; l.classList.remove('done');
+    });
+  });
+</script>
+
+</body>
+</html>
