@@ -5,11 +5,24 @@
  * https://docs.google.com/spreadsheets/d/1AA506-60kvbzZgaAUSVrQ614EFsi7GnduJ_5Lb3_Qtc/edit
  *
  * DEPLOY (once):
+ *   Sign in as the account that owns the sheet (smith.m.04@isg.edu.sa).
  *   Deploy ▸ New deployment ▸ type: Web app
- *   Execute as: Me
- *   Who has access: Anyone
- *   Deploy ▸ Authorize ▸ copy the /exec URL
- *   Paste that URL into APPS_SCRIPT_URL at the top of the lesson page's <script>.
+ *   Execute as:      Me
+ *   Who has access:  Anyone
+ *
+ *   ⚠  It must be the literal "Anyone" option — NOT "Anyone with a Google Account".
+ *      A fetch() from the lesson page carries no Google sign-in, so any setting that
+ *      requires one returns Google's "You need access" page instead of JSON, and the
+ *      whole class fails, not just some of them. Symptom to recognise: opening the
+ *      /exec URL in a browser shows a Drive "You need access" screen.
+ *
+ *   Deploy ▸ Authorize ▸ copy the /exec URL.
+ *   Paste that URL into APPS_SCRIPT_URL near the top of the lesson page's <script>.
+ *
+ * CHANGING THE ACCESS SETTING LATER:
+ *   Deploy ▸ Manage deployments ▸ pencil icon on the active deployment ▸ change ▸ Deploy.
+ *   Editing an existing deployment keeps the same /exec URL. Creating a NEW deployment
+ *   issues a new URL, which then has to be pasted into the lesson page again.
  */
 
 var SHEET_ID  = '1AA506-60kvbzZgaAUSVrQ614EFsi7GnduJ_5Lb3_Qtc';
