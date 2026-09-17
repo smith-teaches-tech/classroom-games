@@ -1,11 +1,17 @@
 /**
- * TOK — "You Have a Frame" (Nacirema) — class submissions backend
+ * TOK — "You Have a Frame" (Nacirema) — class entries + guessing game
  *
  * Bound sheet: TOK — You Have a Frame — Nacirema Submissions
  * https://docs.google.com/spreadsheets/d/1AA506-60kvbzZgaAUSVrQ614EFsi7GnduJ_5Lb3_Qtc/edit
  *
+ * Two tabs, created automatically on first use:
+ *   Entries  — timestamp | id | name | class | paragraph | answer
+ *   Guesses  — timestamp | entry_id | guesser | class | guess
+ *
+ * The older "Submissions" tab from the first version is no longer used and can be deleted.
+ *
  * DEPLOY (once):
- *   Sign in as the account that owns the sheet (smith.m.04@isg.edu.sa).
+ *   Sign in as the account that owns the sheet.
  *   Deploy ▸ New deployment ▸ type: Web app
  *   Execute as:      Me
  *   Who has access:  Anyone
@@ -19,31 +25,35 @@
  *   Deploy ▸ Authorize ▸ copy the /exec URL.
  *   Paste that URL into APPS_SCRIPT_URL near the top of the lesson page's <script>.
  *
- * CHANGING THE ACCESS SETTING LATER:
+ * CHANGING THE DEPLOYMENT LATER:
  *   Deploy ▸ Manage deployments ▸ pencil icon on the active deployment ▸ change ▸ Deploy.
  *   Editing an existing deployment keeps the same /exec URL. Creating a NEW deployment
- *   issues a new URL, which then has to be pasted into the lesson page again.
+ *   issues a new URL, which then has to be pasted into the lesson page again. A URL that
+ *   returns "You need access" is dead — settings changed elsewhere will not revive it.
  */
 
-var SHEET_ID  = '1AA506-60kvbzZgaAUSVrQ614EFsi7GnduJ_5Lb3_Qtc';
-var TAB_NAME  = 'Submissions';
-var HEADERS   = ['timestamp', 'name', 'class', 'paragraph', 'answer'];
+var SHEET_ID = '1AA506-60kvbzZgaAUSVrQ614EFsi7GnduJ_5Lb3_Qtc';
 
-function sheet_() {
+var ENTRY_TAB    = 'Entries';
+var ENTRY_HEAD   = ['timestamp', 'id', 'name', 'class', 'paragraph', 'answer'];
+var GUESS_TAB    = 'Guesses';
+var GUESS_HEAD   = ['timestamp', 'entry_id', 'guesser', 'class', 'guess'];
+
+function tab_(name, headers, wideCol) {
   var ss = SpreadsheetApp.openById(SHEET_ID);
-  var sh = ss.getSheetByName(TAB_NAME);
-  if (!sh) {
-    sh = ss.getSheets()[0];
-    sh.setName(TAB_NAME);
-  }
+  var sh = ss.getSheetByName(name);
+  if (!sh) sh = ss.insertSheet(name);
   if (sh.getLastRow() === 0) {
-    sh.appendRow(HEADERS);
-    sh.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold');
+    sh.appendRow(headers);
+    sh.getRange(1, 1, 1, headers.length).setFontWeight('bold');
     sh.setFrozenRows(1);
-    sh.setColumnWidth(4, 520);
+    if (wideCol) sh.setColumnWidth(wideCol, 520);
   }
   return sh;
 }
+
+function entriesTab_() { return tab_(ENTRY_TAB, ENTRY_HEAD, 5); }
+function guessesTab_() { return tab_(GUESS_TAB, GUESS_HEAD, 5); }
 
 function json_(obj) {
   return ContentService
@@ -51,56 +61,84 @@ function json_(obj) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
+function s_(v, n) { return String(v === null || v === undefined ? '' : v).slice(0, n); }
+
 function doPost(e) {
   try {
-    var body = JSON.parse(e.postData.contents);
-    if (body.action !== 'submit') return json_({ error: 'unknown action' });
+    var b = JSON.parse(e.postData.contents);
 
-    sheet_().appendRow([
-      body.timestamp || new Date().toISOString(),
-      String(body.name || 'anonymous').slice(0, 60),
-      String(body.klass || '').slice(0, 40),
-      String(body.paragraph || '').slice(0, 2000),
-      String(body.answer || '').slice(0, 200)
-    ]);
-    return json_({ ok: true });
+    if (b.action === 'submit') {
+      entriesTab_().appendRow([
+        b.timestamp || new Date().toISOString(),
+        s_(b.id, 40),
+        s_(b.name || 'anonymous', 60),
+        s_(b.klass, 40),
+        s_(b.paragraph, 2000),
+        s_(b.answer, 200)
+      ]);
+      return json_({ ok: true });
+    }
+
+    if (b.action === 'guess') {
+      guessesTab_().appendRow([
+        b.timestamp || new Date().toISOString(),
+        s_(b.entryId, 40),
+        s_(b.guesser || 'anonymous', 60),
+        s_(b.klass, 40),
+        s_(b.guess, 200)
+      ]);
+      return json_({ ok: true });
+    }
+
+    return json_({ error: 'unknown action' });
   } catch (err) {
     return json_({ error: String(err) });
   }
+}
+
+function rows_(sh, headers) {
+  var last = sh.getLastRow();
+  if (last < 2) return [];
+  return sh.getRange(2, 1, last - 1, headers.length).getValues();
 }
 
 function doGet(e) {
   try {
-    var action = (e && e.parameter && e.parameter.action) || 'getAll';
+    var p      = (e && e.parameter) || {};
+    var action = p.action || 'getAll';
     if (action !== 'getAll') return json_({ error: 'unknown action' });
 
-    var wanted = (e && e.parameter && e.parameter.klass) || '';
-    var sh = sheet_();
-    var last = sh.getLastRow();
-    if (last < 2) return json_([]);
+    var wanted = p.klass || '';
 
-    var rows = sh.getRange(2, 1, last - 1, HEADERS.length).getValues();
-    var out = [];
-    for (var i = 0; i < rows.length; i++) {
-      var r = rows[i];
-      if (!r[3]) continue;
-      if (wanted && String(r[2]) !== wanted) continue;
-      out.push({
-        timestamp: r[0],
-        name:      r[1],
-        klass:     r[2],
-        paragraph: r[3],
-        answer:    r[4]
+    var entries = [];
+    rows_(entriesTab_(), ENTRY_HEAD).forEach(function (r) {
+      if (!r[4]) return;
+      if (wanted && String(r[3]) !== wanted) return;
+      entries.push({
+        timestamp: r[0], id: String(r[1]), name: r[2],
+        klass: r[3], paragraph: r[4], answer: r[5]
       });
-    }
-    return json_(out);
+    });
+
+    var guesses = [];
+    rows_(guessesTab_(), GUESS_HEAD).forEach(function (r) {
+      if (!r[4]) return;
+      if (wanted && String(r[3]) !== wanted) return;
+      guesses.push({
+        timestamp: r[0], entryId: String(r[1]),
+        guesser: r[2], klass: r[3], guess: r[4]
+      });
+    });
+
+    return json_({ entries: entries, guesses: guesses });
   } catch (err) {
     return json_({ error: String(err) });
   }
 }
 
-/** Run once from the editor to create the tab and headers before class. */
+/** Run once from the editor to create both tabs before class. */
 function setup() {
-  sheet_();
+  entriesTab_();
+  guessesTab_();
   Logger.log('Ready: ' + SpreadsheetApp.openById(SHEET_ID).getUrl());
 }
