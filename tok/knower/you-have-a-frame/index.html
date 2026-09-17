@@ -1,165 +1,154 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>You Have a Frame — TOK: Knowledge and the Knower</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0c0e13; --bg2:#131720; --bg3:#1a1f2b;
-  --fg:#e6e9f0; --fg2:#9aa3b5; --fg3:#5f6879;
-  --line:#242b39; --line2:#323b4d;
-  --brand:#8aa4ff; --accent:#5eead4;
+  --bg:#fff; --panel:#f4f4f5; --panel2:#e9e9ec;
+  --fg:#000; --fg2:#1c1c1e; --fg3:#4a4a52;
+  --line:#c9c9cf; --line2:#8e8e98;
+  --accent:#1546c8; --accent2:#0b6f5e;
+  --onaccent:#fff; --chipbg:#000; --chipfg:#fff;
   --sans:'Inter',system-ui,-apple-system,sans-serif;
   --disp:'Space Grotesk','Inter',system-ui,sans-serif;
   --mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
 }
+html[data-theme="dark"]{
+  --bg:#000; --panel:#101010; --panel2:#181818;
+  --fg:#fff; --fg2:#e0e0e0; --fg3:#b0b0b0;
+  --line:#3a3a3a; --line2:#565656;
+  --accent:#ffd84d; --accent2:#7fe3ff;
+  --onaccent:#000; --chipbg:#ffd84d; --chipfg:#000;
+}
 *{box-sizing:border-box}
 html,body{margin:0;padding:0;height:100%}
-body{
-  background:var(--bg);color:var(--fg);font-family:var(--sans);
-  -webkit-font-smoothing:antialiased;overflow:hidden;
-  background-image:radial-gradient(ellipse 1100px 600px at 50% -15%, color-mix(in srgb,var(--brand) 9%, transparent), transparent 70%);
-  background-repeat:no-repeat;
-}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;overflow:hidden}
 
-/* ───────── deck shell ───────── */
-.deck{position:fixed;inset:0;display:flex;flex-direction:column}
-.slide{
-  position:absolute;inset:0;display:none;
-  padding:72px 6vw 96px;
-  overflow-y:auto;
-  animation:fade .28s ease;
-}
+.deck{position:fixed;inset:0}
+.slide{position:absolute;inset:0;display:none;padding:82px 6vw 100px;overflow-y:auto}
 .slide.on{display:flex;flex-direction:column;justify-content:center}
-@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.inner{width:100%;max-width:1060px;margin:0 auto}
+.inner{width:100%;max-width:1120px;margin:0 auto}
 
-/* ───────── concept chip ───────── */
-.concept{
-  position:fixed;top:22px;left:6vw;z-index:20;
-  font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--bg);background:var(--accent);
-  padding:6px 13px;border-radius:999px;font-weight:700;
-}
+.concept{position:fixed;top:24px;left:6vw;z-index:20;
+  font-family:var(--mono);font-size:13px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--chipfg);background:var(--chipbg);padding:7px 15px;border-radius:4px;font-weight:700}
 .concept.hide{display:none}
 
-/* ───────── typography ───────── */
-h1.title{
-  font-family:var(--disp);font-size:clamp(46px,8vw,104px);font-weight:700;
-  letter-spacing:-.035em;line-height:.98;margin:0 0 26px;
-}
-.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--fg3);margin:0 0 20px}
-.sub{font-size:clamp(16px,2vw,21px);color:var(--fg2);line-height:1.6;margin:0}
+h1.title{font-family:var(--disp);font-size:clamp(52px,9vw,120px);font-weight:700;
+  letter-spacing:-.035em;line-height:.96;margin:0 0 30px;color:var(--fg)}
+.kicker{font-family:var(--mono);font-size:14px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--accent);margin:0 0 24px;font-weight:600}
+.sub{font-size:clamp(18px,2.2vw,24px);color:var(--fg2);line-height:1.6;margin:0}
 
-h2.q{
-  font-family:var(--disp);font-size:clamp(28px,4.4vw,56px);font-weight:600;
-  letter-spacing:-.025em;line-height:1.14;margin:0 0 22px;
-}
-h2.q + h2.q{margin-top:-4px}
-.setup{
-  font-size:clamp(17px,2.1vw,24px);line-height:1.62;color:var(--fg2);
-  margin:0 0 34px;max-width:900px;
-}
+h2.q{font-family:var(--disp);font-size:clamp(30px,4.6vw,58px);font-weight:600;
+  letter-spacing:-.025em;line-height:1.14;margin:0 0 24px;color:var(--fg)}
+h2.q.hi{color:var(--accent)}
+h2.q + h2.q{margin-top:-6px}
+
+.setup{font-size:clamp(19px,2.3vw,27px);line-height:1.6;color:var(--fg2);margin:0 0 34px;max-width:960px}
+.setup strong{color:var(--fg);font-weight:700}
 .setup em{color:var(--fg);font-style:italic}
-.setup strong{color:var(--fg);font-weight:600}
-.quote{
-  font-family:var(--disp);font-size:clamp(18px,2.3vw,26px);line-height:1.5;
-  color:var(--fg);border-left:3px solid var(--brand);padding:6px 0 6px 22px;
-  margin:0 0 30px;max-width:880px;font-style:italic;
-}
-.after{
-  font-size:clamp(15px,1.7vw,19px);color:var(--fg3);line-height:1.6;
-  margin:26px 0 0;max-width:840px;
-}
+.after{font-size:clamp(17px,1.9vw,22px);color:var(--fg3);line-height:1.6;margin:28px 0 0;max-width:900px}
 .after strong{color:var(--fg2);font-weight:600}
-ol.steps{margin:0;padding:0 0 0 1.3em;max-width:900px}
-ol.steps li{
-  font-size:clamp(16px,2vw,22px);line-height:1.55;color:var(--fg);
-  margin:0 0 20px;padding-left:6px;
-}
-ol.steps li span{color:var(--fg2);font-size:.88em;display:block;margin-top:5px}
+.hintbox{margin:32px 0 0;padding:20px 24px;border-left:4px solid var(--accent2);background:var(--panel);
+  font-size:clamp(16px,1.8vw,20px);line-height:1.62;color:var(--fg2);max-width:920px;border-radius:0 8px 8px 0}
+.hintbox b{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--accent2);display:block;margin-bottom:9px}
+.quote{font-family:var(--disp);font-size:clamp(19px,2.2vw,28px);line-height:1.52;color:var(--fg);
+  border-left:4px solid var(--accent);padding:10px 0 10px 26px;margin:0 0 30px;max-width:960px;font-style:italic}
+.quote .cite{display:block;font-family:var(--mono);font-style:normal;font-size:13px;
+  color:var(--fg3);letter-spacing:.1em;margin-top:16px;text-transform:uppercase}
+ol.steps{margin:0;padding:0 0 0 1.3em;max-width:960px}
+ol.steps li{font-size:clamp(18px,2.1vw,25px);line-height:1.55;color:var(--fg);margin:0 0 22px;padding-left:8px}
+ol.steps li span{color:var(--fg3);font-size:.86em;display:block;margin-top:6px}
 
-/* ───────── nav ───────── */
-.nav{
-  position:fixed;left:0;right:0;bottom:0;z-index:20;
-  display:flex;align-items:center;gap:14px;
-  padding:14px 6vw;background:linear-gradient(to top,var(--bg) 55%,transparent);
-}
+table.pairs{border-collapse:collapse;margin:0 0 6px;font-size:clamp(18px,2.2vw,28px)}
+table.pairs td{padding:9px 34px 9px 0;color:var(--fg);font-family:var(--disp)}
+table.pairs td.b{color:var(--accent)}
+table.pairs td.mid{color:var(--fg3);padding:9px 20px;font-size:.7em;font-family:var(--mono)}
+
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;align-items:center;gap:14px;
+  padding:14px 6vw;background:linear-gradient(to top,var(--bg) 60%,transparent)}
 .dots{display:flex;gap:5px;flex:1;flex-wrap:wrap}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--line2);cursor:pointer;transition:.15s;flex:none}
-.dot.on{background:var(--brand);transform:scale(1.35)}
-.dot:hover{background:var(--fg3)}
-.count{font-family:var(--mono);font-size:11.5px;color:var(--fg3);letter-spacing:.06em;flex:none}
-.nbtn{
-  width:38px;height:38px;flex:none;border:1px solid var(--line);background:var(--bg2);color:var(--fg2);
-  border-radius:9px;cursor:pointer;display:grid;place-items:center;font-size:16px;transition:.14s;
-}
-.nbtn:hover{border-color:var(--line2);color:var(--fg);background:var(--bg3)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--line2);cursor:pointer;transition:.15s;flex:none}
+.dot.on{background:var(--accent);transform:scale(1.4)}
+.count{font-family:var(--mono);font-size:13px;color:var(--fg3);letter-spacing:.06em;flex:none}
+.nbtn{width:42px;height:42px;flex:none;border:1px solid var(--line2);background:var(--panel);color:var(--fg);
+  border-radius:9px;cursor:pointer;display:grid;place-items:center;font-size:18px;transition:.14s}
+.nbtn:hover{background:var(--panel2);border-color:var(--fg)}
 .nbtn:disabled{opacity:.3;cursor:default}
 
-/* ───────── forms / game ───────── */
-.field{margin:0 0 18px;max-width:780px}
-.field label{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--fg3);margin:0 0 7px}
-.field input,.field textarea,.field select{
-  width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:10px;
-  color:var(--fg);font-family:var(--sans);font-size:16px;padding:12px 14px;line-height:1.5;
-  resize:vertical;
-}
-.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--brand)}
-.field .hint{font-size:13px;color:var(--fg3);margin:6px 0 0}
-.row{display:flex;gap:14px;flex-wrap:wrap;max-width:780px}
-.row .field{flex:1;min-width:190px}
-.btn{
-  font-family:var(--disp);font-size:15px;font-weight:600;letter-spacing:-.01em;
-  background:var(--brand);color:#0c0e13;border:none;border-radius:10px;
-  padding:13px 26px;cursor:pointer;transition:.14s;
-}
-.btn:hover{filter:brightness(1.1)}
-.btn:disabled{opacity:.45;cursor:default}
-.btn.ghost{background:transparent;color:var(--fg2);border:1px solid var(--line2)}
-.btn.ghost:hover{color:var(--fg);border-color:var(--fg3);filter:none}
-.btnrow{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:8px}
-.msg{font-size:14px;color:var(--accent);margin:14px 0 0;min-height:20px}
-.msg.warn{color:#ffb86b}
-.wc{font-family:var(--mono);font-size:12px;color:var(--fg3)}
+.field{margin:0 0 20px;max-width:840px}
+.field label{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--fg3);margin:0 0 8px}
+.field input,.field textarea,.field select{width:100%;background:var(--panel);border:1px solid var(--line2);
+  border-radius:9px;color:var(--fg);font-family:var(--sans);font-size:17px;padding:13px 15px;line-height:1.5;resize:vertical}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--accent)}
+.field .hint{font-size:14px;color:var(--fg3);margin:7px 0 0}
+.row{display:flex;gap:16px;flex-wrap:wrap;max-width:840px}
+.row .field{flex:1;min-width:200px}
+.btn{font-family:var(--disp);font-size:16px;font-weight:700;background:var(--accent);color:var(--onaccent);
+  border:none;border-radius:9px;padding:13px 28px;cursor:pointer;transition:.14s}
+.btn:hover{filter:brightness(1.12)}
+.btn:disabled{opacity:.4;cursor:default}
+.btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--line2)}
+.btn.ghost:hover{border-color:var(--fg);filter:none}
+.btn.sm{font-size:14px;padding:9px 18px}
+.btnrow{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.msg{font-size:15px;color:var(--accent);margin:16px 0 0;min-height:22px}
+.msg.warn{color:#b3450b}
+.wc{font-family:var(--mono);font-size:13px;color:var(--fg3)}
 .wc.ok{color:var(--accent)}
 
-.card{
-  background:var(--bg2);border:1px solid var(--line);border-radius:16px;
-  padding:34px 38px;margin:0 0 22px;
-}
-.card .para{font-size:clamp(17px,2.2vw,25px);line-height:1.66;color:var(--fg);font-family:var(--disp);font-weight:400}
-.reveal{
-  margin:22px 0 0;padding:18px 20px;border-radius:12px;
-  background:color-mix(in srgb,var(--accent) 12%,transparent);
-  border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);
-  font-size:18px;color:var(--fg);display:none;
-}
-.reveal.on{display:block}
-.reveal b{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--accent);display:block;margin-bottom:6px;font-weight:700}
-.gamebar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:6px}
-.tag{font-family:var(--mono);font-size:11.5px;color:var(--fg3);letter-spacing:.08em}
+.feedbar{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:0 0 20px}
+.feedbar select{background:var(--panel);border:1px solid var(--line2);color:var(--fg);border-radius:9px;
+  padding:10px 14px;font-family:var(--sans);font-size:15px}
+.tag{font-family:var(--mono);font-size:13px;color:var(--fg3);letter-spacing:.07em}
+.live{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:12px;color:var(--fg3)}
+.live i{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block;animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+
+#feed{display:grid;gap:18px;max-height:62vh;overflow-y:auto;padding-right:6px}
+.entry{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px 26px}
+.entry.mine{border-color:var(--accent);border-width:2px}
+.entry .who{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--fg3);margin:0 0 12px}
+.entry .who b{color:var(--accent);font-weight:700}
+.entry .para{font-family:var(--disp);font-size:clamp(17px,1.9vw,22px);line-height:1.62;color:var(--fg);margin:0 0 18px}
+.guessrow{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.guessrow input{flex:1;min-width:180px;background:var(--panel2);border:1px solid var(--line2);
+  border-radius:8px;color:var(--fg);font-family:var(--sans);font-size:15px;padding:10px 13px}
+.guessrow input:focus{outline:none;border-color:var(--accent)}
+.guesses{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 0}
+.gchip{background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:6px 13px;
+  font-size:14px;color:var(--fg2)}
+.gchip b{color:var(--fg3);font-weight:500;font-size:.85em}
+.ans{margin:16px 0 0;padding:14px 18px;border-radius:10px;background:var(--accent);color:var(--onaccent);
+  font-size:17px;font-weight:700;display:none}
+.ans.on{display:block}
+.ans span{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  display:block;margin-bottom:5px;font-weight:700;opacity:.75}
+.empty{color:var(--fg3);font-size:18px;padding:30px 0}
 
 @media (max-width:640px){
-  .slide{padding:66px 5vw 92px}
-  .concept{left:5vw;font-size:10px}
-  .card{padding:24px 22px}
+  .slide{padding:74px 5vw 96px}
+  .concept{left:5vw;font-size:11px}
+  #feed{max-height:none}
 }
 </style>
 </head>
 <body>
 
 <div class="concept hide" id="conceptChip"></div>
-
 <div class="deck">
 
-<!-- ═══════════ 0 · TITLE ═══════════ -->
+<!-- 1 · TITLE -->
 <section class="slide" data-concept="">
   <div class="inner">
     <p class="kicker">Theory of Knowledge · Knowledge and the Knower · Lesson 4</p>
@@ -168,7 +157,7 @@ ol.steps li span{color:var(--fg2);font-size:.88em;display:block;margin-top:5px}
   </div>
 </section>
 
-<!-- ═══════════ 1 · WHILE YOU READ ═══════════ -->
+<!-- 2 · WHILE YOU READ -->
 <section class="slide" data-concept="">
   <div class="inner">
     <h2 class="q">While you read</h2>
@@ -183,17 +172,17 @@ ol.steps li span{color:var(--fg2);font-size:.88em;display:block;margin-top:5px}
   </div>
 </section>
 
-<!-- ═══════════ 2 ═══════════ -->
+<!-- 3 -->
 <section class="slide" data-concept="Truth · Interpretation">
   <div class="inner">
     <p class="setup">The map is not the territory.<br><br>
       The Underground map is true. It still misleads — because of what it leaves out.<br><br>
       Miner left nothing out. He describes things people really do.</p>
-    <h2 class="q">So why did you still get the wrong idea?</h2>
+    <h2 class="q hi">So why did you still get the wrong idea?</h2>
   </div>
 </section>
 
-<!-- ═══════════ 3 ═══════════ -->
+<!-- 4 -->
 <section class="slide" data-concept="Truth">
   <div class="inner">
     <p class="quote">“…scraping and lacerating the surface of the face with a sharp instrument.”<br><br>
@@ -204,16 +193,16 @@ ol.steps li span{color:var(--fg2);font-size:.88em;display:block;margin-top:5px}
   </div>
 </section>
 
-<!-- ═══════════ 4 ═══════════ -->
+<!-- 5 -->
 <section class="slide" data-concept="Interpretation">
   <div class="inner">
     <p class="setup">Read out the sentence you wrote at the bottom of your page.</p>
     <h2 class="q">Miner never told you what these people were like. You wrote that sentence yourself.</h2>
-    <h2 class="q" style="color:var(--brand)">So where did it come from?</h2>
+    <h2 class="q hi">So where did it come from?</h2>
   </div>
 </section>
 
-<!-- ═══════════ 5 ═══════════ -->
+<!-- 6 -->
 <section class="slide" data-concept="Truth">
   <div class="inner">
     <p class="setup">Miner calls the dentist a <strong>holy</strong>-mouth-man.<br>
@@ -224,7 +213,18 @@ ol.steps li span{color:var(--fg2);font-size:.88em;display:block;margin-top:5px}
   </div>
 </section>
 
-<!-- ═══════════ 6 ═══════════ -->
+<!-- 7 · our own age -->
+<section class="slide" data-concept="Interpretation · Culture">
+  <div class="inner">
+    <p class="setup">The ancient Egyptians preserved their dead with chemicals and buried them with objects they would need.<br><br>
+      So do we.</p>
+    <h2 class="q">Why is one of those a <em>ritual</em> and the other a <em>funeral</em>?</h2>
+    <p class="after">We say Egyptian society was <strong>steeped in tradition</strong>. We say a tribal society is
+      <strong>governed by custom</strong>. What are <em>we</em> steeped in — and why is that harder to name?</p>
+  </div>
+</section>
+
+<!-- 8 -->
 <section class="slide" data-concept="Interpretation · Objectivity">
   <div class="inner">
     <p class="setup">Some of Miner's claims you could check by watching someone.<br><br>
@@ -234,80 +234,106 @@ ol.steps li span{color:var(--fg2);font-size:.88em;display:block;margin-top:5px}
   </div>
 </section>
 
-<!-- ═══════════ 7 ═══════════ -->
+<!-- 9 -->
 <section class="slide" data-concept="Certainty">
   <div class="inner">
     <p class="setup">Miner sounds completely sure of himself from the first line to the last.</p>
     <h2 class="q">Did his confidence make you trust him?</h2>
-    <h2 class="q" style="color:var(--brand)">Should it have?</h2>
+    <h2 class="q hi">Should it have?</h2>
     <p class="after">What would you have needed in order to check him?</p>
   </div>
 </section>
 
-<!-- ═══════════ 8 ═══════════ -->
+<!-- 10 · connotation -->
 <section class="slide" data-concept="Perspective">
   <div class="inner">
-    <p class="setup">Miner turns a dentist into a holy-mouth-man.</p>
-    <h2 class="q">What word would turn a traditional healer into a doctor?</h2>
-    <p class="after">Do you already do this? <strong>To whom?</strong></p>
+    <p class="setup">Each pair points at the <strong>same thing</strong>. Neither word is false.</p>
+    <table class="pairs">
+      <tr><td>healer</td><td class="mid">or</td><td class="b">doctor</td></tr>
+      <tr><td>ritual</td><td class="mid">or</td><td class="b">procedure</td></tr>
+      <tr><td>superstition</td><td class="mid">or</td><td class="b">belief</td></tr>
+      <tr><td>charm</td><td class="mid">or</td><td class="b">medicine</td></tr>
+      <tr><td>witch-doctor</td><td class="mid">or</td><td class="b">therapist</td></tr>
+      <tr><td>tribe</td><td class="mid">or</td><td class="b">community</td></tr>
+    </table>
+    <h2 class="q" style="margin-top:30px">Which column would you use about your own family?</h2>
+    <p class="after">You know the term for the difference between them: <strong>connotation</strong>.
+      So say what the left column carries that the right one does not — and who decides which column a describer reaches for.</p>
   </div>
 </section>
 
-<!-- ═══════════ 9 ═══════════ -->
+<!-- 11 -->
 <section class="slide" data-concept="Perspective · Culture">
   <div class="inner">
     <h2 class="q">In what way do you look at other cultures the way Miner looks at yours?</h2>
     <h2 class="q">How might they look at you?</h2>
-    <h2 class="q" style="color:var(--brand)">What does that say about your framework?</h2>
+    <h2 class="q hi">What does that say about your framework?</h2>
   </div>
 </section>
 
-<!-- ═══════════ 10 ═══════════ -->
+<!-- 12 · full quote -->
 <section class="slide" data-concept="Perspective">
   <div class="inner">
-    <p class="setup">Miner ends by quoting another anthropologist. The quote says it is easy to see</p>
-    <p class="quote">“the crudity and irrelevance of magic”<br>from “our high places of safety in the developed civilization.”</p>
-    <h2 class="q">Does Miner mean it?</h2>
-    <p class="after">Who is he laughing at — the Nacirema, or the people who write about them?</p>
+    <p class="setup">Miner ends his essay by quoting another anthropologist — and leaves it there, without comment.</p>
+    <p class="quote">“Looking from far and above, from our high places of safety in the developed civilization,
+      it is easy to see all the crudity and irrelevance of magic. But without its power and guidance early man
+      could not have mastered his practical difficulties as he has done, nor could man have advanced to the
+      higher stages of civilization.”
+      <span class="cite">Bronislaw Malinowski, quoted by Miner, 1956</span></p>
+    <h2 class="q">What is Miner warning us about?</h2>
+    <p class="after">How might he be mocking <strong>us</strong> — the readers — and not the Nacirema at all?
+      What does that say about our own frames?</p>
   </div>
 </section>
 
-<!-- ═══════════ 11 ═══════════ -->
+<!-- 13 · ladder -->
 <section class="slide" data-concept="Culture">
   <div class="inner">
-    <p class="setup">Miner's method could make <em>any</em> culture look ridiculous.</p>
-    <h2 class="q">So is every description as good as every other?</h2>
-    <p class="after">His essay is useless for one thing and very good for another. <strong>Name both.</strong></p>
+    <p class="setup">Four questions, in order.</p>
+    <h2 class="q">1. Could a dentist learn to fill a tooth from Miner's essay?</h2>
+    <h2 class="q">2. Could a visitor learn from it <em>why</em> Americans go to the dentist?</h2>
+    <h2 class="q">3. So what can this essay not do?</h2>
+    <h2 class="q hi">4. It did do something to you. What?</h2>
+    <p class="after">Now the one that matters: if a description can be useless for understanding people
+      and still worth reading, <strong>what makes a description a good one?</strong></p>
   </div>
 </section>
 
-<!-- ═══════════ 12 ═══════════ -->
+<!-- 14 -->
 <section class="slide" data-concept="Perspective">
   <div class="inner">
-    <p class="setup">A <strong>framework</strong> is what you assume without noticing. What is normal. What counts as a good reason. What is not even worth asking.</p>
+    <p class="setup">A <strong>framework</strong> is what you assume without noticing. What is normal.
+      What counts as a good reason. What is not even worth asking.</p>
     <h2 class="q">Name one thing you assumed was normal until today.</h2>
     <h2 class="q">Now name three more.</h2>
-    <p class="after">Why did that get hard so fast? Could you have made this list yesterday — and what would you have needed?</p>
+    <p class="after">Why did that get hard so fast?</p>
   </div>
 </section>
 
-<!-- ═══════════ 13 · KQ ═══════════ -->
+<!-- 15 · KQ -->
 <section class="slide" data-concept="Knowledge Question">
   <div class="inner">
     <p class="setup">Miner got the actions right and the meanings wrong.</p>
-    <h2 class="q" style="color:var(--brand)">So what decides the picture a description leaves you with — and can you ever check your own?</h2>
+    <h2 class="q hi">So what decides the picture a description leaves you with — and can you ever check your own framework?</h2>
+    <div class="hintbox">
+      <b>If you are stuck</b>
+      For the first half, three things were doing work all lesson: the <strong>words</strong> chosen,
+      what was <strong>left in and left out</strong>, and <strong>who</strong> was describing — from where.<br><br>
+      For the second half: you caught Miner's framework because you already knew the Nacirema.
+      So what would you need in order to catch your own?
+    </div>
     <p class="after">Write a paragraph in your notebook.</p>
   </div>
 </section>
 
-<!-- ═══════════ 14 · ASSIGNMENT ═══════════ -->
+<!-- 16 · WRITE YOUR OWN -->
 <section class="slide" data-concept="Your turn">
   <div class="inner">
     <h2 class="q">Now you do it</h2>
     <p class="setup">Pick something you do regularly. Describe it in <strong>60–80 words</strong> the way Miner would.
       Every sentence must be true — describe only what someone could <em>watch</em> you do.<br><br>
-      Do not name the thing. We are going to guess.</p>
-    <p class="after" style="margin:0 0 26px">
+      <strong>Do not name the thing.</strong> The class is going to guess.</p>
+    <p class="after" style="margin:0 0 28px">
       <strong>Ideas:</strong> the exam hall · the bus queue · graduation · handing in your phone · the canteen ·
       a football crowd · a birthday party · the gym · queueing for new trainers · a family photo · a group chat ·
       a haircut · the last day of term
@@ -315,12 +341,15 @@ ol.steps li span{color:var(--fg2);font-size:.88em;display:block;margin-top:5px}
 
     <div class="row">
       <div class="field">
-        <label for="fName">Your name or initials</label>
-        <input id="fName" type="text" maxlength="40" placeholder="M.S.">
+        <label for="fName">Your name</label>
+        <input id="fName" type="text" maxlength="40" placeholder="Michael S.">
       </div>
       <div class="field">
         <label for="fClass">Class</label>
-        <input id="fClass" type="text" maxlength="20" placeholder="TOK 1A">
+        <select id="fClass">
+          <option value="Period 4">Period 4</option>
+          <option value="Period 8">Period 8</option>
+        </select>
       </div>
     </div>
 
@@ -331,43 +360,39 @@ ol.steps li span{color:var(--fg2);font-size:.88em;display:block;margin-top:5px}
     </div>
 
     <div class="field">
-      <label for="fAns">What is it actually? (hidden until the reveal)</label>
+      <label for="fAns">What is it actually? (hidden until your teacher reveals it)</label>
       <input id="fAns" type="text" maxlength="80" placeholder="brushing my teeth">
     </div>
 
     <div class="btnrow">
       <button class="btn" id="btnSubmit">Post it</button>
+      <button class="btn ghost" id="btnToGame">Go and guess →</button>
       <span class="msg" id="subMsg"></span>
     </div>
   </div>
 </section>
 
-<!-- ═══════════ 15 · GUESSING GAME ═══════════ -->
+<!-- 17 · GUESS -->
 <section class="slide" data-concept="Guess the ritual">
   <div class="inner">
-    <div class="gamebar" style="margin-bottom:22px">
-      <button class="btn ghost" id="btnLoad">Load class entries</button>
-      <button class="btn ghost" id="btnShuffle">Shuffle</button>
-      <span class="tag" id="gameCount">—</span>
+    <div class="feedbar">
+      <select id="gClass">
+        <option value="Period 4">Period 4</option>
+        <option value="Period 8">Period 8</option>
+      </select>
+      <button class="btn ghost sm" id="btnRefresh">Refresh</button>
+      <button class="btn ghost sm" id="btnRevealAll">Reveal all</button>
+      <span class="live"><i></i> live — new posts appear on their own</span>
+      <span class="tag" id="feedCount"></span>
     </div>
-
-    <div class="card" id="gameCard">
-      <div class="para" id="gamePara">Press <em>Load class entries</em> to begin.</div>
-      <div class="reveal" id="gameReveal"><b>It was</b><span id="gameAns"></span></div>
-    </div>
-
-    <div class="gamebar">
-      <button class="btn ghost" id="btnPrev">← Previous</button>
-      <button class="btn" id="btnReveal">Reveal</button>
-      <button class="btn ghost" id="btnNext">Next →</button>
-    </div>
+    <div id="feed"><p class="empty">Waiting for the first paragraph…</p></div>
   </div>
 </section>
 
 </div>
 
-<!-- ═══════════ NAV ═══════════ -->
 <div class="nav">
+  <button class="nbtn" id="theme" title="Light / dark (press T)">◑</button>
   <button class="nbtn" id="prev" aria-label="Previous slide">‹</button>
   <button class="nbtn" id="next" aria-label="Next slide">›</button>
   <div class="dots" id="dots"></div>
@@ -375,164 +400,173 @@ ol.steps li span{color:var(--fg2);font-size:.88em;display:block;margin-top:5px}
 </div>
 
 <script>
-/* ══════════════════════════════════════════════════════════════
-   CONFIG — paste your Apps Script web-app URL between the quotes.
-   Until you do, posts are saved on this device only.
-   ══════════════════════════════════════════════════════════════ */
-const APPS_SCRIPT_URL = "";
+/* CONFIG — Apps Script web-app URL. Empty = this device only. */
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyb36igfI76fyrn8bN3w0z8cbeedReYqZECcE4qCemedjYFTdbifROzv_XpJs7WyCBI/exec";
 
-const SHEET_HINT = "Not connected to the class sheet — this post was saved on this device only.";
-const LS_KEY = "nacirema_entries_v1";
+const LS_ME='nacirema_me_v2', LS_ENTRIES='nacirema_entries_v2', LS_GUESSES='nacirema_guesses_v2';
+const LS_THEME='nacirema_theme_v1';
+const POLL_MS=8000, GAME_SLIDE=16;
 
-/* ───────── deck navigation ───────── */
-const slides = [...document.querySelectorAll('.slide')];
-const dotsEl = document.getElementById('dots');
-const chip   = document.getElementById('conceptChip');
-let i = 0;
+/* theme */
+function setTheme(t){
+  document.documentElement.setAttribute('data-theme', t==='dark'?'dark':'light');
+  try{ localStorage.setItem(LS_THEME,t); }catch(e){}
+}
+setTheme((()=>{ try{ return localStorage.getItem(LS_THEME)||'light'; }catch(e){ return 'light'; } })());
+document.getElementById('theme').onclick=()=>
+  setTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark');
 
-slides.forEach((_, n) => {
-  const d = document.createElement('div');
-  d.className = 'dot';
-  d.onclick = () => go(n);
-  dotsEl.appendChild(d);
-});
-
+/* deck */
+const slides=[...document.querySelectorAll('.slide')];
+const dotsEl=document.getElementById('dots'), chip=document.getElementById('conceptChip');
+let i=0;
+slides.forEach((_,n)=>{ const d=document.createElement('div'); d.className='dot'; d.onclick=()=>go(n); dotsEl.appendChild(d); });
 function go(n){
-  i = Math.max(0, Math.min(slides.length - 1, n));
-  slides.forEach((s, k) => s.classList.toggle('on', k === i));
-  [...dotsEl.children].forEach((d, k) => d.classList.toggle('on', k === i));
-  document.getElementById('count').textContent = (i + 1) + ' / ' + slides.length;
-  document.getElementById('prev').disabled = (i === 0);
-  document.getElementById('next').disabled = (i === slides.length - 1);
-  const c = slides[i].dataset.concept || '';
-  chip.textContent = c;
-  chip.classList.toggle('hide', !c);
-  slides[i].scrollTop = 0;
+  i=Math.max(0,Math.min(slides.length-1,n));
+  slides.forEach((s,k)=>s.classList.toggle('on',k===i));
+  [...dotsEl.children].forEach((d,k)=>d.classList.toggle('on',k===i));
+  document.getElementById('count').textContent=(i+1)+' / '+slides.length;
+  document.getElementById('prev').disabled=(i===0);
+  document.getElementById('next').disabled=(i===slides.length-1);
+  const c=slides[i].dataset.concept||'';
+  chip.textContent=c; chip.classList.toggle('hide',!c);
+  slides[i].scrollTop=0;
+  if(i===GAME_SLIDE) refresh();
 }
-document.getElementById('prev').onclick = () => go(i - 1);
-document.getElementById('next').onclick = () => go(i + 1);
-
-document.addEventListener('keydown', e => {
-  const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
-  if (typing) return;
-  if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); go(i + 1); }
-  if (e.key === 'ArrowLeft'  || e.key === 'PageUp')  { e.preventDefault(); go(i - 1); }
-  if (e.key === 'Home') go(0);
-  if (e.key === 'End')  go(slides.length - 1);
-});
-go(0);
-
-/* ───────── word count ───────── */
-const paraEl = document.getElementById('fPara');
-const wcEl   = document.getElementById('wc');
-paraEl.addEventListener('input', () => {
-  const n = paraEl.value.trim().split(/\s+/).filter(Boolean).length;
-  wcEl.textContent = n + ' word' + (n === 1 ? '' : 's');
-  wcEl.classList.toggle('ok', n >= 60 && n <= 80);
+document.getElementById('prev').onclick=()=>go(i-1);
+document.getElementById('next').onclick=()=>go(i+1);
+document.addEventListener('keydown',e=>{
+  if(/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) return;
+  if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' '){e.preventDefault();go(i+1);}
+  if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();go(i-1);}
+  if(e.key==='Home')go(0);
+  if(e.key==='End')go(slides.length-1);
+  if(e.key==='t'||e.key==='T')document.getElementById('theme').click();
 });
 
-/* ───────── local fallback store ───────── */
-function localRead(){
-  try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch(e){ return []; }
-}
-function localWrite(list){
-  try { localStorage.setItem(LS_KEY, JSON.stringify(list)); } catch(e){}
-}
+/* identity */
+let ME={name:'',klass:'Period 4',posted:[]};
+try{ ME=Object.assign(ME,JSON.parse(localStorage.getItem(LS_ME)||'{}')); }catch(e){}
+function saveMe(){ try{ localStorage.setItem(LS_ME,JSON.stringify(ME)); }catch(e){} }
+const nameEl=document.getElementById('fName'), classEl=document.getElementById('fClass'),
+      gClassEl=document.getElementById('gClass');
+nameEl.value=ME.name||''; classEl.value=ME.klass||'Period 4'; gClassEl.value=ME.klass||'Period 4';
+nameEl.oninput=()=>{ME.name=nameEl.value.trim();saveMe();};
+classEl.onchange=()=>{ME.klass=classEl.value;gClassEl.value=classEl.value;saveMe();refresh();};
+gClassEl.onchange=()=>refresh();
 
-/* ───────── submit ───────── */
-const subMsg = document.getElementById('subMsg');
-document.getElementById('btnSubmit').onclick = async () => {
-  const name  = document.getElementById('fName').value.trim();
-  const klass = document.getElementById('fClass').value.trim();
-  const para  = paraEl.value.trim();
-  const ans   = document.getElementById('fAns').value.trim();
+function lsGet(k){ try{ return JSON.parse(localStorage.getItem(k)||'[]'); }catch(e){ return []; } }
+function lsAdd(k,v){ const a=lsGet(k); a.push(v); try{ localStorage.setItem(k,JSON.stringify(a)); }catch(e){} }
 
-  if (!para || !ans) {
-    subMsg.className = 'msg warn';
-    subMsg.textContent = 'Paragraph and answer are both needed.';
-    return;
+/* word count */
+const paraEl=document.getElementById('fPara'), wcEl=document.getElementById('wc');
+paraEl.addEventListener('input',()=>{
+  const n=paraEl.value.trim().split(/\s+/).filter(Boolean).length;
+  wcEl.textContent=n+' word'+(n===1?'':'s');
+  wcEl.classList.toggle('ok',n>=60&&n<=80);
+});
+
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,8); }
+async function send(payload,lsKey){
+  if(APPS_SCRIPT_URL){
+    try{ await fetch(APPS_SCRIPT_URL,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)}); return true; }
+    catch(e){ lsAdd(lsKey,payload); return false; }
   }
+  lsAdd(lsKey,payload); return false;
+}
 
-  const entry = {
-    action: 'submit',
-    timestamp: new Date().toISOString(),
-    name: name || 'anonymous',
-    klass: klass,
-    paragraph: para,
-    answer: ans
-  };
+const subMsg=document.getElementById('subMsg');
+document.getElementById('btnSubmit').onclick=async()=>{
+  const name=nameEl.value.trim(), para=paraEl.value.trim(), ans=document.getElementById('fAns').value.trim();
+  if(!name||!para||!ans){ subMsg.className='msg warn'; subMsg.textContent='Name, paragraph and answer are all needed.'; return; }
+  const btn=document.getElementById('btnSubmit'); btn.disabled=true;
+  subMsg.className='msg'; subMsg.textContent='Posting…';
+  const id=uid();
+  ME.name=name; ME.klass=classEl.value; ME.posted.push(id); saveMe();
+  const live=await send({action:'submit',id,timestamp:new Date().toISOString(),
+    name,klass:classEl.value,paragraph:para,answer:ans},LS_ENTRIES);
+  subMsg.className=live?'msg':'msg warn';
+  subMsg.textContent=live?'Posted. Say nothing about what it was.'
+    :'Saved on this device only — the class sheet could not be reached.';
+  paraEl.value=''; document.getElementById('fAns').value='';
+  wcEl.textContent='0 words'; wcEl.classList.remove('ok');
+  setTimeout(()=>{btn.disabled=false;},600);
+  setTimeout(refresh,1800);
+};
+document.getElementById('btnToGame').onclick=()=>go(GAME_SLIDE);
 
-  const btn = document.getElementById('btnSubmit');
-  btn.disabled = true;
-  subMsg.className = 'msg';
-  subMsg.textContent = 'Posting…';
-
-  if (APPS_SCRIPT_URL) {
-    try {
-      await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(entry) });
-      subMsg.textContent = 'Posted. Do not tell anyone what it was.';
-    } catch(e) {
-      const list = localRead(); list.push(entry); localWrite(list);
-      subMsg.className = 'msg warn';
-      subMsg.textContent = 'Could not reach the class sheet — saved on this device instead.';
+/* feed */
+let entries=[], guesses=[], revealed=new Set(), revealAll=false;
+async function refresh(){
+  const klass=gClassEl.value;
+  if(APPS_SCRIPT_URL){
+    try{
+      const res=await fetch(APPS_SCRIPT_URL+'?action=getAll&klass='+encodeURIComponent(klass));
+      const data=await res.json();
+      entries=Array.isArray(data.entries)?data.entries:[];
+      guesses=Array.isArray(data.guesses)?data.guesses:[];
+    }catch(e){
+      entries=lsGet(LS_ENTRIES).filter(x=>x.klass===klass);
+      guesses=lsGet(LS_GUESSES).filter(x=>x.klass===klass);
     }
   } else {
-    const list = localRead(); list.push(entry); localWrite(list);
-    subMsg.className = 'msg warn';
-    subMsg.textContent = SHEET_HINT;
+    entries=lsGet(LS_ENTRIES).filter(x=>x.klass===klass);
+    guesses=lsGet(LS_GUESSES).filter(x=>x.klass===klass);
   }
+  render();
+}
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-  paraEl.value = ''; document.getElementById('fAns').value = '';
-  wcEl.textContent = '0 words'; wcEl.classList.remove('ok');
-  setTimeout(() => { btn.disabled = false; }, 600);
-};
-
-/* ───────── guessing game ───────── */
-let entries = [], g = 0;
-const gPara   = document.getElementById('gamePara');
-const gReveal = document.getElementById('gameReveal');
-const gAns    = document.getElementById('gameAns');
-const gCount  = document.getElementById('gameCount');
-
-function renderGame(){
-  gReveal.classList.remove('on');
-  if (!entries.length) {
-    gPara.textContent = 'Nothing posted yet.';
-    gCount.textContent = '—';
-    return;
-  }
-  g = (g + entries.length) % entries.length;
-  gPara.textContent = entries[g].paragraph;
-  gAns.textContent  = entries[g].answer + (entries[g].name ? '  ·  ' + entries[g].name : '');
-  gCount.textContent = (g + 1) + ' of ' + entries.length;
+function render(){
+  const feed=document.getElementById('feed');
+  document.getElementById('feedCount').textContent=
+    entries.length?entries.length+' posted · '+guesses.length+' guesses':'';
+  if(!entries.length){ feed.innerHTML='<p class="empty">Waiting for the first paragraph…</p>'; return; }
+  feed.innerHTML=entries.map(en=>{
+    const mine=ME.posted.includes(en.id);
+    const mg=guesses.filter(g=>g.entryId===en.id);
+    const shown=revealAll||revealed.has(en.id);
+    const iGuessed=mg.some(g=>g.guesser===ME.name);
+    return '<div class="entry'+(mine?' mine':'')+'" data-id="'+esc(en.id)+'">'+
+      '<p class="who">'+(mine?'<b>yours</b> · ':'')+'posted by '+esc(en.name)+'</p>'+
+      '<p class="para">'+esc(en.paragraph)+'</p>'+
+      (mine||iGuessed?'':
+        '<div class="guessrow">'+
+          '<input type="text" maxlength="80" placeholder="What is it? Your guess…" data-guess="'+esc(en.id)+'">'+
+          '<button class="btn sm" data-send="'+esc(en.id)+'">Guess</button>'+
+        '</div>')+
+      (mg.length?'<div class="guesses">'+mg.map(g=>
+        '<span class="gchip">'+esc(g.guess)+' <b>'+esc(g.guesser)+'</b></span>').join('')+'</div>':'')+
+      '<div class="ans'+(shown?' on':'')+'"><span>it was</span>'+esc(en.answer)+'</div>'+
+      (shown?'':'<div class="btnrow"><button class="btn ghost sm" data-reveal="'+esc(en.id)+'">Reveal</button></div>')+
+    '</div>';
+  }).join('');
+  feed.querySelectorAll('[data-send]').forEach(b=>b.onclick=()=>sendGuess(b.dataset.send));
+  feed.querySelectorAll('[data-reveal]').forEach(b=>b.onclick=()=>{revealed.add(b.dataset.reveal);render();});
+  feed.querySelectorAll('[data-guess]').forEach(inp=>inp.onkeydown=e=>{
+    if(e.key==='Enter'){e.preventDefault();sendGuess(inp.dataset.guess);}
+  });
 }
 
-document.getElementById('btnLoad').onclick = async () => {
-  const btn = document.getElementById('btnLoad');
-  btn.disabled = true; gPara.textContent = 'Loading…';
-  if (APPS_SCRIPT_URL) {
-    try {
-      const res  = await fetch(APPS_SCRIPT_URL + '?action=getAll');
-      const data = await res.json();
-      entries = Array.isArray(data) ? data : [];
-    } catch(e) { entries = localRead(); }
-  } else {
-    entries = localRead();
-  }
-  entries = entries.filter(e => e && e.paragraph);
-  g = 0; renderGame();
-  btn.disabled = false;
-};
-document.getElementById('btnShuffle').onclick = () => {
-  for (let k = entries.length - 1; k > 0; k--) {
-    const j = Math.floor(Math.random() * (k + 1));
-    [entries[k], entries[j]] = [entries[j], entries[k]];
-  }
-  g = 0; renderGame();
-};
-document.getElementById('btnNext').onclick   = () => { g++; renderGame(); };
-document.getElementById('btnPrev').onclick   = () => { g--; renderGame(); };
-document.getElementById('btnReveal').onclick = () => gReveal.classList.toggle('on');
+async function sendGuess(entryId){
+  const inp=document.querySelector('[data-guess="'+entryId+'"]');
+  if(!inp) return;
+  const text=inp.value.trim();
+  if(!text) return;
+  if(!ME.name){ alert('Put your name on the previous slide first.'); return; }
+  const g={action:'guess',timestamp:new Date().toISOString(),
+    entryId,guesser:ME.name,klass:gClassEl.value,guess:text};
+  guesses.push({entryId,guesser:ME.name,klass:g.klass,guess:text});
+  render();
+  await send(g,LS_GUESSES);
+  setTimeout(refresh,1500);
+}
+
+document.getElementById('btnRefresh').onclick=refresh;
+document.getElementById('btnRevealAll').onclick=()=>{revealAll=!revealAll;render();};
+setInterval(()=>{ if(i===GAME_SLIDE) refresh(); },POLL_MS);
+
+go(0);
 </script>
 </body>
 </html>
