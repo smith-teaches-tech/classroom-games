@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Student Homepages — Building with AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+  :root{
+    --bg:#0c0e13; --panel:#151922; --panel2:#1c212c; --line:#2a3039;
+    --ink:#e8eaf0; --dim:#98a1b3; --accent:#7bd88f; --accent2:#6aa9ff;
+    --warn:#ffb454; --code:#080a0e; --mag:#ff9ec7;
+    --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    --disp:"Space Grotesk",ui-sans-serif,system-ui,sans-serif;
+    --body:"Inter",ui-sans-serif,system-ui,-apple-system,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);
+    font-size:16px;line-height:1.6;padding:0 0 70px;
+    background-image:
+      linear-gradient(rgba(123,216,143,.022) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(123,216,143,.022) 1px, transparent 1px);
+    background-size:34px 34px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+  /* terminal header */
+  header{padding:38px 0 6px}
+  .term{background:var(--code);border:1px solid var(--line);border-radius:13px;overflow:hidden;
+    box-shadow:0 18px 44px rgba(0,0,0,.45)}
+  .termbar{background:#12161e;border-bottom:1px solid var(--line);padding:10px 15px;
+    display:flex;align-items:center;gap:8px}
+  .termbar i{width:11px;height:11px;border-radius:50%;display:block;background:#333a46}
+  .termbar i:nth-child(1){background:#ff6058} .termbar i:nth-child(2){background:#ffbd2e}
+  .termbar i:nth-child(3){background:#28ca42}
+  .termbar span{margin-left:9px;font-family:var(--mono);font-size:12px;color:var(--dim)}
+  .termbody{padding:20px 22px 24px;font-family:var(--mono);font-size:14px;line-height:1.85;
+    white-space:pre-wrap;overflow-x:auto}
+  .pr{color:var(--accent)} .cmd{color:var(--ink)} .out{color:var(--dim)}
+  .ok{color:var(--accent)} .num{color:var(--warn)} .str{color:var(--mag)}
+  .cur{display:inline-block;width:9px;height:17px;background:var(--accent);
+    vertical-align:-3px;margin-left:4px;animation:bl 1.05s step-end infinite}
+  @keyframes bl{0%,50%{opacity:1}51%,100%{opacity:0}}
+  @media (prefers-reduced-motion:reduce){ .cur{animation:none} }
+
+  h1{font-family:var(--disp);font-size:34px;letter-spacing:-.6px;margin:34px 0 6px;font-weight:700}
+  h1 .br{color:var(--accent)}
+  .lede{color:var(--dim);font-size:16.5px;margin:0 0 4px;max-width:62ch}
+
+  .stats{display:flex;gap:9px;flex-wrap:wrap;margin:20px 0 26px}
+  .pill{font-family:var(--mono);font-size:12px;letter-spacing:.3px;
+    background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:6px 14px;color:var(--dim)}
+  .pill b{color:var(--accent);font-weight:700}
+  .pill.b b{color:var(--warn)}
+
+  /* card grid */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(296px,1fr));gap:14px}
+  .card{position:relative;display:block;text-decoration:none;color:inherit;
+    background:var(--panel);border:1px solid var(--line);border-radius:13px;
+    padding:17px 18px 15px;transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease;
+    overflow:hidden}
+  .card::before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:var(--accent);
+    opacity:0;transition:opacity .16s ease}
+  .card:hover{transform:translateY(-3px);border-color:#3c4a5c;
+    box-shadow:0 12px 26px rgba(0,0,0,.4)}
+  .card:hover::before{opacity:1}
+  .card:focus-visible{outline:2px solid var(--accent2);outline-offset:3px}
+  @media (prefers-reduced-motion:reduce){ .card{transition:none} .card:hover{transform:none} }
+
+  .top{display:flex;align-items:center;gap:9px;margin-bottom:11px}
+  .idx{font-family:var(--mono);font-size:11.5px;color:#4d5666;font-weight:500}
+  .led{width:7px;height:7px;border-radius:50%;background:var(--accent);flex:none;
+    box-shadow:0 0 0 3px rgba(123,216,143,.13)}
+  .status{font-family:var(--mono);font-size:10.5px;letter-spacing:.9px;color:var(--accent);
+    text-transform:uppercase;font-weight:700;margin-left:auto}
+
+  .nm{font-family:var(--disp);font-size:19px;font-weight:600;letter-spacing:-.25px;
+    margin:0 0 3px;line-height:1.25}
+  .hd{font-family:var(--mono);font-size:12.5px;color:var(--accent2);margin:0;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .hd .rp{color:#5f6b7f}
+  .nm em{font-style:normal;color:var(--mag);font-weight:500}
+  .tag{font-family:var(--mono);font-size:11.5px;color:var(--warn);margin:7px 0 0;
+    opacity:.85;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .go{font-family:var(--mono);font-size:11.5px;color:#4d5666;margin-top:13px;
+    padding-top:11px;border-top:1px solid var(--line);display:flex;align-items:center;gap:6px}
+  .card:hover .go{color:var(--accent)}
+
+  /* coming soon */
+  .card.soon{border-style:dashed;border-color:#3a3320;background:#15130e;cursor:default}
+  .card.soon:hover{transform:none;border-color:#4a4029;box-shadow:none}
+  .card.soon:hover::before{opacity:0}
+  .card.soon .led{background:var(--warn);box-shadow:0 0 0 3px rgba(255,180,84,.13);
+    animation:pulse 1.9s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+  @media (prefers-reduced-motion:reduce){ .card.soon .led{animation:none} }
+  .card.soon .status{color:var(--warn)}
+  .card.soon .nm{color:#c9bfa8}
+  .card.soon .hd{color:#7a6d52}
+  .card.soon .go{color:#5c5238}
+  .card.soon:hover .go{color:#5c5238}
+  .dots3::after{content:"";animation:dt 1.6s steps(4,end) infinite}
+  @keyframes dt{0%{content:""}25%{content:"."}50%{content:".."}75%{content:"..."}}
+  @media (prefers-reduced-motion:reduce){ .dots3::after{content:"..."; animation:none} }
+
+  footer{margin-top:46px;padding-top:22px;border-top:1px solid var(--line);
+    color:var(--dim);font-size:14px}
+  footer a{color:var(--accent2)}
+  footer .mono{font-family:var(--mono);font-size:12.5px;color:#4d5666;margin-top:10px}
+</style>
+</head>
+<body>
+
+<header><div class="wrap">
+  <div class="term">
+    <div class="termbar"><i></i><i></i><i></i><span>building-with-ai — class roster</span></div>
+    <div class="termbody">
+<span class="pr">$</span> <span class="cmd">ls ./students --deployed</span>
+<span class="out">scanning github pages&hellip;</span>
+<span class="ok">&#10003;</span> <span class="out">found</span> <span class="num">17</span> <span class="out">builders,</span> <span class="num">15</span> <span class="out">sites live</span>
+<span class="pr">$</span> <span class="cmd">open ./students/*</span><span class="cur"></span>
+    </div>
+  </div>
+
+  <h1>The Class <span class="br">&lt;/&gt;</span></h1>
+  <p class="lede">Every homepage below was built from nothing this semester &mdash; by someone who had never written a line of code. Click a name to see what they made. Each homepage links on to their own projects.</p>
+
+  <div class="stats">
+    <span class="pill"><b>17</b> &nbsp;builders</span>
+    <span class="pill"><b>15</b> &nbsp;sites live</span>
+    <span class="pill b"><b>2</b> &nbsp;still building</span>
+    <span class="pill"><b>0</b> &nbsp;lines written by hand</span>
+  </div>
+</div></header>
+
+<div class="wrap">
+  <div class="grid" id="grid"></div>
+
+  <footer>
+    <p><strong>Building with AI</strong> &mdash; students design and direct the architecture; AI writes the code; they have to be able to explain all of it.</p>
+    <p class="mono">// every site here is hosted on GitHub Pages, built and pushed by its author</p>
+    <p><a href="../">Back to Building with AI</a></p>
+  </footer>
+</div>
+
+<script>
+var STUDENTS = [
+  {name:"Mamoon Faisal",             url:"https://faisam427-afk.github.io/mamoon-faisal-projects/"},
+  {name:"andrea",                    url:"https://alfona427-alt.github.io/andrea_buildwai/index.html"},
+  {name:"Muhammad Ahmed",            url:"https://ahmedm428-ux.github.io/ahmeds-emporium/"},
+  {name:"Adrian Miguel",             url:"https://cardoa427-cmyk.github.io/cardoa427-cmyk_repo/"},
+  {name:"Abdul Samad Nauman",        url:"https://buildingwebsitestogether.github.io/TechDatabase/basketball-chaos-game/"},
+  {name:"Jazzy Aljun",               url:"https://jazzotastical17.github.io/rep1/", tag:"oyahhhhhhhhh"},
+  {name:"Rehan Nabeel",              url:"https://helpbyrehan.github.io/buildingwAI/"},
+  {name:"Khalid Al-Hussain",         url:"https://alhusk428-dev.github.io/khalid-projects/"},
+  {name:"Apoorva Katti",             url:"https://apoorva-kodes.github.io/temp/#projects"},
+  {name:"Saif Sargis",               url:"https://sargis428-bit.github.io/saif/"},
+  {name:"Mohammed Gewily",           url:"https://gewilm427-ship-it.github.io/mo-builds-ai/#work"},
+  {name:"Ali Z",                     url:"https://zahdaa428-stack.github.io/ali-s-amazing-aiprojects/"},
+  {name:"Ella <em>(danger)</em> Catuccio", url:"https://catuce428-alt.github.io/ella-sus-source-code/"},
+  {name:"Calista Baranta",           url:"https://baranc427-design.github.io/calistaswebsite/suika/suika.html"},
+  {name:"Asfa",                      url:"https://nugro-a-429.github.io/nugro-a-ai-hub/"},
+  {name:"Saskia Wibisono",           soon:true},
+  {name:"Areej Unmair",              soon:true}
+];
+
+function handle(url){
+  try { return "@" + new URL(url).hostname.replace(".github.io",""); }
+  catch(e){ return "@unknown"; }
+}
+function repo(url){
+  try {
+    var seg = new URL(url).pathname.split("/").filter(Boolean);
+    return seg.length ? seg[0] : "";
+  } catch(e){ return ""; }
+}
+
+var g = document.getElementById("grid");
+STUDENTS.forEach(function(s, n){
+  var idx = "[" + String(n).padStart(2,"0") + "]";
+  var r = s.soon ? "" : repo(s.url);
+  var sub = s.soon
+    ? '<p class="hd">awaiting first deploy</p>'
+    : '<p class="hd">'+handle(s.url)+(r ? '<span class="rp">/'+r+'</span>' : '')+'</p>';
+
+  var el, inner =
+    '<div class="top"><span class="idx">'+idx+'</span><span class="led"></span>'+
+    '<span class="status">'+(s.soon ? "building" : "live")+'</span></div>'+
+    '<h2 class="nm">'+s.name+'</h2>'+ sub +
+    (s.tag ? '<p class="tag">&ldquo;'+s.tag+'&rdquo;</p>' : '')+
+    '<div class="go">'+(s.soon
+      ? '<span class="dots3">coming soon</span>'
+      : 'open homepage &nbsp;&rarr;')+'</div>';
+
+  if(s.soon){
+    el = document.createElement("div");
+    el.className = "card soon";
+  } else {
+    el = document.createElement("a");
+    el.className = "card";
+    el.href = s.url;
+    el.target = "_blank";
+    el.rel = "noopener";
+  }
+  el.innerHTML = inner;
+  g.appendChild(el);
+});
+</script>
+
+</body>
+</html>
