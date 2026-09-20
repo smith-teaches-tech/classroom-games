@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connecting Your App — Building with AI</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#171a21; --panel2:#1e222b; --line:#2b303b;
+    --ink:#e8eaf0; --dim:#a3abbb; --accent:#7bd88f; --accent2:#6aa9ff;
+    --warn:#ffb454; --danger:#ff7b72; --code:#0b0d11;
+    --sb:#3ecf8e;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:16px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 18px 60px}
+
+  header{background:linear-gradient(160deg,#1b2431,#12151b);border-bottom:1px solid var(--line);padding:26px 0 22px}
+  header .wrap{padding-bottom:0}
+  header h1{margin:0 0 4px;font-size:27px;letter-spacing:-.4px}
+  header p{margin:0;color:var(--dim);font-size:15.5px}
+
+  /* step bar */
+  .bar{position:sticky;top:0;z-index:20;background:rgba(15,17,21,.94);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:12px 0;margin-bottom:18px}
+  .bar .wrap{display:flex;align-items:center;gap:16px;padding-bottom:0;flex-wrap:wrap}
+  .stepno{background:var(--accent);color:#0b0d11;border-radius:8px;padding:5px 11px;
+    font-size:12px;font-weight:700;flex:none;letter-spacing:.4px}
+  .steptitle{font-size:18px;font-weight:600;flex:1;min-width:200px}
+  .navbtns{display:flex;gap:8px;flex:none}
+  .nb{background:var(--panel2);border:1px solid var(--line);color:var(--ink);
+    border-radius:9px;padding:9px 17px;font-size:14.5px;font-weight:600;cursor:pointer}
+  .nb:hover:not(:disabled){border-color:var(--accent2)}
+  .nb:disabled{opacity:.35;cursor:default}
+  .nb.go{background:var(--accent);color:#0b0d11;border-color:var(--accent)}
+  .nb:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
+  .dots{display:flex;gap:5px;width:100%;margin-top:4px}
+  .dot{height:4px;flex:1;background:var(--line);border-radius:2px;cursor:pointer}
+  .dot.on{background:var(--accent)}
+  .dot.past{background:#3c6b4d}
+
+  /* app switcher */
+  .apps{display:flex;gap:8px;margin-bottom:0}
+  .apptab{background:var(--panel2);border:1px solid var(--line);border-bottom:none;
+    color:var(--dim);padding:10px 18px;border-radius:10px 10px 0 0;cursor:pointer;
+    font-size:14px;font-weight:600;display:flex;align-items:center;gap:8px}
+  .apptab:hover{color:var(--ink)}
+  .apptab.on{background:var(--panel);color:var(--ink);border-color:var(--line)}
+  .apptab .led{width:8px;height:8px;border-radius:50%;background:#444;flex:none}
+  .apptab.on .led{background:var(--accent)}
+
+  /* stage */
+  .stage{background:var(--panel);border:1px solid var(--line);border-radius:0 12px 12px 12px;
+    min-height:430px;overflow:hidden}
+  .screen{display:none}
+  .screen.on{display:block}
+
+  /* ---- supabase mock ---- */
+  .sbwin{display:grid;grid-template-columns:186px 1fr;min-height:430px}
+  @media (max-width:720px){ .sbwin{grid-template-columns:1fr} .sbnav{display:flex;overflow-x:auto} }
+  .sbnav{background:#12151b;border-right:1px solid var(--line);padding:14px 10px}
+  .sbproj{display:flex;align-items:center;gap:8px;padding:0 8px 13px;margin-bottom:8px;
+    border-bottom:1px solid var(--line);font-size:13.5px;font-weight:600;white-space:nowrap}
+  .sbproj .logo{width:16px;height:16px;border-radius:4px;background:var(--sb);flex:none}
+  .sbitem{display:block;width:100%;text-align:left;background:none;border:none;color:var(--dim);
+    padding:9px 10px;border-radius:7px;font-size:13.5px;cursor:pointer;white-space:nowrap;font-family:inherit}
+  .sbitem:hover{color:var(--ink);background:var(--panel2)}
+  .sbitem.on{background:var(--panel2);color:var(--ink);font-weight:600;box-shadow:inset 2px 0 0 var(--sb)}
+  .sbitem .badge{background:var(--danger);color:#0b0d11;border-radius:9px;padding:0 6px;
+    font-size:10.5px;font-weight:700;margin-left:6px}
+  .sbmain{padding:18px 20px;min-width:0;overflow-x:auto}
+  .sbhead{font-size:15px;font-weight:600;margin:0 0 12px;color:var(--ink);
+    display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .sbhead .tiny{color:var(--dim);font-weight:400;font-size:13px}
+
+  .sqlbox{background:var(--code);border:1px solid var(--line);border-radius:9px;
+    padding:14px 16px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:14px;line-height:1.75;white-space:pre;overflow-x:auto;color:#d6dae4}
+  .k{color:#ff9ec7} .s{color:#a5e8a5} .c{color:#6f7a8c;font-style:italic} .n{color:#ffd9a0}
+  .hl{background:#1d2b3a;border-radius:3px;padding:1px 3px;box-shadow:0 0 0 1px #2c4a66}
+
+  .runrow{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
+  .run{background:var(--sb);color:#06210f;border:none;border-radius:8px;padding:9px 20px;
+    font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+  .run:hover{filter:brightness(1.08)}
+  .run:disabled{opacity:.4;cursor:default}
+  .runmsg{font-size:13.5px;color:var(--accent);font-family:ui-monospace,monospace}
+  .runmsg.err{color:var(--danger)}
+
+  .grid{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:12px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .grid th{background:#12151b;color:var(--accent2);text-align:left;padding:9px 11px;
+    border:1px solid var(--line);font-size:11.5px;letter-spacing:.5px;text-transform:uppercase;white-space:nowrap}
+  .grid td{padding:9px 11px;border:1px solid var(--line);color:#d6dae4;white-space:nowrap}
+  .grid tr:nth-child(even) td{background:#14171d}
+  .empty{padding:26px;text-align:center;color:var(--dim);font-size:14px;
+    border:1px dashed var(--line);border-radius:9px;margin-top:12px}
+
+  .adv{display:flex;gap:13px;align-items:flex-start;border:1px solid;border-radius:10px;padding:14px 16px;margin-top:12px}
+  .adv.bad{border-color:#5a2b2b;background:#1d1214}
+  .adv.ok{border-color:#2d5a3d;background:#121d16}
+  .adv .lvl{font-size:11px;font-weight:700;letter-spacing:.7px;border-radius:5px;padding:3px 8px;flex:none}
+  .adv.bad .lvl{background:var(--danger);color:#0b0d11}
+  .adv.ok .lvl{background:var(--accent);color:#0b0d11}
+  .adv h5{margin:0 0 4px;font-size:14.5px}
+  .adv p{margin:0;font-size:13.5px;color:var(--dim)}
+
+  .keyrow{background:var(--panel2);border:1px solid var(--line);border-radius:9px;
+    padding:13px 15px;margin-top:12px}
+  .keyrow .lbl{color:var(--accent2);font-size:11px;text-transform:uppercase;
+    letter-spacing:.8px;font-weight:700;margin-bottom:6px}
+  .keyrow .v{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .keyrow .v code{background:var(--code);color:#ffd9a0;padding:7px 11px;border-radius:6px;
+    font-size:13px;word-break:break-all;flex:1;min-width:180px}
+  .cp{background:var(--panel);border:1px solid var(--line);color:var(--dim);border-radius:7px;
+    padding:7px 13px;font-size:12.5px;cursor:pointer;flex:none;font-family:inherit}
+  .cp:hover{color:var(--ink);border-color:var(--sb)}
+  .cp.done{color:var(--accent);border-color:var(--accent)}
+  .tabsel{display:flex;gap:6px;margin:0 0 12px}
+  .tabsel span{font-size:12.5px;padding:6px 12px;border-radius:7px;background:var(--panel2);
+    border:1px solid var(--line);color:var(--dim)}
+  .tabsel span.on{background:var(--panel);color:var(--ink);border-color:var(--sb)}
+
+  /* ---- vs code mock ---- */
+  .vswin{display:grid;grid-template-columns:174px 1fr;min-height:430px}
+  @media (max-width:720px){ .vswin{grid-template-columns:1fr} }
+  .vstree{background:#12151b;border-right:1px solid var(--line);padding:14px 8px;font-size:13.5px}
+  .vstree .ttl{color:var(--dim);font-size:10.5px;letter-spacing:1px;text-transform:uppercase;padding:0 8px 9px}
+  .vsf{padding:6px 10px;border-radius:6px;color:var(--dim);cursor:default;white-space:nowrap}
+  .vsf.on{background:var(--panel2);color:var(--ink)}
+  .vsf.folder{color:var(--accent2)}
+  .vsbody{min-width:0;display:flex;flex-direction:column}
+  .vstab{background:#12151b;border-bottom:1px solid var(--line);padding:0 14px;display:flex;align-items:center;gap:10px}
+  .vstab .f{padding:11px 14px;font-size:13.5px;border-bottom:2px solid var(--sb);color:var(--ink)}
+  .vstab .dirty{color:var(--warn);font-size:12px}
+  .vscode{padding:16px 18px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:14px;line-height:1.85;white-space:pre;overflow-x:auto;color:#d6dae4;flex:1}
+  .blank{background:#3a2a12;border:1px dashed var(--warn);border-radius:4px;padding:1px 8px;color:var(--warn)}
+  .filled{background:#12241a;border:1px solid var(--accent);border-radius:4px;padding:1px 6px;color:#a5e8a5}
+  .vsfoot{border-top:1px solid var(--line);padding:11px 18px;display:flex;gap:11px;align-items:center;flex-wrap:wrap}
+
+  /* ---- browser mock ---- */
+  .brwin{min-height:430px;display:flex;flex-direction:column}
+  .brbar{background:#12151b;border-bottom:1px solid var(--line);padding:11px 14px;display:flex;gap:11px;align-items:center}
+  .dots3{display:flex;gap:6px;flex:none}
+  .dots3 i{width:11px;height:11px;border-radius:50%;background:#333a46;display:block}
+  .url{background:var(--code);border:1px solid var(--line);border-radius:20px;padding:7px 16px;
+    font-family:ui-monospace,monospace;font-size:13px;color:var(--dim);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .brbody{padding:26px 28px;flex:1;background:#0d0f14}
+  .site h3{margin:0 0 4px;font-size:22px;color:var(--ink)}
+  .site .lede{color:var(--dim);margin:0 0 18px;font-size:14.5px}
+  .spot{background:var(--panel2);border:1px solid var(--line);border-radius:10px;
+    padding:13px 16px;margin-bottom:10px;display:flex;gap:14px;align-items:flex-start}
+  .spot .rate{background:var(--accent);color:#0b0d11;border-radius:7px;font-weight:700;
+    font-size:15px;padding:5px 11px;flex:none}
+  .spot h4{margin:0 0 3px;font-size:15.5px;color:var(--ink)}
+  .spot .meta{color:var(--dim);font-size:13.5px;margin:0}
+  .spot .kindtag{display:inline-block;background:#1b2431;border:1px solid #2c4a66;color:var(--accent2);
+    border-radius:20px;padding:1px 10px;font-size:11.5px;margin-right:7px}
+  .siteerr{border:1px solid #5a2b2b;background:#1d1214;border-radius:10px;padding:20px 22px}
+  .siteerr h4{margin:0 0 7px;color:var(--danger);font-size:16px}
+  .siteerr p{margin:0;color:var(--dim);font-size:14px}
+  .siteerr code{background:var(--code);color:#ffd9a0;padding:2px 7px;border-radius:5px;font-size:13px}
+  .counter{color:var(--accent2);font-size:13.5px;margin:0 0 14px;font-weight:600}
+
+  /* narration */
+  .narr{display:grid;grid-template-columns:1fr 340px;gap:16px;margin-top:18px}
+  @media (max-width:860px){ .narr{grid-template-columns:1fr} }
+  .say{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);
+    border-radius:0 12px 12px 0;padding:17px 20px}
+  .say h4{margin:0 0 7px;font-size:11.5px;color:var(--accent);text-transform:uppercase;letter-spacing:.9px}
+  .say p{margin:9px 0;font-size:15.5px}
+  .say p:first-of-type{margin-top:0}
+  .say code{background:var(--code);color:#ffd9a0;padding:2px 6px;border-radius:5px;font-size:13.5px}
+  .say .qq{color:var(--accent2);font-weight:600}
+  .btsc{background:var(--code);border:1px solid var(--line);border-radius:12px;padding:15px 17px;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;
+    line-height:1.7;overflow-x:auto;min-width:0}
+  .btsc h4{margin:0 0 9px;font-size:11px;color:var(--accent2);text-transform:uppercase;
+    letter-spacing:.9px;font-family:ui-sans-serif,system-ui,sans-serif}
+  .btsc .req{color:#ffd9a0} .btsc .hdr{color:var(--accent2)} .btsc .res{color:#a5e8a5}
+  .btsc .cm{color:#6f7a8c} .btsc .nil{color:var(--dim)}
+
+  footer{margin-top:44px;padding-top:22px;border-top:1px solid var(--line);color:var(--dim);font-size:14px}
+  footer a{color:var(--accent2)}
+  .hint{color:var(--dim);font-size:13px;margin-top:10px}
+</style>
+</head>
+<body>
+
+<header><div class="wrap">
+  <h1>Connecting Your App</h1>
+  <p>Building with AI — the whole thing, one step at a time</p>
+</div></header>
+
+<div class="bar"><div class="wrap">
+  <span class="stepno" id="stepno">STEP 1</span>
+  <span class="steptitle" id="steptitle">—</span>
+  <span class="navbtns">
+    <button class="nb" id="prev">&larr; Back</button>
+    <button class="nb go" id="next">Next &rarr;</button>
+  </span>
+  <span class="dots" id="dots"></span>
+</div></div>
+
+<div class="wrap">
+
+  <div class="apps">
+    <button class="apptab" data-app="supabase"><span class="led"></span>Supabase</button>
+    <button class="apptab" data-app="vscode"><span class="led"></span>VS Code</button>
+    <button class="apptab" data-app="site"><span class="led"></span>Your site</button>
+  </div>
+
+  <div class="stage">
+
+    <!-- SUPABASE -->
+    <div class="screen" id="sc-supabase">
+      <div class="sbwin">
+        <div class="sbnav">
+          <div class="sbproj"><span class="logo"></span>study-spots</div>
+          <button class="sbitem" data-view="table">Table Editor</button>
+          <button class="sbitem" data-view="sql">SQL Editor</button>
+          <button class="sbitem" data-view="advisors">Advisors <span class="badge" id="advbadge">1</span></button>
+          <button class="sbitem" data-view="settings">Settings</button>
+        </div>
+        <div class="sbmain" id="sbmain"></div>
+      </div>
+    </div>
+
+    <!-- VS CODE -->
+    <div class="screen" id="sc-vscode">
+      <div class="vswin">
+        <div class="vstree">
+          <div class="ttl">study-spots</div>
+          <div class="vsf">index.html</div>
+          <div class="vsf">add.html</div>
+          <div class="vsf">style.css</div>
+          <div class="vsf on">config.js</div>
+          <div class="vsf">app.js</div>
+          <div class="vsf">project.md</div>
+        </div>
+        <div class="vsbody">
+          <div class="vstab"><span class="f">config.js <span class="dirty" id="dirty"></span></span></div>
+          <div class="vscode" id="vscode"></div>
+          <div class="vsfoot" id="vsfoot"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SITE -->
+    <div class="screen" id="sc-site">
+      <div class="brwin">
+        <div class="brbar">
+          <span class="dots3"><i></i><i></i><i></i></span>
+          <span class="url">https://maya-builds.github.io/study-spots/</span>
+        </div>
+        <div class="brbody" id="brbody"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="narr">
+    <div class="say" id="say"></div>
+    <div class="btsc" id="bts"></div>
+  </div>
+
+  <p class="hint">Use the <strong>&larr;</strong> and <strong>&rarr;</strong> arrow keys to move through the steps. Click the tabs above to look at any window at any time.</p>
+
+  <footer>
+    <p><strong>Building with AI</strong> &mdash; Connecting Your App.
+    Related: <a href="../database/">Your Database</a> &middot; <a href="../new-project/">Adding a New Project</a> &middot; <a href="../editing/">Editing Your Site</a></p>
+  </footer>
+
+</div>
+
+<script>
+var ROWS = [
+  {id:1, where:"Library, 2nd floor", kind:"quiet",    rating:5, comment:"Nobody talks. Outlets everywhere."},
+  {id:2, where:"Cafeteria corner",   kind:"social",   rating:2, comment:"Loud, but the snacks are good."},
+  {id:3, where:"Art room",           kind:"creative", rating:4, comment:"Ms. Kim lets you stay after."},
+  {id:4, where:"Field bleachers",    kind:"outdoor",  rating:3, comment:"Great until it rains."}
+];
+var URL_VAL = "https://kzrdhiqxunucuqp.supabase.co";
+var KEY_VAL = "sb_publishable_7Qk2mXp4Lv9NbR3sTwYz";
+
+var SQL_CREATE =
+'<span class="k">create table</span> study_spots (\n'+
+'  id         <span class="k">bigint primary key generated always as identity</span>,\n'+
+'  <span class="n">where_at</span>   <span class="k">text not null</span>,\n'+
+'  <span class="n">kind</span>       <span class="k">text not null</span>,\n'+
+'  <span class="n">rating</span>     <span class="k">int</span>,\n'+
+'  <span class="n">comment</span>    <span class="k">text</span>,\n'+
+'  <span class="n">added_at</span>   <span class="k">timestamptz default now</span>()\n'+
+');';
+
+var SQL_INSERT =
+'<span class="k">insert into</span> study_spots (where_at, kind, rating, comment)\n'+
+'<span class="k">values</span>\n'+
+'  (<span class="s">\'Library, 2nd floor\'</span>, <span class="s">\'quiet\'</span>,    5, <span class="s">\'Nobody talks. Outlets everywhere.\'</span>),\n'+
+'  (<span class="s">\'Cafeteria corner\'</span>,   <span class="s">\'social\'</span>,   2, <span class="s">\'Loud, but the snacks are good.\'</span>),\n'+
+'  (<span class="s">\'Art room\'</span>,           <span class="s">\'creative\'</span>, 4, <span class="s">\'Ms. Kim lets you stay after.\'</span>),\n'+
+'  (<span class="s">\'Field bleachers\'</span>,    <span class="s">\'outdoor\'</span>,  3, <span class="s">\'Great until it rains.\'</span>);';
+
+var SQL_SELECT =
+'<span class="c">-- pretend to be an ordinary visitor</span>\n'+
+'<span class="k">set role</span> anon;\n\n'+
+'<span class="k">select</span> * <span class="k">from</span> study_spots;\n\n'+
+'<span class="k">reset role</span>;';
+
+var SQL_RLS =
+'<span class="k">alter table</span> <span class="hl">public.study_spots</span>\n'+
+'  <span class="k">enable row level security</span>;';
+
+var SQL_POL =
+'<span class="k">create policy</span> <span class="s">"Anyone can read"</span>\n'+
+'<span class="k">on</span> study_spots <span class="k">for</span> <span class="hl">select</span>\n'+
+'<span class="k">to</span> <span class="hl">anon</span>\n'+
+'<span class="k">using</span> ( <span class="hl">true</span> );\n\n'+
+'<span class="k">create policy</span> <span class="s">"Anyone can add"</span>\n'+
+'<span class="k">on</span> study_spots <span class="k">for</span> <span class="hl">insert</span>\n'+
+'<span class="k">to</span> <span class="hl">anon</span>\n'+
+'<span class="k">with check</span> ( <span class="hl">true</span> );';
+
+var STEPS = [
+  { t:"Three windows, nothing connected yet", app:"site", view:"table",
+    say:"<p>Your app is live and it works &mdash; but every row in it is <strong>fake data you typed into your own code</strong>. Refresh it on someone else's phone and they see your made-up rows, not theirs.</p><p>Three programs are about to be involved. <span class='qq'>Supabase</span> holds the real data. <span class='qq'>VS Code</span> is where your code gets edited. <span class='qq'>Your site</span> is what people actually open.</p><p>Click the three tabs and have a look at each before we start.</p>",
+    bts:"<span class='cm'>// nothing is talking to anything yet.</span>\n<span class='cm'>// the site is showing rows that live</span>\n<span class='cm'>// inside app.js, hardcoded, forever.</span>" },
+
+  { t:"Write the table in SQL", app:"supabase", view:"sql", sql:"create",
+    say:"<p>A table is column headings plus rows. <code>create table</code> writes the headings.</p><p>Gemini wrote this from the plan file, which is why the column names match the plan exactly. Two columns nobody designed: <code>id</code>, so every row can be told apart, and <code>added_at</code>, which fills itself in.</p><p class='qq'>Ask them: which of these columns is the pick-from-a-list one?</p>",
+    bts:"<span class='cm'>// this runs inside Supabase.</span>\n<span class='cm'>// your app is not involved and</span>\n<span class='cm'>// does not know this happened.</span>" },
+
+  { t:"The table exists — and it's empty", app:"supabase", view:"table",
+    say:"<p>Headings, no rows. The shape is there and nothing is in it.</p><p>This is what your table looks like on the day you make it, and it's what a visitor would see if they opened your app right now: an empty board waiting to be filled.</p>",
+    bts:"<span class='res'>study_spots</span>  <span class='nil'>0 rows</span>\n<span class='cm'>// columns: id, where_at, kind,</span>\n<span class='cm'>// rating, comment, added_at</span>" },
+
+  { t:"Put the rows in", app:"supabase", view:"sql", sql:"insert",
+    say:"<p>These are the same four rows that have been sitting inside your app's code as fake data. Gemini turned them into an <code>insert</code>.</p><p>One statement, four rows. Notice nobody typed an <code>id</code> or an <code>added_at</code> &mdash; the database fills both in by itself.</p>",
+    bts:"<span class='cm'>// still entirely inside Supabase.</span>\n<span class='cm'>// still nothing to do with your app.</span>" },
+
+  { t:"Your invented rows are now real", app:"supabase", view:"table",
+    say:"<p>There they are, on a server in another country, with ids and timestamps the database wrote itself.</p><p class='qq'>Ask them: your app is open in the other tab. Does it show these rows yet?</p><p>No. Nothing has connected the two. The app is still reading the copy inside its own code.</p>",
+    bts:"<span class='res'>study_spots</span>  <span class='res'>4 rows</span>\n<span class='cm'>// the app still has no idea</span>\n<span class='cm'>// this database exists.</span>" },
+
+  { t:"Ask it a question, as a stranger", app:"supabase", view:"sql", sql:"select",
+    say:"<p><code>select</code> asks a question. <code>*</code> means every column.</p><p>The interesting part is <code>set role anon</code>. The dashboard is signed in as <em>you, the owner</em> &mdash; so it can always see everything, and it would lie to you about whether your rules work. That line says <strong>&ldquo;answer me as if I were an ordinary visitor.&rdquo;</strong></p><p>Four rows come back. Hold onto that number.</p>",
+    bts:"<span class='req'>set role anon;</span>\n<span class='req'>select * from study_spots;</span>\n\n<span class='res'>&rarr; 4 rows</span>\n<span class='cm'>// a stranger can read everything.</span>" },
+
+  { t:"Supabase tells you off", app:"supabase", view:"advisors",
+    say:"<p>Your table has a red <strong>ERROR</strong> on it, and it's correct.</p><p>Right now the table has no security at all. Anyone who knows your project's address can read it, change it, or delete all of it.</p><p class='qq'>Ask them: nobody knows this address. So why does it matter?</p><p>Because in four steps you're going to print that address on the front of your website.</p>",
+    bts:"<span class='req'>Advisors &rarr; Security</span>\n\n<span class='cm'>ERROR  rls_disabled_in_public</span>\n<span class='cm'>study_spots is reachable by anyone</span>\n<span class='cm'>holding the project URL.</span>" },
+
+  { t:"Lock the door", app:"supabase", view:"sql", sql:"rls",
+    say:"<p>One line. Row Level Security is now on.</p><p>Run the visitor test again and <strong>zero rows</strong> come back. Not an error &mdash; nothing. You haven't broken it; you've told the database to refuse everyone until you say otherwise.</p><p class='qq'>Ask them: why would a database be built to refuse by default?</p><p>Because if it forgot to allow something, your app breaks loudly. If it forgot to <em>forbid</em> something, your data leaks silently.</p>",
+    bts:"<span class='req'>set role anon;</span>\n<span class='req'>select * from study_spots;</span>\n\n<span class='nil'>&rarr; 0 rows</span>\n<span class='cm'>// locked. nobody gets anything,</span>\n<span class='cm'>// including you, from the app.</span>" },
+
+  { t:"Open exactly two doors", app:"supabase", view:"sql", sql:"pol",
+    say:"<p>Read each highlighted piece. Every policy answers three questions.</p><p><code>for select</code> / <code>for insert</code> &mdash; <strong>which action</strong>. One rule, one action.<br><code>to anon</code> &mdash; <strong>who</strong>. Anonymous: anyone who hasn't signed in, which this unit is everybody.<br><code>true</code> &mdash; <strong>which rows</strong>. All of them.</p><p>Reading rules use <code>using</code>; adding rules use <code>with check</code>. The visitor test now returns four rows again.</p><p class='qq'>Ask them: can a stranger delete a row?</p>",
+    bts:"<span class='req'>set role anon;</span>\n<span class='req'>select * from study_spots;</span>\n<span class='res'>&rarr; 4 rows</span>\n\n<span class='req'>delete from study_spots;</span>\n<span class='cm'>&rarr; 0 rows deleted</span>\n<span class='cm'>// no delete policy was ever written,</span>\n<span class='cm'>// so delete simply does nothing.</span>" },
+
+  { t:"Now look at your app's code", app:"vscode", view:"sql",
+    say:"<p>This is <code>config.js</code> &mdash; the only file in your project whose job is <em>where does this app point, and what does it call itself.</em></p><p>Two blanks. The app can't do anything until both are filled, because it doesn't know which database to ask or how to identify itself.</p><p class='qq'>Ask them: which blank is the address, and which is the name tag?</p>",
+    bts:"<span class='cm'>// the app tries to start...</span>\n<span class='req'>fetch( undefined + '/rest/v1/...' )</span>\n<span class='cm'>&rarr; TypeError: invalid URL</span>" },
+
+  { t:"The site is broken right now", app:"site", view:"sql",
+    say:"<p>Which is exactly what it looks like to a visitor. No rows, an error in the console, and nothing on the page.</p><p>Nothing is wrong with your HTML, your CSS, or your layout. The app simply has no idea where to go.</p>",
+    bts:"<span class='cm'>// browser console</span>\n<span class='req'>Uncaught TypeError</span>\n<span class='req'>  Failed to construct 'URL'</span>\n<span class='cm'>// config.js line 4</span>" },
+
+  { t:"Go and fetch the two values", app:"supabase", view:"settings",
+    say:"<p><strong>Settings &rarr; API Keys</strong>, then the <em>Publishable and secret API keys</em> tab.</p><p>The <span class='qq'>Project URL</span> is routing &mdash; which of Supabase's thousands of databases to knock on. The <span class='qq'>publishable key</span> is identity &mdash; it tells Supabase to treat this request as <code>anon</code>, the same word you just typed in both policies.</p><p>Click both copy buttons.</p>",
+    bts:"<span class='hdr'>Project URL</span>  <span class='cm'>which database</span>\n<span class='hdr'>Publishable key</span>  <span class='cm'>which role</span>\n\n<span class='cm'>// one is an address.</span>\n<span class='cm'>// one is a name tag.</span>" },
+
+  { t:"Paste them in and save", app:"vscode", view:"settings", filled:true,
+    say:"<p>Both blanks filled. Hit save.</p><p>That publishable key is now sitting in a file that goes to GitHub, where anyone can read it. <strong>That is fine and it is the point.</strong> Your app runs on other people's phones &mdash; everything it needs in order to work, they get a copy of.</p><p class='qq'>Ask them: so what stops a stranger wrecking the table?</p><p>The two policies. The key gets you to the door; the policies decide what you may do.</p>",
+    bts:"<span class='cm'>// saved to your computer.</span>\n<span class='cm'>// not pushed yet — GitHub still has</span>\n<span class='cm'>// the old version with the blanks.</span>" },
+
+  { t:"It works", app:"site", view:"settings", filled:true, live:true,
+    say:"<p>Same page, same HTML, same CSS. The only thing that changed is that it now knows where to ask.</p><p>Those four rows travelled from a database in another country, through the publishable key, past two policies that checked it was allowed, and onto the screen.</p><p class='qq'>Ask them: open this on your phone. Where do the rows come from now?</p>",
+    bts:"<span class='req'>GET https://kzrdhiq&hellip;.supabase.co</span>\n<span class='req'>     /rest/v1/study_spots?select=*</span>\n<span class='hdr'>apikey: sb_publishable_7Qk2mX&hellip;</span>\n\n<span class='cm'>&rarr; policy \"Anyone can read\" &rarr; allowed</span>\n<span class='res'>200 OK</span>\n<span class='res'>[{\"id\":1,\"where_at\":\"Library, 2nd</span>\n<span class='res'> floor\",\"kind\":\"quiet\", &hellip; }]</span>\n<span class='res'>4 rows</span>" },
+
+  { t:"What actually happened", app:"site", view:"settings", filled:true, live:true,
+    say:"<p>Start to finish, in order:</p><p>Someone opens your link &rarr; <strong>GitHub</strong> sends them your code, with the URL and key inside it &rarr; their browser runs that code and asks <strong>Supabase</strong> for the rows &rarr; Supabase reads the key and says <em>this one is <code>anon</code></em> &rarr; the <strong>policies</strong> decide <code>anon</code> may read &rarr; the rows come back &rarr; the browser draws them.</p><p>GitHub and Supabase never spoke to each other once. The browser did all of it.</p>",
+    bts:"<span class='cm'>GitHub  &rarr;  browser  &rarr;  Supabase</span>\n<span class='cm'>        code           URL + key</span>\n\n<span class='cm'>browser  &larr;  Supabase</span>\n<span class='res'>         4 rows of JSON</span>\n\n<span class='cm'>// GitHub &harr; Supabase: never.</span>" }
+];
+
+var i = 0, copied = {url:false, key:false};
+
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;"); }
+
+function renderSupabase(st){
+  var view = st.view, main = document.getElementById("sbmain"), h = "";
+  document.querySelectorAll(".sbitem").forEach(function(b){
+    b.classList.toggle("on", b.dataset.view === view);
+  });
+  var tableExists = i >= 2, rows = i >= 4, rls = i >= 7, pol = i >= 8;
+  document.getElementById("advbadge").style.display = (i>=2 && !rls) ? "" : "none";
+
+  if(view === "sql"){
+    var sql = {create:SQL_CREATE, insert:SQL_INSERT, select:SQL_SELECT, rls:SQL_RLS, pol:SQL_POL}[st.sql] || SQL_SELECT;
+    var msg = {create:"Success. No rows returned.", insert:"Success. 4 rows inserted.",
+               select:(pol||!rls) ? "4 rows" : "0 rows", rls:"Success. No rows returned.",
+               pol:"Success. 2 policies created."}[st.sql] || "";
+    var isNil = (st.sql === "select" && rls && !pol);
+    h = '<h4 class="sbhead">SQL Editor <span class="tiny">new query</span></h4>'+
+        '<div class="sqlbox">'+sql+'</div>'+
+        '<div class="runrow"><button class="run" disabled>Run</button>'+
+        '<span class="runmsg'+(isNil?" err":"")+'">'+msg+'</span></div>';
+    if(st.sql === "select"){
+      h += (isNil
+        ? '<div class="empty">No rows returned.<br><span style="color:var(--danger)">Security is on and you haven\'t written any rules yet.</span></div>'
+        : gridHTML(ROWS));
+    }
+    if(st.sql === "rls" || st.sql === "pol"){
+      h += '<h4 class="sbhead" style="margin-top:22px">Visitor test <span class="tiny">'+
+           'set role anon; select * from study_spots;</span></h4>';
+      h += (st.sql === "rls")
+        ? '<div class="empty"><strong style="color:var(--danger)">0 rows</strong><br>'+
+          'Locked. Nobody can reach it &mdash; not a stranger, not your app, not you.</div>'
+        : '<div style="color:var(--accent);font-size:13.5px;font-family:ui-monospace,monospace;margin-top:10px">4 rows</div>'+
+          gridHTML(ROWS);
+    }
+  }
+
+  if(view === "table"){
+    h = '<h4 class="sbhead">Table Editor <span class="tiny">'+(tableExists?"public.study_spots":"no tables yet")+'</span></h4>';
+    if(!tableExists) h += '<div class="empty">You haven\'t created a table yet.</div>';
+    else if(!rows) h += gridHTML([]) + '<div class="empty">The table exists. Nothing is in it.</div>';
+    else h += gridHTML(ROWS);
+  }
+
+  if(view === "advisors"){
+    h = '<h4 class="sbhead">Advisors <span class="tiny">Security</span></h4>';
+    h += rls
+      ? '<div class="adv ok"><span class="lvl">PASS</span><div><h5>No issues found</h5>'+
+        '<p>study_spots has Row Level Security enabled'+(pol?' with 2 policies.':' but no policies yet — nothing can reach it.')+'</p></div></div>'
+      : '<div class="adv bad"><span class="lvl">ERROR</span><div><h5>Table publicly accessible</h5>'+
+        '<p>Anyone with your project URL can read, edit, and delete all data in this table because Row-Level Security is not enabled.</p></div></div>';
+  }
+
+  if(view === "settings"){
+    h = '<h4 class="sbhead">Settings <span class="tiny">API Keys</span></h4>'+
+        '<div class="tabsel"><span class="on">Publishable and secret API keys</span><span>Legacy API keys</span></div>'+
+        '<div class="keyrow"><div class="lbl">Project URL &mdash; which database</div><div class="v">'+
+        '<code>'+URL_VAL+'</code><button class="cp'+(copied.url?" done":"")+'" data-copy="url">'+(copied.url?"copied":"copy")+'</button></div></div>'+
+        '<div class="keyrow"><div class="lbl">Publishable key &mdash; which role</div><div class="v">'+
+        '<code>'+KEY_VAL+'</code><button class="cp'+(copied.key?" done":"")+'" data-copy="key">'+(copied.key?"copied":"copy")+'</button></div></div>'+
+        '<p style="color:var(--dim);font-size:13.5px;margin-top:14px">Both of these go straight into your code. Neither is a secret.</p>';
+  }
+  main.innerHTML = h;
+  main.querySelectorAll("[data-copy]").forEach(function(b){
+    b.addEventListener("click", function(){ copied[b.dataset.copy] = true; render(); });
+  });
+}
+
+function gridHTML(rows){
+  var h = '<div style="overflow-x:auto"><table class="grid"><tr><th>id</th><th>where_at</th><th>kind</th><th>rating</th><th>comment</th><th>added_at</th></tr>';
+  rows.forEach(function(r){
+    h += '<tr><td>'+r.id+'</td><td>'+esc(r.where)+'</td><td>'+r.kind+'</td><td>'+r.rating+
+         '</td><td>'+esc(r.comment)+'</td><td>2026-09-20 14:0'+r.id+'</td></tr>';
+  });
+  return h + '</table></div>';
+}
+
+function renderVsCode(st){
+  var f = !!st.filled;
+  var url = f ? '<span class="filled">"'+URL_VAL+'"</span>' : '<span class="blank">PASTE YOUR PROJECT URL</span>';
+  var key = f ? '<span class="filled">"'+KEY_VAL+'"</span>' : '<span class="blank">PASTE YOUR PUBLISHABLE KEY</span>';
+  document.getElementById("vscode").innerHTML =
+    '<span class="c">// config.js — where this app points,</span>\n'+
+    '<span class="c">// and what it calls itself.</span>\n\n'+
+    '<span class="k">const</span> SUPABASE_URL = '+url+';\n\n'+
+    '<span class="k">const</span> SUPABASE_KEY = '+key+';\n\n'+
+    '<span class="c">// nothing else in your project</span>\n'+
+    '<span class="c">// needs to know either of these.</span>';
+  document.getElementById("dirty").textContent = f ? "" : "● unsaved";
+  document.getElementById("vsfoot").innerHTML = f
+    ? '<span style="color:var(--accent);font-size:13.5px">&#10003; Saved &mdash; now commit and push</span>'
+    : '<span style="color:var(--warn);font-size:13.5px">Two blanks left. The app cannot run until both are filled.</span>';
+}
+
+function renderSite(st){
+  var b = document.getElementById("brbody");
+  if(st.live){
+    var h = '<div class="site"><h3>Study Spots</h3><p class="lede">Where people actually get work done.</p>'+
+            '<p class="counter">4 spots &middot; best rated first</p>';
+    ROWS.slice().sort(function(a,b2){ return b2.rating - a.rating; }).forEach(function(r){
+      h += '<div class="spot"><span class="rate">'+r.rating+'</span><div>'+
+           '<h4>'+esc(r.where)+'</h4>'+
+           '<p class="meta"><span class="kindtag">'+r.kind+'</span>'+esc(r.comment)+'</p></div></div>';
+    });
+    b.innerHTML = h + '</div>';
+  } else if(i === 0){
+    var h2 = '<div class="site"><h3>Study Spots</h3><p class="lede">Where people actually get work done.</p>'+
+             '<p class="counter" style="color:var(--warn)">4 spots &middot; from fake data inside app.js</p>';
+    ROWS.slice(0,2).forEach(function(r){
+      h2 += '<div class="spot"><span class="rate">'+r.rating+'</span><div><h4>'+esc(r.where)+'</h4>'+
+            '<p class="meta"><span class="kindtag">'+r.kind+'</span>'+esc(r.comment)+'</p></div></div>';
+    });
+    b.innerHTML = h2 + '<p style="color:var(--dim);font-size:13.5px">Everyone who opens this sees the same four rows you invented. Nobody can add anything.</p></div>';
+  } else {
+    b.innerHTML = '<div class="siteerr"><h4>Nothing loaded</h4>'+
+      '<p>The page renders, but no rows appear and the console shows an error. '+
+      '<code>config.js</code> still has both blanks in it, so the app has no idea which database to ask.</p></div>';
+  }
+}
+
+function render(){
+  var st = STEPS[i];
+  document.getElementById("stepno").textContent = "STEP " + (i+1);
+  document.getElementById("steptitle").textContent = st.t;
+  document.getElementById("say").innerHTML = '<h4>What&rsquo;s happening</h4>' + st.say;
+  document.getElementById("bts").innerHTML = '<h4>Behind the scenes</h4>' + st.bts;
+  document.getElementById("prev").disabled = (i === 0);
+  document.getElementById("next").disabled = (i === STEPS.length - 1);
+
+  renderSupabase(st); renderVsCode(st); renderSite(st);
+  showApp(st.app);
+
+  var d = document.getElementById("dots");
+  d.innerHTML = "";
+  STEPS.forEach(function(_, n){
+    var el = document.createElement("span");
+    el.className = "dot" + (n === i ? " on" : (n < i ? " past" : ""));
+    el.title = "Step " + (n+1);
+    el.addEventListener("click", function(){ i = n; render(); });
+    d.appendChild(el);
+  });
+}
+
+function showApp(name){
+  document.querySelectorAll(".screen").forEach(function(s){
+    s.classList.toggle("on", s.id === "sc-" + name);
+  });
+  document.querySelectorAll(".apptab").forEach(function(t){
+    t.classList.toggle("on", t.dataset.app === name);
+  });
+}
+
+document.getElementById("next").addEventListener("click", function(){
+  if(i < STEPS.length-1){ i++; render(); }
+});
+document.getElementById("prev").addEventListener("click", function(){
+  if(i > 0){ i--; render(); }
+});
+document.querySelectorAll(".apptab").forEach(function(t){
+  t.addEventListener("click", function(){ showApp(t.dataset.app); });
+});
+document.addEventListener("click", function(e){
+  var b = e.target.closest(".sbitem");
+  if(b){ STEPS[i].view = b.dataset.view; renderSupabase(STEPS[i]); }
+});
+document.addEventListener("keydown", function(e){
+  if(e.target.tagName === "INPUT") return;
+  if(e.key === "ArrowRight" && i < STEPS.length-1){ i++; render(); }
+  if(e.key === "ArrowLeft"  && i > 0){ i--; render(); }
+});
+
+render();
+</script>
+
+</body>
+</html>
