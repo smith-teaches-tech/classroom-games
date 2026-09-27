@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Future Tense · TOK Language L3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f1ece0;
+    --card:#faf7ef;
+    --ink:#2a2520;
+    --muted:#8a8074;
+    --rule:#d8cfbd;
+    --oxblood:#74232f;
+    --oxblood-soft:#9c4350;
+    --decode-bg:#efe7d6;
+    --mark:#e8dcc2;
+    --green:#3f5340;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:'Cormorant Garamond',Georgia,serif;
+    font-size:21px;line-height:1.5;padding:48px 20px 96px;
+  }
+  .wrap{max-width:780px;margin:0 auto}
+
+  /* ---- header ---- */
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--oxblood);margin:0 0 14px;
+  }
+  h1{font-weight:600;font-size:54px;line-height:1.02;margin:0 0 10px;letter-spacing:-.01em}
+  .lede{font-size:22px;margin:0 0 6px;max-width:62ch}
+  .how{
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.7;
+    color:var(--muted);margin:18px 0 0;max-width:60ch;
+  }
+  .how b{color:var(--oxblood);font-weight:500}
+  a{color:var(--oxblood)}
+
+  /* ---- stages ---- */
+  .stage{margin:0 0 20px;scroll-margin-top:18px}
+  .s-head{
+    display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+    border-top:2px solid var(--oxblood);padding:16px 0 0;margin:48px 0 14px;
+  }
+  .s-num{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;letter-spacing:.12em;
+    color:var(--paper);background:var(--oxblood);padding:4px 9px;border-radius:2px;flex:none;
+  }
+  .s-title{font-weight:600;font-size:31px;line-height:1.1;margin:0}
+  .s-time{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--muted);margin-left:auto;
+  }
+  .s-sub{
+    font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;
+    color:var(--muted);margin:0 0 20px;max-width:62ch;
+  }
+  .s-sub b{color:var(--oxblood);font-weight:500}
+
+  /* ---- the question ---- */
+  .instrument{
+    background:var(--decode-bg);border:1px solid var(--rule);border-left:3px solid var(--ink);
+    padding:24px 28px;border-radius:2px;margin:0 0 18px;
+  }
+  .instrument p{margin:0;font-size:24px;line-height:1.35;max-width:58ch}
+  .instrument .qnote{color:var(--muted);font-size:19px;margin-top:10px}
+
+  /* ---- article card ---- */
+  .card{
+    background:var(--card);border:1px solid var(--rule);border-left:3px solid var(--oxblood);
+    padding:26px 30px;border-radius:2px;margin:0 0 18px;
+  }
+  .card p{margin:0 0 14px;max-width:60ch}
+  .card p:last-child{margin-bottom:0}
+  .c-lab{
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--muted);margin:0 0 10px!important;
+  }
+  .a-title{font-weight:600;font-size:26px;line-height:1.15;margin:0 0 8px}
+
+  /* ---- write-here box ---- */
+  .writebox{margin:0 0 14px}
+  .writebox label{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink);
+    display:block;margin:0 0 8px;
+  }
+  textarea.tx{
+    width:100%;font-family:'Cormorant Garamond',serif;font-size:19px;color:var(--ink);
+    background:var(--card);border:1px solid var(--rule);border-radius:2px;
+    padding:10px 12px;resize:vertical;min-height:96px;line-height:1.4;
+  }
+  textarea.tx:focus-visible{outline:2px solid var(--oxblood-soft);outline-offset:1px}
+
+  /* ---- reveal blocks ---- */
+  .revealbtn{
+    font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.12em;
+    text-transform:uppercase;padding:10px 18px;background:var(--oxblood);color:var(--paper);
+    border:0;border-radius:2px;cursor:pointer;transition:background .18s;
+  }
+  .revealbtn:hover{background:#5e1c26}
+  .revealbtn[disabled]{background:var(--rule);color:var(--muted);cursor:not-allowed}
+  .lock{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin:8px 0 0}
+  .revealed{
+    margin:16px 0 0;padding:18px 22px;background:var(--card);
+    border-left:3px solid var(--green);border-radius:2px;
+  }
+  .revealed .r-lab{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--green);margin:0 0 8px;
+  }
+  .revealed p{margin:0 0 12px;max-width:60ch}
+  .revealed p:last-child{margin-bottom:0}
+  .revealed h4{font-weight:700;font-size:22px;margin:18px 0 6px;line-height:1.2}
+  .revealed h4:first-of-type{margin-top:4px}
+
+  /* ---- two-up comparison ---- */
+  .pair{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:4px 0 14px}
+  .pairline{background:var(--paper);border:1px solid var(--rule);border-radius:2px;padding:14px 18px}
+  .pairline .pl-tag{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--oxblood);display:block;margin:0 0 6px;
+  }
+  .pairline p{margin:0 0 8px!important}
+  .pairline p:last-child{margin-bottom:0!important}
+  .pairline .ex{font-style:italic;font-size:22px}
+
+  /* ---- rival explanations ---- */
+  .rivals{border:1px solid var(--rule);border-radius:2px;background:var(--paper);margin:6px 0 14px}
+  .rival{display:grid;grid-template-columns:2.2em 1fr;gap:4px 10px;padding:12px 18px;border-bottom:1px solid var(--rule)}
+  .rival:last-child{border-bottom:0}
+  .rival .rn{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--oxblood);padding-top:5px}
+  .rival .rt{font-weight:700;font-size:21px;line-height:1.25}
+  .rival .rd{grid-column:2;margin:0;line-height:1.4}
+
+  /* ---- punch line ---- */
+  .punch{background:var(--ink);color:var(--paper);padding:22px 26px;border-radius:2px;margin:18px 0 0}
+  .punch p{margin:0;font-size:23px;line-height:1.4;max-width:58ch}
+  .punch .p-lab{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--mark);margin:0 0 10px;font-size:10px;
+  }
+
+  /* ---- notebook prompt ---- */
+  .nb{border-left:3px solid var(--ink);background:var(--decode-bg);padding:18px 22px;border-radius:2px;margin:18px 0 16px}
+  .nb .nb-lab{
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--ink);margin:0 0 8px;
+  }
+  .nb p{margin:0;font-size:22px;line-height:1.4;max-width:58ch}
+  .nb p + p{margin-top:10px}
+
+  .turn{margin:44px 0 0;border-top:2px solid var(--oxblood);padding:24px 0 0}
+  .turn .t-lab{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--oxblood);margin:0 0 10px;
+  }
+  .turn p{font-size:24px;line-height:1.4;margin:0 0 12px;max-width:60ch}
+  .turn ul{margin:0;padding-left:1.2em;max-width:60ch}
+  .turn li{margin:0 0 8px}
+
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:26px 0 0}
+  .toolbar button{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;
+    text-transform:uppercase;padding:9px 16px;border:1px solid var(--rule);
+    background:var(--card);color:var(--muted);border-radius:2px;cursor:pointer;
+  }
+  .toolbar button:hover{background:var(--mark);color:var(--ink)}
+
+  @media (max-width:560px){
+    body{font-size:19px;padding:32px 16px 72px}
+    h1{font-size:40px}
+    .card,.instrument{padding:22px 20px}
+    .s-title{font-size:25px}
+    .s-time{margin-left:0;width:100%}
+    .pair{grid-template-columns:1fr}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  @media print{
+    body{background:#fff;padding:0;font-size:12pt}
+    .toolbar,.revealbtn,.lock{display:none!important}
+    .revealed[hidden]{display:block!important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="eyebrow">TOK · Language · Lesson 3</p>
+  <h1>Future Tense</h1>
+  <p class="lede">Some languages make you mark the future every time you mention it. Others let you talk about tomorrow as if it were today. Researchers found that speakers of the second kind care more about the environment. Does the grammar do that, or does something else?</p>
+  <p class="how">
+    <b>Read the article first.</b> Every question below is about it.<br>
+    <b>Write before you reveal.</b> Each answer is locked until you have written your own.<br>
+    <b>Compare, don't copy.</b> Where your answer differs from the reveal, work out whose is better justified.
+  </p>
+
+  <div class="card">
+    <p class="c-lab">The article</p>
+    <p class="a-title"><a href="https://theconversation.com/future-tense-how-the-language-you-speak-influences-your-willingness-to-take-climate-action-92587" target="_blank" rel="noopener">Future tense: how the language you speak influences your willingness to take climate action</a></p>
+    <p>The Conversation. Opens in a new tab.</p>
+  </div>
+
+  <div class="toolbar">
+    <button onclick="window.print()">Print this page</button>
+    <button id="unlockall">Teacher: unlock all</button>
+  </div>
+
+  <!-- ============ Q1 ============ -->
+  <section class="stage" id="s1">
+    <div class="s-head">
+      <span class="s-num">1</span>
+      <h2 class="s-title">Two ways to say tomorrow</h2>
+    </div>
+    <div class="instrument">
+      <p>How do "present-tensed" languages (Finnish, German) talk about the future differently from "future-tensed" ones (English, French)? Give the article's own example.</p>
+    </div>
+    <div class="writebox">
+      <label for="t1">Your answer</label>
+      <textarea class="tx" id="t1" data-for="r1"></textarea>
+    </div>
+    <button class="revealbtn" data-reveal="r1" disabled>Reveal the answer</button>
+    <p class="lock" data-lockfor="r1">Write your answer first.</p>
+    <div class="revealed" id="r1" hidden>
+      <p class="r-lab">A strong answer</p>
+      <div class="pair">
+        <div class="pairline">
+          <span class="pl-tag">Present-tensed</span>
+          <p>Finnish, German. The future can be spoken in the present tense.</p>
+          <p class="ex">"We go to the movies tomorrow."</p>
+        </div>
+        <div class="pairline">
+          <span class="pl-tag">Future-tensed</span>
+          <p>English, French. The future must be marked with its own form.</p>
+          <p class="ex">"It will snow tomorrow."</p>
+        </div>
+      </div>
+      <p><strong>The key difference:</strong> in present-tensed languages, marking the future is grammatically <em>optional</em>. In future-tensed languages, it is grammatically <em>required</em>.</p>
+    </div>
+  </section>
+
+  <!-- ============ Q2 ============ -->
+  <section class="stage" id="s2">
+    <div class="s-head">
+      <span class="s-num">2</span>
+      <h2 class="s-title">The Whorfian view</h2>
+    </div>
+    <div class="instrument">
+      <p>In your own words, what does the Whorfian idea claim about language and thought?</p>
+      <p class="qnote">The article calls it the "Whorfian view"; its fuller name is the Sapir–Whorf hypothesis.</p>
+    </div>
+    <div class="writebox">
+      <label for="t2">Your answer</label>
+      <textarea class="tx" id="t2" data-for="r2"></textarea>
+    </div>
+    <button class="revealbtn" data-reveal="r2" disabled>Reveal the answer</button>
+    <p class="lock" data-lockfor="r2">Write your answer first.</p>
+    <div class="revealed" id="r2" hidden>
+      <p class="r-lab">A strong answer</p>
+      <p>The language we speak is bound up with how we see the world. Its grammar and vocabulary carry a whole worldview (the article's German word is <em>Weltanschauung</em>).</p>
+      <div class="pair">
+        <div class="pairline">
+          <span class="pl-tag">Strong form</span>
+          <p>Language sets the <strong>limits</strong> of what we can think.</p>
+        </div>
+        <div class="pairline">
+          <span class="pl-tag">Weak form</span>
+          <p>Language makes some thoughts <strong>easier</strong> or more natural than others.</p>
+        </div>
+      </div>
+      <p>The future-tense study only needs the <strong>weak form</strong>: language nudges thinking without imprisoning it.</p>
+    </div>
+  </section>
+
+  <!-- ============ Q3 ============ -->
+  <section class="stage" id="s3">
+    <div class="s-head">
+      <span class="s-num">3</span>
+      <h2 class="s-title">Reflect or shape?</h2>
+    </div>
+    <div class="instrument">
+      <p>The article gives two explanations for the same pattern: one, language merely <em>reflects</em> a culture that already cares about the future; two, language <em>shapes</em> the thinking. State both and say why it matters which is true.</p>
+    </div>
+    <div class="writebox">
+      <label for="t3">Your answer</label>
+      <textarea class="tx" id="t3" data-for="r3"></textarea>
+    </div>
+    <button class="revealbtn" data-reveal="r3" disabled>Reveal the answer</button>
+    <p class="lock" data-lockfor="r3">Write your answer first.</p>
+    <div class="revealed" id="r3" hidden>
+      <p class="r-lab">A strong answer</p>
+      <h4>Explanation one — reflection: the grammar is a symptom</h4>
+      <p>A culture that already cares about the long term produces both the grammar and the green behaviour. The language just mirrors values that were there first.</p>
+      <h4>Explanation two — shaping: the grammar is a cause</h4>
+      <p>Talking about the future in the present tense makes the future feel closer. That weakens our natural habit of "discounting" the future (we'd rather have $100 today than in a year), so speakers are more willing to act now.</p>
+      <h4>Why it matters which is true</h4>
+      <p>If language only reflects values, changing how we speak changes nothing; we would have to change the culture. If language shapes thinking, then how we frame climate issues could itself change behaviour, and our grammar is quietly biasing how we weigh evidence about future risk. The article admits both explanations could be operating at once.</p>
+    </div>
+  </section>
+
+  <!-- ============ Q4 ============ -->
+  <section class="stage" id="s4">
+    <div class="s-head">
+      <span class="s-num">4</span>
+      <h2 class="s-title">Correlation or cause?</h2>
+    </div>
+    <div class="instrument">
+      <p>Could this all be correlation rather than language doing the work? What would you need to rule out before believing the language is the cause?</p>
+      <p class="qnote">Aim for at least three rival explanations. Hint: what else do Germany, Finland and Scandinavia have in common besides grammar?</p>
+    </div>
+    <div class="writebox">
+      <label for="t4">Your answer</label>
+      <textarea class="tx" id="t4" data-for="r4"></textarea>
+    </div>
+    <button class="revealbtn" data-reveal="r4" disabled>Reveal the answer</button>
+    <p class="lock" data-lockfor="r4">Write your answer first.</p>
+    <div class="revealed" id="r4" hidden>
+      <p class="r-lab">A strong answer</p>
+      <p><strong>Yes, it could be correlation.</strong> The study compares survey answers (the World Values Survey, nearly 100 countries) with the grammar of the respondents' languages. That only shows the two go together. Before believing the language is the cause, rule out:</p>
+      <div class="rivals">
+        <div class="rival"><span class="rn">A</span><span class="rt">Wealth and development</span>
+          <p class="rd">Many present-tensed countries (Germany, Finland, the Netherlands, Scandinavia) are rich, stable democracies with strong welfare states. Rich countries can afford to care about the environment. Wealth may produce the green attitudes, and the grammar just happens to sit in the same countries.</p></div>
+        <div class="rival"><span class="rn">B</span><span class="rt">Shared history (the language-family problem)</span>
+          <p class="rd">Related languages share grammar and also share cultures, histories and institutions. Germanic-speaking northern Europe could count as one cultural cluster rather than many separate data points, so the study may have far fewer independent cases than it looks. Critics raised this against Keith Chen's earlier work linking future tense to saving money: once researchers controlled for how closely related the languages are, the relationship weakened.</p></div>
+        <div class="rival"><span class="rn">C</span><span class="rt">Institutions and policy</span>
+          <p class="rd">Strong environmental laws, green parties or good environmental education might produce green attitudes regardless of language. The language effect would have to survive after accounting for government and education.</p></div>
+        <div class="rival"><span class="rn">D</span><span class="rt">Reverse causation</span>
+          <p class="rd">A future-focused culture could, over centuries, have shaped the grammar. That is explanation one from Question 3, and a correlation cannot tell the two directions apart.</p></div>
+        <div class="rival"><span class="rn">E</span><span class="rt">Survey translation</span>
+          <p class="rd">If the survey question about the future is worded differently in Finnish than in English, speakers may be answering slightly different questions. The grammar difference could be showing up in the measuring tool itself.</p></div>
+      </div>
+      <h4>The strongest test: keep everything the same except the language</h4>
+      <p><strong>A natural comparison:</strong> people in the same country, with the same income, education and government, who speak different languages at home: Switzerland (German vs French speakers), Belgium (Dutch vs French speakers), or bilinguals tested in each of their languages. If the gap still appears there, the case for causation gets much stronger.</p>
+      <p><strong>An experiment, stronger still:</strong> randomly give people the same climate information framed in present or future tense, then measure their willingness to act. Only an experiment isolates the language as the single thing that differs.</p>
+      <div class="punch">
+        <p class="p-lab">TOK link — justification</p>
+        <p>A statistical pattern is evidence, but a correlation alone does not justify a causal claim. In the human sciences, knowers have to rule out rival explanations before "language causes behaviour" earns the status of knowledge.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Q5 ============ -->
+  <section class="stage" id="s5">
+    <div class="s-head">
+      <span class="s-num">5</span>
+      <h2 class="s-title">Your Toki Pona constraint</h2>
+    </div>
+    <div class="instrument">
+      <p>You just built a constraint by hand in Toki Pona. Where did the limit make you think more clearly, and where did it cost you a thought you couldn't reach?</p>
+    </div>
+    <div class="writebox">
+      <label for="t5">Your answer</label>
+      <textarea class="tx" id="t5" data-for="r5"></textarea>
+    </div>
+    <button class="revealbtn" data-reveal="r5" disabled>Reveal a model answer</button>
+    <p class="lock" data-lockfor="r5">Write your answer first.</p>
+    <div class="revealed" id="r5" hidden>
+      <p class="r-lab">A model answer — yours will use your own concept</p>
+      <div class="pair">
+        <div class="pairline">
+          <span class="pl-tag">Clearer</span>
+          <p>Building "homesickness" as roughly "sad feeling for my home place" showed the concept has two parts: a <strong>place</strong>, and <strong>missing</strong> it. The small vocabulary forced me to find that core.</p>
+        </div>
+        <div class="pairline">
+          <span class="pl-tag">Lost</span>
+          <p>I couldn't separate homesickness from nostalgia. Without an easy way to mark time, "missing a place" and "missing a past time" collapsed into the same phrase.</p>
+        </div>
+      </div>
+      <p>The limit made the core clearer and erased the fine distinctions. That matches the article: a language can make a thought harder to reach without making it impossible.</p>
+    </div>
+  </section>
+
+  <!-- ============ Q6 ============ -->
+  <section class="stage" id="s6">
+    <div class="s-head">
+      <span class="s-num">6</span>
+      <h2 class="s-title">Choice or structure?</h2>
+    </div>
+    <div class="instrument">
+      <p>The euphemism case (L2) and the future-tense case both involve a "limit" on knowing — but one limit is a deliberate <em>choice of words</em> and the other is built into a language's <em>structure</em>. Does that difference matter for what a knower can know?</p>
+    </div>
+    <div class="writebox">
+      <label for="t6">Your answer</label>
+      <textarea class="tx" id="t6" data-for="r6"></textarea>
+    </div>
+    <button class="revealbtn" data-reveal="r6" disabled>Reveal the answer</button>
+    <p class="lock" data-lockfor="r6">Write your answer first.</p>
+    <div class="revealed" id="r6" hidden>
+      <p class="r-lab">A strong answer</p>
+      <p><strong>Yes, the difference matters.</strong></p>
+      <div class="pair">
+        <div class="pairline">
+          <span class="pl-tag">Euphemism — a choice</span>
+          <p>Chosen, usually by someone with power ("collateral damage" instead of "civilians killed"). Because it is a choice, a knower can <strong>notice, name and reject</strong> it, and someone can be held responsible for it.</p>
+        </div>
+        <div class="pairline">
+          <span class="pl-tag">Tense — a structure</span>
+          <p>Chosen by no one. Speakers inherit it and mostly never notice it, so it is <strong>harder to detect</strong> and harder to correct for. You can't question a bias you can't see.</p>
+        </div>
+      </div>
+      <p>That makes structural limits a deeper problem for knowledge. On the other hand, the structural effect is probably weaker: tense nudges; it doesn't hide facts the way euphemism can. The euphemism limit is easier to escape but can do more damage, while the grammar limit is harder to escape but does less.</p>
+    </div>
+  </section>
+
+  <div class="nb">
+    <p class="nb-lab">In your notebook</p>
+    <p>Copy out the one rival explanation from Question 4 you think is strongest, and say in a sentence why. You will need it for the synthesis paragraph.</p>
+  </div>
+
+  <div class="turn">
+    <p class="t-lab">Synthesis knowledge question</p>
+    <p>To what extent does language shape our thinking rather than simply reflect it?</p>
+    <ul>
+      <li>Make a clear claim about the extent to which language shapes vs. reflects thinking.</li>
+      <li>Use specific evidence from at least one lesson (word power, euphemisms, future tense, or Toki Pona).</li>
+      <li>Include at least two TOK concepts (e.g. power, perspective, culture, values, bias, limitations).</li>
+      <li>250–300 words.</li>
+    </ul>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  const MIN_CHARS = 12;
+
+  function reveal(btn){
+    const target = document.getElementById(btn.dataset.reveal);
+    const lk = document.querySelector('.lock[data-lockfor="'+btn.dataset.reveal+'"]');
+    target.hidden = false;
+    btn.style.display = 'none';
+    if(lk) lk.style.display = 'none';
+  }
+
+  document.querySelectorAll('textarea.tx[data-for]').forEach(function(ta){
+    const id = ta.dataset.for;
+    const btn = document.querySelector('.revealbtn[data-reveal="'+id+'"]');
+    const lk = document.querySelector('.lock[data-lockfor="'+id+'"]');
+    function sync(){
+      const ok = ta.value.trim().length >= MIN_CHARS;
+      btn.disabled = !ok;
+      if(lk && btn.style.display !== 'none') lk.style.display = ok ? 'none' : '';
+    }
+    ta.addEventListener('input', sync);
+    sync();
+    btn.addEventListener('click', function(){
+      if(btn.disabled) return;
+      reveal(btn);
+      document.getElementById(id).scrollIntoView({behavior:'smooth', block:'nearest'});
+    });
+  });
+
+  document.getElementById('unlockall').addEventListener('click', function(){
+    document.querySelectorAll('.revealbtn[data-reveal]').forEach(reveal);
+  });
+})();
+</script>
+</body>
+</html>
