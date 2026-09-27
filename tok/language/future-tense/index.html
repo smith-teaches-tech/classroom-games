@@ -197,7 +197,7 @@
   <p class="lede">Some languages make you mark the future every time you mention it. Others let you talk about tomorrow as if it were today. Researchers found that speakers of the second kind care more about the environment. Does the grammar do that, or does something else?</p>
   <p class="how">
     <b>Read the article first.</b> Every question below is about it.<br>
-    <b>Write before you reveal.</b> Each answer is locked until you have written your own.<br>
+    <b>Answer first, then reveal.</b> Try each question in your notebook or with a partner before you open the answer.<br>
     <b>Compare, don't copy.</b> Where your answer differs from the reveal, work out whose is better justified.
   </p>
 
@@ -209,7 +209,7 @@
 
   <div class="toolbar">
     <button onclick="window.print()">Print this page</button>
-    <button id="unlockall">Teacher: unlock all</button>
+    <button id="unlockall">Reveal all answers</button>
   </div>
 
   <!-- ============ Q1 ============ -->
@@ -221,12 +221,7 @@
     <div class="instrument">
       <p>How do "present-tensed" languages (Finnish, German) talk about the future differently from "future-tensed" ones (English, French)? Give the article's own example.</p>
     </div>
-    <div class="writebox">
-      <label for="t1">Your answer</label>
-      <textarea class="tx" id="t1" data-for="r1"></textarea>
-    </div>
-    <button class="revealbtn" data-reveal="r1" disabled>Reveal the answer</button>
-    <p class="lock" data-lockfor="r1">Write your answer first.</p>
+    <button class="revealbtn" data-reveal="r1">Reveal the answer</button>
     <div class="revealed" id="r1" hidden>
       <p class="r-lab">A strong answer</p>
       <div class="pair">
@@ -255,12 +250,7 @@
       <p>In your own words, what does the Whorfian idea claim about language and thought?</p>
       <p class="qnote">The article calls it the "Whorfian view"; its fuller name is the Sapir–Whorf hypothesis.</p>
     </div>
-    <div class="writebox">
-      <label for="t2">Your answer</label>
-      <textarea class="tx" id="t2" data-for="r2"></textarea>
-    </div>
-    <button class="revealbtn" data-reveal="r2" disabled>Reveal the answer</button>
-    <p class="lock" data-lockfor="r2">Write your answer first.</p>
+    <button class="revealbtn" data-reveal="r2">Reveal the answer</button>
     <div class="revealed" id="r2" hidden>
       <p class="r-lab">A strong answer</p>
       <p>The language we speak is bound up with how we see the world. Its grammar and vocabulary carry a whole worldview (the article's German word is <em>Weltanschauung</em>).</p>
@@ -287,12 +277,7 @@
     <div class="instrument">
       <p>The article gives two explanations for the same pattern: one, language merely <em>reflects</em> a culture that already cares about the future; two, language <em>shapes</em> the thinking. State both and say why it matters which is true.</p>
     </div>
-    <div class="writebox">
-      <label for="t3">Your answer</label>
-      <textarea class="tx" id="t3" data-for="r3"></textarea>
-    </div>
-    <button class="revealbtn" data-reveal="r3" disabled>Reveal the answer</button>
-    <p class="lock" data-lockfor="r3">Write your answer first.</p>
+    <button class="revealbtn" data-reveal="r3">Reveal the answer</button>
     <div class="revealed" id="r3" hidden>
       <p class="r-lab">A strong answer</p>
       <h4>Explanation one — reflection: the grammar is a symptom</h4>
@@ -314,12 +299,7 @@
       <p>Could this all be correlation rather than language doing the work? What would you need to rule out before believing the language is the cause?</p>
       <p class="qnote">Aim for at least three rival explanations. Hint: what else do Germany, Finland and Scandinavia have in common besides grammar?</p>
     </div>
-    <div class="writebox">
-      <label for="t4">Your answer</label>
-      <textarea class="tx" id="t4" data-for="r4"></textarea>
-    </div>
-    <button class="revealbtn" data-reveal="r4" disabled>Reveal the answer</button>
-    <p class="lock" data-lockfor="r4">Write your answer first.</p>
+    <button class="revealbtn" data-reveal="r4">Reveal the answer</button>
     <div class="revealed" id="r4" hidden>
       <p class="r-lab">A strong answer</p>
       <p><strong>Yes, it could be correlation.</strong> The study compares survey answers (the World Values Survey, nearly 100 countries) with the grammar of the respondents' languages. That only shows the two go together. Before believing the language is the cause, rule out:</p>
@@ -354,12 +334,7 @@
     <div class="instrument">
       <p>You just built a constraint by hand in Toki Pona. Where did the limit make you think more clearly, and where did it cost you a thought you couldn't reach?</p>
     </div>
-    <div class="writebox">
-      <label for="t5">Your answer</label>
-      <textarea class="tx" id="t5" data-for="r5"></textarea>
-    </div>
-    <button class="revealbtn" data-reveal="r5" disabled>Reveal a model answer</button>
-    <p class="lock" data-lockfor="r5">Write your answer first.</p>
+    <button class="revealbtn" data-reveal="r5">Reveal a model answer</button>
     <div class="revealed" id="r5" hidden>
       <p class="r-lab">A model answer — yours will use your own concept</p>
       <div class="pair">
@@ -385,12 +360,7 @@
     <div class="instrument">
       <p>The euphemism case (L2) and the future-tense case both involve a "limit" on knowing — but one limit is a deliberate <em>choice of words</em> and the other is built into a language's <em>structure</em>. Does that difference matter for what a knower can know?</p>
     </div>
-    <div class="writebox">
-      <label for="t6">Your answer</label>
-      <textarea class="tx" id="t6" data-for="r6"></textarea>
-    </div>
-    <button class="revealbtn" data-reveal="r6" disabled>Reveal the answer</button>
-    <p class="lock" data-lockfor="r6">Write your answer first.</p>
+    <button class="revealbtn" data-reveal="r6">Reveal the answer</button>
     <div class="revealed" id="r6" hidden>
       <p class="r-lab">A strong answer</p>
       <p><strong>Yes, the difference matters.</strong></p>
@@ -428,34 +398,17 @@
 
 <script>
 (function(){
-  const MIN_CHARS = 12;
-
   function reveal(btn){
     const target = document.getElementById(btn.dataset.reveal);
-    const lk = document.querySelector('.lock[data-lockfor="'+btn.dataset.reveal+'"]');
     target.hidden = false;
     btn.style.display = 'none';
-    if(lk) lk.style.display = 'none';
   }
-
-  document.querySelectorAll('textarea.tx[data-for]').forEach(function(ta){
-    const id = ta.dataset.for;
-    const btn = document.querySelector('.revealbtn[data-reveal="'+id+'"]');
-    const lk = document.querySelector('.lock[data-lockfor="'+id+'"]');
-    function sync(){
-      const ok = ta.value.trim().length >= MIN_CHARS;
-      btn.disabled = !ok;
-      if(lk && btn.style.display !== 'none') lk.style.display = ok ? 'none' : '';
-    }
-    ta.addEventListener('input', sync);
-    sync();
+  document.querySelectorAll('.revealbtn[data-reveal]').forEach(function(btn){
     btn.addEventListener('click', function(){
-      if(btn.disabled) return;
       reveal(btn);
-      document.getElementById(id).scrollIntoView({behavior:'smooth', block:'nearest'});
+      document.getElementById(btn.dataset.reveal).scrollIntoView({behavior:'smooth', block:'nearest'});
     });
   });
-
   document.getElementById('unlockall').addEventListener('click', function(){
     document.querySelectorAll('.revealbtn[data-reveal]').forEach(reveal);
   });
