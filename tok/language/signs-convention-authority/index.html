@@ -37,7 +37,7 @@
     flex-direction:column;justify-content:center;
     min-height:100vh;
     padding:5vh 7vw 92px;
-    max-width:1040px;margin:0 auto;
+    max-width:1080px;margin:0 auto;
   }
   .screen.on{display:flex;animation:fade .35s ease}
   @keyframes fade{from{opacity:0}to{opacity:1}}
@@ -50,8 +50,8 @@
   .eyebrow.slate{color:var(--slate)}
   h1{font-weight:600;font-size:clamp(32px,5vw,58px);line-height:1.04;margin:0 0 18px;letter-spacing:-.01em}
   h2{font-weight:600;font-size:clamp(24px,3.5vw,40px);line-height:1.1;margin:0 0 16px}
-  .big-q{font-weight:600;font-size:clamp(26px,4.1vw,46px);line-height:1.08;margin:0 0 18px;max-width:20ch}
-  .support{font-size:clamp(18px,2vw,24px);line-height:1.4;color:var(--ink);max-width:54ch;margin:0 0 12px}
+  .big-q{font-weight:600;font-size:clamp(26px,4.1vw,46px);line-height:1.08;margin:0 0 18px;max-width:22ch}
+  .support{font-size:clamp(18px,2vw,24px);line-height:1.4;color:var(--ink);max-width:56ch;margin:0 0 12px}
   .support.muted{color:var(--muted)}
   em{font-style:italic}
   strong{font-weight:600;color:var(--oxblood)}
@@ -62,7 +62,7 @@
     color:var(--ink);background:var(--mark);
     border-left:3px solid var(--oxblood);
     padding:14px 18px;border-radius:2px;
-    max-width:56ch;margin:24px 0 0;
+    max-width:58ch;margin:24px 0 0;
   }
   .debate .lab{display:block;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--oxblood);margin-bottom:5px}
 
@@ -70,42 +70,52 @@
     font-family:'JetBrains Mono',monospace;
     font-size:14px;line-height:1.6;
     color:var(--slate);border:1px dashed var(--slate);
-    padding:14px 18px;border-radius:2px;max-width:56ch;margin:24px 0 0;
+    padding:14px 18px;border-radius:2px;max-width:58ch;margin:24px 0 0;
   }
   .commit .lab{display:block;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--slate);margin-bottom:5px}
 
+  /* knowledge question box */
+  .kq{
+    background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--slate);
+    border-radius:2px;padding:14px 18px;max-width:60ch;margin:18px 0 0;
+  }
+  .kq .lab{display:block;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--slate);margin-bottom:6px}
+  .kq .q{font-size:clamp(19px,2.2vw,26px);line-height:1.3;font-weight:600}
+  .kq .cc{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.08em;color:var(--muted);margin-top:8px}
+  .kq .cc b{color:var(--slate);font-weight:700}
+
   /* reveal */
-  .reveal-btn{
+  .reveal-btn,.step-btn{
     align-self:flex-start;margin:26px 0 0;
     font-family:'JetBrains Mono',monospace;
     font-size:12px;letter-spacing:.14em;text-transform:uppercase;
     padding:11px 22px;background:var(--oxblood);color:var(--paper);
     border:0;border-radius:2px;cursor:pointer;transition:background .18s;
   }
-  .reveal-btn:hover{background:#5e1c26}
+  .reveal-btn:hover,.step-btn:hover{background:#5e1c26}
   .reveal{display:none;margin:26px 0 0;animation:rise .4s ease}
   .reveal.show{display:block}
   @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-  .reveal .r-line{font-size:clamp(20px,2.4vw,28px);line-height:1.26;max-width:50ch;margin:0 0 10px;font-weight:500}
-  .reveal .r-sub{font-size:clamp(16px,1.9vw,21px);line-height:1.38;color:var(--ink);max-width:54ch;margin:0 0 8px}
+  .reveal .r-line{font-size:clamp(20px,2.4vw,28px);line-height:1.26;max-width:52ch;margin:0 0 10px;font-weight:500}
+  .reveal .r-sub{font-size:clamp(16px,1.9vw,21px);line-height:1.38;color:var(--ink);max-width:56ch;margin:0 0 8px}
   .concept{
     font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.6;
     background:var(--card);border:1px solid var(--rule);border-radius:2px;
-    padding:12px 16px;max-width:58ch;margin:14px 0 0;
+    padding:12px 16px;max-width:60ch;margin:14px 0 0;
   }
   .concept b{color:var(--oxblood);font-weight:700;letter-spacing:.04em}
 
   /* ---------- pictograms ---------- */
   .figs{display:flex;gap:46px;align-items:flex-end;margin:10px 0 6px}
+  .figs.small .fig svg{height:clamp(70px,11vh,110px)}
+  .figs.small{gap:30px;margin:0 0 14px}
   .fig{text-align:center}
   .fig svg{display:block;height:clamp(104px,16vh,168px);width:auto;margin:0 auto}
   .fig .cap{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:12px}
-  .fig.flag .cap{color:var(--oxblood);font-weight:700}
-  .fig.flag svg path,.fig.flag svg circle,.fig.flag svg rect{fill:var(--oxblood)}
   svg .body{fill:var(--ink)}
 
   /* ---------- market board ---------- */
-  .board-switch{display:inline-flex;border:1px solid var(--rule);border-radius:3px;overflow:hidden;margin:0 0 24px;background:var(--card)}
+  .board-switch{display:inline-flex;border:1px solid var(--rule);border-radius:3px;overflow:hidden;margin:0 0 24px;background:var(--card);align-self:flex-start}
   .board-switch button{
     font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:.1em;
     padding:11px 22px;border:0;background:transparent;color:var(--muted);cursor:pointer;transition:background .18s,color .18s;
@@ -117,57 +127,90 @@
   .board-row:last-child{border-bottom:0}
   .ticker{color:#d8cfbd;font-size:15px;letter-spacing:.08em}
   .move{font-size:17px;font-weight:700;letter-spacing:.04em}
-  .move.up-green{color:#56c06a}
-  .move.up-red{color:#ff5a52}
-  .move.down-red{color:#ff5a52}
-  .move.down-green{color:#56c06a}
-  .legend{font-family:'JetBrains Mono',monospace;font-size:14px;line-height:1.7;margin:18px 0 0;color:var(--ink);max-width:54ch}
+  .move.up-green,.move.down-green{color:#56c06a}
+  .move.up-red,.move.down-red{color:#ff5a52}
+  .legend{font-family:'JetBrains Mono',monospace;font-size:14px;line-height:1.7;margin:18px 0 0;color:var(--ink);max-width:56ch}
   .legend b{color:var(--oxblood)}
-  .hk-call{display:none;margin:16px 0 0}
-  .hk-call.show{display:block;animation:rise .4s ease}
-  .hk-call .r-line{font-size:clamp(20px,2.5vw,28px);font-weight:600;line-height:1.25;max-width:52ch;margin:0 0 8px}
+
+  /* ---------- instrument ---------- */
+  .howto{font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.65;color:var(--slate);max-width:64ch;margin:0 0 20px}
+  .howto b{color:var(--slate)}
+  .qrow{display:flex;gap:16px;align-items:flex-start;max-width:64ch;margin:0 0 14px}
+  .qnum{flex:none;width:30px;height:30px;border-radius:50%;background:var(--oxblood);color:var(--paper);font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px}
+  .qnum.k{background:var(--slate)}
+  .qrow > div{font-size:clamp(17px,2vw,22px);line-height:1.36}
+  .qrow b{color:var(--oxblood);font-weight:700;letter-spacing:.03em}
+  .qrow.k b{color:var(--slate)}
+  .qrow .src{display:block;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+  .qrow.k{border-top:1px solid var(--rule);padding-top:14px;margin-top:4px}
+
+  /* worked example rows */
+  .wx{display:grid;grid-template-columns:minmax(170px,230px) 1fr;gap:0;max-width:980px;border-top:1px solid var(--rule)}
+  .wx .wq,.wx .wa{padding:12px 14px;border-bottom:1px solid var(--rule)}
+  .wx .wq{font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.5;color:var(--oxblood);font-weight:700;letter-spacing:.04em}
+  .wx .wq.k{color:var(--slate)}
+  .wx .wq span{display:block;font-weight:400;color:var(--muted);letter-spacing:0;margin-top:3px}
+  .wx .wa{font-size:clamp(16px,1.8vw,20px);line-height:1.38}
+  .wx .wa .pending{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);letter-spacing:.1em}
+  .wx .wa .ans{display:none}
+  .wx .wa.shown .pending{display:none}
+  .wx .wa.shown .ans{display:block;animation:rise .35s ease}
+  .wx .term{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;color:var(--muted);display:block;margin-top:4px}
+
+  /* ---------- specimen cards ---------- */
+  .spec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;margin:6px 0 0}
+  .spec-card{background:var(--card);border:1px solid var(--rule);border-top:3px solid var(--oxblood);border-radius:2px;padding:16px 18px;display:flex;flex-direction:column}
+  .spec-top{display:flex;align-items:center;gap:12px;margin:0 0 8px}
+  .spec-glyph{font-size:30px;line-height:1;min-width:34px}
+  .spec-glyph.txt{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:700}
+  .swatch{display:inline-block;width:28px;height:28px;background:#fff;border:1px solid #c9bfad;vertical-align:middle}
+  .spec-name{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--oxblood)}
+  .spec-card p{font-size:17px;line-height:1.36;margin:0 0 10px}
+  .spec-card .ckq{margin-top:auto;font-size:16.5px;line-height:1.3;font-weight:600;border-top:1px dashed var(--rule);padding-top:10px}
+  .spec-card .ckq span{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--slate);font-weight:400;margin-bottom:4px}
+
+  .steps-list{margin:6px 0 0;padding-left:22px;max-width:62ch}
+  .steps-list li{font-size:clamp(17px,1.9vw,21px);line-height:1.4;margin:0 0 8px}
+  .steps-list li b{color:var(--oxblood)}
+  .timer{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 
   /* ---------- exit write ---------- */
-  .prompt-card{background:var(--card);border:1px solid var(--rule);border-left:3px solid var(--oxblood);border-radius:2px;padding:24px 28px;max-width:60ch;margin:4px 0 0}
+  .prompt-card{background:var(--card);border:1px solid var(--rule);border-left:3px solid var(--oxblood);border-radius:2px;padding:24px 28px;max-width:62ch;margin:4px 0 0}
   .prompt-card ol{margin:14px 0 0;padding-left:20px}
   .prompt-card li{font-size:19px;line-height:1.45;margin:0 0 8px}
   textarea.write{width:100%;max-width:760px;margin:22px 0 0;font-family:'Cormorant Garamond',serif;font-size:20px;line-height:1.5;color:var(--ink);background:var(--card);border:1px solid var(--rule);border-radius:2px;padding:14px 16px;min-height:120px;resize:vertical}
   textarea.write:focus-visible{outline:2px solid var(--oxblood-soft)}
   .wc{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.1em;color:var(--muted);margin:8px 0 0}
 
-  .thread{font-family:'JetBrains Mono',monospace;font-size:14px;line-height:1.7;color:var(--ink);max-width:56ch;margin:18px 0 0}
+  .thread{font-family:'JetBrains Mono',monospace;font-size:14px;line-height:1.7;color:var(--ink);max-width:58ch;margin:18px 0 0}
   .thread b{color:var(--oxblood)}
   .thread .arrow{color:var(--oxblood);font-weight:700}
 
-  /* instrument */
-  .qrow{display:flex;gap:16px;align-items:flex-start;max-width:60ch;margin:0 0 13px}
-  .qrow .qnum{flex:none;width:30px;height:30px;border-radius:50%;background:var(--oxblood);color:var(--paper);font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px}
-  .qrow > div{font-size:clamp(16px,1.9vw,21px);line-height:1.38}
-  .qrow b{color:var(--oxblood);font-weight:600;letter-spacing:.03em}
-  .qrow .src{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-left:6px}
-  /* specimen-3 cards */
-  .spec-grid{display:flex;gap:18px;flex-wrap:wrap;margin:6px 0 0}
-  .spec-card{flex:1 1 230px;background:var(--card);border:1px solid var(--rule);border-top:3px solid var(--oxblood);border-radius:2px;padding:18px 20px}
-  .spec-glyph{font-size:34px;line-height:1;margin:0 0 8px;min-height:38px}
-  .swatch{display:inline-block;width:32px;height:32px;background:#fff;border:1px solid #c9bfad;vertical-align:middle}
-  .spec-name{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--oxblood);margin:0 0 10px}
-  .spec-card p{font-size:18px;line-height:1.38;margin:0}
+  /* ---------- instrument overlay ---------- */
+  .overlay{position:fixed;inset:0;background:rgba(42,37,32,.45);display:none;align-items:center;justify-content:center;z-index:20;padding:20px}
+  .overlay.show{display:flex}
+  .overlay .panel{background:var(--paper);border:1px solid var(--rule);border-top:4px solid var(--oxblood);border-radius:3px;padding:26px 30px;max-width:720px;width:100%;max-height:90vh;overflow:auto}
+  .overlay .close{float:right;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;background:transparent;border:1px solid var(--rule);padding:7px 12px;cursor:pointer;color:var(--ink)}
 
   /* ---------- nav ---------- */
-  .nav{position:fixed;bottom:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;background:linear-gradient(transparent,var(--paper) 40%)}
+  .nav{position:fixed;bottom:0;left:0;right:0;height:64px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 24px;background:linear-gradient(transparent,var(--paper) 40%)}
   .nav button{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:9px 16px;background:transparent;color:var(--ink);border:1px solid var(--rule);border-radius:2px;cursor:pointer;transition:background .15s}
   .nav button:hover:not(:disabled){background:var(--mark)}
   .nav button:disabled{opacity:.3;cursor:default}
+  .nav #inst{border-color:var(--oxblood);color:var(--oxblood)}
   .counter{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;color:var(--muted)}
   .dots{display:flex;gap:7px;align-items:center}
-  .dot{width:7px;height:7px;border-radius:50%;background:var(--rule);transition:background .2s,transform .2s}
+  .dot{width:7px;height:7px;border-radius:50%;background:var(--rule);transition:background .2s,transform .2s;cursor:pointer}
   .dot.active{background:var(--oxblood);transform:scale(1.4)}
   .kbd{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--muted);letter-spacing:.06em}
 
-  @media (max-width:600px){
-    .screen{padding:5vh 7vw 14vh}
+  @media (max-width:700px){
+    .screen{padding:5vh 16px 14vh}
     .figs{gap:24px}
-    .nav .kbd{display:none}
+    .nav{padding:0 12px}
+    .nav .kbd,.nav .dots{display:none}
+    .wx{grid-template-columns:1fr}
+    .wx .wq{border-bottom:0;padding-bottom:0}
   }
   @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -175,7 +218,7 @@
 <body>
 <div class="deck" id="deck">
 
-  <!-- 0 — HOOK -->
+  <!-- 01 — HOOK + LESSON KQ -->
   <section class="screen">
     <p class="eyebrow">TOK · Language · Lesson 4</p>
     <h1>Signs, Convention &amp; Authority</h1>
@@ -185,11 +228,12 @@
         <div class="cap">A sign</div>
       </div>
     </div>
-    <p class="support">A symbol like this is designed to need <em>no words</em> — to mean the same thing to everyone on Earth, in any language.</p>
-    <div class="debate"><span class="lab">Open the floor</span>Does it? Is there such a thing as a sign that means the same thing to everyone — or does every sign carry something it doesn't admit?</div>
+    <p class="support">A symbol like this is designed to need <em>no words</em>: to mean the same thing to everyone on Earth, in any language.</p>
+    <div class="kq"><span class="lab">Today's knowledge question</span><div class="q">How do signs without words make meaning, and who controls that meaning: an authority that decides it, or a community that drifts into it?</div><div class="cc">Core concepts: <b>interpretation</b> · <b>perspective</b> · <b>power</b> · <b>culture</b> · <b>truth</b></div></div>
+    <div class="debate"><span class="lab">Open the floor</span>Is there such a thing as a sign that means the same thing to everyone? Or does every sign carry something it doesn't admit?</div>
   </section>
 
-  <!-- 1 — SPECIMEN 1 BUILD -->
+  <!-- 02 — SPECIMEN 1 BUILD -->
   <section class="screen">
     <p class="eyebrow">Specimen 1 · the universal sign</p>
     <div class="figs">
@@ -206,43 +250,71 @@
         <div class="cap">Women</div>
       </div>
     </div>
-    <p class="support">These cross language borders fast — that part is real. Point at the airport sign in Tokyo or São Paulo and you'll find the toilet. <strong>Denotation</strong> travels.</p>
-    <div class="commit"><span class="lab">Commit — say it out loud or jot it</span>Look at the figure labelled simply <em>"Person."</em> What is it wearing? Now look at the <em>"Women"</em> sign. What was <em>added</em> to make it?</div>
+    <p class="support">These signs cross language borders fast, and that part is real. Point at the airport sign in Tokyo or São Paulo and you'll find the toilet.</p>
+    <div class="commit"><span class="lab">Commit: say it out loud or jot it</span>Look at the figure labelled <em>"Person."</em> What is it wearing? Now look at the <em>"Women"</em> sign. What was <em>added</em> to make it?</div>
   </section>
 
-  <!-- 2 — SPECIMEN 1 TURN -->
+  <!-- 03 — SPECIMEN 1 TURN -->
   <section class="screen">
     <p class="eyebrow">Specimen 1 · the turn</p>
-    <p class="big-q">The "neutral" human is not neutral.</p>
-    <p class="support">Debate it first — then reveal.</p>
+    <p class="big-q">Is the "Person" figure neutral, or does it take a side?</p>
+    <p class="support">Argue it in pairs first. Then reveal.</p>
     <button class="reveal-btn">Reveal</button>
     <div class="reveal">
-      <p class="r-line">The figure that stands for <em>"Person"</em> is identical to the one that stands for <em>"Men."</em> The default human wears trousers. <strong>"Women"</strong> is that same figure with a skirt added — the <em>marked</em> deviation from a male norm.</p>
-      <p class="r-sub">The sign claims to reach <em>everyone</em>. To do it, it quietly decided who the default person <em>is</em>. Its universality fails — not at translation, but at <strong>presupposition</strong>.</p>
-      <div class="concept"><b>BARTHES · MYTH</b> — a convention that has come to look <em>natural</em>. The "neutral" figure feels like simple fact, not a choice. That feeling is the myth doing its work.</div>
-      <div class="debate"><span class="lab">Push it</span>Whose perspective got built into the "neutral"? Who has to notice they've been left out before anyone else can see it at all?</div>
+      <p class="r-line">The "Person" figure is identical to the "Men" figure. The default human wears trousers. The "Women" figure is that same body with a skirt <em>added</em>: a variation on a male starting point.</p>
+      <p class="r-sub">The sign claims to speak to <em>everyone</em>. To do that, it quietly decided who the ordinary person <em>is</em>. That hidden decision is a <strong>presupposition</strong>: an assumption built into the sign that nobody says out loud.</p>
+      <div class="debate"><span class="lab">Push it</span>Whose perspective got built into the "neutral" figure? Who would have to notice they'd been left out before anyone else could see it?</div>
     </div>
   </section>
 
-  <!-- 3 — THE INSTRUMENT -->
+  <!-- 04 — THE INSTRUMENT -->
   <section class="screen">
     <p class="eyebrow slate">The instrument · four questions for any sign</p>
-    <h2>You felt these. Now name them — and use them.</h2>
-    <div class="qrow"><span class="qnum">1</span><div><b>THE CUT</b><span class="src">Saussure</span><br>What is the <em>signifier</em> (the mark) and the <em>signified</em> (the concept it points to)?</div></div>
-    <div class="qrow"><span class="qnum">2</span><div><b>ARBITRARY &amp; DIFFERENTIAL</b><span class="src">Saussure</span><br>Does anything in the mark <em>force</em> its meaning? It means what it means by <em>not</em> being its neighbour — green says "go" only against red's "stop."</div></div>
-    <div class="qrow"><span class="qnum">3</span><div><b>DRIFT &amp; MYTH</b><span class="src">Barthes</span><br>Has the <em>connotation</em> peeled away from the literal <em>denotation</em>? Does the convention pose as <em>natural</em>?</div></div>
-    <div class="qrow"><span class="qnum">4</span><div><b>AUTHORITY &amp; REACH</b><br>Who fixes the meaning — <em>imposed</em> by an institution, or <em>emergent</em> from a community's drift? Either way it binds, and the outsider misreads without knowing.</div></div>
-    <p class="support muted" style="margin-top:18px">Every specimen from here runs through these four.</p>
+    <h2>You just did this in your head. Here are the steps.</h2>
+    <p class="howto"><b>How to use it:</b> ask the questions in order. Questions 1–3 get one line each in your notebook. Spend most of your time on question 4 and the knowledge check. That is where the TOK is.</p>
+    <div class="qrow"><span class="qnum">1</span><div><b>WHAT'S THE MESSAGE?</b> What is the mark itself, and what is it supposed to tell you?<span class="src">Saussure: signifier (the mark) → signified (the idea)</span></div></div>
+    <div class="qrow"><span class="qnum">2</span><div><b>WHY THIS MARK?</b> Could a different mark have done the same job? What is it being contrasted with?<span class="src">Saussure: arbitrary (nothing forces it) · differential (it means by contrast)</span></div></div>
+    <div class="qrow"><span class="qnum">3</span><div><b>WHAT ELSE DOES IT SAY?</b> What does it suggest beyond its message? Does that extra meaning feel "just natural"?<span class="src">Barthes: connotation · myth (a choice that looks like nature)</span></div></div>
+    <div class="qrow"><span class="qnum">4</span><div><b>WHO DECIDED?</b> Did an institution set this meaning (<em>imposed</em>), or did people using it drift into it (<em>emergent</em>)?<span class="src">Authority · power</span></div></div>
+    <div class="qrow k"><span class="qnum k">?</span><div><b>KNOWLEDGE CHECK.</b> Who would misread this sign? What would they wrongly think they <em>know</em>, and would they notice?<span class="src">Which core concept is regulating our knowledge here?</span></div></div>
+    <p class="support muted" style="margin-top:10px">Next: watch all four run on the "Person" sign. The <b style="color:var(--oxblood)">Instrument</b> button at the bottom brings these back at any time.</p>
   </section>
 
-  <!-- 4 — SPECIMEN 2 COMMIT -->
+  <!-- 05 — WORKED EXAMPLE (I DO) -->
+  <section class="screen">
+    <p class="eyebrow">Worked example · the instrument on the "Person" sign</p>
+    <div class="figs small">
+      <div class="fig"><svg viewBox="0 0 100 170"><circle class="body" cx="50" cy="20" r="14"/><rect class="body" x="37" y="38" width="26" height="50" rx="5"/><rect class="body" x="40" y="86" width="9" height="74"/><rect class="body" x="51" y="86" width="9" height="74"/></svg><div class="cap">Person / Men</div></div>
+      <div class="fig"><svg viewBox="0 0 100 170"><circle class="body" cx="50" cy="20" r="14"/><path class="body" d="M50 36 L31 116 H69 Z"/><rect class="body" x="44" y="116" width="5" height="44"/><rect class="body" x="51" y="116" width="5" height="44"/></svg><div class="cap">Women</div></div>
+    </div>
+    <div class="wx">
+      <div class="wq">1 · WHAT'S THE MESSAGE?</div>
+      <div class="wa"><span class="pending">— answer it first, then step —</span><div class="ans">The mark: a head, a block body, two straight legs. The message: "a person", or on a toilet door, "men".<span class="term">signifier → signified</span></div></div>
+
+      <div class="wq">2 · WHY THIS MARK?</div>
+      <div class="wa"><span class="pending">—</span><div class="ans">Nothing forces it. Here in the Gulf, many men wear a thobe, a long garment closer to the "Women" shape. The sign still works here, because we learned the code, not because the figure looks like us. And alone on an exit sign it means "anyone"; put the skirted figure beside it and the same mark now means "man". It means by <em>contrast</em>.<span class="term">arbitrary · differential</span></div></div>
+
+      <div class="wq">3 · WHAT ELSE DOES IT SAY?</div>
+      <div class="wa"><span class="pending">—</span><div class="ans">It suggests the normal human is male and a woman is a variation on him. It doesn't feel like a claim at all. It feels like "just what a person looks like". A choice passing itself off as nature.<span class="term">connotation · myth</span></div></div>
+
+      <div class="wq">4 · WHO DECIDED?</div>
+      <div class="wa"><span class="pending">—</span><div class="ans"><strong>Imposed, then spread.</strong> Designers working for institutions drew these figures: the US Department of Transportation's symbol set (1974) and the international standard ISO 7001. Airports and buildings everywhere copied them, and repetition made them feel natural.<span class="term">authority: imposed</span></div></div>
+
+      <div class="wq k">? · KNOWLEDGE CHECK</div>
+      <div class="wa"><span class="pending">—</span><div class="ans">Almost everyone "misreads" it in the same way: we read "person" and absorb "a person is male" without any evidence for it. Nobody notices, because the sign looks self-explanatory. The concept regulating our knowledge here is <strong>perspective</strong>: one perspective was built in and presented as no perspective.</div></div>
+    </div>
+    <button class="step-btn">Next step</button>
+    <div class="kq"><span class="lab">The knowledge question this specimen answers</span><div class="q">Can a sign be designed to mean the same thing to everyone, or does every design choose a perspective?</div><div class="cc"><b>perspective</b> · <b>interpretation</b> · <b>power</b></div></div>
+  </section>
+
+  <!-- 06 — SPECIMEN 2 COMMIT -->
   <section class="screen">
     <p class="eyebrow">Specimen 2 · same signal, opposite meaning</p>
     <p class="big-q">On a stock board, does <strong>RED</strong> mean the price went up, or down?</p>
-    <div class="commit"><span class="lab">Commit before we look</span>Decide now — up or down? Don't hedge. We're about to switch markets.</div>
+    <div class="commit"><span class="lab">Commit before we look</span>Decide now: up or down? Don't hedge. We're about to switch markets.</div>
   </section>
 
-  <!-- 5 — SPECIMEN 2 FLIP -->
+  <!-- 07 — SPECIMEN 2 FLIP -->
   <section class="screen">
     <p class="eyebrow">Specimen 2 · the flip</p>
     <div class="board-switch" role="group" aria-label="Choose a market">
@@ -259,88 +331,156 @@
     <p class="legend" id="legend"></p>
   </section>
 
-  <!-- 6 — ESSENTIALISM BLOCK -->
+  <!-- 08 — ESSENTIALISM BLOCK -->
   <section class="screen">
     <p class="eyebrow">Specimen 2 · block the easy answer</p>
     <p class="big-q">"So East and West just think in opposites."</p>
-    <p class="support">It's the obvious conclusion. Debate whether it holds — then reveal.</p>
+    <p class="support">It's the obvious conclusion. Argue whether it holds. Then reveal.</p>
     <button class="reveal-btn">Reveal</button>
     <div class="reveal">
-      <p class="r-line"><strong>Hong Kong</strong> — a Chinese context — uses the <em>Western</em> code: green up, red down. So it isn't culture-as-destiny.</p>
-      <p class="r-sub">If culture doesn't fix the meaning, what does? <strong>A community and an authority</strong> — which exchange, which trading software, which regulator adopted which convention. The sign is <em>arbitrary</em> (Saussure); someone holds the power to <em>fix</em> it — authority <em>imposed</em>, not grown.</p>
-      <div class="concept"><b>CALLBACK · L1 / L2</b> — this is the same power you tracked in <em>expat vs migrant</em> and in the euphemism releases: authority over what a sign is allowed to mean.</div>
+      <p class="r-line"><strong>Hong Kong</strong>, a Chinese city, uses the <em>Western</em> code: green up, red down. So culture alone doesn't decide it.</p>
+      <p class="r-sub">If culture doesn't fix the meaning, what does? Which exchange, which trading software, which regulator adopted which code. Someone with authority fixed it.</p>
+      <div class="concept"><b>CALLBACK · L1 / L2</b>: the same power you tracked in <em>expat vs migrant</em> and in the euphemism releases. Someone holds authority over what a sign is allowed to mean.</div>
     </div>
   </section>
 
-  <!-- 7 — SPECIMEN 3 (YOU DO) -->
+  <!-- 09 — WE DO: INSTRUMENT ON STOCK COLOURS -->
   <section class="screen">
-    <p class="eyebrow">Specimen 3 · now you run the instrument</p>
-    <p class="big-q">Your turn. Pick a sign system — put all four questions to it.</p>
+    <p class="eyebrow">We do · the instrument on stock-board colours</p>
+    <p class="support">Answer each question as a class first. Then step to check.</p>
+    <div class="wx">
+      <div class="wq">1 · WHAT'S THE MESSAGE?</div>
+      <div class="wa"><span class="pending">— class answers first —</span><div class="ans">The mark: a red or green number. The message: the price rose, or the price fell.</div></div>
+
+      <div class="wq">2 · WHY THIS MARK?</div>
+      <div class="wa"><span class="pending">—</span><div class="ans">Nothing in red means "up". Swap both colours and the board works just as well. Red means "up" only because green means "down" on the same board.</div></div>
+
+      <div class="wq">3 · WHAT ELSE DOES IT SAY?</div>
+      <div class="wa"><span class="pending">—</span><div class="ans">Red brings other meanings with it: luck and celebration in China; danger and debt ("in the red") in Western accounting. Those extra meanings make each code <em>feel</em> natural to its own users. Hong Kong shows the feeling isn't what fixes it.</div></div>
+
+      <div class="wq">4 · WHO DECIDED?</div>
+      <div class="wa"><span class="pending">—</span><div class="ans"><strong>Imposed.</strong> Exchanges, software makers and regulators. A trader can't choose their own colours on a shared board.</div></div>
+
+      <div class="wq k">? · KNOWLEDGE CHECK</div>
+      <div class="wa"><span class="pending">—</span><div class="ans">A New York trader glancing at a Shanghai board would "know" the market had crashed on a good day, and be certain, because the board looks self-explanatory. The numbers were true; the <strong>interpretation</strong> failed. Being certain didn't make it true.</div></div>
+    </div>
+    <button class="step-btn">Next step</button>
+    <div class="kq"><span class="lab">The knowledge question this specimen answers</span><div class="q">If the same sign means opposite things in two places, what decides which reading is correct?</div><div class="cc"><b>interpretation</b> · <b>truth</b> · <b>certainty</b> · <b>power</b></div></div>
+  </section>
+
+  <!-- 10 — YOU DO: GROUPS CHOOSE A SPECIMEN -->
+  <section class="screen">
+    <p class="eyebrow">You do · your group picks one specimen</p>
+    <p class="big-q" style="max-width:none">Run all four questions and the knowledge check.</p>
     <div class="spec-grid">
       <div class="spec-card">
-        <div class="spec-glyph">💀</div>
-        <div class="spec-name">Emoji</div>
-        <p>💀 means "dying laughing," not death. 👍 reads as approval here, as an insult elsewhere. Where did the denotation go — and who moved it?</p>
+        <div class="spec-top"><div class="spec-glyph">💀</div><div class="spec-name">A · The skull emoji</div></div>
+        <p>Its official name is "skull". Online, 💀 usually means "I'm dead", as in laughing too hard. Nobody announced the change.</p>
+        <div class="ckq"><span>Knowledge question</span>If no one decided what a sign means, how can someone still use it wrong?</div>
       </div>
       <div class="spec-card">
-        <div class="spec-glyph">okay.</div>
-        <div class="spec-name">Texting punctuation</div>
-        <p>"okay" · "okay." · "okay…" · "k". The full stop is <em>unmarked</em> in formal writing, <em>marked</em> in a text. Same sign, flipped by the system it sits in.</p>
+        <div class="spec-top"><div class="spec-glyph txt">okay.</div><div class="spec-name">B · The full stop in a text</div></div>
+        <p>"okay" · "okay." · "k". In an essay, leaving out the full stop is the mistake. In a text, adding one can read as cold or annoyed.</p>
+        <div class="ckq"><span>Knowledge question</span>How do we know what a sign means when the same mark changes meaning depending on where it appears?</div>
       </div>
       <div class="spec-card">
-        <div class="spec-glyph"><span class="swatch"></span></div>
-        <div class="spec-name">The colour of mourning</div>
-        <p>White: mourning across much of East and South Asia; weddings and purity in the West. The same colour, the opposite occasion.</p>
+        <div class="spec-top"><div class="spec-glyph"><span class="swatch"></span></div><div class="spec-name">C · The colour of mourning</div></div>
+        <p>White is worn for mourning in much of East and South Asia. In much of the West, white is for weddings.</p>
+        <div class="ckq"><span>Knowledge question</span>Does knowing what a sign means in your culture help you or mislead you in another?</div>
+      </div>
+      <div class="spec-card">
+        <div class="spec-top"><div class="spec-glyph">💾</div><div class="spec-name">D · The save icon</div></div>
+        <p>It's a floppy disk. Computers stopped using them twenty years ago; most people who click it have never held one. It still means "save".</p>
+        <div class="ckq"><span>Knowledge question</span>Does a sign need to look like what it stands for? What happens when nobody remembers what it looked like?</div>
+      </div>
+      <div class="spec-card">
+        <div class="spec-top"><div class="spec-glyph txt">↕ ↔</div><div class="spec-name">E · The head nod</div></div>
+        <p>Nodding for "yes" feels like pure body language. In Bulgaria, a nod has traditionally meant "no", and a head shake "yes".</p>
+        <div class="ckq"><span>Knowledge question</span>If even a movement of the body can mean opposite things, is any sign natural?</div>
+      </div>
+      <div class="spec-card">
+        <div class="spec-top"><div class="spec-glyph txt" style="color:#b23b3b">✚ ☾</div><div class="spec-name">F · Red Cross, Red Crescent</div></div>
+        <p>In 1864 a treaty chose a red cross as a neutral sign protecting medical workers in war. Many read it as Christian. The Red Crescent was recognised in 1929, and in 2005 a "Red Crystal" with no religious meaning was added.</p>
+        <div class="ckq"><span>Knowledge question</span>Can an authority decide that a sign is neutral?</div>
       </div>
     </div>
-    <div class="debate"><span class="lab">Teach-back</span>Is your system's authority <strong>imposed</strong> or <strong>emergent</strong>? If <em>no one decreed</em> the meaning, why can a member still get it "wrong"?</div>
   </section>
 
-  <!-- 8 — THE CUT -->
+  <!-- 11 — GROUP TASK + TEACH-BACK -->
   <section class="screen">
-    <p class="eyebrow">The cut TOK keeps</p>
-    <p class="big-q">If the same sign means opposite things and neither is wrong — where does the meaning live?</p>
+    <p class="eyebrow">You do · how the group work runs</p>
+    <h2>12 minutes to build it. 90 seconds to teach it.</h2>
+    <ol class="steps-list">
+      <li><b>Pick</b> one specimen (A–F). No two groups on the same one if you can help it.</li>
+      <li><b>Questions 1–3:</b> one line each in your notebook. Don't stall here.</li>
+      <li><b>Question 4:</b> imposed or emergent? Name <em>who</em>. If you can't name anyone, say so and explain what holds the meaning in place instead.</li>
+      <li><b>Knowledge check:</b> who misreads it, what do they wrongly "know", and would they notice?</li>
+      <li><b>Answer your card's knowledge question</b> in two sentences, using at least two core concepts by name.</li>
+    </ol>
+    <div class="debate"><span class="lab">Teach-back · 90 seconds per group</span>Tell us only: (1) imposed or emergent, and who; (2) the outsider's wrong "knowledge"; (3) your answer to the card's knowledge question.<br><br>Listening groups: which specimen is <em>most like yours</em>, and which is <em>most different</em>? Why?</div>
+  </section>
+
+  <!-- 12 — THE CUT -->
+  <section class="screen">
+    <p class="eyebrow">The two cuts TOK keeps</p>
+    <p class="big-q">If the same sign means opposite things and neither is wrong, where does the meaning live?</p>
     <button class="reveal-btn">Reveal</button>
     <div class="reveal">
       <p class="r-line">Part of the meaning is in the <strong>sign</strong>. Part is in the <strong>community reading it</strong>. The mark alone never carries it the whole way.</p>
-      <p class="r-sub">So a reader who doesn't know <em>whose code is running</em> will misread reliably — and, worse, <strong>won't know they're misreading</strong>. The sign looks self-explanatory the entire time.</p>
+      <p class="r-sub">So a reader who doesn't know <em>whose code is running</em> will misread reliably, and <strong>won't know they're misreading</strong>. The sign looks self-explanatory the whole time.</p>
+      <div class="concept"><b>FOR YOUR ESSAY TOOLKIT</b>: two cuts to use on unseen cases.<br>① Was the meaning <b>imposed</b> by an authority, or did it <b>drift</b> in through use?<br>② Is the meaning in the <b>sign</b> itself, or in the <b>community</b> that reads it?</div>
     </div>
   </section>
 
-  <!-- 8 — EXIT WRITE -->
+  <!-- 13 — EXIT WRITE -->
   <section class="screen">
     <p class="eyebrow">Now write</p>
-    <h2>~200 words. One specimen as your evidence.</h2>
+    <h2>~200 words, on paper. One specimen as your evidence.</h2>
     <div class="prompt-card">
-      A sign system can <em>look</em> universal or natural and still carry a presupposition or a convention that decides what it means. Using the pictogram, the colour code, <em>or your group's specimen</em>:
+      A sign can <em>look</em> universal or natural and still carry an assumption or a convention that decides what it means. Using the "Person" sign, the stock colours, <em>or your group's specimen</em>:
       <ol>
-        <li>Name the presupposition or convention in your specimen.</li>
-        <li>Name <em>who holds authority</em> over it — <em>imposed</em> or <em>emergent</em>?</li>
-        <li>State what a reader who didn't know the code would wrongly <em>"know."</em></li>
+        <li>Name the assumption or convention in your specimen.</li>
+        <li>Who holds authority over it? Is it <em>imposed</em> or <em>emergent</em>?</li>
+        <li>What would a reader who didn't know the code wrongly <em>"know"</em>? Would they notice?</li>
         <li>Close on the cut: which part of the meaning is in the sign, and which part is in the community reading it?</li>
       </ol>
+      <p style="font-size:17px;margin:10px 0 0;color:var(--muted)">Use at least two core concepts by name.</p>
     </div>
-    <textarea class="write" placeholder="Write here, or in your notebook…"></textarea>
+    <textarea class="write" placeholder="Draft here if you like, then copy to paper…"></textarea>
     <p class="wc">0 words</p>
   </section>
 
-  <!-- 9 — THREADS -->
+  <!-- 14 — THREADS -->
   <section class="screen">
     <p class="eyebrow slate">Where this goes</p>
     <h2>The thread doesn't stop at language.</h2>
     <p class="thread"><span class="arrow">→</span> <b>Maths.</b> Notation is a sign system too. Does it just <em>record</em> thought, or does it let you think things you otherwise couldn't? (Zero. The calculus notation that opened a century of physics.)</p>
-    <p class="thread" style="margin-top:14px"><span class="arrow">→</span> <b>The arts.</b> Some signs carry what no proposition can — a colour, a chord, a title that renames the image beneath it. Meaning that isn't a statement, and can't be paraphrased without loss.</p>
-    <p class="support muted" style="margin-top:22px">Same question, new material: what does the sign let us know — and who decides?</p>
+    <p class="thread" style="margin-top:14px"><span class="arrow">→</span> <b>The arts.</b> Some signs carry what no statement can: a colour, a chord, a title that renames the image beneath it. Meaning that can't be paraphrased without loss.</p>
+    <p class="support muted" style="margin-top:22px">Same question, new material: what does the sign let us know, and who decides?</p>
   </section>
 
+</div>
+
+<!-- instrument overlay -->
+<div class="overlay" id="overlay" role="dialog" aria-label="The instrument">
+  <div class="panel">
+    <button class="close" id="closeInst">Close · Esc</button>
+    <p class="eyebrow slate" style="margin-bottom:16px">The instrument</p>
+    <div class="qrow"><span class="qnum">1</span><div><b>WHAT'S THE MESSAGE?</b> What is the mark, and what is it supposed to tell you?</div></div>
+    <div class="qrow"><span class="qnum">2</span><div><b>WHY THIS MARK?</b> Could a different mark have done the job? What is it contrasted with?</div></div>
+    <div class="qrow"><span class="qnum">3</span><div><b>WHAT ELSE DOES IT SAY?</b> What does it suggest beyond its message? Does that feel "just natural"?</div></div>
+    <div class="qrow"><span class="qnum">4</span><div><b>WHO DECIDED?</b> Imposed by an institution, or emergent from people using it?</div></div>
+    <div class="qrow k"><span class="qnum k">?</span><div><b>KNOWLEDGE CHECK.</b> Who would misread it, what would they wrongly "know", and would they notice?</div></div>
+  </div>
 </div>
 
 <div class="nav">
   <button id="prev">‹ Prev</button>
   <div class="dots" id="dots"></div>
-  <span class="counter"><span id="cur">01</span> / <span id="tot">10</span></span>
-  <div style="display:flex;align-items:center;gap:14px">
-    <span class="kbd">← → arrows · R reveal</span>
+  <span class="counter"><span id="cur">01</span> / <span id="tot">14</span></span>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="kbd">← → · R reveal · I instrument</span>
+    <button id="inst">Instrument</button>
     <button id="next">Next ›</button>
   </div>
 </div>
@@ -352,6 +492,7 @@
   const prev=document.getElementById('prev'), next=document.getElementById('next');
   const cur=document.getElementById('cur'), tot=document.getElementById('tot');
   const dotsWrap=document.getElementById('dots');
+  const overlay=document.getElementById('overlay');
   tot.textContent=String(screens.length).padStart(2,'0');
   screens.forEach((_,n)=>{const d=document.createElement('span');d.className='dot';d.addEventListener('click',()=>go(n));dotsWrap.appendChild(d);});
   const dots=[...dotsWrap.children];
@@ -367,7 +508,7 @@
   prev.addEventListener('click',()=>go(i-1));
   next.addEventListener('click',()=>go(i+1));
 
-  // reveal buttons
+  // single reveal
   document.querySelectorAll('.reveal-btn').forEach(btn=>{
     btn.addEventListener('click',()=>{
       const rev=btn.parentElement.querySelector('.reveal');
@@ -375,23 +516,44 @@
     });
   });
 
+  // stepped reveal (worked example / we do)
+  document.querySelectorAll('.step-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const rows=[...btn.parentElement.querySelectorAll('.wx .wa')];
+      const nextRow=rows.find(r=>!r.classList.contains('shown'));
+      if(nextRow) nextRow.classList.add('shown');
+      if(rows.every(r=>r.classList.contains('shown'))) btn.style.display='none';
+    });
+  });
+
+  // instrument overlay
+  function toggleInst(show){overlay.classList.toggle('show',show);}
+  document.getElementById('inst').addEventListener('click',()=>toggleInst(true));
+  document.getElementById('closeInst').addEventListener('click',()=>toggleInst(false));
+  overlay.addEventListener('click',e=>{if(e.target===overlay)toggleInst(false);});
+
   // keyboard
   document.addEventListener('keydown',e=>{
     if(e.target.tagName==='TEXTAREA')return;
+    const k=e.key.toLowerCase();
+    if(k==='escape'){toggleInst(false);return;}
+    if(k==='i'){toggleInst(!overlay.classList.contains('show'));return;}
+    if(overlay.classList.contains('show'))return;
     if(e.key==='ArrowRight'||e.key===' '){e.preventDefault();go(i+1);}
     else if(e.key==='ArrowLeft'){go(i-1);}
-    else if(e.key.toLowerCase()==='r'){
+    else if(k==='r'){
+      const s=screens[i].querySelector('.step-btn');
+      if(s&&s.style.display!=='none'){s.click();return;}
       const b=screens[i].querySelector('.reveal-btn');
       if(b&&b.style.display!=='none')b.click();
-      const hk=screens[i].querySelector('.board-switch');
     }
   });
 
   // ---- market flip ----
   const MKT={
-    nyse:{up:'green',down:'red', label:'New York', up_c:'green', down_c:'red'},
-    shanghai:{up:'red',down:'green', label:'Shanghai'},
-    hk:{up:'green',down:'red', label:'Hong Kong'}
+    nyse:{up:'green',down:'red',label:'New York'},
+    shanghai:{up:'red',down:'green',label:'Shanghai'},
+    hk:{up:'green',down:'red',label:'Hong Kong'}
   };
   const board=document.getElementById('board');
   const legend=document.getElementById('legend');
@@ -399,14 +561,11 @@
     const m=MKT[mkt];
     board.querySelectorAll('.move').forEach(el=>{
       const dir=el.dataset.dir;
-      const colour=(dir==='up')?m.up:m.down;
-      el.className='move '+dir+'-'+colour;
+      el.className='move '+dir+'-'+(dir==='up'?m.up:m.down);
     });
-    const upWord=(m.up==='green')?'green':'red';
-    const downWord=(m.down==='red')?'red':'green';
-    let txt='In <b>'+m.label+'</b>: a rise shows <b>'+upWord.toUpperCase()+'</b>, a fall shows <b>'+downWord.toUpperCase()+'</b>.';
-    if(mkt==='shanghai') txt+=' &nbsp;The <em>same numbers</em> — the colours just swapped meaning.';
-    if(mkt==='hk') txt+=' &nbsp;A Chinese market — running the <em>Western</em> code.';
+    let txt='In <b>'+m.label+'</b>: a rise shows <b>'+m.up.toUpperCase()+'</b>, a fall shows <b>'+m.down.toUpperCase()+'</b>.';
+    if(mkt==='shanghai') txt+=' &nbsp;The <em>same numbers</em>. The colours just swapped meaning.';
+    if(mkt==='hk') txt+=' &nbsp;A Chinese city, running the <em>Western</em> code.';
     legend.innerHTML=txt;
   }
   document.querySelectorAll('.board-switch button').forEach(b=>{
