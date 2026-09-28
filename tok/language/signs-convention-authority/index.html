@@ -143,6 +143,17 @@
   .qrow.k b{color:var(--slate)}
   .qrow .src{display:block;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:3px}
   .qrow.k{border-top:1px solid var(--rule);padding-top:14px;margin-top:4px}
+  .inst-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 36px;max-width:1000px}
+  .inst-grid .qrow{max-width:none}
+  .inst-grid .qrow.k{grid-column:1/-1}
+  @media (max-width:700px){.inst-grid{grid-template-columns:1fr}}
+  .subq{list-style:none;margin:6px 0 0;padding:0}
+  .subq li{font-size:clamp(15px,1.6vw,18px);line-height:1.35;color:var(--ink);margin:0 0 3px;padding-left:16px;position:relative}
+  .subq li::before{content:"–";position:absolute;left:0;color:var(--muted)}
+  .wx .wq ul{list-style:none;margin:6px 0 0;padding:0;font-weight:400;letter-spacing:0;color:var(--muted);font-size:11.5px;line-height:1.45}
+  .wx .wq ul li{margin:0 0 4px}
+  .wx .wa .ans p{margin:0 0 6px}
+  .wx .wa .ans p b{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;color:var(--muted);letter-spacing:.02em}
 
   /* worked example rows */
   .wx{display:grid;grid-template-columns:minmax(170px,230px) 1fr;gap:0;max-width:980px;border-top:1px solid var(--rule)}
@@ -270,13 +281,20 @@
   <!-- 04 — THE INSTRUMENT -->
   <section class="screen">
     <p class="eyebrow slate">The instrument · four questions for any sign</p>
-    <h2>You just did this in your head. Here are the steps.</h2>
+    <h2 style="margin-bottom:10px">You just did this in your head. Here are the steps.</h2>
     <p class="howto"><b>How to use it:</b> ask the questions in order. Questions 1–3 get one line each in your notebook. Spend most of your time on question 4 and the knowledge check. That is where the TOK is.</p>
-    <div class="qrow"><span class="qnum">1</span><div><b>WHAT'S THE MESSAGE?</b> What is the mark itself, and what is it supposed to tell you?<span class="src">Saussure: signifier (the mark) → signified (the idea)</span></div></div>
-    <div class="qrow"><span class="qnum">2</span><div><b>WHY THIS MARK?</b> Could a different mark have done the same job? What is it being contrasted with?<span class="src">Saussure: arbitrary (nothing forces it) · differential (it means by contrast)</span></div></div>
-    <div class="qrow"><span class="qnum">3</span><div><b>WHAT ELSE DOES IT SAY?</b> What does it suggest beyond its message? Does that extra meaning feel "just natural"?<span class="src">Barthes: connotation · myth (a choice that looks like nature)</span></div></div>
-    <div class="qrow"><span class="qnum">4</span><div><b>WHO DECIDED?</b> Did an institution set this meaning (<em>imposed</em>), or did people using it drift into it (<em>emergent</em>)?<span class="src">Authority · power</span></div></div>
-    <div class="qrow k"><span class="qnum k">?</span><div><b>KNOWLEDGE CHECK.</b> Who would misread this sign? What would they wrongly think they <em>know</em>, and would they notice?<span class="src">Which core concept is regulating our knowledge here?</span></div></div>
+    <div class="inst-grid">
+    <div class="qrow"><span class="qnum">1</span><div><b>WHAT'S THE MESSAGE?</b> What is the mark itself, and what is it supposed to tell you?<span class="src">Saussure: signifier (the mark) → signified (the idea)</span>
+      <ul class="subq"><li>What exactly do you see? Describe the shapes, colours or letters.</li><li>What are you meant to understand, or do, when you see it?</li></ul></div></div>
+    <div class="qrow"><span class="qnum">2</span><div><b>WHY THIS MARK?</b> Is there any reason it had to be this mark?<span class="src">Saussure: arbitrary (a different mark could have done the job) · differential (it means by contrast)</span>
+      <ul class="subq"><li>Does the mark look like the thing it stands for? If not, how did you learn what it means?</li><li>Could a different mark have done the same job? Name one.</li><li>What is it next to? Would it mean the same thing on its own?</li></ul></div></div>
+    <div class="qrow"><span class="qnum">3</span><div><b>WHAT ELSE DOES IT SAY?</b> What does it suggest beyond its message?<span class="src">Barthes: connotation · myth (a choice that looks like nature)</span>
+      <ul class="subq"><li>What does it suggest about people, places, or what counts as normal?</li><li>Does that feel like a choice someone made, or just "how things are"?</li><li>Who would be most likely to notice it? Who would never notice?</li></ul></div></div>
+    <div class="qrow"><span class="qnum">4</span><div><b>WHO DECIDED?</b> Did an institution set this meaning (<em>imposed</em>), or did people using it drift into it (<em>emergent</em>)?<span class="src">Authority · power</span>
+      <ul class="subq"><li>Can you name a person, company or organisation that set this meaning?</li><li>If not, how did people come to agree on it?</li><li>What happens to someone who uses it "wrong"? Who corrects them?</li></ul></div></div>
+    <div class="qrow k"><span class="qnum k">?</span><div><b>KNOWLEDGE CHECK.</b> Who would be misled by this sign?<span class="src">Which core concept is regulating our knowledge here?</span>
+      <ul class="subq"><li>What would they wrongly believe?</li><li>Why would they feel sure they had read it correctly?</li><li>What evidence would show them they had misread it?</li></ul></div></div>
+    </div>
     <p class="support muted" style="margin-top:10px">Next: watch all four run on the "Person" sign. The <b style="color:var(--oxblood)">Instrument</b> button at the bottom brings these back at any time.</p>
   </section>
 
@@ -288,20 +306,20 @@
       <div class="fig"><svg viewBox="0 0 100 170"><circle class="body" cx="50" cy="20" r="14"/><path class="body" d="M50 36 L31 116 H69 Z"/><rect class="body" x="44" y="116" width="5" height="44"/><rect class="body" x="51" y="116" width="5" height="44"/></svg><div class="cap">Women</div></div>
     </div>
     <div class="wx">
-      <div class="wq">1 · WHAT'S THE MESSAGE?</div>
-      <div class="wa"><span class="pending">— answer it first, then step —</span><div class="ans">The mark: a head, a block body, two straight legs. The message: "a person", or on a toilet door, "men".<span class="term">signifier → signified</span></div></div>
+      <div class="wq">1 · WHAT'S THE MESSAGE?<ul><li>What exactly do you see?</li><li>What are you meant to understand?</li></ul></div>
+      <div class="wa"><span class="pending">— answer it first, then step —</span><div class="ans"><p><b>See:</b> a round head, a block body, two straight legs.</p><p><b>Understand:</b> "a person", or on a toilet door, "men".</p><span class="term">signifier → signified</span></div></div>
 
-      <div class="wq">2 · WHY THIS MARK?</div>
-      <div class="wa"><span class="pending">—</span><div class="ans">Nothing forces it. Here in the Gulf, many men wear a thobe, a long garment closer to the "Women" shape. The sign still works here, because we learned the code, not because the figure looks like us. And alone on an exit sign it means "anyone"; put the skirted figure beside it and the same mark now means "man". It means by <em>contrast</em>.<span class="term">arbitrary · differential</span></div></div>
+      <div class="wq">2 · WHY THIS MARK?<ul><li>Does it look like the thing?</li><li>Could another mark do the job?</li><li>Would it mean the same alone?</li></ul></div>
+      <div class="wa"><span class="pending">—</span><div class="ans"><p><b>Does it look like a man?</b> Not really. It has no face and no hands, and here in the Gulf many men wear a thobe, which is closer to the "Women" shape. So we don't recognise it because it looks like men. We learned it, the way we learned that the letters M-E-N spell a word.</p><p><b>Could another mark do the job?</b> Yes: a different outline, a colour, the letter M. Any of them would work once people learned it.</p><p><b>Would it mean the same alone?</b> No. Alone on an exit sign, this figure means "anyone". Put the skirted figure next to it, and the same figure now means "man". Its meaning comes from the contrast with the figure beside it.</p><span class="term">arbitrary (another mark could have worked) · differential (it means by contrast)</span></div></div>
 
-      <div class="wq">3 · WHAT ELSE DOES IT SAY?</div>
-      <div class="wa"><span class="pending">—</span><div class="ans">It suggests the normal human is male and a woman is a variation on him. It doesn't feel like a claim at all. It feels like "just what a person looks like". A choice passing itself off as nature.<span class="term">connotation · myth</span></div></div>
+      <div class="wq">3 · WHAT ELSE DOES IT SAY?<ul><li>What does it suggest is normal?</li><li>Choice, or "how things are"?</li><li>Who would notice?</li></ul></div>
+      <div class="wa"><span class="pending">—</span><div class="ans"><p><b>Suggests:</b> the normal human is male, and a woman is a variation on him.</p><p><b>Choice or nature?</b> It doesn't feel like a claim at all. It feels like "just what a person looks like". That is a choice passing itself off as nature.</p><p><b>Who notices?</b> Mostly the people the default leaves out.</p><span class="term">connotation · myth</span></div></div>
 
-      <div class="wq">4 · WHO DECIDED?</div>
-      <div class="wa"><span class="pending">—</span><div class="ans"><strong>Imposed, then spread.</strong> Designers working for institutions drew these figures: the US Department of Transportation's symbol set (1974) and the international standard ISO 7001. Airports and buildings everywhere copied them, and repetition made them feel natural.<span class="term">authority: imposed</span></div></div>
+      <div class="wq">4 · WHO DECIDED?<ul><li>Can you name who?</li><li>How did everyone come to agree?</li></ul></div>
+      <div class="wa"><span class="pending">—</span><div class="ans"><p><b>Who:</b> designers working for institutions, such as the US Department of Transportation's symbol set (1974) and the international standard ISO 7001. So the meaning was <strong>imposed</strong>.</p><p><b>How it spread:</b> airports and buildings everywhere copied the figures, and repetition made them feel natural.</p><span class="term">authority: imposed</span></div></div>
 
-      <div class="wq k">? · KNOWLEDGE CHECK</div>
-      <div class="wa"><span class="pending">—</span><div class="ans">Almost everyone "misreads" it in the same way: we read "person" and absorb "a person is male" without any evidence for it. Nobody notices, because the sign looks self-explanatory. The concept regulating our knowledge here is <strong>perspective</strong>: one perspective was built in and presented as no perspective.</div></div>
+      <div class="wq k">? · KNOWLEDGE CHECK<ul><li>Who is misled, and into believing what?</li><li>Why do they feel sure?</li><li>What would show them?</li></ul></div>
+      <div class="wa"><span class="pending">—</span><div class="ans"><p><b>Misled:</b> almost everyone, in the same way. We read "person" and take in the idea that the default person is male, without any evidence for it.</p><p><b>Why sure:</b> the sign looks self-explanatory, so nobody questions it.</p><p><b>What would show them:</b> putting "Person" and "Men" side by side, as we did. The concept regulating our knowledge here is <strong>perspective</strong>: one perspective was built in and presented as no perspective at all.</p></div></div>
     </div>
     <button class="step-btn">Next step</button>
     <div class="kq"><span class="lab">The knowledge question this specimen answers</span><div class="q">Can a sign be designed to mean the same thing to everyone, or does every design choose a perspective?</div><div class="cc"><b>perspective</b> · <b>interpretation</b> · <b>power</b></div></div>
@@ -349,20 +367,20 @@
     <p class="eyebrow">We do · the instrument on stock-board colours</p>
     <p class="support">Answer each question as a class first. Then step to check.</p>
     <div class="wx">
-      <div class="wq">1 · WHAT'S THE MESSAGE?</div>
-      <div class="wa"><span class="pending">— class answers first —</span><div class="ans">The mark: a red or green number. The message: the price rose, or the price fell.</div></div>
+      <div class="wq">1 · WHAT'S THE MESSAGE?<ul><li>What exactly do you see?</li><li>What are you meant to understand?</li></ul></div>
+      <div class="wa"><span class="pending">— class answers first —</span><div class="ans"><p><b>See:</b> numbers in red or green, with an arrow.</p><p><b>Understand:</b> the price rose, or the price fell.</p></div></div>
 
-      <div class="wq">2 · WHY THIS MARK?</div>
-      <div class="wa"><span class="pending">—</span><div class="ans">Nothing in red means "up". Swap both colours and the board works just as well. Red means "up" only because green means "down" on the same board.</div></div>
+      <div class="wq">2 · WHY THIS MARK?<ul><li>Does it look like the thing?</li><li>Could another mark do the job?</li><li>Would it mean the same alone?</li></ul></div>
+      <div class="wa"><span class="pending">—</span><div class="ans"><p><b>Does red look like "up" or "down"?</b> No. A colour has no direction.</p><p><b>Could another mark do the job?</b> Yes. Swap the two colours and the board works just as well. Shanghai does exactly that.</p><p><b>Would it mean the same alone?</b> No. One red number tells you nothing until you know what colour the board uses for the other direction. Red means "down" only because green means "up" on the same board.</p></div></div>
 
-      <div class="wq">3 · WHAT ELSE DOES IT SAY?</div>
-      <div class="wa"><span class="pending">—</span><div class="ans">Red brings other meanings with it: luck and celebration in China; danger and debt ("in the red") in Western accounting. Those extra meanings make each code <em>feel</em> natural to its own users. Hong Kong shows the feeling isn't what fixes it.</div></div>
+      <div class="wq">3 · WHAT ELSE DOES IT SAY?<ul><li>What does it suggest?</li><li>Choice, or "how things are"?</li></ul></div>
+      <div class="wa"><span class="pending">—</span><div class="ans"><p><b>Suggests:</b> red brings other meanings with it: luck and celebration in China; danger and debt ("in the red") in Western accounting.</p><p><b>Choice or nature?</b> Those extra meanings make each code <em>feel</em> natural to its own users. Hong Kong shows the feeling isn't what fixes it.</p></div></div>
 
-      <div class="wq">4 · WHO DECIDED?</div>
-      <div class="wa"><span class="pending">—</span><div class="ans"><strong>Imposed.</strong> Exchanges, software makers and regulators. A trader can't choose their own colours on a shared board.</div></div>
+      <div class="wq">4 · WHO DECIDED?<ul><li>Can you name who?</li><li>What happens if you use it "wrong"?</li></ul></div>
+      <div class="wa"><span class="pending">—</span><div class="ans"><p><b>Who:</b> exchanges, trading-software makers and regulators. The meaning is <strong>imposed</strong>.</p><p><b>Using it wrong:</b> a trader can't choose their own colours on a shared board. Their screen follows the exchange's code.</p></div></div>
 
-      <div class="wq k">? · KNOWLEDGE CHECK</div>
-      <div class="wa"><span class="pending">—</span><div class="ans">A New York trader glancing at a Shanghai board would "know" the market had crashed on a good day, and be certain, because the board looks self-explanatory. The numbers were true; the <strong>interpretation</strong> failed. Being certain didn't make it true.</div></div>
+      <div class="wq k">? · KNOWLEDGE CHECK<ul><li>Who is misled, and into believing what?</li><li>Why do they feel sure?</li><li>What would show them?</li></ul></div>
+      <div class="wa"><span class="pending">—</span><div class="ans"><p><b>Misled:</b> a New York trader glancing at a Shanghai board. He would believe the market had crashed on a day it actually rose.</p><p><b>Why sure:</b> to him, red has always meant "down", so the board looks self-explanatory. He would feel certain, but feeling certain doesn't make a belief true.</p><p><b>What would show him:</b> checking a single price against the day before. The numbers on the board were accurate; his <strong>interpretation</strong> of the colours was wrong.</p></div></div>
     </div>
     <button class="step-btn">Next step</button>
     <div class="kq"><span class="lab">The knowledge question this specimen answers</span><div class="q">If the same sign means opposite things in two places, what decides which reading is correct?</div><div class="cc"><b>interpretation</b> · <b>truth</b> · <b>certainty</b> · <b>power</b></div></div>
@@ -414,10 +432,10 @@
       <li><b>Pick</b> one specimen (A–F). No two groups on the same one if you can help it.</li>
       <li><b>Questions 1–3:</b> one line each in your notebook. Don't stall here.</li>
       <li><b>Question 4:</b> imposed or emergent? Name <em>who</em>. If you can't name anyone, say so and explain what holds the meaning in place instead.</li>
-      <li><b>Knowledge check:</b> who misreads it, what do they wrongly "know", and would they notice?</li>
+      <li><b>Knowledge check:</b> who would be misled, what would they wrongly believe, and would they notice?</li>
       <li><b>Answer your card's knowledge question</b> in two sentences, using at least two core concepts by name.</li>
     </ol>
-    <div class="debate"><span class="lab">Teach-back · 90 seconds per group</span>Tell us only: (1) imposed or emergent, and who; (2) the outsider's wrong "knowledge"; (3) your answer to the card's knowledge question.<br><br>Listening groups: which specimen is <em>most like yours</em>, and which is <em>most different</em>? Why?</div>
+    <div class="debate"><span class="lab">Teach-back · 90 seconds per group</span>Tell us only: (1) imposed or emergent, and who; (2) who would be misled, and into believing what; (3) your answer to the card's knowledge question.<br><br>Listening groups: which specimen is <em>most like yours</em>, and which is <em>most different</em>? Why?</div>
   </section>
 
   <!-- 12 — THE CUT -->
@@ -441,7 +459,7 @@
       <ol>
         <li>Name the assumption or convention in your specimen.</li>
         <li>Who holds authority over it? Is it <em>imposed</em> or <em>emergent</em>?</li>
-        <li>What would a reader who didn't know the code wrongly <em>"know"</em>? Would they notice?</li>
+        <li>What would a reader who didn't know the code wrongly believe? Why would they feel sure they were right?</li>
         <li>Close on the cut: which part of the meaning is in the sign, and which part is in the community reading it?</li>
       </ol>
       <p style="font-size:17px;margin:10px 0 0;color:var(--muted)">Use at least two core concepts by name.</p>
@@ -466,11 +484,11 @@
   <div class="panel">
     <button class="close" id="closeInst">Close · Esc</button>
     <p class="eyebrow slate" style="margin-bottom:16px">The instrument</p>
-    <div class="qrow"><span class="qnum">1</span><div><b>WHAT'S THE MESSAGE?</b> What is the mark, and what is it supposed to tell you?</div></div>
-    <div class="qrow"><span class="qnum">2</span><div><b>WHY THIS MARK?</b> Could a different mark have done the job? What is it contrasted with?</div></div>
-    <div class="qrow"><span class="qnum">3</span><div><b>WHAT ELSE DOES IT SAY?</b> What does it suggest beyond its message? Does that feel "just natural"?</div></div>
-    <div class="qrow"><span class="qnum">4</span><div><b>WHO DECIDED?</b> Imposed by an institution, or emergent from people using it?</div></div>
-    <div class="qrow k"><span class="qnum k">?</span><div><b>KNOWLEDGE CHECK.</b> Who would misread it, what would they wrongly "know", and would they notice?</div></div>
+    <div class="qrow"><span class="qnum">1</span><div><b>WHAT'S THE MESSAGE?</b><ul class="subq"><li>What exactly do you see?</li><li>What are you meant to understand, or do?</li></ul></div></div>
+    <div class="qrow"><span class="qnum">2</span><div><b>WHY THIS MARK?</b><ul class="subq"><li>Does it look like the thing it stands for? If not, how did you learn it?</li><li>Could a different mark have done the job? Name one.</li><li>What is it next to? Would it mean the same on its own?</li></ul></div></div>
+    <div class="qrow"><span class="qnum">3</span><div><b>WHAT ELSE DOES IT SAY?</b><ul class="subq"><li>What does it suggest about people, places, or what counts as normal?</li><li>Does that feel like a choice, or just "how things are"?</li><li>Who would notice it? Who never would?</li></ul></div></div>
+    <div class="qrow"><span class="qnum">4</span><div><b>WHO DECIDED?</b> Imposed or emergent?<ul class="subq"><li>Can you name who set this meaning?</li><li>If not, how did people come to agree on it?</li><li>What happens to someone who uses it "wrong"?</li></ul></div></div>
+    <div class="qrow k"><span class="qnum k">?</span><div><b>KNOWLEDGE CHECK.</b> Who would be misled?<ul class="subq"><li>What would they wrongly believe?</li><li>Why would they feel sure?</li><li>What evidence would show them they had misread it?</li></ul></div></div>
   </div>
 </div>
 
