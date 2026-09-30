@@ -505,6 +505,30 @@
     margin-top: 40px;
   }
 
+  .background-box {
+    margin: 0 0 32px;
+    padding: 14px 20px;
+    background: rgba(122, 46, 42, 0.06);
+    border-left: 3px solid #7a2e2a;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #2a2419;
+  }
+  .background-box summary {
+    cursor: pointer;
+    font-style: italic;
+    color: #7a2e2a;
+    font-size: 15px;
+  }
+  .background-box[open] summary { margin-bottom: 10px; }
+  .background-box ul { margin: 8px 0 12px; padding-left: 22px; }
+  .background-box li { margin-bottom: 6px; }
+  .background-box .while-reading {
+    margin-top: 12px;
+    font-style: italic;
+  }
+
   .annotation-hint {
     text-align: center;
     margin-bottom: 16px;
@@ -537,6 +561,19 @@
       <div class="case-title">On the Hypothesis of Doctor Semmelweis</div>
       <div class="case-subtitle">A response from the Viennese medical faculty &middot; circa 1849</div>
     </div>
+
+    <details class="background-box">
+      <summary>Background: how did a new medical idea get accepted in 1847? (tap to open)</summary>
+      <p>In 1847 there was no system like today's peer review. A doctor with a new idea was expected to do four things:</p>
+      <ul>
+        <li>Write it up himself, in full, in a medical journal or a book, explaining what he did and what he found.</li>
+        <li>Present it in a lecture to a medical society (a club of senior doctors) and answer their questions.</li>
+        <li>Explain the cause: show how the idea fits the accepted medical theory of the time.</li>
+        <li>Win the support of senior professors, who also decided who got jobs and promotions.</li>
+      </ul>
+      <p>These steps were known as the "proper channels." Senior doctors ran all of them.</p>
+      <p class="while-reading">While you read the letter: for each objection, ask yourself whether it is about his numbers, or about something else.</p>
+    </details>
 
     <p class="drop-cap">It has come to the attention of this faculty that Doctor Ignaz Semmelweis, lately an assistant in the First Obstetrical Clinic of the Vienna General Hospital, has continued to advance the singular claim that the cause of puerperal fever is to be located in <span class="anno" data-anno="a1">certain particles of cadaverous matter conveyed upon the hands of physicians from the autopsy theatre to the lying-in ward</span>. The faculty, having given the matter due consideration, must respectfully decline to endorse so extraordinary a hypothesis upon the evidence presented.</p>
 
@@ -586,6 +623,14 @@
       <div class="case-subtitle">U.S. Public Health Service &middot; Macon County, Alabama &middot; 1932–1972</div>
     </div>
 
+    <details class="background-box">
+      <summary>Background: what is peer review? (tap to open)</summary>
+      <p>Before a medical journal publishes a study, the study is checked. The journal's editors read it, and often send it to other experts in the same field (the "peers") for their opinion. Together they decide whether the study is good enough to publish.</p>
+      <p>Once a study passes this check and is published, other doctors treat it as reliable knowledge. That is why "published in a peer-reviewed journal" carries so much weight in science.</p>
+      <p>In 1936, most of this checking was done by the journal's own editors. By the 1950s and 1960s, when later Tuskegee reports appeared, outside experts were more often involved.</p>
+      <p class="while-reading">While you read: this study was checked many times, by journals and later by a review panel. Each time, what were the checkers looking at?</p>
+    </details>
+
     <div class="timeline-entry">
       <div class="entry-header">
         <div class="entry-year">1932</div>
@@ -610,7 +655,7 @@
         <div class="excerpt">
           "Inasmuch as a considerable portion of the infected Negro population remained untreated during the entire course of syphilis, an unusual opportunity arose to study the untreated syphilitic patient from the beginning of the disease to the death of the infected person."
         </div>
-        <p class="commentary"><span class="anno" data-anno="t2">The report was peer-reviewed in the standard manner and published without controversy.</span> Thirteen further reports would appear in respected medical journals over the next thirty-six years, each describing the progressive pathology of untreated syphilis in living, named, traceable men.</p>
+        <p class="commentary"><span class="anno" data-anno="t2">The report passed the journal's review in the standard manner and was published without controversy.</span> Thirteen further reports would appear in respected medical journals over the next thirty-six years, each describing the progressive pathology of untreated syphilis in living, named, traceable men.</p>
       </div>
     </div>
 
@@ -759,8 +804,8 @@
       question: "The men were told they were being treated. They were not. Where in this single phrase is the lie hidden — and why was a folk term, rather than a medical term, the right tool for the deception?"
     },
     t2: {
-      quote: "The report was peer-reviewed in the standard manner and published without controversy.",
-      question: "Peer review is the apparatus's central quality-control mechanism. It approved this. What does that tell you about what peer review actually checks for — and what it does not?"
+      quote: "The report passed the journal's review in the standard manner and was published without controversy.",
+      question: "Review by the journal is how medicine checks a study before it becomes accepted knowledge. It approved this. What does that tell you about what peer review actually checks for — and what it does not?"
     },
     t3: {
       quote: "The Tuskegee investigators did not offer penicillin to the men in the study.",
