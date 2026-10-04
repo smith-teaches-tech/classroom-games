@@ -529,6 +529,130 @@
     font-style: italic;
   }
 
+  .dot.locked { opacity: 0.35; }
+
+  .page-synthesis .response-label {
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 560px;
+    margin: 36px auto 10px;
+    text-align: left;
+  }
+
+  .page-synthesis .response-label strong {
+    font-style: normal;
+    letter-spacing: 0.04em;
+  }
+
+  .page-synthesis textarea {
+    display: block;
+    width: 100%;
+    max-width: 560px;
+    box-sizing: border-box;
+    margin: 0 auto;
+    min-height: 120px;
+    padding: 12px 14px;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 15px;
+    line-height: 1.55;
+    color: #2a2419;
+    background: #fffbf0;
+    border: 1px solid #8a7d5f;
+    resize: vertical;
+  }
+
+  .page-synthesis textarea:focus {
+    outline: none;
+    border-color: #7a2e2a;
+    box-shadow: 0 0 0 2px rgba(122, 46, 42, 0.15);
+  }
+
+  .gate-note {
+    font-size: 14px;
+    color: #7a2e2a;
+    font-style: italic;
+    margin-top: 28px;
+  }
+
+  .gate-note.unlocked { color: #4a6a3a; }
+
+  .page-ideas {
+    background: #f4ecd8;
+    font-family: Georgia, 'Times New Roman', serif;
+    color: #2a2419;
+    padding: 64px 64px 56px;
+  }
+
+  .page-ideas h2 {
+    font-size: 22px;
+    font-weight: normal;
+    font-style: italic;
+    text-align: center;
+    margin: 0 0 8px;
+    letter-spacing: 0.05em;
+  }
+
+  .page-ideas .ideas-intro {
+    text-align: center;
+    font-size: 14px;
+    font-style: italic;
+    color: #6b5e3f;
+    margin: 0 0 36px;
+  }
+
+  .page-ideas h3 {
+    font-size: 17px;
+    font-weight: normal;
+    font-variant: small-caps;
+    letter-spacing: 0.08em;
+    border-bottom: 1px solid #8a7d5f;
+    padding-bottom: 6px;
+    margin: 36px 0 14px;
+  }
+
+  .page-ideas .idea {
+    margin: 0 0 16px;
+    padding-left: 16px;
+    border-left: 3px solid #c4a558;
+    font-size: 15.5px;
+    line-height: 1.65;
+  }
+
+  .page-ideas .idea strong { color: #7a2e2a; font-weight: normal; font-style: italic; }
+
+  .page-ideas .idea.push { border-left-color: #7a2e2a; }
+
+  .page-kq {
+    background: #f4ecd8;
+    font-family: Georgia, 'Times New Roman', serif;
+    color: #2a2419;
+    text-align: center;
+    padding: 120px 64px;
+  }
+
+  .page-kq .kq-label {
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #6b5e3f;
+    margin-bottom: 28px;
+  }
+
+  .page-kq .kq-text {
+    font-size: 26px;
+    font-style: italic;
+    line-height: 1.5;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .page-kq .kq-note {
+    font-size: 15px;
+    color: #6b5e3f;
+    font-style: italic;
+    margin-top: 56px;
+  }
+
   .annotation-hint {
     text-align: center;
     margin-bottom: 16px;
@@ -548,6 +672,8 @@
       <span class="dot" data-page="1"></span>
       <span class="dot" data-page="2"></span>
       <span class="dot" data-page="3"></span>
+      <span class="dot locked" data-page="4"></span>
+      <span class="dot locked" data-page="5"></span>
     </div>
     <button id="next-btn">Next →</button>
   </div>
@@ -742,10 +868,6 @@
   <article class="page page-synthesis" data-page="3">
     <h2>Across the three cases</h2>
 
-    <p class="synthesis-question" style="text-align:center;font-style:italic;margin-bottom:36px;">
-      Knowledge question: How does power shape what counts as knowledge, and who is responsible when that knowledge harms people?
-    </p>
-
     <p class="synthesis-question">
       In each of these three cases, the apparatus of legitimate knowledge — peer review, institutional authority, professional expertise, recognised method — was functioning. The men involved were credentialed and operating within their professional norms. The frameworks that produced their knowledge did not fail on the frameworks' own terms.
     </p>
@@ -754,17 +876,60 @@
       Yet a true finding was rejected, a harmful study was approved, and an invented disease was accepted as medicine.
     </p>
 
-    <p class="synthesis-question" style="font-style:italic;margin-top:32px;">
-      What does the knowledge framework check, and what does it not check? Where in the cases does power decide not just <em>what is true</em>, but <em>what is permitted to count as knowledge in the first place</em>?
+    <p class="response-label">
+      <strong>What is the pattern?</strong> In each of these cases, the knowledge framework — peer review, credentials, expertise, recognised method — was functioning. What does that tell you about what the framework does, and what it does not do?
     </p>
+    <textarea id="resp-pattern" placeholder="Jot down your ideas…"></textarea>
 
-    <p class="synthesis-question" style="font-style:italic;">
-      In each case, who was responsible for the harm? Could the framework itself have made anyone take that responsibility?
+    <p class="response-label">
+      <strong>On responsibility.</strong> In each case, someone was responsible — for the women who died, for the men in Macon County, for the lives shaped by drapetomania as a "diagnosis." But the people in the knowledge apparatus did not see themselves as responsible at the time. What does that tell you about where responsibility comes from, and whether the framework itself can supply it?
     </p>
+    <textarea id="resp-responsibility" placeholder="Jot down your ideas…"></textarea>
 
-    <p class="synthesis-note">
-      Write your response in the worksheet or in your notebook.
-    </p>
+    <p class="gate-note" id="gate-note">Add an idea to both boxes to unlock the discussion page.</p>
+  </article>
+
+  <!-- DISCUSSION IDEAS PAGE -->
+  <article class="page page-ideas" data-page="4">
+    <h2>Ideas for discussion</h2>
+    <p class="ideas-intro">Some possible answers. Which one is closest to yours? Which one would you argue against?</p>
+
+    <h3>What the framework does, and what it does not do</h3>
+
+    <p class="idea"><strong>It checks the form, not the starting assumptions.</strong> Cartwright's article does everything a medical article should: it names a condition, compares it to known conditions, and prescribes a cure. The framework checked that the article looked like medicine. It never asked whether the disease existed.</p>
+
+    <p class="idea"><strong>It checks whether a claim fits the accepted theory.</strong> Semmelweis had the numbers: deaths in Clinic I fell to 1.27% after handwashing. The faculty rejected him because he had no theory to explain why. The framework judged his claim by how well it fit what doctors already believed.</p>
+
+    <p class="idea"><strong>It checks method, not the people being studied.</strong> The Tuskegee reports passed journal review fourteen times. The reviewers checked whether the study described the disease properly. Nothing in the review asked whether the men knew what was being done to them.</p>
+
+    <p class="idea"><strong>The people running the framework had a stake in the answer.</strong> The faculty judging Semmelweis were the doctors he said were spreading the disease. Cartwright's sources were planters and overseers. Power decided who got to be the judge.</p>
+
+    <p class="idea"><strong>The people closest to the harm were never asked.</strong> The mothers in Clinic I, the men in Macon County, and the enslaved people Cartwright called "diseased" all knew something the experts did not. None of them counted as a knower.</p>
+
+    <p class="idea push"><strong>Push back: caution is also a strength.</strong> The same "proper channels" that blocked Semmelweis also block bad ideas. Last lesson, the 1942 geologist rejected Wegener for having no mechanism, and we asked whether that was unreasonable. Is Semmelweis the same case? What is different when the cost of waiting is women dying?</p>
+
+    <p class="idea push"><strong>Push back: the framework did correct itself, eventually.</strong> Germ theory proved Semmelweis right. Drapetomania was dropped. Was that the framework working slowly, or did the correction come from outside it?</p>
+
+    <h3>Where responsibility comes from</h3>
+
+    <p class="idea"><strong>When everyone follows the rules, no one feels responsible.</strong> The 1969 panel was "not unusually evil." Each person did what the profession expected. Responsibility was spread so thin across journals, panels and protocols that nobody held it.</p>
+
+    <p class="idea"><strong>The framework supplies rules, not responsibility.</strong> A method can tell you how to study a disease. It cannot tell you whether you should. Responsibility had to come from individuals: Semmelweis, Irwin Schatz in 1965, Peter Buxtun in 1966 and 1968.</p>
+
+    <p class="idea"><strong>Responsibility came from outside the knowledge community.</strong> People inside medicine objected to Tuskegee and were overruled. The study ended within four months of the public finding out. The outsiders had less expertise and more power to stop it.</p>
+
+    <p class="idea"><strong>Frameworks can change to include responsibility, but only after the harm.</strong> After Tuskegee, the U.S. passed the National Research Act (1974), which required informed consent and ethics review boards. The framework now checks something it did not check before. Someone had to be harmed first.</p>
+
+    <p class="idea push"><strong>Push back: are we judging the past by our standards?</strong> Can we hold 1849 doctors responsible for not knowing about germs? Does the same excuse work for the 1969 panel, who had penicillin and had seen the Nuremberg Code (1947)? Where is the line?</p>
+
+    <p class="idea push"><strong>Answers to be careful with:</strong> "They were just evil people" (the cases say they were ordinary professionals, and that is the problem). "So science can't be trusted" (Semmelweis's numbers and penicillin are science too — the evidence was right; the people judging it were the problem).</p>
+  </article>
+
+  <!-- KNOWLEDGE QUESTION PAGE -->
+  <article class="page page-kq" data-page="5">
+    <div class="kq-label">Knowledge Question</div>
+    <p class="kq-text">How does power shape what counts as knowledge, and who is responsible when that knowledge harms people?</p>
+    <p class="kq-note">Free write in your notebook. Use at least one of the three cases.</p>
   </article>
 
   <!-- Popover — anchored to clicked phrase -->
@@ -846,15 +1011,36 @@
   const prevBtn = document.getElementById('prev-btn');
   const nextBtn = document.getElementById('next-btn');
   let currentPage = 0;
-  const totalPages = 4;
+  const totalPages = 6;
+  const GATED_FROM = 4;
+  const respPattern = document.getElementById('resp-pattern');
+  const respResp = document.getElementById('resp-responsibility');
+  const gateNote = document.getElementById('gate-note');
+
+  function responsesFilled() {
+    return respPattern.value.trim().length > 0 && respResp.value.trim().length > 0;
+  }
+
+  function updateGate() {
+    const ok = responsesFilled();
+    dots.forEach((d, i) => d.classList.toggle('locked', i >= GATED_FROM && !ok));
+    gateNote.textContent = ok
+      ? 'Discussion page unlocked. Press Next when your class is ready.'
+      : 'Add an idea to both boxes to unlock the discussion page.';
+    gateNote.classList.toggle('unlocked', ok);
+    if (currentPage === GATED_FROM - 1) nextBtn.disabled = !ok;
+  }
+
+  [respPattern, respResp].forEach(t => t.addEventListener('input', updateGate));
 
   function showPage(n) {
     if (n < 0 || n >= totalPages) return;
+    if (n >= GATED_FROM && !responsesFilled()) return;
     pages.forEach(p => p.classList.remove('active'));
     pages[n].classList.add('active');
     dots.forEach((d, i) => d.classList.toggle('active', i === n));
     prevBtn.disabled = (n === 0);
-    nextBtn.disabled = (n === totalPages - 1);
+    nextBtn.disabled = (n === totalPages - 1) || (n === GATED_FROM - 1 && !responsesFilled());
     currentPage = n;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -941,6 +1127,7 @@
       popover.classList.remove('open');
       document.querySelectorAll('.anno').forEach(a => a.classList.remove('opened'));
     }
+    if (e.target.tagName === 'TEXTAREA') return;
     if (e.key === 'ArrowLeft' && !prevBtn.disabled) showPage(currentPage - 1);
     if (e.key === 'ArrowRight' && !nextBtn.disabled) showPage(currentPage + 1);
   });
