@@ -13,6 +13,7 @@ TEACHER NOTES — IMAGE FILES (drop in same folder as index.html)
   unrotated.jpg       — Anders's original frame (horizon vertical)
   wec_1969.jpg        — Whole Earth Catalog 2nd issue (Spring 1969)
   earthday_1970.png   — Leydenfrost gas-mask Earth Day 1970 poster (V&A)
+  brand_button_1966.png — Stewart Brand's 1966 campaign button (photo of original)
 
 Onboard transcript: NASA Apollo 8 onboard tape recorder, Dec 24 1968.
 NASA caption: official caption from JSC image database (AS08-14-2383).
@@ -371,7 +372,7 @@ Repo path: smith-teaches-tech/classroom-games/tok/earthrise/
   }
 
   .movement-caption::before {
-    content: "WHOLE EARTH CATALOG / SPRING 1969";
+    content: "ARCHIBALD MACLEISH / THE NEW YORK TIMES / DEC 25 1968";
     display: block;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.56rem;
@@ -486,6 +487,73 @@ Repo path: smith-teaches-tech/classroom-games/tok/earthrise/
     line-height: 1.55;
     color: var(--ink-soft);
     margin-bottom: 0.55rem;
+  }
+
+
+  /* ===== REVEAL POSSIBLE ANSWERS ===== */
+  .reveal-btn {
+    margin-top: 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    background: transparent;
+    color: var(--nasa-blue);
+    border: 1px dashed var(--nasa-blue);
+    cursor: pointer;
+    border-radius: 1px;
+    transition: all 0.2s ease;
+  }
+  .reveal-btn:hover { background: var(--nasa-blue); color: var(--paper); border-style: solid; }
+  .reveal-btn.open { background: var(--nasa-blue); color: var(--paper); border-style: solid; }
+
+  .answers-panel {
+    display: none;
+    margin-top: 0.7rem;
+    padding: 1rem 1.2rem;
+    background: var(--paper-cream);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--nasa-blue);
+    box-shadow: var(--shadow);
+  }
+  .answers-panel.open { display: block; animation: fadeIn 0.3s ease-out; }
+  .answers-panel::before {
+    content: "POSSIBLE ANSWERS — NOT THE ONLY ONES";
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.56rem;
+    letter-spacing: 0.18em;
+    color: var(--nasa-blue);
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px dashed var(--rule);
+  }
+  .answer-item { margin-bottom: 0.85rem; font-size: 0.95rem; line-height: 1.5; color: var(--ink-soft); }
+  .answer-item:last-child { margin-bottom: 0; }
+  .answer-q {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--nasa-red);
+    margin-right: 0.35rem;
+  }
+  .answer-item ul { margin: 0.3rem 0 0 1.2rem; }
+  .answer-item li { margin-bottom: 0.2rem; }
+  .answer-push {
+    display: block;
+    margin-top: 0.35rem;
+    font-style: italic;
+    color: var(--movement-green);
+  }
+  .answer-push::before {
+    content: "PUSH FURTHER — ";
+    font-family: 'JetBrains Mono', monospace;
+    font-style: normal;
+    font-size: 0.56rem;
+    letter-spacing: 0.14em;
+    font-weight: 700;
   }
 
   /* ===== NAV BAR ===== */
@@ -632,7 +700,8 @@ const IMG = {
   iconic: 'iconic.jpg',
   unrotated: 'unrotated.jpg',
   wec: 'wec_1969.jpg',
-  earthDay: 'earthday_1970.png'
+  earthDay: 'earthday_1970.png',
+  brandButton: 'brand_button_1966.png'
 };
 
 // ===== SVG FALLBACKS — used if local image files aren't there yet =====
@@ -702,6 +771,15 @@ const SVG_EARTHDAY = `<svg viewBox="0 0 400 520" xmlns="http://www.w3.org/2000/s
     <circle cx="20" cy="20" r="14" fill="#0a0a0a"/>
     <rect x="-8" y="40" width="16" height="40" fill="#1a1612"/>
     <path d="M 0,80 Q -10,100 0,120 Q 10,140 0,160" stroke="#1a1612" stroke-width="6" fill="none"/>
+  </g>
+</svg>`;
+
+const SVG_BUTTON = `<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="400" fill="#eeeeec"/>
+  <circle cx="200" cy="200" r="160" fill="#fbfaf5" stroke="#d8d6cc" stroke-width="3"/>
+  <g font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="30" fill="#111" text-anchor="middle">
+    <text x="200" y="130">Why haven't we</text><text x="200" y="168">seen a</text><text x="200" y="206">photograph</text>
+    <text x="200" y="244">of the whole</text><text x="200" y="282">Earth yet</text><text x="200" y="318">?</text>
   </g>
 </svg>`;
 
@@ -848,21 +926,21 @@ const STEPS = [
   },
   // STEP 6
   {
-    title: 'WEC 1969',
+    title: 'MacLeish & WEC',
     layout: 'split',
     imageHTML: () => imgCard(IMG.wec, 'Whole Earth Catalog Spring 1969 cover using Earthrise', 'Whole Earth Catalog · Spring 1969', SVG_WEC, 'WEC · 1969'),
     contextHTML: `
       <div class="step-number"><span class="step-num-circle">6</span> How the audience used the image</div>
-      <div class="step-title">Whole Earth Catalog, Spring 1969</div>
+      <div class="step-title">A Poet, Then a Catalog</div>
       <div class="step-body">
-        <p>Months after Apollo 8, an environmentalist named Stewart Brand published the second issue of the <em>Whole Earth Catalog</em> — a publication that argued for ecological awareness and what Brand called "access to tools." It was one of the central texts of the emerging environmental movement.</p>
-        <p>The cover was Earthrise.</p>
-        <p>Around the image, the catalog described the photograph this way:</p>
+        <p>On Christmas morning 1968 — while Apollo 8 was still in space — <em>The New York Times</em> printed an essay by the poet <strong>Archibald MacLeish</strong>. He had watched the crew's grainy television broadcasts of Earth from lunar orbit. <strong>He had not seen Earthrise.</strong> The film was still on board the spacecraft and would not be developed until after splashdown on December 27.</p>
+        <p>This is what MacLeish wrote about the view:</p>
         <div class="movement-caption">
-          Earth — a lonely and fragile outpost of life suspended in an endless, inky-black void. The only home we have. The first picture of a planet that needs us to protect it.
+          To see the earth as it truly is, small and blue and beautiful in that eternal silence where it floats, is to see ourselves as riders on the earth together, brothers on that bright loveliness in the eternal cold — brothers who know now they are truly brothers.
         </div>
+        <p>A few months later, in spring 1969, Stewart Brand put Earthrise on the cover of the <em>Whole Earth Catalog</em> — a publication of ecological awareness and what Brand called "access to tools," and one of the central texts of the emerging environmental movement. Readings like MacLeish's became the way the photograph was seen.</p>
         <div class="ws-prompt">
-          <strong>Q10.</strong> What is the photograph being used to <em>say</em> here? Pick out the words that tell you.
+          <strong>Q10.</strong> What does MacLeish say the view of Earth <em>means</em>? Pick out the words that tell you.
         </div>
       </div>
     `
@@ -874,23 +952,23 @@ const STEPS = [
     imageHTML: () => imgCard(IMG.iconic, 'Earthrise', 'The same image. Both times.', SVG_EARTHRISE, 'UNCHANGED'),
     contextHTML: `
       <div class="step-number"><span class="step-num-circle">7</span> Same image. Two captions.</div>
-      <div class="step-title">What Changed Between 1968 and 1969?</div>
+      <div class="step-title">Same View. Two Readings.</div>
       <div class="step-body">
-        <p>The photograph did not change between NASA's release in 1968 and the <em>Whole Earth Catalog</em>'s use of it in 1969. But the words around it did.</p>
+        <p>NASA and MacLeish were looking at the same view of Earth from lunar orbit, in the same week. The view did not change. The words around it did.</p>
         <div class="comparison">
           <div>
             <div style="font-family:'JetBrains Mono', monospace; font-size:0.6rem; letter-spacing:0.12em; color:var(--nasa-blue); margin-bottom:0.4rem; padding-bottom:0.3rem; border-bottom:1px solid var(--rule-soft);">NASA · 1968</div>
             <p style="font-family:'Special Elite', monospace; font-size:0.78rem; line-height:1.5; color:var(--nasa-blue);">The rising Earth is about five degrees above the lunar horizon in this telephoto view taken from the Apollo 8 spacecraft near 110 degrees east longitude…</p>
           </div>
           <div>
-            <div style="font-family:'JetBrains Mono', monospace; font-size:0.6rem; letter-spacing:0.12em; color:var(--movement-green); margin-bottom:0.4rem; padding-bottom:0.3rem; border-bottom:1px solid var(--rule-soft);">WEC · 1969</div>
-            <p style="font-family:'Cormorant Garamond', serif; font-style:italic; font-size:0.92rem; line-height:1.5; color:var(--movement-green);">Earth — a lonely and fragile outpost of life suspended in an endless, inky-black void. The only home we have…</p>
+            <div style="font-family:'JetBrains Mono', monospace; font-size:0.6rem; letter-spacing:0.12em; color:var(--movement-green); margin-bottom:0.4rem; padding-bottom:0.3rem; border-bottom:1px solid var(--rule-soft);">MACLEISH · NYT · DEC 1968</div>
+            <p style="font-family:'Cormorant Garamond', serif; font-style:italic; font-size:0.92rem; line-height:1.5; color:var(--movement-green);">To see the earth as it truly is, small and blue and beautiful in that eternal silence where it floats, is to see ourselves as riders on the earth together…</p>
           </div>
         </div>
         <div class="ws-prompt">
-          <strong>Q11.</strong> What did the image become <em>about</em> between 1968 and 1969? &nbsp;|&nbsp;
+          <strong>Q11.</strong> In MacLeish's reading, what does the view of Earth become <em>about</em>? &nbsp;|&nbsp;
           <strong>Q12.</strong> The image didn't change. Something else changed. What was it? &nbsp;|&nbsp;
-          <strong>Q13.</strong> Write one sentence: How did the values of 1969 shape what this photograph was understood to be?
+          <strong>Q13.</strong> Write one sentence: How did the values of the late 1960s shape what this photograph was understood to be?
         </div>
       </div>
     `
@@ -899,16 +977,7 @@ const STEPS = [
   {
     title: 'The Button',
     layout: 'split',
-    imageHTML: () => `
-      <div class="image-card">
-        <div class="image-wrap" style="background:#000; padding:1.2rem; border:5px solid #000; box-shadow:0 8px 30px rgba(0,0,0,0.6);">
-          <div class="brand-button">
-            <div class="brand-button-text">Why haven't we seen a photograph of the whole Earth yet?</div>
-          </div>
-        </div>
-        <div class="image-card-label">STEWART BRAND · 1966</div>
-      </div>
-    `,
+    imageHTML: () => imgCard(IMG.brandButton, "Stewart Brand's 1966 button: Why haven't we seen a photograph of the whole Earth yet?", 'Stewart Brand · 1966', SVG_BUTTON, 'BRAND · 1966'),
     contextHTML: `
       <div class="step-number"><span class="step-num-circle">8</span> Stewart Brand · 1966</div>
       <div class="step-title">Two Years Earlier</div>
@@ -937,7 +1006,7 @@ const STEPS = [
       <div class="step-title">Two Producers</div>
       <div class="step-body">
         <p>We started by looking at the people who <em>made</em> the photograph — Anders, NASA, the editors who rotated it. They are <strong>producers of knowledge.</strong> Their values shaped the first interpretation: a technical record of a lunar mission.</p>
-        <p>Then we looked at the people who <em>saw</em> the photograph — Stewart Brand, the Whole Earth Catalog, the environmental movement. Their values shaped a different interpretation: a fragile planet, a call to protect.</p>
+        <p>Then we looked at the people who <em>saw</em> the view — Archibald MacLeish, Stewart Brand, the Whole Earth Catalog, the environmental movement. Their values shaped a different interpretation: one small, fragile, shared home.</p>
         <p style="margin-top:1rem; font-size:1.1rem; color:var(--nasa-blue); font-style:italic; text-align:center; line-height:1.4;">
           The audience is not just receiving knowledge from the image.<br>
           The audience is <strong style="color:var(--nasa-red);">producing</strong> it.
@@ -1002,6 +1071,84 @@ const STEPS = [
   }
 ];
 
+
+// =====================================================================
+// POSSIBLE ANSWERS — keyed by step index (0-based). Toggle with the
+// "Reveal possible answers" button or the A key. Hidden on every step change.
+// =====================================================================
+const ANSWERS = {
+  0: [
+    { q: 'Q1', a: `Typical answers: <ul><li>"The Earth rising over the Moon."</li><li>"Earth seen from the Moon's surface."</li><li>"Our planet, small and alone in space."</li></ul>`,
+      push: `Circle any word in your sentence the camera could not have recorded — "alone", "small", "beautiful", "fragile". Where did that word come from? Hold on to it for Q9 and Q17.` },
+    { q: 'Q2', a: `Either answer can be defended at this point. <ul><li><strong>Record:</strong> a camera captured light from a real scene; nobody painted or invented it.</li><li><strong>Interpretation:</strong> someone chose when to shoot, how to frame it, which way is "up", and what to call it.</li><li><strong>Strongest answer:</strong> "Both — it records light, but what it shows depends on choices made by people."</li></ul>`,
+      push: `If you said "record", what would you need to find out to change your mind?` }
+  ],
+  1: [
+    { q: 'Q3', a: `Anders was the mission photographer. His assignment was <strong>lunar geology</strong> — photographing craters, ridges, and potential landing sites for later Apollo missions. Earth was not on his shot list, which is why Borman says "it's not scheduled."`,
+      push: `If the photograph was not part of the assignment, what was the camera "for" at the moment Anders pressed the shutter?` }
+  ],
+  2: [
+    { q: 'Q4', a: `The Moon's horizon runs vertically down one side of the frame, with a half-lit Earth beside it in black space — Earth is next to the Moon, not above it.` },
+    { q: 'Q5', a: `The rotated version gives the image an "up" and a "down": ground below, Earth above, like a sun rising over a landscape. It places the viewer as if standing on the Moon watching a sunrise. The original is disorienting — it looks like a scientific frame, not a scene.`,
+      push: `Is there an "up" in space? If not, is either orientation the "correct" one?` },
+    { q: 'Q6', a: `<strong>NASA editors</strong>, before publication — not Anders. The rotation makes the image look like it is about <strong>Earth</strong>: a sunrise, a new dawn, home seen from far away. The title "Earthrise", also added afterwards, reinforces that reading.`,
+      push: `The rotation changed no pixels. So what exactly did the editors change?` }
+  ],
+  3: [
+    { q: 'Q7', a: `A record of a <strong>mission observation</strong> — where the spacecraft was and what was in view. Key words: "telephoto view", "five degrees above the lunar horizon", "110 degrees east longitude", "570 kilometers", "the sunset terminator crosses Africa". These are measurements, positions, and geography.`,
+      push: `Notice that even NASA's technical caption opens with "The rising Earth". Has the caption already accepted the rotated version?` },
+    { q: 'Q8', a: `Model sentence: "NASA's values of technical precision and mission achievement framed Earthrise as a scientific record of where Apollo 8 was, while its editors' decision to rotate the image made it look like a sunrise over the Moon."` }
+  ],
+  4: [
+    { q: 'Q9', a: `Most students will find their Q1 answer was <strong>not</strong> close to NASA's reading — very few write "a telephoto view near 110° east longitude." Most described what the image <em>means</em> (home, smallness, beauty, isolation) and described it in the rotated orientation NASA chose.`,
+      push: `Nobody told you what this image meant before Q1. So where did your reading come from?` }
+  ],
+  5: [
+    { q: 'Q10', a: `MacLeish says the view shows Earth as <strong>small, beautiful, and vulnerable</strong>, and humanity as <strong>one people sharing it</strong>. Key words: "small and blue and beautiful", "eternal silence", "eternal cold", "riders on the earth together", "brothers".`,
+      push: `Which of those words describe what a camera could record, and which describe how we should feel or act? And remember: MacLeish had not seen the photograph.` }
+  ],
+  6: [
+    { q: 'Q11', a: `For NASA the view is about a <strong>lunar mission</strong> — where the spacecraft was and what was in frame. For MacLeish it becomes about <strong>humanity</strong>: one small, beautiful, fragile home shared by people who should see each other as "brothers". It moves from "where the spacecraft was" to "who we are and how we should live".` },
+    { q: 'Q12', a: `The <strong>framing</strong> changed: who was describing the view, for what audience, and with what values and purpose — a space agency reporting a mission, then a poet writing for Christmas Day readers, then an environmental catalog.` },
+    { q: 'Q13', a: `Model sentence: "The humanist and environmental values of the late 1960s led MacLeish, and then the Whole Earth Catalog, to present the view of Earth as evidence of one fragile, shared home — a meaning NASA's caption never claimed."` }
+  ],
+  7: [
+    { q: 'Q14', a: `Brand believed an image of the whole Earth would <strong>change how humanity valued the planet</strong> — that seeing Earth as a single, finite, shared object would make people care for it.` },
+    { q: 'Q15', a: `<strong>The values came first.</strong> Brand held environmental values in 1966, two years before the photograph existed, and went looking for an image to carry them. The 1969 interpretation was existing values applied to a new image, not an image creating new values. MacLeish is further evidence: he wrote his reading <em>before</em> the photograph was even developed.`,
+      push: `Is that true for everyone? Brand's values came first — but could the image have spread or strengthened those values in people who did not already hold them? Strong answers distinguish Brand from the wider public.` }
+  ],
+  8: [
+    { q: 'Q16', a: `Model sentence: "If the values came first, then the audience — Brand and the environmental movement — produced the knowledge that Earth is fragile; Anders produced the image, and NASA produced only the first interpretation."<br><br>Strongest answers say <strong>all three</strong>, at different stages: knowledge is produced at each act of interpretation, not once at the moment the shutter clicks.` },
+    { q: 'Q17', a: `Model answer: "In Q1 I wrote that the photograph showed Earth looking small and alone, but 'alone' is not something the camera recorded — it is my judgement. I was interpreting the image through environmental values I had absorbed long before this lesson, and through the rotation NASA chose in 1968."`,
+      push: `If you were "just describing", what would a purely descriptive Q1 answer have looked like? Is one even possible?` }
+  ],
+  9: [
+    { q: 'Discuss', a: `Possible directions: <ul><li>Values do not dictate a single interpretation — the same values produced hope and beauty (Earthrise) and fear and threat (the gas-mask poster).</li><li>Values seem to <strong>select and shape</strong> images to fit a purpose, rather than images producing values.</li><li>The poster is an illustration and Earthrise is a photograph, yet both serve the same claim — so does a photograph carry any more objectivity once it is put to work for a cause?</li></ul>`,
+      push: `Which image would persuade you more — and is that because of the evidence it offers, or the feeling it produces?` }
+  ],
+  10: [
+    { q: 'Q18', a: `What students will probably have: values shape interpretation; NASA's reading versus MacLeish's and the Whole Earth Catalog's reading.<br>What the model adds: <ul><li>The distinction between a <strong>record</strong> and <strong>knowledge</strong> — "a photograph alone does not produce knowledge".</li><li>Both the <strong>producer</strong> side (rotation, caption) and the <strong>audience</strong> side (Brand, the environmental movement).</li><li>The rotation treated as a value-laden editorial decision, not a neutral correction.</li><li>The reversal: Brand's prediction was "correct in reverse".</li><li>Specific evidence — dates, names, a citation — and a final general claim about photographs that reaches beyond this one example.</li></ul>` }
+  ]
+};
+
+function answersHTML(stepIndex) {
+  const list = ANSWERS[stepIndex];
+  if (!list || !list.length) return '';
+  const items = list.map(x => `<div class="answer-item"><span class="answer-q">${x.q}</span>${x.a}${x.push ? `<span class="answer-push">${x.push}</span>` : ''}</div>`).join('');
+  return `<button class="reveal-btn" id="reveal-btn" onclick="toggleAnswers()">Reveal possible answers</button>
+    <div class="answers-panel" id="answers-panel">${items}</div>`;
+}
+
+function toggleAnswers() {
+  const panel = document.getElementById('answers-panel');
+  const btn = document.getElementById('reveal-btn');
+  if (!panel || !btn) return;
+  const open = panel.classList.toggle('open');
+  btn.classList.toggle('open', open);
+  btn.textContent = open ? 'Hide possible answers' : 'Reveal possible answers';
+  if (open) panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
 // ===== NAVIGATION =====
 let currentStep = 0;
 const visited = new Set([0]);
@@ -1017,7 +1164,7 @@ function render() {
   stage.classList.add('layout-' + step.layout);
 
   imageColInner.innerHTML = typeof step.imageHTML === 'function' ? step.imageHTML() : step.imageHTML;
-  textContent.innerHTML = step.contextHTML;
+  textContent.innerHTML = step.contextHTML + answersHTML(currentStep);
 
   imageColInner.classList.remove('fade-in');
   textContent.classList.remove('fade-in');
@@ -1059,6 +1206,7 @@ function renderProgressDots() {
 document.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowRight') navigate(1);
   if (e.key === 'ArrowLeft') navigate(-1);
+  if (e.key === 'a' || e.key === 'A') toggleAnswers();
 });
 
 render();
