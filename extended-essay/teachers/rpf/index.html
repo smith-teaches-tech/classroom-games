@@ -1,320 +1,194 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RPF &amp; Criterion E — Scored Samples · EE for Teachers</title>
-<meta name="description" content="The EE Reflection and Progress Form, the Criterion E rubric, and six marked reflective statements across subjects.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<title>RPF &amp; Criterion E Samples — EE for Teachers</title>
+<meta name="description" content="What the EE Reflection and Progress Form is, what Criterion E asks, and six scored reflective statements.">
 <link rel="stylesheet" href="../../shared/ee.css">
-<script src="../../shared/ee.js"></script>
 <style>
-:root{--brand:var(--teach);
-  --h-eval:#5bd075; --h-ex:#8aa4ff; --h-gen:#ffa14a;}
-html[data-theme="light"]{--h-eval:#2f7a3f; --h-ex:#3b4ea0; --h-gen:#c2610f;}
-.mark{background:var(--teach)}
+/* ── section 1 ── */
+.facts{list-style:none;padding:0;margin:0 0 16px;display:grid;gap:10px}
+.facts li{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start}
+.facts .n{width:34px;height:34px;border-radius:8px;background:var(--accent-soft);color:var(--accent);font-weight:700;display:grid;place-items:center;font-size:15px}
+.facts b{font-weight:650}
 
-/* ── RPF anatomy ── */
-.anatomy{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:22px;align-items:start}
-@media(max-width:860px){.anatomy{grid-template-columns:1fr}}
-.form{background:var(--bg2);border:1px solid var(--line);border-radius:14px;overflow:hidden}
-.form .fh{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);
-  font-family:var(--mono);font-size:11.5px;color:var(--fg3);letter-spacing:.04em}
-.form .fh b{color:var(--fg);font-family:var(--disp);font-size:15px;letter-spacing:-.2px}
-.sess{display:grid;grid-template-columns:28px 1fr;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line)}
-.sess:last-child{border-bottom:0}
-.sess .n{font-family:var(--mono);font-size:12px;color:var(--teach);border:1px solid color-mix(in srgb,var(--teach) 40%,transparent);
-  border-radius:7px;height:26px;display:grid;place-items:center}
-.sess h4{font-size:15px;margin-bottom:3px}
-.sess p{margin:0;font-size:13.8px;color:var(--fg2)}
-.sess .fields{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-.sess .fields span{font-family:var(--mono);font-size:10.5px;border:1px dashed var(--line2);border-radius:5px;padding:2px 7px;color:var(--fg3)}
-.sess.rs{background:color-mix(in srgb,var(--teach) 6%,var(--bg2))}
-.sess.rs .n{background:var(--teach);color:var(--brand-ink);border-color:var(--teach)}
-.facts{display:grid;gap:10px}
-.fact{display:grid;grid-template-columns:22px 1fr;gap:10px;font-size:14.5px}
-.fact .i{color:var(--teach);font-family:var(--mono);font-size:13px;padding-top:1px}
-.fact b{font-weight:600}
+/* ── section 2 ── */
+.gq{font-size:clamp(20px,2.6vw,24px);font-weight:600;line-height:1.35;border-left:4px solid var(--accent);padding:2px 0 2px 16px;margin:0 0 20px;max-width:760px}
+.levels{display:grid;gap:8px;max-width:760px}
+.level{display:grid;grid-template-columns:48px 1fr;gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 16px}
+.level .s{font-size:24px;font-weight:700;color:var(--accent);text-align:center}
+.level p{margin:0}
+.level span{color:var(--muted)}
+table.rubric{border-collapse:collapse;width:100%;min-width:680px;font-size:15px;background:var(--card)}
+.rubric-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+.rubric th,.rubric td{padding:11px 13px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+.rubric tr:last-child td,.rubric tr:last-child th{border-bottom:0}
+.rubric thead th{background:#eef1f5;font-size:14px}
+.rubric tbody th{width:110px}
+.rubric td{color:var(--muted)}
+.rubric td b{color:var(--text)}
 
-/* ── rubric ── */
-.gq{font-family:var(--disp);font-size:clamp(19px,2.4vw,23px);font-weight:500;letter-spacing:-.4px;line-height:1.3;
-  border-left:3px solid var(--teach);padding:2px 0 2px 16px;margin:6px 0 20px;max-width:760px}
-.rubric-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--bg2)}
-table.rubric{border-collapse:collapse;width:100%;min-width:760px;font-size:14px}
-.rubric th,.rubric td{padding:12px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
-.rubric tr:last-child td{border-bottom:0}
-.rubric thead th{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);background:var(--bg3)}
-.rubric thead th.lv{color:var(--fg)}
-.rubric tbody th{font-family:var(--disp);font-size:15px;font-weight:600;width:120px;color:var(--fg)}
-.rubric td{color:var(--fg2);width:22%}
-.rubric td em{font-style:normal;color:var(--fg);font-weight:600;background:color-mix(in srgb,var(--teach) 14%,transparent);border-radius:3px;padding:0 3px}
-.rubric td.hit{background:color-mix(in srgb,var(--teach) 8%,transparent)}
-.ladder{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:16px}
-@media(max-width:620px){.ladder{grid-template-columns:1fr 1fr}}
-.rung{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg2)}
-.rung .s{font-family:var(--mono);font-size:11px;color:var(--teach)}
-.rung b{display:block;font-family:var(--disp);font-size:15px;margin:2px 0}
-.rung span{font-size:12.8px;color:var(--fg2)}
-.evid{margin:0;padding-left:18px;color:var(--fg2)}
-.evid li{margin-bottom:4px}
-
-/* ── sample controls ── */
-.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:4px 0 18px}
-.seg{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden;background:var(--bg2)}
-.seg button{font:500 13px var(--sans);background:none;border:0;color:var(--fg2);padding:7px 12px;cursor:pointer;border-right:1px solid var(--line)}
-.seg button:last-child{border-right:0}
-.seg button[aria-pressed="true"]{background:var(--bg3);color:var(--fg)}
-.seg button:hover{color:var(--fg)}
-.seg button:disabled{opacity:.4;cursor:default}
-.toggle{display:inline-flex;align-items:center;gap:9px;font-size:13.5px;color:var(--fg2);cursor:pointer;user-select:none;
-  border:1px solid var(--line);border-radius:9px;padding:6px 12px;background:var(--bg2)}
-.toggle input{accent-color:var(--teach);width:15px;height:15px;margin:0}
-.toggle:hover{color:var(--fg)}
-.spacer{flex:1}
-.legend{display:none;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--fg2);margin:-6px 0 16px}
-body.annot .legend{display:flex}
-.legend span{display:inline-flex;align-items:center;gap:6px}
-.legend i{width:18px;height:10px;border-radius:2px;display:inline-block}
-.legend .e i{background:color-mix(in srgb,var(--h-eval) 30%,transparent);border-bottom:2px solid var(--h-eval)}
-.legend .x i{background:color-mix(in srgb,var(--h-ex) 30%,transparent);border-bottom:2px solid var(--h-ex)}
-.legend .g i{background:color-mix(in srgb,var(--h-gen) 30%,transparent);border-bottom:2px solid var(--h-gen)}
-
-/* ── distribution strip ── */
-.dist{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:18px}
-@media(max-width:620px){.dist{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.dist button{all:unset;cursor:pointer;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg2);
-  display:flex;flex-direction:column;gap:6px;transition:.13s;min-width:0}
-.dist button:hover{border-color:var(--line2)}
-.dist button[aria-pressed="true"]{border-color:var(--teach);background:color-mix(in srgb,var(--teach) 7%,var(--bg2))}
-.dist .top2{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--fg3)}
-.dist .top2 b{color:var(--fg);font-family:var(--disp);font-size:18px;font-weight:600}
-.dist .chips{display:flex;gap:4px;flex-wrap:wrap}
-.dist .chips span{font-size:11.5px;color:var(--fg2);border:1px solid var(--line2);border-radius:5px;padding:0 6px}
-body.calib .dist{display:none}
+/* ── section 3: toolbar ── */
+.toolbar{position:sticky;top:0;z-index:10;background:var(--bg);display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:12px 0;margin-bottom:8px;border-bottom:1px solid var(--line)}
+.switch{display:inline-flex;align-items:center;gap:10px;cursor:pointer;user-select:none;font-weight:600;font-size:15.5px;
+  background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 14px 7px 8px;position:relative}
+.switch input{position:absolute;opacity:0;pointer-events:none}
+.switch .track{width:38px;height:22px;border-radius:999px;background:#c7cdd6;position:relative;transition:background .15s;flex:none}
+.switch .track::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .15s;box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.switch input:checked + .track{background:var(--accent)}
+.switch input:checked + .track::after{transform:translateX(16px)}
+.switch input:focus-visible + .track{outline:3px solid var(--accent);outline-offset:2px}
+.switch.hl input:checked + .track{background:#c9a400}
+.switch .sw{display:inline-block;width:14px;height:14px;border-radius:3px;background:var(--mark);border:1px solid #e0cc5a;margin-left:-2px}
 
 /* ── sample cards ── */
-.samples{display:grid;gap:14px}
-.card{background:var(--bg2);border:1px solid var(--line);border-radius:14px;overflow:hidden;scroll-margin-top:70px}
-.card[hidden]{display:none}
-.ch{display:grid;grid-template-columns:1fr auto;gap:14px;padding:18px 20px 14px;align-items:start}
-.ch .sub{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg3);margin-bottom:4px}
-.ch h3{font-size:21px;letter-spacing:-.5px}
-.ch .topic{color:var(--fg2);font-size:14px;margin-top:5px}
-.ch .meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
-.score{text-align:right;min-width:92px}
-.score .big{font-family:var(--disp);font-size:34px;font-weight:700;letter-spacing:-1px;line-height:1}
-.score .big small{font-size:16px;color:var(--fg3);font-weight:500}
-.pips{display:flex;gap:4px;justify-content:flex-end;margin-top:7px}
-.pips i{width:14px;height:5px;border-radius:3px;background:var(--line2)}
-.pips i.on{background:var(--teach)}
-.score .lbl{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--fg3);text-transform:uppercase;margin-top:6px}
+.samples{display:grid;gap:16px;margin-top:8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.ch{display:flex;gap:16px;justify-content:space-between;align-items:flex-start;padding:18px 22px 6px}
+.ch h3{font-size:21px}
+.ch .topic{color:var(--muted);font-size:15.5px;margin-top:3px}
+.score{flex:none;text-align:center;min-width:74px;border-radius:10px;background:var(--accent-soft);padding:8px 10px}
+.score b{display:block;font-size:28px;line-height:1;color:var(--accent)}
+.score span{font-size:12.5px;color:var(--muted)}
+body.noscores .score{background:#eef1f5}
+body.noscores .score b{color:transparent;position:relative}
+body.noscores .score b::after{content:"?";color:var(--muted);position:absolute;inset:0}
 
-.cb{border-top:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr)}
-@media(max-width:900px){.cb{grid-template-columns:1fr}}
-.stmt{padding:18px 20px;border-right:1px solid var(--line);position:relative}
-@media(max-width:900px){.stmt{border-right:0;border-bottom:1px solid var(--line)}}
-.stmt .lab,.comm .lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg3);margin-bottom:10px;display:flex;justify-content:space-between;gap:10px}
-.stmt .text{font-family:var(--serif);font-size:15.5px;line-height:1.7;color:var(--fg)}
+.stmt{padding:8px 22px 4px}
+.stmt .text{font-family:var(--serif);font-size:17px;line-height:1.7}
 .stmt .text p{margin:0 0 12px}
-.stmt.clamp .text{max-height:236px;overflow:hidden;-webkit-mask-image:linear-gradient(#000 60%,transparent);mask-image:linear-gradient(#000 60%,transparent)}
-.more{margin-top:6px;font:500 13px var(--sans);color:var(--teach);background:none;border:0;padding:4px 0;cursor:pointer}
-mark{background:none;color:inherit;border-radius:2px;padding:0 1px}
-body.annot mark.e{background:color-mix(in srgb,var(--h-eval) 20%,transparent);box-shadow:inset 0 -2px 0 var(--h-eval)}
-body.annot mark.x{background:color-mix(in srgb,var(--h-ex) 20%,transparent);box-shadow:inset 0 -2px 0 var(--h-ex)}
-body.annot mark.g{background:color-mix(in srgb,var(--h-gen) 20%,transparent);box-shadow:inset 0 -2px 0 var(--h-gen)}
+.stmt.clamp .text{max-height:9.4em;overflow:hidden;-webkit-mask-image:linear-gradient(#000 55%,transparent);mask-image:linear-gradient(#000 55%,transparent)}
+mark{background:none;color:inherit}
+body.hl mark{background:var(--mark);border-radius:2px;padding:0 1px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
 
-.comm{padding:18px 20px;display:flex;flex-direction:column;gap:14px}
-.strand h4{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--teach);margin-bottom:4px}
-.strand p{margin:0;font-size:14.2px;color:var(--fg2)}
-.strand.why h4{color:var(--fg)}
-.cf{display:flex;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:4px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:6px 22px 18px}
+.link{background:none;border:0;padding:6px 0;font:600 15px var(--sans);color:var(--accent);cursor:pointer;margin-right:14px}
+.link:hover{text-decoration:underline}
+.pdf{margin-left:auto;font-size:14.5px;color:var(--muted);text-decoration:none}
+.pdf:hover{color:var(--accent);text-decoration:underline}
 
-/* calibration mode */
-.guess{display:none;padding:18px 20px;flex-direction:column;gap:12px;justify-content:center}
-.guess p{margin:0;color:var(--fg2);font-size:14px}
-.guess .opts{display:flex;gap:8px}
-.guess .opts button{font:600 18px var(--disp);width:46px;height:46px;border-radius:10px;border:1px solid var(--line2);background:var(--bg3);color:var(--fg);cursor:pointer}
-.guess .opts button:hover{border-color:var(--teach);color:var(--teach)}
-body.calib .card:not(.revealed) .score,
-body.calib .card:not(.revealed) .comm{display:none}
-body.calib .card:not(.revealed) .guess{display:flex}
-.verdict{display:none;font-size:13.5px;padding:9px 12px;border-radius:9px;margin-bottom:2px}
-body.calib .card.revealed .verdict{display:block}
-.verdict.hit{background:color-mix(in srgb,var(--ok) 14%,transparent);color:var(--fg)}
-.verdict.off{background:color-mix(in srgb,var(--warn) 14%,transparent);color:var(--fg)}
-.tally{display:none;font-family:var(--mono);font-size:12px;color:var(--fg2)}
-body.calib .tally{display:inline}
+.why{display:none;border-top:1px solid var(--line);background:#fafbfc;padding:16px 22px 18px}
+.card.open .why{display:block}
+.why .sum{font-weight:600;margin:0 0 10px}
+.why dl{margin:0;display:grid;grid-template-columns:110px 1fr;gap:6px 14px}
+.why dt{font-weight:600;color:var(--muted);font-size:15px}
+.why dd{margin:0;font-size:15.5px}
+@media(max-width:600px){.why dl{grid-template-columns:1fr}.why dd{margin-bottom:8px}.ch{padding:16px 16px 6px}.stmt,.actions,.why{padding-left:16px;padding-right:16px}.pdf{margin-left:0}}
 
-/* takeaways */
-.take{counter-reset:t;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
-.take .panel{position:relative;padding-top:40px}
-.take .panel::before{counter-increment:t;content:counter(t,decimal-leading-zero);position:absolute;top:14px;left:20px;
-  font-family:var(--mono);font-size:12px;color:var(--teach)}
-.take h3{font-size:16.5px;margin-bottom:6px}
-.take p{font-size:14px;color:var(--fg2);margin:0}
-.take p b{color:var(--fg);font-weight:600}
+.patterns{margin:0;padding-left:20px}
+.patterns li{margin-bottom:8px}
 </style>
 </head>
 <body>
-<div class="shell">
+<div class="shell narrow">
   <div class="top">
     <a class="mark" href="../../" title="Extended Essay hub">EE</a>
-    <nav class="crumbs" aria-label="Breadcrumb">
-      <a href="../../../">Classroom tools</a><span class="sep">/</span><a href="../../">Extended Essay</a><span class="sep">/</span><a href="../">For Teachers</a><span class="sep">/</span><span>RPF &amp; Criterion E</span>
-    </nav>
-    <button class="iconbtn" id="themeBtn" type="button">☀</button>
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Classroom tools</a><span class="sep">/</span><a href="../../">Extended Essay</a><span class="sep">/</span><a href="../">For Teachers</a><span class="sep">/</span><span>RPF &amp; Criterion E</span></nav>
   </div>
+
   <header class="hero">
-    <p class="eyebrow">For Teachers · Assessment</p>
-    <h1>The RPF &amp; Criterion E</h1>
-    <p class="lede">What the Reflection and Progress Form is, how its reflective statement is marked, and six real reflective statements with their scores.</p>
+    <p class="eyebrow">For Teachers</p>
+    <h1>RPF &amp; Criterion E</h1>
   </header>
+
+  <main>
+  <!-- ═════ 1 · WHAT THE RPF IS ═════ -->
+  <section class="block" id="rpf">
+    <h2>What the RPF is</h2>
+    <p>The Reflection and Progress Form is a two-page form submitted with every extended essay.</p>
+    <ul class="facts">
+      <li><span class="n">1</span><div><b>Page 1: three reflection sessions.</b> The supervisor records the month, DP year and their initials after each one: first session, interim session, and the final viva voce.</div></li>
+      <li><span class="n">2</span><div><b>Page 2: the reflective statement.</b> Written by the student after the viva voce. No more than 500 words. <b>This is the only part marked</b>, under Criterion E.</div></li>
+    </ul>
+    <p class="note warn"><b>Criterion E gets 0</b> if the RPF is blank or the statement is not in the language of the essay.</p>
+    <details class="more">
+      <summary>More detail</summary>
+      <div class="body">
+        <ul>
+          <li>The RPF is mandatory and is submitted together with the completed essay.</li>
+          <li>The first session covers initial ideas and the research plan; the interim session comes once a significant amount of research is done; the viva voce comes after the essay is handed in.</li>
+          <li>Other check-ins are allowed but are not recorded on the form.</li>
+          <li>The form supports the authenticity of the work. By submitting the essay, the supervisor takes responsibility for its authenticity; work in doubt should not be uploaded.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <!-- ═════ 2 · WHAT THE RUBRIC ASKS ═════ -->
+  <section class="block" id="rubric">
+    <h2>What the rubric asks</h2>
+    <p class="gq">Does the student evaluate the effect of the extended essay learning experience on them as a learner?</p>
+    <div class="levels">
+      <div class="level"><span class="s">4</span><p><b>Consistently evaluative</b>, with specific examples. <span>Growth and transfer shown throughout.</span></p></div>
+      <div class="level"><span class="s">3</span><p><b>Partially evaluative</b>, with specific examples. <span>Growth and transfer shown often.</span></p></div>
+      <div class="level"><span class="s">2</span><p><b>Descriptive</b>, with some specific examples. <span>Growth and transfer shown sometimes.</span></p></div>
+      <div class="level"><span class="s">1</span><p><b>Descriptive.</b> <span>Only describes the process; no transfer of learning.</span></p></div>
+    </div>
+    <details class="more">
+      <summary>Full rubric wording</summary>
+      <div class="body">
+        <div class="rubric-wrap">
+          <table class="rubric">
+            <thead><tr><th></th><th>1 mark</th><th>2 marks</th><th>3 marks</th><th>4 marks</th></tr></thead>
+            <tbody>
+              <tr><th>Evaluative</th>
+                <td>Reflection on the extended essay learning experience is <b>descriptive</b>.</td>
+                <td>Reflection on the extended essay learning experience is descriptive and includes <b>some specific examples</b>.</td>
+                <td>Reflection on the extended essay learning experience is <b>partially evaluative</b> and includes specific examples.</td>
+                <td>Reflection on the extended essay learning experience is <b>consistently evaluative</b> and includes specific examples.</td></tr>
+              <tr><th>Growth</th>
+                <td>Reflection on the student's growth is <b>limited to a description of the process</b> and there is no evidence of transfer of learning.</td>
+                <td>Reflection <b>sometimes</b> shows evidence of the student's growth and transfer of learning.</td>
+                <td>Reflection <b>often</b> shows evidence of the student's growth and transfer of learning.</td>
+                <td>Reflection <b>consistently</b> shows evidence of the student's growth and transfer of learning.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin-top:14px"><b>Evidence may be drawn from, but is not limited to:</b></p>
+        <ul>
+          <li>experiences and insights that could shape future thinking</li>
+          <li>explicit examples of how skills learned could be used in other current contexts and in the future</li>
+          <li>how changes in perspective impacted decision-making.</li>
+        </ul>
+        <p class="small muted">Work that does not reach the 1-mark descriptors receives 0. Source: IB <i>Extended essay guide</i>, Criterion E.</p>
+      </div>
+    </details>
+  </section>
+
+  <!-- ═════ 3 · SAMPLES ═════ -->
+  <section class="block" id="samples">
+    <h2>Samples with scores</h2>
+    <p class="muted">Six reflective statements from IB sample RPFs.</p>
+
+    <div class="toolbar noprint">
+      <label class="switch"><input type="checkbox" id="showScores" checked><span class="track"></span>Show scores</label>
+      <label class="switch hl"><input type="checkbox" id="showHl"><span class="track"></span>Highlight strong parts <span class="sw" aria-hidden="true"></span></label>
+    </div>
+
+    <div class="samples" id="samplesList"></div>
+
+    <details class="more">
+      <summary>Patterns across the six samples</summary>
+      <div class="body">
+        <ul class="patterns">
+          <li><b>"Why", not just "what".</b> The Biology statement explains why its scope had to narrow. The Business statement reports changes without saying what they taught.</li>
+          <li><b>Length is not quality.</b> The Mathematics statement uses about 495 words and scores 2. The Interdisciplinary statement uses about 300 and scores 3.</li>
+          <li><b>Named moments earn marks.</b> A surprising result (Biology), feedback on a draft (Language A), a draft that failed (Interdisciplinary).</li>
+          <li><b>Transfer has to be shown.</b> Saying skills will help "in my future job" (Language A) is not the same as giving an example.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+  </main>
+
+  <footer>Reflective statements and forms © International Baccalaureate Organization 2023, shared for teacher training. Rationales are written for this site, not by IB examiners.<br><a href="../">← For Teachers</a></footer>
 </div>
 
-<nav class="jump" aria-label="On this page">
-  <div class="shell">
-    <a href="#rpf">The RPF</a><a href="#rubric">Criterion E rubric</a><a href="#samples">Scored samples</a><a href="#takeaways">What separates the scores</a>
-  </div>
-</nav>
-
-<main class="shell">
-
-<!-- ═══════════ 1 · THE RPF ═══════════ -->
-<section class="block" id="rpf">
-  <div class="sechead"><span class="num">01</span><h2>What the RPF is</h2></div>
-  <p class="muted" style="max-width:720px">The <b style="color:var(--fg)">Reflection and Progress Form (RPF)</b> is the two-page record that travels with every extended essay. Page 1 logs three formal reflection sessions between student and supervisor. Page 2 holds the student's reflective statement, which is the only thing marked under Criterion E.</p>
-
-  <div class="anatomy" style="margin-top:20px">
-    <div class="form" aria-label="Structure of the RPF">
-      <div class="fh"><b>EE/RPF</b><span>For use from May/Nov 2027</span></div>
-      <div class="sess">
-        <span class="n">1</span>
-        <div><h4>First reflection session</h4><p>The student's initial ideas and how they plan to undertake the research.</p>
-        <div class="fields"><span>Month</span><span>DP year (1 or 2)</span><span>Supervisor initials</span></div></div>
-      </div>
-      <div class="sess">
-        <span class="n">2</span>
-        <div><h4>Interim reflection session</h4><p>Once a significant amount of the research has been completed.</p>
-        <div class="fields"><span>Month</span><span>DP year (1 or 2)</span><span>Supervisor initials</span></div></div>
-      </div>
-      <div class="sess">
-        <span class="n">3</span>
-        <div><h4>Final session: viva voce</h4><p>After the completed essay has been handed in.</p>
-        <div class="fields"><span>Month</span><span>DP year (1 or 2)</span><span>Supervisor initials</span></div></div>
-      </div>
-      <div class="sess rs">
-        <span class="n">✎</span>
-        <div><h4>Reflective statement · page 2</h4><p>Written by the student after the viva voce. No more than 500 words, in the same language as the essay. <b style="color:var(--fg)">Assessed under Criterion E.</b></p></div>
-      </div>
-    </div>
-
-    <div class="facts">
-      <div class="fact"><span class="i">→</span><div><b>Mandatory.</b> The RPF must be submitted together with the completed essay.</div></div>
-      <div class="fact"><span class="i">→</span><div><b>Three recorded sessions.</b> Other check-ins are allowed but are not recorded on the form. After each formal session the supervisor records the month, the student's DP year and their initials.</div></div>
-      <div class="fact"><span class="i">→</span><div><b>One statement, written last.</b> The reflective statement is written after the viva voce, so it can look back on the whole experience.</div></div>
-      <div class="fact"><span class="i">→</span><div><b>An authenticity record.</b> The form supports the authenticity of the work. By submitting the essay, the supervisor takes responsibility for its authenticity; work in doubt should not be uploaded.</div></div>
-      <div class="note warn"><b>Automatic 0 for Criterion E</b> if the RPF is blank or the reflective statement is written in a language other than that of the essay.</div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════ 2 · RUBRIC ═══════════ -->
-<section class="block" id="rubric">
-  <div class="sechead"><span class="num">02</span><h2>Criterion E: Reflection</h2><span class="pill">4 marks</span><span class="pill">reflective statement only</span></div>
-  <p class="gq">Does the student evaluate the effect of the extended essay learning experience on them as a learner?</p>
-
-  <div class="rubric-wrap">
-    <table class="rubric">
-      <thead><tr><th>Strand</th><th class="lv">1 mark</th><th class="lv">2 marks</th><th class="lv">3 marks</th><th class="lv">4 marks</th></tr></thead>
-      <tbody>
-        <tr><th>Evaluative</th>
-          <td>Reflection on the EE learning experience is <em>descriptive</em>.</td>
-          <td>Reflection is descriptive and includes <em>some specific examples</em>.</td>
-          <td>Reflection is <em>partially evaluative</em> and includes specific examples.</td>
-          <td>Reflection is <em>consistently evaluative</em> and includes specific examples.</td></tr>
-        <tr><th>Growth</th>
-          <td>Reflection on growth is <em>limited to a description of the process</em>; no evidence of transfer of learning.</td>
-          <td>Reflection <em>sometimes</em> shows evidence of growth and transfer of learning.</td>
-          <td>Reflection <em>often</em> shows evidence of growth and transfer of learning.</td>
-          <td>Reflection <em>consistently</em> shows evidence of growth and transfer of learning.</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p class="small muted" style="margin-top:10px">Wording condensed from the IB <i>Extended essay guide</i> (first assessment 2027). If the work does not reach the standard of the 1-mark descriptors, 0 is awarded.</p>
-
-  <div class="grid2" style="margin-top:22px">
-    <div class="panel">
-      <h3 style="margin-bottom:8px">Evidence the reflection may draw on</h3>
-      <ul class="evid">
-        <li>experiences and insights that could shape future thinking</li>
-        <li>explicit examples of how skills learned could be used in other current contexts and in the future</li>
-        <li>how changes in perspective impacted decision-making</li>
-      </ul>
-      <p class="small muted" style="margin:10px 0 0">The guide says evidence may be drawn from, but is not limited to, these three.</p>
-    </div>
-    <div class="panel">
-      <h3 style="margin-bottom:8px">The ladder in one line each</h3>
-      <div class="ladder" style="grid-template-columns:1fr 1fr;margin-top:6px">
-        <div class="rung"><span class="s">1</span><b>Retells</b><span>What happened, in order.</span></div>
-        <div class="rung"><span class="s">2</span><b>Retells with examples</b><span>Specific moments, little judgement.</span></div>
-        <div class="rung"><span class="s">3</span><b>Judges in places</b><span>Some "why", growth shown often.</span></div>
-        <div class="rung"><span class="s">4</span><b>Judges throughout</b><span>Every example evaluated; transfer shown.</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════ 3 · SAMPLES ═══════════ -->
-<section class="block" id="samples">
-  <div class="sechead"><span class="num">03</span><h2>Scored samples</h2><span class="pill">6 reflective statements</span></div>
-  <p class="muted" style="max-width:740px">Six reflective statements from IB sample RPFs, each with its Criterion E score. The commentary beside each one explains the score against the two strands. Open the original form as a PDF from any card.</p>
-
-  <div class="controls noprint">
-    <div class="seg" role="group" aria-label="Sort samples">
-      <button type="button" data-sort="high" aria-pressed="true">Score: high → low</button>
-      <button type="button" data-sort="low" aria-pressed="false">Low → high</button>
-    </div>
-    <label class="toggle"><input type="checkbox" id="annot"> Highlight evidence</label>
-    <label class="toggle"><input type="checkbox" id="calib"> Calibration mode</label>
-    <span class="tally" id="tally"></span>
-    <span class="spacer"></span>
-  </div>
-  <div class="legend" aria-hidden="true">
-    <span class="e"><i></i>Evaluation or growth</span>
-    <span class="x"><i></i>Specific example</span>
-    <span class="g"><i></i>Description or generic claim</span>
-  </div>
-  <div class="note" id="calibNote" style="display:none;margin-bottom:16px"><b>Calibration mode.</b> Scores and commentary are hidden. Read each statement, pick a mark from 1 to 4, then compare with the awarded score. Useful for supervisor standardisation meetings.</div>
-
-  <div class="dist" id="dist" role="group" aria-label="Filter by score"></div>
-  <div class="samples" id="samplesList"></div>
-</section>
-
-<!-- ═══════════ 4 · TAKEAWAYS ═══════════ -->
-<section class="block" id="takeaways">
-  <div class="sechead"><span class="num">04</span><h2>What separates the scores</h2></div>
-  <p class="muted" style="max-width:720px">Patterns across the six samples, for supervisors preparing students for the viva voce and the reflective statement.</p>
-  <div class="take">
-    <div class="panel"><h3>"Why", not just "what"</h3><p>The Biology statement (4) explains <b>why</b> the scope had to narrow: the in vitro models were infeasible in time and resources. The Business statement (2) reports that the question changed, but rarely says what the change taught the student.</p></div>
-    <div class="panel"><h3>Length is not quality</h3><p>The Mathematics statement (2) uses 495 of its 500 words; the Interdisciplinary statement (3) uses about 300. <b>Generic sentences</b> ("never give up", "the reward was sweet") fill space without earning marks.</p></div>
-    <div class="panel"><h3>Specific moments carry the marks</h3><p>An anomaly in the results (Biology), feedback on a first draft (Language A), a single-subject draft that failed (Interdisciplinary). <b>Named moments</b> give the student something to evaluate.</p></div>
-    <div class="panel"><h3>Transfer must be shown</h3><p>Language A (3) claims the skills transferred to "university classes" and a "future job" but gives no example. The Interdisciplinary statement (3) names a result: <b>improved English grades</b>. Neither sustains it, which is part of why both stop at 3.</p></div>
-    <div class="panel"><h3>Motivation is not reflection</h3><p>The Psychology statement (1) spends its opening on why the topic mattered personally and names a challenge (narrowing the topic) <b>without saying how it was solved</b>. Its one forward-looking idea comes in the final paragraph.</p></div>
-    <div class="panel"><h3>Use the viva to set it up</h3><p>The statement is written after the viva voce. Questions such as "What would you do differently, and why?" and "Where have you used this skill since?" <b>rehearse the evaluative moves</b> the rubric rewards.</p></div>
-  </div>
-</section>
-
-</main>
-<div class="shell"><footer><a href="../">← For Teachers</a> · <a href="../../">Extended Essay hub</a> · Reflective statements and forms © International Baccalaureate Organization 2023, shared here for teacher training. Commentary written for this site; it is not IB examiner commentary.</footer></div>
-
 <script>
-/* ════════════════ DATA ════════════════
-   One object per sample. To add a sample: drop its PDF in samples/,
-   add its statement paragraphs to STATEMENTS, and add one entry here.
-   hl = phrases to highlight: e = evaluation/growth, x = specific example, g = description/generic.
-   Each phrase must appear verbatim in the statement. */
+/* ════════ DATA ════════
+   To add a sample: put its PDF in samples/, add its paragraphs to STATEMENTS,
+   and add one entry to SAMPLES. "strong" phrases must appear word-for-word in the statement. */
 const STATEMENTS = {
  "biology": [
   "Human physiology is a topic that really interests me, so I promptly chose biology. As I wanted my research to be inseparable from our daily lives. I thought of food and decided to research the effect of food additives on the human digestive system. Since I decided to do primary research, I needed to set up a methodology to make sure that it is achievable. One huge concern was how to simulate the digestive system in a feasible way, which was difficult as most investigations are in vivo studies on animals and humans. I investigated various academic journals to find out how I could develop an in vitro methodology. However, a challenge was how most in vitro models, which I initially thought were doable, are infeasible both in terms of time and resources. The difficulty of the experiments from academic journals made me realize that my scope of investigation was too broad. Afterwards, I found out the importance of gut microbiota in gut health and body health, so I narrowed down my topic to the effects of food additives on gut microbiota. While reading different sources, I came across an interesting piece of literature investigating synergism. Thus, I decided to research the synergistic effects of the combinations of food additives to add another layer of investigation. After designing my experimental methodology, I conducted pilot testing, and the methodology was quite reliable as visible results were seen. I would continue to enhance my methodology to produce optimal results.",
@@ -349,212 +223,117 @@ const STATEMENTS = {
 };
 
 const SAMPLES = [
-  {id:"biology", subject:"Biology", label:"Sample C", score:4,
-   topic:"Synergistic effects of food additive combinations on gut microbiota, through primary lab research.",
-   pdf:"samples/biology-sample-c.pdf",
-   evaluative:"Consistently evaluative. Each decision is explained by what the student learned: in vitro models proved infeasible in time and resources, so the scope narrowed to gut microbiota, with Lactobacillus acidophilus as a proxy. The unexpected MSG result is evaluated rather than reported, leading to a point about motivated perception and how it affects the way evidence is gathered.",
-   growth:"Growth is shown throughout: learning to balance significance against feasibility, taking a risk on synergism and getting results beyond the hypothesis, and a lasting change in how the student views food additives. Transfer is clearest in the closing line; the skills point (communication, time management) is stated more than shown.",
-   why:"Awarded 4: evaluation runs through the whole statement and every example is tied to what it taught the student.",
-   hl:[
-    ["x","most in vitro models, which I initially thought were doable, are infeasible both in terms of time and resources"],
-    ["e","The difficulty of the experiments from academic journals made me realize that my scope of investigation was too broad."],
-    ["e","I learnt how to narrow down my area of research into proxies that are focused enough to formulate a research question"],
-    ["x","like using Lactobacillus acidophilus as a proxy to represent gut microbiota"],
-    ["g","I learnt how actively initiating communication and time management are critical when writing an essay."],
-    ["x","there was an anomaly as the results of MSG did not align with my original expectations supported by academic journals"],
-    ["e","Thus, I realized the issue of motivated perception. Our tendency to find evidence for what we are predisposed to believe in may impact how holistically we gather information."],
-    ["e","Without much research in this area, I took the risk and managed to obtain results that drew conclusions beyond my hypothesis."],
-    ["e","all of which I will be more aware of from now on"]
-   ]},
-  {id:"language-a", subject:"Language A", label:"Sample B", score:3,
-   topic:"How Orwell uses setting in 1984 to communicate the dangers of a totalitarian society.",
-   pdf:"samples/language-a-sample-b.pdf",
-   evaluative:"Partially evaluative, with specific examples: the two possible directions considered, the research question, the thematic structure (sanctuary, compromise of home, power), and feedback on the first draft that changed the structure, the sources and the tone of the conclusion. The student explains why critical and biographical research was added, but much of the middle is a sequence of steps.",
-   growth:"Growth is often visible: the essay ended \"radically different\" from the initial plan, and the student reflects on a non-linear process and working in chunks. Transfer is claimed (university classes, a future job) but not illustrated with an example.",
-   why:"Not a 4: the evaluation is not sustained, and the transfer of learning is asserted rather than shown.",
-   hl:[
-    ["x","\"How does Orwell use setting to communicate the dangers of a totalitarian society?\""],
-    ["e","Therefore I believed that some research from a critical and biographical perspective would help improve my understanding and production of my analysis"],
-    ["x","I used a thematic progression of sanctuary, compromise of home, and power"],
-    ["g","I believe that this was a satisfying project for me"],
-    ["e","things clicked in place for me mentally after the feedback on my first draft"],
-    ["x","The structure, use of researched sources, and the tone of my conclusion were all modified"],
-    ["e","The essay looked radically different to my initial vision"],
-    ["g","I was able to transfer the research, critical thinking, and writing skills to my university classes and also to other facets of my life--in my future job, for instance."]
-   ]},
-  {id:"interdisciplinary", subject:"Interdisciplinary", label:"Sample C", score:3,
-   topic:"World Studies (English and anthropology): how Pingu communicates meaning nonverbally across cultures.",
-   pdf:"samples/interdisciplinary-sample-c.pdf",
-   evaluative:"Partially evaluative, and strongest at the start: the student explains exactly why single-subject drafts failed (an English draft assumed the audience shared the conventions; an anthropological draft ignored media conventions) and how that led to the interdisciplinary approach and a narrower research question.",
-   growth:"Clear, honest growth: a long-standing difficulty with subjective analysis in the humanities, improved analytical skill, and a concrete result in improved English grades. Transfer is shown, but only into one current context.",
-   why:"Not a 4: the final paragraph shifts from evaluation to feeling (\"unbelievably proud\"), and there is little on how the learning will be used beyond English class.",
-   hl:[
-    ["e","When I wrote an English draft, I felt forced to assume that the audience would have a true understanding of the norms and conventions"],
-    ["e","an anthropological draft lacked a focus on how media conventions are used to communicate"],
-    ["x","there are substantial differences in methodology"],
-    ["e","I therefore adjusted my research question to better focus on their common ground"],
-    ["e","However, the Essay has helped me to improve my subjective analytical skills, resulting in improved English grades."],
-    ["g","I feel unbelievably proud"]
-   ]},
-  {id:"mathematics", subject:"Mathematics", label:"Sample C", score:2,
-   topic:"Historical methods for approximating π (Archimedes, Wallis, Viète), modelled in Excel.",
-   pdf:"samples/mathematics-sample-c.pdf",
-   evaluative:"Descriptive, with some specific examples: Archimedes' inscribed and circumscribed polygons, failed Java and Python scripts, the switch to Excel, and the Wallis and Viète series. None is evaluated. The student never says why the code failed, what Excel's limitations were, or what either taught them about method.",
-   growth:"Growth is sometimes shown: applying school mathematics in a new way when proving the formulas. Most growth claims are generic (\"never give up\", \"continue learning and growing\"), and there is no concrete transfer.",
-   why:"Not a 3: almost no evaluation. Nearly all 500 words go to narrative and stock phrases, which shows that length does not raise the mark.",
-   hl:[
-    ["x","Archimedes usage of regular polygons inscribed and circumscribed in a circle"],
-    ["x","My initial attempts to use Java or Python scripts to calculate the approximation were met with disappointment as the code failed to yield accurate results."],
-    ["x","John Wallis series and Francois Viètes series"],
-    ["g","This experience was a testament to the power of determination and the importance of seeking out alternative solutions."],
-    ["g","It has taught me to never give up, even when faced with seemingly insurmountable challenges."],
-    ["g","the reward was sweet as I was able to unravel the mystery of π and find its true value"],
-    ["e","I was able to apply the mathematical concepts I had acquired in school and deepen my understanding of them by exercising them in a new way when proving the formulas"],
-    ["g","This experience has left a lasting impression on me and has inspired me to continue learning and growing in new and exciting ways."]
-   ]},
-  {id:"business-management", subject:"Business Management", label:"Sample A", score:2,
-   topic:"The effect of Corporate Social Responsibility on Starbucks' global revenue, through secondary research.",
-   pdf:"samples/business-management-sample-a.pdf",
-   evaluative:"Descriptive, with some specific examples: too many variables for the word limit, the syllabus units used, and the shift from sustainability to CSR. Much of it reads as a log of supervisor feedback, including formatting fixes (double spacing, font size). The closing paragraph begins to evaluate the choice of secondary research.",
-   growth:"Growth appears in places: secondary research suited a global scope, and a single-country focus would have allowed primary research. \"I learned to manage my time better\" is stated without evidence, and there is no transfer beyond the essay.",
-   why:"Not a 3: the evaluation is confined to the last two sentences, and the specific examples are mostly procedural.",
-   hl:[
-    ["x","I added two independent and two dependent variables to my question and realized that the word limit would not be enough for this"],
-    ["x","units 3.3 costs and revenues and 5.1 introduction to operations management"],
-    ["g","I realized that I needed to correct the requirements in the format such as using double space, using 12 punto"],
-    ["g","I learned to manage my time better"],
-    ["e","realized that secondary research is a better option for researching Starbucks globally"],
-    ["e","I could have changed my topic from investigating Starbucks in a global scale to only investigating a country in order to do primary research for deeper understanding."]
-   ]},
-  {id:"psychology", subject:"Psychology", label:"Sample A", score:1,
-   topic:"The effect of music on ADHD symptoms.",
-   pdf:"samples/psychology-sample-a.pdf",
-   evaluative:"Descriptive. The opening explains personal motivation for the topic rather than the learning experience. A challenge is named (narrowing a broad topic) but the statement never says how it was resolved. No study, method or decision from the research is named.",
-   growth:"Growth is mostly described rather than shown: analytical skills \"further developed\" by the final draft. The final paragraph has the one forward-looking idea (studies using music from other cultures) but does not develop it.",
-   why:"Not a 2: there are almost no specific examples from the research process, so there is little for the reflection to work with.",
-   hl:[
-    ["g","I have a strong connection to both these two aspects"],
-    ["g","Narrowing it down so there aren't too many things to focus on in the essay was a challenge."],
-    ["g","the essay helped me further develop these skills"],
-    ["e","I would attempt to find studies that used music from different cultures so I could further explore how cultural music impacts the symptoms of ADHD"]
-   ]}
+  {id:"biology", subject:"Biology", score:4, pdf:"samples/biology-sample-c.pdf",
+   topic:"Food additives and gut microbiota (lab investigation)",
+   sum:"Evaluative throughout: each decision is explained by what it taught the student.",
+   evaluative:"Explains why the scope narrowed (in vitro models were not feasible), why a proxy organism was used, and what the unexpected MSG result revealed about motivated perception.",
+   growth:"Repeated and specific: balancing ambition with feasibility, taking a risk on synergism, and a lasting change in how the student sees food additives.",
+   strong:[
+    "The difficulty of the experiments from academic journals made me realize that my scope of investigation was too broad.",
+    "I learnt how to narrow down my area of research into proxies that are focused enough to formulate a research question",
+    "Thus, I realized the issue of motivated perception. Our tendency to find evidence for what we are predisposed to believe in may impact how holistically we gather information.",
+    "Without much research in this area, I took the risk and managed to obtain results that drew conclusions beyond my hypothesis.",
+    "all of which I will be more aware of from now on"]},
+  {id:"language-a", subject:"Language A", score:3, pdf:"samples/language-a-sample-b.pdf",
+   topic:"Setting and totalitarianism in Orwell's 1984",
+   sum:"Specific and partly evaluative, but transfer is claimed rather than shown.",
+   evaluative:"Explains why critical and biographical research was added, and how feedback on the first draft changed the structure, sources and conclusion. Much of the rest lists steps.",
+   growth:"The essay ended \"radically different\" from the plan. Transfer to \"university classes\" and a \"future job\" is stated with no example.",
+   strong:[
+    "Therefore I believed that some research from a critical and biographical perspective would help improve my understanding and production of my analysis",
+    "things clicked in place for me mentally after the feedback on my first draft",
+    "The essay looked radically different to my initial vision"]},
+  {id:"interdisciplinary", subject:"Interdisciplinary", score:3, pdf:"samples/interdisciplinary-sample-c.pdf",
+   topic:"Nonverbal communication across cultures in Pingu (English and anthropology)",
+   sum:"Strong evaluation of why single-subject drafts failed; growth is real but narrow.",
+   evaluative:"Explains exactly what the English draft and the anthropology draft each missed, and how that reshaped the research question.",
+   growth:"Names a real change: better analysis of texts and improved English grades. Little on future use, and the ending moves to feeling (\"unbelievably proud\").",
+   strong:[
+    "When I wrote an English draft, I felt forced to assume that the audience would have a true understanding of the norms and conventions",
+    "an anthropological draft lacked a focus on how media conventions are used to communicate",
+    "I therefore adjusted my research question to better focus on their common ground",
+    "However, the Essay has helped me to improve my subjective analytical skills, resulting in improved English grades."]},
+  {id:"mathematics", subject:"Mathematics", score:2, pdf:"samples/mathematics-sample-c.pdf",
+   topic:"Historical methods for approximating π, modelled in Excel",
+   sum:"Specific examples but almost no evaluation, across nearly 500 words.",
+   evaluative:"Names Archimedes, the failed Java and Python code, Excel, and the Wallis and Viète series, but never says why the code failed or what Excel's limits taught.",
+   growth:"Mostly stock phrases (\"never give up\", \"the reward was sweet\"). One real point: applying school mathematics in a new way.",
+   strong:[
+    "I was able to apply the mathematical concepts I had acquired in school and deepen my understanding of them by exercising them in a new way when proving the formulas"]},
+  {id:"business-management", subject:"Business Management", score:2, pdf:"samples/business-management-sample-a.pdf",
+   topic:"Corporate Social Responsibility and Starbucks' revenue",
+   sum:"A log of changes with some examples; evaluation appears only at the end.",
+   evaluative:"Lists changes to the question and formatting fixes (double spacing, font size) without saying what they taught.",
+   growth:"The last paragraph recognises that a single-country focus would have allowed primary research. \"I learned to manage my time better\" is stated, not shown.",
+   strong:[
+    "realized that secondary research is a better option for researching Starbucks globally",
+    "I could have changed my topic from investigating Starbucks in a global scale to only investigating a country in order to do primary research for deeper understanding."]},
+  {id:"psychology", subject:"Psychology", score:1, pdf:"samples/psychology-sample-a.pdf",
+   topic:"Music and ADHD symptoms",
+   sum:"Mostly personal motivation and description, with almost no examples from the research.",
+   evaluative:"Names one challenge (narrowing the topic) but not how it was solved. No study, method or decision is named.",
+   growth:"Improved analytical skill is asserted. One forward-looking idea (studies using music from other cultures) comes at the end and is not developed.",
+   strong:[
+    "I would attempt to find studies that used music from different cultures so I could further explore how cultural music impacts the symptoms of ADHD"]}
 ];
 
-/* ════════════════ RENDERING ════════════════ */
+/* ════════ RENDERING ════════ */
 const $=s=>document.querySelector(s);
 const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
-const words=id=>STATEMENTS[id].join(" ").split(/\s+/).filter(Boolean).length;
-const state={sort:"high", filter:null, guesses:{}};
 
-function markup(s){
-  const parts=STATEMENTS[s.id].map(p=>{
+function statementHTML(s){
+  return STATEMENTS[s.id].map(p=>{
     let h=esc(p);
-    s.hl.forEach(([k,ph])=>{const e=esc(ph); const i=h.indexOf(e); if(i>-1) h=h.slice(0,i)+`<mark class="${k}">${e}</mark>`+h.slice(i+e.length);});
-    return `<p>${h}</p>`;
-  });
-  return parts.join("");
+    s.strong.forEach(ph=>{const e=esc(ph),i=h.indexOf(e); if(i>-1) h=h.slice(0,i)+"<mark>"+e+"</mark>"+h.slice(i+e.length);});
+    return "<p>"+h+"</p>";
+  }).join("");
 }
 function card(s){
-  const pips=[1,2,3,4].map(n=>`<i class="${n<=s.score?"on":""}"></i>`).join("");
-  return `<article class="card" id="${s.id}" data-score="${s.score}">
+  return `<article class="card" id="${s.id}">
     <div class="ch">
-      <div>
-        <div class="sub">${s.subject} · IB ${s.label}</div>
-        <h3>${s.subject}</h3>
-        <div class="topic">${esc(s.topic)}</div>
-        <div class="meta"><span class="pill">≈ ${words(s.id)} words</span><span class="pill">${STATEMENTS[s.id].length} ¶</span></div>
-      </div>
-      <div class="score" aria-label="Criterion E score ${s.score} out of 4">
-        <div class="big">${s.score}<small> / 4</small></div>
-        <div class="pips">${pips}</div>
-        <div class="lbl">Criterion E</div>
-      </div>
+      <div><h3>${s.subject}</h3><div class="topic">${esc(s.topic)}</div></div>
+      <div class="score" aria-label="Criterion E score"><b>${s.score}</b><span>out of 4</span></div>
     </div>
-    <div class="cb">
-      <div class="stmt clamp">
-        <div class="lab"><span>Reflective statement</span></div>
-        <div class="text">${markup(s)}</div>
-        <button class="more" type="button">Read full statement ↓</button>
-      </div>
-      <div class="comm">
-        <div class="verdict"></div>
-        <div class="lab"><span>Why this score</span></div>
-        <div class="strand"><h4>Evaluative</h4><p>${esc(s.evaluative)}</p></div>
-        <div class="strand"><h4>Growth &amp; transfer</h4><p>${esc(s.growth)}</p></div>
-        <div class="strand why"><h4>Bottom line</h4><p>${esc(s.why)}</p></div>
-        <div class="cf"><a class="btn" href="${s.pdf}" target="_blank" rel="noopener">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>
-          Open the RPF (PDF)</a></div>
-      </div>
-      <div class="guess">
-        <p>Read the statement, then choose a Criterion E mark.</p>
-        <div class="opts">${[1,2,3,4].map(n=>`<button type="button" data-guess="${n}">${n}</button>`).join("")}</div>
-      </div>
+    <div class="stmt clamp"><div class="text">${statementHTML(s)}</div></div>
+    <div class="actions">
+      <button class="link js-read" type="button" aria-expanded="false">Read full statement</button>
+      <button class="link js-why" type="button" aria-expanded="false">Show rationale</button>
+      <a class="pdf" href="${s.pdf}" target="_blank" rel="noopener">Original RPF (PDF) ↗</a>
+    </div>
+    <div class="why">
+      <p class="sum">${esc(s.sum)}</p>
+      <dl><dt>Evaluative</dt><dd>${esc(s.evaluative)}</dd><dt>Growth</dt><dd>${esc(s.growth)}</dd></dl>
     </div>
   </article>`;
 }
-function renderDist(){
-  $("#dist").innerHTML=[4,3,2,1].map(n=>{
-    const list=SAMPLES.filter(s=>s.score===n);
-    return `<button type="button" data-filter="${n}" aria-pressed="${state.filter===n}">
-      <span class="top2"><span>SCORE</span><b>${n}</b></span>
-      <span class="chips">${list.length?list.map(s=>`<span>${s.subject}</span>`).join(""):'<span style="opacity:.5">none</span>'}</span></button>`;
-  }).join("");
-}
-function renderList(){
-  const calib=document.body.classList.contains("calib");
-  /* calibration mode lists samples alphabetically so the order doesn't give the scores away */
-  const list=[...SAMPLES].sort((a,b)=>calib?a.subject.localeCompare(b.subject):(state.sort==="high"?b.score-a.score:a.score-b.score));
+function render(){
+  const scores=$("#showScores").checked;
+  /* scores shown: high to low. Scores hidden: alphabetical, so the order doesn't give them away. */
+  const list=[...SAMPLES].sort((a,b)=>scores?b.score-a.score:a.subject.localeCompare(b.subject));
+  const open=new Set([...document.querySelectorAll(".card.open")].map(c=>c.id));
   $("#samplesList").innerHTML=list.map(card).join("");
-  applyFilter();
+  open.forEach(id=>toggleWhy(document.getElementById(id),true));
+  if($("#showHl").checked) document.querySelectorAll(".card").forEach(c=>expand(c,true));
 }
-function applyFilter(){
-  document.querySelectorAll(".card").forEach(c=>c.hidden=state.filter!==null&&+c.dataset.score!==state.filter);
+function expand(c,on){
+  c.querySelector(".stmt").classList.toggle("clamp",!on);
+  const b=c.querySelector(".js-read"); b.textContent=on?"Collapse statement":"Read full statement"; b.setAttribute("aria-expanded",on);
 }
-function tally(){
-  const g=Object.entries(state.guesses);
-  const hit=g.filter(([id,v])=>SAMPLES.find(s=>s.id===id).score===v).length;
-  const near=g.filter(([id,v])=>Math.abs(SAMPLES.find(s=>s.id===id).score-v)===1).length;
-  $("#tally").textContent=g.length?`${hit}/${g.length} exact · ${near} within one`:"";
+function toggleWhy(c,on){
+  c.classList.toggle("open",on);
+  const b=c.querySelector(".js-why"); b.textContent=on?"Hide rationale":"Show rationale"; b.setAttribute("aria-expanded",on);
 }
-
 document.addEventListener("click",e=>{
-  const t=e.target;
-  const more=t.closest(".more");
-  if(more){const st=more.closest(".stmt"); const open=st.classList.toggle("clamp"); more.textContent=open?"Read full statement ↓":"Collapse ↑"; return;}
-  const sb=t.closest("[data-sort]");
-  if(sb){state.sort=sb.dataset.sort; document.querySelectorAll("[data-sort]").forEach(b=>b.setAttribute("aria-pressed",b===sb)); renderList(); restoreReveals(); return;}
-  const fb=t.closest("[data-filter]");
-  if(fb){const n=+fb.dataset.filter; state.filter=state.filter===n?null:n; renderDist(); applyFilter(); return;}
-  const gb=t.closest("[data-guess]");
-  if(gb){const c=gb.closest(".card"); const v=+gb.dataset.guess; state.guesses[c.id]=v; reveal(c); tally(); return;}
+  const r=e.target.closest(".js-read"); if(r){const c=r.closest(".card"); expand(c,c.querySelector(".stmt").classList.contains("clamp")); return;}
+  const w=e.target.closest(".js-why"); if(w){const c=w.closest(".card"); toggleWhy(c,!c.classList.contains("open"));}
 });
-function reveal(c){
-  const s=SAMPLES.find(x=>x.id===c.id); const v=state.guesses[c.id];
-  const vd=c.querySelector(".verdict");
-  const d=v-s.score;
-  vd.className="verdict "+(d===0?"hit":"off");
-  vd.textContent=d===0?`You gave ${v}. Awarded ${s.score}: match.`:`You gave ${v}. Awarded ${s.score}: ${Math.abs(d)} ${d>0?"higher":"lower"} than the awarded mark.`;
-  c.classList.add("revealed");
-}
-function restoreReveals(){document.querySelectorAll(".card").forEach(c=>{if(state.guesses[c.id]) reveal(c);});}
-
-$("#annot").addEventListener("change",e=>document.body.classList.toggle("annot",e.target.checked));
-$("#calib").addEventListener("change",e=>{
-  const on=e.target.checked;
-  document.body.classList.toggle("calib",on);
-  $("#calibNote").style.display=on?"block":"none";
-  if(on){state.filter=null; renderDist(); $("#annot").checked=false; document.body.classList.remove("annot");}
-  document.querySelectorAll("[data-sort]").forEach(x=>x.disabled=on);
-  renderList(); restoreReveals();
+$("#showScores").addEventListener("change",e=>{document.body.classList.toggle("noscores",!e.target.checked); render();});
+$("#showHl").addEventListener("change",e=>{
+  document.body.classList.toggle("hl",e.target.checked);
+  /* highlights sit throughout the text, so open every statement when they're switched on */
+  if(e.target.checked) document.querySelectorAll(".card").forEach(c=>expand(c,true));
 });
-
-/* jump-nav highlight */
-const links=[...document.querySelectorAll(".jump a")];
-const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){links.forEach(a=>a.classList.toggle("on",a.getAttribute("href")==="#"+en.target.id));}}),{rootMargin:"-40% 0px -55% 0px"});
-document.querySelectorAll("section.block").forEach(s=>io.observe(s));
-
-renderDist(); renderList();
+render();
 </script>
 </body>
 </html>
