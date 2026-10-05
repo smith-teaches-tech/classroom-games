@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EE for Students — Extended Essay Hub</title>
+<meta name="description" content="Your path through the IB Extended Essay, from exploring topics to formatting the final paper.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../_shared/ee.css">
+<script src="../_shared/ee.js"></script>
+<style>
+:root{--brand:var(--stud)}
+.mark{background:var(--stud)}
+.path{list-style:none;margin:10px 0 0;padding:0;counter-reset:s;display:grid;gap:10px}
+.path li{counter-increment:s;display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;
+  background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.path li::before{content:counter(s,decimal-leading-zero);font-family:var(--mono);font-size:13px;color:var(--stud);
+  border:1px solid color-mix(in srgb,var(--stud) 40%,transparent);border-radius:8px;height:30px;display:grid;place-items:center}
+.path h3{font-size:17px;margin-bottom:3px}
+.path p{margin:0;color:var(--fg2);font-size:14px}
+.path .links{margin-top:9px;display:flex;gap:8px;flex-wrap:wrap}
+.path .soon{font-family:var(--mono);font-size:10.5px;color:var(--fg3);letter-spacing:.06em}
+</style>
+</head>
+<body>
+<div class="shell narrow">
+  <div class="top">
+    <a class="mark" href="../" title="Extended Essay hub">EE</a>
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="../../">Classroom tools</a><span class="sep">/</span><a href="../">Extended Essay</a><span class="sep">/</span><span>For Students</span>
+    </nav>
+    <button class="iconbtn" id="themeBtn" type="button">☀</button>
+  </div>
+
+  <header class="hero">
+    <p class="eyebrow">For Students</p>
+    <h1>Your EE, one stage at a time</h1>
+    <p class="lede">Work through the stages in order. Each stage will get its own guide and activities; the formatting tools are ready now.</p>
+  </header>
+
+  <main>
+    <ol class="path">
+      <li><div><h3>Explore</h3><p>Find a subject and a topic you can sustain for months.</p><span class="soon">COMING SOON</span></div></li>
+      <li><div><h3>Build a research question</h3><p>Narrow a topic into a focused, answerable question.</p><span class="soon">COMING SOON</span></div></li>
+      <li><div><h3>Research &amp; reflect</h3><p>Gather and evaluate sources, and prepare for your reflection sessions.</p><span class="soon">COMING SOON</span></div></li>
+      <li><div><h3>Write</h3><p>Structure the argument and draft within 4,000 words.</p><span class="soon">COMING SOON</span></div></li>
+      <li><div><h3>Format &amp; submit</h3><p>Get the final paper into the required format.</p>
+        <div class="links"><a class="btn" href="../ee-formatting/">EE Formatting Game ↗</a><a class="btn" href="../table-of-contents-pages/">Table of Contents Pages ↗</a></div></div></li>
+    </ol>
+  </main>
+
+  <footer><a href="../">← Extended Essay hub</a></footer>
+</div>
+</body>
+</html>
