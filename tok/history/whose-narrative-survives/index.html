@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Whose Narrative Survives? — TOK History</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--ox:#6E2028;--ox-l:#9A4149;--ink:#241F1D;--mute:rgba(36,31,29,.62);
+--faint:rgba(36,31,29,.40);--paper:#FBF7F1;--card:#FFFDFA;
+--line:rgba(110,32,40,.22);--line-s:rgba(110,32,40,.42);
+--good:#2F6B4F;--good-bg:rgba(47,107,79,.09);--bad:#8C3A2E;--bad-bg:rgba(140,58,46,.08);
+--w:#4A5A73;--w-bg:rgba(74,90,115,.09);--a:#7A5A2B;--a-bg:rgba(122,90,43,.10);--j:#2F6B4F;--j-bg:rgba(47,107,79,.09)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--paper);color:var(--ink);font-family:"Cormorant Garamond",Georgia,serif;
+display:flex;flex-direction:column;overflow:hidden}
+header{flex:0 0 auto;display:flex;justify-content:space-between;align-items:center;gap:16px;
+padding:12px 26px;border-bottom:1px solid var(--line);background:var(--card)}
+.site{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ox)}
+.stepflag{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.14em;color:var(--faint)}
+.hbtns{display:flex;gap:10px;align-items:center}
+main{flex:1 1 auto;overflow-y:auto;padding:26px 26px 22px}
+.stage{display:none;max-width:1200px;margin:0 auto}
+.stage.on{display:block}
+h1{font-size:44px;font-weight:600;color:var(--ox);line-height:1.06;letter-spacing:.02em}
+h2{font-size:29px;font-weight:600;margin-bottom:12px;line-height:1.15}
+h3{font-size:21px;font-weight:600;margin:4px 0 8px}
+.kick{font-family:"JetBrains Mono",monospace;font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--ox);margin-bottom:12px}
+p{font-size:19px;line-height:1.5;margin-bottom:12px;max-width:72ch}
+.lead{font-size:22px;line-height:1.45}
+.q{font-size:21px;font-style:italic;color:var(--ox);max-width:64ch}
+.rule{height:1px;background:var(--line);margin:20px 0}
+button{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;padding:10px 20px;cursor:pointer;background:none;border:1px solid var(--line-s);color:var(--ox);border-radius:2px}
+button:hover:not(:disabled){background:var(--ox);color:var(--paper);border-color:var(--ox)}
+button:disabled{opacity:.3;cursor:default}
+button.solid{background:var(--ox);color:var(--paper);border-color:var(--ox)}
+button.solid:hover{background:#57171e}
+button.sm{padding:6px 12px;font-size:9px}
+.brief{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--ox);border-radius:3px;padding:14px 18px;margin-bottom:14px}
+.brief .h,.wbox .h,.ask .h{font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ox);margin-bottom:6px}
+.brief p{font-size:18px;line-height:1.45;margin:0 0 6px;max-width:none}
+.brief p:last-child{margin-bottom:0}
+.ask{background:var(--card);border:1px solid var(--line-s);border-radius:3px;padding:14px 18px;margin:14px 0}
+.ask ol{margin:4px 0 0 22px}
+.ask li{font-size:19px;line-height:1.42;margin-bottom:8px}
+.ask li .sub{display:block;font-size:16.5px;color:var(--mute);font-style:italic}
+.wbox{background:var(--card);border-left:3px solid var(--ox);padding:14px 18px;margin-bottom:12px}
+.wbox p{font-size:18px;margin:0 0 6px}
+.wbox p:last-child{margin:0}
+.rv{display:none}
+.rv.shown{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.rvbar{display:flex;gap:12px;align-items:center;margin:14px 0}
+.rvbar .lab{font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.14em;color:var(--faint)}
+.doc{background:#fffef9;border:1px solid var(--line-s);box-shadow:0 2px 0 rgba(110,32,40,.08);padding:22px 28px;margin:10px 0 16px;max-width:880px}
+.doc .src{font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ox);margin-bottom:10px}
+.doc p{font-size:20.5px;line-height:1.55;margin:0;max-width:none}
+.doc .cite{font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.06em;color:var(--mute);margin-top:12px}
+.doc mark{background:rgba(110,32,40,.12);color:inherit;padding:0 2px}
+.doc.hl mark{background:rgba(110,32,40,.28)}
+a{color:var(--ox)}
+.cite a{color:var(--mute)}
+/* painting */
+.paint{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:22px;align-items:start}
+.paint figure{background:var(--card);border:1px solid var(--line-s);padding:10px}
+.paint img{width:100%;display:block}
+.paint .miss{display:none;padding:40px 18px;text-align:center;font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;color:var(--faint);border:1px dashed var(--line-s)}
+.paint figcaption{font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.1em;color:var(--mute);margin-top:8px}
+/* timeline */
+.tl{display:grid;gap:9px;margin:12px 0}
+.tlrow{display:grid;grid-template-columns:92px 1fr auto;gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:3px;padding:11px 14px}
+.tlrow .yr{font-family:"JetBrains Mono",monospace;font-size:14px;color:var(--ox);letter-spacing:.06em}
+.tlrow .ev{font-size:18px;line-height:1.35}
+.tlrow .ev .fb{display:none;font-size:16px;color:var(--ink);margin-top:6px;padding-top:6px;border-top:1px dotted var(--line-s)}
+.tlrow.done .ev .fb{display:block}
+.tlrow .bb{display:flex;gap:6px}
+.tlrow.ok{background:var(--good-bg);border-color:var(--good)}
+.tlrow.no{background:var(--bad-bg);border-color:var(--bad)}
+.tlrow.fixed{background:rgba(36,31,29,.04)}
+.tally{display:flex;align-items:baseline;gap:14px;background:var(--card);border:1px solid var(--ox);border-radius:3px;padding:14px 18px;margin:14px 0}
+.tally .n{font-size:38px;font-weight:600;color:var(--ox);line-height:1}
+.tally .say{font-size:18.5px;font-style:italic}
+/* quote */
+.pull{border-left:3px solid var(--ox);padding:6px 0 6px 18px;margin:12px 0}
+.pull p{font-size:22px;font-style:italic;margin:0 0 4px}
+.pull .who{font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.12em;color:var(--mute)}
+/* claim card */
+.claim{background:var(--bad-bg);border:1.5px dashed var(--bad);border-radius:3px;padding:16px 20px;margin:12px 0;max-width:880px}
+.claim .h{font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--bad);margin-bottom:6px}
+.claim p{font-size:21px;margin:0;font-style:italic}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.col{background:var(--card);border:1px solid var(--line);border-radius:3px;padding:13px 16px}
+.col .h{font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:6px}
+.col.y .h{color:var(--good)}.col.n .h{color:var(--bad)}
+.col p{font-size:17.5px;margin:0 0 6px;max-width:none}
+/* grid */
+table.grid{width:100%;border-collapse:collapse;margin:12px 0;background:var(--card)}
+table.grid th,table.grid td{border:1px solid var(--line-s);padding:10px 12px;text-align:left;vertical-align:top;font-size:17px;line-height:1.38}
+table.grid th{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ox);background:rgba(110,32,40,.05);font-weight:500}
+table.grid td.qq{width:24%;font-weight:600}
+table.grid td.qq span{display:block;font-weight:400;font-size:15px;color:var(--mute);font-style:italic}
+table.grid td .ans{visibility:hidden}
+table.grid td.open .ans{visibility:visible;animation:fade .35s ease}
+table.grid td.cell{cursor:pointer}
+table.grid td.cell:not(.open)::after{content:"click to reveal";font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:.14em;color:var(--faint);text-transform:uppercase}
+table.grid td.cell:not(.open) .ans{display:none}
+/* dossier */
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin:6px 0 12px}
+.legend span{font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.12em;text-transform:uppercase;padding:4px 9px;border-radius:2px}
+.lw{background:var(--w-bg);color:var(--w)}.la{background:var(--a-bg);color:var(--a)}.lj{background:var(--j-bg);color:var(--j)}
+.dossier{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:14px}
+.dc{background:var(--card);border:1.5px solid var(--line-s);border-top-width:5px;border-radius:3px;padding:12px 14px;position:relative}
+.dc.w{border-top-color:var(--w)}.dc.a{border-top-color:var(--a)}.dc.j{border-top-color:var(--j)}
+.dc .id{position:absolute;top:8px;right:10px;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--faint)}
+.dc .nm{font-size:19px;font-weight:600;line-height:1.15;padding-right:22px}
+.dc .wh{font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:.11em;text-transform:uppercase;color:var(--mute);margin-top:4px;line-height:1.5}
+.dc .say{font-size:16.5px;line-height:1.38;margin-top:8px}
+.dc .num{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ox);margin-top:8px;letter-spacing:.04em}
+.dc .more{font-family:"JetBrains Mono",monospace;font-size:7.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ox-l);margin-top:8px;display:inline-block;border-bottom:1px dotted var(--line-s);cursor:pointer}
+.dc .deep{display:none;font-size:15px;line-height:1.38;margin-top:8px;padding-top:8px;border-top:1px dotted var(--line-s)}
+.dc.open .deep{display:block}
+.dc .cite{font-family:"JetBrains Mono",monospace;font-size:7.5px;letter-spacing:.04em;color:var(--faint);margin-top:8px;word-break:break-all}
+/* chart */
+.chart{background:var(--card);border:1px solid var(--line-s);border-radius:3px;padding:16px 18px;margin:12px 0}
+.crow{display:grid;grid-template-columns:230px 1fr 120px;gap:12px;align-items:center;margin-bottom:8px}
+.crow .who{font-size:16.5px;line-height:1.2}
+.crow .who small{display:block;font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:.1em;color:var(--mute)}
+.bar{height:20px;background:rgba(36,31,29,.05);position:relative;border-radius:2px}
+.bar i{position:absolute;left:0;top:0;bottom:0;border-radius:2px;width:0;transition:width .9s ease}
+.bar i.w{background:var(--w)}.bar i.a{background:var(--a)}.bar i.j{background:var(--j)}
+.bar.none{background:repeating-linear-gradient(45deg,rgba(36,31,29,.06) 0 6px,transparent 6px 12px)}
+.crow .v{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ox)}
+.axis{font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:.1em;color:var(--faint);text-align:right;margin-top:4px}
+.tnote{display:none}
+body.notes .tnote{display:block;margin-top:16px;padding:12px 16px;border:1px solid var(--line-s);border-radius:3px;background:rgba(110,32,40,.055);font-size:16px;line-height:1.42;color:var(--mute);max-width:80ch}
+body.notes .tnote::before{content:"TEACHER NOTE — NOT FOR PROJECTION";display:block;font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:.2em;color:var(--ox);margin-bottom:5px}
+body.notes .tnote b{color:var(--ink)}
+body.notes header{box-shadow:inset 0 3px 0 var(--ox)}
+nav{flex:0 0 auto;display:flex;justify-content:space-between;align-items:center;padding:11px 26px;border-top:1px solid var(--line);background:var(--card)}
+.nf{font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--faint)}
+body.notes .nf{color:var(--ox)}
+.classtag{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.18em;text-transform:uppercase;border:1px solid var(--line-s);color:var(--ox);padding:4px 9px;border-radius:2px;margin-bottom:14px}
+.menu{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
+.menu .col{cursor:pointer}
+.menu .col:hover{border-color:var(--ox)}
+#printpack{display:none}
+@media(max-width:900px){.dossier{grid-template-columns:1fr 1fr}.paint,.two,.menu{grid-template-columns:1fr}h1{font-size:32px}.crow{grid-template-columns:140px 1fr 80px}}
+@media(max-width:600px){.dossier{grid-template-columns:1fr}.tlrow{grid-template-columns:1fr}main{padding:18px 16px}}
+
+/* ---------------- PRINT PACK ---------------- */
+@media print{
+  body{display:block;overflow:visible;background:#fff;color:#000;font-size:11pt}
+  header,nav,main{display:none!important}
+  #printpack{display:block}
+  .pp{page-break-after:always;padding:0 4mm}
+  .pp:last-child{page-break-after:auto}
+  .pp h2{font-size:17pt;margin:0 0 4pt;color:#000}
+  .pp .kick{color:#000;margin-bottom:6pt}
+  .pp p,.pp li{font-size:11pt;line-height:1.38;max-width:none}
+  .pp ol{margin-left:16pt}
+  .pp li{margin-bottom:5pt}
+  .pp .stop{border:1.5pt solid #000;padding:5pt 8pt;font-family:"JetBrains Mono",monospace;font-size:8pt;letter-spacing:.12em;margin:8pt 0}
+  .pcards{display:grid;grid-template-columns:1fr 1fr;gap:6pt}
+  .pcard{border:1pt solid #888;padding:7pt 9pt;break-inside:avoid}
+  .pcard .nm{font-weight:700;font-size:12pt}
+  .pcard .wh{font-family:"JetBrains Mono",monospace;font-size:7pt;letter-spacing:.06em;text-transform:uppercase;margin:2pt 0 4pt}
+  .pcard .say{font-size:10.5pt;line-height:1.32}
+  .pcard .deep{font-size:9.5pt;line-height:1.3;margin-top:4pt;color:#222}
+  .pcard .num{font-family:"JetBrains Mono",monospace;font-size:8.5pt;margin-top:4pt}
+  .pcard .cite{font-family:"JetBrains Mono",monospace;font-size:6.5pt;color:#444;margin-top:4pt;word-break:break-all}
+  .pdoc{border:1pt solid #888;padding:8pt 10pt;margin:6pt 0 10pt}
+  .pdoc p{font-size:11pt}
+  .pcite{font-family:"JetBrains Mono",monospace;font-size:7pt;color:#444;word-break:break-all}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="site">Whose Narrative Survives?</div>
+  <div class="hbtns">
+    <span class="stepflag" id="flag">Start</span>
+    <button class="sm" onclick="window.print()">Print pack</button>
+  </div>
+</header>
+
+<main>
+
+<!-- ================= 0 START ================= -->
+<section class="stage on" data-s="0" data-f="Start">
+  <div class="kick">TOK · History · Lesson 6 · two classes</div>
+  <h1>Whose Narrative<br>Survives?</h1>
+  <div class="rule"></div>
+  <p class="lead">Every event leaves behind more than one account. Usually only one of them becomes <b>the</b> story: the one in the textbook, the one in the painting, the one everyone repeats.</p>
+  <p class="lead">These two classes ask how that happens. Was the account that won the one with the <b>best evidence</b>?</p>
+  <div class="menu">
+    <div class="col" onclick="go(1)"><div class="h" style="color:var(--ox)">Class 1 · We do it together</div><p style="font-size:21px;font-weight:600">The First Thanksgiving</p><p>One paragraph from 1621, and how it became a national story.</p></div>
+    <div class="col" onclick="go(10)"><div class="h" style="color:var(--ox)">Class 2 · You do it in groups</div><p style="font-size:21px;font-weight:600">Jerusalem, 1099</p><p>Nine accounts of one day, written across four centuries.</p></div>
+  </div>
+  <div class="tnote"><b>Arc.</b> Thanksgiving is the distanced worked example: this cohort was not raised inside it, so it is safe to take apart, and the teacher models every move. Jerusalem 1099 is where the charge is, and the groups do the work. The C cell (who decides what is kept, named and taught) is completed at the end of class 2.<br><br><b>The deliverable, in both classes:</b> how each account justifies itself and what counts as evidence for it. <b>Never a verdict on which side was right or worse.</b> If the room starts arguing about morality, ask the TOK question instead: <i>how did this account come to count as the accepted one?</i><br><br>Keys: <b>← →</b> move between screens, <b>R</b> reveals the next hidden block, <b>T</b> shows these notes. Print pack = Winslow sheet, Jerusalem dossier (9 cards) and the group question sheet.</div>
+</section>
+
+<!-- ================= CLASS 1 ================= -->
+
+<!-- 1 COLD OPEN -->
+<section class="stage" data-s="1" data-f="Class 1 · 1 / 9">
+  <span class="classtag">Class 1 · The First Thanksgiving</span>
+  <h2>Before we look at anything</h2>
+  <div class="ask"><div class="h">In your notebook · 3 minutes · on your own</div>
+    <ol>
+      <li>What happened at “the first Thanksgiving”? Write down everything you think you know.</li>
+      <li>Where did you learn it? A film, a cartoon, a textbook, a teacher, social media?</li>
+    </ol>
+  </div>
+  <p class="q">Keep this page. You will come back to it.</p>
+  <div class="tnote">Wait it out; most will know something from American TV or film. Collect three or four items on the board, word for word (turkey, Pilgrims and “Indians” sharing a meal, a thank-you to the Native people, a peaceful friendship). Do not correct anything yet. This list is the evidence for screen 3.</div>
+</section>
+
+<!-- 2 PAINTING -->
+<section class="stage" data-s="2" data-f="Class 1 · 2 / 9">
+  <span class="classtag">Class 1 · The First Thanksgiving</span>
+  <h2>The picture most people carry</h2>
+  <div class="paint">
+    <figure>
+      <img src="img/brownscombe-1914.jpg" alt="Jennie Augusta Brownscombe, The First Thanksgiving at Plymouth, 1914" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <div class="miss">IMAGE SLOT · img/brownscombe-1914.jpg<br><br>Jennie A. Brownscombe, <i>The First Thanksgiving at Plymouth</i> (1914). Public domain.</div>
+      <figcaption>Jennie Augusta Brownscombe, <i>The First Thanksgiving at Plymouth</i>, 1914.</figcaption>
+    </figure>
+    <div>
+      <div class="ask" style="margin-top:0"><div class="h">Look closely</div>
+        <ol>
+          <li>The painter was born in 1850, more than 200 years after the event. Where could she have got this picture from?</li>
+          <li>What would she have needed to <b>see</b> to paint it accurately? Did anyone leave her that?</li>
+        </ol>
+      </div>
+      <div class="rvbar"><button onclick="rv(this)">Reveal</button><span class="lab">R</span></div>
+      <div class="rv">
+        <div class="wbox"><div class="h">What is in the painting but not in 1621</div>
+          <p><b>Log cabins.</b> The Plymouth colonists did not build them.</p>
+          <p><b>Feathered headdresses</b> of the kind worn on the Great Plains, more than 2,000 km away. Not Wampanoag dress.</p>
+          <p>The museum that owns a later version says she researched carefully, yet painted <i>“the idealized version of the story that entered the collective memory of the United States in the last quarter of the 19th century.”</i></p>
+          <p class="cite" style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--mute)">National Museum of Women in the Arts: <a href="https://nmwa.org/art/collection/thanksgiving-plymouth/" target="_blank">nmwa.org/art/collection/thanksgiving-plymouth</a></p>
+        </div>
+        <p class="q">She didn’t paint 1621. She painted the story about 1621. So where did that story come from?</p>
+      </div>
+    </div>
+  </div>
+  <div class="tnote"><b>Image:</b> drop a public-domain scan of Brownscombe’s 1914 painting into <b>img/brownscombe-1914.jpg</b> (Wikimedia Commons has one). Until then the slot shows a caption.<br><br>The point is not “the painter was careless.” Like Carson in L1, she worked hard. She painted what her sources gave her, and her sources were already a story.</div>
+</section>
+
+<!-- 3 WINSLOW -->
+<section class="stage" data-s="3" data-f="Class 1 · 3 / 9">
+  <span class="classtag">Class 1 · The First Thanksgiving</span>
+  <h2>The only eyewitness account</h2>
+  <p>Edward Winslow, one of the colonists, wrote this in a letter in December 1621. It was printed in London in 1622. <b>It is the only account written by someone who was there.</b></p>
+  <div class="doc" id="winslow">
+    <div class="src">Edward Winslow · letter of 11 December 1621 · printed in <i>Mourt’s Relation</i>, London, 1622</div>
+    <p>“Our harvest being gotten in, our governor sent four men on fowling, that we might after a more special manner rejoice together, after we had gathered the fruits of our labors. They four in one day killed as much fowl as, with a little help beside, served the Company almost a week. At which time, amongst other recreations, <mark>we exercised our arms</mark>, many of the Indians coming amongst us, and among the rest their greatest king Massasoit, <mark>with some 90 men</mark>, whom for three days we entertained and feasted, and they went out and killed five deer, which they brought to the plantation and bestowed on our governor, and upon the captain and others. And although it be not always so plentiful as it was at this time with us, yet by the goodness of God, we are so far from want that we often wish you partakers of our plenty.”</p>
+    <div class="cite">Spelling modernised. Text: Plimoth Patuxet Museums, <a href="https://plimoth.org/yath/unit-4/eye-witness-account-of-the-1621-harvest-celebration" target="_blank">plimoth.org/yath/unit-4/eye-witness-account-of-the-1621-harvest-celebration</a></div>
+  </div>
+  <div class="ask"><div class="h">Pairs · 4 minutes</div>
+    <ol>
+      <li>Go back to your notebook list. Which things on it are actually in this paragraph?</li>
+      <li>Which word would you expect to find here, and can’t?</li>
+      <li>What does “we exercised our arms” mean? Why might ninety Wampanoag men have turned up?</li>
+    </ol>
+  </div>
+  <div class="rvbar"><button onclick="rv(this)">Reveal</button><span class="lab">R</span></div>
+  <div class="rv">
+    <div class="two">
+      <div class="col n"><div class="h">Not in the only eyewitness account</div>
+        <p>The word <b>thanksgiving</b>.</p><p>An invitation to the Wampanoag.</p><p>Turkey (only “fowl”).</p><p>Any thank-you, from anyone, to anyone except God.</p></div>
+      <div class="col y"><div class="h">In it</div>
+        <p>A harvest celebration lasting <b>three days</b>.</p><p>Colonists firing guns (“exercised our arms”).</p><p>Massasoit and <b>about ninety men</b>, who brought five deer.</p></div>
+    </div>
+  </div>
+  <div class="tnote">This is the E cell with almost nothing in it: one paragraph of about 150 words. Bradford’s history mentions “wild turkeys” that autumn, but in general terms, not at the feast, and he wrote years later.<br><br>Q3 plants the Wampanoag account for screen 5. Let students guess (an attack? a visit? an alliance?) and do not settle it yet.</div>
+</section>
+
+<!-- 4 TIMELINE -->
+<section class="stage" data-s="4" data-f="Class 1 · 4 / 9">
+  <span class="classtag">Class 1 · The First Thanksgiving</span>
+  <h2>How one paragraph became a national story</h2>
+  <p>For each step, decide as a class: did this step add <b>new evidence</b> about what happened in 1621? Or did someone <b>name it, publish it, or teach it</b>?</p>
+  <div class="tl" id="tl"></div>
+  <div class="tally" id="tlTally" style="display:none"><div class="n" id="tlN">1</div><div class="say" id="tlSay"></div></div>
+  <div class="ask rv" id="tlAsk"><div class="h">Whole class</div>
+    <ol>
+      <li>Only one step added evidence. So what turned Winslow’s paragraph into the accepted story?</li>
+      <li>Who had the <b>power</b> to do that: name it, print it, put it in schools? Who didn’t?</li>
+    </ol>
+  </div>
+  <div class="tnote">Click through in order and let the class vote before you click. <b>1856 is the only “new evidence” step</b>, and even it only adds turkeys in general, not a new witness. Everything else is naming (1841), proclaiming (1863), linking (1865), teaching (1870) and picturing (1914). That is the C cell arriving as a list: the story was made accepted by editors, a magazine, a president, schools and a painter. None of them had new evidence.<br><br>The 1970 row is deliberately left for screen 6.</div>
+</section>
+
+<!-- 5 WAMPANOAG -->
+<section class="stage" data-s="5" data-f="Class 1 · 5 / 9">
+  <span class="classtag">Class 1 · The First Thanksgiving</span>
+  <h2>The account that isn’t on the page</h2>
+  <div class="brief"><div class="h">The other people at the meal</div>
+    <p>The Wampanoag did not keep written records in 1621. Their history was carried by <b>oral tradition</b>, passed down and retold.</p>
+    <p>Wampanoag tradition says the men came because they <b>heard the colonists’ guns</b>, and came to see what was happening. The visit was <b>diplomacy</b>, between two peoples who had signed an alliance that spring. Disease had killed a large part of the coastal population in the years just before 1620, and the alliance mattered to both sides.</p>
+    <p class="cite" style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--mute)">Smithsonian <i>American Indian</i> magazine: <a href="https://www.americanindianmagazine.org/story/a-closer-look-at-the-thanksgiving-tale" target="_blank">americanindianmagazine.org/story/a-closer-look-at-the-thanksgiving-tale</a></p>
+  </div>
+  <div class="ask"><div class="h">Pairs · then share</div>
+    <ol>
+      <li>Is oral tradition <b>evidence</b>? What would make you trust it more, or less?</li>
+      <li>Look again at Winslow. Is there anything in his paragraph that fits the Wampanoag account?</li>
+      <li>In the 1800s, when the story was being built, why did Winslow’s account count and the Wampanoag account not?</li>
+    </ol>
+  </div>
+  <div class="rvbar"><button onclick="rv(this)">Reveal</button><span class="lab">R</span></div>
+  <div class="rv">
+    <div class="doc hl" style="max-width:none"><div class="src">Winslow, again</div><p>“…amongst other recreations, <mark>we exercised our arms</mark>, many of the Indians coming amongst us…”</p></div>
+    <p class="q">Two accounts that never read each other, one written and one spoken, agree that the guns came first. That is the independence test from Lesson 2.</p>
+    <p>So the Wampanoag account was not left out because it was weak evidence. It was left out because <b>the people building the story only counted what was written down</b>, and the Wampanoag did not write it down.</p>
+  </div>
+  <div class="tnote">This is the screen that stops the lesson becoming “written good, oral bad” or “oral good, written bad.” Oral tradition is evidence to be tested like any other. Here it passes one test: it agrees on an independent detail with a source it cannot have copied. <b>The L2 callback should be said out loud.</b><br><br>Q3 is the C cell: a rule about what counts as evidence (writing only) decided whose account could enter the record. Ask who made that rule.</div>
+</section>
+
+<!-- 6 1970 -->
+<section class="stage" data-s="6" data-f="Class 1 · 6 / 9">
+  <span class="classtag">Class 1 · The First Thanksgiving</span>
+  <h2>1970: the speech that was read first</h2>
+  <div class="brief"><div class="h">What happened</div>
+    <p>In 1970 Massachusetts celebrated 350 years since the Pilgrims landed. The organisers invited <b>Wamsutta Frank James</b>, a Wampanoag leader, to speak.</p>
+    <p>They asked to read his speech in advance. Then they told him he could not give it.</p>
+  </div>
+  <div class="ask"><div class="h">Before the reveal</div>
+    <ol>
+      <li>What reason do you think they gave?</li>
+      <li>If his speech had contained false claims, what would the organisers have needed to show?</li>
+    </ol>
+  </div>
+  <div class="rvbar"><button onclick="rv(this)">Reveal</button><span class="lab">R</span></div>
+  <div class="rv">
+    <div class="pull"><p>“The theme of the anniversary celebration is brotherhood and anything inflammatory would have been out of place.”</p><div class="who">— an official explaining the decision, 1970</div></div>
+    <p>The speech included the accusation that the Pilgrims had taken goods from Wampanoag graves. James gave it instead on a hill above Plymouth harbour. Native people have gathered there every Thanksgiving since, calling it the <b>National Day of Mourning</b>.</p>
+    <div class="pull"><p>“What has happened cannot be changed, but today we must work towards a more humane America, a more Indian America.”</p><div class="who">— Wamsutta Frank James, the speech he was not allowed to give</div></div>
+    <p class="cite" style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--mute)"><a href="https://en.wikipedia.org/wiki/National_Day_of_Mourning_(United_States_protest)" target="_blank">en.wikipedia.org/wiki/National_Day_of_Mourning_(United_States_protest)</a></p>
+    <p class="q">Was the speech rejected because its evidence was weak?</p>
+  </div>
+  <div class="tnote">The answer is no: it was rejected for not fitting the <b>theme</b>. Nobody checked the claim. This is the C cell on the record: who decides which account of the past may be spoken, and on what grounds. Keep it there.<br><br><b>Drift guard.</b> Do not let this become “was James right to be angry?” or a debate about colonialism. The TOK question is narrower and sharper: <i>what was the reason for excluding this account, and was it a reason about evidence?</i></div>
+</section>
+
+<!-- 7 COUNTER-STORY -->
+<section class="stage" data-s="7" data-f="Class 1 · 7 / 9">
+  <span class="classtag">Class 1 · The First Thanksgiving</span>
+  <h2>Now test the other story</h2>
+  <p>Once people learn the painting is a myth, a second story often takes its place. You may have seen it online.</p>
+  <div class="claim"><div class="h">Claim on trial</div><p>“Thanksgiving really began in 1637, as a celebration of a massacre.”</p></div>
+  <div class="ask"><div class="h">Pairs · use the same questions you used on the painting</div>
+    <ol>
+      <li>What <b>evidence</b> would this claim need?</li>
+      <li>What would you need to check before you believed it?</li>
+    </ol>
+  </div>
+  <div class="rvbar"><button onclick="rv(this)">Reveal</button><span class="lab">R</span></div>
+  <div class="rv">
+    <div class="two">
+      <div class="col y"><div class="h">True, and documented</div>
+        <p>In 1637 English forces attacked a Pequot village at Mystic and killed around 500 men, women and children.</p>
+        <p>Governor John Winthrop recorded: “There was a day of thanksgiving kept in all the churches for the victory obtained against the Pequots.”</p></div>
+      <div class="col n"><div class="h">Not supported</div>
+        <p>That this is where the holiday came from. English colonists declared days of thanksgiving all the time, for harvests, rain and victories. Historian David Silverman: <i>“There were hundreds, if not thousands of thanksgivings.”</i></p>
+        <p>The national holiday comes from 1863 and the campaign traced on screen 4.</p></div>
+    </div>
+    <p class="cite" style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--mute)">Snopes fact-check, with Winthrop’s journal and Silverman: <a href="https://www.snopes.com/fact-check/thanksgiving-massacre-pequot-tribe/" target="_blank">snopes.com/fact-check/thanksgiving-massacre-pequot-tribe</a></p>
+    <p class="q">Showing that a powerful story left things out does not make the opposite story true. Both have to pass the same test.</p>
+  </div>
+  <div class="tnote"><b>This is the anti-relativist turn, and it must not be skipped.</b> The massacre is real and Winthrop’s line is real. The claim fails on one step: <i>origin</i>. A student who leaves thinking “the official story is propaganda, so the counter-story is the truth” has learned the opposite of the lesson.<br><br>This is a live risk: the 1637 story is often retold as if the killing followed the 1621 meal. It is sixteen years later, and the Pequot are a different people.</div>
+</section>
+
+<!-- 8 GRID WE DO -->
+<section class="stage" data-s="8" data-f="Class 1 · 8 / 9">
+  <span class="classtag">Class 1 · The First Thanksgiving</span>
+  <h2>Run the grid: “the First Thanksgiving”</h2>
+  <p>Answer each question as a class <b>before</b> you click the cell.</p>
+  <table class="grid" id="g1">
+    <tr><th>Question</th><th>For the First Thanksgiving</th></tr>
+    <tr><td class="qq">E · What counts as evidence?<span>What traces does this story rest on?</span></td><td class="cell"><div class="ans">One written eyewitness paragraph (Winslow). Bradford, written years later. Wampanoag oral tradition. In the 1800s, only the written ones were counted.</div></td></tr>
+    <tr><td class="qq">V · How is it checked?<span>Do independent traces agree?</span></td><td class="cell"><div class="ans">Winslow and the oral tradition agree on the guns and the armed visit. Nothing at all supports the name “First Thanksgiving”. That was added in 1841.</div></td></tr>
+    <tr><td class="qq">C · Who decides?<span>Who made this the accepted account?</span></td><td class="cell"><div class="ans">An editor’s footnote (1841), a president (1863), a magazine (1865), school textbooks, a painter, and in 1970 a celebration committee. None of them had new evidence.</div></td></tr>
+    <tr><td class="qq">R · What can it never reach?<span>Not yet, or never?</span></td><td class="cell"><div class="ans">What the Wampanoag thought the meeting was, in their own words from 1621. No one wrote it down then; oral tradition reaches part of the way, but not the rest.</div></td></tr>
+  </table>
+  <div class="tnote">This is the modelled run. Say each answer aloud before clicking. The C row is the new one this lesson; the others repeat moves the class already owns. Point out that the grid also <b>ranks</b>: the guns detail is better supported than the name, which has no support at all.</div>
+</section>
+
+<!-- 9 EXIT 1 -->
+<section class="stage" data-s="9" data-f="Class 1 · 9 / 9">
+  <span class="classtag">Class 1 · The First Thanksgiving</span>
+  <h2>Before you leave</h2>
+  <div class="ask"><div class="h">Notebook · 5 minutes</div>
+    <ol>
+      <li>Which step on the timeline did the most to make “the First Thanksgiving” the accepted story? Was that step about <b>evidence</b>, or about <b>power</b>?</li>
+      <li>Go back to the list you wrote at the start. Cross out anything that came from the story rather than the evidence. What is left?</li>
+    </ol>
+  </div>
+  <p class="q">Next class: an event you probably do have a story about.</p>
+  <div class="tnote">Do not preview Jerusalem. The second question is the one that matters: students see on their own page how much of what they “knew” came from the story.</div>
+</section>
+
+<!-- ================= CLASS 2 ================= -->
+
+<!-- 10 COLD OPEN 2 -->
+<section class="stage" data-s="10" data-f="Class 2 · 1 / 8">
+  <span class="classtag">Class 2 · Jerusalem, 1099</span>
+  <h2>Before we look at anything</h2>
+  <div class="ask"><div class="h">In your notebook · 3 minutes · on your own</div>
+    <ol>
+      <li>What happened when the Crusaders took Jerusalem in 1099? Write what you know.</li>
+      <li>If you have heard a <b>number</b> of people killed, write it down.</li>
+      <li>Where did you learn it?</li>
+    </ol>
+  </div>
+  <div class="brief"><div class="h">What nobody disputes</div>
+    <p>In June 1099 an army from western Europe, on what we now call the First Crusade, laid siege to Jerusalem. On 15 July 1099 they broke into the city. Many of the people inside were killed.</p>
+    <p><b>What is disputed is how many, and what the accounts of it were doing.</b></p>
+  </div>
+  <div class="tnote">Collect any numbers on the board without comment. Some students will have one, often 70,000. Some will know Maalouf or a documentary. Write down where they say they learned it; that column pays off on screen 15.<br><br><b>Say this early, and mean it:</b> nothing in this lesson questions that a massacre happened. The independent evidence confirms it. The question is what a historian can know about its <i>size</i>, and why the numbers in the sources differ so much.</div>
+</section>
+
+<!-- 11 DOSSIER -->
+<section class="stage" data-s="11" data-f="Class 2 · 2 / 8">
+  <span class="classtag">Class 2 · Jerusalem, 1099</span>
+  <h2>The dossier: nine accounts</h2>
+  <div class="legend"><span class="lw">Written by crusaders</span><span class="la">Written by Muslim historians, in Arabic</span><span class="lj">Written by the Jewish community</span></div>
+  <div class="dossier" id="dossier"></div>
+  <div class="tnote">Groups of three, printed cards from the pack (fixed order, A–I). <b>Cards are in no particular order on purpose</b>: putting them in date order is the first task. “Detail” on each card gives provenance; on paper it is printed under the card.<br><br>Watch for students grouping by side and stopping there (“the Christians exaggerate, the Muslims exaggerate”). Push them to group by <b>when</b> and <b>whether the writer was there</b>.</div>
+</section>
+
+<!-- 12 TASK -->
+<section class="stage" data-s="12" data-f="Class 2 · 3 / 8">
+  <span class="classtag">Class 2 · Jerusalem, 1099</span>
+  <h2>Group task · 20 minutes</h2>
+  <div class="ask"><div class="h">Write your answers in your notebooks</div>
+    <ol>
+      <li>Put the nine cards in order of <b>when they were written</b>. Next to each, write the number it gives (or “no number”).
+        <span class="sub">What happens to the number as you move further from 1099?</span></li>
+      <li>Which writers were actually <b>in Jerusalem</b> in July 1099? What did they say?</li>
+      <li>One card was written by people who were on <b>neither</b> army’s side. Which one? What does it confirm, and what does it not tell us?</li>
+      <li>Raymond says the blood reached the horses’ bridles. Read the detail on his card. What job is that sentence doing?</li>
+      <li>Which number became the one most people repeat? Was it the <b>earliest</b> number? Was it the <b>best-supported</b>?</li>
+      <li>Finish this as a group, in your own words: what can a historian say they <b>know</b> about July 1099, and what can’t they?</li>
+    </ol>
+  </div>
+  <div class="tnote">Q3 is the Geniza letter: the strongest single card, and the one groups most often pass over because it has no number. That is the point. It confirms killing, captives and ransom; it is silent on totals.<br><br>Q5 is where the charge is. Let it be uncomfortable; don’t rescue. If a group says “so the Muslim sources lied,” redirect: <i>did the number’s job change between 1100 and 1233? What job is a number like 70,000 doing?</i> The next screen gives a historian’s answer, and a medieval Arab historian’s.</div>
+</section>
+
+<!-- 13 CHART + REVEAL -->
+<section class="stage" data-s="13" data-f="Class 2 · 4 / 8">
+  <span class="classtag">Class 2 · Jerusalem, 1099</span>
+  <h2>The numbers, in the order they were written</h2>
+  <div class="chart" id="chart"></div>
+  <div class="rvbar"><button onclick="drawChart()" id="chartBtn">Draw the chart</button><button onclick="rv(this)">Reveal what historians say</button><span class="lab">R</span></div>
+  <div class="rv">
+    <div class="wbox"><div class="h">Konrad Hirschler, historian of Arabic history-writing (then at SOAS, London), 2014</div>
+      <p>He read the Arabic accounts in order. The early ones, from Syria, Egypt and Iraq, <i>“rarely agreed on what happened in the hours and days after the fall of Jerusalem.”</i> About a century later, one version took over: full-scale massacre, told as part of a long war between Franks and Muslims. That became the version that was copied.</p>
+      <p>The figure 70,000 was not a count. Seventy thousand is a number with a long history in Islamic writing about martyrdom and the end of days. Hirschler points to a medieval Arab historian who said the same thing six hundred years ago:</p>
+    </div>
+    <div class="pull"><p>“Numbers are not all to be taken literally; the intended sense is rather that of magnitude.”</p><div class="who">— Ibn Khaldun, North Africa, 14th century</div></div>
+    <div class="doc" style="max-width:none"><div class="src">Revelation 14:20 · the Bible Raymond’s readers knew</div><p>“…and blood came out of the winepress, <mark>even unto the horse bridles</mark>…”</p></div>
+    <p>Raymond was not measuring the blood either. He was telling his readers that what they had done fulfilled scripture: <i>“a just and splendid judgment of God.”</i></p>
+    <p class="cite" style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--mute)">Hirschler, “The Jerusalem Conquest of 492/1099 in the Medieval Arabic Historiography of the Crusades,” <i>Crusades</i> 13 (2014): <a href="https://soas-repository.worktribe.com/OutputFile/347926" target="_blank">soas-repository.worktribe.com/OutputFile/347926</a></p>
+  </div>
+  <div class="tnote"><b>Balance is structural, not a courtesy.</b> Both traditions turned the event into a sign: one of God’s judgment, one of martyrdom and a long war. And the source criticism comes from inside both traditions: Ibn Khaldun said it about numbers in the 14th century. Source criticism is not a Western import.<br><br>Modern historians still disagree about the total. One recent historian (Conor Kostick) thinks up to 40,000 is possible, because refugees had crowded into the city; others go far lower. What they agree on is that the later figures are not literal counts. If asked “so how many?”, the honest answer is the lesson: <b>we know there was a massacre; we cannot know the number.</b></div>
+</section>
+
+<!-- 14 LANDING -->
+<section class="stage" data-s="14" data-f="Class 2 · 5 / 8">
+  <span class="classtag">Class 2 · Jerusalem, 1099</span>
+  <h2>So what do we know?</h2>
+  <div class="two">
+    <div class="col y"><div class="h">Known</div>
+      <p>The city fell on 15 July 1099 and many inhabitants were killed: Muslims, and Jews in the burning synagogue.</p>
+      <p>Captives were taken and ransomed.</p>
+      <p><b>Why we can say this:</b> crusader eyewitnesses, Muslim historians and the Jewish letter, three lines that did not copy each other, all agree.</p>
+    </div>
+    <div class="col n"><div class="h">Not known</div>
+      <p>How many died.</p>
+      <p><b>Why not:</b> the people who were there gave no count, the one fully independent source gives no count, and every big number comes later, from writers with a reason to make it big.</p>
+    </div>
+  </div>
+  <div class="ask"><div class="h">Whole class</div>
+    <ol>
+      <li>Somebody says: “Both sides exaggerated, so we can’t know anything about 1099.” What is wrong with that?</li>
+      <li>Rank two cards: the Jewish elders’ letter and the 15th-century chronicle. Which is stronger evidence, and why? Is your reason about <b>which side</b> wrote it?</li>
+    </ol>
+  </div>
+  <div class="tnote">The directed landing. <b>Underdetermined is not unknowable</b> (the L1 line). The massacre is settled by convergence of independent lines (the L2 tool); the number is not. And the grid still ranks: the Geniza letter beats Ibn Taghribirdi on <i>when</i> and <i>independence</i>, not on side. If a student answers Q2 by side, that is the relativist ditch from the other direction.<br><br><b>Through-line from L4:</b> the summary overreaches. Eight defendants became “the lower classes”, one lifeboat became “any one”, and here an event becomes a number that nobody counted.</div>
+</section>
+
+<!-- 15 NAMING -->
+<section class="stage" data-s="15" data-f="Class 2 · 6 / 8">
+  <span class="classtag">Class 2 · Jerusalem, 1099</span>
+  <h2>Who named it?</h2>
+  <p>None of the nine writers in your dossier called this event part of “the Crusades.” The Muslim historians called the invaders <b>al-Franj</b>, the Franks.</p>
+  <div class="tl" id="tl2"></div>
+  <div class="ask"><div class="h">Pairs · then share</div>
+    <ol>
+      <li>If the name for an event came from one side’s history books, whose story are you inside when you use it?</li>
+      <li>Maalouf calls his book a “true-life novel.” What does that tell you about what he counts as evidence, and what he is trying to do?</li>
+      <li>Look at where you said you learned about 1099 at the start of class. Whose story was that?</li>
+    </ol>
+  </div>
+  <div class="tnote">Language-unit callback (naming) and L1 callback (the pierced rod and the “drums”, named after a guess). Here a whole war was named from one side’s histories, and the name was then translated into the other side’s language. <b>Do not</b> turn this into a lecture on 19th-century colonialism; one sentence of context is enough.<br><br><b>Contested, for your reference only:</b> some historians (e.g. Edward Peters) argue that Muslim writers largely stopped writing about the Crusades until the 19th century. Others point to Ibn Khaldun and to a 17th-century Jerusalem poet who called his son “a second Saladin” and call the “forgetting” thesis unproven (OUPblog, 2018). The naming dates on screen are not in dispute; how much was <i>remembered</i> is. If a student pushes, that disagreement is itself the C cell: historians disagree about the history of memory.</div>
+</section>
+
+<!-- 16 GRID ACROSS -->
+<section class="stage" data-s="16" data-f="Class 2 · 7 / 8">
+  <span class="classtag">Class 2 · Jerusalem, 1099</span>
+  <h2>Run the grid across both cases</h2>
+  <p>Groups: answer the Jerusalem column in your notebooks first. Then check.</p>
+  <table class="grid" id="g2">
+    <tr><th>Question</th><th>The First Thanksgiving</th><th>Jerusalem, 1099</th></tr>
+    <tr><td class="qq">E · What counts as evidence?</td><td>One written eyewitness paragraph, and an oral tradition that was not counted.</td><td class="cell"><div class="ans">Eyewitness chronicles, a letter from people who ransomed the survivors, and Arabic histories written from decades to centuries later.</div></td></tr>
+    <tr><td class="qq">V · How is it checked?</td><td>Independent agreement on the guns; no support at all for the name.</td><td class="cell"><div class="ans">Three independent lines agree that there was a massacre. Nothing independent supports any total.</div></td></tr>
+    <tr><td class="qq">C · Who decides?</td><td>Editors, a president, a magazine, textbooks, a painter, a committee.</td><td class="cell"><div class="ans">The chroniclers who were copied. Ibn al-Athir’s version became the standard one; the name “Crusades” came from 19th-century European histories, then was translated.</div></td></tr>
+    <tr><td class="qq">R · What can it never reach?</td><td>The Wampanoag view, in their own words, from 1621.</td><td class="cell"><div class="ans">The number. Nobody who was there counted, and no new evidence will produce a count.</div></td></tr>
+  </table>
+  <div class="wbox"><div class="h">The History grid, C row, now complete</div>
+    <p><b>C · Who counts as an expert?</b> The archive and the discipline: what got kept, what got named, what got copied and taught, and who decided. <b>The account that survives is not always the earliest or the best-supported. Often it is the one that had a job to do.</b></p>
+  </div>
+  <div class="tnote">This completes the History grid for the unit. Read across the C row aloud. Then read <i>down</i> one column, because the essay needs that move: in both cases, the account that survived was not the earliest one. It had a job to do (a nation’s story; a judgment of God; a martyrdom).</div>
+</section>
+
+<!-- 17 CLOSE -->
+<section class="stage" data-s="17" data-f="Class 2 · 8 / 8">
+  <span class="classtag">Class 2 · Jerusalem, 1099</span>
+  <div class="kick">The knowledge question</div>
+  <h2 style="font-size:32px;color:var(--ox)">When one account of the past becomes the accepted one, is that because it was the best supported, or because of who got to write it down, name it and teach it?</h2>
+  <div class="rule"></div>
+  <div class="ask"><div class="h">Exit write · notebook · about 150 words</div>
+    <ol>
+      <li>Choose the First Thanksgiving or Jerusalem 1099. Name the account that became the accepted one.</li>
+      <li>Was it the best-supported account? What, besides evidence, helped it survive?</li>
+      <li>Say one thing a historian can <b>know</b> about the event and one thing they <b>can’t</b>, and explain why.</li>
+      <li>Use at least two of these concepts by name: <b>evidence, power, perspective, certainty, interpretation</b>.</li>
+    </ol>
+  </div>
+  <div class="tnote"><b>C/D line.</b> A response that argues which side was right, or which side was worse, has argued the topic and cannot get above a C. A response that explains how one account came to count as accepted, and separates what is known from what is not, has made the TOK move.<br><br>Watch for the two ditches in the exit writes: “history is written by the winners, so it’s all propaganda” (relativism), and “the official story was a lie, so the other story is true” (the 1637 error).</div>
+</section>
+
+</main>
+
+<nav>
+  <button id="back" onclick="step(-1)">&larr; Back</button>
+  <span class="nf" id="nf">T · notes off</span>
+  <button id="fwd" onclick="step(1)">Next &rarr;</button>
+</nav>
+
+<!-- ================= PRINT PACK ================= -->
+<div id="printpack"></div>
+
+<script>
+/* ============ DATA ============ */
+const TL=[
+ {yr:'1622',ev:'Winslow’s letter is printed in London, in a small book about the new colony.',ans:'ev',fb:'<b>Evidence.</b> This is the trace itself, the only eyewitness account.'},
+ {yr:'1622–1840',ev:'For about two hundred years, almost nobody writes about the 1621 meal at all.',ans:'fixed',fb:'Nothing happens. The event is not a story yet.'},
+ {yr:'1841',ev:'Alexander Young reprints Winslow’s letter in a collection of Pilgrim documents. In a footnote, he calls the meal <b>“the first Thanksgiving.”</b>',ans:'nm',fb:'<b>Naming.</b> The earliest known use of the name. No new evidence, just a label in a footnote. <a href="https://plimoth.org/yath/unit-5/memories-of-thanksgiving-across-the-centuries" target="_blank">Source</a>'},
+ {yr:'1856',ev:'William Bradford’s history of the colony, lost during the American Revolution and found in the Bishop of London’s library, is printed. It mentions “wild turkeys” that autumn.',ans:'ev',fb:'<b>New evidence</b>, the only new evidence on this list. Even so, Bradford wrote years later, and he does not describe the meal. <a href="https://en.wikipedia.org/wiki/Of_Plymouth_Plantation" target="_blank">Source</a>'},
+ {yr:'1863',ev:'President Lincoln declares a national day of Thanksgiving, in the middle of the Civil War. His proclamation does not mention the Pilgrims.',ans:'nm',fb:'<b>Power, not evidence.</b> A national holiday is created, and the Pilgrims are not part of it yet.'},
+ {yr:'1865',ev:'Sarah Josepha Hale, editor of the most influential women’s magazine in America, writes an editorial connecting the Pilgrims to the new holiday.',ans:'nm',fb:'<b>Publishing.</b> The 1621 meal and the national holiday are joined, by an editor. <a href="https://blog.oup.com/2019/11/thanksgiving-behind-the-pilgrim-myth" target="_blank">Source</a>'},
+ {yr:'by 1870',ev:'School textbooks begin teaching the Pilgrim Thanksgiving story.',ans:'nm',fb:'<b>Teaching.</b> Millions of children learn it as fact.'},
+ {yr:'1914',ev:'Jennie Brownscombe paints <i>The First Thanksgiving at Plymouth</i>.',ans:'nm',fb:'<b>Picturing.</b> The story gets a face, with log cabins and Plains headdresses.'}
+];
+const TL2=[
+ {yr:'1099–1470',ev:'Every account in your dossier. Muslim writers call the invaders <b>al-Franj</b>, the Franks. None calls the war a “crusade.”',ans:'fixed',fb:''},
+ {yr:'1817–1822',ev:'A French historian, Joseph-François Michaud, publishes a six-volume history of the Crusades. It is very influential in Europe.',ans:'fixed',fb:''},
+ {yr:'c. 1865',ev:'An Arabic name for the wars, <b>al-hurub al-salibiyya</b> (“the wars of the cross”), appears for the first time, in Arabic translations of French histories.',ans:'fixed',fb:''},
+ {yr:'1899',ev:'Sayyid Ali al-Hariri publishes in Cairo the first history of the Crusades by a Muslim author in Arabic.',ans:'fixed',fb:''},
+ {yr:'1983',ev:'Amin Maalouf, a Lebanese novelist and journalist, publishes <i>The Crusades Through Arab Eyes</i>. His aim: <i>“to tell the story of the crusades as they were seen, lived, and recorded on ‘the other side.’”</i> He calls it a “true-life novel.”',ans:'fixed',fb:''}
+];
+const TL2CITE='Dates of the Arabic term and al-Hariri: Edward Peters, <a href="https://www.historynewsnetwork.org/article/1398" target="_blank">historynewsnetwork.org/article/1398</a> · Maalouf’s aim (p. xi) and “true-life novel”: Henk Vynckier’s review, <a href="https://wreview.nccu.edu.tw/attachments/article/94/Behold%20the%20Franks-%20Amin%20Maalouf%e2%80%99s%20The%20Crusades%20through%20Arab%20Eyes%20Revisited.pdf" target="_blank">wreview.nccu.edu.tw</a>';
+
+const KRYEY='https://sourcebooks.fordham.edu/source/cde-jlem.asp';
+const HIRSCH='https://soas-repository.worktribe.com/OutputFile/347926';
+const GENIZA='https://genizahfragments.lib.cam.ac.uk/2021/07/15/15th-july-jerusalem-falls-to-the-armies-of-the-first-crusade/';
+/* fixed card order A–I, deliberately not chronological */
+const CARDS=[
+ {id:'A',s:'a',nm:'Ibn al-Athir',wh:'Mosul (Iraq) · <i>The Complete History</i> · died 1233',say:'“The Franks killed more than 70,000 people in the Aqsa Mosque.”',num:'70,000',deep:'One of the most respected historians of the medieval Muslim world, writing over a hundred years after the event. His history became the standard account that later writers copied.',cite:HIRSCH,yr:1230,n:70000},
+ {id:'B',s:'w',nm:'Raymond d’Aguilers',wh:'Chaplain to a crusader commander · eyewitness · written within a few years',say:'“…men rode in blood up to their knees and bridle reins. Indeed, it was a just and splendid judgment of God.”',num:'No number',deep:'He was there, inside the army. He wrote for Christian readers who knew the Bible well. In the Book of Revelation (14:20), at the end of the world, blood rises “even unto the horse bridles.”',cite:KRYEY,yr:1100,n:null},
+ {id:'C',s:'j',nm:'Letter of the Jewish elders of Ascalon',wh:'Written c. 1100, months after the fall · found in the Cairo Geniza',say:'Some captives were “killed before the eyes of the rest, who themselves were killed afterwards with all manner of tortures.” The community spent about 500 dinars ransoming survivors and holy books.',num:'No total given',deep:'Written by the leaders of a Jewish community who were on neither army’s side and were raising money to buy back the survivors. Stored in a synagogue storeroom in Cairo (the Geniza) for 800 years; read and published by the historian S. D. Goitein in 1952.',cite:GENIZA,yr:1100,n:null},
+ {id:'D',s:'a',nm:'Ibn al-Jawzi',wh:'Baghdad (Iraq) · died 1200',say:'Gives the figure of <b>70,000</b> Muslims killed. According to Hirschler, the first Arabic historian to use that number.',num:'70,000',deep:'Writing about a century after the event. He tells the fall of Jerusalem as part of a great struggle between the Franks and Islam.',cite:HIRSCH,yr:1195,n:70000},
+ {id:'E',s:'w',nm:'Fulcher of Chartres',wh:'Chaplain to a crusader lord · written from c. 1101',say:'“In this temple almost ten thousand were killed.”',num:'≈ 10,000',deep:'A crusader, but <b>not at Jerusalem</b> during the siege. He was hundreds of kilometres away, at Edessa, with his lord, and reached Jerusalem months later. His number is not an eyewitness count.',cite:KRYEY,yr:1101,n:10000},
+ {id:'F',s:'a',nm:'Ibn Taghribirdi',wh:'Cairo (Egypt) · died 1470',say:'<b>100,000</b> killed, and another <b>100,000</b> taken captive.',num:'100,000',deep:'Writing nearly four hundred years after the event. Another writer in the 1200s, Sibt ibn al-Jawzi, had already raised the number to 100,000.',cite:HIRSCH,yr:1460,n:100000},
+ {id:'G',s:'a',nm:'Ibn al-Qalanisi',wh:'Damascus (Syria) · lived through the event · died 1160',say:'“Many” were killed. The Jews gathered in their synagogue, and the Franks burned it over their heads.',num:'No number',deep:'A Damascus official writing in the same lifetime as the event, about 200 km away. He gives no total.',cite:HIRSCH,yr:1150,n:null},
+ {id:'H',s:'w',nm:'<i>The Deeds of the Franks</i> (anonymous)',wh:'A crusader knight · eyewitness · written c. 1100–1101',say:'“…our men waded in blood up to their ankles.”',num:'No number',deep:'The earliest crusader account, by an unnamed soldier in the army. Later crusade histories copied from it.',cite:KRYEY,yr:1101,n:null},
+ {id:'I',s:'a',nm:'Ibn al-Arabi',wh:'A scholar from al-Andalus (Spain) · died 1148',say:'<b>3,000</b> killed, “among them worshippers and scholars, men and women.”',num:'3,000',deep:'An early figure. But 3,000 is also the number given for a <b>different</b> capture of Jerusalem, by the Turkish commander Atsiz in about 1077. The historian Konrad Hirschler thinks the two events may have been mixed up.',cite:HIRSCH,yr:1140,n:3000}
+];
+
+/* ============ NAV ============ */
+const stages=[...document.querySelectorAll('.stage')];
+let cur=0;
+function go(n){
+  stages.forEach(s=>s.classList.remove('on'));
+  const s=stages.find(x=>+x.dataset.s===n); if(!s) return;
+  s.classList.add('on'); cur=n;
+  document.getElementById('flag').textContent=s.dataset.f;
+  document.querySelector('main').scrollTop=0;
+  document.getElementById('back').disabled=(n===0);
+  document.getElementById('fwd').disabled=(n===17);
+}
+function step(d){go(Math.max(0,Math.min(17,cur+d)))}
+function rv(btn){
+  const st=btn?btn.closest('.stage'):stages.find(x=>+x.dataset.s===cur);
+  const nx=[...st.querySelectorAll('.rv:not(.shown)')][0];
+  if(nx){nx.classList.add('shown');nx.scrollIntoView({behavior:'smooth',block:'nearest'})}
+}
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA') return;
+  if(e.key==='t'||e.key==='T'){
+    const on=document.body.classList.toggle('notes');
+    document.getElementById('nf').textContent='T · notes '+(on?'ON':'off');
+  }else if(e.key==='ArrowRight'){step(1)}
+  else if(e.key==='ArrowLeft'){step(-1)}
+  else if(e.key==='r'||e.key==='R'){rv(null)}
+});
+
+/* ============ TIMELINE (class 1) ============ */
+function buildTL(){
+  const box=document.getElementById('tl');
+  TL.forEach((t,i)=>{
+    const r=document.createElement('div');r.className='tlrow';
+    if(t.ans==='fixed'){
+      r.classList.add('fixed','done');
+      r.innerHTML=`<div class="yr">${t.yr}</div><div class="ev">${t.ev}<div class="fb">${t.fb}</div></div><div></div>`;
+    }else{
+      r.innerHTML=`<div class="yr">${t.yr}</div><div class="ev">${t.ev}<div class="fb">${t.fb}</div></div>
+      <div class="bb"><button class="sm" data-a="ev">New evidence</button><button class="sm" data-a="nm">Named / published / taught</button></div>`;
+      r.querySelectorAll('button').forEach(b=>b.onclick=()=>{
+        if(r.classList.contains('done')) return;
+        r.classList.add('done', b.dataset.a===t.ans?'ok':'no');
+        if(b.dataset.a!==t.ans){r.querySelector('.fb').innerHTML='<b>Look again.</b> '+t.fb}
+        r.querySelectorAll('button').forEach(x=>x.disabled=true);
+        checkTL();
+      });
+    }
+    box.appendChild(r);
+  });
+}
+function checkTL(){
+  const rows=[...document.querySelectorAll('#tl .tlrow:not(.fixed)')];
+  if(rows.every(r=>r.classList.contains('done'))){
+    const t=document.getElementById('tlTally');t.style.display='flex';
+    document.getElementById('tlN').textContent='1 of 7';
+    document.getElementById('tlSay').textContent='steps added new evidence about 1621. The other six named it, proclaimed it, published it, taught it or painted it.';
+    document.getElementById('tlAsk').classList.add('shown');
+  }
+}
+function buildTL2(){
+  const box=document.getElementById('tl2');
+  TL2.forEach(t=>{
+    const r=document.createElement('div');r.className='tlrow fixed';
+    r.style.gridTemplateColumns='110px 1fr';
+    r.innerHTML=`<div class="yr">${t.yr}</div><div class="ev">${t.ev}</div>`;
+    box.appendChild(r);
+  });
+  const c=document.createElement('p');
+  c.className='cite';c.style.cssText="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--mute);max-width:none";
+  c.innerHTML=TL2CITE;box.appendChild(c);
+}
+
+/* ============ GRID CELLS ============ */
+document.querySelectorAll('table.grid td.cell').forEach(td=>td.onclick=()=>td.classList.add('open'));
+
+/* ============ DOSSIER ============ */
+function buildDossier(){
+  const box=document.getElementById('dossier');
+  CARDS.forEach(c=>{
+    const d=document.createElement('div');d.className='dc '+c.s;
+    d.innerHTML=`<div class="id">${c.id}</div><div class="nm">${c.nm}</div><div class="wh">${c.wh}</div>
+      <div class="say">${c.say}</div><div class="num">${c.num}</div>
+      <span class="more">Detail</span><div class="deep">${c.deep}</div>
+      <div class="cite"><a href="${c.cite}" target="_blank">${c.cite.replace('https://','')}</a></div>`;
+    d.querySelector('.more').onclick=()=>d.classList.toggle('open');
+    box.appendChild(d);
+  });
+}
+
+/* ============ CHART ============ */
+function buildChart(){
+  const box=document.getElementById('chart');
+  const sorted=[...CARDS].sort((a,b)=>a.yr-b.yr);
+  box.innerHTML=sorted.map(c=>{
+    const yrs=c.yr-1099;
+    return `<div class="crow"><div class="who">${c.id} · ${c.nm}<small>${yrs<=2?'written within 2 years':'about '+Math.round(yrs/10)*10+' years after'}</small></div>
+    <div class="bar ${c.n?'':'none'}"><i class="${c.s}" data-w="${c.n?c.n/100000*100:0}"></i></div>
+    <div class="v">${c.n?c.n.toLocaleString('en-US'):'no number'}</div></div>`;
+  }).join('')+'<div class="axis">bar length = number of dead given · hatched = no number given · rows in order of writing</div>';
+}
+function drawChart(){
+  document.querySelectorAll('#chart .bar i').forEach(i=>i.style.width=i.dataset.w+'%');
+  document.getElementById('chartBtn').disabled=true;
+}
+
+/* ============ PRINT PACK ============ */
+function buildPrint(){
+  const pp=document.getElementById('printpack');
+  const winslow=document.querySelector('#winslow p').innerHTML.replace(/<\/?mark>/g,'');
+  let h='';
+  h+=`<div class="pp"><div class="kick">TOK · History L6 · Class 1</div><h2>The First Thanksgiving: the only eyewitness account</h2>
+  <div class="pdoc"><p><b>Edward Winslow</b>, letter of 11 December 1621, printed in <i>Mourt’s Relation</i> (London, 1622). Spelling modernised.</p><p>${winslow}</p>
+  <p class="pcite">plimoth.org/yath/unit-4/eye-witness-account-of-the-1621-harvest-celebration</p></div>
+  <p><b>How it became the accepted story</b></p><ol>`+TL.map(t=>`<li><b>${t.yr}</b>: ${t.ev.replace(/<a[^>]*>.*?<\/a>/g,'')}</li>`).join('')+`</ol>
+  <p><b>Questions (answer in your notebook)</b></p><ol>
+  <li>Which things you wrote at the start are actually in Winslow’s paragraph? Which word would you expect, and can’t find?</li>
+  <li>For each step in the list, did it add new evidence about 1621, or did someone name it, publish it or teach it?</li>
+  <li>Is Wampanoag oral tradition evidence? Is there anything in Winslow that fits it?</li>
+  <li>Test the claim “Thanksgiving really began in 1637, as a celebration of a massacre.” What evidence would it need?</li>
+  <li>Which step did the most to make this the accepted story? Was it about evidence, or about power?</li></ol></div>`;
+  h+=`<div class="pp"><div class="kick">TOK · History L6 · Class 2 · Dossier</div><h2>Jerusalem, 15 July 1099: nine accounts</h2>
+  <p>Cards are in no particular order. Crusader writers: B, E, H. Muslim historians writing in Arabic: A, D, F, G, I. The Jewish community: C.</p>
+  <div class="pcards">`+CARDS.map(c=>`<div class="pcard"><div class="nm">${c.id} · ${c.nm}</div><div class="wh">${c.wh}</div><div class="say">${c.say}</div><div class="num">Number given: ${c.num}</div><div class="deep">${c.deep}</div><div class="cite">${c.cite}</div></div>`).join('')+`</div>
+  <p class="pcite">Crusader texts: A. C. Krey, <i>The First Crusade</i> (1921), via Fordham Medieval Sourcebook. Arabic accounts: K. Hirschler, <i>Crusades</i> 13 (2014). Letter: Cambridge University Library, T-S 20.113.</p></div>`;
+  h+=`<div class="pp"><div class="kick">TOK · History L6 · Class 2 · Group task</div><h2>Jerusalem, 1099: group questions</h2>
+  <p>Write your answers in your notebooks.</p><ol>
+  <li>Put the nine cards in order of when they were written. Next to each, write the number it gives (or “no number”). What happens to the number as you move further from 1099?</li>
+  <li>Which writers were actually in Jerusalem in July 1099? What did they say?</li>
+  <li>One card was written by people who were on neither army’s side. Which one? What does it confirm, and what does it not tell us?</li>
+  <li>Raymond says the blood reached the horses’ bridles. Read the detail on his card. What job is that sentence doing?</li>
+  <li>Which number became the one most people repeat? Was it the earliest number? Was it the best-supported?</li>
+  <li>As a group: what can a historian say they know about July 1099, and what can’t they?</li></ol>
+  <div class="stop">STOP · wait for the class reveal before going on</div>
+  <ol start="7"><li>Somebody says: “Both sides exaggerated, so we can’t know anything about 1099.” What is wrong with that?</li>
+  <li>Which is stronger evidence: the Jewish elders’ letter (C) or Ibn Taghribirdi (F)? Why? Is your reason about which side wrote it?</li>
+  <li>None of these nine writers called this war a “crusade.” The Arabic name for it first appears around 1865, in translations of French histories. If the name for an event came from one side’s history books, whose story are you inside when you use it?</li></ol>
+  <p><b>Exit write (about 150 words):</b> Choose the First Thanksgiving or Jerusalem 1099. Name the account that became the accepted one. Was it the best-supported account? What, besides evidence, helped it survive? Say one thing a historian can know about the event and one thing they can’t, and explain why. Use at least two of: evidence, power, perspective, certainty, interpretation.</p></div>`;
+  pp.innerHTML=h;
+}
+
+buildTL();buildTL2();buildDossier();buildChart();buildPrint();go(0);
+</script>
+</body>
+</html>
