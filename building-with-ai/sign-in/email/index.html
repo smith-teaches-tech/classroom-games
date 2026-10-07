@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Email Sign-In Setup — Building with AI</title>
+<style>
+[hidden]{display:none!important}
+img{max-width:100%}
+/* Layout: one reading column (760px) with wide bands for the diagram and the mock-ups; keys and locks as the visual language. */
+:root{
+  --bg:#0f1115; --surface:#171a21; --surface-2:#1e222b; --ink:#e8eaf0; --muted:#a3abbb; --line:#2b303b;
+  --brass:#ffb454; --brass-soft:#241d12; --open:#7bd88f; --open-soft:#122018; --secret:#ff7b72; --secret-soft:#251519;
+  --focus:#6aa9ff; --mock-bar:#232833; --code-bg:#0b0d11; --code-fg:#d6dae4; --dim:#4a5160;
+  --f-display:ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-body:ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-mono:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6}
+.wrap{max-width:980px;margin:0 auto;padding-inline:20px;padding-block:28px 80px}
+.col{max-width:760px}
+h1,h2,h3{font-family:var(--f-display);line-height:1.12;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.4rem,7vw,4rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(1.6rem,4vw,2.2rem);font-weight:700;letter-spacing:-.01em}
+h3{font-size:1.25rem;font-weight:700}
+p{margin:0}
+code,.mono{font-family:var(--f-mono);font-size:.88em}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--brass);font-weight:600}
+.muted{color:var(--muted)}
+a{color:var(--focus)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+section{display:grid;gap:18px;padding-block:44px;border-top:1px solid var(--line)}
+section:first-of-type{border-top:0}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center;padding-block:12px 40px}
+.hero-text{display:grid;gap:16px;min-width:0}
+.lede{font-size:1.15rem;max-width:34ch}
+.jump{display:flex;flex-wrap:wrap;gap:8px}
+.jump a{font-size:.9rem;text-decoration:none;color:var(--ink);border:1px solid var(--line);background:var(--surface);padding:5px 12px;border-radius:999px}
+.jump a:hover{border-color:var(--brass)}
+@media (max-width:760px){.hero{grid-template-columns:1fr}}
+
+/* sign-in mock (the thing they'll build) */
+.signin{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px;display:grid;gap:12px;box-shadow:0 18px 40px -24px rgba(10,20,40,.35);position:relative}
+.signin h3{font-size:1.5rem}
+.field{display:grid;gap:4px;font-size:.85rem;color:var(--muted)}
+.field input{font:inherit;font-size:1rem;color:var(--ink);background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:9px 11px}
+.btn{border:0;border-radius:8px;padding:10px 14px;font-weight:700;text-align:center}
+.btn-primary{background:var(--ink);color:var(--bg)}
+.btn-gh{background:var(--surface-2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-gh .key{color:var(--brass)}
+.or{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:.8rem}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+.signin-hint{font-size:.8rem;color:var(--muted);text-align:center}
+.tag{position:absolute;top:-11px;right:16px;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;background:var(--brass-soft);color:var(--brass);padding:3px 9px;border-radius:999px;font-weight:600}
+
+/* answers strip */
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.fact{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;gap:6px;align-content:start}
+.fact .big{font-family:var(--f-display);font-weight:800;font-size:1.5rem}
+.fact.no .big{color:var(--open)} .fact.yes .big{color:var(--secret)}
+@media (max-width:620px){.facts{grid-template-columns:1fr}}
+
+/* sequence diagram */
+.scen{display:flex;flex-wrap:wrap;gap:8px}
+.scen button{border:1px solid var(--line);background:var(--surface);padding:7px 14px;border-radius:999px;font-size:.92rem}
+.scen button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.scen button.warn[aria-pressed="true"]{background:var(--secret);border-color:var(--secret);color:#0b0d11}
+.diagram{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.seq-scroll{overflow-x:auto}
+.seq{min-width:600px;padding:18px 10px 10px}
+.lanes{display:grid;grid-template-columns:repeat(3,1fr);text-align:center;gap:8px}
+.lane{display:grid;justify-items:center;gap:4px;font-family:var(--f-display);font-weight:700;font-size:1.05rem}
+.lane small{font-family:var(--f-body);font-weight:400;font-size:.78rem;color:var(--muted)}
+.lane .ic{width:42px;height:42px;border-radius:10px;display:grid;place-items:center;background:var(--surface-2);border:1px solid var(--line)}
+.lane.vault .ic{background:var(--brass-soft);border-color:var(--brass);color:var(--brass)}
+.lane.off{opacity:.35}
+.lane.bad .ic{background:var(--secret-soft);border-color:var(--secret);color:var(--secret)}
+.seq-body{position:relative;margin-top:10px;padding-bottom:8px}
+.life{position:absolute;top:0;bottom:0;width:0;border-left:2px dashed var(--line)}
+.row{position:relative;height:64px;transition:opacity .25s}
+.row.future{opacity:.18}
+.row .arrow{position:absolute;top:36px;height:0;border-top:3px solid var(--open)}
+.row .arrow::after{content:"";position:absolute;top:-8px;border:6.5px solid transparent}
+.row .arrow.r::after{right:-4px;border-left:10px solid var(--open);border-right:0}
+.row .arrow.l::after{left:-4px;border-right:10px solid var(--open);border-left:0}
+.row.secret .arrow{border-top-color:var(--brass);border-top-width:4px}
+.row.secret .arrow.r::after{border-left-color:var(--brass)} .row.secret .arrow.l::after{border-right-color:var(--brass)}
+.row.danger .arrow{border-top-color:var(--secret)}
+.row.danger .arrow.r::after{border-left-color:var(--secret)} .row.danger .arrow.l::after{border-right-color:var(--secret)}
+.row .lbl{position:absolute;top:4px;transform:translateX(-50%);font-size:.82rem;line-height:1.25;text-align:center;background:var(--surface);padding:2px 8px;border-radius:6px;white-space:nowrap;max-width:46%;overflow:hidden;text-overflow:ellipsis}
+.row .num{font-family:var(--f-mono);font-weight:600;color:var(--muted);margin-right:4px}
+.row .note{position:absolute;top:10px;transform:translateX(-50%);font-size:.8rem;line-height:1.25;text-align:center;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:5px 10px;width:30%}
+.row.current .lbl,.row.current .note{outline:2px solid var(--focus);font-weight:700}
+.row.current .arrow{animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.45}}
+@media (prefers-reduced-motion:reduce){.row.current .arrow{animation:none}.row{transition:none}}
+.zone-key{display:flex;flex-wrap:wrap;gap:16px;padding:10px 18px;font-size:.82rem;color:var(--muted);border-top:1px solid var(--line)}
+.zone-key span{display:inline-flex;align-items:center;gap:7px}
+.sw{width:22px;height:0;border-top:3px solid var(--open)} .sw.s{border-top:4px solid var(--brass)} .sw.d{border-top:3px solid var(--secret)}
+.caption{display:grid;grid-template-columns:1fr auto;gap:14px 20px;padding:20px;background:var(--surface-2);border-top:1px solid var(--line);align-items:start}
+.caption .cap-text{display:grid;gap:6px;min-width:0}
+.caption h3{font-size:1.3rem}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:.72rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:999px;width:max-content}
+.pill.open{background:var(--open-soft);color:var(--open)} .pill.secret{background:var(--brass-soft);color:var(--brass)} .pill.danger{background:var(--secret-soft);color:var(--secret)} .pill.self{background:var(--surface);color:var(--muted);border:1px solid var(--line)}
+.stepper{display:flex;gap:8px;align-items:center}
+.stepper button{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 14px;font-weight:700}
+.stepper button:disabled{opacity:.4;cursor:default}
+.stepcount{font-family:var(--f-mono);font-size:.8rem;color:var(--muted);min-width:4.5em;text-align:center}
+@media (max-width:620px){.caption{grid-template-columns:1fr}}
+.bigidea{border-left:4px solid var(--brass);padding:4px 0 4px 18px;font-family:var(--f-display);font-size:1.35rem;font-weight:700;line-height:1.3}
+.bigidea em{font-style:normal;color:var(--brass)}
+
+/* key sort */
+.keys{display:grid;gap:12px}
+.keycard{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 18px;align-items:center}
+.keycard .kname{font-weight:700}
+.keycard .ksample{font-family:var(--f-mono);font-size:.8rem;color:var(--muted);overflow-wrap:anywhere}
+.choices{display:flex;flex-wrap:wrap;gap:6px}
+.choices button{border:1px solid var(--line);background:var(--surface-2);border-radius:8px;padding:6px 11px;font-size:.85rem}
+.choices button.right{background:var(--open-soft);border-color:var(--open);color:var(--open);font-weight:700}
+.choices button.wrong{background:var(--secret-soft);border-color:var(--secret);color:var(--secret)}
+.kfeedback{grid-column:1/-1;font-size:.92rem}
+.kfeedback:empty{display:none}
+@media (max-width:620px){.keycard{grid-template-columns:1fr}}
+.score{font-family:var(--f-mono);font-size:.85rem;color:var(--muted)}
+
+/* walkthrough */
+.order{display:flex;flex-wrap:wrap;gap:6px 4px;align-items:center;font-size:.9rem}
+.order b{font-family:var(--f-mono);font-size:.78rem;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:3px 8px;font-weight:600}
+.order b.gh{border-color:var(--ink)} .order b.sb{border-color:var(--open)}
+.order i{font-style:normal;color:var(--muted)}
+.part{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:22px 28px;padding-block:34px;border-top:1px dashed var(--line)}
+.part:first-of-type{border-top:0}
+.part-text{display:grid;gap:12px;align-content:start;min-width:0}
+.part-head{display:flex;gap:12px;align-items:baseline}
+.pnum{font-family:var(--f-display);font-weight:800;font-size:2.2rem;color:var(--brass);line-height:1}
+.where{font-family:var(--f-mono);font-size:.78rem;color:var(--muted);line-height:1.5}
+.where b{color:var(--ink);font-weight:600}
+.site{font-family:var(--f-mono);font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:5px;border:1px solid var(--line)}
+.site.sb{color:var(--open);border-color:var(--open)} .site.gh{color:var(--ink);border-color:var(--ink)} .site.ai{color:var(--brass);border-color:var(--brass)} .site.you{color:var(--muted)}
+ol.do{margin:0;padding-left:1.3em;display:grid;gap:6px}
+.why{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:.93rem}
+.why b{color:var(--brass)}
+.trap{background:var(--secret-soft);border-radius:10px;padding:12px 14px;font-size:.93rem;color:var(--ink)}
+.trap b{color:var(--secret)}
+.ipad{font-size:.85rem;color:var(--muted);border:1px dashed var(--line);border-radius:10px;padding:9px 12px}
+@media (max-width:820px){.part{grid-template-columns:1fr}}
+
+/* mock-ups */
+.mock{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 14px 30px -22px rgba(10,20,40,.4);min-width:0;align-self:start}
+.chrome{background:var(--mock-bar);display:flex;align-items:center;gap:10px;padding:8px 10px}
+.dots{display:flex;gap:5px}.dots i{width:9px;height:9px;border-radius:50%;background:var(--dim);display:block}
+.url{flex:1;min-width:0;background:var(--surface);border-radius:6px;padding:3px 10px;font-family:var(--f-mono);font-size:.72rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mocktag{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;color:var(--brass);font-weight:600;white-space:nowrap}
+.mbody{padding:16px;display:grid;gap:12px;font-size:.88rem}
+.mbody h4{margin:0;font-family:var(--f-display);font-size:1.05rem}
+.crumbs{font-size:.75rem;color:var(--muted)}
+.mrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}
+.mrow:last-child{border-bottom:0}
+.mrow .d{font-size:.76rem;color:var(--muted)}
+.tog{width:38px;height:22px;border-radius:999px;background:var(--dim);position:relative;border:0;flex:none}
+.tog::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .15s}
+.tog[aria-checked="true"]{background:var(--open)}
+.tog[aria-checked="true"]::after{left:19px}
+.minput{font-family:var(--f-mono);font-size:.76rem;background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:7px 9px;overflow-wrap:anywhere;color:var(--ink)}
+.minput.hl{border:2px solid var(--brass);background:var(--brass-soft)}
+.minput.ph{color:var(--muted);font-family:var(--f-body)}
+.mlabel{font-weight:700;font-size:.82rem;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.req{color:var(--secret)}
+.mhint{font-size:.74rem;color:var(--muted)}
+.mfield{display:grid;gap:5px}
+.mbtn{justify-self:start;border-radius:6px;padding:7px 13px;font-size:.82rem;font-weight:700;border:1px solid var(--line);background:var(--surface-2)}
+.mbtn.go{background:var(--open);border-color:var(--open);color:#0b0d11}
+.mbtn.dark{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.callout{position:relative;outline:2px dashed var(--brass);outline-offset:4px;border-radius:6px}
+.callout.red{outline-color:var(--secret)}
+.flag{font-family:var(--f-mono);font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--brass)}
+.flag.red{color:var(--secret)}
+.banner{background:var(--open-soft);color:var(--open);border-radius:6px;padding:8px 10px;font-size:.8rem}
+.secretval{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.copy{border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:4px 9px;font-size:.75rem}
+.check{display:flex;gap:8px;align-items:center}
+.check span.box{width:15px;height:15px;border:1.5px solid var(--muted);border-radius:3px;display:inline-block}
+.mselect{display:flex;justify-content:space-between;gap:8px}
+.urlitem{display:flex;justify-content:space-between;gap:8px;align-items:center}
+
+/* code / prompt */
+.prompt{background:var(--code-bg);color:var(--code-fg);border-radius:12px;padding:16px 18px;font-family:var(--f-mono);font-size:.8rem;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere;position:relative}
+.prompt-wrap{display:grid;gap:8px;min-width:0}
+.prompt-bar{display:flex;justify-content:space-between;align-items:center;gap:10px}
+
+/* testing */
+.tests{display:grid;gap:8px;list-style:none;padding:0;margin:0}
+.tests label{display:flex;gap:10px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer}
+.tests input{margin-top:5px;accent-color:var(--open);width:17px;height:17px;flex:none}
+.tests .brk{font-family:var(--f-mono);font-size:.68rem;font-weight:600;color:var(--secret);text-transform:uppercase;letter-spacing:.05em;margin-left:4px}
+.errs-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table.errs{border-collapse:collapse;width:100%;min-width:560px;font-size:.9rem}
+.errs th,.errs td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+.errs tr:last-child td{border-bottom:0}
+.errs th{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.errs td:first-child{font-family:var(--f-mono);font-size:.78rem;color:var(--secret);width:36%}
+.leak{background:var(--secret-soft);border-radius:14px;padding:18px 20px;display:grid;gap:8px}
+.leak h3{color:var(--secret)}
+footer{padding-top:30px;font-size:.82rem;color:var(--muted)}
+
+/* additions for the three-page version */
+.backlink{display:inline-flex;gap:6px;font-size:.9rem;color:var(--muted);text-decoration:none;width:max-content}
+.backlink:hover{color:var(--ink)}
+.row.divider{height:46px}
+.row.divider .divlbl{position:absolute;left:0;right:0;top:12px;display:flex;align-items:center;gap:10px;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.row.divider .divlbl::before,.row.divider .divlbl::after{content:"";flex:1;height:1px;background:var(--line)}
+.row.divider.future{opacity:.35}
+.row.carry .arrow{border-top:4px dashed var(--brass);border-top-color:var(--brass)}
+.row.carry .arrow.l::after{border-right-color:var(--brass)} .row.carry .arrow.r::after{border-left-color:var(--brass)}
+.row.vault .note{background:var(--brass-soft);border-color:var(--brass);color:var(--ink)}
+.row.mint .note{background:var(--brass-soft);border-color:var(--brass);color:var(--ink)}
+.pill.carry{background:var(--brass-soft);color:var(--brass)}
+.sw.c{border-top:4px dashed var(--brass)}
+.scen-hint{font-size:.88rem;color:var(--muted)}
+
+.danger-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.dcard{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;gap:8px;align-content:start}
+.dcard h3{font-size:1.08rem}
+.dcard .dn{font-family:var(--f-mono);font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--secret)}
+@media (max-width:680px){.danger-grid{grid-template-columns:1fr}}
+.compare-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table.compare{border-collapse:collapse;width:100%;min-width:560px;font-size:.92rem}
+.compare th,.compare td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+.compare tr:last-child td{border-bottom:0}
+.compare th{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.compare td:first-child{font-weight:700;width:24%}
+.compare .lvl{font-family:var(--f-mono);font-size:.75rem;font-weight:600;color:var(--secret)}
+.redflags{display:grid;gap:8px;list-style:none;padding:0;margin:0}
+.redflags li{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--secret);border-radius:8px;padding:10px 14px}
+.redflags li b{color:var(--secret)}
+
+.linkcards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.lcard{display:grid;gap:10px;align-content:start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;text-decoration:none;color:var(--ink);transition:border-color .15s}
+.lcard:hover{border-color:var(--open)}
+.lcard h3{font-size:1.4rem}
+.lcard .go{font-weight:700;color:var(--open)}
+.lcard ul{margin:0;padding-left:1.1em;display:grid;gap:4px;color:var(--muted);font-size:.93rem}
+@media (max-width:680px){.linkcards{grid-template-columns:1fr}}
+.pagehead{display:grid;gap:14px;padding-block:8px 18px}
+.pagehead .lede{max-width:52ch}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="pagehead">
+  <a class="backlink" href="../">← Two Ways In</a>
+  <span class="eyebrow">Build 2 · Identity · Setup page 1 of 2</span>
+  <h1>Set Up Email Sign-In</h1>
+  <p class="lede">The easy one. No keys, no other websites. Supabase does all the work, so you only change a few settings and ask your AI for a sign-in screen.</p>
+  <div class="order" aria-label="Order of steps">
+    <b class="sb">1 Supabase</b><i>→</i><b>2 Your AI</b><i>→</i><b>3 Test</b>
+  </div>
+</header>
+
+<section id="setup" style="border-top:1px solid var(--line)">
+  <div class="part">
+    <div class="part-text">
+      <div class="part-head"><span class="pnum">1</span><div style="display:grid;gap:4px"><h3>Turn on email sign-in</h3><span class="site sb" style="width:max-content">Supabase</span></div></div>
+      <p class="where"><b>Your project</b> → Authentication → Sign In / Providers → <b>Email</b></p>
+      <ol class="do">
+        <li>Check that the Email provider is <b>on</b>.</li>
+        <li>Turn <b>Confirm email</b> <b>off</b>.</li>
+        <li>Set <b>Minimum password length</b> to 8 or more.</li>
+        <li>Pick a <b>Password requirement</b>, like letters and digits.</li>
+        <li>Click <b>Save</b>.</li>
+      </ol>
+      <div class="why"><b>Why turn off Confirm email?</b> Supabase's free email sender only sends to people on your Supabase team, and only a few emails an hour. Your friends would never get the confirmation email, so they could never sign in. Real apps pay for their own email service. We're skipping it.</div>
+      <div class="why"><b>Think about it:</b> with confirmation off, someone could sign up using an email address that isn't theirs. Is that a problem for your app?</div>
+      <div class="why"><b>Why no key?</b> Look at the email version of the diagram on the <a href="../#how">main page</a>. Only your app and Supabase are involved. Nobody else needs proof of who's asking.</div>
+    </div>
+    <div class="mock" aria-label="Mock-up: Supabase Email provider settings">
+      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">supabase.com/dashboard/project/abcdefghijklmnop/auth/providers</span><span class="mocktag">Mock-up</span></div>
+      <div class="mbody">
+        <span class="crumbs">Authentication › Sign In / Providers › Email</span>
+        <h4>Email</h4>
+        <div class="mrow"><div><b>Enable Email provider</b><div class="d">Let people sign up with email and password</div></div><button type="button" class="tog" role="switch" aria-checked="true" aria-label="Enable Email provider"></button></div>
+        <div class="mrow callout red"><div><b>Confirm email</b> <span class="flag red">Turn off</span><div class="d">Users must confirm their email before signing in</div></div><button type="button" class="tog" role="switch" aria-checked="false" aria-label="Confirm email"></button></div>
+        <div class="mrow"><div><b>Minimum password length</b><div class="d">Shorter passwords are rejected</div></div><span class="minput">8</span></div>
+        <div class="mrow"><div><b>Password requirements</b><div class="d">Characters every password must include</div></div><span class="minput">Letters and digits ▾</span></div>
+        <button type="button" class="mbtn go">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="part">
+    <div class="part-text">
+      <div class="part-head"><span class="pnum">2</span><div style="display:grid;gap:4px"><h3>Ask your AI for the sign-in screen</h3><span class="site ai" style="width:max-content">Your AI</span></div></div>
+      <p>Upload <code>index.html</code>, <code>app.js</code> and <code>config.js</code>, then paste this prompt. Change the parts about your app if you need to.</p>
+      <div class="why"><b>When the code comes back, check:</b> you should see <code>signUp</code> and <code>signInWithPassword</code>. There should be no new keys anywhere. Email sign-in uses the same publishable key you already have.</div>
+    </div>
+    <div class="prompt-wrap">
+      <div class="prompt-bar"><span class="eyebrow">Prompt</span><button type="button" class="copy" data-copy="prompt-email">Copy prompt</button></div>
+      <div class="prompt" id="prompt-email">I'm adding accounts to my app. My files are index.html, app.js and config.js (attached). config.js already connects to Supabase with my project URL and publishable key.
+
+Please add:
+1. A sign-in screen with an email box, a password box, a Sign up button and a Sign in button. Use supabase.auth.signUp and supabase.auth.signInWithPassword.
+2. Use supabase.auth.onAuthStateChange so the page shows the sign-in screen when nobody is signed in, and my app when someone is. Show the email of whoever is signed in.
+3. A Sign out button.
+4. Clear error messages on the page, for example a wrong password, a password that is too short, or an email that already has an account.
+5. Leave room under the Sign in button for a "Sign in with GitHub" button. I'll add it later.
+
+Do not put any secret keys in my code. Tell me exactly which file each change goes in.</div>
+    </div>
+  </div>
+</section>
+
+<section id="test">
+  <div class="col" style="display:grid;gap:12px">
+    <span class="eyebrow">Step 3</span>
+    <h2>Test it, then try to break it</h2>
+    <p>Do these on Live Server first, then again on your live GitHub Pages site.</p>
+  </div>
+  <ul class="tests col">
+    <li><label><input type="checkbox" id="e1"><span>Sign up with a password that's too short. <span class="brk">break it</span><br><span class="muted">Do you see a clear error, or does nothing happen?</span></span></label></li>
+    <li><label><input type="checkbox" id="e2"><span>Sign up properly. Do you land inside your app, with your email showing?</span></label></li>
+    <li><label><input type="checkbox" id="e3"><span>Sign up again with the same email. <span class="brk">break it</span><br><span class="muted">What does your app say?</span></span></label></li>
+    <li><label><input type="checkbox" id="e4"><span>Sign out, then sign in with the wrong password. <span class="brk">break it</span></span></label></li>
+    <li><label><input type="checkbox" id="e5"><span>Sign in properly, then refresh the page. Are you still signed in?</span></label></li>
+    <li><label><input type="checkbox" id="e6"><span>In Supabase, open Authentication → Users. Is your account there? Can you see the password? (You shouldn't be able to.)</span></label></li>
+    <li><label><input type="checkbox" id="e7"><span>Get someone else to sign up on their phone.</span></label></li>
+  </ul>
+
+  <div class="col" style="display:grid;gap:10px">
+    <h3>Error decoder</h3>
+    <p class="muted" style="font-size:.92rem">Paste the full error into your AI as usual. But these ones are almost always a setting, not your code.</p>
+  </div>
+  <div class="errs-scroll">
+    <table class="errs">
+      <thead><tr><th>You see</th><th>What's wrong</th><th>Fix</th></tr></thead>
+      <tbody>
+        <tr><td>Email not confirmed</td><td>Confirm email is still on.</td><td>Step 1. Turn it off and Save. Then delete that user in Authentication → Users and sign up again.</td></tr>
+        <tr><td>Invalid login credentials</td><td>Wrong email or password.</td><td>Check for typos. Passwords are case-sensitive.</td></tr>
+        <tr><td>Password should be at least … characters</td><td>Working as planned. Your rule from step 1 caught it.</td><td>Make sure your app shows this message on the page.</td></tr>
+        <tr><td>User already registered</td><td>That email already has an account.</td><td>Sign in instead.</td></tr>
+        <tr><td>Nothing happens when you click, no message</td><td>The error isn't being shown on the page.</td><td>Open the browser console (right-click → Inspect → Console), copy the red error, give it to your AI.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="linkcards" style="grid-template-columns:1fr">
+    <a class="lcard" href="../github/">
+      <span class="eyebrow">Next · setup page 2 of 2</span>
+      <h3>Sign in with GitHub</h3>
+      <span class="go">Add the GitHub button →</span>
+    </a>
+  </div>
+</section>
+
+<footer><strong>Building with AI</strong> &mdash; Email Sign-In Setup. <a href="../">Back to Two Ways In</a> &middot; Next: <a href="../github/">Sign in with GitHub</a><br>Mock-ups are simplified drawings of the Supabase dashboard, made for teaching. Your screen may look a little different.</footer>
+</div>
+
+<script>
+(function(){
+  /* ---------- sequence diagram (main page only) ---------- */
+  if(document.getElementById('lanes')){
+  const ICONS = {
+    app:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>',
+    sb:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg>',
+    gh:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V9l8-5 8 5v12"/><path d="M10 21v-6h4v6"/></svg>',
+    bad:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6M8 8h8"/></svg>'
+  };
+  const LANES = {
+    normal:[{n:'Your app',s:'in the browser',i:'app'},{n:'Supabase',s:'holds the secret',i:'sb',vault:1},{n:'GitHub',s:'makes the secret',i:'gh'}],
+    email:[{n:'Your app',s:'in the browser',i:'app'},{n:'Supabase',s:'stores scrambled passwords',i:'sb'},{n:'GitHub',s:'not involved',i:'gh',off:1}],
+    hack:[{n:'A hacker',s:'on their laptop',i:'bad',bad:1},{n:'Supabase',s:'holds the secret',i:'sb',vault:1,off:1},{n:'GitHub',s:'makes the secret',i:'gh'}]
+  };
+  const SETUP='Setup · you do this once', SIGNIN='Every time someone signs in';
+  const S = {
+    github:{lanes:'normal',steps:[
+      {ph:SETUP,a:2,k:'mint',l:'makes a Client ID + Client Secret',h:'GitHub makes the secret',p:'When you register your app with GitHub, GitHub makes two things for it. The Client ID is a public name tag. The Client Secret is the proof that goes with it. GitHub keeps a copy of the secret so it can check it later.'},
+      {ph:SETUP,f:2,t:1,k:'carry',l:'you copy it into Supabase',h:'You carry the secret to Supabase',p:'You copy the Client Secret from GitHub and paste it straight into your Supabase dashboard. Look where the arrow goes: it skips your app completely. The secret never goes in config.js, and never in your repo.'},
+      {ph:SETUP,a:1,k:'vault',l:'saves it in its settings, locked',h:'Supabase locks it away',p:'Supabase saves the secret on its own servers, in your project\'s settings. It never sends it to anyone\'s browser. Now only GitHub and Supabase know the secret. Setup is done, and you never touch the secret again.'},
+      {ph:SIGNIN,f:0,t:1,k:'open',l:'"Sign in with GitHub, please"',h:'Someone clicks "Sign in with GitHub"',p:'Your app tells Supabase that this person wants to use GitHub. Your app only holds public things: your project URL and your publishable key.'},
+      {ph:SIGNIN,f:1,t:2,k:'open',l:'sends them to GitHub + Client ID',h:'Supabase sends them to GitHub',p:'Their browser jumps to github.com. The address bar now shows your app\'s Client ID. That\'s fine. The Client ID is a name tag: it says which app is asking, but it doesn\'t prove anything.'},
+      {ph:SIGNIN,a:2,k:'self',l:'Asks: "Let Mood Tracker in?" They click Authorize',h:'GitHub asks them',p:'GitHub shows a screen: Mood Tracker wants to access your account. They click Authorize. Their GitHub password stays on GitHub. Your app and Supabase never see it.'},
+      {ph:SIGNIN,f:2,t:1,k:'open',l:'one-time ticket (code)',h:'GitHub hands out a one-time ticket',p:'GitHub sends the browser back to Supabase with a ticket (a short code) in the address bar. Anything in the address bar is out in the open. So the ticket on its own must not be enough.'},
+      {ph:SIGNIN,f:1,t:2,k:'secret',l:'ticket + CLIENT SECRET',h:'Supabase shows the ticket and the secret',p:'Now Supabase talks to GitHub directly, server to server. The browser isn\'t part of this. Supabase sends the ticket plus the Client Secret it saved in step 3, which proves: "I really am Mood Tracker."'},
+      {ph:SIGNIN,f:2,t:1,k:'secret',l:'"Checks out. Here\'s who they are."',h:'GitHub checks, then answers',p:'GitHub checks two things. Is the ticket real and unused? Does the secret match the copy GitHub kept in step 1? If both are yes, GitHub tells Supabase who this person is: their username, email and picture.'},
+      {ph:SIGNIN,f:1,t:0,k:'open',l:'you\'re signed in',h:'Back in your app, signed in',p:'Supabase makes their account (or finds it, if they\'ve been here before) and sends them back to your app, signed in. Your app never saw the secret. It never needed to.'}
+    ]},
+    email:{lanes:'email',steps:[
+      {f:0,t:1,k:'open',l:'email + password',h:'Someone types an email and password',p:'Your app sends them straight to Supabase. No other company is involved.'},
+      {a:1,k:'self',l:'scrambles the password, then checks or saves it',h:'Supabase checks it',p:'On sign-up, Supabase scrambles the password (hashing) and saves the scrambled version. On sign-in, it scrambles what was typed and checks it against the saved one. Nobody, not even you in the dashboard, can see the real password.'},
+      {f:1,t:0,k:'open',l:'you\'re signed in',h:'Signed in',p:'Supabase sends back a session. Nobody else was involved, so there\'s nobody to prove anything to. That\'s why email sign-in needs no key from anyone.'}
+    ]},
+    hack1:{lanes:'hack',steps:[
+      {f:0,t:2,k:'danger',l:'stolen ticket, no secret',h:'A hacker copies a ticket',p:'Say someone grabs the ticket from step 7. Maybe it was on screen, maybe in a browser history. They try to cash it in at GitHub.'},
+      {f:2,t:0,k:'danger',l:'"No secret? Rejected."',h:'GitHub says no',p:'No Client Secret, no deal. A ticket alone can\'t be cashed in. Each ticket also works only once and runs out after 10 minutes.'}
+    ]},
+    hack2:{lanes:'hack',steps:[
+      {f:0,t:2,k:'danger',l:'stolen ticket + secret copied from your repo',h:'But what if the secret was in config.js?',p:'config.js is in your public GitHub repo and on your live site. Anyone can open it. Now the hacker has the ticket and the secret.'},
+      {f:2,t:0,k:'danger',l:'"Looks like Mood Tracker. Here you go."',h:'GitHub can\'t tell the difference',p:'To GitHub, whoever holds the secret is your app. If anyone else has it, it stops proving anything. That\'s why the Client Secret lives in one place only: the Supabase dashboard.'}
+    ]}
+  };
+  const PILL = {open:['open','Out in the open'],secret:['secret','Back room'],self:['self','On one screen'],danger:['danger','Attack'],mint:['secret','Setup · on GitHub'],carry:['carry','Setup · you, by hand'],vault:['secret','Setup · in Supabase']};
+  let scen='github', step=0;
+  const lanesEl=document.getElementById('lanes'), body=document.getElementById('seqbody');
+  const center=i=>(i+.5)/3*100;
+  function render(){
+    const sc=S[scen];
+    lanesEl.innerHTML=LANES[sc.lanes].map(l=>`<div class="lane${l.vault?' vault':''}${l.off?' off':''}${l.bad?' bad':''}"><span class="ic">${ICONS[l.i]}</span>${l.n}<small>${l.s}</small></div>`).join('');
+    let html=[0,1,2].map(i=>`<div class="life" style="left:${center(i)}%"></div>`).join('');
+    let lastPh=null;
+    sc.steps.forEach((s,i)=>{
+      if(s.ph && s.ph!==lastPh){ html+=`<div class="row divider${i>step?' future':''}"><span class="divlbl">${s.ph}</span></div>`; lastPh=s.ph; }
+      const cls=['row',s.k,i>step?'future':'',i===step?'current':''].join(' ');
+      if(s.a!==undefined){
+        html+=`<div class="${cls}"><span class="note" style="left:${center(s.a)}%"><span class="num">${i+1}</span>${s.l}</span></div>`;
+      }else{
+        const a=Math.min(center(s.f),center(s.t)), w=Math.abs(center(s.f)-center(s.t));
+        html+=`<div class="${cls}"><div class="arrow ${s.t>s.f?'r':'l'}" style="left:${a}%;width:${w}%"></div><span class="lbl" style="left:${a+w/2}%"><span class="num">${i+1}</span>${s.l}</span></div>`;
+      }
+    });
+    body.innerHTML=html;
+    const s=sc.steps[step];
+    const pill=document.getElementById('cap-pill');
+    pill.className='pill '+PILL[s.k][0]; pill.textContent=PILL[s.k][1];
+    document.getElementById('cap-title').textContent=s.h;
+    document.getElementById('cap-text').textContent=s.p;
+    document.getElementById('stepcount').textContent=`Step ${step+1} of ${sc.steps.length}`;
+    document.getElementById('prev').disabled=step===0;
+    document.getElementById('next').disabled=step===sc.steps.length-1;
+    document.querySelectorAll('[data-scen]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.scen===scen));
+  }
+  function setScen(n,st){scen=n;step=st||0;render();}
+  document.querySelectorAll('[data-scen]').forEach(b=>b.addEventListener('click',()=>setScen(b.dataset.scen)));
+  document.getElementById('prev').addEventListener('click',()=>{if(step>0){step--;render();}});
+  document.getElementById('next').addEventListener('click',()=>{if(step<S[scen].steps.length-1){step++;render();}});
+  document.querySelectorAll('[data-play]').forEach(b=>b.addEventListener('click',()=>{
+    setScen(b.dataset.play, b.dataset.play==='github'?3:0);
+    document.getElementById('how').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+  }));
+  render();
+  }
+
+  /* ---------- key sort (main page only) ---------- */
+  const list=document.getElementById('keylist');
+  if(list){
+  const OPTS=['In config.js (public)','Supabase dashboard only','Nowhere, ever'];
+  const KEYS=[
+    {n:'Supabase project URL',x:'https://abcdefghijklmnop.supabase.co',a:0,ok:'Right. It\'s just your backend\'s address. Public on purpose.',no:'It\'s just your backend\'s address, so your app needs it. It goes in config.js and it\'s fine to be public.'},
+    {n:'Supabase publishable key',x:'sb_publishable_… (older projects: anon)',a:0,ok:'Right. It lets your app talk to Supabase, and your RLS policies decide what it\'s allowed to see.',no:'This one belongs in config.js. It\'s public by design: your RLS policies decide what it can reach.'},
+    {n:'Supabase secret key',x:'sb_secret_… (older projects: service_role)',a:2,ok:'Right. It skips every RLS rule. You never need it this year.',no:'This one skips every RLS rule and can read or wipe your whole database. It goes nowhere. You don\'t need it this year.'},
+    {n:'GitHub Client ID',x:'Ov23li…',a:1,ok:'Right. You paste it into Supabase. It isn\'t secret: it shows up in the address bar in step 5.',no:'It goes in the Supabase dashboard. It isn\'t secret, though. It shows up in the address bar in step 5 of the diagram.'},
+    {n:'GitHub Client Secret',x:'a long string GitHub shows you once',a:1,ok:'Right. Supabase uses it in the back room (steps 8 and 9). Nowhere else.',no:'It goes in the Supabase dashboard and nowhere else. Supabase uses it in the back room (steps 8 and 9). Never in your files.'}
+  ];
+  const right=new Set();
+  KEYS.forEach((k,i)=>{
+    const card=document.createElement('div'); card.className='keycard';
+    card.innerHTML=`<div><div class="kname">${k.n}</div><div class="ksample">${k.x}</div></div><div class="choices">${OPTS.map((o,j)=>`<button type="button" data-k="${i}" data-o="${j}">${o}</button>`).join('')}</div><p class="kfeedback" id="kf${i}"></p>`;
+    list.appendChild(card);
+  });
+  list.addEventListener('click',e=>{
+    const b=e.target.closest('button[data-k]'); if(!b) return;
+    const i=+b.dataset.k, j=+b.dataset.o, k=KEYS[i];
+    b.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('right','wrong'));
+    if(j===k.a){b.classList.add('right');right.add(i);}else{b.classList.add('wrong');right.delete(i);}
+    document.getElementById('kf'+i).textContent=j===k.a?k.ok:k.no;
+    document.getElementById('score').textContent=`${right.size} of 5 right`;
+  });
+  }
+
+  /* ---------- mock-up toggles (cosmetic) ---------- */
+  document.querySelectorAll('.tog').forEach(t=>t.addEventListener('click',()=>t.setAttribute('aria-checked',t.getAttribute('aria-checked')!=='true')));
+
+  /* ---------- generate secret (GitHub page) ---------- */
+  const gen=document.getElementById('gen');
+  if(gen) gen.addEventListener('click',()=>{
+    const hex=Array.from({length:40},()=>'0123456789abcdef'[Math.floor(Math.random()*16)]).join('');
+    document.getElementById('secret-zone').innerHTML=`<div style="display:grid;gap:8px"><div class="banner">Make sure to copy your new client secret now. You won't be able to see it again.</div><div class="secretval"><span class="minput hl" id="sec">${hex}</span><button type="button" class="copy" data-copy="sec">Copy</button></div><span class="mhint">Pretend secret, made up for this page.</span></div>`;
+  });
+
+  /* ---------- copy buttons ---------- */
+  document.addEventListener('click',e=>{
+    const b=e.target.closest('[data-copy]'); if(!b) return;
+    const el=document.getElementById(b.dataset.copy); const txt=el.innerText;
+    const done=()=>{const o=b.textContent;b.textContent='Copied';setTimeout(()=>b.textContent=o,1400);};
+    const fallback=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Selected, press Ctrl+C';};
+    try{navigator.clipboard.writeText(txt).then(done,fallback);}catch(err){fallback();}
+  });
+})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adding Sign-In — Building with AI</title>
+<style>
+[hidden]{display:none!important}
+img{max-width:100%}
+/* Layout: one reading column (760px) with wide bands for the diagram and the mock-ups; keys and locks as the visual language. */
+:root{
+  --bg:#0f1115; --surface:#171a21; --surface-2:#1e222b; --ink:#e8eaf0; --muted:#a3abbb; --line:#2b303b;
+  --brass:#ffb454; --brass-soft:#241d12; --open:#7bd88f; --open-soft:#122018; --secret:#ff7b72; --secret-soft:#251519;
+  --focus:#6aa9ff; --mock-bar:#232833; --code-bg:#0b0d11; --code-fg:#d6dae4; --dim:#4a5160;
+  --f-display:ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-body:ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-mono:ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6}
+.wrap{max-width:980px;margin:0 auto;padding-inline:20px;padding-block:28px 80px}
+.col{max-width:760px}
+h1,h2,h3{font-family:var(--f-display);line-height:1.12;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.4rem,7vw,4rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(1.6rem,4vw,2.2rem);font-weight:700;letter-spacing:-.01em}
+h3{font-size:1.25rem;font-weight:700}
+p{margin:0}
+code,.mono{font-family:var(--f-mono);font-size:.88em}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--brass);font-weight:600}
+.muted{color:var(--muted)}
+a{color:var(--focus)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:6px}
+section{display:grid;gap:18px;padding-block:44px;border-top:1px solid var(--line)}
+section:first-of-type{border-top:0}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:36px;align-items:center;padding-block:12px 40px}
+.hero-text{display:grid;gap:16px;min-width:0}
+.lede{font-size:1.15rem;max-width:34ch}
+.jump{display:flex;flex-wrap:wrap;gap:8px}
+.jump a{font-size:.9rem;text-decoration:none;color:var(--ink);border:1px solid var(--line);background:var(--surface);padding:5px 12px;border-radius:999px}
+.jump a:hover{border-color:var(--brass)}
+@media (max-width:760px){.hero{grid-template-columns:1fr}}
+
+/* sign-in mock (the thing they'll build) */
+.signin{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px;display:grid;gap:12px;box-shadow:0 18px 40px -24px rgba(10,20,40,.35);position:relative}
+.signin h3{font-size:1.5rem}
+.field{display:grid;gap:4px;font-size:.85rem;color:var(--muted)}
+.field input{font:inherit;font-size:1rem;color:var(--ink);background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:9px 11px}
+.btn{border:0;border-radius:8px;padding:10px 14px;font-weight:700;text-align:center}
+.btn-primary{background:var(--ink);color:var(--bg)}
+.btn-gh{background:var(--surface-2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-gh .key{color:var(--brass)}
+.or{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:.8rem}
+.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+.signin-hint{font-size:.8rem;color:var(--muted);text-align:center}
+.tag{position:absolute;top:-11px;right:16px;font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;background:var(--brass-soft);color:var(--brass);padding:3px 9px;border-radius:999px;font-weight:600}
+
+/* answers strip */
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.fact{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;gap:6px;align-content:start}
+.fact .big{font-family:var(--f-display);font-weight:800;font-size:1.5rem}
+.fact.no .big{color:var(--open)} .fact.yes .big{color:var(--secret)}
+@media (max-width:620px){.facts{grid-template-columns:1fr}}
+
+/* sequence diagram */
+.scen{display:flex;flex-wrap:wrap;gap:8px}
+.scen button{border:1px solid var(--line);background:var(--surface);padding:7px 14px;border-radius:999px;font-size:.92rem}
+.scen button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.scen button.warn[aria-pressed="true"]{background:var(--secret);border-color:var(--secret);color:#0b0d11}
+.diagram{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.seq-scroll{overflow-x:auto}
+.seq{min-width:600px;padding:18px 10px 10px}
+.lanes{display:grid;grid-template-columns:repeat(3,1fr);text-align:center;gap:8px}
+.lane{display:grid;justify-items:center;gap:4px;font-family:var(--f-display);font-weight:700;font-size:1.05rem}
+.lane small{font-family:var(--f-body);font-weight:400;font-size:.78rem;color:var(--muted)}
+.lane .ic{width:42px;height:42px;border-radius:10px;display:grid;place-items:center;background:var(--surface-2);border:1px solid var(--line)}
+.lane.vault .ic{background:var(--brass-soft);border-color:var(--brass);color:var(--brass)}
+.lane.off{opacity:.35}
+.lane.bad .ic{background:var(--secret-soft);border-color:var(--secret);color:var(--secret)}
+.seq-body{position:relative;margin-top:10px;padding-bottom:8px}
+.life{position:absolute;top:0;bottom:0;width:0;border-left:2px dashed var(--line)}
+.row{position:relative;height:64px;transition:opacity .25s}
+.row.future{opacity:.18}
+.row .arrow{position:absolute;top:36px;height:0;border-top:3px solid var(--open)}
+.row .arrow::after{content:"";position:absolute;top:-8px;border:6.5px solid transparent}
+.row .arrow.r::after{right:-4px;border-left:10px solid var(--open);border-right:0}
+.row .arrow.l::after{left:-4px;border-right:10px solid var(--open);border-left:0}
+.row.secret .arrow{border-top-color:var(--brass);border-top-width:4px}
+.row.secret .arrow.r::after{border-left-color:var(--brass)} .row.secret .arrow.l::after{border-right-color:var(--brass)}
+.row.danger .arrow{border-top-color:var(--secret)}
+.row.danger .arrow.r::after{border-left-color:var(--secret)} .row.danger .arrow.l::after{border-right-color:var(--secret)}
+.row .lbl{position:absolute;top:4px;transform:translateX(-50%);font-size:.82rem;line-height:1.25;text-align:center;background:var(--surface);padding:2px 8px;border-radius:6px;white-space:nowrap;max-width:46%;overflow:hidden;text-overflow:ellipsis}
+.row .num{font-family:var(--f-mono);font-weight:600;color:var(--muted);margin-right:4px}
+.row .note{position:absolute;top:10px;transform:translateX(-50%);font-size:.8rem;line-height:1.25;text-align:center;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:5px 10px;width:30%}
+.row.current .lbl,.row.current .note{outline:2px solid var(--focus);font-weight:700}
+.row.current .arrow{animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.45}}
+@media (prefers-reduced-motion:reduce){.row.current .arrow{animation:none}.row{transition:none}}
+.zone-key{display:flex;flex-wrap:wrap;gap:16px;padding:10px 18px;font-size:.82rem;color:var(--muted);border-top:1px solid var(--line)}
+.zone-key span{display:inline-flex;align-items:center;gap:7px}
+.sw{width:22px;height:0;border-top:3px solid var(--open)} .sw.s{border-top:4px solid var(--brass)} .sw.d{border-top:3px solid var(--secret)}
+.caption{display:grid;grid-template-columns:1fr auto;gap:14px 20px;padding:20px;background:var(--surface-2);border-top:1px solid var(--line);align-items:start}
+.caption .cap-text{display:grid;gap:6px;min-width:0}
+.caption h3{font-size:1.3rem}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:.72rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:999px;width:max-content}
+.pill.open{background:var(--open-soft);color:var(--open)} .pill.secret{background:var(--brass-soft);color:var(--brass)} .pill.danger{background:var(--secret-soft);color:var(--secret)} .pill.self{background:var(--surface);color:var(--muted);border:1px solid var(--line)}
+.stepper{display:flex;gap:8px;align-items:center}
+.stepper button{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 14px;font-weight:700}
+.stepper button:disabled{opacity:.4;cursor:default}
+.stepcount{font-family:var(--f-mono);font-size:.8rem;color:var(--muted);min-width:4.5em;text-align:center}
+@media (max-width:620px){.caption{grid-template-columns:1fr}}
+.bigidea{border-left:4px solid var(--brass);padding:4px 0 4px 18px;font-family:var(--f-display);font-size:1.35rem;font-weight:700;line-height:1.3}
+.bigidea em{font-style:normal;color:var(--brass)}
+
+/* key sort */
+.keys{display:grid;gap:12px}
+.keycard{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 18px;align-items:center}
+.keycard .kname{font-weight:700}
+.keycard .ksample{font-family:var(--f-mono);font-size:.8rem;color:var(--muted);overflow-wrap:anywhere}
+.choices{display:flex;flex-wrap:wrap;gap:6px}
+.choices button{border:1px solid var(--line);background:var(--surface-2);border-radius:8px;padding:6px 11px;font-size:.85rem}
+.choices button.right{background:var(--open-soft);border-color:var(--open);color:var(--open);font-weight:700}
+.choices button.wrong{background:var(--secret-soft);border-color:var(--secret);color:var(--secret)}
+.kfeedback{grid-column:1/-1;font-size:.92rem}
+.kfeedback:empty{display:none}
+@media (max-width:620px){.keycard{grid-template-columns:1fr}}
+.score{font-family:var(--f-mono);font-size:.85rem;color:var(--muted)}
+
+/* walkthrough */
+.order{display:flex;flex-wrap:wrap;gap:6px 4px;align-items:center;font-size:.9rem}
+.order b{font-family:var(--f-mono);font-size:.78rem;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:3px 8px;font-weight:600}
+.order b.gh{border-color:var(--ink)} .order b.sb{border-color:var(--open)}
+.order i{font-style:normal;color:var(--muted)}
+.part{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:22px 28px;padding-block:34px;border-top:1px dashed var(--line)}
+.part:first-of-type{border-top:0}
+.part-text{display:grid;gap:12px;align-content:start;min-width:0}
+.part-head{display:flex;gap:12px;align-items:baseline}
+.pnum{font-family:var(--f-display);font-weight:800;font-size:2.2rem;color:var(--brass);line-height:1}
+.where{font-family:var(--f-mono);font-size:.78rem;color:var(--muted);line-height:1.5}
+.where b{color:var(--ink);font-weight:600}
+.site{font-family:var(--f-mono);font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:5px;border:1px solid var(--line)}
+.site.sb{color:var(--open);border-color:var(--open)} .site.gh{color:var(--ink);border-color:var(--ink)} .site.ai{color:var(--brass);border-color:var(--brass)} .site.you{color:var(--muted)}
+ol.do{margin:0;padding-left:1.3em;display:grid;gap:6px}
+.why{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:.93rem}
+.why b{color:var(--brass)}
+.trap{background:var(--secret-soft);border-radius:10px;padding:12px 14px;font-size:.93rem;color:var(--ink)}
+.trap b{color:var(--secret)}
+.ipad{font-size:.85rem;color:var(--muted);border:1px dashed var(--line);border-radius:10px;padding:9px 12px}
+@media (max-width:820px){.part{grid-template-columns:1fr}}
+
+/* mock-ups */
+.mock{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 14px 30px -22px rgba(10,20,40,.4);min-width:0;align-self:start}
+.chrome{background:var(--mock-bar);display:flex;align-items:center;gap:10px;padding:8px 10px}
+.dots{display:flex;gap:5px}.dots i{width:9px;height:9px;border-radius:50%;background:var(--dim);display:block}
+.url{flex:1;min-width:0;background:var(--surface);border-radius:6px;padding:3px 10px;font-family:var(--f-mono);font-size:.72rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mocktag{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;color:var(--brass);font-weight:600;white-space:nowrap}
+.mbody{padding:16px;display:grid;gap:12px;font-size:.88rem}
+.mbody h4{margin:0;font-family:var(--f-display);font-size:1.05rem}
+.crumbs{font-size:.75rem;color:var(--muted)}
+.mrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}
+.mrow:last-child{border-bottom:0}
+.mrow .d{font-size:.76rem;color:var(--muted)}
+.tog{width:38px;height:22px;border-radius:999px;background:var(--dim);position:relative;border:0;flex:none}
+.tog::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:left .15s}
+.tog[aria-checked="true"]{background:var(--open)}
+.tog[aria-checked="true"]::after{left:19px}
+.minput{font-family:var(--f-mono);font-size:.76rem;background:var(--surface-2);border:1px solid var(--line);border-radius:6px;padding:7px 9px;overflow-wrap:anywhere;color:var(--ink)}
+.minput.hl{border:2px solid var(--brass);background:var(--brass-soft)}
+.minput.ph{color:var(--muted);font-family:var(--f-body)}
+.mlabel{font-weight:700;font-size:.82rem;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.req{color:var(--secret)}
+.mhint{font-size:.74rem;color:var(--muted)}
+.mfield{display:grid;gap:5px}
+.mbtn{justify-self:start;border-radius:6px;padding:7px 13px;font-size:.82rem;font-weight:700;border:1px solid var(--line);background:var(--surface-2)}
+.mbtn.go{background:var(--open);border-color:var(--open);color:#0b0d11}
+.mbtn.dark{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.callout{position:relative;outline:2px dashed var(--brass);outline-offset:4px;border-radius:6px}
+.callout.red{outline-color:var(--secret)}
+.flag{font-family:var(--f-mono);font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--brass)}
+.flag.red{color:var(--secret)}
+.banner{background:var(--open-soft);color:var(--open);border-radius:6px;padding:8px 10px;font-size:.8rem}
+.secretval{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.copy{border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:4px 9px;font-size:.75rem}
+.check{display:flex;gap:8px;align-items:center}
+.check span.box{width:15px;height:15px;border:1.5px solid var(--muted);border-radius:3px;display:inline-block}
+.mselect{display:flex;justify-content:space-between;gap:8px}
+.urlitem{display:flex;justify-content:space-between;gap:8px;align-items:center}
+
+/* code / prompt */
+.prompt{background:var(--code-bg);color:var(--code-fg);border-radius:12px;padding:16px 18px;font-family:var(--f-mono);font-size:.8rem;line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere;position:relative}
+.prompt-wrap{display:grid;gap:8px;min-width:0}
+.prompt-bar{display:flex;justify-content:space-between;align-items:center;gap:10px}
+
+/* testing */
+.tests{display:grid;gap:8px;list-style:none;padding:0;margin:0}
+.tests label{display:flex;gap:10px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer}
+.tests input{margin-top:5px;accent-color:var(--open);width:17px;height:17px;flex:none}
+.tests .brk{font-family:var(--f-mono);font-size:.68rem;font-weight:600;color:var(--secret);text-transform:uppercase;letter-spacing:.05em;margin-left:4px}
+.errs-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table.errs{border-collapse:collapse;width:100%;min-width:560px;font-size:.9rem}
+.errs th,.errs td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+.errs tr:last-child td{border-bottom:0}
+.errs th{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.errs td:first-child{font-family:var(--f-mono);font-size:.78rem;color:var(--secret);width:36%}
+.leak{background:var(--secret-soft);border-radius:14px;padding:18px 20px;display:grid;gap:8px}
+.leak h3{color:var(--secret)}
+details.teacher{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 18px}
+details.teacher summary{cursor:pointer;font-family:var(--f-display);font-weight:700;font-size:1.1rem}
+details.teacher ul{margin:12px 0 0;padding-left:1.2em;display:grid;gap:8px;font-size:.95rem}
+footer{padding-top:30px;font-size:.82rem;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="hero-text">
+    <span class="eyebrow">Build 2 · Identity · Sign-in day</span>
+    <h1>Two Ways In</h1>
+    <p class="lede">Today your app gets a sign-in screen like the one on the right. One way in needs a secret key. The other doesn't. By the end of class you'll know why.</p>
+    <nav class="jump" aria-label="Lesson sections">
+      <a href="#how">1 · How the secret works</a>
+      <a href="#keys">2 · Every key so far</a>
+      <a href="#setup">3 · Set it up</a>
+      <a href="#test">4 · Test and break it</a>
+    </nav>
+  </div>
+  <div class="signin" aria-label="Mock-up of the sign-in screen you will build">
+    <span class="tag">What you're building</span>
+    <h3>Welcome back</h3>
+    <label class="field">Email<input id="demo-email" type="email" value="maya@example.com"></label>
+    <label class="field">Password<input id="demo-pass" type="password" value="hunter2hunter2"></label>
+    <button class="btn btn-primary" type="button" data-play="email">Sign in</button>
+    <div class="or">or</div>
+    <button class="btn btn-gh" type="button" data-play="github"><svg class="key" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M15 8l2 2"/></svg>Sign in with GitHub</button>
+    <p class="signin-hint">Click either button to see what happens behind the screen.</p>
+  </div>
+</header>
+
+<div class="facts col" style="max-width:none">
+  <div class="fact no"><span class="eyebrow">Email + password</span><span class="big">No key needed</span><p>Supabase handles the whole thing itself. No other company is involved, so there's nothing to prove to anyone.</p></div>
+  <div class="fact yes"><span class="eyebrow">Sign in with GitHub</span><span class="big">Needs a secret</span><p>Supabase has to prove to GitHub that it really is your app. The <b>Client Secret</b> is that proof. You'll make one today.</p></div>
+</div>
+
+<!-- ============ 1. HOW THE SECRET WORKS ============ -->
+<section id="how">
+  <div class="col" style="display:grid;gap:12px">
+    <span class="eyebrow">Part 1</span>
+    <h2>How the secret works</h2>
+    <p>Three players: <b>your app</b> (running in someone's browser), <b>Supabase</b> (your backend), and <b>GitHub</b>. Step through it. Watch which arrows are out in the open and which ones happen in the back room.</p>
+  </div>
+
+  <div class="scen" role="group" aria-label="Choose a scenario">
+    <button type="button" data-scen="github" aria-pressed="true">Sign in with GitHub</button>
+    <button type="button" data-scen="email" aria-pressed="false">Email + password</button>
+    <button type="button" class="warn" data-scen="hack1" aria-pressed="false">What if: someone steals the ticket</button>
+    <button type="button" class="warn" data-scen="hack2" aria-pressed="false">What if: the secret is in config.js</button>
+  </div>
+
+  <div class="diagram" id="diagram">
+    <div class="seq-scroll">
+      <div class="seq">
+        <div class="lanes" id="lanes"></div>
+        <div class="seq-body" id="seqbody"></div>
+      </div>
+    </div>
+    <div class="zone-key">
+      <span><i class="sw"></i>Out in the open (passes through the browser, anyone could see it)</span>
+      <span><i class="sw s"></i>Back room (Supabase and GitHub talk directly)</span>
+      <span><i class="sw d"></i>Attack</span>
+    </div>
+    <div class="caption" aria-live="polite">
+      <div class="cap-text">
+        <span class="pill" id="cap-pill"></span>
+        <h3 id="cap-title"></h3>
+        <p id="cap-text"></p>
+      </div>
+      <div class="stepper">
+        <button type="button" id="prev" aria-label="Previous step">Back</button>
+        <span class="stepcount" id="stepcount"></span>
+        <button type="button" id="next" aria-label="Next step">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <p class="bigidea col">The ticket says <em>who signed in</em>. The secret proves <em>who's asking</em>. GitHub only answers when it gets both, and only Supabase has the secret.</p>
+</section>
+
+<!-- ============ 2. KEYS ============ -->
+<section id="keys">
+  <div class="col" style="display:grid;gap:12px">
+    <span class="eyebrow">Part 2</span>
+    <h2>Every key so far</h2>
+    <p>By the end of today you'll have handled five keys and IDs. For each one, pick where it belongs. <span class="score" id="score">0 of 5 right</span></p>
+  </div>
+  <div class="keys" id="keylist"></div>
+</section>
+
+<!-- ============ 3. SETUP ============ -->
+<section id="setup">
+  <div class="col" style="display:grid;gap:12px">
+    <span class="eyebrow">Part 3</span>
+    <h2>Set it up</h2>
+    <p>You'll bounce between two websites, so <b>open Supabase in one tab and GitHub in another</b> before you start. Each site needs something the other one makes.</p>
+    <div class="order" aria-label="Order of steps">
+      <b class="sb">1 Supabase</b><i>→</i><b class="sb">2 Supabase</b><i>→</i><b class="sb">3 Supabase</b><i>→</i><b class="gh">4 GitHub</b><i>→</i><b class="gh">5 GitHub</b><i>→</i><b class="sb">6 Supabase</b><i>→</i><b>7 Your AI</b><i>→</i><b>8 Test</b>
+    </div>
+    <p class="muted" style="font-size:.88rem">The screens below are mock-ups. Your screen may look a little different, but the names of the settings will match. Example values use a made-up app called <b>Mood Tracker</b> by the GitHub user <b>yourname</b>. Use your own.</p>
+  </div>
+
+  <!-- PART 1 -->
+  <div class="part">
+    <div class="part-text">
+      <div class="part-head"><span class="pnum">1</span><div style="display:grid;gap:4px"><h3>Turn on email sign-in</h3><span class="site sb" style="width:max-content">Supabase</span></div></div>
+      <p class="where"><b>Your project</b> → Authentication → Sign In / Providers → <b>Email</b></p>
+      <ol class="do">
+        <li>Check that the Email provider is <b>on</b>.</li>
+        <li>Turn <b>Confirm email</b> <b>off</b>.</li>
+        <li>Set <b>Minimum password length</b> to 8 or more.</li>
+        <li>Pick a <b>Password requirement</b>, like letters and digits.</li>
+        <li>Click <b>Save</b>.</li>
+      </ol>
+      <div class="why"><b>Why turn off Confirm email?</b> Supabase's free email sender only sends to people on your Supabase team, and only a few emails an hour. Your friends would never get the confirmation email, so they could never sign in. Real apps pay for their own email service. We're skipping it.</div>
+      <div class="why"><b>Think about it:</b> with confirmation off, someone could sign up using an email address that isn't theirs. Is that a problem for your app?</div>
+    </div>
+    <div class="mock" aria-label="Mock-up: Supabase Email provider settings">
+      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">supabase.com/dashboard/project/abcdefghijklmnop/auth/providers</span><span class="mocktag">Mock-up</span></div>
+      <div class="mbody">
+        <span class="crumbs">Authentication › Sign In / Providers › Email</span>
+        <h4>Email</h4>
+        <div class="mrow"><div><b>Enable Email provider</b><div class="d">Let people sign up with email and password</div></div><button type="button" class="tog" role="switch" aria-checked="true" aria-label="Enable Email provider"></button></div>
+        <div class="mrow callout red"><div><b>Confirm email</b> <span class="flag red">Turn off</span><div class="d">Users must confirm their email before signing in</div></div><button type="button" class="tog" role="switch" aria-checked="false" aria-label="Confirm email"></button></div>
+        <div class="mrow"><div><b>Minimum password length</b><div class="d">Shorter passwords are rejected</div></div><span class="minput">8</span></div>
+        <div class="mrow"><div><b>Password requirements</b><div class="d">Characters every password must include</div></div><span class="minput">Letters and digits ▾</span></div>
+        <button type="button" class="mbtn go">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 2 -->
+  <div class="part">
+    <div class="part-text">
+      <div class="part-head"><span class="pnum">2</span><div style="display:grid;gap:4px"><h3>Tell Supabase where your app lives</h3><span class="site sb" style="width:max-content">Supabase</span></div></div>
+      <p class="where">Authentication → <b>URL Configuration</b></p>
+      <ol class="do">
+        <li>Set <b>Site URL</b> to your GitHub Pages address, for example <code>https://yourname.github.io/mood-tracker/</code></li>
+        <li>Under <b>Redirect URLs</b>, add the same address with <code>**</code> on the end.</li>
+        <li>Add <code>http://127.0.0.1:5500/**</code> so sign-in also works when you test with Live Server.</li>
+        <li>Click <b>Save</b>.</li>
+      </ol>
+      <div class="why"><b>Why?</b> At the end of GitHub sign-in (step 7 in the diagram), Supabase has to send the person back to your app. It will only send people to addresses on this list. Skip this and sign-in dumps you on <code>localhost:3000</code>, a page that doesn't exist.</div>
+      <p class="ipad">iPad: you don't use Live Server, so skip the <code>127.0.0.1</code> line. You'll test on your GitHub Pages site.</p>
+    </div>
+    <div class="mock" aria-label="Mock-up: Supabase URL Configuration">
+      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">supabase.com/dashboard/project/abcdefghijklmnop/auth/url-configuration</span><span class="mocktag">Mock-up</span></div>
+      <div class="mbody">
+        <span class="crumbs">Authentication › URL Configuration</span>
+        <div class="mfield"><span class="mlabel">Site URL</span><span class="minput hl">https://yourname.github.io/mood-tracker/</span><span class="mhint">The default place to send people after they sign in.</span></div>
+        <div class="mfield"><span class="mlabel">Redirect URLs</span>
+          <span class="minput urlitem hl">https://yourname.github.io/mood-tracker/**</span>
+          <span class="minput urlitem hl">http://127.0.0.1:5500/**</span>
+          <span class="mhint">Supabase will only send people back to addresses on this list.</span></div>
+        <button type="button" class="mbtn">Add URL</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 3 -->
+  <div class="part">
+    <div class="part-text">
+      <div class="part-head"><span class="pnum">3</span><div style="display:grid;gap:4px"><h3>Copy Supabase's callback URL</h3><span class="site sb" style="width:max-content">Supabase</span></div></div>
+      <p class="where">Authentication → Sign In / Providers → <b>GitHub</b></p>
+      <ol class="do">
+        <li>Click <b>GitHub</b> in the list to open its settings.</li>
+        <li>Find <b>Callback URL (for OAuth)</b> and click <b>Copy</b>.</li>
+        <li>Leave this tab open. You'll come back to it in Part 6.</li>
+      </ol>
+      <div class="why"><b>What is it?</b> It's Supabase's door, not your app's. When GitHub hands out the one-time ticket (step 4 in the diagram), it sends it to this address. It always ends in <code>/auth/v1/callback</code>.</div>
+    </div>
+    <div class="mock" aria-label="Mock-up: Supabase GitHub provider, callback URL">
+      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">supabase.com/dashboard/project/abcdefghijklmnop/auth/providers</span><span class="mocktag">Mock-up</span></div>
+      <div class="mbody">
+        <span class="crumbs">Authentication › Sign In / Providers › GitHub</span>
+        <h4>GitHub</h4>
+        <div class="mrow"><div><b>Enable Sign in with GitHub</b><div class="d">Leave this off for now</div></div><button type="button" class="tog" role="switch" aria-checked="false" aria-label="Enable Sign in with GitHub"></button></div>
+        <div class="mfield callout"><span class="mlabel">Callback URL (for OAuth) <span class="flag">Copy this</span></span>
+          <div class="secretval"><span class="minput" id="cb-url">https://abcdefghijklmnop.supabase.co/auth/v1/callback</span><button type="button" class="copy" data-copy="cb-url">Copy</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 4 -->
+  <div class="part">
+    <div class="part-text">
+      <div class="part-head"><span class="pnum">4</span><div style="display:grid;gap:4px"><h3>Register your app with GitHub</h3><span class="site gh" style="width:max-content">GitHub</span></div></div>
+      <p class="where">Your profile picture → Settings → <b>Developer settings</b> (bottom of the left menu) → OAuth Apps → <b>New OAuth App</b></p>
+      <ol class="do">
+        <li><b>Application name:</b> your app's real name. People see it when they click Authorize.</li>
+        <li><b>Homepage URL:</b> your GitHub Pages address.</li>
+        <li><b>Authorization callback URL:</b> paste the Supabase callback URL from Part 3.</li>
+        <li>Leave <b>Enable Device Flow</b> unticked.</li>
+        <li>Click <b>Register application</b>.</li>
+      </ol>
+      <div class="trap"><b>Most common mistake:</b> putting your GitHub Pages address in the callback box. The callback is the <b>Supabase</b> address ending in <code>/auth/v1/callback</code>. Get this wrong and GitHub says "redirect_uri is not associated with this application."</div>
+    </div>
+    <div class="mock" aria-label="Mock-up: GitHub Register a new OAuth app form">
+      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">github.com/settings/applications/new</span><span class="mocktag">Mock-up</span></div>
+      <div class="mbody">
+        <span class="crumbs">Developer settings › OAuth Apps</span>
+        <h4>Register a new OAuth app</h4>
+        <div class="mfield"><span class="mlabel">Application name <span class="req">*</span></span><span class="minput">Mood Tracker</span><span class="mhint">Something users will recognize and trust.</span></div>
+        <div class="mfield"><span class="mlabel">Homepage URL <span class="req">*</span></span><span class="minput">https://yourname.github.io/mood-tracker/</span></div>
+        <div class="mfield"><span class="mlabel">Application description</span><span class="minput ph">Optional</span></div>
+        <div class="mfield callout red"><span class="mlabel">Authorization callback URL <span class="req">*</span> <span class="flag red">Supabase address, not yours</span></span><span class="minput hl">https://abcdefghijklmnop.supabase.co/auth/v1/callback</span></div>
+        <div class="check"><span class="box"></span><span>Enable Device Flow</span></div>
+        <button type="button" class="mbtn go">Register application</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 5 -->
+  <div class="part">
+    <div class="part-text">
+      <div class="part-head"><span class="pnum">5</span><div style="display:grid;gap:4px"><h3>Get the Client ID and make a Client Secret</h3><span class="site gh" style="width:max-content">GitHub</span></div></div>
+      <p class="where">You land on your new app's page automatically.</p>
+      <ol class="do">
+        <li>Copy the <b>Client ID</b>. It's not secret. It's your app's name tag.</li>
+        <li>Click <b>Generate a new client secret</b>. GitHub may ask for your password first. (Try it in the mock-up.)</li>
+        <li>Copy the secret <b>right away</b>. GitHub shows it once. Leave the page and it's gone.</li>
+        <li>Go straight to Part 6 and paste it into Supabase.</li>
+      </ol>
+      <div class="trap"><b>Where the secret must never go:</b> config.js or any file in your repo, your AI chat, a Google Doc, a screenshot. Your AI never needs it. Only Supabase does.</div>
+    </div>
+    <div class="mock" aria-label="Mock-up: GitHub OAuth app page with client ID and client secret">
+      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">github.com/settings/applications/1234567</span><span class="mocktag">Mock-up</span></div>
+      <div class="mbody">
+        <span class="crumbs">Developer settings › OAuth Apps › Mood Tracker</span>
+        <h4>Mood Tracker</h4>
+        <div class="mfield"><span class="mlabel">Client ID <span class="flag">Copy · not secret</span></span><div class="secretval"><span class="minput" id="cid">Ov23liEXAMPLE0a1b2c3</span><button type="button" class="copy" data-copy="cid">Copy</button></div></div>
+        <div class="mfield"><span class="mlabel">Client secrets</span><span class="mhint">You need a client secret to authenticate as the application to the API.</span>
+          <div id="secret-zone"><button type="button" class="mbtn dark" id="gen">Generate a new client secret</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 6 -->
+  <div class="part">
+    <div class="part-text">
+      <div class="part-head"><span class="pnum">6</span><div style="display:grid;gap:4px"><h3>Lock the secret in Supabase</h3><span class="site sb" style="width:max-content">Supabase</span></div></div>
+      <p class="where">Back to your Supabase tab: Authentication → Sign In / Providers → <b>GitHub</b></p>
+      <ol class="do">
+        <li>Turn <b>Enable Sign in with GitHub</b> on.</li>
+        <li>Paste the <b>Client ID</b>.</li>
+        <li>Paste the <b>Client Secret</b>.</li>
+        <li>Click <b>Save</b>.</li>
+      </ol>
+      <div class="why"><b>This is the vault.</b> The secret now lives on Supabase's servers. It never gets sent to anyone's browser. Look back at the diagram: the only arrows that carry it are the back-room ones (steps 5 and 6).</div>
+    </div>
+    <div class="mock" aria-label="Mock-up: Supabase GitHub provider with client ID and secret filled in">
+      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">supabase.com/dashboard/project/abcdefghijklmnop/auth/providers</span><span class="mocktag">Mock-up</span></div>
+      <div class="mbody">
+        <span class="crumbs">Authentication › Sign In / Providers › GitHub</span>
+        <h4>GitHub</h4>
+        <div class="mrow callout"><div><b>Enable Sign in with GitHub</b> <span class="flag">Turn on</span></div><button type="button" class="tog" role="switch" aria-checked="true" aria-label="Enable Sign in with GitHub"></button></div>
+        <div class="mfield"><span class="mlabel">Client ID</span><span class="minput hl">Ov23liEXAMPLE0a1b2c3</span></div>
+        <div class="mfield"><span class="mlabel">Client Secret</span><span class="minput hl">••••••••••••••••••••••••••••••••••••••••</span></div>
+        <div class="mfield"><span class="mlabel">Callback URL (for OAuth)</span><span class="minput">https://abcdefghijklmnop.supabase.co/auth/v1/callback</span></div>
+        <button type="button" class="mbtn go">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 7 -->
+  <div class="part">
+    <div class="part-text">
+      <div class="part-head"><span class="pnum">7</span><div style="display:grid;gap:4px"><h3>Ask your AI for the sign-in screen</h3><span class="site ai" style="width:max-content">Your AI</span></div></div>
+      <p>Upload <code>index.html</code>, <code>app.js</code> and <code>config.js</code>, then paste this prompt. Change the parts about your app if you need to.</p>
+      <div class="why"><b>When the code comes back, check two things.</b> You should see <code>signInWithOAuth</code> with <code>provider: 'github'</code>. And the Client Secret should be nowhere in your files. If the AI asks for it, say no.</div>
+    </div>
+    <div class="prompt-wrap">
+      <div class="prompt-bar"><span class="eyebrow">Prompt</span><button type="button" class="copy" data-copy="prompt">Copy prompt</button></div>
+      <div class="prompt" id="prompt">I'm adding sign-in to my app. My files are index.html, app.js and config.js (attached). config.js already connects to Supabase with my project URL and publishable key.
+
+Please add:
+1. A sign-in screen with two ways in: email and password (with both Sign up and Sign in), and a "Sign in with GitHub" button.
+2. For GitHub, use supabase.auth.signInWithOAuth with provider 'github'. Set redirectTo to window.location.origin + window.location.pathname so it works on Live Server and on GitHub Pages.
+3. Use supabase.auth.onAuthStateChange so the page shows the sign-in screen when nobody is signed in, and my app when someone is. Show who is signed in.
+4. A Sign out button.
+5. Clear error messages for things like a wrong password or a password that is too short.
+
+Do not put any secret keys in my code. The GitHub Client Secret is already saved in my Supabase dashboard. Tell me exactly which file each change goes in.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. TEST ============ -->
+<section id="test">
+  <div class="col" style="display:grid;gap:12px">
+    <span class="eyebrow">Part 4</span>
+    <h2>Test it, then try to break it</h2>
+    <p>Tick each one off on your live GitHub Pages site, not only on Live Server.</p>
+  </div>
+  <ul class="tests col">
+    <li><label><input type="checkbox" id="t1"><span>Sign up with email and a password that's too short. <span class="brk">break it</span><br><span class="muted">Do you see a clear error, or does nothing happen?</span></span></label></li>
+    <li><label><input type="checkbox" id="t2"><span>Sign up with email properly. Do you land inside your app?</span></label></li>
+    <li><label><input type="checkbox" id="t3"><span>Sign out. Sign in with GitHub. Does the Authorize screen show your app's name?</span></label></li>
+    <li><label><input type="checkbox" id="t4"><span>Refresh the page. Are you still signed in?</span></label></li>
+    <li><label><input type="checkbox" id="t5"><span>Open your live <code>config.js</code> by adding <code>/config.js</code> to your site's address. <span class="brk">break it</span><br><span class="muted">This is what a hacker sees. Is anything there except your project URL and publishable key?</span></span></label></li>
+    <li><label><input type="checkbox" id="t6"><span>Get someone else to sign in on their phone. <span class="brk">break it</span></span></label></li>
+  </ul>
+
+  <div class="col" style="display:grid;gap:10px">
+    <h3>Error decoder</h3>
+    <p class="muted" style="font-size:.92rem">Paste the full error into your AI as usual. But these ones are almost always a setting, not your code.</p>
+  </div>
+  <div class="errs-scroll">
+    <table class="errs">
+      <thead><tr><th>You see</th><th>What's wrong</th><th>Fix</th></tr></thead>
+      <tbody>
+        <tr><td>The redirect_uri is not associated with this application.</td><td>The callback URL in your GitHub OAuth App doesn't match Supabase's.</td><td>Part 4. Copy the callback URL from Supabase again and paste it exactly.</td></tr>
+        <tr><td>After GitHub, you land on localhost:3000 and the page won't load.</td><td>Supabase doesn't know where your app lives.</td><td>Part 2. Set the Site URL and Redirect URLs.</td></tr>
+        <tr><td>Works on Live Server but not on GitHub Pages (or the other way round).</td><td>One of your two addresses is missing from Redirect URLs.</td><td>Part 2. Add both, each ending in <code>/**</code>.</td></tr>
+        <tr><td>Unsupported provider: provider is not enabled</td><td>GitHub is switched off in Supabase, or you didn't click Save.</td><td>Part 6.</td></tr>
+        <tr><td>Back in your app with "Unable to exchange external code" in the address bar.</td><td>Supabase showed GitHub the ticket, but the secret was wrong (step 5 failed).</td><td>Part 5. Generate a new secret, paste it in Part 6, Save.</td></tr>
+        <tr><td>Email not confirmed</td><td>Confirm email is still on.</td><td>Part 1.</td></tr>
+        <tr><td>Invalid login credentials</td><td>Wrong email or password. Or this person signed up with GitHub, so they don't have a password.</td><td>Use the way in you signed up with.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="leak col">
+    <h3>If your Client Secret leaks</h3>
+    <p>It got pushed to GitHub, pasted into a chat, or ended up in a screenshot? Don't panic. It takes two minutes:</p>
+    <p><b>GitHub</b> → your OAuth App → <b>Delete</b> the old secret → <b>Generate a new client secret</b> → paste it into <b>Supabase</b> (Part 6) → Save. The old one stops working the moment you delete it.</p>
+  </div>
+
+  <div class="col" style="display:grid;gap:10px">
+    <h3>For your diagram</h3>
+    <p>When you draw your app's data flow, show the GitHub sign-in. Mark which arrows pass through the browser, and draw a lock where the Client Secret lives. Then answer: <b>your publishable key is public and that's fine. Why isn't the Client Secret?</b></p>
+  </div>
+
+</section>
+
+<footer><strong>Building with AI</strong> &mdash; Adding Sign-In. Related: <a href="../connect/">Connecting Your App</a> &middot; <a href="../database/">Your Database</a> &middot; <a href="../local-testing/">Testing on Your Computer</a><br>Mock-ups are simplified drawings of the Supabase and GitHub dashboards, made for teaching. Your screen may look a little different.</footer>
+</div>
+
+<script>
+(function(){
+  /* ---------- sequence diagram ---------- */
+  const ICONS = {
+    app:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>',
+    sb:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg>',
+    gh:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V9l8-5 8 5v12"/><path d="M10 21v-6h4v6"/></svg>',
+    bad:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6M8 8h8"/></svg>'
+  };
+  const LANES = {
+    normal:[{n:'Your app',s:'in the browser',i:'app'},{n:'Supabase',s:'holds the secret',i:'sb',vault:1},{n:'GitHub',s:'knows who you are',i:'gh'}],
+    email:[{n:'Your app',s:'in the browser',i:'app'},{n:'Supabase',s:'stores scrambled passwords',i:'sb'},{n:'GitHub',s:'not involved',i:'gh',off:1}],
+    hack:[{n:'A hacker',s:'on their laptop',i:'bad',bad:1},{n:'Supabase',s:'holds the secret',i:'sb',vault:1,off:1},{n:'GitHub',s:'knows who you are',i:'gh'}]
+  };
+  const S = {
+    github:{lanes:'normal',steps:[
+      {f:0,t:1,k:'open',l:'"Sign in with GitHub, please"',h:'You click "Sign in with GitHub"',p:'Your app tells Supabase that this person wants to use GitHub. Your app only holds public things: your project URL and your publishable key.'},
+      {f:1,t:2,k:'open',l:'sends you to GitHub + Client ID',h:'Supabase sends you to GitHub',p:'Your browser jumps to github.com. The address bar now shows your app\'s Client ID. That\'s fine. The Client ID is a name tag: it says which app is asking, but it doesn\'t prove anything.'},
+      {a:2,k:'self',l:'Asks you: "Let Mood Tracker in?" You click Authorize',h:'GitHub asks you',p:'GitHub shows a screen: Mood Tracker wants to access your account. You click Authorize. Your GitHub password stays on GitHub. Your app and Supabase never see it.'},
+      {f:2,t:1,k:'open',l:'one-time ticket (code)',h:'GitHub hands you a one-time ticket',p:'GitHub sends your browser back to Supabase with a ticket (a short code) in the address bar. Anything in the address bar is out in the open. So the ticket on its own must not be enough.'},
+      {f:1,t:2,k:'secret',l:'ticket + CLIENT SECRET',h:'Supabase shows the ticket and the secret',p:'Now Supabase talks to GitHub directly, server to server. The browser isn\'t part of this. Supabase sends the ticket plus the Client Secret, which proves: "I really am Mood Tracker."'},
+      {f:2,t:1,k:'secret',l:'"Checks out. Here\'s who they are."',h:'GitHub checks, then answers',p:'GitHub checks two things. Is the ticket real and unused? Does the secret match Mood Tracker? If both are yes, GitHub tells Supabase who you are: your username, email and picture.'},
+      {f:1,t:0,k:'open',l:'you\'re signed in',h:'You\'re back in your app, signed in',p:'Supabase makes your account (or finds it, if you\'ve been here before) and sends you back to your app, signed in. Your app never saw the secret. It never needed to.'}
+    ]},
+    email:{lanes:'email',steps:[
+      {f:0,t:1,k:'open',l:'email + password',h:'You type an email and password',p:'Your app sends them straight to Supabase. No other company is involved.'},
+      {a:1,k:'self',l:'scrambles the password, then checks or saves it',h:'Supabase checks it',p:'On sign-up, Supabase scrambles the password (hashing) and saves the scrambled version. On sign-in, it scrambles what you typed and checks it against the saved one. Nobody, not even you in the dashboard, can see the real password.'},
+      {f:1,t:0,k:'open',l:'you\'re signed in',h:'You\'re signed in',p:'Supabase sends back a session. Nobody else was involved, so there\'s nobody to prove anything to. That\'s why email sign-in needs no key from anyone.'}
+    ]},
+    hack1:{lanes:'hack',steps:[
+      {f:0,t:2,k:'danger',l:'stolen ticket, no secret',h:'A hacker copies your ticket',p:'Say someone grabs the ticket from step 4. Maybe it was on screen, maybe in a browser history. They try to cash it in at GitHub.'},
+      {f:2,t:0,k:'danger',l:'"No secret? Rejected."',h:'GitHub says no',p:'No Client Secret, no deal. A ticket alone can\'t be cashed in. Each ticket also works only once and runs out after 10 minutes.'}
+    ]},
+    hack2:{lanes:'hack',steps:[
+      {f:0,t:2,k:'danger',l:'stolen ticket + secret copied from your repo',h:'But what if the secret was in config.js?',p:'config.js is on your public GitHub repo and your live site. Anyone can open it. Now the hacker has the ticket and the secret.'},
+      {f:2,t:0,k:'danger',l:'"Looks like Mood Tracker. Here you go."',h:'GitHub can\'t tell the difference',p:'To GitHub, whoever holds the secret is your app. If anyone else has it, it stops proving anything. That\'s why the Client Secret lives in one place only: the Supabase dashboard.'}
+    ]}
+  };
+  const PILL = {open:['open','Out in the open'],secret:['secret','Back room'],self:['self','On one screen'],danger:['danger','Attack']};
+  let scen='github', step=0;
+  const lanesEl=document.getElementById('lanes'), body=document.getElementById('seqbody');
+  const center=i=>(i+.5)/3*100;
+
+  function render(){
+    const sc=S[scen];
+    lanesEl.innerHTML=LANES[sc.lanes].map(l=>`<div class="lane${l.vault?' vault':''}${l.off?' off':''}${l.bad?' bad':''}"><span class="ic">${ICONS[l.i]}</span>${l.n}<small>${l.s}</small></div>`).join('');
+    let html=[0,1,2].map(i=>`<div class="life" style="left:${center(i)}%"></div>`).join('');
+    sc.steps.forEach((s,i)=>{
+      const cls=['row',s.k,i>step?'future':'',i===step?'current':''].join(' ');
+      if(s.a!==undefined){
+        html+=`<div class="${cls}"><span class="note" style="left:${center(s.a)}%"><span class="num">${i+1}</span>${s.l}</span></div>`;
+      }else{
+        const a=Math.min(center(s.f),center(s.t)), w=Math.abs(center(s.f)-center(s.t));
+        html+=`<div class="${cls}"><div class="arrow ${s.t>s.f?'r':'l'}" style="left:${a}%;width:${w}%"></div><span class="lbl" style="left:${a+w/2}%"><span class="num">${i+1}</span>${s.l}</span></div>`;
+      }
+    });
+    body.innerHTML=html;
+    const s=sc.steps[step];
+    const pill=document.getElementById('cap-pill');
+    pill.className='pill '+PILL[s.k][0]; pill.textContent=PILL[s.k][1];
+    document.getElementById('cap-title').textContent=s.h;
+    document.getElementById('cap-text').textContent=s.p;
+    document.getElementById('stepcount').textContent=`Step ${step+1} of ${sc.steps.length}`;
+    document.getElementById('prev').disabled=step===0;
+    document.getElementById('next').disabled=step===sc.steps.length-1;
+    document.querySelectorAll('[data-scen]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.scen===scen));
+  }
+  function setScen(n){scen=n;step=0;render();}
+  document.querySelectorAll('[data-scen]').forEach(b=>b.addEventListener('click',()=>setScen(b.dataset.scen)));
+  document.getElementById('prev').addEventListener('click',()=>{if(step>0){step--;render();}});
+  document.getElementById('next').addEventListener('click',()=>{if(step<S[scen].steps.length-1){step++;render();}});
+  document.querySelectorAll('[data-play]').forEach(b=>b.addEventListener('click',()=>{
+    setScen(b.dataset.play);
+    document.getElementById('how').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+  }));
+  render();
+
+  /* ---------- key sort ---------- */
+  const OPTS=['In config.js (public)','Supabase dashboard only','Nowhere, ever'];
+  const KEYS=[
+    {n:'Supabase project URL',x:'https://abcdefghijklmnop.supabase.co',a:0,ok:'Right. It\'s just your backend\'s address. Public on purpose.',no:'It\'s just your backend\'s address, so your app needs it. It goes in config.js and it\'s fine to be public.'},
+    {n:'Supabase publishable key',x:'sb_publishable_… (older projects: anon)',a:0,ok:'Right. It lets your app talk to Supabase, and your RLS policies decide what it\'s allowed to see.',no:'This one belongs in config.js. It\'s public by design: your RLS policies decide what it can reach.'},
+    {n:'Supabase secret key',x:'sb_secret_… (older projects: service_role)',a:2,ok:'Right. It skips every RLS rule. You never need it this year.',no:'This one skips every RLS rule and can read or wipe your whole database. It goes nowhere. You don\'t need it this year.'},
+    {n:'GitHub Client ID',x:'Ov23li…',a:1,ok:'Right. You paste it into Supabase. It isn\'t secret: it shows up in the address bar in step 2.',no:'It goes in the Supabase dashboard (Part 6). It isn\'t secret, though. It shows up in the address bar in step 2 of the diagram.'},
+    {n:'GitHub Client Secret',x:'a long string GitHub shows you once',a:1,ok:'Right. Supabase uses it in the back room (steps 5 and 6). Nowhere else.',no:'It goes in the Supabase dashboard and nowhere else. Supabase uses it in the back room (steps 5 and 6). Never in your files.'}
+  ];
+  const right=new Set();
+  const list=document.getElementById('keylist');
+  KEYS.forEach((k,i)=>{
+    const card=document.createElement('div'); card.className='keycard';
+    card.innerHTML=`<div><div class="kname">${k.n}</div><div class="ksample">${k.x}</div></div><div class="choices">${OPTS.map((o,j)=>`<button type="button" data-k="${i}" data-o="${j}">${o}</button>`).join('')}</div><p class="kfeedback" id="kf${i}"></p>`;
+    list.appendChild(card);
+  });
+  list.addEventListener('click',e=>{
+    const b=e.target.closest('button[data-k]'); if(!b) return;
+    const i=+b.dataset.k, j=+b.dataset.o, k=KEYS[i];
+    b.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('right','wrong'));
+    if(j===k.a){b.classList.add('right');right.add(i);}else{b.classList.add('wrong');right.delete(i);}
+    document.getElementById('kf'+i).textContent=j===k.a?k.ok:k.no;
+    document.getElementById('score').textContent=`${right.size} of 5 right`;
+  });
+
+  /* ---------- mock-up toggles (cosmetic) ---------- */
+  document.querySelectorAll('.tog').forEach(t=>t.addEventListener('click',()=>t.setAttribute('aria-checked',t.getAttribute('aria-checked')!=='true')));
+
+  /* ---------- generate secret ---------- */
+  document.getElementById('gen').addEventListener('click',()=>{
+    const hex=Array.from({length:40},()=>'0123456789abcdef'[Math.floor(Math.random()*16)]).join('');
+    document.getElementById('secret-zone').innerHTML=`<div style="display:grid;gap:8px"><div class="banner">Make sure to copy your new client secret now. You won't be able to see it again.</div><div class="secretval"><span class="minput hl" id="sec">${hex}</span><button type="button" class="copy" data-copy="sec">Copy</button></div><span class="mhint">Pretend secret, made up for this page.</span></div>`;
+  });
+
+  /* ---------- copy buttons ---------- */
+  document.addEventListener('click',e=>{
+    const b=e.target.closest('[data-copy]'); if(!b) return;
+    const el=document.getElementById(b.dataset.copy); const txt=el.innerText;
+    const done=()=>{const o=b.textContent;b.textContent='Copied';setTimeout(()=>b.textContent=o,1400);};
+    const fallback=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='Selected, press Ctrl+C';};
+    try{navigator.clipboard.writeText(txt).then(done,fallback);}catch(err){fallback();}
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L6 · The Proof That Stalls</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f1ece1;
+    --paper-deep:#e7dfcf;
+    --card:#f7f3ea;
+    --ink:#221f1a;
+    --ink-soft:#5b5446;
+    --rule:rgba(34,31,26,0.16);
+    --rule-strong:rgba(34,31,26,0.32);
+    --oxblood:#7a2e2e;
+    --oxblood-bright:#9c3b3b;
+    --slate:#33505f;
+    --slate-bright:#3f6678;
+    --gold:#8a6d2f;
+    --clash:#c62828;
+    --sq-light:#efe6d2;
+    --sq-dark:#8c7356;
+    --sq-plain:#e4dccb;
+    --shadow:0 1px 0 rgba(255,255,255,.5), 0 10px 30px rgba(34,31,26,.10);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Cormorant Garamond",Georgia,serif;
+    font-size:20px;
+    line-height:1.45;
+    display:flex;flex-direction:column;height:100vh;overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:"JetBrains Mono",monospace;}
+
+  /* ---------- top bar ---------- */
+  .topbar{
+    flex:0 0 auto;
+    border-bottom:1px solid var(--rule);
+    background:linear-gradient(var(--paper),var(--paper-deep));
+    padding:10px 22px 9px;
+    display:flex;align-items:center;gap:18px;
+  }
+  .brand{
+    font-family:"JetBrains Mono",monospace;
+    font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--oxblood);font-weight:700;white-space:nowrap;
+  }
+  .kq{flex:1;font-style:italic;font-size:17px;color:var(--ink-soft);line-height:1.25;}
+  .kq b{color:var(--ink);font-style:normal;font-weight:600;}
+  .dots{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end;max-width:260px;}
+  .dot{width:9px;height:9px;border-radius:50%;border:1px solid var(--rule-strong);
+    background:transparent;cursor:pointer;padding:0;transition:all .2s;}
+  .dot.on{background:var(--oxblood);border-color:var(--oxblood);}
+  .dot.past{background:var(--rule-strong);border-color:var(--rule-strong);}
+
+  /* ---------- stage ---------- */
+  .stage{flex:1 1 auto;overflow-y:auto;display:flex;justify-content:center;}
+  .screen{display:none;width:100%;max-width:1080px;padding:30px 36px 46px;
+    flex-direction:column;justify-content:flex-start;animation:fade .45s ease both;}
+  .screen.active{display:flex;}
+  @keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  @media (prefers-reduced-motion:reduce){.screen.active{animation:none;}}
+
+  .eyebrow{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--oxblood);font-weight:700;margin-bottom:14px;
+    display:flex;align-items:center;gap:10px;}
+  .eyebrow::after{content:"";flex:1;height:1px;background:var(--rule);}
+  h1{font-size:54px;font-weight:600;line-height:1.02;margin:0 0 18px;letter-spacing:-.01em;}
+  h2{font-size:38px;font-weight:600;line-height:1.06;margin:0 0 16px;letter-spacing:-.01em;}
+  h3{font-size:25px;font-weight:600;margin:18px 0 8px;}
+  p{margin:0 0 14px;max-width:64ch;}
+  .lede{font-size:24px;color:var(--ink);max-width:60ch;}
+  .soft{color:var(--ink-soft);}
+  em,i{font-style:italic;}
+  strong,b{font-weight:600;}
+
+  /* prompt card */
+  .prompt{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--oxblood);
+    border-radius:3px;padding:18px 22px;margin:6px 0 16px;box-shadow:var(--shadow);max-width:62ch;}
+  .prompt .tag{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--oxblood);font-weight:700;display:block;margin-bottom:7px;}
+  .prompt .task{font-size:23px;font-style:italic;line-height:1.22;color:var(--ink);display:block;}
+  .prompt.slate{border-left-color:var(--slate);}
+  .prompt.slate .tag{color:var(--slate);}
+  .commit{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-soft);
+    margin-top:10px;display:flex;align-items:center;gap:8px;}
+  .commit::before{content:"\270E";font-family:serif;font-size:16px;color:var(--oxblood);}
+
+  /* reveal */
+  .reveal{background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--slate);
+    border-radius:3px;padding:17px 21px;margin:8px 0 14px;max-width:66ch;box-shadow:var(--shadow);}
+  .reveal.ox{border-left-color:var(--oxblood);}
+  .reveal .rtag{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--slate);font-weight:700;margin-bottom:9px;}
+  .reveal.ox .rtag{color:var(--oxblood);}
+  .reveal p{font-size:19px;}
+  .reveal p:last-child{margin-bottom:0;}
+  .hidden{display:none !important;}
+  .screen > .btn{align-self:flex-start;}
+
+  .work{display:grid;grid-template-columns:minmax(300px,1fr) 1.05fr;gap:34px;align-items:start;}
+  @media (max-width:820px){.work{grid-template-columns:1fr;}}
+
+  .guard{border-top:1px dashed var(--rule-strong);margin-top:18px;padding-top:14px;
+    font-size:17px;color:var(--ink-soft);max-width:66ch;}
+
+  .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 4px;align-items:center;}
+  .btn{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+    font-weight:700;background:var(--card);border:1px solid var(--rule-strong);color:var(--ink);
+    padding:10px 18px;border-radius:2px;cursor:pointer;transition:all .18s;}
+  .btn:hover{border-color:var(--oxblood);color:var(--oxblood);}
+  .btn.on{background:var(--oxblood);border-color:var(--oxblood);color:var(--paper);}
+  .btn:disabled{opacity:.35;cursor:default;}
+
+  /* poll (commit before reveal) */
+  .poll{display:flex;flex-direction:column;gap:8px;margin:6px 0 12px;max-width:62ch;}
+  .opt{text-align:left;font-family:"Cormorant Garamond",Georgia,serif;font-size:20px;
+    background:var(--card);border:1px solid var(--rule-strong);border-radius:3px;
+    padding:10px 16px;cursor:pointer;color:var(--ink);transition:all .15s;display:flex;gap:12px;align-items:baseline;}
+  .opt .k{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;color:var(--ink-soft);}
+  .opt:hover{border-color:var(--oxblood);}
+  .opt.chosen{border-color:var(--oxblood);background:rgba(122,46,46,.09);}
+  .opt.chosen .k{color:var(--oxblood);}
+  .pollnote{font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--ink-soft);letter-spacing:.03em;}
+
+  /* notebook card */
+  .nb{background:var(--card);border:1px solid var(--rule-strong);border-left:4px solid var(--gold);
+    border-radius:3px;padding:16px 20px;margin:8px 0 12px;max-width:64ch;box-shadow:var(--shadow);}
+  .nb .ntag{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:7px;}
+  .nb .task{font-size:22px;font-style:italic;line-height:1.24;display:block;}
+
+  /* rules card */
+  .kit{background:var(--card);border:1px solid var(--rule-strong);border-left:4px solid var(--gold);
+    border-radius:3px;padding:14px 20px;margin:4px 0 12px;box-shadow:var(--shadow);}
+  .kit .ktag{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:7px;}
+  .kit ol{margin:0;padding-left:22px;}
+  .kit li{margin-bottom:6px;font-size:18px;}
+
+  /* numbered proof steps */
+  .steps{background:var(--card);border:1px solid var(--rule-strong);border-radius:3px;
+    padding:8px 8px;box-shadow:var(--shadow);}
+  .step{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:baseline;padding:10px 13px;
+    border-bottom:1px solid var(--rule);animation:fade .35s ease both;}
+  .step:last-child{border-bottom:none;}
+  .step .n{font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:700;color:var(--oxblood);}
+  .step .s{font-size:21px;line-height:1.28;}
+  .step .why{display:block;font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--ink-soft);
+    letter-spacing:.02em;margin-top:4px;}
+  .step.final .s{font-weight:600;}
+
+  /* timer */
+  .timer{display:inline-flex;align-items:center;gap:10px;}
+  .timer .t{font-family:"JetBrains Mono",monospace;font-size:20px;font-weight:700;color:var(--oxblood);
+    min-width:62px;}
+  .timer .t.done{color:var(--clash);}
+
+  /* ---------- chessboard ---------- */
+  .boardwrap{display:flex;flex-direction:column;align-items:flex-start;gap:10px;}
+  .board{--cs:52px;position:relative;display:grid;grid-template-columns:repeat(8,var(--cs));
+    grid-template-rows:repeat(8,var(--cs));border:2px solid var(--ink);box-shadow:var(--shadow);
+    background:var(--ink);gap:1px;user-select:none;}
+  .cell{border:none;padding:0;margin:0;background:var(--sq-plain);cursor:pointer;position:relative;}
+  .cell:hover{outline:2px solid var(--oxblood);outline-offset:-2px;z-index:1;}
+  .board.coloured .cell.light{background:var(--sq-light);}
+  .board.coloured .cell.dark{background:var(--sq-dark);}
+  .cell.gone{background:repeating-linear-gradient(45deg,var(--paper),var(--paper) 5px,var(--paper-deep) 5px,var(--paper-deep) 10px) !important;cursor:default;}
+  .cell.gone:hover{outline:none;}
+  .cell.sel{outline:3px solid var(--oxblood);outline-offset:-3px;z-index:2;}
+  .domino{position:absolute;pointer-events:none;border-radius:7px;z-index:3;
+    background:rgba(122,46,46,.78);border:2px solid #4d1c1c;
+    box-shadow:inset 0 0 0 2px rgba(255,255,255,.18);}
+  .board.coloured .domino{background:rgba(122,46,46,.42);}
+  .domino::after{content:"";position:absolute;background:rgba(255,255,255,.55);}
+  .domino.h::after{left:50%;top:18%;bottom:18%;width:2px;margin-left:-1px;}
+  .domino.v::after{top:50%;left:18%;right:18%;height:2px;margin-top:-1px;}
+  .readout{font-family:"JetBrains Mono",monospace;font-size:14.5px;background:var(--card);
+    border:1px solid var(--rule-strong);border-radius:2px;padding:11px 15px;
+    display:flex;flex-direction:column;gap:4px;box-shadow:var(--shadow);min-width:300px;}
+  .readout .r{display:flex;justify-content:space-between;gap:14px;}
+  .readout .r b{color:var(--oxblood);}
+  .readout .msg{border-top:1px solid var(--rule-strong);margin-top:4px;padding-top:7px;
+    color:var(--oxblood);font-weight:700;font-size:13.5px;min-height:1.2em;}
+  .sw{display:inline-block;width:12px;height:12px;border:1px solid var(--ink);vertical-align:-1px;margin-right:6px;}
+
+  /* ---------- primes ---------- */
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 12px;}
+  .chip{font-family:"JetBrains Mono",monospace;font-size:18px;font-weight:700;width:58px;height:46px;
+    border:1px solid var(--rule-strong);background:var(--card);border-radius:3px;cursor:pointer;color:var(--ink);}
+  .chip.on{background:var(--slate);border-color:var(--slate);color:var(--paper);}
+  .calc{font-family:"JetBrains Mono",monospace;background:var(--card);border:1px solid var(--rule-strong);
+    border-radius:3px;padding:14px 18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:8px;font-size:16px;}
+  .calc .row{display:flex;gap:12px;align-items:baseline;flex-wrap:wrap;}
+  .calc .lab{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);min-width:120px;font-weight:700;}
+  .calc .big{font-size:22px;font-weight:700;}
+  .calc .new{color:var(--oxblood);font-weight:700;}
+
+  /* ---------- maps ---------- */
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px;}
+  .mapsvg{width:100%;max-width:440px;height:auto;display:block;background:var(--card);
+    border:1px solid var(--rule-strong);border-radius:3px;box-shadow:var(--shadow);}
+  .region{stroke:var(--ink);stroke-width:1.6;cursor:pointer;transition:fill .15s;stroke-linejoin:round;}
+  .region:hover{stroke:var(--oxblood);stroke-width:2.6;}
+  .rlabel{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;fill:var(--ink);
+    pointer-events:none;text-anchor:middle;dominant-baseline:middle;letter-spacing:.04em;}
+  .clashline{stroke:var(--clash);stroke-width:7;stroke-linecap:round;pointer-events:none;opacity:.9;}
+  .mapnote{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--ink-soft);margin-top:6px;letter-spacing:.02em;}
+
+  /* ---------- timeline ---------- */
+  .tl{display:flex;flex-direction:column;gap:0;border-left:2px solid var(--rule-strong);margin:4px 0 10px 8px;}
+  .ev{position:relative;padding:4px 0 14px 26px;animation:fade .35s ease both;max-width:68ch;}
+  .ev::before{content:"";position:absolute;left:-7px;top:12px;width:12px;height:12px;border-radius:50%;
+    background:var(--oxblood);border:2px solid var(--paper);}
+  .ev .yr{font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:700;color:var(--oxblood);letter-spacing:.08em;}
+  .ev p{font-size:19.5px;margin:2px 0 0;}
+
+  /* ---------- grid fill ---------- */
+  .grow{display:grid;grid-template-columns:210px 1fr;margin:10px 0 14px;
+    border:1px solid var(--rule-strong);border-radius:3px;overflow:hidden;box-shadow:var(--shadow);max-width:900px;}
+  .grow .hd{background:var(--paper-deep);font-family:"JetBrains Mono",monospace;font-size:10.5px;
+    letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--ink-soft);
+    padding:11px 14px;border-bottom:1px solid var(--rule-strong);}
+  .grow .cell2{background:var(--card);padding:14px 17px;font-size:18px;line-height:1.34;border-bottom:1px solid var(--rule);}
+  .grow .q{border-right:1px solid var(--rule);}
+  .grow .q b{color:var(--oxblood);}
+  .grow .lab{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--ink-soft);display:block;margin-bottom:5px;}
+  .grow .blank{background:repeating-linear-gradient(45deg,var(--card),var(--card) 8px,var(--paper-deep) 8px,var(--paper-deep) 16px);
+    color:var(--ink-soft);font-style:italic;font-size:16px;}
+  @media (max-width:820px){.grow{grid-template-columns:1fr;}}
+
+  .compare{display:grid;grid-template-columns:200px 1fr 1fr;border:1px solid var(--rule-strong);
+    border-radius:3px;overflow:hidden;box-shadow:var(--shadow);margin:8px 0 12px;}
+  .compare div{padding:11px 14px;background:var(--card);border-bottom:1px solid var(--rule);font-size:17.5px;line-height:1.3;}
+  .compare .hd{background:var(--paper-deep);font-family:"JetBrains Mono",monospace;font-size:10.5px;
+    letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--ink-soft);}
+  .compare .rq{font-weight:600;border-right:1px solid var(--rule);}
+  .compare .ar{border-right:1px solid var(--rule);}
+  @media (max-width:820px){.compare{grid-template-columns:1fr;}}
+
+  .cutbox{display:flex;gap:14px;flex-wrap:wrap;margin:6px 0 4px;}
+  .cutb{flex:1 1 260px;background:var(--card);border:1px solid var(--rule-strong);
+    border-top:3px solid var(--oxblood);border-radius:2px;padding:13px 16px;}
+  .cutb.slate{border-top-color:var(--slate);}
+  .cutb .t{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.12em;
+    text-transform:uppercase;font-weight:700;color:var(--oxblood);margin-bottom:6px;}
+  .cutb.slate .t{color:var(--slate);}
+  .cutb p{font-size:17.5px;margin:0;}
+
+  /* ---------- nav ---------- */
+  .nav{flex:0 0 auto;border-top:1px solid var(--rule);
+    background:linear-gradient(var(--paper-deep),var(--paper));
+    padding:9px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;}
+  .nav button{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.1em;
+    text-transform:uppercase;font-weight:700;background:transparent;border:1px solid var(--rule-strong);
+    color:var(--ink);padding:9px 20px;border-radius:2px;cursor:pointer;transition:all .18s;}
+  .nav button:hover:not(:disabled){background:var(--oxblood);border-color:var(--oxblood);color:var(--paper);}
+  .nav button:disabled{opacity:.3;cursor:default;}
+  .counter{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-soft);letter-spacing:.1em;}
+
+  /* ---------- short viewports (720p projectors) ---------- */
+  @media (max-height:820px){
+    body{font-size:18.5px;}
+    .screen{padding:20px 34px 26px;}
+    h1{font-size:44px;margin-bottom:14px;}
+    h2{font-size:31px;margin-bottom:12px;}
+    .lede{font-size:21px;}
+    p{margin-bottom:11px;}
+    .prompt{padding:14px 18px;margin:5px 0 11px;}
+    .prompt .task{font-size:20px;}
+    .reveal{padding:13px 17px;margin:6px 0 10px;}
+    .reveal p{font-size:17.5px;}
+    .nb{padding:12px 17px;} .nb .task{font-size:19px;}
+    .opt{font-size:18px;padding:8px 14px;}
+    .btnrow{margin:9px 0 3px;}
+    .btn{padding:8px 15px;}
+    .board{--cs:42px;}
+    .step{padding:7px 12px;} .step .s{font-size:18.5px;}
+    .ev p{font-size:17.5px;} .ev{padding-bottom:10px;}
+    .grow .cell2{font-size:16px;padding:11px 14px;}
+    .compare div{font-size:15.5px;padding:9px 12px;}
+    .kit li{font-size:16.5px;}
+    .mapsvg{max-width:370px;}
+    .guard{font-size:15.5px;margin-top:12px;padding-top:10px;}
+    .work{gap:26px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">TOK &middot; Arts &amp; Maths &middot; L6</div>
+  <div class="kq">When can you know a maths claim is true by <b>checking it yourself</b> &mdash; and when do you have to <b>trust other people</b>?</div>
+  <div class="dots" id="dots"></div>
+</div>
+
+<div class="stage">
+
+  <!-- 01 · TITLE -->
+  <section class="screen">
+    <div class="eyebrow">Lesson 6 &middot; The proof that stalls</div>
+    <h1>The Proof<br>That Stalls</h1>
+    <p class="lede">Last lesson you learned that a proof is the strongest reason in the whole grid: if every step is allowed, the conclusion is forced. Today&rsquo;s question is about the people. If a proof forces everyone to agree, why do mathematicians sometimes still disagree?</p>
+    <div class="reveal ox">
+      <div class="rtag">Today you fill</div>
+      <p><b>V &middot; Maths:</b> how does a maths claim move from &ldquo;someone says so&rdquo; to &ldquo;accepted&rdquo;?<br><b>C &middot; Maths:</b> who certifies a proof &mdash; and what exactly are they certifying?</p>
+    </div>
+    <div class="guard">Core concepts today: <b>certainty</b>, <b>justification</b>, <b>power</b>. Notebooks out: three numbered notebook questions, then an exit ticket. You will also need paper and coloured pencils for one task.</div>
+  </section>
+
+  <!-- 02 · evidence or proof -->
+  <section class="screen">
+    <div class="eyebrow">Warm-up &middot; evidence or proof?</div>
+    <h2>Fifty tries. Fifty failures.</h2>
+    <div class="prompt">
+      <span class="tag">Commit first</span>
+      <span class="task">Your friend tries to solve a puzzle 50 times and fails every time. Does your friend now <b>know</b> the puzzle can&rsquo;t be solved?</span>
+    </div>
+    <div class="poll" data-reveal="r-warm">
+      <button class="opt"><span class="k">A</span>Yes. Fifty tries is plenty.</button>
+      <button class="opt"><span class="k">B</span>No. Try number 51 might work.</button>
+      <button class="opt"><span class="k">C</span>It depends on the puzzle.</button>
+    </div>
+    <div id="r-warm" class="hidden">
+      <div class="cutbox">
+        <div class="cutb slate"><div class="t">Evidence</div><p><b>Examples.</b> &ldquo;I tried 50 times and it never worked.&rdquo; Evidence makes a claim <i>likely</i>. Try number 51 could still work.</p></div>
+        <div class="cutb"><div class="t">Proof</div><p><b>A reason that covers every case</b>, including the cases nobody tried. Every step is forced by the step before, so the conclusion is forced too.</p></div>
+      </div>
+      <div class="guard">Remember 2&nbsp;=&nbsp;1 from Lesson 5? Checking a proof does not mean testing examples. It means checking that <b>every step is allowed</b>. One illegal step, and the whole proof fails.</div>
+    </div>
+  </section>
+
+  <!-- 03 · chessboard, plain -->
+  <section class="screen">
+    <div class="eyebrow">Try it &middot; the broken chessboard</div>
+    <h2>Cover the board.</h2>
+    <div class="work">
+      <div>
+        <p class="lede">Two opposite corners have been cut off this board. That leaves <b>62 squares</b>. A domino covers two squares that sit side by side.</p>
+        <div class="prompt">
+          <span class="tag">The challenge</span>
+          <span class="task">Can you cover all 62 squares with 31 dominoes, with no gaps and no overlaps?</span>
+        </div>
+        <div class="kit">
+          <div class="ktag">How</div>
+          <ol>
+            <li>Click a square, then click a square <b>next to it</b> (not diagonal) to place a domino.</li>
+            <li>Click a domino to pick it up again.</li>
+          </ol>
+        </div>
+        <div class="btnrow">
+          <div class="timer" data-sec="240"><span class="t">4:00</span><button class="btn tgo">Start</button><button class="btn treset">Reset</button></div>
+        </div>
+      </div>
+      <div class="boardwrap">
+        <div class="board" id="boardA"></div>
+        <div class="readout" id="readA"></div>
+        <div class="btnrow"><button class="btn" id="resetA">Clear the board</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 · nobody did it -->
+  <section class="screen">
+    <div class="eyebrow">Commit &middot; nobody did it</div>
+    <h2>Does failing prove anything?</h2>
+    <div class="prompt">
+      <span class="tag">Commit first</span>
+      <span class="task">Nobody in the room covered the whole board. Does that <b>prove</b> it can&rsquo;t be done?</span>
+    </div>
+    <div class="poll" data-reveal="r-fail">
+      <button class="opt"><span class="k">A</span>Yes. The whole class tried and failed.</button>
+      <button class="opt"><span class="k">B</span>No. Maybe we&rsquo;re just bad at it.</button>
+    </div>
+    <div id="r-fail" class="hidden">
+      <div class="reveal ox">
+        <div class="rtag">Our failures are evidence, not proof</div>
+        <p>There are millions of ways to lay the dominoes, and nobody can try them all. However many times we fail, a cleverer layout might still exist.</p>
+        <p>So we need something different: <b>one reason that rules out every layout at once.</b></p>
+      </div>
+      <div class="prompt slate">
+        <span class="tag">Hint</span>
+        <span class="task">On a real chessboard, the squares have colours. Next screen.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 · chessboard, coloured -->
+  <section class="screen">
+    <div class="eyebrow">The hint &middot; turn the colours on</div>
+    <h2>Same board. Now with colours.</h2>
+    <div class="work">
+      <div>
+        <div class="prompt">
+          <span class="tag">Look, then try</span>
+          <span class="task">Look at the two corners that were cut off. What colour are they? Place a few dominoes and watch the count. What does every domino cover?</span>
+          <div class="commit">Talk with your partner before the next screen.</div>
+        </div>
+        <div class="guard">The count on the right updates as you go. Keep your eye on the two numbers, not on the dominoes.</div>
+      </div>
+      <div class="boardwrap">
+        <div class="board coloured" id="boardB"></div>
+        <div class="readout" id="readB"></div>
+        <div class="btnrow"><button class="btn" id="resetB">Clear the board</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 · the six-step proof -->
+  <section class="screen">
+    <div class="eyebrow">The proof &middot; six steps</div>
+    <h2>Why nobody will ever do it.</h2>
+    <div class="work">
+      <div>
+        <div class="steps" id="chessSteps">
+          <div class="step"><span class="n">1</span><span class="s">Squares that sit side by side on a chessboard are always different colours.<span class="why">Check: look at any chessboard.</span></span></div>
+          <div class="step"><span class="n">2</span><span class="s">So every domino covers one dark square and one light square.<span class="why">A domino covers two side-by-side squares (step 1).</span></span></div>
+          <div class="step"><span class="n">3</span><span class="s">The two corners that were cut off are the same colour: both dark.<span class="why">Check: look at the board.</span></span></div>
+          <div class="step"><span class="n">4</span><span class="s">So 30 dark squares and 32 light squares are left.<span class="why">A full board has 32 of each. 32 &minus; 2 = 30.</span></span></div>
+          <div class="step"><span class="n">5</span><span class="s">31 dominoes would cover exactly 31 dark squares and 31 light squares.<span class="why">Step 2, done 31 times.</span></span></div>
+          <div class="step final"><span class="n">6</span><span class="s">But only 30 dark squares are left. So the board can never be covered: not by you, not by anyone, not in any order.<span class="why">Steps 4 and 5 can&rsquo;t both be true.</span></span></div>
+        </div>
+        <div class="btnrow" data-steps="chessSteps"><button class="btn snext">Next step</button><button class="btn sall">Show all</button><button class="btn sreset">Reset</button></div>
+      </div>
+      <div>
+        <div class="nb">
+          <div class="ntag">Notebook 1</div>
+          <span class="task">Are you now certain the board can&rsquo;t be covered? Whose word did you need to be certain?</span>
+        </div>
+        <button class="btn gate" data-reveal="r-nb1">We&rsquo;ve written ours &mdash; reveal</button>
+        <div id="r-nb1" class="hidden">
+          <div class="reveal ox">
+            <div class="rtag">Nobody&rsquo;s</div>
+            <p>You checked every step yourself. You didn&rsquo;t need to trust your teacher, a textbook or an expert.</p>
+            <p>That is what a proof does. Every step is forced, so the conclusion is forced, <b>for anyone who can follow the steps.</b> Hold on to that last part.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 · Euclid -->
+  <section class="screen">
+    <div class="eyebrow">Infinite, but still checkable &middot; Euclid, about 300 BC</div>
+    <h2>Do the prime numbers ever run out?</h2>
+    <p class="lede">The chessboard has only 62 squares. What about a claim about <b>infinitely many</b> numbers? A prime number divides only by 1 and itself: 2, 3, 5, 7, 11, 13&nbsp;&hellip; Claim: <b>the primes go on forever.</b></p>
+    <div class="work">
+      <div>
+        <div class="prompt">
+          <span class="tag">Try it</span>
+          <span class="task">Pick some primes. Multiply them together and add 1. Is the answer always a prime? Try all six.</span>
+        </div>
+        <div class="chips" id="chips"></div>
+        <div class="calc" id="calc"></div>
+      </div>
+      <div>
+        <div class="steps" id="euclidSteps">
+          <div class="step"><span class="n">1</span><span class="s">Suppose someone hands you a list that claims to contain every prime.</span></div>
+          <div class="step"><span class="n">2</span><span class="s">Multiply every prime on the list together, then add 1.</span></div>
+          <div class="step"><span class="n">3</span><span class="s">Divide the new number by any prime on the list: there is always 1 left over. So no prime on the list divides it.<span class="why">Watch the calculator: remainder 1, every time.</span></span></div>
+          <div class="step"><span class="n">4</span><span class="s">Every whole number bigger than 1 is either a prime or divides by a prime. So some prime is missing from the list.</span></div>
+          <div class="step final"><span class="n">5</span><span class="s">So no list of primes is ever complete. The primes go on forever.</span></div>
+        </div>
+        <div class="btnrow" data-steps="euclidSteps"><button class="btn snext">Next step</button><button class="btn sall">Show all</button><button class="btn sreset">Reset</button></div>
+      </div>
+    </div>
+    <div class="reveal ox hidden" id="r-size">
+      <div class="rtag">So size isn&rsquo;t the problem</div>
+      <p>Infinitely many cases, five steps, and you can check every one. A problem can be infinite and still have a short proof. What matters is <b>whether you can follow every step.</b></p>
+    </div>
+  </section>
+
+  <!-- 08 · colour the map -->
+  <section class="screen">
+    <div class="eyebrow">Try it &middot; colour the map</div>
+    <h2>How few colours can you use?</h2>
+    <div class="work">
+      <div>
+        <div class="kit">
+          <div class="ktag">The rules</div>
+          <ol>
+            <li><b>Neighbours</b> (regions that share a border line) must be different colours.</li>
+            <li>Touching at a <b>single point</b> doesn&rsquo;t count as being neighbours.</li>
+            <li>Each region is <b>one connected piece</b>.</li>
+          </ol>
+        </div>
+        <div class="prompt">
+          <span class="tag" id="mapTag">Map 1</span>
+          <span class="task" id="mapTask"></span>
+        </div>
+        <div class="readout" id="mapRead"></div>
+      </div>
+      <div>
+        <div class="tabs" id="mapTabs"></div>
+        <svg class="mapsvg" id="mapSvg" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div class="btnrow">
+          <button class="btn" id="mapClear">Clear</button>
+          <button class="btn" id="map3">3 colours only</button>
+        </div>
+        <div class="mapnote">Click a region to change its colour. Clashing borders turn red. The shapes are simplified; which regions touch is real.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 09 · draw a five-colour map -->
+  <section class="screen">
+    <div class="eyebrow">On paper &middot; your turn</div>
+    <h2>Draw a map that needs five colours.</h2>
+    <div class="work">
+      <div>
+        <div class="prompt">
+          <span class="tag">The challenge</span>
+          <span class="task">Draw a map that can&rsquo;t be coloured with four colours. Follow the three rules.</span>
+          <div class="commit">Hint: you need five regions that each share a border line with all four of the others.</div>
+        </div>
+        <div class="btnrow">
+          <div class="timer" data-sec="240"><span class="t">4:00</span><button class="btn tgo">Start</button><button class="btn treset">Reset</button></div>
+        </div>
+      </div>
+      <div>
+        <div class="prompt slate">
+          <span class="tag">Then commit</span>
+          <span class="task">Nobody managed it. Does that prove that four colours are <b>always</b> enough, for every map anyone could ever draw?</span>
+        </div>
+        <div class="poll" data-reveal="r-five">
+          <button class="opt"><span class="k">A</span>Yes. If nobody can draw one, it can&rsquo;t exist.</button>
+          <button class="opt"><span class="k">B</span>No. It&rsquo;s the chessboard question again.</button>
+        </div>
+        <div id="r-five" class="hidden">
+          <div class="reveal ox">
+            <div class="rtag">Same question, different answer</div>
+            <p>With the chessboard, I could show you a six-step reason. This time I can&rsquo;t, and neither can anyone else: nobody has ever found a short proof that four colours are always enough.</p>
+            <p>The claim does have a proof, though. Here is how it was found.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 · four colour story -->
+  <section class="screen">
+    <div class="eyebrow">The story &middot; 1852 to 1976</div>
+    <h2>124 years to prove a colouring rule.</h2>
+    <div class="tl" id="tlFour">
+      <div class="ev"><div class="yr">1852</div><p>Francis Guthrie, colouring a map of the counties of England, notices that four colours always seem to be enough. He can&rsquo;t prove it. Nor can anyone else.</p></div>
+      <div class="ev"><div class="yr">1879</div><p>Alfred Kempe publishes a proof. Mathematicians accept it.</p></div>
+      <div class="ev"><div class="yr">1890</div><p>Percy Heawood finds a mistake in Kempe&rsquo;s proof, <b>11 years later</b>. The claim is unproven again. Heawood does prove that <b>five</b> colours are always enough, in a short proof a strong student can follow.</p></div>
+      <div class="ev"><div class="yr">1976</div><p>Kenneth Appel and Wolfgang Haken prove that four colours are enough. Their proof shows that every possible map must contain one of nearly 2,000 special patterns, then has a <b>computer</b> check every pattern. The checking takes more than 1,000 hours of computer time. <b>No person has ever checked the whole proof by hand.</b></p></div>
+    </div>
+    <div class="btnrow" data-tl="tlFour"><button class="btn tnext">Next</button><button class="btn tall">Show all</button><button class="btn treset2">Reset</button></div>
+  </section>
+
+  <!-- 11 · is it proven -->
+  <section class="screen">
+    <div class="eyebrow">Commit &middot; is it proven?</div>
+    <h2>Is the Four Colour Theorem proven?</h2>
+    <div class="work">
+      <div>
+        <div class="poll" data-reveal="r-proven">
+          <button class="opt"><span class="k">A</span>Yes</button>
+          <button class="opt"><span class="k">B</span>No</button>
+          <button class="opt"><span class="k">C</span>Not yet</button>
+        </div>
+        <div class="pollnote">Write one sentence in your notebook explaining your choice before you click.</div>
+      </div>
+      <div id="r-proven" class="hidden">
+        <div class="prompt slate">
+          <span class="tag">Compare it with the chessboard</span>
+          <span class="task">What could you do with the chessboard proof that you can&rsquo;t do with this one?</span>
+        </div>
+        <div class="reveal ox">
+          <div class="rtag">You can&rsquo;t check it</div>
+          <p>With the chessboard you checked every step yourself. With the Four Colour proof you would have to <b>trust the computer, and the people who wrote its program.</b></p>
+          <p>When the proof came out, some mathematicians refused to count it. Others accepted it but were unhappy: the proof showed <i>that</i> four colours are enough, but not <i>why</i>.</p>
+          <p>And remember 1879: mathematicians accepted a <b>wrong</b> proof for 11 years.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 · 2005 -->
+  <section class="screen">
+    <div class="eyebrow">2005 &middot; checking the checker</div>
+    <h2>A machine checks the machine.</h2>
+    <p class="lede">In 2005, Georges Gonthier had the whole proof checked again by a computer program built for one job: checking proofs, one step at a time (it is called <b>Coq</b>).</p>
+    <div class="reveal">
+      <div class="rtag">What changed</div>
+      <p>You no longer have to trust the programs from 1976. You only have to trust the small core of the checking program.</p>
+    </div>
+    <div class="prompt">
+      <span class="tag">Discuss</span>
+      <span class="task">Did the need for trust disappear, or did it move somewhere else?</span>
+    </div>
+    <div class="nb">
+      <div class="ntag">Notebook 2</div>
+      <span class="task">When you can&rsquo;t check a proof yourself, what are you really trusting?</span>
+    </div>
+    <button class="btn gate" data-reveal="r-nb2">We&rsquo;ve written ours &mdash; reveal</button>
+    <div id="r-nb2" class="hidden">
+      <div class="reveal ox">
+        <div class="rtag">People and tools</div>
+        <p>You are trusting the programmers, the checking program, and the mathematicians who say they checked. The proof is still a chain of forced steps. What changed is <b>who can check the chain.</b></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 13 · abc -->
+  <section class="screen">
+    <div class="eyebrow">The proof nobody can certify &middot; abc</div>
+    <h2>Six hundred pages. One step.</h2>
+    <p class="lede">The <b>abc conjecture</b> is one of the most famous unsolved problems about whole numbers. You don&rsquo;t need to know the maths. Almost no one on Earth does, and that is the point.</p>
+    <div class="tl" id="tlAbc">
+      <div class="ev"><div class="yr">2012</div><p>Shinichi Mochizuki, a respected mathematician at Kyoto University, posts hundreds of pages claiming to prove the abc conjecture. He invented a new kind of mathematics to do it. Almost no one can follow it.</p></div>
+      <div class="ev"><div class="yr">2018</div><p>Peter Scholze and Jakob Stix, two leading mathematicians, spend five days in Kyoto with Mochizuki. They report a gap in one step, called <b>Corollary 3.12</b>, so serious that, in their view, small fixes will not rescue the proof. Mochizuki says they have misunderstood it.</p></div>
+      <div class="ev"><div class="yr">2021</div><p>The proof is published in <i>PRIMS</i>, a journal where Mochizuki is the chief editor. He stepped back from the review and did not attend the meetings about his paper. Scholze says his concerns were never addressed.</p></div>
+      <div class="ev"><div class="yr">2026</div><p><b>Project LANA</b>, a team checking the argument with a proof-checking program called Lean, reports that it has <b>not</b> found the theory wrong. But it has narrowed the dispute to one precise point, which nobody has yet written out in full.</p></div>
+    </div>
+    <div class="btnrow" data-tl="tlAbc"><button class="btn tnext">Next</button><button class="btn tall">Show all</button><button class="btn treset2">Reset</button></div>
+    <div class="guard" id="abcEnd">Today the abc proof is accepted as a theorem in Kyoto and treated as an unproven conjecture almost everywhere else.</div>
+  </section>
+
+  <!-- 14 · commit abc -->
+  <section class="screen">
+    <div class="eyebrow">Commit &middot; who decides?</div>
+    <h2>Is the abc conjecture now known to be true?</h2>
+    <div class="work">
+      <div>
+        <div class="poll" data-reveal="r-abc">
+          <button class="opt"><span class="k">A</span>Yes. It was published in a journal.</button>
+          <button class="opt"><span class="k">B</span>No. Experts found a gap.</button>
+          <button class="opt"><span class="k">C</span>Nobody can say yet.</button>
+        </div>
+        <div class="prompt slate">
+          <span class="tag">Then discuss</span>
+          <span class="task">Who gets to decide? And why doesn&rsquo;t the abc proof force anyone to agree, the way the chessboard proof forced you?</span>
+        </div>
+      </div>
+      <div id="r-abc" class="hidden">
+        <div class="reveal ox">
+          <div class="rtag">A proof only forces people who can follow it</div>
+          <p>The chessboard proof forced you to agree because you could check every step. When almost nobody can follow the steps, the proof can&rsquo;t do that job by itself.</p>
+          <p>Then a <b>community</b> has to check the proof and certify it. A community can get stuck (abc), and it can be wrong for a while (Kempe).</p>
+        </div>
+        <div class="guard">Note the recusal. Nobody cheated here: the journal followed its process, and most mathematicians outside Kyoto still don&rsquo;t accept the proof. Publication is not the same as certification by the whole community.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 15 · grid fill -->
+  <section class="screen">
+    <div class="eyebrow">The fill &middot; V &middot; Maths and C &middot; Maths</div>
+    <h2>Fill the two cells in your own words first.</h2>
+    <div class="grow">
+      <div class="hd">Question</div><div class="hd">Mathematics</div>
+      <div class="cell2 q"><span class="lab">V</span><b>How does a claim move from asserted to accepted?</b></div>
+      <div class="cell2 blank" id="cellV">Write yours first.</div>
+      <div class="cell2 q"><span class="lab">C</span><b>Who certifies, and what do they certify?</b></div>
+      <div class="cell2 blank" id="cellC">Write yours first.</div>
+    </div>
+    <button class="btn" id="fillBtn">We&rsquo;ve written ours &mdash; reveal</button>
+    <div id="r-cut" class="hidden">
+      <div class="cutbox" style="margin-top:12px">
+        <div class="cutb"><div class="t">The cut &middot; proof &ne; acceptance</div><p>New checks don&rsquo;t overturn a correct proof. They test <i>claimed</i> proofs: they expose a flaw (Kempe, 1890), confirm a proof (Coq, 2005), or narrow a dispute (LANA, 2026). What gets overturned is the community&rsquo;s <b>acceptance</b>.</p></div>
+        <div class="cutb slate"><div class="t">You&rsquo;ve met this cut before</div><p>Lesson 1: being art &ne; being good. Today: being proved &ne; being accepted. In both, a community&rsquo;s verdict and the thing itself can come apart.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 16 · opinion objection -->
+  <section class="screen">
+    <div class="eyebrow">The obvious objection &middot; so maths is just opinion?</div>
+    <h2>The art world got stuck too.</h2>
+    <p class="lede">In Lesson 3, the art world couldn&rsquo;t agree whether Tracey Emin&rsquo;s <i>My Bed</i> should count as art. Now mathematicians can&rsquo;t agree about abc.</p>
+    <div class="work">
+      <div>
+        <div class="prompt">
+          <span class="tag">Commit first</span>
+          <span class="task">Is the abc disagreement the same kind of disagreement as the <i>My Bed</i> one?</span>
+        </div>
+        <div class="poll" data-reveal="r-same">
+          <button class="opt"><span class="k">A</span>Same kind. A community decides in both.</button>
+          <button class="opt"><span class="k">B</span>Different kind.</button>
+        </div>
+      </div>
+      <div id="r-same" class="hidden">
+        <div class="compare">
+          <div class="hd"></div><div class="hd">My Bed (art)</div><div class="hd">abc (maths)</div>
+          <div class="rq">What are they disagreeing about?</div><div class="ar">Whether the work should count as art.</div><div>Whether one step of the proof works.</div>
+          <div class="rq">Can both sides be right?</div><div class="ar">Often, yes. Several readings can be justified at once.</div><div>No. The step works or it doesn&rsquo;t, and both sides agree on that.</div>
+          <div class="rq">What&rsquo;s the problem?</div><div class="ar">There is no mechanical test.</div><div>Access: almost nobody can check the step.</div>
+        </div>
+      </div>
+    </div>
+    <div id="r-same2" class="hidden">
+      <div class="reveal ox">
+        <div class="rtag">Same structure &ne; same validity</div>
+        <p>Both disputes rest on a community decision. That doesn&rsquo;t make them equally loose. LANA&rsquo;s report narrowed the abc dispute to one precise point, which is something that could never happen to <i>My Bed</i>.</p>
+      </div>
+      <div class="nb">
+        <div class="ntag">Notebook 3</div>
+        <span class="task">Both the art world and mathematicians can fail to agree. What is different about what each one is disagreeing over?</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 17 · exit -->
+  <section class="screen">
+    <div class="eyebrow">Exit ticket</div>
+    <h2>So where does certainty in maths come from?</h2>
+    <div class="nb">
+      <div class="ntag">Exit ticket &middot; 3 to 4 sentences</div>
+      <span class="task">The chessboard proof needed no one to trust. The abc proof needs a community. So where does certainty in maths come from: the proof, the people, or both? Use the words <b>certainty</b> and <b>justification</b>.</span>
+    </div>
+    <div class="reveal">
+      <div class="rtag">Back to the question</div>
+      <p><i>When can you know a maths claim is true by checking it yourself, and when do you have to trust other people?</i></p>
+    </div>
+    <div class="guard"><b>Next:</b> mathematicians use one more guide besides proof when they judge a result: <b>beauty</b>. Does a beautiful proof tell you anything about truth? That is where art and maths meet. <span class="soft">&#9654; Lesson 7</span></div>
+  </section>
+
+</div>
+
+<div class="nav">
+  <button id="prev">&#9666; Back</button>
+  <div class="counter"><span id="cur">01</span> / <span id="tot">17</span></div>
+  <button id="next">Next &#9654;</button>
+</div>
+
+<script>
+(function(){
+  /* ---------- navigation ---------- */
+  const screens=[...document.querySelectorAll('.screen')];
+  const dotsWrap=document.getElementById('dots');
+  const prev=document.getElementById('prev');
+  const next=document.getElementById('next');
+  const cur=document.getElementById('cur');
+  const tot=document.getElementById('tot');
+  let i=0;
+  tot.textContent=String(screens.length).padStart(2,'0');
+  screens.forEach((_,idx)=>{
+    const b=document.createElement('button');
+    b.className='dot';b.setAttribute('aria-label','Go to screen '+(idx+1));
+    b.addEventListener('click',()=>go(idx));
+    dotsWrap.appendChild(b);
+  });
+  const dots=[...dotsWrap.children];
+  function go(n){
+    i=Math.max(0,Math.min(screens.length-1,n));
+    screens.forEach((s,idx)=>s.classList.toggle('active',idx===i));
+    dots.forEach((d,idx)=>{d.classList.toggle('on',idx===i);d.classList.toggle('past',idx<i);});
+    cur.textContent=String(i+1).padStart(2,'0');
+    prev.disabled=(i===0); next.disabled=(i===screens.length-1);
+    document.querySelector('.stage').scrollTop=0;
+  }
+  prev.addEventListener('click',()=>go(i-1));
+  next.addEventListener('click',()=>go(i+1));
+  document.addEventListener('keydown',e=>{
+    if(e.target.matches('input,textarea'))return;
+    if(e.key==='ArrowRight'){e.preventDefault();go(i+1);}
+    if(e.key==='ArrowLeft'){e.preventDefault();go(i-1);}
+  });
+
+  /* ---------- polls: commit, then reveal ---------- */
+  document.querySelectorAll('.poll').forEach(p=>{
+    const target=document.getElementById(p.dataset.reveal);
+    p.querySelectorAll('.opt').forEach(o=>{
+      o.addEventListener('click',()=>{
+        p.querySelectorAll('.opt').forEach(x=>x.classList.remove('chosen'));
+        o.classList.add('chosen');
+        target.classList.remove('hidden');
+        if(p.dataset.reveal==='r-same') document.getElementById('r-same2').classList.remove('hidden');
+      });
+    });
+  });
+
+  /* ---------- notebook gates ---------- */
+  document.querySelectorAll('.gate').forEach(b=>{
+    b.addEventListener('click',()=>{
+      document.getElementById(b.dataset.reveal).classList.remove('hidden');
+      b.classList.add('hidden');
+    });
+  });
+
+  /* ---------- step-by-step reveals ---------- */
+  document.querySelectorAll('[data-steps]').forEach(row=>{
+    const box=document.getElementById(row.dataset.steps);
+    const items=[...box.children];
+    let shown=1;
+    function draw(){items.forEach((s,k)=>s.classList.toggle('hidden',k>=shown));
+      row.querySelector('.snext').disabled=shown>=items.length;
+      if(row.dataset.steps==='euclidSteps') document.getElementById('r-size').classList.toggle('hidden',shown<items.length);}
+    row.querySelector('.snext').addEventListener('click',()=>{shown=Math.min(items.length,shown+1);draw();});
+    row.querySelector('.sall').addEventListener('click',()=>{shown=items.length;draw();});
+    row.querySelector('.sreset').addEventListener('click',()=>{shown=1;draw();});
+    draw();
+  });
+
+  /* ---------- timelines ---------- */
+  document.querySelectorAll('[data-tl]').forEach(row=>{
+    const box=document.getElementById(row.dataset.tl);
+    const items=[...box.children];
+    const end=(row.dataset.tl==='tlAbc')?document.getElementById('abcEnd'):null;
+    let shown=1;
+    function draw(){
+      items.forEach((s,k)=>s.classList.toggle('hidden',k>=shown));
+      row.querySelector('.tnext').disabled=shown>=items.length;
+      if(end) end.classList.toggle('hidden',shown<items.length);
+    }
+    row.querySelector('.tnext').addEventListener('click',()=>{shown=Math.min(items.length,shown+1);draw();});
+    row.querySelector('.tall').addEventListener('click',()=>{shown=items.length;draw();});
+    row.querySelector('.treset2').addEventListener('click',()=>{shown=1;draw();});
+    draw();
+  });
+
+  /* ---------- timers ---------- */
+  document.querySelectorAll('.timer').forEach(t=>{
+    const total=+t.dataset.sec; let left=total, id=null;
+    const out=t.querySelector('.t'), goB=t.querySelector('.tgo');
+    const fmt=s=>Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+    function stop(){clearInterval(id);id=null;goB.textContent='Start';}
+    goB.addEventListener('click',()=>{
+      if(id){stop();return;}
+      if(left<=0){left=total;out.classList.remove('done');}
+      goB.textContent='Pause';
+      id=setInterval(()=>{left--;out.textContent=fmt(Math.max(0,left));
+        if(left<=0){stop();out.classList.add('done');out.textContent='0:00';}},1000);
+    });
+    t.querySelector('.treset').addEventListener('click',()=>{stop();left=total;out.textContent=fmt(total);out.classList.remove('done');});
+  });
+
+  /* ---------- chessboard ---------- */
+  function makeBoard(boardId,readId,resetId,coloured){
+    const el=document.getElementById(boardId), read=document.getElementById(readId);
+    const gone=(r,c)=>(r===0&&c===0)||(r===7&&c===7);
+    const isDark=(r,c)=>(r+c)%2===0;
+    let cover, doms, nextId, sel;
+    const cells=[];
+    for(let r=0;r<8;r++){cells.push([]);for(let c=0;c<8;c++){
+      const b=document.createElement('button');
+      b.className='cell '+(isDark(r,c)?'dark':'light')+(gone(r,c)?' gone':'');
+      b.setAttribute('aria-label','row '+(r+1)+' column '+(c+1));
+      b.addEventListener('click',()=>click(r,c));
+      el.appendChild(b); cells[r].push(b);
+    }}
+    function reset(){cover=[...Array(8)].map(()=>Array(8).fill(null));doms={};nextId=1;sel=null;render();}
+    function click(r,c){
+      if(gone(r,c))return;
+      const d=cover[r][c];
+      if(d){doms[d].forEach(([a,b])=>cover[a][b]=null);delete doms[d];sel=null;render();return;}
+      if(!sel){sel=[r,c];render();return;}
+      const [sr,sc]=sel;
+      if(sr===r&&sc===c){sel=null;render();return;}
+      if(Math.abs(sr-r)+Math.abs(sc-c)===1){
+        const id=nextId++; doms[id]=[[sr,sc],[r,c]]; cover[sr][sc]=id; cover[r][c]=id; sel=null; render(); return;
+      }
+      sel=[r,c];render();
+    }
+    function render(){
+      cells.forEach((row,r)=>row.forEach((b,c)=>b.classList.toggle('sel',!!sel&&sel[0]===r&&sel[1]===c)));
+      el.querySelectorAll('.domino').forEach(x=>x.remove());
+      Object.values(doms).forEach(([[r1,c1],[r2,c2]])=>{
+        const d=document.createElement('div');
+        const h=r1===r2; d.className='domino '+(h?'h':'v');
+        const r=Math.min(r1,r2), c=Math.min(c1,c2);
+        d.style.left=`calc(${c} * (var(--cs) + 1px) + 4px)`;
+        d.style.top=`calc(${r} * (var(--cs) + 1px) + 4px)`;
+        d.style.width=`calc(${h?2:1} * var(--cs) + ${h?1:0}px - 8px)`;
+        d.style.height=`calc(${h?1:2} * var(--cs) + ${h?0:1}px - 8px)`;
+        el.appendChild(d);
+      });
+      const n=Object.keys(doms).length;
+      let dark=0,light=0,fits=false;
+      for(let r=0;r<8;r++)for(let c=0;c<8;c++){
+        if(gone(r,c)||cover[r][c])continue;
+        if(isDark(r,c))dark++;else light++;
+        if(c<7&&!gone(r,c+1)&&!cover[r][c+1])fits=true;
+        if(r<7&&!gone(r+1,c)&&!cover[r+1][c])fits=true;
+      }
+      const left=dark+light;
+      let msg='';
+      if(left===0)msg='Every square covered!';
+      else if(!fits&&n>0)msg='No more dominoes fit. '+left+' squares can’t be covered.';
+      let html=`<div class="r"><span>Dominoes placed</span><b>${n} / 31</b></div>`+
+               `<div class="r"><span>Squares still uncovered</span><b>${left}</b></div>`;
+      if(coloured){
+        html+=`<div class="r"><span><span class="sw" style="background:var(--sq-dark)"></span>Dark squares uncovered</span><b>${dark}</b></div>`+
+              `<div class="r"><span><span class="sw" style="background:var(--sq-light)"></span>Light squares uncovered</span><b>${light}</b></div>`;
+      }
+      html+=`<div class="msg">${msg}</div>`;
+      read.innerHTML=html;
+    }
+    document.getElementById(resetId).addEventListener('click',reset);
+    reset();
+  }
+  makeBoard('boardA','readA','resetA',false);
+  makeBoard('boardB','readB','resetB',true);
+
+  /* ---------- Euclid calculator ---------- */
+  const PR=[2,3,5,7,11,13];
+  const picked=new Set([2,3,5]);
+  const chipsEl=document.getElementById('chips'), calcEl=document.getElementById('calc');
+  PR.forEach(p=>{
+    const b=document.createElement('button');
+    b.className='chip'; b.textContent=p;
+    b.addEventListener('click',()=>{
+      if(picked.has(p)){ if(picked.size>1) picked.delete(p); } else picked.add(p);
+      drawCalc();
+    });
+    chipsEl.appendChild(b);
+  });
+  function factor(n){const f=[];let d=2;while(d*d<=n){while(n%d===0){f.push(d);n/=d;}d++;}if(n>1)f.push(n);return f;}
+  function drawCalc(){
+    [...chipsEl.children].forEach((b,k)=>b.classList.toggle('on',picked.has(PR[k])));
+    const list=PR.filter(p=>picked.has(p));
+    const prod=list.reduce((a,b)=>a*b,1), n=prod+1, f=factor(n);
+    const isPrime=f.length===1;
+    const fresh=[...new Set(f)].filter(p=>!picked.has(p));
+    const rems=list.map(p=>`${n} ÷ ${p} leaves ${n%p}`).join(' &middot; ');
+    calcEl.innerHTML=
+      `<div class="row"><span class="lab">Your list</span><span>${list.join(', ')}</span></div>`+
+      `<div class="row"><span class="lab">Multiply</span><span>${list.join(' × ')} = ${prod}</span></div>`+
+      `<div class="row"><span class="lab">Add 1</span><span class="big">${n}</span></div>`+
+      `<div class="row"><span class="lab">Remainders</span><span style="font-size:13.5px">${rems}</span></div>`+
+      `<div class="row"><span class="lab">Is ${n} prime?</span><span>${isPrime?'Yes, '+n+' is prime.':'No. '+n+' = '+f.join(' × ')}</span></div>`+
+      `<div class="row"><span class="lab">Missing primes</span><span class="new">${fresh.join(', ')}</span><span class="soft" style="font-size:13px">not on your list</span></div>`;
+  }
+  drawCalc();
+
+  /* ---------- map colouring ---------- */
+  const NS='http://www.w3.org/2000/svg';
+  const PAL=['#c98b7e','#7f9cae','#d6b867','#93a77a'];
+  function rect(x0,y0,x1,y1){return [[x0,y0],[x1,y0],[x1,y1],[x0,y1]];}
+  function nevada(){
+    const cx=210,cy=200,ri=72,ro=180, regs=[];
+    const P=(a,r)=>{const t=a*Math.PI/180;return [cx+r*Math.cos(t),cy+r*Math.sin(t)];};
+    const b=k=>-126+72*k;
+    const names=['Oregon','Idaho','Utah','Arizona','California'];
+    names.forEach((nm,k)=>{
+      const pts=[P(b(k),ri),P(b(k),ro)];
+      for(let j=1;j<8;j++)pts.push(P(b(k)+72*j/8,ro));
+      pts.push(P(b(k+1),ro),P(b(k+1),ri));
+      regs.push({name:nm,pts,lp:P(b(k)+36,(ri+ro)/2+4)});
+    });
+    regs.push({name:'Nevada',pts:[0,1,2,3,4].map(k=>P(b(k),ri)),lp:[cx,cy]});
+    return regs;
+  }
+  const MAPS=[
+    {tab:'Warm-up',vb:'-10 -10 380 230',
+     task:'An invented map of 10 regions. What is the fewest colours you need? Can you do it with two?',
+     regs:(()=>{const r=[];let L='ABCDEFGHIJ',k=0;
+       [[0,120],[120,240],[240,360]].forEach(([a,b])=>r.push({name:L[k++],pts:rect(a,0,b,70)}));
+       [[0,60],[60,180],[180,300],[300,360]].forEach(([a,b])=>r.push({name:L[k++],pts:rect(a,70,b,140)}));
+       [[0,120],[120,240],[240,360]].forEach(([a,b])=>r.push({name:L[k++],pts:rect(a,140,b,210)}));
+       return r;})()},
+    {tab:'Four Corners (USA)',vb:'-10 -10 360 360',
+     task:'Utah and New Mexico touch at only one point, and so do Colorado and Arizona. How many colours do you need?',
+     regs:[{name:'Utah',pts:rect(0,0,170,170)},{name:'Colorado',pts:rect(170,0,340,170)},
+           {name:'Arizona',pts:rect(0,170,170,340)},{name:'New Mexico',pts:rect(170,170,340,340)}]},
+    {tab:'Nevada (USA)',vb:'20 10 380 380',
+     task:'Turn on “3 colours only”. Colour the ring of five states first, then try Nevada. What happens, and why?',
+     regs:nevada()},
+    {tab:'Benelux (Europe)',vb:'-10 -10 380 380',
+     task:'Belgium, Luxembourg, France and Germany: each one borders the other three. How many colours are forced?',
+     regs:(()=>{const s=1.2,S=p=>p.map(([x,y])=>[x*s,y*s]);return [
+       {name:'Belgium',pts:S([[0,0],[160,0],[160,170],[140,170],[140,200],[0,200]]),lp:[70*s,100*s]},
+       {name:'Germany',pts:S([[160,0],[300,0],[300,200],[180,200],[180,170],[160,170]]),lp:[235*s,100*s]},
+       {name:'France',pts:S([[0,200],[140,200],[140,220],[180,220],[180,200],[300,200],[300,300],[0,300]]),lp:[150*s,262*s]},
+       {name:'Lux.',pts:S([[140,170],[180,170],[180,220],[140,220]]),lp:[160*s,195*s]}];})()}
+  ];
+  // shared border segments (positive length only; point contacts excluded)
+  function sharedSegs(A,B){
+    const out=[],eps=1e-6;
+    for(let a=0;a<A.length;a++){const p1=A[a],p2=A[(a+1)%A.length];
+      const dx=p2[0]-p1[0],dy=p2[1]-p1[1],L2=dx*dx+dy*dy;
+      for(let b=0;b<B.length;b++){const q1=B[b],q2=B[(b+1)%B.length];
+        const c1=dx*(q1[1]-p1[1])-dy*(q1[0]-p1[0]), c2=dx*(q2[1]-p1[1])-dy*(q2[0]-p1[0]);
+        if(Math.abs(c1)>1e-3*Math.sqrt(L2)||Math.abs(c2)>1e-3*Math.sqrt(L2))continue;
+        const t1=((q1[0]-p1[0])*dx+(q1[1]-p1[1])*dy)/L2, t2=((q2[0]-p1[0])*dx+(q2[1]-p1[1])*dy)/L2;
+        const lo=Math.max(0,Math.min(t1,t2)), hi=Math.min(1,Math.max(t1,t2));
+        if((hi-lo)*Math.sqrt(L2)>0.5) out.push([[p1[0]+dx*lo,p1[1]+dy*lo],[p1[0]+dx*hi,p1[1]+dy*hi]]);
+      }}
+    return out;
+  }
+  MAPS.forEach(m=>{
+    m.adj=[];
+    for(let a=0;a<m.regs.length;a++)for(let b=a+1;b<m.regs.length;b++){
+      const s=sharedSegs(m.regs[a].pts,m.regs[b].pts); if(s.length)m.adj.push({a,b,segs:s});
+    }
+    m.col=m.regs.map(()=>-1);
+  });
+  let mi=0, only3=false;
+  const svg=document.getElementById('mapSvg'), tabs=document.getElementById('mapTabs');
+  const mapRead=document.getElementById('mapRead'), b3=document.getElementById('map3');
+  MAPS.forEach((m,k)=>{const b=document.createElement('button');b.className='btn';b.textContent=m.tab;
+    b.addEventListener('click',()=>{mi=k;drawMap();});tabs.appendChild(b);});
+  function centroid(p){let x=0,y=0;p.forEach(q=>{x+=q[0];y+=q[1];});return [x/p.length,y/p.length];}
+  function drawMap(){
+    const m=MAPS[mi];
+    [...tabs.children].forEach((b,k)=>b.classList.toggle('on',k===mi));
+    document.getElementById('mapTag').textContent='Map '+(mi+1)+' · '+m.tab;
+    document.getElementById('mapTask').textContent=m.task;
+    svg.setAttribute('viewBox',m.vb);
+    while(svg.firstChild)svg.removeChild(svg.firstChild);
+    m.regs.forEach((r,k)=>{
+      const pg=document.createElementNS(NS,'polygon');
+      pg.setAttribute('points',r.pts.map(p=>p[0].toFixed(2)+','+p[1].toFixed(2)).join(' '));
+      pg.setAttribute('class','region');
+      pg.setAttribute('fill',m.col[k]<0?'#f7f3ea':PAL[m.col[k]]);
+      pg.addEventListener('click',()=>{
+        const n=only3?3:4; m.col[k]=(m.col[k]+2)%(n+1)-1; drawMap();
+      });
+      svg.appendChild(pg);
+    });
+    let clashes=0;
+    m.adj.forEach(({a,b,segs})=>{
+      if(m.col[a]>=0&&m.col[a]===m.col[b]){clashes++;
+        segs.forEach(([p,q])=>{const l=document.createElementNS(NS,'line');
+          l.setAttribute('x1',p[0]);l.setAttribute('y1',p[1]);l.setAttribute('x2',q[0]);l.setAttribute('y2',q[1]);
+          l.setAttribute('class','clashline');svg.appendChild(l);});}
+    });
+    m.regs.forEach(r=>{const [x,y]=r.lp||centroid(r.pts);
+      const t=document.createElementNS(NS,'text');t.setAttribute('x',x);t.setAttribute('y',y);
+      t.setAttribute('class','rlabel');t.textContent=r.name;svg.appendChild(t);});
+    const used=new Set(m.col.filter(c=>c>=0)).size, blank=m.col.filter(c=>c<0).length;
+    let msg='';
+    if(blank===0&&clashes===0)msg='Done: '+used+' colour'+(used===1?'':'s')+', no clashes.';
+    else if(clashes>0)msg=clashes+' clash'+(clashes===1?'':'es')+': neighbours with the same colour.';
+    mapRead.innerHTML=`<div class="r"><span>Colours used</span><b>${used}</b></div>`+
+      `<div class="r"><span>Regions not coloured yet</span><b>${blank}</b></div>`+
+      `<div class="r"><span>Clashes</span><b>${clashes}</b></div><div class="msg">${msg}</div>`;
+  }
+  document.getElementById('mapClear').addEventListener('click',()=>{MAPS[mi].col=MAPS[mi].regs.map(()=>-1);drawMap();});
+  b3.addEventListener('click',()=>{only3=!only3;b3.classList.toggle('on',only3);
+    if(only3)MAPS.forEach(m=>{m.col=m.col.map(c=>c===3?-1:c);});drawMap();});
+  drawMap();
+
+  /* ---------- grid fill ---------- */
+  document.getElementById('fillBtn').addEventListener('click',function(){
+    const v=document.getElementById('cellV'), c=document.getElementById('cellC');
+    v.classList.remove('blank'); c.classList.remove('blank');
+    v.innerHTML='Every step is checked against strict rules, and one broken step breaks the whole proof. Usually close to mechanical, <b>but not automatic</b>: when a proof is too long or too new for one person to check, others have to do the checking.';
+    c.innerHTML='The community of mathematicians (referees, journals). They certify that a proof is <b>correct</b>, not that it is important or beautiful. That certification can <b>get stuck</b> (abc) and can be <b>wrong for a while</b> (Kempe).';
+    document.getElementById('r-cut').classList.remove('hidden');
+    this.classList.add('hidden');
+  });
+
+  go(0);
+})();
+</script>
+</body>
+</html>
