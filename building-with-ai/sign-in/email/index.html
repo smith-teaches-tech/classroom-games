@@ -258,9 +258,9 @@ table.compare{border-collapse:collapse;width:100%;min-width:560px;font-size:.92r
   <a class="backlink" href="../">← Two Ways In</a>
   <span class="eyebrow">Build 2 · Identity · Setup page 1 of 2</span>
   <h1>Set Up Email Sign-In</h1>
-  <p class="lede">The easy one. No keys, no other websites. Supabase does all the work, so you only change a few settings and ask your AI for a sign-in screen.</p>
+  <p class="lede">The easy one. No keys, no other websites, no SQL. Supabase does all the work, so you only change a few settings and ask your AI for a sign-in screen.</p>
   <div class="order" aria-label="Order of steps">
-    <b class="sb">1 Supabase</b><i>→</i><b>2 Your AI</b><i>→</i><b>3 Test</b>
+    <b class="sb">1 Supabase</b><i>→</i><b class="sb">2 Supabase</b><i>→</i><b>3 Your AI</b><i>→</i><b>4 Test</b>
   </div>
 </header>
 
@@ -296,7 +296,38 @@ table.compare{border-collapse:collapse;width:100%;min-width:560px;font-size:.92r
 
   <div class="part">
     <div class="part-text">
-      <div class="part-head"><span class="pnum">2</span><div style="display:grid;gap:4px"><h3>Ask your AI for the sign-in screen</h3><span class="site ai" style="width:max-content">Your AI</span></div></div>
+      <div class="part-head"><span class="pnum">2</span><div style="display:grid;gap:4px"><h3>Your database: nothing to add</h3><span class="site sb" style="width:max-content">Supabase</span></div></div>
+      <p class="where"><b>Your project</b> → Authentication → <b>Users</b></p>
+      <p>You don't need to make a table or write any SQL for accounts. Supabase already has its own users table, built in. Every time someone signs up, Supabase adds a row to it by itself.</p>
+      <ol class="do">
+        <li>Open <b>Authentication → Users</b>. This is where every account will show up.</li>
+        <li>It's empty for now. Come back after your first test sign-up and you'll see a row.</li>
+      </ol>
+      <div class="trap"><b>Don't make your own users table</b> with an email column and a password column. Your table would hold the real passwords, readable by anyone your RLS lets in. Supabase's built-in table only keeps a scrambled version, and it's locked away from your app.</div>
+      <div class="why"><b>What about usernames, or saving each person's own stuff?</b> That does need your own tables, linked to these accounts. That's a later step. Get sign-in working first.</div>
+    </div>
+    <div class="mock" aria-label="Mock-up: Supabase Authentication Users list">
+      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">supabase.com/dashboard/project/abcdefghijklmnop/auth/users</span><span class="mocktag">Mock-up</span></div>
+      <div class="mbody">
+        <span class="crumbs">Authentication › Users</span>
+        <h4>Users</h4>
+        <div class="errs-scroll" style="border-radius:8px">
+          <table class="errs" style="min-width:420px;font-size:.78rem">
+            <thead><tr><th>Email</th><th>Provider</th><th>Created</th><th>Last signed in</th></tr></thead>
+            <tbody>
+              <tr><td style="color:var(--ink);width:auto">maya@example.com</td><td>Email</td><td>Oct 8</td><td>Oct 8</td></tr>
+              <tr><td style="color:var(--ink);width:auto">sam@example.com</td><td>Email</td><td>Oct 8</td><td>Oct 9</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <span class="mhint">Example rows. Yours will be empty until someone signs up. Notice there's no password column.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="part">
+    <div class="part-text">
+      <div class="part-head"><span class="pnum">3</span><div style="display:grid;gap:4px"><h3>Ask your AI for the sign-in screen</h3><span class="site ai" style="width:max-content">Your AI</span></div></div>
       <p>Upload <code>index.html</code>, <code>app.js</code> and <code>config.js</code>, then paste this prompt. Change the parts about your app if you need to.</p>
       <div class="why"><b>When the code comes back, check:</b> you should see <code>signUp</code> and <code>signInWithPassword</code>. There should be no new keys anywhere. Email sign-in uses the same publishable key you already have.</div>
     </div>
@@ -318,7 +349,7 @@ Do not put any secret keys in my code. Tell me exactly which file each change go
 
 <section id="test">
   <div class="col" style="display:grid;gap:12px">
-    <span class="eyebrow">Step 3</span>
+    <span class="eyebrow">Step 4</span>
     <h2>Test it, then try to break it</h2>
     <p>Do these on Live Server first, then again on your live GitHub Pages site.</p>
   </div>
@@ -340,8 +371,8 @@ Do not put any secret keys in my code. Tell me exactly which file each change go
     <table class="errs">
       <thead><tr><th>You see</th><th>What's wrong</th><th>Fix</th></tr></thead>
       <tbody>
-        <tr><td>Email not confirmed</td><td>Confirm email is still on.</td><td>Step 1. Turn it off and Save. Then delete that user in Authentication → Users and sign up again.</td></tr>
-        <tr><td>Invalid login credentials</td><td>Wrong email or password.</td><td>Check for typos. Passwords are case-sensitive.</td></tr>
+        <tr><td>Email not confirmed</td><td>Confirm email is still on.</td><td>Step 1. Turn it off and Save. Then delete that user in Authentication → Users (step 2) and sign up again.</td></tr>
+        <tr><td>Invalid login credentials</td><td>Wrong email or password.</td><td>Check for typos. Passwords are case-sensitive. Check Authentication → Users to see if the account exists at all.</td></tr>
         <tr><td>Password should be at least … characters</td><td>Working as planned. Your rule from step 1 caught it.</td><td>Make sure your app shows this message on the page.</td></tr>
         <tr><td>User already registered</td><td>That email already has an account.</td><td>Sign in instead.</td></tr>
         <tr><td>Nothing happens when you click, no message</td><td>The error isn't being shown on the page.</td><td>Open the browser console (right-click → Inspect → Console), copy the red error, give it to your AI.</td></tr>

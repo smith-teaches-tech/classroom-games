@@ -207,27 +207,63 @@ table.errs{border-collapse:collapse;width:100%;min-width:560px;font-size:.9rem}
 .errs td:first-child{font-family:var(--f-mono);font-size:.78rem;color:var(--secret);width:36%}
 .leak{background:var(--secret-soft);border-radius:14px;padding:18px 20px;display:grid;gap:8px}
 .leak h3{color:var(--secret)}
-details.teacher{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 18px}
-details.teacher summary{cursor:pointer;font-family:var(--f-display);font-weight:700;font-size:1.1rem}
-details.teacher ul{margin:12px 0 0;padding-left:1.2em;display:grid;gap:8px;font-size:.95rem}
 footer{padding-top:30px;font-size:.82rem;color:var(--muted)}
+
+/* additions for the three-page version */
+.backlink{display:inline-flex;gap:6px;font-size:.9rem;color:var(--muted);text-decoration:none;width:max-content}
+.backlink:hover{color:var(--ink)}
+.row.divider{height:46px}
+.row.divider .divlbl{position:absolute;left:0;right:0;top:12px;display:flex;align-items:center;gap:10px;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.row.divider .divlbl::before,.row.divider .divlbl::after{content:"";flex:1;height:1px;background:var(--line)}
+.row.divider.future{opacity:.35}
+.row.carry .arrow{border-top:4px dashed var(--brass);border-top-color:var(--brass)}
+.row.carry .arrow.l::after{border-right-color:var(--brass)} .row.carry .arrow.r::after{border-left-color:var(--brass)}
+.row.vault .note{background:var(--brass-soft);border-color:var(--brass);color:var(--ink)}
+.row.mint .note{background:var(--brass-soft);border-color:var(--brass);color:var(--ink)}
+.pill.carry{background:var(--brass-soft);color:var(--brass)}
+.sw.c{border-top:4px dashed var(--brass)}
+.scen-hint{font-size:.88rem;color:var(--muted)}
+
+.danger-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.dcard{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;display:grid;gap:8px;align-content:start}
+.dcard h3{font-size:1.08rem}
+.dcard .dn{font-family:var(--f-mono);font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--secret)}
+@media (max-width:680px){.danger-grid{grid-template-columns:1fr}}
+.compare-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table.compare{border-collapse:collapse;width:100%;min-width:560px;font-size:.92rem}
+.compare th,.compare td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+.compare tr:last-child td{border-bottom:0}
+.compare th{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.compare td:first-child{font-weight:700;width:24%}
+.compare .lvl{font-family:var(--f-mono);font-size:.75rem;font-weight:600;color:var(--secret)}
+.redflags{display:grid;gap:8px;list-style:none;padding:0;margin:0}
+.redflags li{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--secret);border-radius:8px;padding:10px 14px}
+.redflags li b{color:var(--secret)}
+
+.linkcards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.lcard{display:grid;gap:10px;align-content:start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;text-decoration:none;color:var(--ink);transition:border-color .15s}
+.lcard:hover{border-color:var(--open)}
+.lcard h3{font-size:1.4rem}
+.lcard .go{font-weight:700;color:var(--open)}
+.lcard ul{margin:0;padding-left:1.1em;display:grid;gap:4px;color:var(--muted);font-size:.93rem}
+@media (max-width:680px){.linkcards{grid-template-columns:1fr}}
+.pagehead{display:grid;gap:14px;padding-block:8px 18px}
+.pagehead .lede{max-width:52ch}
 </style>
 </head>
 <body>
-
 <div class="wrap">
 
-<!-- ============ HERO ============ -->
 <header class="hero">
   <div class="hero-text">
     <span class="eyebrow">Build 2 · Identity · Sign-in day</span>
     <h1>Two Ways In</h1>
-    <p class="lede">Today your app gets a sign-in screen like the one on the right. One way in needs a secret key. The other doesn't. By the end of class you'll know why.</p>
+    <p class="lede">Today your app gets a sign-in screen like the one on the right. One way in needs a secret key. The other doesn't. By the end of class you'll know why, and what happens if a secret gets out.</p>
     <nav class="jump" aria-label="Lesson sections">
       <a href="#how">1 · How the secret works</a>
       <a href="#keys">2 · Every key so far</a>
-      <a href="#setup">3 · Set it up</a>
-      <a href="#test">4 · Test and break it</a>
+      <a href="#danger">3 · When a secret gets out</a>
+      <a href="#setup">4 · Set it up</a>
     </nav>
   </div>
   <div class="signin" aria-label="Mock-up of the sign-in screen you will build">
@@ -242,17 +278,16 @@ footer{padding-top:30px;font-size:.82rem;color:var(--muted)}
   </div>
 </header>
 
-<div class="facts col" style="max-width:none">
+<div class="facts">
   <div class="fact no"><span class="eyebrow">Email + password</span><span class="big">No key needed</span><p>Supabase handles the whole thing itself. No other company is involved, so there's nothing to prove to anyone.</p></div>
-  <div class="fact yes"><span class="eyebrow">Sign in with GitHub</span><span class="big">Needs a secret</span><p>Supabase has to prove to GitHub that it really is your app. The <b>Client Secret</b> is that proof. You'll make one today.</p></div>
+  <div class="fact yes"><span class="eyebrow">Sign in with GitHub</span><span class="big">Needs a secret</span><p>Supabase has to prove to GitHub that it really is your app. The <b>Client Secret</b> is that proof. GitHub makes it, and you lock it inside Supabase.</p></div>
 </div>
 
-<!-- ============ 1. HOW THE SECRET WORKS ============ -->
 <section id="how">
   <div class="col" style="display:grid;gap:12px">
     <span class="eyebrow">Part 1</span>
     <h2>How the secret works</h2>
-    <p>Three players: <b>your app</b> (running in someone's browser), <b>Supabase</b> (your backend), and <b>GitHub</b>. Step through it. Watch which arrows are out in the open and which ones happen in the back room.</p>
+    <p>Three players: <b>your app</b> (running in someone's browser), <b>Supabase</b> (your backend), and <b>GitHub</b>. The story starts before anyone signs in: first GitHub makes the secret, and you put it in Supabase. Then, every time someone signs in, Supabase uses it. Step through it and watch which arrows are out in the open and which ones happen in the back room.</p>
   </div>
 
   <div class="scen" role="group" aria-label="Choose a scenario">
@@ -270,7 +305,8 @@ footer{padding-top:30px;font-size:.82rem;color:var(--muted)}
       </div>
     </div>
     <div class="zone-key">
-      <span><i class="sw"></i>Out in the open (passes through the browser, anyone could see it)</span>
+      <span><i class="sw c"></i>Setup (you copy the secret by hand, once)</span>
+      <span><i class="sw"></i>Out in the open (passes through the browser)</span>
       <span><i class="sw s"></i>Back room (Supabase and GitHub talk directly)</span>
       <span><i class="sw d"></i>Attack</span>
     </div>
@@ -291,7 +327,6 @@ footer{padding-top:30px;font-size:.82rem;color:var(--muted)}
   <p class="bigidea col">The ticket says <em>who signed in</em>. The secret proves <em>who's asking</em>. GitHub only answers when it gets both, and only Supabase has the secret.</p>
 </section>
 
-<!-- ============ 2. KEYS ============ -->
 <section id="keys">
   <div class="col" style="display:grid;gap:12px">
     <span class="eyebrow">Part 2</span>
@@ -301,259 +336,86 @@ footer{padding-top:30px;font-size:.82rem;color:var(--muted)}
   <div class="keys" id="keylist"></div>
 </section>
 
-<!-- ============ 3. SETUP ============ -->
-<section id="setup">
+<section id="danger">
   <div class="col" style="display:grid;gap:12px">
     <span class="eyebrow">Part 3</span>
-    <h2>Set it up</h2>
-    <p>You'll bounce between two websites, so <b>open Supabase in one tab and GitHub in another</b> before you start. Each site needs something the other one makes.</p>
-    <div class="order" aria-label="Order of steps">
-      <b class="sb">1 Supabase</b><i>→</i><b class="sb">2 Supabase</b><i>→</i><b class="sb">3 Supabase</b><i>→</i><b class="gh">4 GitHub</b><i>→</i><b class="gh">5 GitHub</b><i>→</i><b class="sb">6 Supabase</b><i>→</i><b>7 Your AI</b><i>→</i><b>8 Test</b>
-    </div>
-    <p class="muted" style="font-size:.88rem">The screens below are mock-ups. Your screen may look a little different, but the names of the settings will match. Example values use a made-up app called <b>Mood Tracker</b> by the GitHub user <b>yourname</b>. Use your own.</p>
+    <h2>When a secret gets out</h2>
+    <p>Your <b>publishable key</b> is meant to be public. Your RLS policies protect your data, not the key. A <b>secret</b> is different. A secret works like a password for your app. Once someone else has it, it proves nothing, and you can't take it back. You can only cancel it and make a new one.</p>
   </div>
-
-  <!-- PART 1 -->
-  <div class="part">
-    <div class="part-text">
-      <div class="part-head"><span class="pnum">1</span><div style="display:grid;gap:4px"><h3>Turn on email sign-in</h3><span class="site sb" style="width:max-content">Supabase</span></div></div>
-      <p class="where"><b>Your project</b> → Authentication → Sign In / Providers → <b>Email</b></p>
-      <ol class="do">
-        <li>Check that the Email provider is <b>on</b>.</li>
-        <li>Turn <b>Confirm email</b> <b>off</b>.</li>
-        <li>Set <b>Minimum password length</b> to 8 or more.</li>
-        <li>Pick a <b>Password requirement</b>, like letters and digits.</li>
-        <li>Click <b>Save</b>.</li>
-      </ol>
-      <div class="why"><b>Why turn off Confirm email?</b> Supabase's free email sender only sends to people on your Supabase team, and only a few emails an hour. Your friends would never get the confirmation email, so they could never sign in. Real apps pay for their own email service. We're skipping it.</div>
-      <div class="why"><b>Think about it:</b> with confirmation off, someone could sign up using an email address that isn't theirs. Is that a problem for your app?</div>
-    </div>
-    <div class="mock" aria-label="Mock-up: Supabase Email provider settings">
-      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">supabase.com/dashboard/project/abcdefghijklmnop/auth/providers</span><span class="mocktag">Mock-up</span></div>
-      <div class="mbody">
-        <span class="crumbs">Authentication › Sign In / Providers › Email</span>
-        <h4>Email</h4>
-        <div class="mrow"><div><b>Enable Email provider</b><div class="d">Let people sign up with email and password</div></div><button type="button" class="tog" role="switch" aria-checked="true" aria-label="Enable Email provider"></button></div>
-        <div class="mrow callout red"><div><b>Confirm email</b> <span class="flag red">Turn off</span><div class="d">Users must confirm their email before signing in</div></div><button type="button" class="tog" role="switch" aria-checked="false" aria-label="Confirm email"></button></div>
-        <div class="mrow"><div><b>Minimum password length</b><div class="d">Shorter passwords are rejected</div></div><span class="minput">8</span></div>
-        <div class="mrow"><div><b>Password requirements</b><div class="d">Characters every password must include</div></div><span class="minput">Letters and digits ▾</span></div>
-        <button type="button" class="mbtn go">Save</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- PART 2 -->
-  <div class="part">
-    <div class="part-text">
-      <div class="part-head"><span class="pnum">2</span><div style="display:grid;gap:4px"><h3>Tell Supabase where your app lives</h3><span class="site sb" style="width:max-content">Supabase</span></div></div>
-      <p class="where">Authentication → <b>URL Configuration</b></p>
-      <ol class="do">
-        <li>Set <b>Site URL</b> to your GitHub Pages address, for example <code>https://yourname.github.io/mood-tracker/</code></li>
-        <li>Under <b>Redirect URLs</b>, add the same address with <code>**</code> on the end.</li>
-        <li>Add <code>http://127.0.0.1:5500/**</code> so sign-in also works when you test with Live Server.</li>
-        <li>Click <b>Save</b>.</li>
-      </ol>
-      <div class="why"><b>Why?</b> At the end of GitHub sign-in (step 7 in the diagram), Supabase has to send the person back to your app. It will only send people to addresses on this list. Skip this and sign-in dumps you on <code>localhost:3000</code>, a page that doesn't exist.</div>
-      <p class="ipad">iPad: you don't use Live Server, so skip the <code>127.0.0.1</code> line. You'll test on your GitHub Pages site.</p>
-    </div>
-    <div class="mock" aria-label="Mock-up: Supabase URL Configuration">
-      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">supabase.com/dashboard/project/abcdefghijklmnop/auth/url-configuration</span><span class="mocktag">Mock-up</span></div>
-      <div class="mbody">
-        <span class="crumbs">Authentication › URL Configuration</span>
-        <div class="mfield"><span class="mlabel">Site URL</span><span class="minput hl">https://yourname.github.io/mood-tracker/</span><span class="mhint">The default place to send people after they sign in.</span></div>
-        <div class="mfield"><span class="mlabel">Redirect URLs</span>
-          <span class="minput urlitem hl">https://yourname.github.io/mood-tracker/**</span>
-          <span class="minput urlitem hl">http://127.0.0.1:5500/**</span>
-          <span class="mhint">Supabase will only send people back to addresses on this list.</span></div>
-        <button type="button" class="mbtn">Add URL</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- PART 3 -->
-  <div class="part">
-    <div class="part-text">
-      <div class="part-head"><span class="pnum">3</span><div style="display:grid;gap:4px"><h3>Copy Supabase's callback URL</h3><span class="site sb" style="width:max-content">Supabase</span></div></div>
-      <p class="where">Authentication → Sign In / Providers → <b>GitHub</b></p>
-      <ol class="do">
-        <li>Click <b>GitHub</b> in the list to open its settings.</li>
-        <li>Find <b>Callback URL (for OAuth)</b> and click <b>Copy</b>.</li>
-        <li>Leave this tab open. You'll come back to it in Part 6.</li>
-      </ol>
-      <div class="why"><b>What is it?</b> It's Supabase's door, not your app's. When GitHub hands out the one-time ticket (step 4 in the diagram), it sends it to this address. It always ends in <code>/auth/v1/callback</code>.</div>
-    </div>
-    <div class="mock" aria-label="Mock-up: Supabase GitHub provider, callback URL">
-      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">supabase.com/dashboard/project/abcdefghijklmnop/auth/providers</span><span class="mocktag">Mock-up</span></div>
-      <div class="mbody">
-        <span class="crumbs">Authentication › Sign In / Providers › GitHub</span>
-        <h4>GitHub</h4>
-        <div class="mrow"><div><b>Enable Sign in with GitHub</b><div class="d">Leave this off for now</div></div><button type="button" class="tog" role="switch" aria-checked="false" aria-label="Enable Sign in with GitHub"></button></div>
-        <div class="mfield callout"><span class="mlabel">Callback URL (for OAuth) <span class="flag">Copy this</span></span>
-          <div class="secretval"><span class="minput" id="cb-url">https://abcdefghijklmnop.supabase.co/auth/v1/callback</span><button type="button" class="copy" data-copy="cb-url">Copy</button></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PART 4 -->
-  <div class="part">
-    <div class="part-text">
-      <div class="part-head"><span class="pnum">4</span><div style="display:grid;gap:4px"><h3>Register your app with GitHub</h3><span class="site gh" style="width:max-content">GitHub</span></div></div>
-      <p class="where">Your profile picture → Settings → <b>Developer settings</b> (bottom of the left menu) → OAuth Apps → <b>New OAuth App</b></p>
-      <ol class="do">
-        <li><b>Application name:</b> your app's real name. People see it when they click Authorize.</li>
-        <li><b>Homepage URL:</b> your GitHub Pages address.</li>
-        <li><b>Authorization callback URL:</b> paste the Supabase callback URL from Part 3.</li>
-        <li>Leave <b>Enable Device Flow</b> unticked.</li>
-        <li>Click <b>Register application</b>.</li>
-      </ol>
-      <div class="trap"><b>Most common mistake:</b> putting your GitHub Pages address in the callback box. The callback is the <b>Supabase</b> address ending in <code>/auth/v1/callback</code>. Get this wrong and GitHub says "redirect_uri is not associated with this application."</div>
-    </div>
-    <div class="mock" aria-label="Mock-up: GitHub Register a new OAuth app form">
-      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">github.com/settings/applications/new</span><span class="mocktag">Mock-up</span></div>
-      <div class="mbody">
-        <span class="crumbs">Developer settings › OAuth Apps</span>
-        <h4>Register a new OAuth app</h4>
-        <div class="mfield"><span class="mlabel">Application name <span class="req">*</span></span><span class="minput">Mood Tracker</span><span class="mhint">Something users will recognize and trust.</span></div>
-        <div class="mfield"><span class="mlabel">Homepage URL <span class="req">*</span></span><span class="minput">https://yourname.github.io/mood-tracker/</span></div>
-        <div class="mfield"><span class="mlabel">Application description</span><span class="minput ph">Optional</span></div>
-        <div class="mfield callout red"><span class="mlabel">Authorization callback URL <span class="req">*</span> <span class="flag red">Supabase address, not yours</span></span><span class="minput hl">https://abcdefghijklmnop.supabase.co/auth/v1/callback</span></div>
-        <div class="check"><span class="box"></span><span>Enable Device Flow</span></div>
-        <button type="button" class="mbtn go">Register application</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- PART 5 -->
-  <div class="part">
-    <div class="part-text">
-      <div class="part-head"><span class="pnum">5</span><div style="display:grid;gap:4px"><h3>Get the Client ID and make a Client Secret</h3><span class="site gh" style="width:max-content">GitHub</span></div></div>
-      <p class="where">You land on your new app's page automatically.</p>
-      <ol class="do">
-        <li>Copy the <b>Client ID</b>. It's not secret. It's your app's name tag.</li>
-        <li>Click <b>Generate a new client secret</b>. GitHub may ask for your password first. (Try it in the mock-up.)</li>
-        <li>Copy the secret <b>right away</b>. GitHub shows it once. Leave the page and it's gone.</li>
-        <li>Go straight to Part 6 and paste it into Supabase.</li>
-      </ol>
-      <div class="trap"><b>Where the secret must never go:</b> config.js or any file in your repo, your AI chat, a Google Doc, a screenshot. Your AI never needs it. Only Supabase does.</div>
-    </div>
-    <div class="mock" aria-label="Mock-up: GitHub OAuth app page with client ID and client secret">
-      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">github.com/settings/applications/1234567</span><span class="mocktag">Mock-up</span></div>
-      <div class="mbody">
-        <span class="crumbs">Developer settings › OAuth Apps › Mood Tracker</span>
-        <h4>Mood Tracker</h4>
-        <div class="mfield"><span class="mlabel">Client ID <span class="flag">Copy · not secret</span></span><div class="secretval"><span class="minput" id="cid">Ov23liEXAMPLE0a1b2c3</span><button type="button" class="copy" data-copy="cid">Copy</button></div></div>
-        <div class="mfield"><span class="mlabel">Client secrets</span><span class="mhint">You need a client secret to authenticate as the application to the API.</span>
-          <div id="secret-zone"><button type="button" class="mbtn dark" id="gen">Generate a new client secret</button></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PART 6 -->
-  <div class="part">
-    <div class="part-text">
-      <div class="part-head"><span class="pnum">6</span><div style="display:grid;gap:4px"><h3>Lock the secret in Supabase</h3><span class="site sb" style="width:max-content">Supabase</span></div></div>
-      <p class="where">Back to your Supabase tab: Authentication → Sign In / Providers → <b>GitHub</b></p>
-      <ol class="do">
-        <li>Turn <b>Enable Sign in with GitHub</b> on.</li>
-        <li>Paste the <b>Client ID</b>.</li>
-        <li>Paste the <b>Client Secret</b>.</li>
-        <li>Click <b>Save</b>.</li>
-      </ol>
-      <div class="why"><b>This is the vault.</b> The secret now lives on Supabase's servers. It never gets sent to anyone's browser. Look back at the diagram: the only arrows that carry it are the back-room ones (steps 5 and 6).</div>
-    </div>
-    <div class="mock" aria-label="Mock-up: Supabase GitHub provider with client ID and secret filled in">
-      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">supabase.com/dashboard/project/abcdefghijklmnop/auth/providers</span><span class="mocktag">Mock-up</span></div>
-      <div class="mbody">
-        <span class="crumbs">Authentication › Sign In / Providers › GitHub</span>
-        <h4>GitHub</h4>
-        <div class="mrow callout"><div><b>Enable Sign in with GitHub</b> <span class="flag">Turn on</span></div><button type="button" class="tog" role="switch" aria-checked="true" aria-label="Enable Sign in with GitHub"></button></div>
-        <div class="mfield"><span class="mlabel">Client ID</span><span class="minput hl">Ov23liEXAMPLE0a1b2c3</span></div>
-        <div class="mfield"><span class="mlabel">Client Secret</span><span class="minput hl">••••••••••••••••••••••••••••••••••••••••</span></div>
-        <div class="mfield"><span class="mlabel">Callback URL (for OAuth)</span><span class="minput">https://abcdefghijklmnop.supabase.co/auth/v1/callback</span></div>
-        <button type="button" class="mbtn go">Save</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- PART 7 -->
-  <div class="part">
-    <div class="part-text">
-      <div class="part-head"><span class="pnum">7</span><div style="display:grid;gap:4px"><h3>Ask your AI for the sign-in screen</h3><span class="site ai" style="width:max-content">Your AI</span></div></div>
-      <p>Upload <code>index.html</code>, <code>app.js</code> and <code>config.js</code>, then paste this prompt. Change the parts about your app if you need to.</p>
-      <div class="why"><b>When the code comes back, check two things.</b> You should see <code>signInWithOAuth</code> with <code>provider: 'github'</code>. And the Client Secret should be nowhere in your files. If the AI asks for it, say no.</div>
-    </div>
-    <div class="prompt-wrap">
-      <div class="prompt-bar"><span class="eyebrow">Prompt</span><button type="button" class="copy" data-copy="prompt">Copy prompt</button></div>
-      <div class="prompt" id="prompt">I'm adding sign-in to my app. My files are index.html, app.js and config.js (attached). config.js already connects to Supabase with my project URL and publishable key.
-
-Please add:
-1. A sign-in screen with two ways in: email and password (with both Sign up and Sign in), and a "Sign in with GitHub" button.
-2. For GitHub, use supabase.auth.signInWithOAuth with provider 'github'. Set redirectTo to window.location.origin + window.location.pathname so it works on Live Server and on GitHub Pages.
-3. Use supabase.auth.onAuthStateChange so the page shows the sign-in screen when nobody is signed in, and my app when someone is. Show who is signed in.
-4. A Sign out button.
-5. Clear error messages for things like a wrong password or a password that is too short.
-
-Do not put any secret keys in my code. The GitHub Client Secret is already saved in my Supabase dashboard. Tell me exactly which file each change goes in.</div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ 4. TEST ============ -->
-<section id="test">
-  <div class="col" style="display:grid;gap:12px">
-    <span class="eyebrow">Part 4</span>
-    <h2>Test it, then try to break it</h2>
-    <p>Tick each one off on your live GitHub Pages site, not only on Live Server.</p>
-  </div>
-  <ul class="tests col">
-    <li><label><input type="checkbox" id="t1"><span>Sign up with email and a password that's too short. <span class="brk">break it</span><br><span class="muted">Do you see a clear error, or does nothing happen?</span></span></label></li>
-    <li><label><input type="checkbox" id="t2"><span>Sign up with email properly. Do you land inside your app?</span></label></li>
-    <li><label><input type="checkbox" id="t3"><span>Sign out. Sign in with GitHub. Does the Authorize screen show your app's name?</span></label></li>
-    <li><label><input type="checkbox" id="t4"><span>Refresh the page. Are you still signed in?</span></label></li>
-    <li><label><input type="checkbox" id="t5"><span>Open your live <code>config.js</code> by adding <code>/config.js</code> to your site's address. <span class="brk">break it</span><br><span class="muted">This is what a hacker sees. Is anything there except your project URL and publishable key?</span></span></label></li>
-    <li><label><input type="checkbox" id="t6"><span>Get someone else to sign in on their phone. <span class="brk">break it</span></span></label></li>
-  </ul>
 
   <div class="col" style="display:grid;gap:10px">
-    <h3>Error decoder</h3>
-    <p class="muted" style="font-size:.92rem">Paste the full error into your AI as usual. But these ones are almost always a setting, not your code.</p>
+    <h3>What if you put your GitHub Client Secret in config.js?</h3>
   </div>
-  <div class="errs-scroll">
-    <table class="errs">
-      <thead><tr><th>You see</th><th>What's wrong</th><th>Fix</th></tr></thead>
+  <div class="danger-grid">
+    <div class="dcard"><span class="dn">1 · Anyone can read it</span><h3>config.js is public twice</h3><p>It's in your public GitHub repo, and anyone can open it on your live site by adding <code>/config.js</code> to the address. No hacking needed. Just looking.</p></div>
+    <div class="dcard"><span class="dn">2 · Robots find it fast</span><h3>Nobody has to be looking for you</h3><p>Programs scan new public code on GitHub all day, hunting for keys and secrets. Security researchers who leaked test keys on purpose have watched them get found in under a minute.</p></div>
+    <div class="dcard"><span class="dn">3 · They become your app</span><h3>GitHub can't tell them apart from you</h3><p>With your secret, someone can talk to GitHub as Mood Tracker. Add a stolen ticket and they get your users' GitHub details. That's the second "What if" in the diagram above. Your users trusted <i>your</i> app's name.</p></div>
+    <div class="dcard"><span class="dn">4 · Deleting it doesn't fix it</span><h3>Your repo remembers</h3><p>Removing the line from config.js and pushing again isn't enough. Every old commit is still in your repo's history, secret included. GitHub's own advice is clear: the fix is to cancel the secret, not just delete the code.</p></div>
+  </div>
+
+  <div class="col" style="display:grid;gap:10px">
+    <h3>Two secrets, two kinds of damage</h3>
+  </div>
+  <div class="compare-scroll">
+    <table class="compare">
+      <thead><tr><th>Secret</th><th>If it leaks, someone can…</th><th>How bad</th><th>The fix</th></tr></thead>
       <tbody>
-        <tr><td>The redirect_uri is not associated with this application.</td><td>The callback URL in your GitHub OAuth App doesn't match Supabase's.</td><td>Part 4. Copy the callback URL from Supabase again and paste it exactly.</td></tr>
-        <tr><td>After GitHub, you land on localhost:3000 and the page won't load.</td><td>Supabase doesn't know where your app lives.</td><td>Part 2. Set the Site URL and Redirect URLs.</td></tr>
-        <tr><td>Works on Live Server but not on GitHub Pages (or the other way round).</td><td>One of your two addresses is missing from Redirect URLs.</td><td>Part 2. Add both, each ending in <code>/**</code>.</td></tr>
-        <tr><td>Unsupported provider: provider is not enabled</td><td>GitHub is switched off in Supabase, or you didn't click Save.</td><td>Part 6.</td></tr>
-        <tr><td>Back in your app with "Unable to exchange external code" in the address bar.</td><td>Supabase showed GitHub the ticket, but the secret was wrong (step 5 failed).</td><td>Part 5. Generate a new secret, paste it in Part 6, Save.</td></tr>
-        <tr><td>Email not confirmed</td><td>Confirm email is still on.</td><td>Part 1.</td></tr>
-        <tr><td>Invalid login credentials</td><td>Wrong email or password. Or this person signed up with GitHub, so they don't have a password.</td><td>Use the way in you signed up with.</td></tr>
+        <tr><td>GitHub Client Secret</td><td>Pretend to be your app when talking to GitHub, and use stolen tickets to get your users' GitHub details.</td><td class="lvl">Bad</td><td>GitHub → your OAuth App → delete the secret → generate a new one → paste it into Supabase → Save.</td></tr>
+        <tr><td>Supabase secret key<br><span class="muted mono" style="font-weight:400">sb_secret_…</span></td><td>Skip every RLS rule. Read, change or delete every row in your database, including every user's private data.</td><td class="lvl">Worst</td><td>Supabase → Project Settings → API Keys → make a new secret key → delete the old one. Then check your data.</td></tr>
       </tbody>
     </table>
   </div>
 
+  <div class="col" style="display:grid;gap:10px">
+    <h3>Red flags: stop if you see one</h3>
+    <ul class="redflags">
+      <li><b>Your AI asks for the secret,</b> or writes code with a line like <code>clientSecret:</code> or <code>secret:</code> in it. Say no. Your app never needs it, because Supabase already has it.</li>
+      <li><b>You're about to paste the secret anywhere except Supabase:</b> your AI chat, a Google Doc, a message to a friend, a note "for later".</li>
+      <li><b>You're taking a screenshot</b> of the GitHub page while the secret is showing.</li>
+      <li><b>You search your files for the word "secret"</b> and find anything. Do this check before every push.</li>
+    </ul>
+  </div>
+
   <div class="leak col">
-    <h3>If your Client Secret leaks</h3>
-    <p>It got pushed to GitHub, pasted into a chat, or ended up in a screenshot? Don't panic. It takes two minutes:</p>
-    <p><b>GitHub</b> → your OAuth App → <b>Delete</b> the old secret → <b>Generate a new client secret</b> → paste it into <b>Supabase</b> (Part 6) → Save. The old one stops working the moment you delete it.</p>
+    <h3>If it already leaked</h3>
+    <p>Don't panic and don't hide it. Tell your teacher, then cancel it right away. It takes two minutes, it's free, and the old secret stops working the moment you delete it. Steps are on the GitHub setup page.</p>
+  </div>
+</section>
+
+<section id="setup">
+  <div class="col" style="display:grid;gap:12px">
+    <span class="eyebrow">Part 4</span>
+    <h2>Set it up</h2>
+    <p>Two setup pages. Do email first. It's quicker, it gives you a working sign-in screen, and the GitHub button goes on that same screen afterwards.</p>
+  </div>
+  <div class="linkcards">
+    <a class="lcard" href="email/">
+      <span class="eyebrow">First · about 15 minutes</span>
+      <h3>Email sign-in</h3>
+      <ul><li>Two Supabase pages</li><li>No keys, no SQL, no other websites</li><li>Ends with a working sign-in screen</li></ul>
+      <span class="go">Set up email →</span>
+    </a>
+    <a class="lcard" href="github/">
+      <span class="eyebrow">Second · about 30 minutes</span>
+      <h3>Sign in with GitHub</h3>
+      <ul><li>Two tabs: Supabase and GitHub</li><li>You make a Client Secret and lock it in Supabase</li><li>Adds the GitHub button to your sign-in screen</li></ul>
+      <span class="go">Set up GitHub →</span>
+    </a>
   </div>
 
   <div class="col" style="display:grid;gap:10px">
     <h3>For your diagram</h3>
-    <p>When you draw your app's data flow, show the GitHub sign-in. Mark which arrows pass through the browser, and draw a lock where the Client Secret lives. Then answer: <b>your publishable key is public and that's fine. Why isn't the Client Secret?</b></p>
+    <p>When you draw your app's data flow, show the GitHub sign-in, starting with setup. Draw where the Client Secret is made, where it goes, and put a lock where it lives. Mark which arrows pass through the browser. Then answer: <b>your publishable key is public and that's fine. Why isn't the Client Secret?</b></p>
   </div>
-
 </section>
 
-<footer><strong>Building with AI</strong> &mdash; Adding Sign-In. Related: <a href="../connect/">Connecting Your App</a> &middot; <a href="../database/">Your Database</a> &middot; <a href="../local-testing/">Testing on Your Computer</a><br>Mock-ups are simplified drawings of the Supabase and GitHub dashboards, made for teaching. Your screen may look a little different.</footer>
+<footer><strong>Building with AI</strong> &mdash; Adding Sign-In. Setup pages: <a href="email/">Email sign-in</a> &middot; <a href="github/">Sign in with GitHub</a>. Related: <a href="../connect/">Connecting Your App</a> &middot; <a href="../database/">Your Database</a></footer>
 </div>
 
 <script>
 (function(){
-  /* ---------- sequence diagram ---------- */
+  /* ---------- sequence diagram (main page only) ---------- */
+  if(document.getElementById('lanes')){
   const ICONS = {
     app:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>',
     sb:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></svg>',
@@ -561,44 +423,49 @@ Do not put any secret keys in my code. The GitHub Client Secret is already saved
     bad:'<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6M8 8h8"/></svg>'
   };
   const LANES = {
-    normal:[{n:'Your app',s:'in the browser',i:'app'},{n:'Supabase',s:'holds the secret',i:'sb',vault:1},{n:'GitHub',s:'knows who you are',i:'gh'}],
+    normal:[{n:'Your app',s:'in the browser',i:'app'},{n:'Supabase',s:'holds the secret',i:'sb',vault:1},{n:'GitHub',s:'makes the secret',i:'gh'}],
     email:[{n:'Your app',s:'in the browser',i:'app'},{n:'Supabase',s:'stores scrambled passwords',i:'sb'},{n:'GitHub',s:'not involved',i:'gh',off:1}],
-    hack:[{n:'A hacker',s:'on their laptop',i:'bad',bad:1},{n:'Supabase',s:'holds the secret',i:'sb',vault:1,off:1},{n:'GitHub',s:'knows who you are',i:'gh'}]
+    hack:[{n:'A hacker',s:'on their laptop',i:'bad',bad:1},{n:'Supabase',s:'holds the secret',i:'sb',vault:1,off:1},{n:'GitHub',s:'makes the secret',i:'gh'}]
   };
+  const SETUP='Setup · you do this once', SIGNIN='Every time someone signs in';
   const S = {
     github:{lanes:'normal',steps:[
-      {f:0,t:1,k:'open',l:'"Sign in with GitHub, please"',h:'You click "Sign in with GitHub"',p:'Your app tells Supabase that this person wants to use GitHub. Your app only holds public things: your project URL and your publishable key.'},
-      {f:1,t:2,k:'open',l:'sends you to GitHub + Client ID',h:'Supabase sends you to GitHub',p:'Your browser jumps to github.com. The address bar now shows your app\'s Client ID. That\'s fine. The Client ID is a name tag: it says which app is asking, but it doesn\'t prove anything.'},
-      {a:2,k:'self',l:'Asks you: "Let Mood Tracker in?" You click Authorize',h:'GitHub asks you',p:'GitHub shows a screen: Mood Tracker wants to access your account. You click Authorize. Your GitHub password stays on GitHub. Your app and Supabase never see it.'},
-      {f:2,t:1,k:'open',l:'one-time ticket (code)',h:'GitHub hands you a one-time ticket',p:'GitHub sends your browser back to Supabase with a ticket (a short code) in the address bar. Anything in the address bar is out in the open. So the ticket on its own must not be enough.'},
-      {f:1,t:2,k:'secret',l:'ticket + CLIENT SECRET',h:'Supabase shows the ticket and the secret',p:'Now Supabase talks to GitHub directly, server to server. The browser isn\'t part of this. Supabase sends the ticket plus the Client Secret, which proves: "I really am Mood Tracker."'},
-      {f:2,t:1,k:'secret',l:'"Checks out. Here\'s who they are."',h:'GitHub checks, then answers',p:'GitHub checks two things. Is the ticket real and unused? Does the secret match Mood Tracker? If both are yes, GitHub tells Supabase who you are: your username, email and picture.'},
-      {f:1,t:0,k:'open',l:'you\'re signed in',h:'You\'re back in your app, signed in',p:'Supabase makes your account (or finds it, if you\'ve been here before) and sends you back to your app, signed in. Your app never saw the secret. It never needed to.'}
+      {ph:SETUP,a:2,k:'mint',l:'makes a Client ID + Client Secret',h:'GitHub makes the secret',p:'When you register your app with GitHub, GitHub makes two things for it. The Client ID is a public name tag. The Client Secret is the proof that goes with it. GitHub keeps a copy of the secret so it can check it later.'},
+      {ph:SETUP,f:2,t:1,k:'carry',l:'you copy it into Supabase',h:'You carry the secret to Supabase',p:'You copy the Client Secret from GitHub and paste it straight into your Supabase dashboard. Look where the arrow goes: it skips your app completely. The secret never goes in config.js, and never in your repo.'},
+      {ph:SETUP,a:1,k:'vault',l:'saves it in its settings, locked',h:'Supabase locks it away',p:'Supabase saves the secret on its own servers, in your project\'s settings. It never sends it to anyone\'s browser. Now only GitHub and Supabase know the secret. Setup is done, and you never touch the secret again.'},
+      {ph:SIGNIN,f:0,t:1,k:'open',l:'"Sign in with GitHub, please"',h:'Someone clicks "Sign in with GitHub"',p:'Your app tells Supabase that this person wants to use GitHub. Your app only holds public things: your project URL and your publishable key.'},
+      {ph:SIGNIN,f:1,t:2,k:'open',l:'sends them to GitHub + Client ID',h:'Supabase sends them to GitHub',p:'Their browser jumps to github.com. The address bar now shows your app\'s Client ID. That\'s fine. The Client ID is a name tag: it says which app is asking, but it doesn\'t prove anything.'},
+      {ph:SIGNIN,a:2,k:'self',l:'Asks: "Let Mood Tracker in?" They click Authorize',h:'GitHub asks them',p:'GitHub shows a screen: Mood Tracker wants to access your account. They click Authorize. Their GitHub password stays on GitHub. Your app and Supabase never see it.'},
+      {ph:SIGNIN,f:2,t:1,k:'open',l:'one-time ticket (code)',h:'GitHub hands out a one-time ticket',p:'GitHub sends the browser back to Supabase with a ticket (a short code) in the address bar. Anything in the address bar is out in the open. So the ticket on its own must not be enough.'},
+      {ph:SIGNIN,f:1,t:2,k:'secret',l:'ticket + CLIENT SECRET',h:'Supabase shows the ticket and the secret',p:'Now Supabase talks to GitHub directly, server to server. The browser isn\'t part of this. Supabase sends the ticket plus the Client Secret it saved in step 3, which proves: "I really am Mood Tracker."'},
+      {ph:SIGNIN,f:2,t:1,k:'secret',l:'"Checks out. Here\'s who they are."',h:'GitHub checks, then answers',p:'GitHub checks two things. Is the ticket real and unused? Does the secret match the copy GitHub kept in step 1? If both are yes, GitHub tells Supabase who this person is: their username, email and picture.'},
+      {ph:SIGNIN,f:1,t:0,k:'open',l:'you\'re signed in',h:'Back in your app, signed in',p:'Supabase makes their account (or finds it, if they\'ve been here before) and sends them back to your app, signed in. Your app never saw the secret. It never needed to.'}
     ]},
     email:{lanes:'email',steps:[
-      {f:0,t:1,k:'open',l:'email + password',h:'You type an email and password',p:'Your app sends them straight to Supabase. No other company is involved.'},
-      {a:1,k:'self',l:'scrambles the password, then checks or saves it',h:'Supabase checks it',p:'On sign-up, Supabase scrambles the password (hashing) and saves the scrambled version. On sign-in, it scrambles what you typed and checks it against the saved one. Nobody, not even you in the dashboard, can see the real password.'},
-      {f:1,t:0,k:'open',l:'you\'re signed in',h:'You\'re signed in',p:'Supabase sends back a session. Nobody else was involved, so there\'s nobody to prove anything to. That\'s why email sign-in needs no key from anyone.'}
+      {f:0,t:1,k:'open',l:'email + password',h:'Someone types an email and password',p:'Your app sends them straight to Supabase. No other company is involved.'},
+      {a:1,k:'self',l:'scrambles the password, then checks or saves it',h:'Supabase checks it',p:'On sign-up, Supabase scrambles the password (hashing) and saves the scrambled version. On sign-in, it scrambles what was typed and checks it against the saved one. Nobody, not even you in the dashboard, can see the real password.'},
+      {f:1,t:0,k:'open',l:'you\'re signed in',h:'Signed in',p:'Supabase sends back a session. Nobody else was involved, so there\'s nobody to prove anything to. That\'s why email sign-in needs no key from anyone.'}
     ]},
     hack1:{lanes:'hack',steps:[
-      {f:0,t:2,k:'danger',l:'stolen ticket, no secret',h:'A hacker copies your ticket',p:'Say someone grabs the ticket from step 4. Maybe it was on screen, maybe in a browser history. They try to cash it in at GitHub.'},
+      {f:0,t:2,k:'danger',l:'stolen ticket, no secret',h:'A hacker copies a ticket',p:'Say someone grabs the ticket from step 7. Maybe it was on screen, maybe in a browser history. They try to cash it in at GitHub.'},
       {f:2,t:0,k:'danger',l:'"No secret? Rejected."',h:'GitHub says no',p:'No Client Secret, no deal. A ticket alone can\'t be cashed in. Each ticket also works only once and runs out after 10 minutes.'}
     ]},
     hack2:{lanes:'hack',steps:[
-      {f:0,t:2,k:'danger',l:'stolen ticket + secret copied from your repo',h:'But what if the secret was in config.js?',p:'config.js is on your public GitHub repo and your live site. Anyone can open it. Now the hacker has the ticket and the secret.'},
+      {f:0,t:2,k:'danger',l:'stolen ticket + secret copied from your repo',h:'But what if the secret was in config.js?',p:'config.js is in your public GitHub repo and on your live site. Anyone can open it. Now the hacker has the ticket and the secret.'},
       {f:2,t:0,k:'danger',l:'"Looks like Mood Tracker. Here you go."',h:'GitHub can\'t tell the difference',p:'To GitHub, whoever holds the secret is your app. If anyone else has it, it stops proving anything. That\'s why the Client Secret lives in one place only: the Supabase dashboard.'}
     ]}
   };
-  const PILL = {open:['open','Out in the open'],secret:['secret','Back room'],self:['self','On one screen'],danger:['danger','Attack']};
+  const PILL = {open:['open','Out in the open'],secret:['secret','Back room'],self:['self','On one screen'],danger:['danger','Attack'],mint:['secret','Setup · on GitHub'],carry:['carry','Setup · you, by hand'],vault:['secret','Setup · in Supabase']};
   let scen='github', step=0;
   const lanesEl=document.getElementById('lanes'), body=document.getElementById('seqbody');
   const center=i=>(i+.5)/3*100;
-
   function render(){
     const sc=S[scen];
     lanesEl.innerHTML=LANES[sc.lanes].map(l=>`<div class="lane${l.vault?' vault':''}${l.off?' off':''}${l.bad?' bad':''}"><span class="ic">${ICONS[l.i]}</span>${l.n}<small>${l.s}</small></div>`).join('');
     let html=[0,1,2].map(i=>`<div class="life" style="left:${center(i)}%"></div>`).join('');
+    let lastPh=null;
     sc.steps.forEach((s,i)=>{
+      if(s.ph && s.ph!==lastPh){ html+=`<div class="row divider${i>step?' future':''}"><span class="divlbl">${s.ph}</span></div>`; lastPh=s.ph; }
       const cls=['row',s.k,i>step?'future':'',i===step?'current':''].join(' ');
       if(s.a!==undefined){
         html+=`<div class="${cls}"><span class="note" style="left:${center(s.a)}%"><span class="num">${i+1}</span>${s.l}</span></div>`;
@@ -618,27 +485,29 @@ Do not put any secret keys in my code. The GitHub Client Secret is already saved
     document.getElementById('next').disabled=step===sc.steps.length-1;
     document.querySelectorAll('[data-scen]').forEach(b=>b.setAttribute('aria-pressed',b.dataset.scen===scen));
   }
-  function setScen(n){scen=n;step=0;render();}
+  function setScen(n,st){scen=n;step=st||0;render();}
   document.querySelectorAll('[data-scen]').forEach(b=>b.addEventListener('click',()=>setScen(b.dataset.scen)));
   document.getElementById('prev').addEventListener('click',()=>{if(step>0){step--;render();}});
   document.getElementById('next').addEventListener('click',()=>{if(step<S[scen].steps.length-1){step++;render();}});
   document.querySelectorAll('[data-play]').forEach(b=>b.addEventListener('click',()=>{
-    setScen(b.dataset.play);
+    setScen(b.dataset.play, b.dataset.play==='github'?3:0);
     document.getElementById('how').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
   }));
   render();
+  }
 
-  /* ---------- key sort ---------- */
+  /* ---------- key sort (main page only) ---------- */
+  const list=document.getElementById('keylist');
+  if(list){
   const OPTS=['In config.js (public)','Supabase dashboard only','Nowhere, ever'];
   const KEYS=[
     {n:'Supabase project URL',x:'https://abcdefghijklmnop.supabase.co',a:0,ok:'Right. It\'s just your backend\'s address. Public on purpose.',no:'It\'s just your backend\'s address, so your app needs it. It goes in config.js and it\'s fine to be public.'},
     {n:'Supabase publishable key',x:'sb_publishable_… (older projects: anon)',a:0,ok:'Right. It lets your app talk to Supabase, and your RLS policies decide what it\'s allowed to see.',no:'This one belongs in config.js. It\'s public by design: your RLS policies decide what it can reach.'},
     {n:'Supabase secret key',x:'sb_secret_… (older projects: service_role)',a:2,ok:'Right. It skips every RLS rule. You never need it this year.',no:'This one skips every RLS rule and can read or wipe your whole database. It goes nowhere. You don\'t need it this year.'},
-    {n:'GitHub Client ID',x:'Ov23li…',a:1,ok:'Right. You paste it into Supabase. It isn\'t secret: it shows up in the address bar in step 2.',no:'It goes in the Supabase dashboard (Part 6). It isn\'t secret, though. It shows up in the address bar in step 2 of the diagram.'},
-    {n:'GitHub Client Secret',x:'a long string GitHub shows you once',a:1,ok:'Right. Supabase uses it in the back room (steps 5 and 6). Nowhere else.',no:'It goes in the Supabase dashboard and nowhere else. Supabase uses it in the back room (steps 5 and 6). Never in your files.'}
+    {n:'GitHub Client ID',x:'Ov23li…',a:1,ok:'Right. You paste it into Supabase. It isn\'t secret: it shows up in the address bar in step 5.',no:'It goes in the Supabase dashboard. It isn\'t secret, though. It shows up in the address bar in step 5 of the diagram.'},
+    {n:'GitHub Client Secret',x:'a long string GitHub shows you once',a:1,ok:'Right. Supabase uses it in the back room (steps 8 and 9). Nowhere else.',no:'It goes in the Supabase dashboard and nowhere else. Supabase uses it in the back room (steps 8 and 9). Never in your files.'}
   ];
   const right=new Set();
-  const list=document.getElementById('keylist');
   KEYS.forEach((k,i)=>{
     const card=document.createElement('div'); card.className='keycard';
     card.innerHTML=`<div><div class="kname">${k.n}</div><div class="ksample">${k.x}</div></div><div class="choices">${OPTS.map((o,j)=>`<button type="button" data-k="${i}" data-o="${j}">${o}</button>`).join('')}</div><p class="kfeedback" id="kf${i}"></p>`;
@@ -652,12 +521,14 @@ Do not put any secret keys in my code. The GitHub Client Secret is already saved
     document.getElementById('kf'+i).textContent=j===k.a?k.ok:k.no;
     document.getElementById('score').textContent=`${right.size} of 5 right`;
   });
+  }
 
   /* ---------- mock-up toggles (cosmetic) ---------- */
   document.querySelectorAll('.tog').forEach(t=>t.addEventListener('click',()=>t.setAttribute('aria-checked',t.getAttribute('aria-checked')!=='true')));
 
-  /* ---------- generate secret ---------- */
-  document.getElementById('gen').addEventListener('click',()=>{
+  /* ---------- generate secret (GitHub page) ---------- */
+  const gen=document.getElementById('gen');
+  if(gen) gen.addEventListener('click',()=>{
     const hex=Array.from({length:40},()=>'0123456789abcdef'[Math.floor(Math.random()*16)]).join('');
     document.getElementById('secret-zone').innerHTML=`<div style="display:grid;gap:8px"><div class="banner">Make sure to copy your new client secret now. You won't be able to see it again.</div><div class="secretval"><span class="minput hl" id="sec">${hex}</span><button type="button" class="copy" data-copy="sec">Copy</button></div><span class="mhint">Pretend secret, made up for this page.</span></div>`;
   });
@@ -671,6 +542,7 @@ Do not put any secret keys in my code. The GitHub Client Secret is already saved
     try{navigator.clipboard.writeText(txt).then(done,fallback);}catch(err){fallback();}
   });
 })();
+
 </script>
 </body>
 </html>
