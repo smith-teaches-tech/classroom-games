@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Putting a Claim to the Test · TOK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f1ece0;
+    --card:#faf7ef;
+    --ink:#2a2520;
+    --muted:#8a8074;
+    --rule:#d8cfbd;
+    --oxblood:#74232f;
+    --oxblood-soft:#9c4350;
+    --decode-bg:#efe7d6;
+    --mark:#e8dcc2;
+    --green:#3f5340;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:'Cormorant Garamond',Georgia,serif;
+    font-size:21px;line-height:1.5;padding:48px 20px 96px;
+  }
+  .wrap{max-width:780px;margin:0 auto}
+
+  /* ---- header ---- */
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--oxblood);margin:0 0 14px;
+  }
+  h1{font-weight:600;font-size:54px;line-height:1.02;margin:0 0 10px;letter-spacing:-.01em}
+  .lede{font-size:22px;margin:0 0 6px;max-width:62ch}
+  .how{
+    font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.7;
+    color:var(--muted);margin:18px 0 0;max-width:60ch;
+  }
+  .how b{color:var(--oxblood);font-weight:500}
+  a{color:var(--oxblood)}
+
+  /* ---- stages ---- */
+  .stage{margin:0 0 20px;scroll-margin-top:18px}
+  .s-head{
+    display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;
+    border-top:2px solid var(--oxblood);padding:16px 0 0;margin:48px 0 14px;
+  }
+  .s-num{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;letter-spacing:.12em;
+    color:var(--paper);background:var(--oxblood);padding:4px 9px;border-radius:2px;flex:none;
+  }
+  .s-title{font-weight:600;font-size:31px;line-height:1.1;margin:0}
+  .s-time{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--muted);margin-left:auto;
+  }
+  .s-sub{
+    font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7;
+    color:var(--muted);margin:0 0 20px;max-width:62ch;
+  }
+  .s-sub b{color:var(--oxblood);font-weight:500}
+
+  /* ---- the question ---- */
+  .instrument{
+    background:var(--decode-bg);border:1px solid var(--rule);border-left:3px solid var(--ink);
+    padding:24px 28px;border-radius:2px;margin:0 0 18px;
+  }
+  .instrument p{margin:0;font-size:24px;line-height:1.35;max-width:58ch}
+  .instrument .qnote{color:var(--muted);font-size:19px;margin-top:10px}
+
+  /* ---- article card ---- */
+  .card{
+    background:var(--card);border:1px solid var(--rule);border-left:3px solid var(--oxblood);
+    padding:26px 30px;border-radius:2px;margin:0 0 18px;
+  }
+  .card p{margin:0 0 14px;max-width:60ch}
+  .card p:last-child{margin-bottom:0}
+  .c-lab{
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--muted);margin:0 0 10px!important;
+  }
+  .a-title{font-weight:600;font-size:26px;line-height:1.15;margin:0 0 8px}
+
+  /* ---- write-here box ---- */
+  .writebox{margin:0 0 14px}
+  .writebox label{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ink);
+    display:block;margin:0 0 8px;
+  }
+  textarea.tx{
+    width:100%;font-family:'Cormorant Garamond',serif;font-size:19px;color:var(--ink);
+    background:var(--card);border:1px solid var(--rule);border-radius:2px;
+    padding:10px 12px;resize:vertical;min-height:96px;line-height:1.4;
+  }
+  textarea.tx:focus-visible{outline:2px solid var(--oxblood-soft);outline-offset:1px}
+
+  /* ---- reveal blocks ---- */
+  .revealbtn{
+    font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.12em;
+    text-transform:uppercase;padding:10px 18px;background:var(--oxblood);color:var(--paper);
+    border:0;border-radius:2px;cursor:pointer;transition:background .18s;
+  }
+  .revealbtn:hover{background:#5e1c26}
+  .revealbtn[disabled]{background:var(--rule);color:var(--muted);cursor:not-allowed}
+  .lock{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin:8px 0 0}
+  .revealed{
+    margin:16px 0 0;padding:18px 22px;background:var(--card);
+    border-left:3px solid var(--green);border-radius:2px;
+  }
+  .revealed .r-lab{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--green);margin:0 0 8px;
+  }
+  .revealed p{margin:0 0 12px;max-width:60ch}
+  .revealed p:last-child{margin-bottom:0}
+  .revealed h4{font-weight:700;font-size:22px;margin:18px 0 6px;line-height:1.2}
+  .revealed h4:first-of-type{margin-top:4px}
+
+  /* ---- two-up comparison ---- */
+  .pair{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:4px 0 14px}
+  .pairline{background:var(--paper);border:1px solid var(--rule);border-radius:2px;padding:14px 18px}
+  .pairline .pl-tag{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--oxblood);display:block;margin:0 0 6px;
+  }
+  .pairline p{margin:0 0 8px!important}
+  .pairline p:last-child{margin-bottom:0!important}
+  .pairline .ex{font-style:italic;font-size:22px}
+
+  /* ---- rival explanations ---- */
+  .rivals{border:1px solid var(--rule);border-radius:2px;background:var(--paper);margin:6px 0 14px}
+  .rival{display:grid;grid-template-columns:2.2em 1fr;gap:4px 10px;padding:12px 18px;border-bottom:1px solid var(--rule)}
+  .rival:last-child{border-bottom:0}
+  .rival .rn{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--oxblood);padding-top:5px}
+  .rival .rt{font-weight:700;font-size:21px;line-height:1.25}
+  .rival .rd{grid-column:2;margin:0;line-height:1.4}
+
+  /* ---- punch line ---- */
+  .punch{background:var(--ink);color:var(--paper);padding:22px 26px;border-radius:2px;margin:18px 0 0}
+  .punch p{margin:0;font-size:23px;line-height:1.4;max-width:58ch}
+  .punch .p-lab{
+    font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--mark);margin:0 0 10px;font-size:10px;
+  }
+
+  /* ---- notebook prompt ---- */
+  .nb{border-left:3px solid var(--ink);background:var(--decode-bg);padding:18px 22px;border-radius:2px;margin:18px 0 16px}
+  .nb .nb-lab{
+    font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--ink);margin:0 0 8px;
+  }
+  .nb p{margin:0;font-size:22px;line-height:1.4;max-width:58ch}
+  .nb p + p{margin-top:10px}
+
+  .turn{margin:44px 0 0;border-top:2px solid var(--oxblood);padding:24px 0 0}
+  .turn .t-lab{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--oxblood);margin:0 0 10px;
+  }
+  .turn p{font-size:24px;line-height:1.4;margin:0 0 12px;max-width:60ch}
+  .turn ul{margin:0;padding-left:1.2em;max-width:60ch}
+  .turn li{margin:0 0 8px}
+
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:26px 0 0}
+  .toolbar button{
+    font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;
+    text-transform:uppercase;padding:9px 16px;border:1px solid var(--rule);
+    background:var(--card);color:var(--muted);border-radius:2px;cursor:pointer;
+  }
+  .toolbar button:hover{background:var(--mark);color:var(--ink)}
+
+  @media (max-width:560px){
+    body{font-size:19px;padding:32px 16px 72px}
+    h1{font-size:40px}
+    .card,.instrument{padding:22px 20px}
+    .s-title{font-size:25px}
+    .s-time{margin-left:0;width:100%}
+    .pair{grid-template-columns:1fr}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  @media print{
+    body{background:#fff;padding:0;font-size:12pt}
+    .toolbar,.revealbtn,.lock{display:none!important}
+    .revealed[hidden]{display:block!important}
+  }
+
+  /* ---- claim / test / verdict strip ---- */
+  .cvt{border:1px solid var(--rule);border-radius:2px;background:var(--card);margin:0 0 14px}
+  .cvt-row{display:grid;grid-template-columns:6.2em 1fr;gap:10px;padding:12px 18px;border-bottom:1px solid var(--rule);align-items:baseline}
+  .cvt-row:last-child{border-bottom:0}
+  .cvt-row p{margin:0}
+  .cvt-tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+  .cvt-tag.t{color:var(--oxblood)}
+  .cvt-tag.v{color:var(--green)}
+
+  /* ---- model paragraph highlighting ---- */
+  :root{--hl-claim:#e9dfc6;--hl-case:#dde3ee;--hl-test:#f0d9d9;--hl-verdict:#dbe5d8}
+  .model p{max-width:62ch}
+  .model .seg{transition:background .2s}
+  .model.show .s-claim{background:var(--hl-claim)}
+  .model.show .s-case{background:var(--hl-case)}
+  .model.show .s-test{background:var(--hl-test)}
+  .model.show .s-verdict{background:var(--hl-verdict)}
+  .legend{display:none;gap:8px;flex-wrap:wrap;margin:14px 0 0}
+  .model.show .legend{display:flex}
+  .lg{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:4px 9px;border-radius:2px;color:var(--ink)}
+  .l-claim{background:var(--hl-claim)} .l-case{background:var(--hl-case)} .l-test{background:var(--hl-test)} .l-verdict{background:var(--hl-verdict)}
+
+  /* ---- steps ---- */
+  .steps{margin:22px 0 14px}
+  .step{display:grid;grid-template-columns:2.4em 1fr;gap:12px;margin:0 0 14px;align-items:start}
+  .step p{margin:0;max-width:60ch}
+  .st-t{font-weight:700;font-size:22px;line-height:1.2;margin:0 0 2px!important}
+  .st-n{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;text-align:center;padding:4px 0;border-radius:2px;color:var(--ink)}
+  .st-n.c{background:var(--hl-claim)} .st-n.k{background:var(--hl-case)} .st-n.t{background:var(--hl-test)} .st-n.v{background:var(--hl-verdict)}
+  @media print{.model .legend{display:flex}.model .s-claim{background:var(--hl-claim)}.model .s-case{background:var(--hl-case)}.model .s-test{background:var(--hl-test)}.model .s-verdict{background:var(--hl-verdict)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="eyebrow">TOK · Writing Skill · Language to History</p>
+  <h1>Putting a Claim to the Test</h1>
+  <p class="lede">In the timed essay, most of you made a claim and then gave more evidence that agreed with it. That's support. It isn't a test. This page shows you the difference, walks you through a paragraph that would score 9 or 10, and then asks you to revise one of your own paragraphs.</p>
+  <p class="how">
+    <b>Read it in order.</b> Each section is short.<br>
+    <b>Try before you reveal.</b> Where there's a button, decide your answer first.<br>
+    <b>Finish with section 6.</b> That's the part you hand in.
+  </p>
+
+  <!-- 1 -->
+  <section class="stage">
+    <div class="s-head"><span class="s-num">01</span><h2 class="s-title">What a test is</h2></div>
+    <div class="instrument">
+      <p>A test is the detail that makes your claim smaller.</p>
+      <p class="qnote">If your claim comes out of the paragraph the same size it went in, you haven't tested it.</p>
+    </div>
+    <div class="card">
+      <p>Think of a bridge. You don't prove a bridge is safe by walking across it once. You load it until something bends, and then you know exactly how much weight it holds.</p>
+      <p>Your claim is the bridge. The case is the weight.</p>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section class="stage">
+    <div class="s-head"><span class="s-num">02</span><h2 class="s-title">You already did this in History</h2></div>
+    <p class="s-sub">In <b>The Village of Mysteries</b>, the exit question asked: what would have to be found for you to give up your claim? That's a test.</p>
+    <div class="cvt">
+      <div class="cvt-row"><span class="cvt-tag">Claim</span><p>The carved stone balls were used as rollers to move heavy stones.</p></div>
+      <div class="cvt-row"><span class="cvt-tag t">Test</span><p>Experiments show the balls work as rollers. But working proves the use was possible, not that it happened, and the balls have no wear of any kind.</p></div>
+      <div class="cvt-row"><span class="cvt-tag v">Verdict</span><p>We can know the balls <i>could</i> have been rollers. We can't know they <i>were</i>.</p></div>
+    </div>
+    <div class="nb">
+      <p class="nb-lab">And "ritual"?</p>
+      <p>You couldn't test it, because nothing could ever prove it wrong. A claim that can't be tested explains everything, so it explains nothing.</p>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="stage">
+    <div class="s-head"><span class="s-num">03</span><h2 class="s-title">Support or test?</h2></div>
+    <p class="s-sub">Both of these come from your fake news essays. <b>Which one is the test?</b> Decide, then reveal.</p>
+    <div class="pair">
+      <div class="pairline"><span class="pl-tag">Paragraph A</span><p>"Politicians used 'fake news' for real reporting they disagreed with, which made the public doubt it. This shows that control over language gives control over knowledge."</p></div>
+      <div class="pairline"><span class="pl-tag">Paragraph B</span><p>"But a factual report doesn't become fake because someone calls it fake news. Once knowers notice that the label no longer separates true from false, they stop trusting the label, not the report. So the control lasts only while knowers don't question the label."</p></div>
+    </div>
+    <button class="revealbtn" data-reveal="r3">Reveal</button>
+    <div class="revealed" id="r3" hidden>
+      <p class="r-lab">B is the test</p>
+      <p>A agrees with the claim. B finds the place where the claim stops working, and the claim comes out smaller: control lasts <i>only while</i> knowers don't question the label.</p>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section class="stage">
+    <div class="s-head"><span class="s-num">04</span><h2 class="s-title">Three questions that find the test</h2></div>
+    <p class="s-sub">Ask these about your case. One of them will usually find the detail you need.</p>
+    <div class="rivals">
+      <div class="rival"><span class="rn">1</span><span class="rt">Who does my claim NOT work on?</span><p class="rd">Which knower sees through it?</p></div>
+      <div class="rival"><span class="rn">2</span><span class="rt">What detail in the case doesn't fit my claim?</span><p class="rd">Look for a date, a person who objected, or a decision that went the other way.</p></div>
+      <div class="rival"><span class="rn">3</span><span class="rt">What did the language change, and what did it NOT change?</span><p class="rd">The word, or the thing itself? What people believe, or what is true?</p></div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="stage">
+    <div class="s-head"><span class="s-num">05</span><h2 class="s-title">A 9 or 10 paragraph, step by step</h2></div>
+    <div class="instrument">
+      <p>To what extent does control over language give control over knowledge?</p>
+    </div>
+    <div class="card">
+      <p class="c-lab">Case H · Partners or workers?</p>
+      <p>Uber called its drivers "partners." Its contracts said the drivers were self-employed and that "nothing shall create an employment relationship between Uber and the partner." Drivers took Uber to court, arguing they were "workers," which in UK law means a right to the minimum wage and paid holidays. In February 2021 the UK Supreme Court agreed with the drivers. It looked at how Uber actually controlled the work, such as setting fares and rating and removing drivers, not at the words in the contract.</p>
+    </div>
+
+    <div class="card model" id="model">
+      <p class="c-lab">The paragraph</p>
+      <p><span class="seg s-claim">Control over language gives control over knowledge when the people choosing the words also write the documents that others have to accept.</span> <span class="seg s-case">Uber wrote the contracts, so it could call its drivers "partners" and state that "nothing shall create an employment relationship." A driver who signed was told, in Uber's own words, what the job was: a partnership, with no right to the minimum wage or paid holidays. As long as drivers and the public accepted the word, Uber controlled what they believed about the job.</span> <span class="seg s-test">But the drivers didn't accept it. They took Uber to court, and the Supreme Court didn't decide what the drivers were by reading the word "partner." It looked at what Uber actually did: it set the fares, rated the drivers and removed them. The evidence about the work beat the word on the page.</span> <span class="seg s-verdict">So Uber's control over language gave it control over knowledge only while nobody checked the word against the facts. Control over language can shape what people believe, but not what is true, and it lasts only until someone with the power to examine the evidence tests the word against the world.</span></p>
+      <div class="legend">
+        <span class="lg l-claim">1 Claim</span><span class="lg l-case">2 Case</span><span class="lg l-test">3 Test</span><span class="lg l-verdict">4 Verdict</span>
+      </div>
+    </div>
+    <div class="toolbar" style="margin-top:0"><button id="partsbtn" type="button">Show the four parts</button></div>
+
+    <div class="steps">
+      <div class="step"><span class="st-n c">1</span><div><p class="st-t">The claim, with a "when"</p><p>It doesn't just say yes. It says <i>when</i>: when the people choosing the words also write the documents others have to accept.</p></div></div>
+      <div class="step"><span class="st-n k">2</span><div><p class="st-t">The case, kept short</p><p>Three sentences show the claim working. No long retelling.</p></div></div>
+      <div class="step"><span class="st-n t">3</span><div><p class="st-t">The test</p><p>Question 1 found it: who does the claim NOT work on? The drivers. Question 3 sharpened it: what did the word NOT change? What the job really was.</p></div></div>
+      <div class="step"><span class="st-n v">4</span><div><p class="st-t">The verdict</p><p>The claim is rewritten after the test, and it's smaller and more accurate.</p></div></div>
+    </div>
+
+    <div class="pair">
+      <div class="pairline"><span class="pl-tag">Claim before the test</span><p>Control over language gives control over knowledge.</p></div>
+      <div class="pairline"><span class="pl-tag">Claim after the test</span><p>Control over language shapes belief, not truth, and only until someone checks it against the evidence.</p></div>
+    </div>
+
+    <div class="punch">
+      <p class="p-lab">Notice the core concepts</p>
+      <p>Power (who writes the contract), evidence (what Uber actually did), truth (what the job really was). They explain the case. They aren't decoration.</p>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section class="stage">
+    <div class="s-head"><span class="s-num">06</span><h2 class="s-title">Revise your own paragraph</h2><span class="s-time">Hand this in</span></div>
+    <p class="s-sub">Take one body paragraph from your timed essay and make it a test.</p>
+    <div class="rivals">
+      <div class="rival"><span class="rn">1</span><span class="rt">Copy one paragraph into a new document.</span><p class="rd">Highlight your claim.</p></div>
+      <div class="rival"><span class="rn">2</span><span class="rt">Reread your case and ask the three questions.</span><p class="rd">Your feedback comment names the detail you missed, so start there.</p></div>
+      <div class="rival"><span class="rn">3</span><span class="rt">Write two to four sentences that test your claim.</span><p class="rd">Start with the detail from the case, not with "Some people might argue."</p></div>
+      <div class="rival"><span class="rn">4</span><span class="rt">End with a verdict that rewrites your claim.</span><p class="rd">Is it smaller and more accurate than the claim you started with? If it's the same size, go back to step 2.</p></div>
+      <div class="rival"><span class="rn">5</span><span class="rt">Check your new sentences.</span><p class="rd">Do they agree with your claim? Then they're support, and you haven't tested it yet.</p></div>
+    </div>
+    <div class="nb">
+      <p class="nb-lab">Hand in</p>
+      <p>Your revised paragraph, under 300 words, with your test sentences highlighted.</p>
+    </div>
+  </section>
+
+  <div class="turn">
+    <p class="t-lab">Coming up in History</p>
+    <p>Every claim about the past has to survive the question you answered in The Village of Mysteries: what would have to be found for you to give it up?</p>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  document.querySelectorAll('.revealbtn[data-reveal]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var t = document.getElementById(btn.dataset.reveal);
+      t.hidden = false; btn.style.display = 'none';
+      t.scrollIntoView({behavior:'smooth', block:'nearest'});
+    });
+  });
+  var m = document.getElementById('model'), b = document.getElementById('partsbtn');
+  b.addEventListener('click', function(){
+    var on = m.classList.toggle('show');
+    b.textContent = on ? 'Hide the four parts' : 'Show the four parts';
+  });
+})();
+</script>
+</body>
+</html>
