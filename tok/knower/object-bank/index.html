@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Object Bank — TOK · Knowledge &amp; the Knower</title>
+
+<!--
+=================================================================
+TEACHER NOTES
+=================================================================
+Repo path: classroom-games/tok/knower/object-bank/
+Images go in:  object-bank/images/   (a placeholder box shows until each file exists)
+
+  semmelweis-1861.jpg      title page of Semmelweis's 1861 book
+  geosyncline-textbook.jpg geosyncline diagram from a real textbook
+                           -> ALSO fill in SOURCE_GEOSYNCLINE below
+  wegener-1915.jpg         title page / cover of Wegener's 1915 book
+  photo-51.jpg             Photo 51
+  tuskegee-letter.jpg      "Last Chance for Special Free Treatment" letter
+  lee-payne-1963.jpg       Scherman's photo of Edith Lee-Payne (NARA 542030)
+  beck-map-1933.jpg        Beck's 1933 pocket Underground map
+  mercator-1569.jpg        Mercator 1569 world map
+  nacirema-1956.jpg        first page of Miner's article
+  brand-button-1966.png    Brand's button (already copied in)
+  shirley-card.jpg         an original 1950s Kodak Shirley card
+  le-grand-k.jpg           Le Grand K under its bell jars
+  food-pyramid-1992.jpg    USDA Food Guide Pyramid, 1992
+  lfp17-mayfield.jpg       Latent Fingerprint 17 (as published in the 2006 OIG report)
+  japan-spain-2022.jpg     goal-line image of the Mitoma ball
+  iau-2006.jpg             IAU 2006 vote in Prague / Resolution B5 text
+
+Earthrise is deliberately NOT in the bank: it is the model paragraph.
+Facts were checked against sources in Oct 2026 (archives, Nature, OIG report,
+BIPM/Wikipedia, CDC). Disputed points are worded as disputed on the cards.
+=================================================================
+-->
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+  :root {
+    --paper: #f1ebe0;
+    --paper-deep: #e8e0d0;
+    --paper-cream: #fdf9ef;
+    --ink: #1a1814;
+    --ink-soft: #3d3830;
+    --rule: #8a7f6a;
+    --rule-soft: #c4b89e;
+    --red: #b8281f;
+    --blue: #0a2540;
+    --green: #4a6831;
+    --gold: #8a6a1f;
+    --shadow: 0 2px 8px rgba(40, 30, 20, 0.15);
+    --shadow-deep: 0 10px 30px rgba(40, 30, 20, 0.3);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.55;
+  }
+
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* ===== HEADER ===== */
+  .top {
+    background: var(--ink);
+    color: var(--paper);
+    border-bottom: 3px solid var(--red);
+    padding: 1.6rem 2rem 1.4rem;
+  }
+  .top-inner { max-width: 1200px; margin: 0 auto; }
+  .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: #e8d9b0;
+  }
+  h1 { font-size: 2.6rem; font-weight: 600; line-height: 1.05; margin: 0.3rem 0 0.4rem; }
+  h1 em { color: #f4a49c; font-style: italic; }
+  .sub { font-size: 1.1rem; font-style: italic; color: var(--paper-deep); max-width: 760px; }
+
+  main { max-width: 1200px; margin: 0 auto; padding: 1.6rem 2rem 4rem; }
+
+  /* ===== RULE BOX ===== */
+  .rules {
+    display: grid; grid-template-columns: 1.2fr 1fr; gap: 1.2rem;
+    margin-bottom: 1.6rem;
+  }
+  .box {
+    background: var(--paper-cream);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--red);
+    padding: 1.1rem 1.3rem;
+    box-shadow: var(--shadow);
+  }
+  .box.blue { border-left-color: var(--blue); }
+  .box h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--red); margin-bottom: 0.6rem;
+  }
+  .box.blue h2 { color: var(--blue); }
+  .box p { margin-bottom: 0.55rem; font-size: 1rem; }
+  .box p:last-child { margin-bottom: 0; }
+  .pass-fail { display: grid; grid-template-columns: auto 1fr; gap: 0.25rem 0.7rem; margin: 0.5rem 0 0.6rem; font-size: 0.98rem; }
+  .pf-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; padding-top: 0.25rem; }
+  .pf-tag.fail { color: var(--red); }
+  .pf-tag.pass { color: var(--green); }
+  .box ol { margin: 0.2rem 0 0 1.2rem; font-size: 1rem; }
+  .box li { margin-bottom: 0.3rem; }
+
+  /* ===== CONTROLS ===== */
+  .controls {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(241, 235, 224, 0.96);
+    backdrop-filter: blur(4px);
+    border-bottom: 1px solid var(--rule-soft);
+    padding: 0.8rem 0;
+    margin-bottom: 1.2rem;
+  }
+  .control-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; margin-bottom: 0.45rem; }
+  .control-row:last-child { margin-bottom: 0; }
+  .control-label {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--ink-soft); min-width: 72px;
+  }
+  .chip {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; letter-spacing: 0.06em;
+    padding: 0.38rem 0.75rem; border: 1px solid var(--rule); background: transparent;
+    color: var(--ink); cursor: pointer; border-radius: 2px; transition: all 0.15s ease;
+  }
+  .chip:hover { border-color: var(--ink); }
+  .chip.on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .chip .num { color: var(--red); font-weight: 700; margin-right: 0.3rem; }
+  .chip.on .num { color: #f4a49c; }
+  .print-btn {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.5rem 1rem; background: var(--red); color: var(--paper); border: 1px solid var(--red);
+    cursor: pointer; border-radius: 2px;
+  }
+  .print-btn:hover { background: #d63329; }
+  .prompt-full {
+    font-style: italic; font-size: 1.02rem; color: var(--blue); min-height: 1.4em; padding-left: 0.2rem;
+  }
+  .count { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: var(--ink-soft); letter-spacing: 0.1em; }
+
+  /* ===== SECTIONS & GRID ===== */
+  .section-head {
+    display: flex; align-items: baseline; gap: 0.8rem;
+    margin: 1.8rem 0 0.9rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--rule);
+  }
+  .section-head h2 { font-size: 1.6rem; font-weight: 600; }
+  .section-head .mono { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(255px, 1fr)); gap: 1.1rem; }
+
+  .card {
+    background: var(--paper-cream); border: 1px solid var(--rule-soft);
+    box-shadow: var(--shadow); cursor: pointer; display: flex; flex-direction: column;
+    transition: transform 0.15s ease, box-shadow 0.15s ease; text-align: left;
+    font: inherit; color: inherit;
+  }
+  .card:hover, .card:focus-visible { transform: translateY(-3px); box-shadow: var(--shadow-deep); outline: none; }
+  .card-img {
+    height: 165px; background: #111; display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+  .card-img img { width: 100%; height: 100%; object-fit: cover; }
+  .card-body { padding: 0.8rem 0.95rem 0.95rem; display: flex; flex-direction: column; gap: 0.4rem; flex: 1; }
+  .card-tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .tag-class { color: var(--green); }
+  .tag-new { color: var(--gold); }
+  .tag-personal { color: var(--blue); }
+  .card-title { font-size: 1.18rem; font-weight: 600; line-height: 1.18; }
+  .card-hook { font-size: 0.95rem; font-style: italic; color: var(--ink-soft); line-height: 1.4; }
+  .card-prompts { display: flex; gap: 0.3rem; flex-wrap: wrap; margin-top: auto; padding-top: 0.3rem; }
+  .pnum {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; font-weight: 700;
+    border: 1px solid var(--red); color: var(--red); padding: 0.08rem 0.4rem; border-radius: 2px;
+  }
+
+  .placeholder {
+    width: 100%; height: 100%; min-height: 120px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 0.3rem; background: repeating-linear-gradient(45deg, #1d1b18, #1d1b18 10px, #24211d 10px, #24211d 20px);
+    color: #c4b89e; font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.08em; text-align: center; padding: 0.6rem;
+  }
+  .placeholder b { font-size: 0.66rem; color: #e8d9b0; letter-spacing: 0.14em; }
+
+  .personal-icon {
+    height: 110px; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #0a2540, #1d3a5c); color: #e8d9b0;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; letter-spacing: 0.2em;
+  }
+
+  .empty { font-style: italic; color: var(--ink-soft); padding: 1rem 0; }
+
+  /* ===== MODAL ===== */
+  .overlay {
+    position: fixed; inset: 0; background: rgba(15, 12, 8, 0.72); z-index: 50;
+    display: none; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 2rem 1rem;
+  }
+  .overlay.open { display: flex; }
+  .sheet {
+    background: var(--paper); max-width: 860px; width: 100%; box-shadow: var(--shadow-deep);
+    border-top: 4px solid var(--red); position: relative; animation: rise 0.25s ease-out;
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  .close {
+    position: absolute; top: 0.6rem; right: 0.7rem; background: var(--ink); color: var(--paper);
+    border: none; font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em;
+    padding: 0.4rem 0.7rem; cursor: pointer; z-index: 2;
+  }
+  .sheet-nav { display: flex; justify-content: space-between; padding: 0 1.6rem 1.3rem; gap: 0.6rem; }
+  .sheet-nav button {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase;
+    background: transparent; border: 1px solid var(--rule); padding: 0.45rem 0.9rem; cursor: pointer; color: var(--ink);
+  }
+  .sheet-nav button:hover:not(:disabled) { background: var(--ink); color: var(--paper); }
+  .sheet-nav button:disabled { opacity: 0.3; cursor: default; }
+
+  /* ===== FULL OBJECT SHEET (modal + print share this) ===== */
+  .obj { padding: 1.6rem 1.6rem 1.2rem; }
+  .obj-head { display: grid; grid-template-columns: 260px 1fr; gap: 1.3rem; margin-bottom: 1rem; }
+  .obj-img { background: #111; border: 4px solid #111; min-height: 180px; display: flex; align-items: center; justify-content: center; }
+  .obj-img img { width: 100%; height: auto; display: block; max-height: 340px; object-fit: contain; }
+  .obj-title { font-size: 1.75rem; font-weight: 600; line-height: 1.1; margin: 0.3rem 0 0.6rem; }
+  .obj-specific {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; line-height: 1.5; color: var(--blue);
+    background: var(--paper-cream); border: 1px dashed var(--rule); padding: 0.55rem 0.7rem;
+  }
+  .obj-specific::before { content: "THE OBJECT — "; font-weight: 700; color: var(--red); letter-spacing: 0.1em; }
+  .obj-class-note { margin-top: 0.55rem; font-size: 0.92rem; font-style: italic; color: var(--green); }
+
+  .obj h3 {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--red); margin: 1.1rem 0 0.45rem; padding-bottom: 0.3rem; border-bottom: 1px solid var(--rule-soft);
+  }
+  .obj-story p { margin-bottom: 0.65rem; font-size: 1.04rem; color: var(--ink-soft); }
+  .obj-story strong { color: var(--ink); }
+  .facts { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 0.3rem 1.2rem; }
+  .facts li { font-size: 0.96rem; padding-left: 1rem; position: relative; }
+  .facts li::before { content: "▪"; position: absolute; left: 0; color: var(--red); font-size: 0.8rem; top: 0.1rem; }
+  .facts b { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--blue); }
+
+  .prompt-q { margin-bottom: 0.75rem; padding: 0.65rem 0.9rem; background: rgba(10, 37, 64, 0.05); border-left: 3px solid var(--blue); }
+  .prompt-q .pq-prompt { font-weight: 600; font-size: 1.02rem; color: var(--blue); }
+  .prompt-q .pq-prompt .pnum { margin-right: 0.45rem; vertical-align: 2px; }
+  .prompt-q .pq-ask { font-style: italic; font-size: 1rem; margin-top: 0.2rem; color: var(--ink); }
+
+  .trap {
+    margin-top: 0.9rem; padding: 0.7rem 0.95rem; background: rgba(184, 40, 31, 0.06);
+    border-left: 4px solid var(--red); font-size: 1rem;
+  }
+  .trap::before {
+    content: "TOPIC TRAP — "; font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.16em;
+    font-weight: 700; color: var(--red);
+  }
+  .build { margin: 0.2rem 0 0 1.2rem; }
+  .build li { margin-bottom: 0.3rem; font-size: 1rem; }
+  .obj-foot { margin-top: 0.9rem; font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; color: var(--ink-soft); letter-spacing: 0.08em; }
+
+  #print-area { display: none; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 760px) {
+    .top { padding: 1.2rem 1rem; }
+    h1 { font-size: 1.9rem; }
+    main { padding: 1rem 1rem 3rem; }
+    .rules { grid-template-columns: 1fr; }
+    .obj-head { grid-template-columns: 1fr; }
+    .facts { grid-template-columns: 1fr; }
+    .print-btn { margin-left: 0; }
+    .obj { padding: 1.2rem 1rem; }
+  }
+
+  /* ===== PRINT ===== */
+  @media print {
+    @page { size: A4; margin: 11mm 12mm; }
+    body { background: #fff; font-size: 10pt; line-height: 1.38; }
+    .top, main, .overlay { display: none !important; }
+    #print-area { display: block; }
+    .print-cover { padding: 0 0 3mm; border-bottom: 1.5px solid #000; margin-bottom: 4mm; }
+    .print-cover h1 { font-size: 17pt; color: #000; margin: 1mm 0; }
+    .print-cover p { font-size: 9.5pt; margin-bottom: 1mm; }
+    .print-obj { break-before: page; page-break-before: always; }
+    .print-obj:first-of-type { break-before: auto; page-break-before: auto; }
+    .print-obj.personal { break-before: auto; page-break-before: auto; break-inside: avoid; page-break-inside: avoid; padding-top: 4mm; margin-top: 4mm; border-top: 1px dashed #999; }
+    .print-obj.personal.first-personal { break-before: page; page-break-before: always; border-top: none; margin-top: 0; padding-top: 0; }
+    .print-obj.personal .obj-head { grid-template-columns: 1fr; }
+    .print-obj.personal .obj-img { display: none; }
+    .print-obj.personal .build { columns: 2; }
+    .obj { padding: 0; }
+    .obj-head { grid-template-columns: 48mm 1fr; gap: 5mm; margin-bottom: 2mm; }
+    .obj-img { min-height: 30mm; border-width: 2px; }
+    .obj-img img { max-height: 52mm; }
+    .placeholder { min-height: 30mm; background: #eee; color: #444; }
+    .placeholder b { color: #000; }
+    .personal-icon { background: #eee; color: #000; height: 26mm; }
+    .obj-title { font-size: 15pt; margin: 1mm 0 2mm; }
+    .obj-specific { font-size: 7.5pt; padding: 1.5mm 2.5mm; }
+    .obj-class-note { font-size: 9pt; margin-top: 1.5mm; }
+    .obj h3 { font-size: 7pt; margin: 3mm 0 1.5mm; padding-bottom: 1mm; }
+    .obj-story p { font-size: 10pt; margin-bottom: 1.6mm; }
+    .facts { gap: 0.5mm 6mm; }
+    .facts li { font-size: 9.5pt; }
+    .facts b { font-size: 7pt; }
+    .prompt-q { break-inside: avoid; page-break-inside: avoid; background: #f3f3f3; margin-bottom: 2mm; padding: 1.8mm 3mm; }
+    .prompt-q .pq-prompt { font-size: 10pt; }
+    .prompt-q .pq-ask, .build li { font-size: 10pt; }
+    .trap { background: #f7eeee; font-size: 10pt; margin-top: 2.5mm; padding: 2mm 3mm; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-inner">
+    <div class="kicker">TOK · Knowledge &amp; the Knower · Object Bank</div>
+    <h1><em>The</em> object, not <em>an</em> object.</h1>
+    <p class="sub">Fifteen real objects with the context you need, plus ideas for objects from your own life. Everything you need for Block 1 is on the card. You do not need the internet.</p>
+  </div>
+</header>
+
+<main>
+  <section class="rules">
+    <div class="box">
+      <h2>The rule: one specific thing</h2>
+      <p>Your object must be <strong>one specific thing that exists (or existed) in the world</strong>, not a <em>kind</em> of thing. Test it: can you put <strong>THE</strong> or <strong>MY</strong> in front of it and say exactly which one?</p>
+      <div class="pass-fail">
+        <span class="pf-tag fail">FAIL</span><span>a fingerprint · a world map · a food guide · a phone</span>
+        <span class="pf-tag pass">PASS</span><span>Latent Fingerprint 17 · Mercator's 1569 map · the 1992 Food Guide Pyramid · my phone's Screen Time report for 1–7 October</span>
+      </div>
+      <p>If someone could ask <em>"which one?"</em>, you haven't chosen yet.</p>
+    </div>
+    <div class="box blue">
+      <h2>How to use this bank</h2>
+      <ol>
+        <li>Pick a prompt below, or browse everything.</li>
+        <li>Open an object. Read <strong>The story</strong> and <strong>Key facts</strong>. That is your Block 1 material.</li>
+        <li>Use the question under your prompt to start thinking. It is a question, not an answer.</li>
+        <li>Read the <strong>Topic trap</strong>. Stay on the TOK side of the line.</li>
+      </ol>
+    </div>
+  </section>
+
+  <div class="controls" id="controls">
+    <div class="control-row">
+      <span class="control-label">Prompt</span>
+      <div id="prompt-chips" style="display:flex; flex-wrap:wrap; gap:0.45rem;"></div>
+    </div>
+    <div class="control-row">
+      <span class="control-label">Show</span>
+      <div id="source-chips" style="display:flex; flex-wrap:wrap; gap:0.45rem;"></div>
+      <span class="count" id="count"></span>
+      <button class="print-btn" onclick="window.print()" title="Prints every object currently showing, one per page">⎙ Print / save PDF</button>
+    </div>
+    <div class="prompt-full" id="prompt-full"></div>
+  </div>
+
+  <div class="section-head" id="head-context">
+    <h2>Objects with context</h2>
+    <span class="mono">read the card · write Block 1 from it</span>
+  </div>
+  <div class="grid" id="grid-context"></div>
+
+  <div class="section-head" id="head-personal">
+    <h2>Objects from your own life</h2>
+    <span class="mono">no context given · you are the expert on these</span>
+  </div>
+  <div class="grid" id="grid-personal"></div>
+</main>
+
+<div class="overlay" id="overlay" onclick="if(event.target===this) closeSheet()">
+  <div class="sheet" role="dialog" aria-modal="true">
+    <button class="close" onclick="closeSheet()">✕ CLOSE</button>
+    <div id="sheet-content"></div>
+    <div class="sheet-nav">
+      <button id="sheet-prev" onclick="stepSheet(-1)">◂ Previous</button>
+      <button id="sheet-next" onclick="stepSheet(1)">Next ▸</button>
+    </div>
+  </div>
+</div>
+
+<div id="print-area"></div>
+
+<script>
+// =====================================================================
+// PROMPTS — official IA prompt numbers (2022 TOK guide)
+// =====================================================================
+const PROMPTS = {
+  5:  'What counts as good evidence for a claim?',
+  8:  'To what extent is certainty attainable?',
+  12: 'Is bias inevitable in the production of knowledge?',
+  13: 'How can we know that current knowledge is an improvement upon past knowledge?',
+  24: 'How might the context in which knowledge is presented influence whether it is accepted or rejected?',
+  35: 'In what ways do values affect the production of knowledge?'
+};
+const PROMPT_SHORT = { 5: 'Evidence', 8: 'Certainty', 12: 'Bias', 13: 'Improvement', 24: 'Context', 35: 'Values' };
+
+// TEACHER: replace with the textbook your geosyncline photo comes from.
+const SOURCE_GEOSYNCLINE = '[Source to be added: textbook title, author, year, page and figure number — copy it from the photo]';
+
+// =====================================================================
+// OBJECTS WITH CONTEXT
+// source: 'class' (seen in an earlier lesson) or 'new'
+// =====================================================================
+const OBJECTS = [
+  {
+    id: 'semmelweis', source: 'class', fromLesson: 'L5 · Who Has the Power?',
+    img: 'semmelweis-1861.jpg',
+    title: "Semmelweis's book on childbed fever (1861)",
+    hook: 'He had the numbers. Doctors still said no.',
+    specific: 'Ignaz Semmelweis, Die Ätiologie, der Begriff und die Prophylaxis des Kindbettfiebers (The Cause, Concept and Prevention of Childbed Fever). Published in Pest, Vienna and Leipzig, 1861.',
+    classNote: 'In class you read a letter written to show the objections Semmelweis faced. This book is the real object.',
+    story: [
+      'In the 1840s, Vienna General Hospital had two maternity clinics. <strong>Clinic I</strong> was run by doctors and medical students, who also dissected dead bodies. <strong>Clinic II</strong> was run by student midwives, who did not. Far more mothers died of childbed fever in Clinic I. Women begged not to be sent there.',
+      'Ignaz Semmelweis, a Hungarian doctor, began work in Clinic I in 1846. In March 1847 his colleague Jakob Kolletschka died after being cut during an autopsy, with the same symptoms as the dying mothers. Semmelweis guessed that "cadaverous particles" on doctors\' hands were carrying the disease from the autopsy room to the wards. <strong>He could not say what the particles were or how they worked.</strong>',
+      'In May 1847 he made doctors wash their hands in a chlorine solution. Deaths in Clinic I fell from 18.3% in April to about 1–2% a month.',
+      'He did not write up his own findings for years; other doctors, such as Ferdinand von Hebra, reported them for him. His job was not renewed in 1849 and he left Vienna in 1850. When his book finally appeared in 1861, it was long, full of statistics, and angry. In open letters he called his critics "murderers." Most doctors rejected it. In 1865 he was committed to an asylum, where he died two weeks later, aged 47.',
+      'His idea was only accepted after Louis Pasteur\'s germ theory (1860s) and Joseph Lister\'s antiseptic surgery (1867) explained <em>why</em> handwashing worked.'
+    ],
+    facts: [
+      ['April 1847', 'Clinic I deaths: 18.3%'],
+      ['After handwashing', 'about 1–2% a month'],
+      ['1846 (from class table)', 'Clinic I 11.4% · Clinic II 2.7%'],
+      ['1861', 'book published'],
+      ['1865', 'Semmelweis dies, aged 47'],
+      ['1867', "Lister's antiseptic surgery"]
+    ],
+    prompts: {
+      24: 'Semmelweis had the numbers. What else did doctors want before they would accept his claim — and why did it matter who he was and how he said it?',
+      5:  'His statistics showed handwashing worked, but he could not explain why. Is evidence without an explanation good evidence?',
+      13: 'Doctors in 1850 rejected him; doctors twenty years later accepted him. What changed: the evidence, or something else?'
+    },
+    trap: "Don't argue that handwashing is a good idea. Everyone agrees. Ask why good evidence was not enough."
+  },
+  {
+    id: 'geosyncline', source: 'class', fromLesson: 'L4 · You Have a Frame',
+    img: 'geosyncline-textbook.jpg',
+    title: 'A geosyncline diagram from a geology textbook',
+    hook: 'A whole discipline, confident — and wrong.',
+    specific: SOURCE_GEOSYNCLINE,
+    classNote: 'In class you read a textbook passage written to show this theory. The diagram in this photo is from a real textbook.',
+    story: [
+      'For about a hundred years, geologists explained mountains with <strong>geosynclinal theory</strong>. James Hall set out the idea in 1857–59, and James Dwight Dana named it in 1873. A geosyncline was a long trough in the Earth\'s crust that slowly sank and filled with miles of sediment. Later the sediment was squeezed sideways, folded and pushed up into mountains. Most geologists thought the squeezing came from the Earth slowly shrinking as it cooled.',
+      'The theory explained real evidence: why sea fossils are found at the tops of mountains, and why mountain belts contain such thick layers of rock. It was taught in textbooks in North America and Europe. Marshall Kay\'s <em>North American Geosynclines</em> (1951) was still a major work on it in the 1950s.',
+      'In this theory, continents stay where they are. When Alfred Wegener argued in 1915 that continents move, textbooks dismissed the idea.',
+      'In the 1960s, new evidence from the ocean floor (seafloor spreading in 1962, magnetic stripes in 1963) led to <strong>plate tectonics</strong>, which most geologists accepted by about 1968. Textbooks were rewritten and the word "geosyncline" mostly disappeared. Unlike Wegener, the geologists who held the old theory were never called cranks.'
+    ],
+    facts: [
+      ['1857–59', 'James Hall describes the idea'],
+      ['1873', 'Dana names it "geosynclinal"'],
+      ['1951', "Kay's North American Geosynclines"],
+      ['1962–63', 'seafloor spreading; magnetic stripes'],
+      ['c. 1968', 'plate tectonics accepted'],
+      ['Today', 'the term is rarely used']
+    ],
+    prompts: {
+      13: 'This diagram was "current knowledge" when it was printed. How could its readers have known it would be replaced — and how do we know ours won\'t be?',
+      5:  'Fossils on mountaintops counted as evidence FOR this theory. Who decides what a piece of evidence is evidence of?',
+      12: 'If a whole discipline shares the same assumption, is that bias? Who could even notice it?'
+    },
+    trap: "Don't explain how mountains form. Ask how a whole discipline could be confident and wrong."
+  },
+  {
+    id: 'wegener', source: 'class', fromLesson: 'L4 · You Have a Frame',
+    img: 'wegener-1915.jpg',
+    title: "Wegener's The Origin of Continents and Oceans (1915)",
+    hook: 'Lots of evidence. No mechanism. Forty years of no.',
+    specific: 'Alfred Wegener, Die Entstehung der Kontinente und Ozeane, first edition 1915. Revised 1920, 1922 and 1929; first English translation 1924.',
+    story: [
+      'Alfred Wegener had a doctorate in astronomy and worked as a meteorologist and polar researcher. <strong>He was not a geologist.</strong> In 1915 he published a book arguing that the continents had once been joined together and had slowly drifted apart.',
+      'His evidence: the coastlines of South America and Africa fit together; the same fossils (the reptile <em>Mesosaurus</em>, the plant <em>Glossopteris</em>) are found on continents now separated by oceans; matching rock formations line up across the Atlantic; and there are traces of ancient glaciers in places that are now tropical.',
+      'Geologists\' main objection was not his evidence but his <strong>mechanism</strong>. He could not explain what force moved the continents, and the forces he suggested were shown to be far too weak. At a 1926 meeting of the American Association of Petroleum Geologists in New York, most speakers attacked the idea. Many explained his matching fossils with "land bridges" that had since sunk into the sea.',
+      'Wegener died on the Greenland ice cap in November 1930. In the 1960s, evidence from the ocean floor showed how continents move, and plate tectonics was accepted by about 1968, nearly 40 years after his death.'
+    ],
+    facts: [
+      ['1915', 'first edition'],
+      ['1924', 'English translation'],
+      ['1926', 'hostile New York symposium'],
+      ['1930', 'dies in Greenland'],
+      ['Weak point', 'no convincing mechanism'],
+      ['c. 1968', 'plate tectonics accepted']
+    ],
+    prompts: {
+      24: 'Would this book have been received differently if a famous geologist had written it?',
+      5:  'He had lots of evidence that continents moved, but no explanation of how. Was his evidence good evidence?',
+      13: 'Plate tectonics replaced the theory that rejected Wegener. Is today\'s theory better because it is right, or because new evidence arrived?'
+    },
+    trap: "Don't argue that continental drift is true. Ask why strong evidence was rejected for 40 years."
+  },
+  {
+    id: 'photo51', source: 'class', fromLesson: 'L5 · Who Has the Power?',
+    img: 'photo-51.jpg',
+    title: 'Photo 51 (1952)',
+    hook: 'An X on film. Whose discovery?',
+    specific: 'X-ray diffraction photograph of DNA, taken 2 May 1952 at King\'s College London by Raymond Gosling, working under Rosalind Franklin.',
+    story: [
+      'Photo 51 was taken by Raymond Gosling, a PhD student working under <strong>Rosalind Franklin</strong> at King\'s College London. It shows how X-rays scatter off fibres of DNA. To a trained eye, the X-shaped pattern means the molecule is a helix.',
+      'The image does not "show" a double helix the way a photograph of a face shows a face. It has to be <strong>read</strong>, using mathematics and knowledge of crystal structures.',
+      'In January 1953, Franklin\'s colleague Maurice Wilkins showed the photo to James Watson of Cambridge University, without Franklin\'s knowledge. Watson and Francis Crick were also using Franklin\'s data from a research report that had been passed to them. On 25 April 1953 the journal <em>Nature</em> published three papers together: Watson and Crick\'s model of the double helix first, then a paper by Wilkins and colleagues, then Franklin and Gosling\'s paper with Photo 51. Placed last, Franklin\'s work looked like it was supporting someone else\'s discovery.',
+      'Franklin died in 1958, aged 37. In 1962 Watson, Crick and Wilkins won the Nobel Prize, which is not given to people who have died. Historians still argue about her role. In 2023 two historians, Matthew Cobb and Nathaniel Comfort, argued in <em>Nature</em> that new documents show she was "an equal member of a team of four", not simply a victim whose photo was taken.'
+    ],
+    facts: [
+      ['2 May 1952', 'photo taken'],
+      ['Jan 1953', 'Wilkins shows it to Watson'],
+      ['25 Apr 1953', 'three papers in Nature'],
+      ['1958', 'Franklin dies, aged 37'],
+      ['1962', 'Nobel: Watson, Crick, Wilkins'],
+      ['2023', 'Cobb & Comfort reassess her role']
+    ],
+    prompts: {
+      24: 'Three papers appeared side by side in the same issue. How did the order and framing help decide who got credit for the discovery?',
+      5:  'The photo is evidence of a helix only to people trained to read it. What does that tell you about evidence?',
+      12: 'The story of Photo 51 has been told in very different ways since 1953. Is there a version of it without bias?'
+    },
+    trap: "Don't just argue that Franklin was treated unfairly. Ask how credit for knowledge gets decided."
+  },
+  {
+    id: 'tuskegee', source: 'class', fromLesson: 'L5 · Who Has the Power?',
+    img: 'tuskegee-letter.jpg',
+    title: 'The "Last Chance for Special Free Treatment" letter (early 1930s)',
+    hook: 'A letter offering treatment. There was no treatment.',
+    specific: 'Letter sent to men in the U.S. Public Health Service syphilis study in Macon County, Alabama, in the early 1930s (1932–33). Records of the study are held at the National Archives at Atlanta.',
+    story: [
+      'In 1932 the U.S. Public Health Service began a study in Macon County, Alabama, to observe what untreated syphilis does to the body. It enrolled <strong>600 Black men</strong>: 399 with syphilis and 201 without. Most were poor sharecroppers. They were told they were being treated for "bad blood." They were not told they had syphilis.',
+      'To get the men to come in for spinal taps, a painful procedure used only to collect data, the study sent this letter. Its title called the visit <strong>"Last Chance for Special Free Treatment."</strong> It was not treatment.',
+      'By 1947 penicillin was the standard cure for syphilis. The men were not given it. The study ran for 40 years, and reports from it were published in medical journals and read by other doctors. Peter Buxtun, who worked for the Public Health Service, raised concerns from 1966. In July 1972, reporter Jean Heller made the story public and the study ended.',
+      'By 1972, 28 men had died directly of syphilis and about 100 of related problems; 40 wives had been infected, and 19 children were born with the disease. A 1974 settlement paid $10 million. The 1979 Belmont Report set new rules for research on people. President Clinton apologised in 1997.'
+    ],
+    facts: [
+      ['1932', 'study begins'],
+      ['600 men', '399 with syphilis, 201 without'],
+      ['1947', 'penicillin standard — withheld'],
+      ['July 1972', 'story made public'],
+      ['1979', 'Belmont Report'],
+      ['1997', 'presidential apology']
+    ],
+    prompts: {
+      35: 'The study was designed to produce knowledge. What did the people running it value more than the men in it?',
+      24: 'The letter is written to sound helpful. How did the way information was presented to the men decide what they could know?',
+      12: 'The study was published for decades and other doctors read it. Why did so few see a problem?'
+    },
+    trap: "Don't just say the study was wrong. Everyone agrees. Ask what it shows about how knowledge gets produced, and who checks it."
+  },
+  {
+    id: 'leepayne', source: 'class', fromLesson: 'L3 · Two True Maps',
+    img: 'lee-payne-1963.jpg',
+    title: "Rowland Scherman's photograph of Edith Lee-Payne (1963)",
+    hook: 'A record of her she did not know existed for 45 years.',
+    specific: 'Photograph taken at the March on Washington for Jobs and Freedom, 28 August 1963, by Rowland Scherman for the U.S. Information Agency. U.S. National Archives, identifier 542030.',
+    story: [
+      'On 28 August 1963, around 250,000 people joined the March on Washington for Jobs and Freedom, the day Martin Luther King Jr. gave his "I Have a Dream" speech. <strong>Edith Lee-Payne</strong>, from Detroit, was there with her mother. It was her 12th birthday.',
+      'Rowland Scherman, a photographer for the U.S. Information Agency (a government agency that presented America to the rest of the world), photographed her in the crowd. She is holding a felt pennant that reads "March on Washington for Jobs and Freedom … I was there."',
+      'The agency did not name its photographers, and nobody recorded her name. For decades the photograph was used without anyone knowing who she was. In 2008 her cousin phoned to say Edith\'s face was on the cover of a Black History calendar. She tracked the image down in the National Archives. <strong>She had not known the photograph existed.</strong>',
+      'Her pennant is now in the Smithsonian\'s National Museum of African American History and Culture.'
+    ],
+    facts: [
+      ['28 Aug 1963', 'March on Washington'],
+      ['Age', '12 — her birthday'],
+      ['Photographer', 'Rowland Scherman, USIA'],
+      ['2008', 'she learns the photo exists'],
+      ['NARA', 'identifier 542030'],
+      ['Pennant', 'Smithsonian NMAAHC']
+    ],
+    prompts: {
+      24: 'An aerial photo of the crowd and this close-up show the same day. How might the story people accept about the march depend on which one they see?',
+      35: 'Why might a government agency choose this particular face to represent the march to the world?',
+      12: 'The photograph carried knowledge about her for 45 years before she had it. Who decides what a photograph is "of"?'
+    },
+    trap: "Don't write about the civil rights movement. Ask how one photograph comes to stand for a whole event."
+  },
+  {
+    id: 'beck', source: 'class', fromLesson: 'L3 · Two True Maps',
+    img: 'beck-map-1933.jpg',
+    title: "Harry Beck's London Underground map (1933)",
+    hook: 'Wrong about distance. Right about what passengers need.',
+    specific: "Harry Beck's pocket map of the London Underground, first issued January 1933.",
+    story: [
+      'Before 1933, maps of the London Underground were drawn over real street maps. Stations in the centre were crammed together; lines in the suburbs ran off the page.',
+      '<strong>Harry Beck</strong>, an engineering draughtsman in the Underground\'s signals office, redesigned the map in his spare time in 1931. Nobody asked him to. He used only straight lines (horizontal, vertical and 45°), spaced the stations evenly, and made the crowded centre bigger. It is often said he borrowed the look of electrical circuit diagrams.',
+      'The Underground\'s managers first rejected it as too radical. After a trial run of 500 copies in 1932, it was issued as a pocket map in January 1933. Passengers loved it: 700,000 were printed, and another print run was needed within a month. Beck was paid a small fee.',
+      'The map is wrong about distance and direction. Two stations that look far apart can be a short walk from each other. But it is very good at what passengers need: which line, which direction, where to change. Most metro maps around the world now follow its style.'
+    ],
+    facts: [
+      ['1931', 'designed in spare time'],
+      ['1932', 'trial run of 500'],
+      ['Jan 1933', 'pocket map issued'],
+      ['700,000', 'copies printed in 1933'],
+      ['Lines', 'only 0°, 45°, 90°'],
+      ['Paid', 'a small fee']
+    ],
+    prompts: {
+      35: 'Beck chose to make the map wrong about distance. What did he value more, and who decided that was the right choice?',
+      12: 'Every map leaves things out. Is a map that leaves things out biased, or just useful?',
+      5:  'Is the Tube map good evidence that two stations are close together? Why do millions of people trust it anyway?'
+    },
+    trap: "Don't write about transport design. Ask what it means for a representation to be \"true.\""
+  },
+  {
+    id: 'mercator', source: 'class', fromLesson: 'L3 · Two True Maps',
+    img: 'mercator-1569.jpg',
+    title: "Mercator's world map (1569)",
+    hook: 'Made for sailors. Hung on classroom walls for centuries.',
+    specific: 'Gerardus Mercator, Nova et Aucta Orbis Terrae Descriptio ad Usum Navigantium Emendate Accommodata ("New and more complete representation of the Earth, properly adapted for use in navigation"). Duisburg, 1569, engraved on 18 sheets.',
+    story: [
+      'In 1569 the Flemish mapmaker <strong>Gerardus Mercator</strong> published a huge world map, engraved by him on 18 sheets. The Earth is round, so a flat map must distort something. Mercator chose to keep <strong>angles</strong> correct: on his map, a ship holding one compass direction travels in a straight line. For sailors, this was exactly what they needed.',
+      'The cost is <strong>size</strong>. The further from the equator, the more land is stretched. Greenland looks about as big as Africa; Africa is actually about 14 times larger. Europe looks bigger than it is, and Africa and South America look smaller.',
+      'Mercator\'s projection became the standard for classroom wall maps and, much later, for online maps such as Google Maps. In 2018 Google\'s desktop maps switched to showing a globe when you zoom out.',
+      'In August 2025 the African Union backed the "Correct the Map" campaign, which asks schools and organisations to use the Equal Earth projection (2018) instead, because the Mercator map makes Africa look smaller than it is.'
+    ],
+    facts: [
+      ['1569', 'published, Duisburg'],
+      ['Keeps', 'angles and directions'],
+      ['Distorts', 'size near the poles'],
+      ['Africa vs Greenland', 'about 14× larger'],
+      ['2018', 'Google desktop maps → globe'],
+      ['Aug 2025', 'African Union backs Equal Earth']
+    ],
+    prompts: {
+      35: 'Mercator built his map for sailors. What happens to its knowledge when a map made for one purpose is used for another?',
+      12: 'Is a map that makes Europe look bigger biased, even if the mapmaker never intended it?',
+      24: 'Why did it matter that this map, and not another, hung on classroom walls for centuries?'
+    },
+    trap: "Don't just argue which map is better. Ask what a map's purpose does to the knowledge it gives."
+  },
+  {
+    id: 'nacirema', source: 'class', fromLesson: 'L4 · You Have a Frame',
+    img: 'nacirema-1956.jpg',
+    title: 'Horace Miner, "Body Ritual among the Nacirema" (1956)',
+    hook: 'You judged them before you knew who they were.',
+    specific: 'Horace Miner, "Body Ritual among the Nacirema," American Anthropologist, vol. 58, no. 3, June 1956, pp. 503–507.',
+    story: [
+      'In 1956 the anthropologist <strong>Horace Miner</strong> published an article in a serious academic journal describing the strange rituals of the "Nacirema," a people obsessed with the body. They visit "holy-mouth-men," keep charms in a box in a household "shrine," and are taken to the "latipso" when they are very ill.',
+      '<strong>Nacirema is "American" spelled backwards.</strong> The shrine is a bathroom, the charm-box is a medicine cabinet, the holy-mouth-men are dentists and the latipso is a hospital. Miner described ordinary American habits the way anthropologists of his time described cultures they saw as "primitive."',
+      'The joke works on the reader. Most readers decide the Nacirema are odd and superstitious before they realise they are reading about themselves. Miner\'s point: the language an observer uses, and the framework behind it, can make any culture look strange.',
+      'The article is still widely taught in schools and universities.'
+    ],
+    facts: [
+      ['1956', 'American Anthropologist'],
+      ['Nacirema', '"American" backwards'],
+      ['holy-mouth-men', 'dentists'],
+      ['latipso', 'hospital'],
+      ['shrine', 'bathroom'],
+      ['Notgnihsaw', 'Washington']
+    ],
+    prompts: {
+      12: "Miner describes Americans accurately, but you still judged them. Where did the bias come from: the writer, the words, or you?",
+      35: 'What values were built into the way anthropologists of the 1950s described other cultures?',
+      24: 'Would you have reacted the same way if the title had said "Body Ritual among Americans"?'
+    },
+    trap: "Don't write about American culture. Ask how an observer's framework shapes what they \"see.\""
+  },
+  {
+    id: 'brand', source: 'class', fromLesson: 'L6 · Earthrise',
+    img: 'brand-button-1966.png',
+    title: "Stewart Brand's button (1966)",
+    hook: 'He knew what the photo would mean before it existed.',
+    specific: 'Button reading "Why haven\'t we seen a photograph of the whole Earth yet?", made and sold by Stewart Brand in 1966.',
+    classNote: 'Earthrise itself is not in this bank: it is the model paragraph. This button is a different object with its own story.',
+    story: [
+      'In February 1966, on a rooftop in San Francisco, the writer and activist <strong>Stewart Brand</strong> started wondering why nobody had seen a photograph of the whole Earth from space. He believed that if people could see the planet whole (small, round and finite) they would start to look after it.',
+      'He printed buttons asking the question and sold them for 25 cents on college campuses. He mailed them to NASA officials, members of Congress, and well-known thinkers such as Marshall McLuhan and Buckminster Fuller.',
+      'On 10 November 1967 a NASA satellite, ATS-3, took the first colour photograph of almost the whole Earth. Brand put it on the cover of the first <em>Whole Earth Catalog</em> in autumn 1968. A few months later Earthrise (Apollo 8, December 1968) went on the cover of the spring 1969 issue.',
+      '<strong>Brand campaigned for the image before it existed.</strong> He had already decided what it would mean.'
+    ],
+    facts: [
+      ['Feb 1966', 'Brand starts the campaign'],
+      ['Price', '25 cents'],
+      ['Sent to', 'NASA, Congress, McLuhan, Fuller'],
+      ['10 Nov 1967', 'ATS-3 photo of almost whole Earth'],
+      ['Fall 1968', 'first Whole Earth Catalog'],
+      ['Spring 1969', 'Earthrise on the cover']
+    ],
+    prompts: {
+      35: 'Brand decided what a photo of Earth would mean before anyone took one. Can values shape knowledge before the evidence even exists?',
+      24: 'Did the whole-Earth photographs become powerful because of what they showed, or because people like Brand were ready to read them a certain way?'
+    },
+    trap: "Don't write about the environment. Ask how expectations shape what evidence is taken to show."
+  },
+  {
+    id: 'shirley', source: 'new',
+    img: 'shirley-card.jpg',
+    title: 'Kodak\'s "Shirley card" (1950s)',
+    hook: 'If Shirley looked right, the photo was "correct."',
+    specific: 'Colour reference card used by photo labs to check prints. First version mid-1950s, showing Kodak model Shirley Page.',
+    story: [
+      'When people dropped off film to be printed in the 1950s, the photo lab had to decide how to balance the colours. To check, technicians used a reference card: a photograph of a woman with pale skin, dark hair and bright clothes. The first model was <strong>Shirley Page</strong>, who worked for Kodak, and every card after hers was called a "Shirley card," whoever was on it. If Shirley\'s skin looked right, the print was judged correct.',
+      'Colour film chemistry was also designed around lighter skin. Photographs of people with darker skin often came out badly, with faces too dark and details lost.',
+      'Pressure that pushed Kodak to improve its film came from business customers: furniture companies who could not photograph dark wood properly, and chocolate makers who could not show the differences between their chocolates. One later Kodak film was advertised as able to photograph "the details of a dark horse in low light."',
+      'Kodak introduced a multiracial Shirley card in the mid-1990s. Lorna Roth, a professor at Concordia University in Montreal, studied the cards in a 2009 article called "Looking at Shirley, the Ultimate Norm."'
+    ],
+    facts: [
+      ['Mid-1950s', 'first Shirley card'],
+      ['Model', 'Shirley Page'],
+      ['Used by', 'photo-printing labs'],
+      ['Pressure from', 'furniture & chocolate makers'],
+      ['Mid-1990s', 'multiracial card'],
+      ['2009', "Lorna Roth's study"]
+    ],
+    prompts: {
+      12: 'Nobody at Kodak set out to make dark skin look bad. Can a technology be biased if no one meant it to be?',
+      35: 'Who did the people who designed film imagine as their customer, and what did that decide?',
+      5:  'For decades, a print was "correct" if it matched Shirley. What does that tell you about the standards we use to judge evidence?'
+    },
+    trap: "Don't write about racism in general. Ask how a standard built into a tool shapes what it records."
+  },
+  {
+    id: 'grandk', source: 'new',
+    img: 'le-grand-k.jpg',
+    title: 'Le Grand K, the kilogram (1879–2019)',
+    hook: 'It could never be wrong. That was the problem.',
+    specific: 'The International Prototype of the Kilogram: a platinum-iridium cylinder made in London in 1879, adopted as the kilogram in 1889, kept at the International Bureau of Weights and Measures (BIPM) near Paris.',
+    story: [
+      'From 1889 to 2019, the kilogram was not an idea. It was an <strong>object</strong>: a small metal cylinder of 90% platinum and 10% iridium, about 39 mm tall and 39 mm wide, made in London in 1879. Nicknamed <strong>Le Grand K</strong>, it sat under three glass bell jars in a vault at the International Bureau of Weights and Measures near Paris.',
+      'By definition, Le Grand K weighed exactly one kilogram. Every scale in the world traced back to it through official copies held by different countries.',
+      'Over about 100 years, scientists comparing Le Grand K with its copies found differences of up to about 50 micrograms, about the mass of a small grain of sand. But they could not tell which had changed. Had the copies gained mass, or had Le Grand K lost it? <strong>Because Le Grand K was the kilogram by definition, it could not be "wrong."</strong>',
+      'In November 2018, scientists from around the world voted to redefine the kilogram using a constant of nature, the Planck constant (h = 6.62607015 × 10⁻³⁴ J s). The new definition took effect on 20 May 2019. Le Grand K is still kept in its vault, but it no longer defines anything.'
+    ],
+    facts: [
+      ['1879', 'made in London'],
+      ['1889', 'becomes the kilogram'],
+      ['Material', '90% platinum, 10% iridium'],
+      ['Drift', 'up to ~50 micrograms'],
+      ['Nov 2018', 'vote to redefine'],
+      ['20 May 2019', 'Planck-constant kilogram']
+    ],
+    prompts: {
+      8:  'Le Grand K was certainly one kilogram, by definition. Is that the same kind of certainty as measuring something?',
+      5:  'If the original and its copies disagree, what could count as evidence of which one changed?',
+      13: 'Is a kilogram defined by a constant of nature better knowledge than one defined by an object, or just more convenient?'
+    },
+    trap: "Don't explain the physics. Ask what it means to be certain of a measurement."
+  },
+  {
+    id: 'pyramid', source: 'new',
+    img: 'food-pyramid-1992.jpg',
+    title: 'The USDA Food Guide Pyramid (1992)',
+    hook: 'Official advice — from an agency that also supports farmers.',
+    specific: 'The Food Guide Pyramid, released by the U.S. Department of Agriculture (USDA) in April 1992.',
+    story: [
+      'In 1992 the U.S. Department of Agriculture released the <strong>Food Guide Pyramid</strong> to tell Americans what to eat. At the wide base: 6–11 servings a day of bread, cereal, rice and pasta. Above that: vegetables and fruit, then meat and dairy. At the narrow tip: fats, oils and sweets, "use sparingly." It appeared on cereal boxes, school walls and food packaging.',
+      'It was nearly released a year earlier. In April 1991 the Secretary of Agriculture, Edward Madigan, stopped it, saying it "needed more study," after the meat and dairy industries objected: the design put their products near the top, in the "eat less" part. After about a year and an $855,000 study, it was released.',
+      'The USDA had two jobs at once: advising people about healthy eating, and supporting American farmers. Luise Light, a nutritionist who worked on the guide, later claimed that her team had recommended far fewer grain servings and that the numbers were changed. This is her own account, and it is disputed.',
+      'Critics such as Walter Willett of Harvard said the pyramid treated all fats as bad and all carbohydrates as good. It was replaced by MyPyramid in 2005 and by MyPlate in June 2011.'
+    ],
+    facts: [
+      ['April 1991', 'release stopped'],
+      ['April 1992', 'pyramid released'],
+      ['Base', '6–11 servings of grains'],
+      ['Tip', 'fats, oils, sweets: "use sparingly"'],
+      ['2005', 'MyPyramid'],
+      ['June 2011', 'MyPlate']
+    ],
+    prompts: {
+      35: 'The USDA advises people what to eat and also supports farmers. How might those two jobs shape the advice?',
+      12: 'Light\'s claim is disputed. If you cannot be sure who changed what, how can you judge whether the pyramid was biased?',
+      13: 'The pyramid was replaced by MyPlate. How do we know MyPlate is better knowledge, and not just a new set of values?'
+    },
+    trap: "Don't argue about what people should eat. Ask how official knowledge gets made."
+  },
+  {
+    id: 'mayfield', source: 'new',
+    img: 'lfp17-mayfield.jpg',
+    title: 'Latent Fingerprint 17, Madrid (2004)',
+    hook: 'Four experts agreed. All four were wrong.',
+    specific: 'Partial fingerprint ("Latent Fingerprint 17") found on a plastic bag of detonators after the 11 March 2004 Madrid train bombings.',
+    story: [
+      'On 11 March 2004, bombs on commuter trains in Madrid killed 191 people (later 193). Spanish police found a blue plastic bag of detonators in a van near a train station. On it was a partial fingerprint, labelled <strong>Latent Fingerprint 17</strong>.',
+      'Spain shared the print with the FBI. Its computer database suggested 20 possible matches. Three FBI fingerprint examiners, and then an independent expert, concluded that it matched number four on the list: <strong>Brandon Mayfield</strong>, a lawyer near Portland, Oregon, a former U.S. Army soldier who had converted to Islam.',
+      'On 13 April, Spanish police told the FBI their own check was negative. The FBI did not change its view. Mayfield was arrested on 6 May. On 19 May, Spain matched the fingerprint to an Algerian man, Ouhnane Daoud. Mayfield was released the next day.',
+      'The FBI apologised and in 2006 paid him $2 million. A U.S. government investigation (2006) found that the two prints had an "unusual similarity," and that examiners used "circular reasoning": once they believed it was a match, they explained the differences away. It said Mayfield\'s religion was "not the sole or primary cause" but "also likely contributed" to the examiners not reconsidering.'
+    ],
+    facts: [
+      ['11 Mar 2004', 'Madrid bombings'],
+      ['20', 'database candidates'],
+      ['4', 'experts agreed on the match'],
+      ['13 Apr', 'Spain: negative match'],
+      ['6–20 May', 'Mayfield held'],
+      ['2006', '$2 million; official report']
+    ],
+    prompts: {
+      5:  'Fingerprints are treated as some of the strongest evidence there is. What went wrong when four experts agreed?',
+      12: 'Once the examiners believed it was a match, they explained the differences away. Can experts avoid doing this?',
+      8:  'Before Spain\'s result, the FBI treated the match as certain. What would it actually take to be certain?'
+    },
+    trap: "Don't write about terrorism or the FBI. Ask what makes expert evidence reliable."
+  },
+  {
+    id: 'mitoma', source: 'new',
+    img: 'japan-spain-2022.jpg',
+    title: "Japan's second goal against Spain, 2022 World Cup",
+    hook: 'Millions watched the same video. They did not see the same thing.',
+    specific: "Ao Tanaka's goal (51st minute) after Kaoru Mitoma's cut-back, Japan v Spain, Group E, Khalifa International Stadium, Qatar, 1 December 2022.",
+    story: [
+      'In their last group game at the 2022 World Cup in Qatar, Japan were losing 1–0 to Spain at half-time. Japan equalised in the 48th minute. Three minutes later, <strong>Kaoru Mitoma</strong> chased a ball to the byline and cut it back for Ao Tanaka to score.',
+      'On the TV replay, the ball looked clearly out of play before Mitoma reached it. Many players and viewers were sure. The officials checked it with VAR (video assistant referee) and, after a review, <strong>the goal stood</strong>. Japan won 2–1.',
+      'The rule: the ball is out only if the <strong>whole</strong> ball is over the <strong>whole</strong> line. Seen from directly above, a tiny part of the curve of the ball was still over the line. Seen from the side, it looked out. FIFA later released images from the goal-line cameras.',
+      'The result knocked Germany out of the World Cup on goal difference. Millions of people argued online about whether the ball was in or out. All of them had watched the same video.'
+    ],
+    facts: [
+      ['1 Dec 2022', 'Japan 2–1 Spain'],
+      ['48′', 'Japan equalise'],
+      ['51′', 'Tanaka scores'],
+      ['Rule', 'whole ball over whole line'],
+      ['Decided by', 'VAR review'],
+      ['Result', 'Germany eliminated']
+    ],
+    prompts: {
+      8:  'Viewers were certain it was out; the officials decided it was in. Can both be certain? Can either?',
+      5:  'Is a camera angle evidence? Which angle counts, and who decides?',
+      24: 'FIFA released the overhead image the next day. Did seeing it change people\'s minds? Why or why not?'
+    },
+    trap: "Don't argue whether it was in. Ask what it takes to be certain about what we see."
+  },
+  {
+    id: 'pluto', source: 'new',
+    img: 'iau-2006.jpg',
+    title: 'The IAU vote on what counts as a planet (2006)',
+    hook: 'Pluto did not change. The knowledge did.',
+    specific: 'International Astronomical Union Resolution B5 (the definition of a planet) and B6 (Pluto), voted on at the IAU General Assembly in Prague, 24 August 2006.',
+    story: [
+      'Pluto was discovered on 18 February 1930 by Clyde Tombaugh at Lowell Observatory in Arizona. For 76 years, students learned that there were nine planets.',
+      'In 2005, a team led by Mike Brown announced the discovery of <strong>Eris</strong>, far beyond Pluto. At the time it seemed bigger than Pluto. (Later measurements showed Pluto is slightly wider, but Eris is about 27% more massive.) Was Eris the tenth planet? And what about the other similar objects being found?',
+      'On 24 August 2006, at the International Astronomical Union\'s meeting in Prague, astronomers voted on a definition. A planet must (1) orbit the Sun, (2) be heavy enough to pull itself into a round shape, and (3) have "cleared the neighbourhood" around its orbit. Pluto shares its zone with many icy objects, so it failed rule 3 and became a <strong>"dwarf planet."</strong>',
+      'About 424 astronomers voted on the final day, out of roughly 10,000 astronomers worldwide. Some, including Alan Stern, who led NASA\'s New Horizons mission to Pluto, have argued against the definition ever since.'
+    ],
+    facts: [
+      ['18 Feb 1930', 'Pluto discovered'],
+      ['2005', 'Eris announced'],
+      ['24 Aug 2006', 'IAU vote, Prague'],
+      ['3 rules', 'orbit · round · cleared orbit'],
+      ['~424', 'astronomers voted'],
+      ['~10,000', 'astronomers worldwide']
+    ],
+    prompts: {
+      13: 'Textbooks went from nine planets to eight. Did we learn something new about Pluto, or did we change a definition?',
+      24: 'Would the decision carry the same authority if all 10,000 astronomers had voted?',
+      8:  'Was it ever certain that Pluto was a planet? What kind of certainty does a definition give?'
+    },
+    trap: "Don't argue whether Pluto is a planet. Ask what changed when the knowledge changed."
+  }
+];
+
+// =====================================================================
+// PERSONAL OBJECTS — no context: the student supplies it
+// =====================================================================
+const BUILD_QUESTIONS = [
+  'Exactly which one is it? (date, version, where it is now)',
+  'Who made it, and why?',
+  'Who uses it, and what do they use it for?',
+  'What decisions went into making it the way it is?',
+  'What happened because of it?'
+];
+
+const PERSONAL = [
+  {
+    id: 'screentime', title: "My phone's Screen Time report for one week",
+    example: 'MY Screen Time report for 1–7 October, showing 41 hours and 212 pickups',
+    prompts: {
+      5: 'Is this report good evidence of how you spent your week? What does it count, and what can\'t it see?',
+      8: 'The numbers are exact to the minute. Does that make you certain about your own habits?'
+    }
+  },
+  {
+    id: 'wrapped', title: 'My Spotify Wrapped or YouTube home page',
+    example: 'MY Spotify Wrapped for 2025, which says my top genre is "bedroom pop"',
+    prompts: {
+      12: 'An algorithm decided who you are as a listener. Whose assumptions are built into it?',
+      35: 'What does the company that made it want from you — and how does that shape the "knowledge" about you?'
+    }
+  },
+  {
+    id: 'reportcard', title: 'My report card from one semester',
+    example: 'MY Grade 10 Semester 1 report card',
+    prompts: {
+      5: 'Is a grade good evidence of what you know? What would a teacher need to see to be sure?',
+      35: 'What does your school value? Look at what the report card measures, and what it leaves out.',
+      8: 'A 6 looks exact. How certain is it?'
+    }
+  },
+  {
+    id: 'whatsapp', title: 'A message forwarded in my family WhatsApp group',
+    example: 'THE health warning forwarded to my family group on 3 October',
+    prompts: {
+      24: 'Why do people believe a message more when it comes from family? Does the source matter more than the content?',
+      5: 'What evidence does the message give? What would it need to give?'
+    }
+  },
+  {
+    id: 'familyphoto', title: 'An old family photograph',
+    example: "MY grandparents' wedding photograph",
+    prompts: {
+      35: 'Who chose this moment to photograph, and this photo to keep? What did they want remembered?',
+      24: 'What would a stranger understand from this photo that your family would not, and the reverse?'
+    }
+  },
+  {
+    id: 'label', title: 'A nutrition label in my kitchen',
+    example: 'THE nutrition label on the cereal box in my kitchen',
+    prompts: {
+      35: 'Who decided which numbers go on the label, and what serving size to use?',
+      5: 'Is the label good evidence that the food is healthy? Who checks it?'
+    }
+  },
+  {
+    id: 'sleepscore', title: "My smartwatch's sleep score for one night",
+    example: 'MY watch\'s sleep score of 62 for the night before my maths test',
+    prompts: {
+      8: 'You were there all night, and the watch says you slept badly. Who knows better: you or the watch?',
+      5: 'What is the watch actually measuring? Is that good evidence of how well you slept?'
+    }
+  },
+  {
+    id: 'ai', title: 'One answer an AI chatbot gave me',
+    example: 'THE answer a chatbot gave me about the causes of World War I (screenshot, 2 October)',
+    prompts: {
+      5: 'The answer sounded confident. What evidence did it actually give you?',
+      24: 'Would you trust the same words more or less if a teacher said them? Why?',
+      8: 'How could you become certain that the answer was right, without asking another AI?'
+    }
+  },
+  {
+    id: 'oldtextbook', title: 'An old textbook at home',
+    example: "MY father's 1995 science textbook, which lists nine planets",
+    prompts: {
+      13: 'Find one thing in it that has changed since. Was it wrong, or was it the best knowledge at the time?',
+      12: 'What does the book assume its reader already believes?'
+    }
+  }
+];
+
+// =====================================================================
+// RENDERING
+// =====================================================================
+let activePrompt = null;   // number or null
+let activeSource = 'all';  // all | class | new | personal
+let sheetList = [];        // items currently navigable in the modal
+let sheetIndex = 0;
+
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+function imgOrPlaceholder(file, alt) {
+  const ph = `<div class="placeholder"><b>IMAGE COMING</b>images/${esc(file)}</div>`;
+  return `<img src="images/${esc(file)}" alt="${esc(alt)}" onerror="this.outerHTML=this.dataset.ph" data-ph="${esc(ph)}">`;
+}
+
+function promptTags(p) {
+  return Object.keys(p).map(n => `<span class="pnum" title="${esc(PROMPTS[n])}">#${n}</span>`).join('');
+}
+
+function sourceTag(o) {
+  if (o.kind === 'personal') return '<span class="card-tag tag-personal">Your own object</span>';
+  return o.source === 'class'
+    ? `<span class="card-tag tag-class">From class · ${esc(o.fromLesson)}</span>`
+    : '<span class="card-tag tag-new">New object</span>';
+}
+
+function matches(o) {
+  if (activePrompt && !(activePrompt in o.prompts)) return false;
+  if (activeSource === 'all') return true;
+  if (activeSource === 'personal') return o.kind === 'personal';
+  return o.kind !== 'personal' && o.source === activeSource;
+}
+
+function cardHTML(o, i, listName) {
+  const top = o.kind === 'personal'
+    ? `<div class="personal-icon">MY · ___</div>`
+    : `<div class="card-img">${imgOrPlaceholder(o.img, o.title)}</div>`;
+  const hook = o.kind === 'personal' ? `e.g. ${o.example}` : o.hook;
+  return `<button class="card" onclick="openSheet('${listName}', ${i})">
+    ${top}
+    <div class="card-body">
+      ${sourceTag(o)}
+      <div class="card-title">${esc(o.title)}</div>
+      <div class="card-hook">${esc(hook)}</div>
+      <div class="card-prompts">${promptTags(o.prompts)}</div>
+    </div>
+  </button>`;
+}
+
+function promptBlock(prompts) {
+  const order = activePrompt && prompts[activePrompt]
+    ? [activePrompt, ...Object.keys(prompts).map(Number).filter(n => n !== activePrompt)]
+    : Object.keys(prompts);
+  return order.map(n => `<div class="prompt-q">
+      <div class="pq-prompt"><span class="pnum">#${n}</span>${esc(PROMPTS[n])}</div>
+      <div class="pq-ask">${esc(prompts[n])}</div>
+    </div>`).join('');
+}
+
+function objectSheet(o) {
+  if (o.kind === 'personal') {
+    return `<div class="obj">
+      <div class="obj-head">
+        <div class="obj-img"><div class="personal-icon" style="width:100%;height:100%;min-height:150px;">MY · ___</div></div>
+        <div>
+          ${sourceTag(o)}
+          <div class="obj-title">${esc(o.title)}</div>
+          <div class="obj-specific">${esc(o.example)}</div>
+          <p class="obj-class-note">This is only an example. Make it yours: name the exact one.</p>
+        </div>
+      </div>
+      <h3>Build your own context</h3>
+      <p style="font-size:1rem; margin-bottom:0.4rem;">There is no card for this object, because you are the expert on it. Answer these and you have Block 1:</p>
+      <ol class="build">${BUILD_QUESTIONS.map(q => `<li>${esc(q)}</li>`).join('')}</ol>
+      <h3>Prompts it can answer</h3>
+      ${promptBlock(o.prompts)}
+      <div class="trap">Don't write about yourself or your habits. Ask what this object shows about how knowledge is produced, judged or limited.</div>
+    </div>`;
+  }
+  return `<div class="obj">
+    <div class="obj-head">
+      <div class="obj-img">${imgOrPlaceholder(o.img, o.title)}</div>
+      <div>
+        ${sourceTag(o)}
+        <div class="obj-title">${esc(o.title)}</div>
+        <div class="obj-specific">${esc(o.specific)}</div>
+        ${o.classNote ? `<p class="obj-class-note">${esc(o.classNote)}</p>` : ''}
+      </div>
+    </div>
+    <h3>The story</h3>
+    <div class="obj-story">${o.story.map(p => `<p>${p}</p>`).join('')}</div>
+    <h3>Key facts</h3>
+    <ul class="facts">${o.facts.map(([k, v]) => `<li><b>${esc(k)}</b> — ${esc(v)}</li>`).join('')}</ul>
+    <h3>Prompts it can answer</h3>
+    ${promptBlock(o.prompts)}
+    <div class="trap">${esc(o.trap)}</div>
+  </div>`;
+}
+
+const LISTS = {};
+
+function render() {
+  const ctx = OBJECTS.map(o => ({ ...o, kind: 'context' })).filter(matches);
+  const per = PERSONAL.map(o => ({ ...o, kind: 'personal' })).filter(matches);
+  LISTS.context = ctx;
+  LISTS.personal = per;
+
+  document.getElementById('grid-context').innerHTML =
+    ctx.length ? ctx.map((o, i) => cardHTML(o, i, 'context')).join('') : '<p class="empty">No objects with context match this filter.</p>';
+  document.getElementById('grid-personal').innerHTML =
+    per.length ? per.map((o, i) => cardHTML(o, i, 'personal')).join('') : '<p class="empty">No personal objects match this filter.</p>';
+
+  const showCtx = activeSource !== 'personal';
+  const showPer = activeSource === 'all' || activeSource === 'personal';
+  document.getElementById('head-context').style.display = showCtx ? '' : 'none';
+  document.getElementById('grid-context').style.display = showCtx ? '' : 'none';
+  document.getElementById('head-personal').style.display = showPer ? '' : 'none';
+  document.getElementById('grid-personal').style.display = showPer ? '' : 'none';
+
+  const n = (showCtx ? ctx.length : 0) + (showPer ? per.length : 0);
+  document.getElementById('count').textContent = `${n} object${n === 1 ? '' : 's'}`;
+  document.getElementById('prompt-full').textContent = activePrompt ? `#${activePrompt} — ${PROMPTS[activePrompt]}` : '';
+
+  renderChips();
+  renderPrintArea(showCtx ? ctx : [], showPer ? per : []);
+}
+
+function renderChips() {
+  const pc = document.getElementById('prompt-chips');
+  pc.innerHTML = `<button class="chip ${activePrompt === null ? 'on' : ''}" onclick="setPrompt(null)">All prompts</button>` +
+    Object.keys(PROMPTS).map(n => `<button class="chip ${activePrompt === +n ? 'on' : ''}" onclick="setPrompt(${n})" title="${esc(PROMPTS[n])}"><span class="num">#${n}</span>${PROMPT_SHORT[n]}</button>`).join('');
+  const sc = document.getElementById('source-chips');
+  const opts = [['all', 'Everything'], ['class', 'From class'], ['new', 'New objects'], ['personal', 'My own objects']];
+  sc.innerHTML = opts.map(([k, label]) => `<button class="chip ${activeSource === k ? 'on' : ''}" onclick="setSource('${k}')">${label}</button>`).join('');
+}
+
+function renderPrintArea(ctx, per) {
+  const filterLine = [
+    activePrompt ? `Prompt #${activePrompt}: ${PROMPTS[activePrompt]}` : 'All prompts',
+    { all: 'All objects', class: 'Objects from class', new: 'New objects', personal: 'Your own objects' }[activeSource]
+  ].join(' · ');
+  const cover = `<div class="print-cover">
+      <div class="kicker" style="color:#b8281f">TOK · Knowledge &amp; the Knower · Object Bank</div>
+      <h1>The object, not an object.</h1>
+      <p>Your object must be <strong>one specific thing that exists (or existed) in the world</strong>. Test: can you put THE or MY in front of it and say exactly which one? Everything you need for Block 1 is on the card.</p>
+      <p style="font-family:'JetBrains Mono',monospace; font-size:8pt;">${esc(filterLine)}</p>
+    </div>`;
+  const items = ctx.map(o => `<section class="print-obj">${objectSheet(o)}</section>`).join('') +
+    per.map((o, i) => `<section class="print-obj personal${i === 0 ? ' first-personal' : ''}">${objectSheet(o)}</section>`).join('');
+  document.getElementById('print-area').innerHTML = cover + items;
+}
+
+function setPrompt(n) { activePrompt = n; render(); }
+function setSource(s) { activeSource = s; render(); }
+
+function openSheet(listName, i) {
+  sheetList = LISTS[listName];
+  sheetIndex = i;
+  showSheet();
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function showSheet() {
+  document.getElementById('sheet-content').innerHTML = objectSheet(sheetList[sheetIndex]);
+  document.getElementById('sheet-prev').disabled = sheetIndex === 0;
+  document.getElementById('sheet-next').disabled = sheetIndex === sheetList.length - 1;
+  document.getElementById('overlay').scrollTop = 0;
+}
+function stepSheet(d) {
+  const n = sheetIndex + d;
+  if (n < 0 || n >= sheetList.length) return;
+  sheetIndex = n; showSheet();
+}
+function closeSheet() {
+  document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('overlay').classList.contains('open')) return;
+  if (e.key === 'Escape') closeSheet();
+  if (e.key === 'ArrowRight') stepSheet(1);
+  if (e.key === 'ArrowLeft') stepSheet(-1);
+});
+
+render();
+</script>
+</body>
+</html>
