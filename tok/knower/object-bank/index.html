@@ -13,8 +13,8 @@ Repo path: classroom-games/tok/knower/object-bank/
 Images go in:  object-bank/images/   (a placeholder box shows until each file exists)
 
   semmelweis-1861.jpg      title page of Semmelweis's 1861 book
-  geosyncline-textbook.jpg geosyncline diagram from a real textbook
-                           -> ALSO fill in SOURCE_GEOSYNCLINE below
+  geosyncline-kober.png    Kober's model redrawn in a later textbook (source unknown)
+  geosyncline-modern.jpg   modern school textbook figure (source unknown)
   wegener-1915.jpg         title page / cover of Wegener's 1915 book
   photo-51.jpg             Photo 51
   tuskegee-letter.jpg      "Last Chance for Special Free Treatment" letter
@@ -266,6 +266,8 @@ BIPM/Wikipedia, CDC). Disputed points are worded as disputed on the cards.
   .build li { margin-bottom: 0.3rem; font-size: 1rem; }
   .obj-foot { margin-top: 0.9rem; font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; color: var(--ink-soft); letter-spacing: 0.08em; }
 
+  .img-cap { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; line-height: 1.45; color: var(--ink-soft); margin-top: 0.35rem; }
+
   #print-area { display: none; }
 
   /* ===== RESPONSIVE ===== */
@@ -300,6 +302,8 @@ BIPM/Wikipedia, CDC). Disputed points are worded as disputed on the cards.
     .obj-head { grid-template-columns: 48mm 1fr; gap: 5mm; margin-bottom: 2mm; }
     .obj-img { min-height: 30mm; border-width: 2px; }
     .obj-img img { max-height: 52mm; }
+    .obj-img + .img-cap + .obj-img img, .has-img2 .obj-img img { max-height: 30mm; }
+    .img-cap { font-size: 6.5pt; }
     .placeholder { min-height: 30mm; background: #eee; color: #444; }
     .placeholder b { color: #000; }
     .personal-icon { background: #eee; color: #000; height: 26mm; }
@@ -405,8 +409,6 @@ const PROMPTS = {
 };
 const PROMPT_SHORT = { 5: 'Evidence', 8: 'Certainty', 12: 'Bias', 13: 'Improvement', 24: 'Context', 35: 'Values' };
 
-// TEACHER: replace with the textbook your geosyncline photo comes from.
-const SOURCE_GEOSYNCLINE = '[Source to be added: textbook title, author, year, page and figure number — copy it from the photo]';
 
 // =====================================================================
 // OBJECTS WITH CONTEXT
@@ -444,38 +446,41 @@ const OBJECTS = [
   },
   {
     id: 'geosyncline', source: 'class', fromLesson: 'L4 · You Have a Frame',
-    img: 'geosyncline-textbook.jpg',
-    title: 'A geosyncline diagram from a geology textbook',
-    hook: 'A whole discipline, confident — and wrong.',
-    specific: SOURCE_GEOSYNCLINE,
-    classNote: 'In class you read a textbook passage written to show this theory. The diagram in this photo is from a real textbook.',
+    img: 'geosyncline-kober.png',
+    imgCaption: "Kober's model, redrawn in a later geography textbook: the land itself squeezes the trough.",
+    img2: 'geosyncline-modern.jpg',
+    img2Caption: 'A modern school textbook: the same word, now explained by plate movement.',
+    title: "Kober's geosyncline theory, Der Bau der Erde (1921)",
+    hook: 'The mainstream answer — and it was wrong too.',
+    specific: 'Leopold Kober, Der Bau der Erde (The Structure of the Earth). Berlin: Gebrüder Borntraeger, 1921. 321 pages, 46 figures.',
+    classNote: 'In class you read a textbook passage written to show geosynclinal theory. Kober\'s book is a real, specific version of it.',
     story: [
-      'For about a hundred years, geologists explained mountains with <strong>geosynclinal theory</strong>. James Hall set out the idea in 1857–59, and James Dwight Dana named it in 1873. A geosyncline was a long trough in the Earth\'s crust that slowly sank and filled with miles of sediment. Later the sediment was squeezed sideways, folded and pushed up into mountains. Most geologists thought the squeezing came from the Earth slowly shrinking as it cooled.',
-      'The theory explained real evidence: why sea fossils are found at the tops of mountains, and why mountain belts contain such thick layers of rock. It was taught in textbooks in North America and Europe. Marshall Kay\'s <em>North American Geosynclines</em> (1951) was still a major work on it in the 1950s.',
-      'In this theory, continents stay where they are. When Alfred Wegener argued in 1915 that continents move, textbooks dismissed the idea.',
-      'In the 1960s, new evidence from the ocean floor (seafloor spreading in 1962, magnetic stripes in 1963) led to <strong>plate tectonics</strong>, which most geologists accepted by about 1968. Textbooks were rewritten and the word "geosyncline" mostly disappeared. Unlike Wegener, the geologists who held the old theory were never called cranks.'
+      'For about a hundred years, geologists explained mountains with <strong>geosynclinal theory</strong> (named by James Dwight Dana in 1873): a long trough in the Earth\'s crust slowly sank, filled with miles of sediment, and was later squeezed and folded up into mountains.',
+      'In 1921 the Austrian geologist <strong>Leopold Kober</strong> published <em>Der Bau der Erde</em>. In his version, two stable blocks of land ("forelands") move towards each other and squeeze the sediment between them. Mountain ranges rise along each edge ("marginal ranges"), with a block left in the middle (the "median mass"). Look at the top diagram: there are no plates, only land pushing on land. Continents stay where they are.',
+      'Kober\'s book came out six years after Wegener\'s (1915), explaining the same mountains. Kober\'s fixed continents were mainstream; Wegener\'s moving continents were mostly rejected.',
+      'In the 1960s, evidence from the ocean floor (seafloor spreading in 1962, magnetic stripes in 1963) led to <strong>plate tectonics</strong>, accepted by about 1968. Kober\'s theory was largely abandoned. But look at the bottom diagram: some school textbooks still use the word "geosyncline", now explained by moving plates. The old word survived inside the new theory. Unlike Wegener, the geologists who held the old theory were never called cranks.'
     ],
     facts: [
-      ['1857–59', 'James Hall describes the idea'],
       ['1873', 'Dana names it "geosynclinal"'],
-      ['1951', "Kay's North American Geosynclines"],
-      ['1962–63', 'seafloor spreading; magnetic stripes'],
+      ['1915', "Wegener's book (the rival)"],
+      ['1921', "Kober's Der Bau der Erde"],
+      ['Kober\'s forces', 'land blocks squeezing a trough'],
       ['c. 1968', 'plate tectonics accepted'],
-      ['Today', 'the term is rarely used']
+      ['Today', 'word survives in some textbooks']
     ],
     prompts: {
-      13: 'This diagram was "current knowledge" when it was printed. How could its readers have known it would be replaced — and how do we know ours won\'t be?',
-      5:  'Fossils on mountaintops counted as evidence FOR this theory. Who decides what a piece of evidence is evidence of?',
-      12: 'If a whole discipline shares the same assumption, is that bias? Who could even notice it?'
+      13: 'One diagram says land squeezes the trough; the other says plates do. Did the new theory replace the old knowledge, or absorb it?',
+      24: 'Kober and Wegener wrote six years apart about the same mountains. Why was one treated as mainstream and the other as a crank?',
+      5:  'Fossils on mountaintops counted as evidence for Kober\'s theory, and later for plate tectonics. Who decides what a piece of evidence is evidence of?'
     },
-    trap: "Don't explain how mountains form. Ask how a whole discipline could be confident and wrong."
+    trap: "Don't explain how mountains form. Ask how a whole discipline could be confident and wrong — and what survives when a theory is replaced."
   },
   {
     id: 'wegener', source: 'class', fromLesson: 'L4 · You Have a Frame',
-    img: 'wegener-1915.jpg',
+    img: 'wegener-1915.jpeg',
     title: "Wegener's The Origin of Continents and Oceans (1915)",
     hook: 'Lots of evidence. No mechanism. Forty years of no.',
-    specific: 'Alfred Wegener, Die Entstehung der Kontinente und Ozeane, first edition 1915. Revised 1920, 1922 and 1929; first English translation 1924.',
+    specific: 'Alfred Wegener, Die Entstehung der Kontinente und Ozeane, first edition, Braunschweig: Friedr. Vieweg & Sohn, 1915 (Sammlung Vieweg, no. 23). Revised 1920, 1922 and 1929; first English translation 1924.',
     story: [
       'Alfred Wegener had a doctorate in astronomy and worked as a meteorologist and polar researcher. <strong>He was not a geologist.</strong> In 1915 he published a book arguing that the continents had once been joined together and had slowly drifted apart.',
       'His evidence: the coastlines of South America and Africa fit together; the same fossils (the reptile <em>Mesosaurus</em>, the plant <em>Glossopteris</em>) are found on continents now separated by oceans; matching rock formations line up across the Atlantic; and there are traces of ancient glaciers in places that are now tropical.',
@@ -529,7 +534,7 @@ const OBJECTS = [
     img: 'tuskegee-letter.jpg',
     title: 'The "Last Chance for Special Free Treatment" letter (early 1930s)',
     hook: 'A letter offering treatment. There was no treatment.',
-    specific: 'Letter sent to men in the U.S. Public Health Service syphilis study in Macon County, Alabama, in the early 1930s (1932–33). Records of the study are held at the National Archives at Atlanta.',
+    specific: 'Letter on Macon County Health Department letterhead ("Alabama State Board of Health and U.S. Public Health Service cooperating with Tuskegee Institute"), sent to men in the syphilis study in the early 1930s. Records of the study are held at the National Archives at Atlanta.',
     story: [
       'In 1932 the U.S. Public Health Service began a study in Macon County, Alabama, to observe what untreated syphilis does to the body. It enrolled <strong>600 Black men</strong>: 399 with syphilis and 201 without. Most were poor sharecroppers. They were told they were being treated for "bad blood." They were not told they had syphilis.',
       'To get the men to come in for spinal taps, a painful procedure used only to collect data, the study sent this letter. Its title called the visit <strong>"Last Chance for Special Free Treatment."</strong> It was not treatment.',
@@ -553,7 +558,7 @@ const OBJECTS = [
   },
   {
     id: 'leepayne', source: 'class', fromLesson: 'L3 · Two True Maps',
-    img: 'lee-payne-1963.jpg',
+    img: 'lee-payne-1963.webp',
     title: "Rowland Scherman's photograph of Edith Lee-Payne (1963)",
     hook: 'A record of her she did not know existed for 45 years.',
     specific: 'Photograph taken at the March on Washington for Jobs and Freedom, 28 August 1963, by Rowland Scherman for the U.S. Information Agency. U.S. National Archives, identifier 542030.',
@@ -607,7 +612,7 @@ const OBJECTS = [
   },
   {
     id: 'mercator', source: 'class', fromLesson: 'L3 · Two True Maps',
-    img: 'mercator-1569.jpg',
+    img: 'mercator-1569-web.jpg',
     title: "Mercator's world map (1569)",
     hook: 'Made for sailors. Hung on classroom walls for centuries.',
     specific: 'Gerardus Mercator, Nova et Aucta Orbis Terrae Descriptio ad Usum Navigantium Emendate Accommodata ("New and more complete representation of the Earth, properly adapted for use in navigation"). Duisburg, 1569, engraved on 18 sheets.',
@@ -634,10 +639,11 @@ const OBJECTS = [
   },
   {
     id: 'nacirema', source: 'class', fromLesson: 'L4 · You Have a Frame',
-    img: 'nacirema-1956.jpg',
+    img: 'nacirema.jpeg',
     title: 'Horace Miner, "Body Ritual among the Nacirema" (1956)',
     hook: 'You judged them before you knew who they were.',
     specific: 'Horace Miner, "Body Ritual among the Nacirema," American Anthropologist, vol. 58, no. 3, June 1956, pp. 503–507.',
+    imgCaption: 'Shown: a later reprint of the article in a textbook collection.',
     story: [
       'In 1956 the anthropologist <strong>Horace Miner</strong> published an article in a serious academic journal describing the strange rituals of the "Nacirema," a people obsessed with the body. They visit "holy-mouth-men," keep charms in a box in a household "shrine," and are taken to the "latipso" when they are very ill.',
       '<strong>Nacirema is "American" spelled backwards.</strong> The shrine is a bathroom, the charm-box is a medicine cabinet, the holy-mouth-men are dentists and the latipso is a hospital. Miner described ordinary American habits the way anthropologists of his time described cultures they saw as "primitive."',
@@ -742,7 +748,7 @@ const OBJECTS = [
   },
   {
     id: 'pyramid', source: 'new',
-    img: 'food-pyramid-1992.jpg',
+    img: 'food-pyramid-1992.gif',
     title: 'The USDA Food Guide Pyramid (1992)',
     hook: 'Official advice — from an agency that also supports farmers.',
     specific: 'The Food Guide Pyramid, released by the U.S. Department of Agriculture (USDA) in April 1992.',
@@ -769,7 +775,7 @@ const OBJECTS = [
   },
   {
     id: 'mayfield', source: 'new',
-    img: 'lfp17-mayfield.jpg',
+    img: 'lfp17-mayfield.jpeg',
     title: 'Latent Fingerprint 17, Madrid (2004)',
     hook: 'Four experts agreed. All four were wrong.',
     specific: 'Partial fingerprint ("Latent Fingerprint 17") found on a plastic bag of detonators after the 11 March 2004 Madrid train bombings.',
@@ -796,7 +802,7 @@ const OBJECTS = [
   },
   {
     id: 'mitoma', source: 'new',
-    img: 'japan-spain-2022.jpg',
+    img: 'japan-spain-2022.jpeg',
     title: "Japan's second goal against Spain, 2022 World Cup",
     hook: 'Millions watched the same video. They did not see the same thing.',
     specific: "Ao Tanaka's goal (51st minute) after Kaoru Mitoma's cut-back, Japan v Spain, Group E, Khalifa International Stadium, Qatar, 1 December 2022.",
@@ -1017,9 +1023,13 @@ function objectSheet(o) {
       <div class="trap">Don't write about yourself or your habits. Ask what this object shows about how knowledge is produced, judged or limited.</div>
     </div>`;
   }
-  return `<div class="obj">
+  return `<div class="obj${o.img2 ? ' has-img2' : ''}">
     <div class="obj-head">
-      <div class="obj-img">${imgOrPlaceholder(o.img, o.title)}</div>
+      <div>
+        <div class="obj-img">${imgOrPlaceholder(o.img, o.title)}</div>
+        ${o.imgCaption ? `<p class="img-cap">${esc(o.imgCaption)}</p>` : ''}
+        ${o.img2 ? `<div class="obj-img" style="margin-top:0.6rem">${imgOrPlaceholder(o.img2, o.img2Caption || o.title)}</div><p class="img-cap">${esc(o.img2Caption || '')}</p>` : ''}
+      </div>
       <div>
         ${sourceTag(o)}
         <div class="obj-title">${esc(o.title)}</div>
