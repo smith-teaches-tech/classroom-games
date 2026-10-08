@@ -471,7 +471,7 @@ const OBJECTS = [
     prompts: {
       13: 'One diagram says land squeezes the trough; the other says plates do. Did the new theory replace the old knowledge, or absorb it?',
       24: 'Kober and Wegener wrote six years apart about the same mountains. Why was one treated as mainstream and the other as a crank?',
-      5:  'Fossils on mountaintops counted as evidence for Kober\'s theory, and later for plate tectonics. Who decides what a piece of evidence is evidence of?'
+      8:  'In the 1920s most geologists were certain continents could not move. What was that certainty built on, and why did it feel so secure from the inside?'
     },
     trap: "Don't explain how mountains form. Ask how a whole discipline could be confident and wrong — and what survives when a theory is replaced."
   },
@@ -661,7 +661,8 @@ const OBJECTS = [
     prompts: {
       12: "Miner describes Americans accurately, but you still judged them. Where did the bias come from: the writer, the words, or you?",
       35: 'What values were built into the way anthropologists of the 1950s described other cultures?',
-      24: 'Would you have reacted the same way if the title had said "Body Ritual among Americans"?'
+      24: 'Would you have reacted the same way if the title had said "Body Ritual among Americans"?',
+      8:  'Before you realised who the Nacirema were, you were sure they were strange. What changed your certainty: new facts, or a new way of seeing the same facts?'
     },
     trap: "Don't write about American culture. Ask how an observer's framework shapes what they \"see.\""
   },
@@ -1056,7 +1057,7 @@ function render() {
   LISTS.personal = per;
 
   document.getElementById('grid-context').innerHTML =
-    ctx.length ? ctx.map((o, i) => cardHTML(o, i, 'context')).join('') : '<p class="empty">No objects with context match this filter.</p>';
+    ctx.length ? ctx.map((o, i) => cardHTML(o, i, 'context')).join('') : `<p class="empty">No ${activeSource === 'class' ? 'objects from class' : activeSource === 'new' ? 'new objects' : 'objects with context'} are tagged for this prompt. Try <a href="#" onclick="setSource('all');return false;">Everything</a>.</p>`;
   document.getElementById('grid-personal').innerHTML =
     per.length ? per.map((o, i) => cardHTML(o, i, 'personal')).join('') : '<p class="empty">No personal objects match this filter.</p>';
 

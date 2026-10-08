@@ -259,6 +259,7 @@ table.compare{border-collapse:collapse;width:100%;min-width:560px;font-size:.92r
   <span class="eyebrow">Build 2 · Identity · Setup page 2 of 2</span>
   <h1>Set Up Sign in with GitHub</h1>
   <p class="lede">Finish <a href="../email/">email sign-in</a> first. This page adds a GitHub button to the sign-in screen you already have. You'll make a real secret today, so read the red boxes.</p>
+  <div class="why"><b>Where does the GitHub secret come from?</b> You make it yourself, free, in your own GitHub account. You register your app with GitHub as an "OAuth App" (step 3), and GitHub gives you a Client ID and a Client Secret for it (step 4). Then you paste both into Supabase (step 5).</div>
   <p>You'll bounce between two websites, so <b>open Supabase in one tab and GitHub in another</b> before you start. Each site needs something the other one makes.</p>
   <div class="order" aria-label="Order of steps">
     <b class="sb">1 Supabase</b><i>→</i><b class="sb">2 Supabase</b><i>→</i><b class="gh">3 GitHub</b><i>→</i><b class="gh">4 GitHub</b><i>→</i><b class="sb">5 Supabase</b><i>→</i><b>6 Your AI</b><i>→</i><b>7 Test</b>
@@ -322,7 +323,9 @@ table.compare{border-collapse:collapse;width:100%;min-width:560px;font-size:.92r
   <div class="part">
     <div class="part-text">
       <div class="part-head"><span class="pnum">3</span><div style="display:grid;gap:4px"><h3>Register your app with GitHub</h3><span class="site gh" style="width:max-content">GitHub</span></div></div>
-      <p class="where">Your profile picture → Settings → <b>Developer settings</b> (bottom of the left menu) → OAuth Apps → <b>New OAuth App</b></p>
+      <p class="where">Your profile picture (top right) → Settings → <b>Developer settings</b> (bottom of the left menu) → <b>OAuth Apps</b> → <b>New OAuth App</b></p>
+      <p class="where">Shortcut: <a href="https://github.com/settings/applications/new" target="_blank" rel="noopener">github.com/settings/applications/new</a></p>
+      <p style="font-size:.93rem">If you've never made one before, the button says <b>Register a new application</b> instead of New OAuth App. Same thing.</p>
       <ol class="do">
         <li><b>Application name:</b> your app's real name. People see it when they click Authorize.</li>
         <li><b>Homepage URL:</b> your GitHub Pages address.</li>
@@ -330,6 +333,7 @@ table.compare{border-collapse:collapse;width:100%;min-width:560px;font-size:.92r
         <li>Leave <b>Enable Device Flow</b> unticked.</li>
         <li>Click <b>Register application</b>.</li>
       </ol>
+      <div class="why"><b>One OAuth App per app.</b> An OAuth App can only have one callback URL, and each Supabase project has its own callback URL. If you have two apps on two Supabase projects, make two OAuth Apps.</div>
       <div class="trap"><b>Most common mistake:</b> putting your GitHub Pages address in the callback box. The callback is the <b>Supabase</b> address ending in <code>/auth/v1/callback</code>. Get this wrong and GitHub says "redirect_uri is not associated with this application."</div>
     </div>
     <div class="mock" aria-label="Mock-up: GitHub Register a new OAuth app form">
@@ -357,6 +361,7 @@ table.compare{border-collapse:collapse;width:100%;min-width:560px;font-size:.92r
         <li>Copy the secret <b>right away</b>. GitHub shows it once. Leave the page and it's gone.</li>
         <li>Go straight to step 5 and paste it into Supabase. Nowhere else.</li>
       </ol>
+      <div class="why"><b>Left the page before copying it?</b> It's not gone for good. Go back to your app's page (Settings → Developer settings → OAuth Apps → your app), click <b>Generate a new client secret</b> again, and use the new one. Delete the old one you never copied.</div>
       <div class="trap"><b>Where the secret must never go:</b> config.js or any file in your repo, your AI chat, a Google Doc, a screenshot. If it ends up in your code, anyone can pretend to be your app, and deleting the line doesn't undo it. <a href="../#danger">Why</a>.</div>
     </div>
     <div class="mock" aria-label="Mock-up: GitHub OAuth app page with client ID and client secret">
