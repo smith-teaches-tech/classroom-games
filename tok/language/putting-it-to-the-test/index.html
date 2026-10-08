@@ -218,6 +218,25 @@
   .st-n{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;text-align:center;padding:4px 0;border-radius:2px;color:var(--ink)}
   .st-n.c{background:var(--hl-claim)} .st-n.k{background:var(--hl-case)} .st-n.t{background:var(--hl-test)} .st-n.v{background:var(--hl-verdict)}
   @media print{.model .legend{display:flex}.model .s-claim{background:var(--hl-claim)}.model .s-case{background:var(--hl-case)}.model .s-test{background:var(--hl-test)}.model .s-verdict{background:var(--hl-verdict)}}
+
+  /* ---- build steps ---- */
+  .build{margin:22px 0 16px}
+  .bstep{background:var(--card);border:1px solid var(--rule);border-radius:2px;padding:18px 22px;margin:0 0 12px}
+  .b-head{display:flex;align-items:center;gap:12px;margin:0 0 10px}
+  .b-head .st-n{width:2.2em;flex:none}
+  .b-title{font-weight:700;font-size:23px;line-height:1.2;margin:0}
+  .b-quote{margin:0 0 12px;padding:10px 14px;border-radius:2px;font-size:21px;line-height:1.45;max-width:62ch}
+  .b-quote.c{background:var(--hl-claim)} .b-quote.k{background:var(--hl-case)} .b-quote.t{background:var(--hl-test)} .b-quote.v{background:var(--hl-verdict)}
+  .b-what{margin:0 0 4px;font-size:19px;line-height:1.4;max-width:62ch}
+  .b-what{display:grid;grid-template-columns:12.5em 1fr;gap:10px;align-items:baseline}
+  .b-what span{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .b-quote .kn{font-weight:700;color:var(--oxblood)}
+  .b-quote .cc{font-weight:700;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
+  .model.show .kn{font-weight:700;color:var(--oxblood)}
+  .model.show .cc{font-weight:700;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
+  .l-kn{background:var(--card);color:var(--oxblood)!important;font-weight:700;border:1px solid var(--rule)}
+  .l-cc{background:var(--card);text-decoration:underline;border:1px solid var(--rule)}
+  @media (max-width:560px){.b-what{grid-template-columns:1fr;gap:2px}}
 </style>
 </head>
 <body>
@@ -289,6 +308,8 @@
   <!-- 5 -->
   <section class="stage">
     <div class="s-head"><span class="s-num">05</span><h2 class="s-title">A 9 or 10 paragraph, step by step</h2></div>
+    <p class="s-sub">First the question and the case. Then the paragraph built in <b>four steps</b>. Then the finished paragraph in one piece.</p>
+
     <div class="instrument">
       <p>To what extent does control over language give control over knowledge?</p>
     </div>
@@ -297,30 +318,53 @@
       <p>Uber called its drivers "partners." Its contracts said the drivers were self-employed and that "nothing shall create an employment relationship between Uber and the partner." Drivers took Uber to court, arguing they were "workers," which in UK law means a right to the minimum wage and paid holidays. In February 2021 the UK Supreme Court agreed with the drivers. It looked at how Uber actually controlled the work, such as setting fares and rating and removing drivers, not at the words in the contract.</p>
     </div>
 
-    <div class="card model" id="model">
-      <p class="c-lab">The paragraph</p>
-      <p><span class="seg s-claim">Control over language gives control over knowledge when the people choosing the words also write the documents that others have to accept.</span> <span class="seg s-case">Uber wrote the contracts, so it could call its drivers "partners" and state that "nothing shall create an employment relationship." A driver who signed was told, in Uber's own words, what the job was: a partnership, with no right to the minimum wage or paid holidays. As long as drivers and the public accepted the word, Uber controlled what they believed about the job.</span> <span class="seg s-test">But the drivers didn't accept it. They took Uber to court, and the Supreme Court didn't decide what the drivers were by reading the word "partner." It looked at what Uber actually did: it set the fares, rated the drivers and removed them. The evidence about the work beat the word on the page.</span> <span class="seg s-verdict">So Uber's control over language gave it control over knowledge only while nobody checked the word against the facts. Control over language can shape what people believe, but not what is true, and it lasts only until someone with the power to examine the evidence tests the word against the world.</span></p>
-      <div class="legend">
-        <span class="lg l-claim">1 Claim</span><span class="lg l-case">2 Case</span><span class="lg l-test">3 Test</span><span class="lg l-verdict">4 Verdict</span>
+    <div class="build">
+      <div class="bstep">
+        <div class="b-head"><span class="st-n c">1</span><p class="b-title">The claim, with a "when"</p></div>
+        <blockquote class="b-quote c">Control over language gives control over knowledge when the people choosing the words have the <span class="cc">power</span> to write the documents other <span class="kn">knowers</span> must accept.</blockquote>
+        <p class="b-what"><span>What it does</span>Answers the question, and says <i>when</i> the answer is true.</p>
+        <p class="b-what"><span>Knowers &amp; concepts</span>Other knowers · power</p>
       </div>
-    </div>
-    <div class="toolbar" style="margin-top:0"><button id="partsbtn" type="button">Show the four parts</button></div>
 
-    <div class="steps">
-      <div class="step"><span class="st-n c">1</span><div><p class="st-t">The claim, with a "when"</p><p>It doesn't just say yes. It says <i>when</i>: when the people choosing the words also write the documents others have to accept.</p></div></div>
-      <div class="step"><span class="st-n k">2</span><div><p class="st-t">The case, kept short</p><p>Three sentences show the claim working. No long retelling.</p></div></div>
-      <div class="step"><span class="st-n t">3</span><div><p class="st-t">The test</p><p>Question 1 found it: who does the claim NOT work on? The drivers. Question 3 sharpened it: what did the word NOT change? What the job really was.</p></div></div>
-      <div class="step"><span class="st-n v">4</span><div><p class="st-t">The verdict</p><p>The claim is rewritten after the test, and it's smaller and more accurate.</p></div></div>
+      <div class="bstep">
+        <div class="b-head"><span class="st-n k">2</span><p class="b-title">The case, kept short</p></div>
+        <blockquote class="b-quote k">Uber wrote its own contracts, so it could call its drivers "partners" and state that "nothing shall create an employment relationship." A driver who signed was handed Uber's <span class="cc">interpretation</span> of the job: a partnership, with no right to the minimum wage or paid holidays. As long as the drivers and the public accepted that word, Uber controlled what those <span class="kn">knowers</span> believed about the job.</blockquote>
+        <p class="b-what"><span>What it does</span>Shows the claim working in the case. Three sentences, no long retelling.</p>
+        <p class="b-what"><span>Knowers &amp; concepts</span>The drivers, the public · interpretation</p>
+      </div>
+
+      <div class="bstep">
+        <div class="b-head"><span class="st-n t">3</span><p class="b-title">The test</p></div>
+        <blockquote class="b-quote t">But the drivers were <span class="kn">knowers</span> too, and they didn't accept Uber's word. They took Uber to court, and the Supreme Court refused to <span class="cc">justify</span> its decision with the word "partner." It looked at the <span class="cc">evidence</span> of how the work was actually done: Uber set the fares, rated the drivers and removed them. The evidence about the work beat the word on the page.</blockquote>
+        <p class="b-what"><span>What it does</span>Finds the detail where the claim stops working. Question 1 found it (who does the claim NOT work on? the drivers). Question 3 sharpened it (what did the word NOT change? what the job really was).</p>
+        <p class="b-what"><span>Knowers &amp; concepts</span>The drivers, the court · justification, evidence</p>
+      </div>
+
+      <div class="bstep">
+        <div class="b-head"><span class="st-n v">4</span><p class="b-title">The verdict</p></div>
+        <blockquote class="b-quote v">So Uber's <span class="cc">power</span> over language gave it control over knowledge only while no <span class="kn">knower</span> checked the word against the evidence. Control over language can shape what <span class="kn">knowers</span> believe, but not what is <span class="cc">true</span>, and it lasts only until a <span class="kn">knower</span> with the power to examine the evidence tests the word against the world.</blockquote>
+        <p class="b-what"><span>What it does</span>Rewrites the claim after the test. It comes out smaller and more accurate.</p>
+        <p class="b-what"><span>Knowers &amp; concepts</span>Any knower who checks · power, truth</p>
+      </div>
     </div>
 
     <div class="pair">
       <div class="pairline"><span class="pl-tag">Claim before the test</span><p>Control over language gives control over knowledge.</p></div>
-      <div class="pairline"><span class="pl-tag">Claim after the test</span><p>Control over language shapes belief, not truth, and only until someone checks it against the evidence.</p></div>
+      <div class="pairline"><span class="pl-tag">Claim after the test</span><p>Control over language shapes what knowers believe, not what is true, and only until a knower checks it against the evidence.</p></div>
     </div>
 
+    <div class="card model" id="model">
+      <p class="c-lab">The finished paragraph</p>
+      <p><span class="seg s-claim">Control over language gives control over knowledge when the people choosing the words have the <span class="cc">power</span> to write the documents other <span class="kn">knowers</span> must accept.</span> <span class="seg s-case">Uber wrote its own contracts, so it could call its drivers "partners" and state that "nothing shall create an employment relationship." A driver who signed was handed Uber's <span class="cc">interpretation</span> of the job: a partnership, with no right to the minimum wage or paid holidays. As long as the drivers and the public accepted that word, Uber controlled what those <span class="kn">knowers</span> believed about the job.</span> <span class="seg s-test">But the drivers were <span class="kn">knowers</span> too, and they didn't accept Uber's word. They took Uber to court, and the Supreme Court refused to <span class="cc">justify</span> its decision with the word "partner." It looked at the <span class="cc">evidence</span> of how the work was actually done: Uber set the fares, rated the drivers and removed them. The evidence about the work beat the word on the page.</span> <span class="seg s-verdict">So Uber's <span class="cc">power</span> over language gave it control over knowledge only while no <span class="kn">knower</span> checked the word against the evidence. Control over language can shape what <span class="kn">knowers</span> believe, but not what is <span class="cc">true</span>, and it lasts only until a <span class="kn">knower</span> with the power to examine the evidence tests the word against the world.</span></p>
+      <div class="legend">
+        <span class="lg l-claim">1 Claim</span><span class="lg l-case">2 Case</span><span class="lg l-test">3 Test</span><span class="lg l-verdict">4 Verdict</span><span class="lg l-kn">knower</span><span class="lg l-cc">core concept</span>
+      </div>
+    </div>
+    <div class="toolbar" style="margin-top:0"><button id="partsbtn" type="button">Show the parts, knowers and concepts</button></div>
+
     <div class="punch">
-      <p class="p-lab">Notice the core concepts</p>
-      <p>Power (who writes the contract), evidence (what Uber actually did), truth (what the job really was). They explain the case. They aren't decoration.</p>
+      <p class="p-lab">Count them</p>
+      <p>"Knower" appears six times, and every time it names a real person or group in the case: the drivers, the public, the court. Five core concepts (power, interpretation, justification, evidence, truth) each explain something about how the case works. None of them is just a label.</p>
     </div>
   </section>
 
@@ -333,7 +377,8 @@
       <div class="rival"><span class="rn">2</span><span class="rt">Reread your case and ask the three questions.</span><p class="rd">Your feedback comment names the detail you missed, so start there.</p></div>
       <div class="rival"><span class="rn">3</span><span class="rt">Write two to four sentences that test your claim.</span><p class="rd">Start with the detail from the case, not with "Some people might argue."</p></div>
       <div class="rival"><span class="rn">4</span><span class="rt">End with a verdict that rewrites your claim.</span><p class="rd">Is it smaller and more accurate than the claim you started with? If it's the same size, go back to step 2.</p></div>
-      <div class="rival"><span class="rn">5</span><span class="rt">Check your new sentences.</span><p class="rd">Do they agree with your claim? Then they're support, and you haven't tested it yet.</p></div>
+      <div class="rival"><span class="rn">5</span><span class="rt">Name the knowers and use the core concepts.</span><p class="rd">Who are the knowers in your case? Say "knower" and name them. Use at least two core concepts to explain how the case works, not as labels stuck on the end.</p></div>
+      <div class="rival"><span class="rn">6</span><span class="rt">Check your new sentences.</span><p class="rd">Do they agree with your claim? Then they're support, and you haven't tested it yet.</p></div>
     </div>
     <div class="nb">
       <p class="nb-lab">Hand in</p>
@@ -360,7 +405,7 @@
   var m = document.getElementById('model'), b = document.getElementById('partsbtn');
   b.addEventListener('click', function(){
     var on = m.classList.toggle('show');
-    b.textContent = on ? 'Hide the four parts' : 'Show the four parts';
+    b.textContent = on ? 'Hide the parts, knowers and concepts' : 'Show the parts, knowers and concepts';
   });
 })();
 </script>
