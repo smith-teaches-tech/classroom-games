@@ -249,6 +249,28 @@ table.compare{border-collapse:collapse;width:100%;min-width:560px;font-size:.92r
 @media (max-width:680px){.linkcards{grid-template-columns:1fr}}
 .pagehead{display:grid;gap:14px;padding-block:8px 18px}
 .pagehead .lede{max-width:52ch}
+
+/* chips: the two addresses and two codes */
+.chip{display:inline-flex;align-items:center;justify-content:center;min-width:1.7em;height:1.5em;padding:0 .45em;border-radius:6px;font-family:var(--f-mono);font-size:.72rem;font-weight:700;letter-spacing:.02em;vertical-align:middle;color:#0b0d11;white-space:nowrap}
+.chip.a{background:#6aa9ff} .chip.b{background:#c792ea} .chip.id{background:#7bd88f} .chip.sec{background:#ffb454}
+.minput.ca{border:2px solid #6aa9ff} .minput.cb{border:2px solid #c792ea} .minput.cid{border:2px solid #7bd88f} .minput.csec{border:2px solid #ffb454}
+.cheat{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.cheatcard{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:8px;align-content:start;min-width:0}
+.cheatcard .ch-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.cheatcard .ch-head b{font-size:1.02rem}
+.cheatcard .val{font-family:var(--f-mono);font-size:.76rem;color:var(--muted);overflow-wrap:anywhere}
+.cheatcard ul{margin:0;padding-left:1.1em;display:grid;gap:3px;font-size:.9rem}
+.cheatcard .from{font-size:.85rem;color:var(--muted)}
+@media (max-width:680px){.cheat{grid-template-columns:1fr}}
+/* mock with left sidebar */
+.mgrid{display:grid;grid-template-columns:150px minmax(0,1fr);gap:14px}
+.mside{display:grid;gap:2px;align-content:start;font-size:.8rem;border-right:1px solid var(--line);padding-right:10px}
+.mside span{padding:5px 8px;border-radius:6px;color:var(--muted)}
+.mside .sec-h{font-family:var(--f-mono);font-size:.62rem;letter-spacing:.07em;text-transform:uppercase;padding-top:8px}
+.mside .on{background:var(--brass-soft);color:var(--ink);font-weight:700;outline:2px dashed var(--brass);outline-offset:-2px}
+.mside .no{text-decoration:line-through;color:var(--secret)}
+@media (max-width:520px){.mgrid{grid-template-columns:1fr}.mside{border-right:0;border-bottom:1px solid var(--line);padding:0 0 8px}}
+.check .box.on{background:var(--open);border-color:var(--open)}
 </style>
 </head>
 <body>
@@ -259,157 +281,236 @@ table.compare{border-collapse:collapse;width:100%;min-width:560px;font-size:.92r
   <span class="eyebrow">Build 2 · Identity · Setup page 2 of 2</span>
   <h1>Set Up Sign in with GitHub</h1>
   <p class="lede">Finish <a href="../email/">email sign-in</a> first. This page adds a GitHub button to the sign-in screen you already have. You'll make a real secret today, so read the red boxes.</p>
-  <div class="why"><b>Where does the GitHub secret come from?</b> You make it yourself, free, in your own GitHub account. You register your app with GitHub as an "OAuth App" (step 3), and GitHub gives you a Client ID and a Client Secret for it (step 4). Then you paste both into Supabase (step 5).</div>
-  <p>You'll bounce between two websites, so <b>open Supabase in one tab and GitHub in another</b> before you start. Each site needs something the other one makes.</p>
+  <p><b>Open two tabs before you start:</b> Supabase in one, GitHub in the other. You'll go back and forth, because each site needs something the other one makes.</p>
   <div class="order" aria-label="Order of steps">
-    <b class="sb">1 Supabase</b><i>→</i><b class="sb">2 Supabase</b><i>→</i><b class="gh">3 GitHub</b><i>→</i><b class="gh">4 GitHub</b><i>→</i><b class="sb">5 Supabase</b><i>→</i><b>6 Your AI</b><i>→</i><b>7 Test</b>
+    <b class="sb">1 Supabase</b><i>→</i><b class="sb">2 Supabase</b><i>→</i><b class="gh">3 GitHub</b><i>→</i><b class="gh">4 GitHub</b><i>→</i><b class="gh">5 GitHub</b><i>→</i><b class="sb">6 Supabase</b><i>→</i><b>7 Your AI</b><i>→</i><b>8 Test</b>
   </div>
-  <p class="muted" style="font-size:.88rem">The screens below are mock-ups. Your screen may look a little different, but the names of the settings will match. Example values use a made-up app called <b>Mood Tracker</b> by the GitHub user <b>yourname</b>. Use your own.</p>
 </header>
 
-<section id="setup" style="border-top:1px solid var(--line)">
+<section id="cheat" style="border-top:1px solid var(--line)">
+  <div class="col" style="display:grid;gap:10px">
+    <span class="eyebrow">Read this first</span>
+    <h2>Two addresses, two codes</h2>
+    <p>GitHub and Supabase use lots of names that sound the same: callback URL, redirect URL, site URL, homepage URL. Don't let that confuse you. There are only <b>four things</b>, and every box you fill in today gets one of them. Each one has a colour tag. Match the tag to the box.</p>
+  </div>
+  <div class="cheat">
+    <div class="cheatcard">
+      <div class="ch-head"><span class="chip a">A</span><b>Your website address</b></div>
+      <span class="val">https://yourname.github.io/mood-tracker/</span>
+      <span class="from">Where you get it: your GitHub Pages address, the one you share with people.</span>
+      <ul><li>Supabase <b>Site URL</b> (step 1)</li><li>Supabase <b>Redirect URLs</b>, with <code>**</code> on the end (step 1)</li><li>GitHub <b>Homepage URL</b> (step 4)</li></ul>
+    </div>
+    <div class="cheatcard">
+      <div class="ch-head"><span class="chip b">B</span><b>Supabase's callback address</b></div>
+      <span class="val">https://abcdefghijklmnop.supabase.co/auth/v1/callback</span>
+      <span class="from">Where you get it: Supabase, GitHub settings, <b>Callback URL</b> (step 2). Always ends in <code>/auth/v1/callback</code>.</span>
+      <ul><li>GitHub <b>Authorization callback URL</b> (step 4)</li><li>If GitHub ever says <b>redirect_uri</b>, it means this one.</li></ul>
+    </div>
+    <div class="cheatcard">
+      <div class="ch-head"><span class="chip id">ID</span><b>Client ID</b></div>
+      <span class="val">Ov23li… (about 20 letters and numbers)</span>
+      <span class="from">Where you get it: GitHub makes it when you register your app (step 5). Not secret.</span>
+      <ul><li>Supabase <b>Client ID</b> (step 6)</li></ul>
+    </div>
+    <div class="cheatcard">
+      <div class="ch-head"><span class="chip sec">SECRET</span><b>Client Secret</b></div>
+      <span class="val">a long string, shown once</span>
+      <span class="from">Where you get it: GitHub, when you click Generate a new client secret (step 5).</span>
+      <ul><li>Supabase <b>Client Secret</b> (step 6). Nowhere else, ever.</li></ul>
+    </div>
+  </div>
+  <p class="muted col" style="font-size:.88rem">The screens below are mock-ups, checked against the GitHub and Supabase instructions in October 2026. Your screen may look a little different, but the names of the boxes will match. Example values use a made-up app called <b>Mood Tracker</b> by the GitHub user <b>yourname</b>. Use your own.</p>
+</section>
 
+<section id="setup">
+
+  <!-- 1 -->
   <div class="part">
     <div class="part-text">
-      <div class="part-head"><span class="pnum">1</span><div style="display:grid;gap:4px"><h3>Tell Supabase where your app lives</h3><span class="site sb" style="width:max-content">Supabase</span></div></div>
-      <p class="where"><b>Your project</b> → Authentication → <b>URL Configuration</b></p>
+      <div class="part-head"><span class="pnum">1</span><div style="display:grid;gap:4px"><h3>Tell Supabase your website address</h3><span class="site sb" style="width:max-content">Supabase</span></div></div>
+      <p class="where">Your project → <b>Authentication</b> (left menu) → <b>URL Configuration</b></p>
       <ol class="do">
-        <li>Set <b>Site URL</b> to your GitHub Pages address, for example <code>https://yourname.github.io/mood-tracker/</code></li>
-        <li>Under <b>Redirect URLs</b>, add the same address with <code>**</code> on the end.</li>
-        <li>Add <code>http://127.0.0.1:5500/**</code> so sign-in also works when you test with Live Server.</li>
-        <li>Click <b>Save</b>.</li>
+        <li><b>Site URL:</b> type your website address <span class="chip a">A</span>. Click <b>Save</b>.</li>
+        <li><b>Redirect URLs:</b> click <b>Add URL</b>. Type your website address <span class="chip a">A</span> with <code>**</code> on the end. Save.</li>
+        <li>Add one more: <code>http://127.0.0.1:5500/**</code>. That's Live Server on your laptop. Save.</li>
       </ol>
-      <div class="why"><b>Why?</b> At the end of GitHub sign-in (step 10 in the <a href="../#how">diagram</a>), Supabase has to send the person back to your app. It will only send people to addresses on this list. Skip this and sign-in dumps you on <code>localhost:3000</code>, a page that doesn't exist.</div>
-      <p class="ipad">iPad: you don't use Live Server, so skip the <code>127.0.0.1</code> line. You'll test on your GitHub Pages site.</p>
+      <div class="why"><b>Why?</b> When sign-in finishes, Supabase sends the person back to your app. It only sends people to addresses on this list. Skip this and you land on <code>localhost:3000</code>, a page that doesn't exist.</div>
+      <p class="ipad">iPad: you don't use Live Server, so skip the <code>127.0.0.1</code> line.</p>
     </div>
     <div class="mock" aria-label="Mock-up: Supabase URL Configuration">
       <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">supabase.com/dashboard/project/abcdefghijklmnop/auth/url-configuration</span><span class="mocktag">Mock-up</span></div>
       <div class="mbody">
-        <span class="crumbs">Authentication › URL Configuration</span>
-        <div class="mfield"><span class="mlabel">Site URL</span><span class="minput hl">https://yourname.github.io/mood-tracker/</span><span class="mhint">The default place to send people after they sign in.</span></div>
-        <div class="mfield"><span class="mlabel">Redirect URLs</span>
-          <span class="minput urlitem hl">https://yourname.github.io/mood-tracker/**</span>
-          <span class="minput urlitem hl">http://127.0.0.1:5500/**</span>
-          <span class="mhint">Supabase will only send people back to addresses on this list.</span></div>
-        <button type="button" class="mbtn">Add URL</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="part">
-    <div class="part-text">
-      <div class="part-head"><span class="pnum">2</span><div style="display:grid;gap:4px"><h3>Copy Supabase's callback URL</h3><span class="site sb" style="width:max-content">Supabase</span></div></div>
-      <p class="where">Authentication → Sign In / Providers → <b>GitHub</b></p>
-      <ol class="do">
-        <li>Click <b>GitHub</b> in the list to open its settings.</li>
-        <li>Find <b>Callback URL (for OAuth)</b> and click <b>Copy</b>.</li>
-        <li>Leave this tab open. You'll come back to it in step 5.</li>
-      </ol>
-      <div class="why"><b>What is it?</b> It's Supabase's door, not your app's. When GitHub hands out the one-time ticket (step 7 in the diagram), it sends it to this address. It always ends in <code>/auth/v1/callback</code>.</div>
-    </div>
-    <div class="mock" aria-label="Mock-up: Supabase GitHub provider, callback URL">
-      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">supabase.com/dashboard/project/abcdefghijklmnop/auth/providers</span><span class="mocktag">Mock-up</span></div>
-      <div class="mbody">
-        <span class="crumbs">Authentication › Sign In / Providers › GitHub</span>
-        <h4>GitHub</h4>
-        <div class="mrow"><div><b>Enable Sign in with GitHub</b><div class="d">Leave this off for now</div></div><button type="button" class="tog" role="switch" aria-checked="false" aria-label="Enable Sign in with GitHub"></button></div>
-        <div class="mfield callout"><span class="mlabel">Callback URL (for OAuth) <span class="flag">Copy this</span></span>
-          <div class="secretval"><span class="minput" id="cb-url">https://abcdefghijklmnop.supabase.co/auth/v1/callback</span><button type="button" class="copy" data-copy="cb-url">Copy</button></div>
+        <div class="mgrid">
+          <div class="mside"><span class="sec-h">Authentication</span><span>Users</span><span class="sec-h">Configuration</span><span>Sign In / Providers</span><span class="on">URL Configuration</span><span>…</span></div>
+          <div style="display:grid;gap:12px;min-width:0">
+            <h4>URL Configuration</h4>
+            <div class="mfield"><span class="mlabel">Site URL <span class="chip a">A</span></span><span class="minput ca">https://yourname.github.io/mood-tracker/</span></div>
+            <div class="mfield"><span class="mlabel">Redirect URLs <span class="chip a">A</span> + <code>**</code></span>
+              <span class="minput ca">https://yourname.github.io/mood-tracker/**</span>
+              <span class="minput">http://127.0.0.1:5500/**</span></div>
+            <button type="button" class="mbtn">Add URL</button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- 2 -->
   <div class="part">
     <div class="part-text">
-      <div class="part-head"><span class="pnum">3</span><div style="display:grid;gap:4px"><h3>Register your app with GitHub</h3><span class="site gh" style="width:max-content">GitHub</span></div></div>
-      <p class="where">Your profile picture (top right) → Settings → <b>Developer settings</b> (bottom of the left menu) → <b>OAuth Apps</b> → <b>New OAuth App</b></p>
-      <p class="where">Shortcut: <a href="https://github.com/settings/applications/new" target="_blank" rel="noopener">github.com/settings/applications/new</a></p>
-      <p style="font-size:.93rem">If you've never made one before, the button says <b>Register a new application</b> instead of New OAuth App. Same thing.</p>
+      <div class="part-head"><span class="pnum">2</span><div style="display:grid;gap:4px"><h3>Copy Supabase's callback address</h3><span class="site sb" style="width:max-content">Supabase</span></div></div>
+      <p class="where">Authentication → <b>Sign In / Providers</b> → scroll the list → click <b>GitHub</b></p>
       <ol class="do">
-        <li><b>Application name:</b> your app's real name. People see it when they click Authorize.</li>
-        <li><b>Homepage URL:</b> your GitHub Pages address.</li>
-        <li><b>Authorization callback URL:</b> paste the Supabase callback URL from step 2.</li>
-        <li>Leave <b>Enable Device Flow</b> unticked.</li>
+        <li>Click <b>GitHub</b> in the list of providers. A panel opens.</li>
+        <li>Find <b>Callback URL</b> near the bottom. Click <b>Copy</b>. This is address <span class="chip b">B</span>.</li>
+        <li>Leave the panel open. Don't turn GitHub on yet. You'll come back in step 6.</li>
+      </ol>
+      <div class="why"><b>What is it?</b> Supabase's door, not your website. GitHub sends people here after they click Authorize. It always ends in <code>/auth/v1/callback</code>.</div>
+    </div>
+    <div class="mock" aria-label="Mock-up: Supabase GitHub provider panel showing the callback URL">
+      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">supabase.com/dashboard/project/abcdefghijklmnop/auth/providers</span><span class="mocktag">Mock-up</span></div>
+      <div class="mbody">
+        <div class="mgrid">
+          <div class="mside"><span class="sec-h">Authentication</span><span>Users</span><span class="sec-h">Configuration</span><span class="on">Sign In / Providers</span><span>URL Configuration</span><span>…</span></div>
+          <div style="display:grid;gap:10px;min-width:0">
+            <h4>GitHub</h4>
+            <div class="mrow"><div><b>GitHub enabled</b><div class="d">Leave off for now</div></div><button type="button" class="tog" role="switch" aria-checked="false" aria-label="GitHub enabled"></button></div>
+            <div class="mfield"><span class="mlabel">Client ID</span><span class="minput ph">empty for now</span></div>
+            <div class="mfield"><span class="mlabel">Client Secret</span><span class="minput ph">empty for now</span></div>
+            <div class="mfield callout"><span class="mlabel">Callback URL <span class="chip b">B</span> <span class="flag">Copy this</span></span>
+              <div class="secretval"><span class="minput cb" id="cb-url">https://abcdefghijklmnop.supabase.co/auth/v1/callback</span><button type="button" class="copy" data-copy="cb-url">Copy</button></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 -->
+  <div class="part">
+    <div class="part-text">
+      <div class="part-head"><span class="pnum">3</span><div style="display:grid;gap:4px"><h3>Find OAuth Apps on GitHub</h3><span class="site gh" style="width:max-content">GitHub</span></div></div>
+      <p class="where">Your profile picture (top right) → <b>Settings</b> → <b>Developer settings</b> (very bottom of the left menu) → <b>OAuth Apps</b></p>
+      <p class="where">Shortcut: <a href="https://github.com/settings/developers" target="_blank" rel="noopener">github.com/settings/developers</a></p>
+      <ol class="do">
+        <li>Click <b>OAuth Apps</b> in the left menu.</li>
+        <li>Click <b>New OAuth App</b>. If you've never made one, the button says <b>Register a new application</b>. Same thing.</li>
+      </ol>
+      <div class="trap"><b>Click OAuth Apps, not GitHub Apps.</b> They sit right next to each other and the forms look alike, but GitHub Apps is a different thing and Supabase won't work with it.</div>
+    </div>
+    <div class="mock" aria-label="Mock-up: GitHub Developer settings, OAuth Apps">
+      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">github.com/settings/developers</span><span class="mocktag">Mock-up</span></div>
+      <div class="mbody">
+        <div class="mgrid">
+          <div class="mside"><span class="sec-h">Developer settings</span><span class="no">GitHub Apps</span><span class="on">OAuth Apps</span><span>Personal access tokens</span></div>
+          <div style="display:grid;gap:12px;min-width:0;align-content:start">
+            <h4>OAuth Apps</h4>
+            <span class="mhint">No OAuth applications yet.</span>
+            <div class="callout" style="justify-self:start"><button type="button" class="mbtn dark">New OAuth App</button></div>
+            <span class="mhint">First time? This button says Register a new application.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="part">
+    <div class="part-text">
+      <div class="part-head"><span class="pnum">4</span><div style="display:grid;gap:4px"><h3>Fill in the form</h3><span class="site gh" style="width:max-content">GitHub</span></div></div>
+      <p class="where">The "Register a new OAuth app" form. Go box by box:</p>
+      <ol class="do">
+        <li><b>Application name:</b> your app's name. People see it when they sign in.</li>
+        <li><b>Homepage URL:</b> your website address <span class="chip a">A</span>.</li>
+        <li><b>Application description:</b> skip it.</li>
+        <li><b>Authorization callback URL:</b> paste Supabase's callback address <span class="chip b">B</span> from step 2.</li>
+        <li>Ignore the <b>Add callback URL</b> button. One is enough.</li>
+        <li><b>Enable Device Flow:</b> leave it unticked.</li>
+        <li><b>Expire user access tokens:</b> leave it the way it is (ticked).</li>
         <li>Click <b>Register application</b>.</li>
       </ol>
-      <div class="why"><b>One OAuth App per app.</b> An OAuth App can only have one callback URL, and each Supabase project has its own callback URL. If you have two apps on two Supabase projects, make two OAuth Apps.</div>
-      <div class="trap"><b>Most common mistake:</b> putting your GitHub Pages address in the callback box. The callback is the <b>Supabase</b> address ending in <code>/auth/v1/callback</code>. Get this wrong and GitHub says "redirect_uri is not associated with this application."</div>
+      <div class="trap"><b>The most common mistake:</b> putting your website address <span class="chip a">A</span> in the callback box. The callback box needs <span class="chip b">B</span>, the Supabase address ending in <code>/auth/v1/callback</code>. Get it wrong and GitHub says "The redirect_uri is not associated with this application."</div>
     </div>
     <div class="mock" aria-label="Mock-up: GitHub Register a new OAuth app form">
       <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">github.com/settings/applications/new</span><span class="mocktag">Mock-up</span></div>
       <div class="mbody">
-        <span class="crumbs">Developer settings › OAuth Apps</span>
         <h4>Register a new OAuth app</h4>
-        <div class="mfield"><span class="mlabel">Application name <span class="req">*</span></span><span class="minput">Mood Tracker</span><span class="mhint">Something users will recognize and trust.</span></div>
-        <div class="mfield"><span class="mlabel">Homepage URL <span class="req">*</span></span><span class="minput">https://yourname.github.io/mood-tracker/</span></div>
-        <div class="mfield"><span class="mlabel">Application description</span><span class="minput ph">Optional</span></div>
-        <div class="mfield callout red"><span class="mlabel">Authorization callback URL <span class="req">*</span> <span class="flag red">Supabase address, not yours</span></span><span class="minput hl">https://abcdefghijklmnop.supabase.co/auth/v1/callback</span></div>
-        <div class="check"><span class="box"></span><span>Enable Device Flow</span></div>
+        <div class="mfield"><span class="mlabel">Application name <span class="req">*</span></span><span class="minput">Mood Tracker</span></div>
+        <div class="mfield"><span class="mlabel">Homepage URL <span class="req">*</span> <span class="chip a">A</span></span><span class="minput ca">https://yourname.github.io/mood-tracker/</span></div>
+        <div class="mfield"><span class="mlabel">Application description</span><span class="minput ph">Optional. Skip it.</span></div>
+        <div class="mfield callout red"><span class="mlabel">Authorization callback URL <span class="req">*</span> <span class="chip b">B</span> <span class="flag red">Supabase address</span></span><span class="minput cb">https://abcdefghijklmnop.supabase.co/auth/v1/callback</span><span class="mhint">Add callback URL ← ignore this</span></div>
+        <div class="check"><span class="box"></span><span>Enable Device Flow <span class="mhint">← leave unticked</span></span></div>
+        <div class="check"><span class="box on"></span><span>Expire user access tokens <span class="mhint">← leave as it is</span></span></div>
         <button type="button" class="mbtn go">Register application</button>
       </div>
     </div>
   </div>
 
+  <!-- 5 -->
   <div class="part">
     <div class="part-text">
-      <div class="part-head"><span class="pnum">4</span><div style="display:grid;gap:4px"><h3>Get the Client ID and make the Client Secret</h3><span class="site gh" style="width:max-content">GitHub</span></div></div>
-      <p class="where">You land on your new app's page automatically. This is step 1 of the <a href="../#how">diagram</a>: GitHub makes the secret.</p>
+      <div class="part-head"><span class="pnum">5</span><div style="display:grid;gap:4px"><h3>Copy the Client ID, make the Client Secret</h3><span class="site gh" style="width:max-content">GitHub</span></div></div>
+      <p class="where">After you click Register, GitHub opens your new app's page.</p>
       <ol class="do">
-        <li>Copy the <b>Client ID</b>. It's not secret. It's your app's name tag.</li>
-        <li>Click <b>Generate a new client secret</b>. GitHub may ask for your password first. (Try it in the mock-up.)</li>
-        <li>Copy the secret <b>right away</b>. GitHub shows it once. Leave the page and it's gone.</li>
-        <li>Go straight to step 5 and paste it into Supabase. Nowhere else.</li>
+        <li>Copy the <b>Client ID</b> <span class="chip id">ID</span> at the top.</li>
+        <li>Under <b>Client secrets</b>, click <b>Generate a new client secret</b>. GitHub may ask for your password first. (Try it in the mock-up.)</li>
+        <li>Copy the <b>Client Secret</b> <span class="chip sec">SECRET</span> <b>right away</b>. GitHub only shows it once.</li>
+        <li>Go straight to your Supabase tab (step 6).</li>
       </ol>
-      <div class="why"><b>Left the page before copying it?</b> It's not gone for good. Go back to your app's page (Settings → Developer settings → OAuth Apps → your app), click <b>Generate a new client secret</b> again, and use the new one. Delete the old one you never copied.</div>
-      <div class="trap"><b>Where the secret must never go:</b> config.js or any file in your repo, your AI chat, a Google Doc, a screenshot. If it ends up in your code, anyone can pretend to be your app, and deleting the line doesn't undo it. <a href="../#danger">Why</a>.</div>
+      <div class="why"><b>Missed it?</b> No problem. Click <b>Generate a new client secret</b> again, and delete the one you didn't copy. To find this page later: Settings → Developer settings → OAuth Apps → click your app.</div>
+      <div class="trap"><b>Where the secret must never go:</b> config.js or any file in your repo, your AI chat, a Google Doc, a screenshot. If it ends up in your code, anyone can pretend to be your app. <a href="../#danger">Why</a>.</div>
     </div>
     <div class="mock" aria-label="Mock-up: GitHub OAuth app page with client ID and client secret">
       <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">github.com/settings/applications/1234567</span><span class="mocktag">Mock-up</span></div>
       <div class="mbody">
-        <span class="crumbs">Developer settings › OAuth Apps › Mood Tracker</span>
         <h4>Mood Tracker</h4>
-        <div class="mfield"><span class="mlabel">Client ID <span class="flag">Copy · not secret</span></span><div class="secretval"><span class="minput" id="cid">Ov23liEXAMPLE0a1b2c3</span><button type="button" class="copy" data-copy="cid">Copy</button></div></div>
-        <div class="mfield"><span class="mlabel">Client secrets</span><span class="mhint">You need a client secret to authenticate as the application to the API.</span>
+        <div class="mfield"><span class="mlabel">Client ID <span class="chip id">ID</span></span><div class="secretval"><span class="minput cid" id="cid">Ov23liEXAMPLE0a1b2c3</span><button type="button" class="copy" data-copy="cid">Copy</button></div></div>
+        <div class="mfield"><span class="mlabel">Client secrets <span class="chip sec">SECRET</span></span><span class="mhint">You need a client secret to authenticate as the application to the API.</span>
           <div id="secret-zone"><button type="button" class="mbtn dark" id="gen">Generate a new client secret</button></div>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- 6 -->
   <div class="part">
     <div class="part-text">
-      <div class="part-head"><span class="pnum">5</span><div style="display:grid;gap:4px"><h3>Lock the secret in Supabase</h3><span class="site sb" style="width:max-content">Supabase</span></div></div>
-      <p class="where">Back to your Supabase tab: Authentication → Sign In / Providers → <b>GitHub</b>. This is steps 2 and 3 of the diagram.</p>
+      <div class="part-head"><span class="pnum">6</span><div style="display:grid;gap:4px"><h3>Paste both into Supabase</h3><span class="site sb" style="width:max-content">Supabase</span></div></div>
+      <p class="where">Back to your Supabase tab: Authentication → Sign In / Providers → <b>GitHub</b> (the same panel as step 2)</p>
       <ol class="do">
-        <li>Turn <b>Enable Sign in with GitHub</b> on.</li>
-        <li>Paste the <b>Client ID</b>.</li>
-        <li>Paste the <b>Client Secret</b>.</li>
+        <li>Turn the <b>GitHub enabled</b> switch on.</li>
+        <li><b>Client ID:</b> paste <span class="chip id">ID</span>.</li>
+        <li><b>Client Secret:</b> paste <span class="chip sec">SECRET</span>.</li>
+        <li>Leave <b>Callback URL</b> alone. You already used it.</li>
         <li>Click <b>Save</b>.</li>
-        <li>Clear your clipboard: copy any other word, so the secret isn't sitting there waiting to be pasted somewhere by accident.</li>
+        <li>Copy any other word, so the secret isn't sitting on your clipboard.</li>
       </ol>
-      <div class="why"><b>This is the vault.</b> The secret now lives on Supabase's servers. It never gets sent to anyone's browser. Your app will never need it.</div>
+      <div class="why"><b>This is the vault.</b> The secret now lives on Supabase's servers. It's never sent to anyone's browser, and your app never needs it.</div>
     </div>
     <div class="mock" aria-label="Mock-up: Supabase GitHub provider with client ID and secret filled in">
       <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">supabase.com/dashboard/project/abcdefghijklmnop/auth/providers</span><span class="mocktag">Mock-up</span></div>
       <div class="mbody">
-        <span class="crumbs">Authentication › Sign In / Providers › GitHub</span>
-        <h4>GitHub</h4>
-        <div class="mrow callout"><div><b>Enable Sign in with GitHub</b> <span class="flag">Turn on</span></div><button type="button" class="tog" role="switch" aria-checked="true" aria-label="Enable Sign in with GitHub"></button></div>
-        <div class="mfield"><span class="mlabel">Client ID</span><span class="minput hl">Ov23liEXAMPLE0a1b2c3</span></div>
-        <div class="mfield"><span class="mlabel">Client Secret</span><span class="minput hl">••••••••••••••••••••••••••••••••••••••••</span></div>
-        <div class="mfield"><span class="mlabel">Callback URL (for OAuth)</span><span class="minput">https://abcdefghijklmnop.supabase.co/auth/v1/callback</span></div>
-        <button type="button" class="mbtn go">Save</button>
+        <div class="mgrid">
+          <div class="mside"><span class="sec-h">Authentication</span><span>Users</span><span class="sec-h">Configuration</span><span class="on">Sign In / Providers</span><span>URL Configuration</span><span>…</span></div>
+          <div style="display:grid;gap:10px;min-width:0">
+            <h4>GitHub</h4>
+            <div class="mrow callout"><div><b>GitHub enabled</b> <span class="flag">Turn on</span></div><button type="button" class="tog" role="switch" aria-checked="true" aria-label="GitHub enabled"></button></div>
+            <div class="mfield"><span class="mlabel">Client ID <span class="chip id">ID</span></span><span class="minput cid">Ov23liEXAMPLE0a1b2c3</span></div>
+            <div class="mfield"><span class="mlabel">Client Secret <span class="chip sec">SECRET</span></span><span class="minput csec">••••••••••••••••••••••••••••••••••••••••</span></div>
+            <div class="mfield"><span class="mlabel">Callback URL <span class="chip b">B</span></span><span class="minput">https://abcdefghijklmnop.supabase.co/auth/v1/callback</span><span class="mhint">Already used in step 4. Leave it.</span></div>
+            <button type="button" class="mbtn go">Save</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- 7 -->
   <div class="part">
     <div class="part-text">
-      <div class="part-head"><span class="pnum">6</span><div style="display:grid;gap:4px"><h3>Ask your AI for the GitHub button</h3><span class="site ai" style="width:max-content">Your AI</span></div></div>
+      <div class="part-head"><span class="pnum">7</span><div style="display:grid;gap:4px"><h3>Ask your AI for the GitHub button</h3><span class="site ai" style="width:max-content">Your AI</span></div></div>
       <p>Upload your current <code>index.html</code>, <code>app.js</code> and <code>config.js</code> (the versions with email sign-in working), then paste this prompt.</p>
-      <div class="trap"><b>If your AI asks for the Client Secret, say no.</b> If the code it gives you has a line like <code>clientSecret:</code> or <code>secret:</code>, don't use it. Ask it to redo the code without one.</div>
-      <div class="why"><b>When the code comes back, check:</b> you should see <code>signInWithOAuth</code> with <code>provider: 'github'</code>, and nothing else about GitHub except the button.</div>
+      <div class="trap"><b>If your AI asks for the Client Secret, say no.</b> If the code has a line like <code>clientSecret:</code> or <code>secret:</code>, don't use it. Ask it to redo the code without one.</div>
+      <div class="why"><b>When the code comes back, check:</b> you should see <code>signInWithOAuth</code> with <code>provider: 'github'</code>. That's the only GitHub code your app needs.</div>
     </div>
     <div class="prompt-wrap">
       <div class="prompt-bar"><span class="eyebrow">Prompt</span><button type="button" class="copy" data-copy="prompt-gh">Copy prompt</button></div>
@@ -428,7 +529,7 @@ Do not put any secret keys in my code. The GitHub Client Secret is already saved
 
 <section id="test">
   <div class="col" style="display:grid;gap:12px">
-    <span class="eyebrow">Step 7</span>
+    <span class="eyebrow">Step 8</span>
     <h2>Test it, then try to break it</h2>
     <p>Tick each one off on your live GitHub Pages site, not only on Live Server.</p>
   </div>
@@ -444,17 +545,17 @@ Do not put any secret keys in my code. The GitHub Client Secret is already saved
 
   <div class="col" style="display:grid;gap:10px">
     <h3>Error decoder</h3>
-    <p class="muted" style="font-size:.92rem">Paste the full error into your AI as usual. But these ones are almost always a setting, not your code.</p>
+    <p class="muted" style="font-size:.92rem">These are almost always a box with the wrong thing in it, not your code. Check the colour tags.</p>
   </div>
   <div class="errs-scroll">
     <table class="errs">
       <thead><tr><th>You see</th><th>What's wrong</th><th>Fix</th></tr></thead>
       <tbody>
-        <tr><td>The redirect_uri is not associated with this application.</td><td>The callback URL in your GitHub OAuth App doesn't match Supabase's.</td><td>Step 3. Copy the callback URL from Supabase again and paste it exactly.</td></tr>
-        <tr><td>After GitHub, you land on localhost:3000 and the page won't load.</td><td>Supabase doesn't know where your app lives.</td><td>Step 1. Set the Site URL and Redirect URLs.</td></tr>
-        <tr><td>Works on Live Server but not on GitHub Pages (or the other way round).</td><td>One of your two addresses is missing from Redirect URLs.</td><td>Step 1. Add both, each ending in <code>/**</code>.</td></tr>
-        <tr><td>Unsupported provider: provider is not enabled</td><td>GitHub is switched off in Supabase, or you didn't click Save.</td><td>Step 5.</td></tr>
-        <tr><td>Back in your app with "Unable to exchange external code" in the address bar.</td><td>Supabase showed GitHub the ticket, but the secret was wrong (step 8 of the diagram failed).</td><td>Step 4. Generate a new secret, paste it in step 5, Save.</td></tr>
+        <tr><td>The redirect_uri is not associated with this application.</td><td>GitHub's <b>Authorization callback URL</b> box doesn't have <span class="chip b">B</span> in it, exactly.</td><td>Step 2: copy <span class="chip b">B</span> again. Step 3: open your OAuth App, paste it into the callback box, click <b>Update application</b>.</td></tr>
+        <tr><td>After GitHub, you land on localhost:3000 and the page won't load.</td><td>Supabase's <b>Site URL</b> still has the default in it.</td><td>Step 1. Put <span class="chip a">A</span> in Site URL.</td></tr>
+        <tr><td>Works on Live Server but not on GitHub Pages (or the other way round).</td><td>One address is missing from Supabase's <b>Redirect URLs</b>.</td><td>Step 1. Add both, each ending in <code>/**</code>.</td></tr>
+        <tr><td>Unsupported provider: provider is not enabled</td><td>GitHub is switched off in Supabase, or you didn't click Save.</td><td>Step 6.</td></tr>
+        <tr><td>Back in your app with "Unable to exchange external code" in the address bar.</td><td>The <span class="chip sec">SECRET</span> or <span class="chip id">ID</span> in Supabase is wrong, or has a space at the end.</td><td>Step 5: generate a new secret. Step 6: paste <span class="chip id">ID</span> and <span class="chip sec">SECRET</span> again, Save.</td></tr>
         <tr><td>Invalid login credentials when using email</td><td>This person signed up with GitHub, so they don't have a password.</td><td>Use the way in you signed up with.</td></tr>
       </tbody>
     </table>
@@ -464,7 +565,7 @@ Do not put any secret keys in my code. The GitHub Client Secret is already saved
     <h3>If your Client Secret leaks</h3>
     <p>It got pushed to GitHub, pasted into a chat, or ended up in a screenshot? Tell your teacher, then fix it right away. Deleting it from your code is not enough, because your repo's history keeps old versions.</p>
     <ol class="do">
-      <li><b>GitHub</b> → your profile picture → Settings → Developer settings → OAuth Apps → your app.</li>
+      <li><b>GitHub</b> → Settings → Developer settings → OAuth Apps → your app.</li>
       <li>Under Client secrets, <b>Delete</b> the leaked secret. It stops working right away.</li>
       <li>Click <b>Generate a new client secret</b> and copy it.</li>
       <li><b>Supabase</b> → Authentication → Sign In / Providers → GitHub → paste the new secret → <b>Save</b>.</li>
