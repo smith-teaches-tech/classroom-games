@@ -223,7 +223,7 @@ body.notes header{box-shadow:inset 0 3px 0 var(--ox)}
 
 <header>
   <div class="site">The Village of Mysteries</div>
-  <div class="count"><span id="cur">1</span> / 11</div>
+  <div class="count"><span id="cur">1</span> / <span id="tot">13</span></div>
 </header>
 
 <main>
@@ -526,9 +526,48 @@ body.notes header{box-shadow:inset 0 3px 0 var(--ox)}
     <li>The pierced rod carried a guess inside its own name for a hundred years. <em>What does a name do to the people who inherit it?</em></li>
     <li>Your AGREED column survived every group. What made those claims different from the contested ones? <em>The traces do constrain — so what, exactly, do they constrain?</em></li>
   </ol>
-  <div class="rule"></div>
-  <p><strong>Write, before you leave:</strong> pick one claim you made about these people. State what it rests on, and state what would have to be found for you to give it up.</p>
   <div class="tnote"><b>Guard the landing.</b> The ditch is "so we can never know anything about the past." Counter it with the AGREED column: these <em>were</em> made by people, they <em>were</em> worked with skill, someone <em>did</em> place three chalk cylinders in a child's grave. The record is thin, not empty. <b>Underdetermined is not unknowable.</b><br><br><b>Forward:</b> next lesson gives you the instrument for saying <em>which</em> of these claims is better supported — and why the Roman dodecahedron may never be settled while other questions about the past have been.</div>
+</section>
+
+<!-- ═══════════ 12 — EXIT: ONE CLAIM ═══════════ -->
+<section class="screen">
+  <div class="kicker">Before you leave · write</div>
+  <h2>One claim</h2>
+  <ol class="ladder">
+    <li>Pick one claim your group made about these people.</li>
+    <li>What facts from the dossier is your claim based on?</li>
+    <li>What would someone have to dig up to prove your claim wrong?</li>
+  </ol>
+  <p>Notice that "more evidence" is not an answer to question 3. You have to name the actual thing someone would find, and where.</p>
+  <div class="gate"><button onclick="openGate(this)">Show an example</button></div>
+  <div class="gated">
+    <div class="verdict">
+      <dl class="dossier">
+        <div><dt>Claim</dt><dd>The chalk cylinders were made for the child's burial.</dd></div>
+        <div><dt>Based on</dt><dd>They're soft chalk and completely undamaged, so nobody ever used them for work. They were placed carefully in a child's grave.</dd></div>
+        <div><dt>Proved wrong by</dt><dd>Finding the same cylinders in a house or a rubbish pit, worn and chipped from use.</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ 13 — EXIT: KNOWLEDGE CLAIM ═══════════ -->
+<section class="screen">
+  <div class="kicker">Before you leave · write</div>
+  <h2>Now turn it into a knowledge claim</h2>
+  <p class="lead">Your claim so far is about the people. A knowledge claim is about what we can know.</p>
+  <ol class="ladder" style="counter-reset:s 3">
+    <li>Look at your answer to question 3. Could someone still find that, or is it gone for good?</li>
+    <li>What can these objects tell a historian about the people who made them, and what can't they? Use your claim as the example.</li>
+    <li>Is there anything in the other dossiers that makes your answer to question 5 wrong?</li>
+  </ol>
+  <div class="gate"><button onclick="openGate(this)">Show an example</button></div>
+  <div class="gated">
+    <div class="verdict">
+      <p style="margin:0">The cylinders tell us they were put in a child's grave without ever being used. They can't tell us why people made them. Chalk lasts and wood rots, so people might have used wooden versions every day and left nothing behind.</p>
+    </div>
+  </div>
+  <div class="tnote"><b>Question 6:</b> the pierced rod is the one to push with. Wear inside the hole shows that some rods were used, so objects can sometimes tell us about everyday use, not only about the grave. But wear only shows that something rubbed in the hole, not what it was.</div>
 </section>
 
 </main>
@@ -689,6 +728,7 @@ function render(){
   screens.forEach((s,k)=>s.classList.toggle('active',k===i));
   [...dots.children].forEach((d,k)=>d.classList.toggle('on',k===i));
   document.getElementById('cur').textContent=i+1;
+  document.getElementById('tot').textContent=screens.length;
   document.getElementById('prev').disabled=i===0;
   document.getElementById('next').disabled=i===screens.length-1;
   document.querySelector('main').scrollTop=0;
