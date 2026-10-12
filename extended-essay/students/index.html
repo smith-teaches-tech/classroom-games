@@ -4,19 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>EE for Students — Extended Essay Hub</title>
-<meta name="description" content="Your path through the IB Extended Essay, from exploring topics to formatting the final paper.">
+<meta name="description" content="Your path through the IB Extended Essay, step by step: from choosing a subject to the viva voce.">
 <link rel="stylesheet" href="../shared/ee.css">
+<link rel="stylesheet" href="../shared/steps.css">
 <style>
-.mark{background:var(--stud)}
-.eyebrow{color:var(--stud)}
-.path{list-style:none;margin:0;padding:0;counter-reset:s;display:grid;gap:10px}
-.path li{counter-increment:s;display:grid;grid-template-columns:40px 1fr;gap:14px;align-items:start;
-  background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
-.path li::before{content:counter(s);font-weight:700;color:var(--stud);background:var(--stud-soft);border-radius:8px;height:34px;display:grid;place-items:center}
-.path h3{font-size:18px;margin-bottom:2px}
+.phase{margin-top:34px}
+.phase > h2{font-size:22px;margin:0 0 2px}
+.phase > p{color:var(--muted);margin:0 0 12px}
+.path{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.path li{display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 18px}
+.path li.soon{background:transparent;border-style:dashed}
+.path .num{font-weight:700;color:var(--stud);background:var(--stud-soft);border-radius:8px;height:36px;display:grid;place-items:center;font-size:15px}
+.path li.soon .num{background:#eef1f5;color:var(--muted)}
+.path h3{font-size:18px;margin:2px 0 2px}
+.path h3 a{color:var(--text);text-decoration:none}
+.path h3 a:hover{color:var(--stud);text-decoration:underline}
 .path p{margin:0;color:var(--muted);font-size:15.5px}
 .path .links{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
-.soon{font-size:13px;color:var(--muted)}
+.tag{display:inline-block;font-size:12.5px;font-weight:600;border-radius:999px;padding:1px 9px;margin-left:6px;vertical-align:2px}
+.tag.started{background:#e6f4ea;color:var(--ok)}
+.tag.soon{background:#eef1f5;color:var(--muted)}
+.side{margin-top:30px}
 </style>
 </head>
 <body>
@@ -29,20 +37,43 @@
   <header class="hero">
     <p class="eyebrow">For Students</p>
     <h1>Your EE, step by step</h1>
+    <p class="lede">Eighteen steps from choosing a subject to your viva voce. Work through them in order — each step has a short guide and a private thinking tool to help you develop your ideas.</p>
   </header>
 
   <main>
-    <ol class="path">
-      <li><div><h3>Explore</h3><p>Find a subject and topic you can stay with for months.</p><span class="soon">Coming soon</span></div></li>
-      <li><div><h3>Research question</h3><p>Narrow the topic into a focused question.</p><span class="soon">Coming soon</span></div></li>
-      <li><div><h3>Research &amp; reflect</h3><p>Gather sources and prepare for reflection sessions.</p><span class="soon">Coming soon</span></div></li>
-      <li><div><h3>Write</h3><p>Build the argument within 4,000 words.</p><span class="soon">Coming soon</span></div></li>
-      <li><div><h3>Format &amp; submit</h3><p>Get the final paper into the required format.</p>
-        <div class="links"><a class="btn" href="../ee-formatting/">EE Formatting Game</a><a class="btn" href="../table-of-contents-pages/">Table of Contents Pages</a></div></div></li>
-    </ol>
+    <div class="note"><p style="margin:0"><b>New here?</b> Begin with <a href="step-0/">Start here</a>. It explains how the steps work and how to set up your RRS (researcher's reflection space) Google Doc.</p></div>
+
+    <div id="path"></div>
+
+    <div class="side grid2">
+      <a class="tile live" href="../samples/"><span class="k">Any time</span><h3>Sample essays</h3><p>IB example essays in your subject, with grades and examiner comments.</p></a>
+    </div>
   </main>
 
   <footer><a href="../">← Extended Essay hub</a></footer>
 </div>
+
+<script src="../data/steps.js"></script>
+<script src="../shared/thinking-tools.js"></script>
+<script>
+(function(){
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+  var html = "";
+  EE_PHASES.forEach(function(ph){
+    var steps = EE_STEPS.filter(function(s){return s.phase===ph.id;});
+    html += '<section class="phase"><h2>'+esc(ph.name)+'</h2><p>'+esc(ph.blurb)+'</p><ol class="path">';
+    steps.forEach(function(s){
+      var label = s.n===0 ? "★" : s.n;
+      var started = s.live && EETools.hasAnswers("step-"+s.n);
+      var title = s.live ? '<a href="step-'+s.n+'/">'+esc(s.title)+'</a>' : esc(s.title);
+      var tag = !s.live ? '<span class="tag soon">Coming soon</span>' : (started ? '<span class="tag started">Started</span>' : '');
+      var extras = (s.extras||[]).map(function(x){return '<a class="btn" href="'+x[1]+'">'+esc(x[0])+'</a>';}).join("");
+      html += '<li class="'+(s.live?'':'soon')+'"><span class="num" aria-hidden="true">'+label+'</span><div><h3>'+(s.n===0?'':'<span class="sr" style="position:absolute;left:-9999px">Step '+s.n+': </span>')+title+tag+'</h3><p>'+esc(s.blurb)+'</p>'+(extras?'<div class="links">'+extras+'</div>':'')+'</div></li>';
+    });
+    html += '</ol></section>';
+  });
+  document.getElementById("path").innerHTML = html;
+})();
+</script>
 </body>
 </html>

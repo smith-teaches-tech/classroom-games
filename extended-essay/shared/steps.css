@@ -1,0 +1,90 @@
+/* ═══════════════════════════════════════════════════════════════
+   Extended Essay hub — student step pages and thinking tools.
+   Loaded after shared/ee.css.
+   ═══════════════════════════════════════════════════════════════ */
+.mark{background:var(--stud)}
+.eyebrow{color:var(--stud)}
+
+/* step header */
+.stepno{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--stud);margin:0 0 8px}
+.stepno .pill{background:var(--stud-soft);border-radius:999px;padding:2px 10px}
+
+/* content blocks */
+.step-body h2{font-size:23px;margin:34px 0 10px}
+.step-body h3{font-size:18.5px;margin:22px 0 8px}
+.step-body ul,.step-body ol{padding-left:22px;margin:0 0 14px}
+.step-body li{margin-bottom:6px}
+.why{font-size:18px}
+.do{counter-reset:d;list-style:none;padding:0!important}
+.do > li{counter-increment:d;position:relative;padding-left:42px;margin-bottom:14px}
+.do > li::before{content:counter(d);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:7px;background:var(--stud-soft);color:var(--stud);font-weight:700;display:grid;place-items:center;font-size:14.5px}
+.kv{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:12px 0 16px}
+.kv .panel h3{margin:0 0 6px;font-size:16.5px}
+.kv .panel p{margin:0;color:var(--muted);font-size:15.5px}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin:10px 0 16px;background:var(--card)}
+table.info{border-collapse:collapse;width:100%;min-width:620px;font-size:15.5px}
+table.info th,table.info td{padding:10px 12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+table.info thead th{background:#eef1f5;font-size:14px}
+table.info tr:last-child td,table.info tr:last-child th{border-bottom:0}
+table.info tbody th{width:170px}
+table.info tr.mine{background:var(--stud-soft)}
+.src-note{font-size:14px;color:var(--muted)}
+
+/* step navigation */
+.stepnav{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:40px 0 0}
+.stepnav a{display:block;text-decoration:none;color:var(--text);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 16px}
+.stepnav a:hover{border-color:var(--stud)}
+.stepnav small{display:block;color:var(--muted);font-size:13px}
+.stepnav .next{text-align:right;grid-column:2}
+.stepnav .soon{opacity:.65;pointer-events:none}
+@media(max-width:560px){.stepnav{grid-template-columns:1fr}.stepnav .next{grid-column:1;text-align:left}}
+
+/* ── thinking tool ── */
+.tt{margin:34px 0 0;background:var(--card);border:1px solid var(--line);border-top:5px solid var(--stud);border-radius:12px;padding:22px 24px}
+.tt-kicker{font-size:12.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--stud);margin:0 0 4px}
+.tt h2{margin:0 0 8px;font-size:24px}
+.tt-intro{color:var(--text)}
+.tt-privacy{font-size:14.5px;color:var(--muted);background:#f6f7f9;border-radius:8px;padding:10px 12px}
+.tt-sec{border-top:1px solid var(--line);padding-top:16px;margin-top:18px}
+.tt-sec h3{font-size:18px;margin:0 0 6px}
+.tt-note{color:var(--muted);font-size:15px}
+.tt-q{margin:0 0 18px}
+.tt-q[hidden]{display:none}
+.tt-label{display:block;font-weight:600;margin:0 0 4px}
+.tt-hint{font-size:14.5px;color:var(--muted);margin:0 0 6px}
+.tt input[type=text],.tt input[type=number],.tt textarea{width:100%;font:16px/1.5 var(--sans);color:var(--text);background:#fff;border:1px solid #c9cfd8;border-radius:8px;padding:9px 11px}
+.tt input[type=number]{max-width:120px}
+.tt textarea{resize:vertical}
+.tt input:focus,.tt textarea:focus{outline:3px solid var(--stud-soft);border-color:var(--stud)}
+.tt-opts{display:flex;flex-direction:column;gap:6px}
+.tt-opt{display:flex;gap:10px;align-items:flex-start;cursor:pointer;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.tt-opt:hover{border-color:var(--stud)}
+.tt-opt input{margin-top:5px;accent-color:var(--stud);flex:none;width:17px;height:17px}
+.tt-opt:has(input:checked){border-color:var(--stud);background:var(--stud-soft)}
+.tt-checklist .tt-opt{border-style:dashed}
+.tt-tablewrap{overflow-x:auto;margin:0 0 8px}
+.tt-table{border-collapse:collapse;width:100%;min-width:560px}
+.tt-table th{font-size:13.5px;text-align:left;color:var(--muted);font-weight:600;padding:0 6px 6px}
+.tt-table td{padding:3px}
+.tt-table textarea{min-height:58px;font-size:15px;padding:7px 9px}
+.tt-addrow{font-size:14px;padding:6px 12px}
+.tt-totalval{font-size:18px;margin:0}
+.tt-totalnote{display:block;font-size:14.5px;color:var(--muted)}
+.tt-bar{position:sticky;bottom:0;display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:var(--card);border-top:1px solid var(--line);margin:18px -24px -22px;padding:14px 24px;border-radius:0 0 12px 12px}
+.tt-copy{background:var(--stud);border-color:var(--stud);color:#fff}
+.tt-copy:hover{background:#8a4f00;color:#fff;border-color:#8a4f00}
+.tt-clear.armed{border-color:var(--warn);color:var(--warn)}
+.tt-status{font-size:14.5px;color:var(--muted)}
+.tt-status.ok{color:var(--ok)}
+@media(max-width:560px){
+  .tt{padding:18px 16px}.tt-bar{margin:18px -16px -18px;padding:12px 16px}
+  .tt-table{min-width:0}.tt-table thead{display:none}
+  .tt-table tr{display:block;border:1px solid var(--line);border-radius:8px;padding:6px;margin-bottom:8px}
+  .tt-table td{display:block}
+  .tt-table td::before{content:attr(data-col);display:block;font-size:13px;color:var(--muted);font-weight:600;margin:2px 0}
+}
+
+/* before you move on */
+.checkout{margin-top:26px}
+
+@media print{.tt-bar,.stepnav,.top{display:none!important}.tt{border:0;padding:0}}

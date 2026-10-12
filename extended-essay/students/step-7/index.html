@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Step 7: Collect 40 sources in PowerNotes — EE for Students</title>
+<meta name="description" content="Collect and categorise 40 sources for your EE in PowerNotes, then look for the patterns that will shape your question.">
+<link rel="stylesheet" href="../../shared/ee.css">
+<link rel="stylesheet" href="../../shared/steps.css">
+</head>
+<body data-step="7">
+<div class="shell narrow">
+  <div class="top">
+    <a class="mark" href="../../" title="Extended Essay hub">EE</a>
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Classroom tools</a><span class="sep">/</span><a href="../../">Extended Essay</a><span class="sep">/</span><a href="../">For Students</a><span class="sep">/</span><span>Step 7</span></nav>
+  </div>
+
+  <header class="hero">
+    <p class="stepno" id="stepno"></p>
+    <h1>Collect 40 sources in PowerNotes</h1>
+    <p class="lede">Bring your reading together: 40 sources, organised so you can see what your topic is really about.</p>
+  </header>
+
+  <main class="step-body">
+
+    <h2>Why this step matters</h2>
+    <p class="why">Forty sources is more than you will cite — and that is the point. A wide collection shows you the shape of your topic: the themes that keep returning, the arguments that matter, and the gaps. In step 9 you will narrow these 40 to the 20 best.</p>
+
+    <h2>Organise PowerNotes</h2>
+    <p>You already have four categories from steps 3 to 6. Keep them, and add theme categories as patterns appear.</p>
+    <div class="kv">
+      <div class="panel"><h3>Open / background</h3><p>From step 3. Orientation and key terms.</p></div>
+      <div class="panel"><h3>Current</h3><p>From step 4. Recent research and debate.</p></div>
+      <div class="panel"><h3>Historical</h3><p>From step 5. Foundational work.</p></div>
+      <div class="panel"><h3>Methods</h3><p>From step 6. How your question could be answered.</p></div>
+    </div>
+    <p>For every source, check that PowerNotes has a full citation in your chosen style, and add a one-line note on why the source matters.</p>
+
+    <h2>Check your collection</h2>
+    <ul>
+      <li><b>Spread:</b> no single category should hold more than about half your sources.</li>
+      <li><b>Quality:</b> a good share of your sources should be scholarly — peer-reviewed articles, academic books, or data from reputable organisations.</li>
+      <li><b>Perspectives:</b> do your sources disagree with each other anywhere? If every source says the same thing, look for the other side.</li>
+      <li><b>Records:</b> every source has a complete citation in your chosen style.</li>
+    </ul>
+
+    <h2>Then step back</h2>
+    <p>Read your one-line notes from top to bottom. Which themes keep coming up? Which sources do you keep going back to? Where do you feel most curious? Those answers point to the narrower topic you will choose in step 8.</p>
+    <p class="src-note">Source: IB <i>Extended essay guide</i> (first assessment 2027), "Researching the extended essay" (preliminary investigation and changing direction).</p>
+
+    <div data-tool="step-7"></div>
+
+    <nav class="stepnav" id="stepnav" aria-label="Steps"></nav>
+  </main>
+
+  <footer><a href="../">← All steps</a></footer>
+</div>
+
+<script src="../../data/steps.js"></script>
+<script src="../../shared/step-nav.js"></script>
+<script src="../../shared/thinking-tools.js"></script>
+<script>
+
+EETools.define({
+ "id": "step-7",
+ "stepLabel": "Step 7 · Collect 40 sources",
+ "title": "What my 40 sources are telling me",
+ "sections": [
+  {
+   "heading": "Count",
+   "note": "Enter how many sources you have in each PowerNotes category.",
+   "prompts": [
+    {
+     "id": "n_open",
+     "type": "number",
+     "label": "Open / background",
+     "min": 0,
+     "max": 99
+    },
+    {
+     "id": "n_current",
+     "type": "number",
+     "label": "Current",
+     "min": 0,
+     "max": 99
+    },
+    {
+     "id": "n_hist",
+     "type": "number",
+     "label": "Historical",
+     "min": 0,
+     "max": 99
+    },
+    {
+     "id": "n_methods",
+     "type": "number",
+     "label": "Methods",
+     "min": 0,
+     "max": 99
+    },
+    {
+     "id": "total",
+     "type": "total",
+     "label": "Total sources:",
+     "of": [
+      "n_open",
+      "n_current",
+      "n_hist",
+      "n_methods"
+     ],
+     "target": 40,
+     "warnShare": 0.5
+    }
+   ]
+  },
+  {
+   "heading": "Patterns",
+   "prompts": [
+    {
+     "id": "themes",
+     "type": "long",
+     "label": "Themes that keep coming up across my sources:",
+     "rows": 3
+    },
+    {
+     "id": "top5",
+     "type": "table",
+     "label": "The five sources I keep going back to",
+     "columns": [
+      "Source (author, year)",
+      "Why I keep going back to it"
+     ],
+     "rows": 5,
+     "max": 5
+    },
+    {
+     "id": "missing",
+     "type": "long",
+     "label": "What is missing from my collection — a perspective, a type of source, a time period, a place?",
+     "rows": 3
+    }
+   ]
+  },
+  {
+   "heading": "What my topic is really about",
+   "prompts": [
+    {
+     "id": "topicnow",
+     "type": "text",
+     "label": "My broad topic at step 1 was:",
+     "prefill": function(){ return EETools.read("step-1","chosen")||""; }
+    },
+    {
+     "id": "really",
+     "type": "long",
+     "label": "In one or two sentences: what is my topic really about now?",
+     "rows": 3
+    }
+   ]
+  },
+  {
+   "heading": "Before you move on",
+   "prompts": [
+    {
+     "id": "done",
+     "type": "checklist",
+     "label": "Tick each one when it is true.",
+     "items": [
+      "I have 40 sources in PowerNotes.",
+      "Every source has a full citation in my chosen style and a one-line note.",
+      "No single category holds more than about half my sources.",
+      "I have copied this thinking tool into my RRS."
+     ]
+    }
+   ]
+  }
+ ]
+});
+</script>
+</body>
+</html>

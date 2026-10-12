@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Sample Essays — Extended Essay Hub</title>
+<meta name="description" content="IB example extended essays by subject, with letter grades, examiner marks and reflection forms.">
+<link rel="stylesheet" href="../shared/ee.css">
+<style>
+.mark{background:var(--stud)}
+.eyebrow{color:var(--stud)}
+
+/* filters */
+.filters{position:sticky;top:0;z-index:10;background:var(--bg);display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+  padding:12px 0;margin-bottom:6px;border-bottom:1px solid var(--line)}
+.filters select{font:600 15px var(--sans);border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:8px;padding:8px 10px;max-width:100%}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font:600 14px var(--sans);border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:6px 13px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--text);color:var(--card);border-color:var(--text)}
+.count{margin-left:auto;font-size:14px;color:var(--muted)}
+
+/* subject groups */
+.subject{margin-top:30px}
+.subject > h2{font-size:22px;margin-bottom:12px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.subject > h2 small{font-size:14px;font-weight:500;color:var(--muted)}
+.cards{display:grid;gap:12px}
+
+/* sample card */
+.card{display:grid;grid-template-columns:76px 1fr;gap:16px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.grade{border-radius:10px;text-align:center;padding:8px 4px;align-self:start;background:var(--accent-soft)}
+.grade b{display:block;font-size:34px;line-height:1;font-weight:750;color:var(--accent)}
+.grade span{display:block;font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.25}
+.grade.A{background:#e6f4ea}.grade.A b{color:var(--ok)}
+.grade.D,.grade.E{background:var(--warn-soft)}.grade.D b,.grade.E b{color:var(--warn)}
+.grade.none{background:#eef1f5}.grade.none b{color:var(--muted);font-size:22px;padding:6px 0}
+.meta{font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin:0 0 4px}
+.rq{font-family:var(--serif);font-size:17.5px;line-height:1.5;margin:0 0 10px}
+.crit{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px;padding:0;list-style:none}
+.crit li{font-size:13.5px;border:1px solid var(--line);border-radius:6px;padding:2px 8px;color:var(--muted)}
+.crit li b{color:var(--text)}
+.links{display:flex;gap:8px;flex-wrap:wrap}
+.links .btn{font-size:14px;padding:6px 12px}
+.src{font-size:13px;color:var(--muted);margin:10px 0 0}
+@media(max-width:560px){.card{grid-template-columns:1fr}.grade{display:flex;align-items:center;gap:10px;text-align:left;padding:8px 12px}.grade b{font-size:28px}.grade span{margin:0}}
+.empty{color:var(--muted);padding:30px 0}
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="top">
+    <a class="mark" href="../" title="Extended Essay hub">EE</a>
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="../../">Classroom tools</a><span class="sep">/</span><a href="../">Extended Essay</a><span class="sep">/</span><span>Sample Essays</span></nav>
+  </div>
+
+  <header class="hero">
+    <p class="eyebrow">For Students &amp; Teachers</p>
+    <h1>Sample essays</h1>
+    <p class="lede">Real IB example essays, sorted by subject. Each one shows the grade it earned, the examiner's marks for each criterion, and — where we have it — the student's Reflection and Progress Form (RPF).</p>
+  </header>
+
+  <main>
+    <div class="note">
+      <p style="margin:0 0 6px"><b>About the grades.</b> The IB gives every essay a mark out of 30, and the letter grade (A–E) comes from where that mark falls. The IB has not published official 2027 grade boundaries yet, so every letter on this page is an estimate. Read the examiner's comments — they explain the grade far better than the letter does.</p>
+      <p style="margin:0" class="small">Estimated boundaries (out of 30): A 24–30 · B 19–23 · C 14–18 · D 7–13 · E 0–6. A few older essays were marked out of 34 on the previous rubric (A 27–34 · B 21–26 · C 14–20 · D 7–13 · E 0–6); the criteria have changed since, but what makes a strong essay has not.</p>
+    </div>
+
+    <div class="filters" role="search">
+      <label class="sr" for="subj" style="position:absolute;left:-9999px">Subject</label>
+      <select id="subj" aria-label="Filter by subject"></select>
+      <div class="chips" id="grades" aria-label="Filter by grade"></div>
+      <span class="count" id="count" aria-live="polite"></span>
+    </div>
+
+    <div id="list"></div>
+  </main>
+
+  <footer><a href="../">← Extended Essay hub</a></footer>
+</div>
+
+<script src="../data/samples.js"></script>
+<script>
+(function(){
+  var ASD = ["Language A","Language B","Visual Arts","Biology","Chemistry","Physics","Business Management","Economics","Global Politics","Mathematics","Interdisciplinary"];
+  var IBO_BASE = "https://xmltwo.ibo.org/publications/DP/Group0/d_0_exten_asw_2503_1/en/";
+  var OLD_PAGE = "https://ibpublishing.ibo.org/extendedessay/apps/dpapp/sample.html?doc=d_0_eeyyy_gui_1602_1_e&part=1&chapter=";
+  var OLD_PDF  = "https://xmltwo.ibo.org/publications/DP/Group0/d_0_eeyyy_gui_1602_1/samples/assessment/";
+
+  function letter(total,outOf){
+    if(total==null) return null;
+    var b = window.EE_BOUNDARIES[outOf];
+    for(var i=0;i<b.length;i++){ if(total>=b[i][1]) return b[i][0]; }
+    return "E";
+  }
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+
+  var data = window.EE_SAMPLES.map(function(s){
+    var o = Object.assign({}, s);
+    o.grade = letter(s.total, s.outOf);
+    o.links = [];
+    if(s.src==="m27"){
+      var names = {essay:"Read the essay", marks:"Examiner marks & comments", rpf:"Reflection form (RPF)"};
+      ["essay","marks","rpf"].forEach(function(k){ if(s.files.indexOf(k)>-1) o.links.push([names[k], "files/"+s.id+"-"+k+".pdf"]); });
+      o.title = s.label;
+      o.note = "IB example essay · first assessment 2027";
+    } else if(s.src==="ibo"){
+      var n = ("0"+s.n).slice(-2);
+      o.links = [["Read the essay", IBO_BASE+"EE_"+s.code+"_example"+n+"_en.pdf"],
+                 ["Examiner marks & comments", IBO_BASE+"EE_"+s.code+"_example"+n+"_assessed_en.pdf"],
+                 ["Reflection form (RPF)", IBO_BASE+"EE_"+s.code+"_RPF"+n+"_en.pdf"]];
+      o.title = "IB example "+s.n;
+      o.note = "Hosted by the IB · marked on the 2027 criteria"+(s.total==null?" — open the examiner comments for the mark":"");
+    } else {
+      o.links = [["Read the essay", OLD_PDF+"EE_"+s.code+"_example"+s.letterCode+"_en.pdf"],
+                 ["Examiner marks & comments", OLD_PAGE+s.chapter+"&sample-index="+s.idx],
+                 ["Reflection form (RPPF)", OLD_PDF+"EE_"+s.code+"_example"+s.letterCode+"_RPPF_en.pdf"]];
+      o.title = "IB example "+s.letterCode;
+      o.note = "Hosted by the IB · previous rubric, marked out of 34";
+    }
+    return o;
+  });
+
+  /* subject order: ASD subjects first, then the rest alphabetically */
+  var subjects = [];
+  data.forEach(function(d){ if(subjects.indexOf(d.subject)<0) subjects.push(d.subject); });
+  subjects.sort(function(a,b){
+    var ia=ASD.indexOf(a), ib=ASD.indexOf(b);
+    if(ia<0) ia=99; if(ib<0) ib=99;
+    return ia-ib || a.localeCompare(b);
+  });
+
+  var sel = document.getElementById("subj");
+  sel.innerHTML = '<option value="">All subjects</option>' + subjects.map(function(s){return '<option>'+esc(s)+'</option>';}).join("");
+
+  var gradeBox = document.getElementById("grades");
+  var activeGrade = "";
+  ["All","A","B","C","D","E"].forEach(function(g){
+    var b = document.createElement("button");
+    b.type="button"; b.className="chip"; b.textContent = g==="All" ? "All grades" : "Grade "+g;
+    b.dataset.g = g==="All" ? "" : g;
+    b.setAttribute("aria-pressed", g==="All" ? "true" : "false");
+    b.addEventListener("click", function(){
+      activeGrade = b.dataset.g;
+      Array.prototype.forEach.call(gradeBox.children, function(c){ c.setAttribute("aria-pressed", c===b ? "true":"false"); });
+      render(); save();
+    });
+    gradeBox.appendChild(b);
+  });
+
+  function card(d){
+    var g = d.grade;
+    var gradeHtml = g
+      ? '<div class="grade '+g+'"><b>'+g+'</b><span>est. grade<br>'+d.total+'/'+d.outOf+'</span></div>'
+      : '<div class="grade none"><b>—</b><span>see examiner comments</span></div>';
+    var crit = "";
+    if(d.marks){
+      var max = {A:6,B:6,C:6,D:8,E:4};
+      crit = '<ul class="crit" aria-label="Marks by criterion">' + ["A","B","C","D","E"].map(function(k){
+        return '<li>'+k+' <b>'+d.marks[k]+'</b>/'+max[k]+'</li>'; }).join("") + '</ul>';
+    }
+    var fw = d.framework ? ' · '+esc(d.framework) : '';
+    return '<article class="card">'+gradeHtml+'<div>'+
+      '<p class="meta">'+esc(d.title)+fw+'</p>'+
+      '<p class="rq">'+esc(d.rq)+'</p>'+ crit +
+      '<div class="links">'+d.links.map(function(l){return '<a class="btn" href="'+esc(l[1])+'" target="_blank" rel="noopener">'+esc(l[0])+'</a>';}).join("")+'</div>'+
+      '<p class="src">'+esc(d.note)+'</p>'+
+      '</div></article>';
+  }
+
+  function render(){
+    var subj = sel.value, shown = 0, html = "";
+    subjects.forEach(function(s){
+      if(subj && s!==subj) return;
+      var items = data.filter(function(d){ return d.subject===s && (!activeGrade || d.grade===activeGrade); });
+      if(!items.length) return;
+      items.sort(function(a,b){ return (a.grade||"Z").localeCompare(b.grade||"Z"); });
+      shown += items.length;
+      var label = s==="Interdisciplinary" ? "Interdisciplinary pathway" : s;
+      html += '<section class="subject"><h2>'+esc(label)+' <small>'+items.length+' essay'+(items.length>1?'s':'')+'</small></h2><div class="cards">'+items.map(card).join("")+'</div></section>';
+    });
+    document.getElementById("list").innerHTML = html || '<p class="empty">No essays match those filters yet.</p>';
+    document.getElementById("count").textContent = shown+" essay"+(shown===1?"":"s");
+  }
+
+  function save(){ try{ localStorage.setItem("ee-samples-filter", JSON.stringify({s:sel.value,g:activeGrade})); }catch(e){} }
+  try{
+    var f = JSON.parse(localStorage.getItem("ee-samples-filter")||"null");
+    if(f){ if(subjects.indexOf(f.s)>-1) sel.value=f.s;
+      if(f.g){ activeGrade=f.g; Array.prototype.forEach.call(gradeBox.children,function(c){c.setAttribute("aria-pressed", c.dataset.g===f.g?"true":"false");}); } }
+  }catch(e){}
+
+  /* a link such as samples/?subject=Economics (used by step 6) overrides the remembered filter */
+  try{
+    var q = new URLSearchParams(location.search).get("subject");
+    if(q && subjects.indexOf(q)>-1){ sel.value = q; }
+  }catch(e){}
+
+  sel.addEventListener("change", function(){ render(); save(); });
+  render();
+})();
+</script>
+</body>
+</html>

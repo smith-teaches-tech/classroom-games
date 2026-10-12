@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Step 2: Choose your citation style: APA or MLA — EE for Students</title>
+<meta name="description" content="Choose APA or MLA for your extended essay before you collect any sources, and set up PowerNotes.">
+<link rel="stylesheet" href="../../shared/ee.css">
+<link rel="stylesheet" href="../../shared/steps.css">
+</head>
+<body data-step="2">
+<div class="shell narrow">
+  <div class="top">
+    <a class="mark" href="../../" title="Extended Essay hub">EE</a>
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Classroom tools</a><span class="sep">/</span><a href="../../">Extended Essay</a><span class="sep">/</span><a href="../">For Students</a><span class="sep">/</span><span>Step 2</span></nav>
+  </div>
+
+  <header class="hero">
+    <p class="stepno" id="stepno"></p>
+    <h1>Choose your citation style: APA or MLA</h1>
+    <p class="lede">Decide how you will cite sources now — before you collect a single one — so you never have to redo your records.</p>
+  </header>
+
+  <main class="step-body">
+
+    <h2>Why this step matters</h2>
+    <p class="why">From step 3 onward you will collect around 40 sources. If you record each one in your chosen style as you find it, your works cited list at step 16 is almost finished already. If you switch styles halfway, you redo every entry.</p>
+    <p>The IB does not require one particular style. It requires you to acknowledge every source using a standard style of referencing, consistently, throughout the essay. At ASD you will use <b>APA</b> or <b>MLA</b>.</p>
+
+    <h2>Which style for which subject?</h2>
+    <div class="tablewrap"><table class="info">
+      <thead><tr><th>Style</th><th>Usually used in</th><th>In-text citation looks like</th></tr></thead>
+      <tbody>
+        <tr><th>MLA</th><td>Language A, Language B, Visual Arts</td><td>(Orwell 112)</td></tr>
+        <tr><th>APA</th><td>Biology, Chemistry, Physics, Business Management, Economics, Global Politics, Mathematics</td><td>(Smith &amp; Lee, 2021, p. 4)</td></tr>
+      </tbody></table></div>
+    <p>These are the usual choices, not rules. Confirm the style with your supervisor, then use it for the whole essay. For an interdisciplinary essay, choose the style that suits the subject doing most of the work, and agree it with your supervisor.</p>
+    <p>Use the current edition of your style. At the time of writing that is the MLA Handbook, 9th edition, and the APA Publication Manual, 7th edition. The Purdue Online Writing Lab has clear guides to both: <a href="https://owl.purdue.edu/owl/research_and_citation/mla_style/mla_formatting_and_style_guide/mla_general_format.html" target="_blank" rel="noopener">MLA guide</a> · <a href="https://owl.purdue.edu/owl/research_and_citation/apa_style/apa_formatting_and_style_guide/general_format.html" target="_blank" rel="noopener">APA guide</a>.</p>
+
+    <h2>Works cited, reference list and bibliography</h2>
+    <ul>
+      <li>A <b>reference list</b> (APA) or <b>works cited</b> list (MLA) includes only the sources you cite in the body of your essay.</li>
+      <li>A <b>bibliography</b> lists every source you consulted during your research, including the ones you did not cite.</li>
+    </ul>
+
+    <h2>What to record for every source</h2>
+    <p>Whatever style you choose, capture these details the moment you find a source — they are much harder to find again later:</p>
+    <ul>
+      <li>Author(s) or organisation</li>
+      <li>Title of the work (and the journal, book or website it appears in)</li>
+      <li>Date of publication</li>
+      <li>Publisher</li>
+      <li>URL or DOI, and the date you accessed it</li>
+      <li>Page numbers for anything you might quote</li>
+    </ul>
+
+    <h2>Set up PowerNotes</h2>
+    <ol class="do">
+      <li>Log in to PowerNotes and create a project for your extended essay.</li>
+      <li>Set the project's citation style to the style you have chosen, if your account offers that setting.</li>
+      <li>Every time you save a source from step 3 onward, check the citation PowerNotes creates. Automatic citations often miss authors, dates or page numbers — fix them straight away.</li>
+    </ol>
+    <p class="src-note">Source: IB <i>Extended essay guide</i> (first assessment 2027), "Writing your extended essay" (reference list and bibliography; citation and referencing) and "The ethical researcher".</p>
+
+    <div data-tool="step-2"></div>
+
+    <nav class="stepnav" id="stepnav" aria-label="Steps"></nav>
+  </main>
+
+  <footer><a href="../">← All steps</a></footer>
+</div>
+
+<script src="../../data/steps.js"></script>
+<script src="../../shared/step-nav.js"></script>
+<script src="../../shared/thinking-tools.js"></script>
+<script>
+
+EETools.define({
+ "id": "step-2",
+ "stepLabel": "Step 2 · Choose your citation style",
+ "title": "My citation style",
+ "sections": [
+  {
+   "heading": "Decide",
+   "prompts": [
+    {
+     "id": "subjectnow",
+     "type": "text",
+     "label": "My subject (from step 1):",
+     "prefill": function(){ var p=EETools.read("step-1","pathway"); if(p==="Interdisciplinary (two subjects)"){ var a=EETools.read("step-1","sub1")||"", b=EETools.read("step-1","sub2")||""; return (a||b)?"Interdisciplinary: "+[a,b].filter(Boolean).join(" + "):"Interdisciplinary"; } if(p==="Subject-focused (one subject)"){ return EETools.read("step-1","subject")||""; } return ""; }
+    },
+    {
+     "id": "style",
+     "type": "choice",
+     "label": "The citation style I will use:",
+     "options": [
+      "APA",
+      "MLA"
+     ]
+    },
+    {
+     "id": "why",
+     "type": "long",
+     "label": "Why this style suits my subject:",
+     "rows": 2
+    },
+    {
+     "id": "confirmed",
+     "type": "choice",
+     "label": "Has my supervisor confirmed this style?",
+     "options": [
+      "Yes",
+      "Not yet — I will ask at our next meeting"
+     ]
+    }
+   ]
+  },
+  {
+   "heading": "Practise",
+   "prompts": [
+    {
+     "id": "practice",
+     "type": "long",
+     "label": "Find any one source on your topic and write its full citation in your chosen style.",
+     "hint": "Check it against the Purdue OWL guide for your style before you move on.",
+     "rows": 3
+    },
+    {
+     "id": "intext",
+     "type": "text",
+     "label": "Now write the in-text citation you would use for that source:"
+    }
+   ]
+  },
+  {
+   "heading": "Before you move on",
+   "prompts": [
+    {
+     "id": "done",
+     "type": "checklist",
+     "label": "Tick each one when it is true.",
+     "items": [
+      "I have chosen APA or MLA.",
+      "I have set up a PowerNotes project for my EE.",
+      "I know the difference between a works cited list and a bibliography.",
+      "I have copied this thinking tool into my RRS."
+     ]
+    }
+   ]
+  }
+ ]
+});
+</script>
+</body>
+</html>
