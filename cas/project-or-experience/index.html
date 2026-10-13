@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project or Experience? — CAS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3eee1; --paper-2:#ece5d3;
+    --ink:#1f1c17; --ink-soft:#4a4339; --rule:#cbbfa3;
+    --nasa:#1d3b5c; --green:#39563f; --amber:#b9892f;
+    --bad:#8a3324; --good:#39563f;
+    --shadow:0 18px 50px -22px rgba(31,28,23,.5);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:
+      radial-gradient(120% 90% at 80% -10%, rgba(29,59,92,.07), transparent 60%),
+      radial-gradient(120% 90% at 0% 110%, rgba(57,86,63,.08), transparent 55%),
+      var(--paper);
+    color:var(--ink);
+    font-family:"Cormorant Garamond", Georgia, serif;
+    font-size:20px; line-height:1.5; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:940px;margin:0 auto;padding:0 22px 120px;}
+  .mono{font-family:"JetBrains Mono", monospace;}
+
+  header{padding:64px 0 30px;border-bottom:2px solid var(--ink);margin-bottom:8px;}
+  .kicker{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--amber);margin:0 0 18px;}
+  h1{font-size:clamp(38px,6.6vw,64px);line-height:.99;font-weight:600;margin:0;letter-spacing:-.015em;}
+  h1 em{font-style:italic;color:var(--nasa);}
+  .sub{font-size:22px;color:var(--ink-soft);margin:18px 0 0;max-width:60ch;font-style:italic;}
+  .target{font-family:"JetBrains Mono",monospace;font-size:12.5px;line-height:1.6;text-transform:uppercase;letter-spacing:.08em;margin-top:26px;padding:14px 18px;border:1px solid var(--rule);background:rgba(255,255,255,.35);color:var(--ink-soft);}
+  .target b{color:var(--ink);}
+
+  section{padding:52px 0 8px;}
+  .sec-num{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.2em;color:var(--amber);}
+  h2{font-size:clamp(26px,4.2vw,38px);font-weight:600;margin:6px 0 14px;letter-spacing:-.01em;line-height:1.03;}
+  h2 em{color:var(--nasa);}
+  .lede{font-size:21px;color:var(--ink-soft);margin:0 0 26px;max-width:64ch;}
+
+  /* ---- STAGES ---- */
+  .stages{display:grid;gap:10px;counter-reset:st;}
+  .stage{display:grid;grid-template-columns:170px 1fr;border:1.5px solid var(--ink);background:rgba(255,255,255,.5);}
+  @media(max-width:640px){.stage{grid-template-columns:1fr;}}
+  .stage .sn{background:var(--nasa);color:#fff;font-family:"JetBrains Mono",monospace;font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;display:flex;flex-direction:column;justify-content:center;padding:14px 14px;}
+  .stage .sn small{font-size:10.5px;opacity:.7;letter-spacing:.2em;margin-bottom:4px;}
+  .stage .sd{padding:14px 20px;}
+  .stage .sd p{margin:0;font-size:19.5px;line-height:1.35;}
+  .stage .ask{font-style:italic;color:var(--ink-soft);margin-top:6px !important;font-size:18.5px !important;}
+  .stage .svc{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--green);margin-top:8px !important;letter-spacing:.02em;}
+  .stage.refl .sn{background:var(--green);}
+  .note{font-size:18.5px;color:var(--ink-soft);margin:14px 0 0;font-style:italic;}
+
+  /* ---- TESTS ---- */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px;}
+  @media(max-width:640px){.split{grid-template-columns:1fr;}}
+  .box{border:1.5px solid var(--ink);padding:16px 20px;background:rgba(255,255,255,.45);}
+  .box.e{border-left:6px solid var(--amber);}
+  .box.p{border-left:6px solid var(--green);}
+  .box .lab{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;margin:0 0 8px;}
+  .box.e .lab{color:var(--amber);} .box.p .lab{color:var(--green);}
+  .box p{margin:0;font-size:19px;line-height:1.38;}
+  .tests{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;}
+  .test{border:1.5px solid var(--ink);background:rgba(255,255,255,.55);padding:14px 16px;}
+  .test .tn{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;color:var(--amber);}
+  .test h3{font-size:24px;margin:2px 0 6px;font-weight:600;line-height:1.1;}
+  .test p{margin:0;font-size:18px;line-height:1.3;color:var(--ink-soft);}
+  .svcbox{margin-top:14px;border:1.5px dashed var(--green);padding:14px 18px;font-size:19px;line-height:1.38;}
+  .svcbox b{color:var(--green);}
+
+  /* ---- QUIZ ---- */
+  .progress{display:flex;gap:6px;margin:0 0 16px;flex-wrap:wrap;}
+  .pip{width:28px;height:8px;background:var(--paper-2);border:1px solid var(--rule);}
+  .pip.done{background:var(--green);border-color:var(--green);}
+  .pcount{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.1em;color:var(--ink-soft);margin:0 0 10px;text-transform:uppercase;}
+  .card{border:2px solid var(--ink);background:#fbf8f0;padding:26px 28px;box-shadow:var(--shadow);}
+  .card .cnum{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.2em;color:var(--amber);text-transform:uppercase;}
+  .card .scen{font-size:22px;line-height:1.4;margin:10px 0 20px;}
+  .btns{display:flex;flex-wrap:wrap;gap:10px;}
+  .btn{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:12px 18px;border:1.5px solid var(--ink);background:var(--paper-2);color:var(--ink);cursor:pointer;transition:transform .12s, background .15s;}
+  .btn:hover:not(:disabled){transform:translateY(-2px);background:var(--paper);}
+  .btn:disabled{opacity:.45;cursor:default;}
+  .btn.primary{background:var(--ink);color:var(--paper);}
+  .btn.picked-good{background:var(--good);color:#fff;border-color:var(--good);opacity:1;}
+  .btn.picked-bad{background:var(--bad);color:#fff;border-color:var(--bad);opacity:1;}
+  .step2{margin-top:20px;padding-top:16px;border-top:1px dashed var(--rule);}
+  .step2 .q{font-size:20px;margin:0 0 12px;font-weight:600;}
+  .fb{margin-top:18px;padding:14px 18px;font-size:19px;line-height:1.4;}
+  .fb.good{border-left:5px solid var(--good);background:rgba(57,86,63,.08);}
+  .fb.bad{border-left:5px solid var(--bad);background:rgba(138,51,36,.07);}
+  .fb .tag{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;display:block;margin-bottom:4px;}
+  .fb.good .tag{color:var(--good);} .fb.bad .tag{color:var(--bad);}
+  .next{margin-top:16px;}
+  .hidden{display:none !important;}
+
+  /* ---- CERTIFICATE ---- */
+  .namerow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:0 0 18px;}
+  .namerow input{font-family:"Cormorant Garamond",Georgia,serif;font-size:22px;padding:8px 12px;border:1.5px solid var(--ink);background:#fff;min-width:0;flex:1 1 240px;}
+  .cert{border:2px solid var(--ink);outline:1px solid var(--ink);outline-offset:-10px;background:#fbf8f0;padding:48px 40px;text-align:center;position:relative;}
+  .cert .ck{font-family:"JetBrains Mono",monospace;font-size:11.5px;letter-spacing:.32em;text-transform:uppercase;color:var(--amber);margin:0;}
+  .cert h3{font-size:clamp(30px,5vw,46px);font-weight:600;margin:10px 0 4px;line-height:1.05;}
+  .cert .awd{font-style:italic;color:var(--ink-soft);margin:16px 0 0;font-size:20px;}
+  .cert .who{font-size:clamp(30px,5.4vw,48px);font-style:italic;color:var(--nasa);border-bottom:1.5px solid var(--ink);display:inline-block;min-width:60%;padding:0 10px 4px;margin:8px 0 14px;}
+  .cert .what{max-width:52ch;margin:0 auto;font-size:20px;line-height:1.4;}
+  .cert .chips{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:18px 0 0;}
+  .cert .chips span{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--rule);padding:5px 8px;}
+  .cert .sig{display:flex;justify-content:space-between;gap:20px;margin-top:34px;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);}
+  .cert .sig div{flex:1;border-top:1px solid var(--ink);padding-top:6px;}
+  .locked{border:1.5px dashed var(--rule);padding:22px;text-align:center;color:var(--ink-soft);font-style:italic;}
+
+  /* ---- NEXT ---- */
+  .nextq{list-style:none;padding:0;margin:0;display:grid;gap:10px;}
+  .nextq li{border:1.5px solid var(--ink);background:rgba(255,255,255,.5);padding:12px 18px;font-size:20px;line-height:1.35;}
+  .nextq li b{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);display:block;font-weight:500;}
+
+  footer{margin-top:60px;padding-top:16px;border-top:1px solid var(--rule);font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);}
+
+  @media print{
+    body{background:#fff;}
+    .wrap > *:not(#certificate){display:none !important;}
+    #certificate{padding:0;}
+    #certificate > *:not(.cert){display:none !important;}
+    .cert{margin-top:40px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="kicker">CAS · The CAS Project</p>
+    <h1>Project <em>or</em> Experience?</h1>
+    <p class="sub">Most of what you log for CAS will be experiences. At least one thing has to be a CAS project. Today you learn to tell the two apart, so the project you plan actually counts.</p>
+    <p class="target"><b>By the end of today:</b> I can name the five CAS stages, use the four tests to decide whether something is a CAS project or a CAS experience, and start testing my own project ideas.</p>
+  </header>
+
+  <!-- 01 STAGES -->
+  <section id="stages">
+    <div class="sec-num">01 · THE FIVE CAS STAGES</div>
+    <h2>Every CAS project moves through <em>five stages</em></h2>
+    <p class="lede">The CAS stages are the plan for doing CAS well. A one-off experience might skip some of them. A CAS project has to use all five.</p>
+
+    <div class="stages">
+      <div class="stage">
+        <div class="sn"><small>Stage 1</small>Investigation</div>
+        <div class="sd">
+          <p>Work out what you want to do and why. Look at your interests and skills, and decide the purpose and goals.</p>
+          <p class="ask">What do I want to achieve, and why does it matter?</p>
+          <p class="svc">Service: find a real need, and check it with the people you want to help.</p>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="sn"><small>Stage 2</small>Preparation</div>
+        <div class="sd">
+          <p>Make the plan. Decide who does which job, what you need, and the timeline. Learn any skills you are missing.</p>
+          <p class="ask">Who is doing what, by when, and with what?</p>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="sn"><small>Stage 3</small>Action</div>
+        <div class="sd">
+          <p>Carry out the plan. Things will go wrong, so you will need to make decisions and solve problems along the way.</p>
+          <p class="ask">What do we do when the plan stops working?</p>
+        </div>
+      </div>
+      <div class="stage refl">
+        <div class="sn"><small>Stage 4</small>Reflection</div>
+        <div class="sd">
+          <p>Describe what happened, how you felt, and what you are learning. Reflection happens all the way through the CAS project, not only at the end.</p>
+          <p class="ask">What happened, what did I learn, and what should I change?</p>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="sn"><small>Stage 5</small>Demonstration</div>
+        <div class="sd">
+          <p>Show what you did and what you learned. You can share it in your CAS portfolio or with an audience.</p>
+          <p class="ask">How will I show other people what we did and what I learned?</p>
+        </div>
+      </div>
+    </div>
+    <p class="note">Reflection can send you back to Investigation or Preparation. The stages are a cycle, not a checklist you do once.</p>
+  </section>
+
+  <!-- 02 TESTS -->
+  <section id="tests">
+    <div class="sec-num">02 · EXPERIENCE OR PROJECT?</div>
+    <h2>Four tests that only a <em>CAS project</em> passes</h2>
+
+    <div class="split">
+      <div class="box e">
+        <p class="lab">CAS experience</p>
+        <p>Anything you do in Creativity, Activity or Service. It can be a single event, or something you do many times. Most of your CAS will be experiences, and they all count.</p>
+      </div>
+      <div class="box p">
+        <p class="lab">CAS project</p>
+        <p>A planned set of CAS experiences, done with other people, over at least a month. Every CAS student must complete at least one CAS project.</p>
+      </div>
+    </div>
+
+    <p class="lede">A CAS project has to pass all four tests. If it fails even one test, it is still a CAS experience. It is just not a CAS project.</p>
+
+    <div class="tests">
+      <div class="test">
+        <div class="tn">TEST 1</div>
+        <h3>Team</h3>
+        <p>You work with other students or community members, and everyone contributes.</p>
+      </div>
+      <div class="test">
+        <div class="tn">TEST 2</div>
+        <h3>One month+</h3>
+        <p>From the first planning to the finish, it lasts at least one month.</p>
+      </div>
+      <div class="test">
+        <div class="tn">TEST 3</div>
+        <h3>All five stages</h3>
+        <p>It goes through Investigation, Preparation, Action, Reflection and Demonstration, starting with a clear purpose and goals.</p>
+      </div>
+      <div class="test">
+        <div class="tn">TEST 4</div>
+        <h3>Ownership</h3>
+        <p>You started it, or you are responsible for part of it. Just turning up is not enough.</p>
+      </div>
+    </div>
+
+    <div class="svcbox"><b>Service projects:</b> Investigation must find a real need. Ask the people you are helping what they need. Do not guess for them. A service project built on a guess fails Test 3.</div>
+  </section>
+
+  <!-- 03 QUIZ -->
+  <section id="quiz">
+    <div class="sec-num">03 · SORT THEM</div>
+    <h2>Project or experience? <em>Prove it.</em></h2>
+    <p class="lede">Read each situation and run the four tests. If you pick the wrong answer, you get a question to think about, and that card comes back later. Clear every card to unlock your certificate.</p>
+
+    <p class="pcount" id="pcount"></p>
+    <div class="progress" id="progress"></div>
+
+    <div class="card" id="card">
+      <div class="cnum" id="cnum"></div>
+      <p class="scen" id="scen"></p>
+      <div class="btns" id="ans">
+        <button class="btn" data-a="E">CAS experience</button>
+        <button class="btn" data-a="P">CAS project</button>
+      </div>
+
+      <div class="step2 hidden" id="step2">
+        <p class="q">Which test does it fail?</p>
+        <div class="btns" id="testbtns">
+          <button class="btn" data-t="team">Team</button>
+          <button class="btn" data-t="month">One month+</button>
+          <button class="btn" data-t="stages">All five stages</button>
+          <button class="btn" data-t="own">Ownership</button>
+        </div>
+      </div>
+
+      <div class="fb hidden" id="fb"></div>
+      <button class="btn primary next hidden" id="nextbtn">Next card →</button>
+    </div>
+  </section>
+
+  <!-- 04 CERTIFICATE -->
+  <section id="certificate">
+    <div class="sec-num">04 · CERTIFICATE</div>
+    <h2>Your <em>certificate</em></h2>
+    <div class="locked" id="locked">Clear all the cards in Section 03 to unlock your certificate.</div>
+
+    <div id="certarea" class="hidden">
+      <div class="namerow">
+        <input id="nameIn" type="text" placeholder="Type your full name" maxlength="60" autocomplete="name">
+        <button class="btn primary" id="printbtn">Print / save as PDF</button>
+      </div>
+      <div class="cert">
+        <p class="ck">IB Diploma · Creativity, Activity, Service</p>
+        <h3>CAS Project Certificate</h3>
+        <p class="awd">This certifies that</p>
+        <div class="who" id="who">Your name</div>
+        <p class="what">can tell a CAS project from a CAS experience using the four tests (Team, One month+, All five stages, Ownership) and the five CAS stages.</p>
+        <div class="chips"><span>Investigation</span><span>Preparation</span><span>Action</span><span>Reflection</span><span>Demonstration</span></div>
+        <div class="sig">
+          <div id="certdate">Date</div>
+          <div>CAS Coordinator</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 NEXT -->
+  <section id="next">
+    <div class="sec-num">05 · YOUR TURN</div>
+    <h2>Now test <em>your own</em> project ideas</h2>
+    <p class="lede">Open the CAS project brainstorm document your teacher has posted. For each idea you write there, answer these four questions:</p>
+    <ul class="nextq">
+      <li><b>Team</b>Who would be on your team, and what would each person do?</li>
+      <li><b>One month+</b>What would keep the project going for at least a month?</li>
+      <li><b>All five stages</b>What is the goal? If it is service, who would you ask about what they need?</li>
+      <li><b>Ownership</b>Which part would you be in charge of?</li>
+    </ul>
+  </section>
+
+  <footer>CAS · The CAS Project · Experience or project · Next: test your own ideas</footer>
+</div>
+
+<script>
+(function(){
+  var TESTNAME = {team:"Team", month:"One month+", stages:"All five stages", own:"Ownership"};
+
+  // fail: null = CAS project (passes all four tests)
+  var CARDS = [
+    {
+      s:"Omar trains for a half-marathon for ten weeks. He sets a target time, follows a training plan, keeps a log, and writes reflections. He trains alone.",
+      fail:"team",
+      hintE:"Who else is doing the work with Omar?",
+      hintT:"Omar has the weeks, the plan and the reflections. Look at who he is working with.",
+      why:"Omar's training is a strong CAS experience, with goals, a plan and reflection. But he trains alone, so it fails the Team test."
+    },
+    {
+      s:"Five students notice the Grade 7s have nothing to do at lunch. They survey the Grade 7s, plan a futsal league, split the jobs (fixtures, referees, equipment), and run it for the whole semester. They reflect along the way and present results at a Core assembly.",
+      fail:null,
+      hintE:"Run all four tests. Is there a team? Does it last a month? Are all five stages there? Who is in charge of each part?",
+      why:"Team: five students. One month+: a whole semester. All five stages: survey, plan, run, reflect, present. Ownership: each student has a job. It passes all four tests."
+    },
+    {
+      s:"For six weeks, Yousef works shifts at the school food drive. A teacher runs the food drive: she decides what to collect and tells each volunteer when to turn up. Yousef turns up to every shift he is given.",
+      fail:"own",
+      hintE:"Which part of the food drive is Yousef responsible for?",
+      hintT:"There is a team and it runs six weeks. But who makes the decisions about Yousef's part?",
+      why:"Yousef is part of a team for six weeks, but he only follows instructions. He has not started it or taken charge of any part, so it fails the Ownership test."
+    },
+    {
+      s:"Four friends design and paint a mural for the school cafeteria. They plan the design together, split up the painting, and reflect on the process. From their first meeting to the finished wall takes three weeks.",
+      fail:"month",
+      hintE:"Count the time from the first planning meeting to the finished wall.",
+      hintT:"There is a team, a plan, and reflection. How long did it last?",
+      why:"The mural has a team, a plan and reflection, but it took three weeks. A CAS project needs at least one month from planning to finish, so it fails the One month+ test."
+    },
+    {
+      s:"Same food drive, different student. Hana asks the teacher if she can run the collection points in the Grade 9 classrooms. She plans the posters and pick-up times with two classmates, runs her part for six weeks, reflects as she goes, and presents what she learned to her CAS adviser.",
+      fail:null,
+      hintE:"Hana did not start the food drive. Does that matter? Look at Test 4 again: started it, or responsible for part of it.",
+      why:"Hana did not start the food drive, but she is responsible for one part of it. Team, six weeks, all five stages, ownership of the Grade 9 collection. It passes all four tests."
+    },
+    {
+      s:"A group of five students decide to \"do something for the environment.\" Every few weeks for three months, whoever is free picks up litter around the compound. They never set a goal, never make a plan, and never talk about what they learned.",
+      fail:"stages",
+      hintE:"What is their goal? Where is their plan? When do they reflect?",
+      hintT:"There is a team and it lasts three months. What is missing from how they did it?",
+      why:"There is a team and it lasts three months, but there is no purpose, no plan, no reflection and no demonstration. It fails the All five stages test."
+    },
+    {
+      s:"Four students spend two months collecting English storybooks for a local primary school library. They never ask the school what it needs. When they deliver the books, they find out the school wanted Arabic readers for its younger classes.",
+      fail:"stages",
+      hintE:"For service, what does the Investigation stage have to find? Did they find it?",
+      hintT:"They had a team, two months, and they took charge. Which stage did they skip?",
+      why:"For a service project, Investigation has to find a real need, checked with the people you are helping. They guessed instead of asking, so it fails the All five stages test."
+    },
+    {
+      s:"Six students learn that children at a nearby school need backpacks. They meet the school to confirm what kind of bags would help, design backpacks made from recycled fabric, and spend seven weeks sewing them in teams. They reflect each week and share the process at a Core evening.",
+      fail:null,
+      hintE:"Run all four tests. Is there a team? Is it more than a month? Did they check the need? Who is in charge?",
+      why:"Team: six students. One month+: seven weeks. All five stages: they confirmed the need with the school, planned, made, reflected and shared. Ownership: they started it. It passes all four tests."
+    }
+  ];
+
+  var queue = CARDS.map(function(_,i){return i;});
+  var cleared = {};
+  var cur = null;       // index into CARDS
+  var phase = "ans";    // ans | test | done
+  var missedThisPass = false;
+
+  var $ = function(id){return document.getElementById(id);};
+  var scen=$("scen"), cnum=$("cnum"), ans=$("ans"), step2=$("step2"), fb=$("fb"), nextbtn=$("nextbtn");
+
+  function renderProgress(){
+    var n = Object.keys(cleared).length;
+    $("pcount").textContent = n + " of " + CARDS.length + " cleared";
+    var p = $("progress"); p.innerHTML="";
+    CARDS.forEach(function(_,i){
+      var d=document.createElement("div"); d.className="pip"+(cleared[i]?" done":""); p.appendChild(d);
+    });
+  }
+
+  function resetBtns(box){
+    Array.prototype.forEach.call(box.querySelectorAll(".btn"),function(b){
+      b.disabled=false; b.classList.remove("picked-good","picked-bad");
+    });
+  }
+  function lockBtns(box){
+    Array.prototype.forEach.call(box.querySelectorAll(".btn"),function(b){b.disabled=true;});
+  }
+
+  function show(){
+    renderProgress();
+    if(queue.length===0){ finish(); return; }
+    cur = queue[0];
+    phase = "ans"; missedThisPass=false;
+    var c = CARDS[cur];
+    cnum.textContent = "Card " + (cur+1) + (c.seen ? " · back again" : "");
+    scen.textContent = c.s;
+    resetBtns(ans); resetBtns($("testbtns"));
+    step2.classList.add("hidden");
+    fb.className="fb hidden"; fb.innerHTML="";
+    nextbtn.classList.add("hidden");
+  }
+
+  function feedback(kind, tag, text){
+    fb.className = "fb " + kind;
+    fb.innerHTML = '<span class="tag"></span><span class="body"></span>';
+    fb.querySelector(".tag").textContent = tag;
+    fb.querySelector(".body").textContent = text;
+  }
+
+  function miss(hint){
+    // card goes to the back of the queue
+    var c = CARDS[cur];
+    c.seen = true;
+    queue.shift(); queue.push(cur);
+    feedback("bad", "Not yet · think about this", hint + " This card will come back later.");
+    nextbtn.textContent = "Next card →";
+    nextbtn.classList.remove("hidden");
+  }
+
+  function clear(){
+    var c = CARDS[cur];
+    cleared[cur] = true;
+    queue.shift();
+    feedback("good", c.fail ? "Cleared · CAS experience" : "Cleared · CAS project", c.why);
+    nextbtn.textContent = queue.length ? "Next card →" : "Unlock certificate →";
+    nextbtn.classList.remove("hidden");
+    renderProgress();
+  }
+
+  ans.addEventListener("click", function(e){
+    var b = e.target.closest(".btn"); if(!b || b.disabled || phase!=="ans") return;
+    var c = CARDS[cur];
+    var right = c.fail ? "E" : "P";
+    lockBtns(ans);
+    if(b.dataset.a === right){
+      b.classList.add("picked-good");
+      if(c.fail){
+        phase="test";
+        step2.classList.remove("hidden");
+      } else {
+        phase="done"; clear();
+      }
+    } else {
+      b.classList.add("picked-bad");
+      phase="done"; miss(c.hintE);
+    }
+  });
+
+  $("testbtns").addEventListener("click", function(e){
+    var b = e.target.closest(".btn"); if(!b || b.disabled || phase!=="test") return;
+    var c = CARDS[cur];
+    if(b.dataset.t === c.fail){
+      lockBtns($("testbtns"));
+      b.classList.add("picked-good");
+      phase="done";
+      if(missedThisPass){
+        // got there after a wrong test pick: card comes back once more
+        c.seen = true;
+        queue.shift(); queue.push(cur);
+        feedback("good", "Right test · this card comes back once more", c.why);
+        nextbtn.textContent = "Next card →";
+        nextbtn.classList.remove("hidden");
+      } else {
+        clear();
+      }
+    } else {
+      b.disabled = true; b.classList.add("picked-bad");
+      missedThisPass = true;
+      feedback("bad", "Not that one · think about this", "It passes the " + TESTNAME[b.dataset.t] + " test. " + c.hintT);
+    }
+  });
+
+  nextbtn.addEventListener("click", function(){
+    if(queue.length===0){ finish(); $("certificate").scrollIntoView(); return; }
+    show();
+    $("quiz").scrollIntoView();
+  });
+
+  function finish(){
+    renderProgress();
+    $("card").innerHTML = '<div class="cnum">All cards cleared</div><p class="scen">You sorted every card. Your certificate is unlocked below.</p>';
+    $("locked").classList.add("hidden");
+    $("certarea").classList.remove("hidden");
+  }
+
+  // certificate
+  var d = new Date();
+  $("certdate").textContent = d.toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
+  $("nameIn").addEventListener("input", function(){
+    var v = this.value.trim();
+    $("who").textContent = v || "Your name";
+  });
+  $("printbtn").addEventListener("click", function(){
+    if(!$("nameIn").value.trim()){ $("nameIn").focus(); $("nameIn").placeholder="Type your name first"; return; }
+    window.print();
+  });
+
+  show();
+})();
+</script>
+</body>
+</html>
