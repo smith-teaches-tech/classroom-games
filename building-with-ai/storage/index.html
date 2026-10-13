@@ -383,18 +383,16 @@ details.example .prompt{margin-top:10px}
 <body>
 <div class="wrap">
 
-
-
 <header class="hero">
   <div class="hero-text">
     <span class="eyebrow">Build 2 · Identity · Files day</span>
     <h1>Saving Files</h1>
-    <p class="lede">Today your app gets an <b>Add file</b> button. People can save photos, videos, audio and documents, and watch a progress bar while they upload. The hard part isn't the button. It's deciding what you let in, how big it can be, and who gets to see it.</p>
+    <p class="lede">Today your app gets an <b>Add file</b> button. Before you build it, you need three answers: <b>what files</b> can come in, <b>how big</b> they can be, and <b>who can see</b> them.</p>
     <nav class="jump" aria-label="Lesson sections">
       <a href="#where">1 · Where files live</a>
-      <a href="#types">2 · What to let in</a>
-      <a href="#who">3 · Who can see</a>
-      <a href="#size">4 · How big</a>
+      <a href="#two">2 · Two places</a>
+      <a href="#types">3 · What to let in</a>
+      <a href="#who">4 · Who can see</a>
       <a href="setup/">Set it up →</a>
     </nav>
   </div>
@@ -415,81 +413,90 @@ details.example .prompt{margin-top:10px}
     <ul class="flist" id="hero-list">
       <li><span>essay-draft.pdf <span class="fmeta">0.8 MB</span></span><button type="button" tabindex="-1">Delete</button></li>
     </ul>
-    <p class="signin-hint">Click Add file. This is what your app will do: check the file, show the upload progress, then add it to your list.</p>
+    <p class="signin-hint">Click Add file. Your app will check the file, show the upload progress, then add it to the list.</p>
   </div>
 </header>
-
 
 <!-- 1 WHERE -->
 <section id="where">
   <div class="col" style="display:grid;gap:12px">
     <span class="eyebrow">Part 1</span>
     <h2>Where files live</h2>
-    <p>Your database tables hold <b>words and numbers</b>. Files are too big for that, so Supabase keeps them in <b>Storage</b>, inside a <b>bucket</b>. A bucket is like a shared drive for your app.</p>
-    <p>Inside the bucket, every person gets their <b>own folder</b>, named after their account ID. Then you write <b>policies</b> (rules, in SQL) that check the folder name. It's the same RLS idea as your tables: "you can only touch your own stuff."</p>
+    <p>Files are too big for a database table. Supabase keeps them in <b>Storage</b>, inside a <b>bucket</b>, like a shared drive for your app. Each person gets their <b>own folder</b>, named after their account ID.</p>
   </div>
   <div class="bucket">
-    <div class="bk-head"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16l-1.5 13h-13z"/><path d="M8 7a4 4 0 0 1 8 0"/></svg><b>Bucket: user-files</b><span class="muted">in Supabase Storage</span></div>
+    <div class="bk-head"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16l-1.5 13h-13z"/><path d="M8 7a4 4 0 0 1 8 0"/></svg><b>Bucket: user-files</b></div>
     <div class="folders">
-      <div class="folder"><span class="who">Maya's folder</span><span class="fname">a1b2c3d4-…/ (Maya's account ID)</span><span class="f">a1b2c3d4-…/1739001-sunset.jpg</span><span class="f">a1b2c3d4-…/1739044-voice-memo.m4a</span></div>
-      <div class="folder"><span class="who">Sam's folder</span><span class="fname">f9e8d7c6-…/ (Sam's account ID)</span><span class="f">f9e8d7c6-…/1739120-essay.pdf</span></div>
+      <div class="folder"><span class="who">Maya's folder</span><span class="f">sunset.jpg</span><span class="f">voice-memo.m4a</span></div>
+      <div class="folder"><span class="who">Sam's folder</span><span class="f">essay.pdf</span></div>
     </div>
     <div class="attempts">
-      <div class="attempt ok"><span class="res">ALLOWED</span><span>Maya uploads <code>sunset.jpg</code> into <b>her own</b> folder. The policy checks: folder name = Maya's ID? Yes.</span></div>
-      <div class="attempt no"><span class="res">BLOCKED</span><span>Maya tries to upload into <b>Sam's</b> folder. Folder name = Maya's ID? No. Supabase refuses, even if Maya's app code is changed.</span></div>
-      <div class="attempt no"><span class="res">BLOCKED</span><span>Maya tries to delete Sam's <code>essay.pdf</code>. Same check, same answer.</span></div>
+      <div class="attempt ok"><span class="res">ALLOWED</span><span>Maya uploads into <b>her own</b> folder.</span></div>
+      <div class="attempt no"><span class="res">BLOCKED</span><span>Maya tries to upload into, or delete from, <b>Sam's</b> folder.</span></div>
     </div>
   </div>
-  <div class="facts">
-    <div class="fact"><span class="eyebrow">Clicking in the dashboard</span><span class="big" style="color:var(--open)">The bucket</span><p>You make it in Supabase Storage. While making it you set the <b>size limit</b> and the <b>allowed file types</b>. No SQL.</p></div>
-    <div class="fact"><span class="eyebrow">SQL, written with your AI</span><span class="big" style="color:var(--brass)">The policies</span><p>Who can upload, view and delete. Until you add policies, <b>nobody can upload anything</b>. Supabase locks new buckets by default.</p></div>
-  </div>
-  <p class="bigidea col">Your app's checks are a <em>sign on the door</em>: they help honest people. The bucket settings and policies are the <em>lock</em>: they stop everyone, because they run on Supabase, not in the browser.</p>
+  <p class="col">The rules that decide this are called <b>policies</b>. They're the same idea as the rules on your tables: you can only touch your own stuff.</p>
 </section>
 
-<!-- 2 TYPES -->
-<section id="types">
+<!-- 2 TWO PLACES -->
+<section id="two">
   <div class="col" style="display:grid;gap:12px">
     <span class="eyebrow">Part 2</span>
-    <h2>What to let in</h2>
-    <p>Supabase does <b>not</b> scan files for viruses. So you decide what kinds of files your bucket accepts. Your apps share photos, videos, audio and documents, so those are in. Some file types should never be allowed, because they can carry code that runs.</p>
+    <h2>Set your limits in two places</h2>
+    <p>Your <b>allowed file types</b> and your <b>size limit</b> each go in two places. They do different jobs.</p>
+  </div>
+  <div class="facts">
+    <div class="fact"><span class="eyebrow">Place 1 · your app's code</span><span class="big" style="color:var(--open)">Helps</span><p>Greys out the wrong file types in the file picker, and says "too big" or "wrong type" straight away.</p><p class="muted" style="font-size:.9rem">But anyone can get around it. It runs in the browser, and people control their own browser.</p></div>
+    <div class="fact"><span class="eyebrow">Place 2 · your Supabase bucket</span><span class="big" style="color:var(--brass)">Blocks</span><p>Refuses any file that's the wrong type or too big, even if someone skips your app completely.</p><p class="muted" style="font-size:.9rem">This is the one that actually stops a file. It runs on Supabase, not in the browser.</p></div>
+  </div>
+  <p class="bigidea col">Keep both lists <em>the same</em>. Add or remove a file type in one place, change it in the other.</p>
+</section>
+
+<!-- 3 TYPES -->
+<section id="types">
+  <div class="col" style="display:grid;gap:12px">
+    <span class="eyebrow">Part 3</span>
+    <h2>What to let in, and how big</h2>
+    <p>Supabase doesn't scan files for viruses. So you choose what your bucket accepts.</p>
   </div>
   <div class="typegrid">
     <div class="tcard yes">
       <h3>Allow</h3>
       <ul class="tlist">
         <li><b>Photos</b> · JPG, PNG, WEBP, GIF</li>
-        <li><b>Video</b> · MP4, MOV (iPhone), WEBM</li>
-        <li><b>Audio</b> · MP3, M4A (voice memos), WAV</li>
+        <li><b>Video</b> · MP4, MOV</li>
+        <li><b>Audio</b> · MP3, M4A, WAV</li>
         <li><b>Documents</b> · PDF, Word (.docx)</li>
       </ul>
-      <p class="muted" style="font-size:.88rem">These hold pictures, sound or text. On their own, they don't run code.</p>
     </div>
     <div class="tcard no">
       <h3>Never allow</h3>
       <ul class="tlist">
-        <li><b>.html .htm</b> · a web page. Opened from your storage link, it runs its own code. It could pretend to be your sign-in page.</li>
-        <li><b>.svg</b> · looks like a picture, but it's written as code and can hide a script.</li>
-        <li><b>.exe .msi .apk .dmg</b> · programs. Run one and it can do anything on that computer.</li>
-        <li><b>.zip .rar .7z</b> · sealed boxes. Nobody can see what's inside until it's opened.</li>
-        <li><b>.docm .xlsm .pptm</b> · Office files with <i>macros</i>, little programs that run when the file opens. (.docx can't have macros. .docm can.)</li>
-        <li><b>.js .bat .sh</b> · code files.</li>
+        <li><b>.html</b> · a web page that runs its own code</li>
+        <li><b>.svg</b> · looks like a picture, can hide code</li>
+        <li><b>.exe</b> · a program</li>
+        <li><b>.zip</b> · a sealed box, could hide anything</li>
+        <li><b>.docm</b> · a Word file with macros (little programs)</li>
       </ul>
     </div>
   </div>
-  <div class="trap col"><b>The trap with "all images":</b> Supabase lets you allow <code>image/*</code>, meaning every image type. But SVG counts as an image type. So list your photo types one by one instead. Video and audio are fine to allow as a group (<code>video/*</code>, <code>audio/*</code>).</div>
+  <div class="nums" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+    <div class="num"><span class="big" style="color:var(--open)">10 MB</span><span class="lab">Our limit for one file</span></div>
+    <div class="num"><span class="big">1 GB</span><span class="lab">All your files together, on a free account</span></div>
+    <div class="num"><span class="big">~10 sec</span><span class="lab">of phone video fits in 10 MB. Photos fit easily.</span></div>
+  </div>
 
   <div class="col" style="display:grid;gap:10px">
     <h3>Try it: be the bucket</h3>
-    <p>Set your bucket's rules on the left, then try uploading the sample files. Watch which check stops each one. Then tick the hacker box and try again.</p>
+    <p>Set the rules, then try to upload each file. Then tick hacker mode and try again.</p>
   </div>
   <div class="sim" id="sim">
     <div class="sim-top">
       <div class="sim-rules">
-        <h4>Your bucket rules</h4>
-        <div class="slider"><label for="sz">File size limit: <b id="szv">10 MB</b></label><input id="sz" type="range" min="1" max="50" value="10"><span class="mhint">Free accounts can't go over 50 MB.</span></div>
+        <h4>Your rules</h4>
+        <div class="slider"><label for="sz">Size limit: <b id="szv">10 MB</b></label><input id="sz" type="range" min="1" max="50" value="10"></div>
         <div class="rule-types" id="rtypes" aria-label="Allowed file types"></div>
-        <label class="hack"><input type="checkbox" id="hack"> Hacker mode: skip my app and send files straight to Supabase</label>
+        <label class="hack"><input type="checkbox" id="hack"> Hacker mode: skip the app, send files straight to Supabase</label>
       </div>
       <div class="sim-files">
         <h4>Try to upload</h4>
@@ -498,11 +505,11 @@ details.example .prompt{margin-top:10px}
     </div>
     <div class="sim-out" aria-live="polite">
       <div class="gates">
-        <div class="gate" id="g-app"><b>Sign on the door</b><span>Your app's check</span></div>
+        <div class="gate" id="g-app"><b>Place 1</b><span>Your app</span></div>
         <div class="gline"></div>
-        <div class="gate" id="g-lock"><b>The lock</b><span>Bucket rules on Supabase</span></div>
+        <div class="gate" id="g-lock"><b>Place 2</b><span>Supabase bucket</span></div>
         <div class="gline"></div>
-        <div class="gate" id="g-saved"><b>Saved</b><span>In the bucket</span></div>
+        <div class="gate" id="g-saved"><b>Saved</b><span>In the folder</span></div>
       </div>
       <div class="pbar" id="sim-bar"><i></i></div>
       <p class="verdict" id="verdict">Pick a file to upload.</p>
@@ -512,21 +519,19 @@ details.example .prompt{margin-top:10px}
   <div class="discuss col">
     <h3>Discuss with a partner</h3>
     <ol>
-      <li>Supabase doesn't scan for viruses. Whose job is it, then, to keep bad files out of your app?</li>
-      <li>In hacker mode, why did the lock still work when the sign was skipped? Where does each check run?</li>
-      <li><code>cute-cat.jpg</code> got through both checks. Why didn't anything bad happen? What would change if your app made people <i>download</i> files instead of showing them on the page?</li>
-      <li>Your app shares Word documents. Why .docx but not .docm?</li>
-      <li>Which file types does <i>your</i> app actually need? Every type you allow is a door you have to think about.</li>
+      <li>In hacker mode, why did Supabase still stop the file?</li>
+      <li><code>cute-cat.jpg</code> got through. Why didn't anything bad happen?</li>
+      <li>Which file types does <i>your</i> app actually need?</li>
     </ol>
   </div>
 </section>
 
-<!-- 3 WHO -->
+<!-- 4 WHO -->
 <section id="who">
   <div class="col" style="display:grid;gap:12px">
-    <span class="eyebrow">Part 3</span>
+    <span class="eyebrow">Part 4</span>
     <h2>Who can see the files</h2>
-    <p>You already decided who sees what in your app. Your files need the same decision. Pick your app's level:</p>
+    <p>Pick your app's level:</p>
   </div>
   <div class="levels" role="group" aria-label="Sharing level">
     <button type="button" data-lvl="0" aria-pressed="true">Only me</button>
@@ -539,52 +544,35 @@ details.example .prompt{margin-top:10px}
     <div class="viewer" id="v2"><span class="av">?</span><b>A stranger with the link</b><span class="can"></span></div>
   </div>
   <div class="lvl-note" id="lvl-note"></div>
-  <p class="col" style="font-size:.93rem"><b>At every level:</b> people can only upload into, and delete from, <b>their own folder</b>. Sharing only changes who can <i>view</i>.</p>
-</section>
-
-<!-- 4 SIZE -->
-<section id="size">
-  <div class="col" style="display:grid;gap:12px">
-    <span class="eyebrow">Part 4</span>
-    <h2>How big</h2>
-    <p>Your Supabase account is free, and free has limits. One person uploading a few long videos could fill your whole account. So your bucket gets a size limit.</p>
-  </div>
-  <div class="nums">
-    <div class="num"><span class="big">50 MB</span><span class="lab">Biggest single file a free account allows</span></div>
-    <div class="num"><span class="big">1 GB</span><span class="lab">All files, all buckets, for your whole Supabase account (both projects)</span></div>
-    <div class="num"><span class="big" style="color:var(--open)">10 MB</span><span class="lab">Our class limit per file. About 100 files fill 1 GB.</span></div>
-    <div class="num"><span class="big">~1 MB</span><span class="lab">per second of normal phone video. 10 MB is about 10 seconds.</span></div>
-  </div>
-  <div class="why col"><b>Video is the problem child.</b> A phone photo is usually 2 to 5 MB and fits easily. A one-minute phone video is around 60 MB and won't fit. If your app shares video, keep clips short, record at a lower quality, or raise the limit (up to 50 MB) and accept that your 1 GB fills up faster. Write your choice in your project file.</div>
+  <p class="col" style="font-size:.93rem">At every level, people can only upload into, and delete from, their <b>own</b> folder.</p>
 </section>
 
 <section id="build">
   <div class="col" style="display:grid;gap:12px">
     <span class="eyebrow">Next</span>
     <h2>Now build it</h2>
-    <p>Before you open the setup page, make four decisions and write them in your project file. Every step of the setup depends on them.</p>
+    <p>Write these four answers in your project file first:</p>
     <ol class="do">
-      <li><b>Which file types</b> your app needs, from the Allow list in Part 2.</li>
-      <li><b>Who can see the files:</b> Only me, People signed in to my app, or Anyone on the internet (Part 3).</li>
-      <li><b>Your size limit:</b> 10 MB, unless your app is about video (Part 4).</li>
-      <li><b>Your bucket's name</b>, short and lowercase, like <code>user-files</code>.</li>
+      <li><b>Which file types</b> your app needs.</li>
+      <li><b>Who can see</b> the files.</li>
+      <li><b>Your size limit</b> (10 MB, unless your app is about video).</li>
+      <li><b>Your bucket's name</b>, like <code>user-files</code>.</li>
     </ol>
   </div>
   <div class="linkcards" style="grid-template-columns:1fr">
     <a class="lcard" href="setup/">
       <span class="eyebrow">Setup page</span>
       <h3>Set up files and usernames</h3>
-      <ul><li>A users table, a bucket and its rules, then the Add file button</li><li>Gemini writes the SQL. You check it before it runs.</li></ul>
       <span class="go">Go to the steps →</span>
     </a>
   </div>
   <div class="col" style="display:grid;gap:10px">
     <h3>For your diagram</h3>
-    <p>Draw a file's trip: phone or laptop → your app's check → the bucket's rules → the user's folder. Mark which checks run in the browser and which run on Supabase. Then answer: <b>if someone skips your app completely, what still stops a 200 MB video or a .exe?</b></p>
+    <p>Draw a file's trip: your app → Supabase bucket → the user's folder. Mark Place 1 and Place 2. Then answer: <b>if someone skips your app, what still stops a .exe?</b></p>
   </div>
 </section>
 
-<footer><strong>Building with AI</strong> &mdash; Saving Files. Steps: <a href="setup/">Set up files and usernames</a>. Related: <a href="../sign-in/">Adding Sign-In</a> &middot; <a href="../database/">Your Database</a><br>Limits checked against Supabase's docs in October 2026.</footer>
+<footer><strong>Building with AI</strong> &mdash; Saving Files. Steps: <a href="setup/">Set up files and usernames</a>. Related: <a href="../sign-in/">Adding Sign-In</a><br>Limits checked against Supabase's docs in October 2026.</footer>
 </div>
 
 <script>
@@ -748,36 +736,27 @@ details.example .prompt{margin-top:10px}
 
   /* ---------- simulator ---------- */
   const TYPES=[
-    {id:'photo',label:'Photos (JPG, PNG, WEBP, GIF)',on:true},
+    {id:'photo',label:'Photos',on:true},
     {id:'video',label:'Video',on:true},
     {id:'audio',label:'Audio',on:true},
     {id:'pdf',label:'PDF',on:true},
-    {id:'docx',label:'Word (.docx)',on:true},
     {id:'svg',label:'SVG',on:false,bad:true},
     {id:'html',label:'Web pages (.html)',on:false,bad:true},
-    {id:'zip',label:'ZIP',on:false,bad:true},
-    {id:'exe',label:'Programs (.exe)',on:false,bad:true},
-    {id:'macro',label:'Office with macros (.docm)',on:false,bad:true}
+    {id:'exe',label:'Programs (.exe)',on:false,bad:true}
   ];
   const DANGER={
-    svg:'An SVG is a picture written as code. It can hide a script that runs when someone opens the file in their browser.',
-    html:'A web page runs its own code when opened. Someone could upload a fake copy of your sign-in page and send people the link.',
-    zip:'A sealed box. Nobody can see what\'s inside until it\'s opened, and by then it\'s too late.',
-    exe:'A program. Whoever downloads and runs it lets it do anything on their computer.',
-    macro:'Macros are little programs inside Office files. They run when the file is opened. A .docx can\'t have them. A .docm can.'
+    svg:'An SVG looks like a picture but is written as code, and can hide a script.',
+    html:'A web page runs its own code. It could pretend to be your sign-in page.',
+    exe:'A program. Whoever runs it lets it do anything on their computer.'
   };
   const FILES=[
     {n:'sunset.jpg',t:'photo',mb:3.2},
     {n:'voice-memo.m4a',t:'audio',mb:1.1},
     {n:'essay.pdf',t:'pdf',mb:0.8},
-    {n:'notes.docx',t:'docx',mb:0.4},
-    {n:'clip.mp4',t:'video',mb:8.5},
     {n:'field-trip.mp4',t:'video',mb:38},
     {n:'logo.svg',t:'svg',mb:0.02},
     {n:'free-robux.html',t:'html',mb:0.01},
-    {n:'homework.zip',t:'zip',mb:4},
     {n:'cool-game.exe',t:'exe',mb:3.5},
-    {n:'report.docm',t:'macro',mb:0.3},
     {n:'cute-cat.jpg',t:'photo',mb:2,fake:true}
   ];
   const rt=document.getElementById('rtypes');
@@ -808,13 +787,13 @@ details.example .prompt{margin-top:10px}
     if(!ok){
       if(hack.checked){
         setGate(gApp,'skip'); setGate(gLock,'stop');
-        verdict.innerHTML=`<b>Stopped by the lock.</b> ${reason} The hacker skipped your app, but the bucket rules run on Supabase, so they still apply.`;
+        verdict.innerHTML=`<b>Stopped by Place 2, Supabase.</b> ${reason} The hacker skipped your app, but Supabase checks every file itself.`;
       }else{
         setGate(gApp,'stop'); setGate(gLock,null);
-        verdict.innerHTML=`<b>Stopped by the sign on the door.</b> ${reason} Your app caught it straight away and showed a friendly message.`;
+        verdict.innerHTML=`<b>Stopped by Place 1, your app.</b> ${reason} Your app caught it straight away with a friendly message.`;
       }
       sbar.querySelector('i').style.width='100%'; sbar.classList.add('bad');
-      if(!allowed && DANGER[f.t]) verdict.innerHTML+=` <span class="muted">Why it's blocked: ${DANGER[f.t]}</span>`;
+      if(!allowed && DANGER[f.t]) verdict.innerHTML+=` <span class="muted">${DANGER[f.t]}</span>`;
       return;
     }
     setGate(gApp,hack.checked?'skip':'pass'); setGate(gLock,'pass');
@@ -823,21 +802,21 @@ details.example .prompt{margin-top:10px}
       busy=false; setGate(gSaved,'pass');
       if(f.fake){
         verdict.className='verdict';
-        verdict.innerHTML=`<b>Saved, but it's not really a cat.</b> It's a program renamed to .jpg. Its label says "photo", so both checks let it in. Labels can lie. Your app shows photos with an image tag, which can only draw pictures, so this shows up as a broken image and nothing runs. That's why you show files on the page instead of making people download them.`;
+        verdict.innerHTML=`<b>Saved, but it's not really a cat.</b> It's a program renamed to .jpg, so both places let it in. But your app shows photos as pictures on the page, and a picture can't run code. It just shows up broken. Nothing happens.`;
       }else if(DANGER[f.t]){
         verdict.className='verdict danger';
-        verdict.innerHTML=`<b>Let in. Is that what you wanted?</b> ${DANGER[f.t]} Untick it in your rules.`;
+        verdict.innerHTML=`<b>Let in. Is that what you wanted?</b> ${DANGER[f.t]} Untick it.`;
       }else{
-        verdict.innerHTML=`<b>Saved.</b> ${f.n} passed both checks and is in the user's folder.`;
+        verdict.innerHTML=`<b>Saved.</b> ${f.n} passed both places.`;
       }
     });
   });
 
   /* ---------- sharing levels ---------- */
   const LV=[
-    {c:['on','off','off'],t:['Can view','Can\'t view','Can\'t view'],note:'<b>Only me.</b> Private bucket. The view policy checks the folder name, just like upload and delete. Best for journals, private trackers, personal collections.'},
-    {c:['on','on','maybe'],t:['Can view','Can view','If they make an account'],note:'<b>People signed in to my app.</b> Private bucket. The view policy lets any signed-in user see files. <b>Careful:</b> we turned email confirmation off, so a stranger can make an account in 30 seconds. "Signed in" is closer to "anyone" than it sounds.'},
-    {c:['on','on','on'],t:['Can view','Can view','Can view'],note:'<b>Anyone on the internet.</b> Public bucket. Every file has a link that works for anyone, forever, no sign-in needed. Only for things meant to be public, like profile pictures or a public gallery. Uploading and deleting still need policies.'}
+    {c:['on','off','off'],t:['Can view','Can\'t view','Can\'t view'],note:'<b>Only me.</b> Private bucket. Good for journals, trackers and personal collections.'},
+    {c:['on','on','maybe'],t:['Can view','Can view','If they make an account'],note:'<b>People signed in to my app.</b> Private bucket. <b>Careful:</b> anyone can make an account in 30 seconds, so this is closer to "anyone" than it sounds.'},
+    {c:['on','on','on'],t:['Can view','Can view','Can view'],note:'<b>Anyone on the internet.</b> Public bucket. Every file has a link anyone can open, forever. Only for things meant to be public.'}
   ];
   function setLvl(i){
     document.querySelectorAll('[data-lvl]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.lvl===i));

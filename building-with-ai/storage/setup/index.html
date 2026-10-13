@@ -499,6 +499,7 @@ alter table public.profiles
         <div class="prompt mimes" id="mimes">image/jpeg, image/png, image/webp, image/gif, video/*, audio/*, application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document</div>
       </div>
       <p class="mhint">Missed a setting? Click the bucket's three-dot menu → <b>Edit bucket</b>.</p>
+      <div class="why"><b>This is Place 2 from the lesson: your Supabase bucket.</b> These settings actually block files. In step 4 you'll put the same list in your app's code (Place 1).</div>
     </div>
     <div class="mock" aria-label="Mock-up: Supabase new bucket form">
       <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">supabase.com/dashboard/project/abcdefghijklmnop/storage/buckets</span><span class="mocktag">Mock-up</span></div>
@@ -626,7 +627,7 @@ using (
       <div class="part-head"><span class="pnum">4</span><div style="display:grid;gap:4px"><h3>Add the code: ask Gemini</h3><span class="site ai" style="width:max-content">Gemini</span></div></div>
       <p>Upload <code>index.html</code>, <code>app.js</code> and <code>config.js</code>, then paste this. Fill in the [brackets] to match your table and bucket.</p>
       <div class="why"><b>Why the prompt is so detailed:</b> AI often makes a "progress bar" that's just an animation, not connected to the real upload. Item 5 asks for the real thing. You'll test it in step 5.</div>
-      <div class="why"><b>Why the app checks too:</b> the bucket already blocks big or wrong files. The app's check is the sign on the door: it gives a friendly message straight away, instead of a confusing error after waiting.</div>
+      <div class="why"><b>This is Place 1 from the lesson: your app's code.</b> Items 2 and 3 set your allowed file types and size limit in the code. Use the <b>same list</b> you put in your bucket in step 2.</div>
     </div>
     <div class="prompt-wrap">
       <div class="prompt-bar"><span class="eyebrow">Prompt</span><button type="button" class="copy" data-copy="prompt-app">Copy prompt</button></div>
