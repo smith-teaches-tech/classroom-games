@@ -179,7 +179,8 @@
     else if(p.type==="long"){
       var t = el("textarea",{id:"f-"+p.id, rows:p.rows||4});
       if(p.placeholder) t.placeholder = p.placeholder;
-      t.value = data[p.id]||"";
+      t.value = data[p.id]!=null ? data[p.id] : (p.prefill ? (p.prefill()||"") : "");
+      if(p.prefill && data[p.id]==null && t.value){ data[p.id]=t.value; }
       t.addEventListener("input", function(){ data[p.id]=t.value; save(); });
       w.appendChild(t);
     }

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Step 9: Annotated bibliography: 20 sources — EE for Students</title>
+<meta name="description" content="Narrow 40 sources to 20, annotate them in APA or MLA, cover different perspectives, and find the gap in the research.">
+<link rel="stylesheet" href="../../shared/ee.css">
+<link rel="stylesheet" href="../../shared/steps.css">
+</head>
+<body data-step="9">
+<div class="shell narrow">
+  <div class="top">
+    <a class="mark" href="../../" title="Extended Essay hub">EE</a>
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Classroom tools</a><span class="sep">/</span><a href="../../">Extended Essay</a><span class="sep">/</span><a href="../">For Students</a><span class="sep">/</span><span>Step 9</span></nav>
+  </div>
+
+  <header class="hero">
+    <p class="stepno" id="stepno"></p>
+    <h1>Annotated bibliography: 20 sources</h1>
+    <p class="lede">Choose the 20 sources that matter most for your broad question, annotate each one, and find what is missing — the gap your essay can fill.</p>
+  </header>
+
+  <main class="step-body">
+
+    <h2>Why this step matters</h2>
+    <p class="why">An annotated bibliography forces you to understand each source well enough to explain it in your own words and judge it. Laying 20 sources side by side also shows you where the research runs out — and that is where your own question belongs.</p>
+    <p>The IB's support material is clear about this: your research question "should be sufficiently original that you are making a genuine contribution to knowledge in that field", and gaps in what secondary research can tell you are "often a cue that primary research is needed".</p>
+
+    <h2>From 40 sources to 20</h2>
+    <p>Go back to PowerNotes and keep the 20 sources that best help with your broad question from step 8. Choose for:</p>
+    <ul>
+      <li><b>Relevance</b> — the source speaks directly to your broad question, not just your broad topic.</li>
+      <li><b>Quality</b> — mostly scholarly sources: peer-reviewed articles, academic books, reputable data.</li>
+      <li><b>Different perspectives</b> — sources that disagree; sources from different places, time periods, schools of thought or methods.</li>
+      <li><b>Method</b> — at least a few sources that show a method you might use (from step 6).</li>
+    </ul>
+    <p>Move your 20 into a new PowerNotes category called <b>Annotated 20</b>. Keep the other 20 — you may need them later.</p>
+
+    <h2>What an annotation contains</h2>
+    <p>Each entry starts with the full citation in your chosen style (APA or MLA), followed by a paragraph of roughly 100 to 150 words, in your own words, that covers:</p>
+    <ol class="do">
+      <li><b>Summary</b> — what the source argues or finds, and how (its method or evidence).</li>
+      <li><b>Evaluation</b> — how reliable it is: who wrote it, for whom, with what evidence, and any limitations.</li>
+      <li><b>Connection</b> — how it relates to your broad question and to your other sources: does it agree, disagree, or add something new?</li>
+    </ol>
+    <p>The Purdue OWL has examples of annotated bibliographies in both styles: <a href="https://owl.purdue.edu/owl/general_writing/common_writing_assignments/annotated_bibliographies/annotated_bibliography_samples.html" target="_blank" rel="noopener">annotated bibliography samples</a>.</p>
+
+    <h2>Find the gap</h2>
+    <p>Put your 20 sources into a matrix: one row per source, with columns for its <b>position</b>, its <b>method</b> and its <b>main finding</b>. Then read down each column and ask what is missing. A gap might be:</p>
+    <ul>
+      <li>a <b>place</b> nobody has studied — including your own city or region. "Local" simply means a specific place; local data can still say something that matters internationally;</li>
+      <li>a <b>group</b> of people, a <b>time period</b>, or a <b>text or artwork</b> that has not been examined in this way;</li>
+      <li>a <b>method</b> that has not been applied to this question;</li>
+      <li>a <b>disagreement</b> between sources that nobody has tested directly;</li>
+      <li>a <b>combination</b> of two things that have only been studied separately.</li>
+    </ul>
+    <p>Your gap does not need to be dramatic. A focused, well-chosen gap that you can actually investigate in 4,000 words is exactly right.</p>
+    <p class="src-note">Sources: IB <i>Extended essay support material</i> (2025), "Researching your extended essay" (secondary and primary research); IB <i>Extended essay guide</i> (first assessment 2027), "Writing your extended essay" (citation and referencing).</p>
+
+    <div data-tool="step-9"></div>
+
+    <nav class="stepnav" id="stepnav" aria-label="Steps"></nav>
+  </main>
+
+  <footer><a href="../">← All steps</a></footer>
+</div>
+
+<script src="../../data/steps.js"></script>
+<script src="../../shared/step-nav.js"></script>
+<script src="../../shared/thinking-tools.js"></script>
+<script>
+
+EETools.define({
+ "id": "step-9",
+ "stepLabel": "Step 9 · Annotated bibliography",
+ "title": "Perspectives and the gap",
+ "intro": "Write your full annotations in your RRS Google Doc or in PowerNotes. Use this tool to sort your 20 sources and find the gap.",
+ "sections": [
+  {
+   "heading": "My broad question",
+   "prompts": [
+    {
+     "id": "bq",
+     "type": "long",
+     "label": "My broad question (from step 8):",
+     "rows": 2,
+     "prefill": function(){ return EETools.read("step-8","bq")||""; }
+    }
+   ]
+  },
+  {
+   "heading": "The matrix",
+   "prompts": [
+    {
+     "id": "matrix",
+     "type": "table",
+     "label": "Sort your 20 sources",
+     "hint": "Short notes are enough here — the full annotation goes in your annotated bibliography.",
+     "columns": [
+      "Source (author, year)",
+      "Position it takes",
+      "Method or evidence",
+      "Main finding"
+     ],
+     "rows": 6,
+     "max": 20
+    }
+   ]
+  },
+  {
+   "heading": "Perspectives",
+   "prompts": [
+    {
+     "id": "sides",
+     "type": "long",
+     "label": "What are the main positions on my broad question? Which sources hold each one?",
+     "rows": 3
+    },
+    {
+     "id": "fewest",
+     "type": "long",
+     "label": "Which position, place, method or time period has the fewest sources? Is that a gap or a dead end?",
+     "rows": 3
+    }
+   ]
+  },
+  {
+   "heading": "The gap",
+   "prompts": [
+    {
+     "id": "gaptype",
+     "type": "multi",
+     "label": "What kind of gap have I found?",
+     "options": [
+      "A place",
+      "A group of people",
+      "A time period",
+      "A text or artwork",
+      "A method",
+      "An untested disagreement",
+      "A combination studied only separately",
+      "Not sure yet"
+     ]
+    },
+    {
+     "id": "gap",
+     "type": "long",
+     "label": "In one or two sentences: what is missing from the research, and how could my essay help fill it?",
+     "rows": 3
+    },
+    {
+     "id": "primary",
+     "type": "long",
+     "label": "Will filling this gap need primary research? If so, what kind?",
+     "rows": 2
+    }
+   ]
+  },
+  {
+   "heading": "Before you move on",
+   "prompts": [
+    {
+     "id": "done",
+     "type": "checklist",
+     "label": "Tick each one when it is true.",
+     "items": [
+      "I have chosen 20 sources and moved them to an Annotated 20 category in PowerNotes.",
+      "Each source has a full citation in my chosen style and an annotation (summary, evaluation, connection).",
+      "My 20 sources include different perspectives.",
+      "I can state the gap my essay could fill.",
+      "I have copied this thinking tool into my RRS."
+     ]
+    }
+   ]
+  }
+ ]
+});
+</script>
+</body>
+</html>

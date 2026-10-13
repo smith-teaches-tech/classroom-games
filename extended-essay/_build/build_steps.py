@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Run from anywhere:  python3 extended-essay/_build/build_steps.py   (rewrites students/step-0 … step-7). The leading underscore keeps this folder off GitHub Pages.
+# Run from anywhere:  python3 extended-essay/_build/build_steps.py   (rewrites every step page listed in STEPS). The leading underscore keeps this folder off GitHub Pages.
 """Builds extended-essay/students/step-N/index.html for the live steps.
 Content lives in STEPS below. Output is plain HTML that can also be edited by hand."""
 import os, json, html
@@ -65,6 +65,8 @@ PREFILLS = {
     "__PREFILL_SUBJECT__": 'function(){ var p=EETools.read("step-1","pathway"); if(p==="Interdisciplinary (two subjects)"){ var a=EETools.read("step-1","sub1")||"", b=EETools.read("step-1","sub2")||""; return (a||b)?"Interdisciplinary: "+[a,b].filter(Boolean).join(" + "):"Interdisciplinary"; } if(p==="Subject-focused (one subject)"){ return EETools.read("step-1","subject")||""; } return ""; }',
     "__PREFILL_STYLE__": 'function(){ return EETools.read("step-2","style")||""; }',
     "__PREFILL_TOPIC__": 'function(){ return EETools.read("step-1","chosen")||""; }',
+    "__PREFILL_BQ__": 'function(){ return EETools.read("step-8","bq")||""; }',
+    "__PREFILL_GAP__": 'function(){ return EETools.read("step-9","gap")||""; }',
 }
 
 def checklist(items):
@@ -556,6 +558,243 @@ STEPS.append(dict(
               "Every source has a full citation in my chosen style and a one-line note.",
               "No single category holds more than about half my sources.",
               "I have copied this thinking tool into my RRS."])
+  ])
+))
+
+# ───────────────────────── STEP 8 ─────────────────────────
+STEPS.append(dict(
+ n=8, crumb="Step 8", title="Narrow your topic and write a broad question",
+ desc="Narrow your EE topic from broad to focused, then brainstorm and evaluate questions to find a broad working question.",
+ lede="Turn what you learned from 40 sources into a focused topic, then into a broad question you can test.",
+ body="""
+    <h2>Why this step matters</h2>
+    <p class="why">A broad topic leads to a descriptive essay that informs the reader but never argues anything. The IB guide warns that staying "too broad and general almost inevitably leads to descriptive, superficial writing". Narrowing is how you get to analysis.</p>
+    <p>You are not writing your final research question yet — that comes in step 10. Here you narrow the topic and write a <b>broad question</b>: a working question that will guide which 20 sources you keep in step 9.</p>
+
+    <h2>The topic funnel</h2>
+    <p>Narrow one level at a time. Each level should be a part of the level above it.</p>
+    <div class="tablewrap"><table class="info">
+      <thead><tr><th>Level</th><th>Example (Economics)</th><th>Example (Language A)</th></tr></thead>
+      <tbody>
+        <tr><th>Broad topic</th><td>Government intervention in markets</td><td>Dystopian fiction</td></tr>
+        <tr><th>Narrower aspect</th><td>Price controls</td><td>How setting creates fear in dystopian novels</td></tr>
+        <tr><th>A specific case, text, place or time</th><td>Minimum unit pricing of alcohol in Scotland since 2018</td><td>Setting in an Orwell novel</td></tr>
+        <tr><th>Focused topic</th><td>Whether minimum unit pricing reduced alcohol consumption in Scotland</td><td>How Orwell uses setting to show the dangers of a totalitarian society</td></tr>
+      </tbody></table></div>
+    <p class="small muted">Both examples are based on sample essays in the <a href="../../samples/">sample library</a> (Economics Sample B and Language A Sample B).</p>
+
+    <h2>Check your focused topic</h2>
+    <p>The IB guide suggests a preliminary investigation of your focused topic. You have already done most of it in steps 3 to 7. Ask yourself:</p>
+    <ul>
+      <li>What has already been written about this topic?</li>
+      <li>Is it easy to find sources of information?</li>
+      <li>Is there a range of different resources available?</li>
+      <li>Is there a range of views or perspectives on the topic?</li>
+      <li>What interesting questions have started to emerge from my reading?</li>
+    </ul>
+
+    <h2>Brainstorm, then evaluate</h2>
+    <ol class="do">
+      <li>Write at least five open-ended questions about your focused topic. The IB guide recommends starting them with <b>how</b>, <b>why</b> or <b>to what extent</b>.</li>
+      <li>Judge each question against three tests from the guide: is it <b>clear</b>, is it <b>focused</b>, and is it <b>arguable</b> (could reasonable people answer it differently)?</li>
+      <li>Choose the strongest one as your broad question. It is allowed — expected — to change.</li>
+    </ol>
+    <div class="note"><p style="margin:0"><b>Changing direction is normal.</b> The IB guide says a change of topic or question "is completely acceptable and will be supported by your supervisor". Sometimes a slight change of wording is all that is needed.</p></div>
+    <p class="src-note">Source: IB <i>Extended essay guide</i> (first assessment 2027), "Generic guidance" (choosing a topic) and "Researching the extended essay" (four steps to developing a research question; changing direction).</p>
+""",
+ tool=dict(id="step-8", stepLabel="Step 8 · Narrow your topic", title="From broad topic to broad question",
+  sections=[
+   {"heading":"My funnel","prompts":[
+     {"id":"broad","type":"text","label":"Broad topic:","prefill":"__PREFILL_TOPIC__"},
+     {"id":"aspect","type":"text","label":"Narrower aspect:"},
+     {"id":"specific","type":"text","label":"A specific case, text, place or time:"},
+     {"id":"focused","type":"long","label":"My focused topic, in one sentence:","rows":2},
+     {"id":"why","type":"long","label":"Which of my 40 sources pointed me here, and why?","rows":3}]},
+   {"heading":"Preliminary investigation","prompts":[
+     {"id":"range","type":"long","label":"Is there enough to read on this focused topic, from a range of views? What makes me think so?","rows":3}]},
+   {"heading":"Emerging questions","prompts":[
+     {"id":"qs","type":"table","label":"Brainstorm at least five questions, then test each one.","hint":"Clear: would a stranger understand it? Focused: is it narrow enough for 4,000 words? Arguable: could reasonable people answer it differently?","columns":["Question (how / why / to what extent)","Clear?","Focused?","Arguable?"],"rows":5,"max":10}]},
+   {"heading":"My broad question","prompts":[
+     {"id":"bq","type":"long","label":"The broad question I will work with for now:","rows":2},
+     {"id":"bqwhy","type":"long","label":"Why this one is stronger than the others:","rows":3}]},
+   checklist(["I have a focused topic in one sentence.",
+              "I have tested at least five questions for clear, focused and arguable.",
+              "I have chosen a broad question to guide step 9.",
+              "I have copied this thinking tool into my RRS."])
+  ])
+))
+
+# ───────────────────────── STEP 9 ─────────────────────────
+STEPS.append(dict(
+ n=9, crumb="Step 9", title="Annotated bibliography: 20 sources",
+ desc="Narrow 40 sources to 20, annotate them in APA or MLA, cover different perspectives, and find the gap in the research.",
+ lede="Choose the 20 sources that matter most for your broad question, annotate each one, and find what is missing — the gap your essay can fill.",
+ body="""
+    <h2>Why this step matters</h2>
+    <p class="why">An annotated bibliography forces you to understand each source well enough to explain it in your own words and judge it. Laying 20 sources side by side also shows you where the research runs out — and that is where your own question belongs.</p>
+    <p>The IB's support material is clear about this: your research question "should be sufficiently original that you are making a genuine contribution to knowledge in that field", and gaps in what secondary research can tell you are "often a cue that primary research is needed".</p>
+
+    <h2>From 40 sources to 20</h2>
+    <p>Go back to PowerNotes and keep the 20 sources that best help with your broad question from step 8. Choose for:</p>
+    <ul>
+      <li><b>Relevance</b> — the source speaks directly to your broad question, not just your broad topic.</li>
+      <li><b>Quality</b> — mostly scholarly sources: peer-reviewed articles, academic books, reputable data.</li>
+      <li><b>Different perspectives</b> — sources that disagree; sources from different places, time periods, schools of thought or methods.</li>
+      <li><b>Method</b> — at least a few sources that show a method you might use (from step 6).</li>
+    </ul>
+    <p>Move your 20 into a new PowerNotes category called <b>Annotated 20</b>. Keep the other 20 — you may need them later.</p>
+
+    <h2>What an annotation contains</h2>
+    <p>Each entry starts with the full citation in your chosen style (APA or MLA), followed by a paragraph of roughly 100 to 150 words, in your own words, that covers:</p>
+    <ol class="do">
+      <li><b>Summary</b> — what the source argues or finds, and how (its method or evidence).</li>
+      <li><b>Evaluation</b> — how reliable it is: who wrote it, for whom, with what evidence, and any limitations.</li>
+      <li><b>Connection</b> — how it relates to your broad question and to your other sources: does it agree, disagree, or add something new?</li>
+    </ol>
+    <p>The Purdue OWL has examples of annotated bibliographies in both styles: <a href="https://owl.purdue.edu/owl/general_writing/common_writing_assignments/annotated_bibliographies/annotated_bibliography_samples.html" target="_blank" rel="noopener">annotated bibliography samples</a>.</p>
+
+    <h2>Find the gap</h2>
+    <p>Put your 20 sources into a matrix: one row per source, with columns for its <b>position</b>, its <b>method</b> and its <b>main finding</b>. Then read down each column and ask what is missing. A gap might be:</p>
+    <ul>
+      <li>a <b>place</b> nobody has studied — including your own city or region. "Local" simply means a specific place; local data can still say something that matters internationally;</li>
+      <li>a <b>group</b> of people, a <b>time period</b>, or a <b>text or artwork</b> that has not been examined in this way;</li>
+      <li>a <b>method</b> that has not been applied to this question;</li>
+      <li>a <b>disagreement</b> between sources that nobody has tested directly;</li>
+      <li>a <b>combination</b> of two things that have only been studied separately.</li>
+    </ul>
+    <p>Your gap does not need to be dramatic. A focused, well-chosen gap that you can actually investigate in 4,000 words is exactly right.</p>
+    <p class="src-note">Sources: IB <i>Extended essay support material</i> (2025), "Researching your extended essay" (secondary and primary research); IB <i>Extended essay guide</i> (first assessment 2027), "Writing your extended essay" (citation and referencing).</p>
+""",
+ tool=dict(id="step-9", stepLabel="Step 9 · Annotated bibliography", title="Perspectives and the gap",
+  intro="Write your full annotations in your RRS Google Doc or in PowerNotes. Use this tool to sort your 20 sources and find the gap.",
+  sections=[
+   {"heading":"My broad question","prompts":[
+     {"id":"bq","type":"long","label":"My broad question (from step 8):","rows":2,"prefill":"__PREFILL_BQ__"}]},
+   {"heading":"The matrix","prompts":[
+     {"id":"matrix","type":"table","label":"Sort your 20 sources","hint":"Short notes are enough here — the full annotation goes in your annotated bibliography.","columns":["Source (author, year)","Position it takes","Method or evidence","Main finding"],"rows":6,"max":20}]},
+   {"heading":"Perspectives","prompts":[
+     {"id":"sides","type":"long","label":"What are the main positions on my broad question? Which sources hold each one?","rows":3},
+     {"id":"fewest","type":"long","label":"Which position, place, method or time period has the fewest sources? Is that a gap or a dead end?","rows":3}]},
+   {"heading":"The gap","prompts":[
+     {"id":"gaptype","type":"multi","label":"What kind of gap have I found?","options":["A place","A group of people","A time period","A text or artwork","A method","An untested disagreement","A combination studied only separately","Not sure yet"]},
+     {"id":"gap","type":"long","label":"In one or two sentences: what is missing from the research, and how could my essay help fill it?","rows":3},
+     {"id":"primary","type":"long","label":"Will filling this gap need primary research? If so, what kind?","rows":2}]},
+   checklist(["I have chosen 20 sources and moved them to an Annotated 20 category in PowerNotes.",
+              "Each source has a full citation in my chosen style and an annotation (summary, evaluation, connection).",
+              "My 20 sources include different perspectives.",
+              "I can state the gap my essay could fill.",
+              "I have copied this thinking tool into my RRS."])
+  ])
+))
+
+# ───────────────────────── STEP 10 ─────────────────────────
+STEP10_PAIRS = [
+ ("Design Technology","Sample A — criterion A: 2/6","Can compostable materials be a sustainable solution to how the fields of mass manufactured EPS food packaging contributed to the world’s environmental causes?","“clear but only partially focused in relation to the scope of the essay”",
+  "Sample C — criterion A: 5/6","With reference to structural integrity and environmental consideration, what would be the most suitable cement alternatives for the construction of stabilized rammed earth structures?","“fully relevant to the topic, easy to understand and thoroughly focused within a clearly defined scope”"),
+ ("Physics and ESS","Physics Sample D — criterion A: 2/6","How do different types of Stirling engines contribute to energy generated and efficiency?","“relevant to the topic but only partially focused”; overall, “A descriptive work without a clear focus”",
+  "ESS Sample C — criterion A: 6/6","How far is the enhanced infiltration of UVA radiation (315-400nm) due to ozone depletion less detrimental than UVB (280-315nm) for the germination and growth of Gerbera (Gerbera L.) and Chamomile (Matricaria chamomilla) flowering plants?","“relevant and focused”; the method “includes justifications for the selection of variables”"),
+]
+pairs_html = "\n".join("""      <div class="tablewrap"><table class="info">
+        <thead><tr><th colspan="2">%s</th></tr></thead>
+        <tbody>
+          <tr><th>%s</th><td><i>%s</i><br><span class="small muted">Examiner: %s</span></td></tr>
+          <tr><th>%s</th><td><i>%s</i><br><span class="small muted">Examiner: %s</span></td></tr>
+        </tbody></table></div>""" % tuple(html.escape(x) for x in p) for p in STEP10_PAIRS)
+
+STEPS.append(dict(
+ n=10, crumb="Step 10", title="Your research question and the parts of a paper",
+ desc="Write a focused EE research question, learn from examiner comments on real questions, learn the structure of a paper in your subject, and prepare for the first reflection session.",
+ lede="Sharpen your broad question into a research question, learn how essays in your subject are built, and get ready for your first reflection session.",
+ body="""
+    <h2>Why this step matters</h2>
+    <p class="why">Your research question is the centre of Criterion A, and every other criterion depends on it. The IB guide says it should keep you "within the scope of the 4,000 words" and help you "avoid producing an unfocused, mostly descriptive piece of writing".</p>
+
+    <h2>What the IB asks of a research question</h2>
+    <p>It must be framed as a <b>question</b> — not a hypothesis or a statement of intent. It should:</p>
+    <ul>
+      <li>be clearly stated and focused;</li>
+      <li>be open to amendment if your research takes you in a different direction, or if there are not enough resources;</li>
+      <li>invite a critical examination of the topic using the knowledge, concepts, theories, perspectives or methods of your subject(s);</li>
+      <li>encourage analysis, evaluation and synthesis, rather than description, unsupported generalizations and value judgements.</li>
+    </ul>
+    <p>Subject reminders: in the sciences, the variables in your question must be defined, justified and measurable. In an interdisciplinary essay, the question must reflect both subjects and the reason for combining them.</p>
+
+    <h2>What examiners said about real questions</h2>
+    <p>These research questions come from the sample essays, word for word, with the examiner's comment on each.</p>
+""" + pairs_html + """
+    <p>Two more examiner comments worth knowing:</p>
+    <ul>
+      <li>Chemistry Sample A (criterion A: 5/6): the question was "clear and focused but stated as a yes/no answer type question". A yes/no question limits your argument.</li>
+      <li>IB Economics example 1 (criterion A: 3/6): a "to what extent" question did not work because "it is not possible to measure the extent" of what it asked about. Only use "to what extent" when the extent can actually be judged.</li>
+    </ul>
+    <p>Once you have a question, use exactly the same wording on your title page, in your introduction and in your conclusion.</p>
+
+    <h2>The parts of a paper</h2>
+    <p>Every extended essay must include these parts:</p>
+    <ol>
+      <li>Title page</li>
+      <li>Contents page</li>
+      <li>Introduction</li>
+      <li>Body of the essay</li>
+      <li>Conclusion</li>
+      <li>Reference list or bibliography</li>
+    </ol>
+    <p>On top of these, each subject has its own structural conventions:</p>
+    <div class="tablewrap"><table class="info" id="conventions">
+      <thead><tr><th>Subject</th><th>Structural conventions</th></tr></thead>
+      <tbody>
+        <tr data-subject="Language A"><th>Language A</th><td>An introduction that explains the topic and focus and names the texts; body paragraphs that build an argument with textual support from primary and secondary sources; a conclusion that answers the question in light of your close readings. Sections and headings are allowed, but must not fragment the essay.</td></tr>
+        <tr data-subject="Language B"><th>Language B</th><td>Images are generally not useful in the body unless you are analysing an advertisement or artwork. If you analyse poetry or song lyrics, quote significant extracts in the body; the full text can go in an appendix, but examiners do not have to read appendices.</td></tr>
+        <tr data-subject="Visual Arts"><th>Visual Arts</th><td>Select a limited number of works so you can analyse them in depth within the word limit. Review the existing literature on your topic to shape your research question. Label and reference any images you include.</td></tr>
+        <tr data-subject="Sciences"><th>Biology, Chemistry, Physics</th><td>A methodology detailed enough to be replicated; SI units; results in a standardized format with labelled headings, units and numbering; processed data with uncertainties; conclusions supported by the data; an evaluation linked to the question and method.</td></tr>
+        <tr data-subject="I&amp;S"><th>Business Management, Economics, Global Politics</th><td>Clearly labelled diagrams, maps, images and graphs, acknowledged if they are someone else's work and referred to in the text; headings to organize the essay where appropriate.</td></tr>
+        <tr data-subject="Mathematics"><th>Mathematics</th><td>State the question clearly and stay focused on it. Write mathematics with an equation editor — a new line for each step of algebra, no * for multiplication or ^ for powers.</td></tr>
+      </tbody></table></div>
+    <p>Anything important to your argument must be in the body of the essay — examiners are not required to read appendices, footnotes or endnotes.</p>
+    <p><a class="btn" href="../../samples/">See how sample essays in your subject are structured</a></p>
+
+    <h2>Your first reflection session</h2>
+    <p>After this step you have your <b>first reflection session</b> with your supervisor — the first of the three sessions recorded on your RPF. It focuses on your initial ideas and how you plan to carry out your research. Bring your RRS. The thinking tool below includes questions your supervisor may ask, taken from the IB's own list.</p>
+    <p class="src-note">Sources: IB <i>Extended essay guide</i> (first assessment 2027), "Researching the extended essay" (developing a research question), "Writing your extended essay" (overall structure) and "Subject-specific guidance"; IB <i>Extended essay support material</i> (2025), "Questions to guide reflection sessions"; examiner comments on the sample essays.</p>
+""",
+ script="""/* highlight the subject chosen in step 1 */
+(function(){
+  var path = EETools.read("step-1","pathway") || "", s = path==="Subject-focused (one subject)" ? (EETools.read("step-1","subject")||"") : "";
+  var map = {"Biology":"Sciences","Chemistry":"Sciences","Physics":"Sciences","Business Management":"I&S","Economics":"I&S","Global Politics":"I&S"};
+  var row = s && document.querySelector('#conventions tr[data-subject="'+(map[s]||s)+'"]');
+  if(row) row.classList.add("mine");
+})();""",
+ tool=dict(id="step-10", stepLabel="Step 10 · Research question", title="My research question",
+  sections=[
+   {"heading":"From broad question to research question","prompts":[
+     {"id":"bq","type":"long","label":"My broad question (from step 8):","rows":2,"prefill":"__PREFILL_BQ__"},
+     {"id":"gap","type":"long","label":"The gap I found (from step 9):","rows":2,"prefill":"__PREFILL_GAP__"},
+     {"id":"drafts","type":"table","label":"Draft research questions","hint":"Write two or three versions. Make each one more focused than the last.","columns":["Draft research question","What I changed, and why"],"rows":3,"max":6}]},
+   {"heading":"Test my best draft","prompts":[
+     {"id":"rq","type":"long","label":"My research question:","rows":2},
+     {"id":"checks","type":"checklist","label":"Does it pass?","items":[
+       "It is a question, not a statement or a hypothesis.",
+       "It is clear — a stranger would understand it.",
+       "It is focused enough to answer in 4,000 words.",
+       "It is arguable — it cannot be answered with yes, no, or a fact.",
+       "It uses the concepts or methods of my subject(s).",
+       "If it says “to what extent”, the extent can actually be judged.",
+       "It leads to analysis, not description.",
+       "I can get the sources, data or texts I need to answer it."]},
+     {"id":"method","type":"long","label":"How will I answer it? (Name the method and the sources or data.)","rows":3}]},
+   {"heading":"The parts of my paper","prompts":[
+     {"id":"structure","type":"long","label":"The sections my essay will probably need, in order (use your subject's conventions):","rows":4}]},
+   {"heading":"Prepare for my first reflection session","note":"Questions supervisors may ask, from the IB's list of initial reflection questions.","prompts":[
+     {"id":"motivated","type":"long","label":"What has motivated me to research this topic?","rows":2},
+     {"id":"requirements","type":"long","label":"What are the extended essay requirements for my subject, and does my topic fit them?","rows":2},
+     {"id":"enough","type":"long","label":"Will I be able to collect sufficient resources to answer my research question effectively?","rows":2},
+     {"id":"obstacles","type":"long","label":"What challenges or obstacles have I met, and what can I do about them?","rows":2},
+     {"id":"next","type":"long","label":"What are my next steps?","rows":2},
+     {"id":"askme","type":"long","label":"Questions I want to ask my supervisor:","rows":2}]},
+   checklist(["My research question passes every test above, or I know what to fix.",
+              "I know the structural conventions for my subject.",
+              "I have booked or confirmed my first reflection session with my supervisor.",
+              "I have copied this thinking tool into my RRS and will bring it to the session."])
   ])
 ))
 

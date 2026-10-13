@@ -20,9 +20,9 @@ window.EE_STEPS = [
   {n:6,  phase:"explore", live:true,  title:"Research methods in your subject",             blurb:"How researchers in your subject answer questions."},
   {n:7,  phase:"explore", live:true,  title:"Collect 40 sources in PowerNotes",             blurb:"Categorise them and see what your topic is really about."},
 
-  {n:8,  phase:"narrow",  live:false, title:"Narrow your topic and write a broad question", blurb:"From a broad topic to a working question."},
-  {n:9,  phase:"narrow",  live:false, title:"Annotated bibliography: 20 sources",           blurb:"Twenty sources, different perspectives, and the gap in the research."},
-  {n:10, phase:"narrow",  live:false, title:"Your research question and the parts of a paper", blurb:"A focused question and how papers in your subject are built. First reflection session follows."},
+  {n:8,  phase:"narrow",  live:true, title:"Narrow your topic and write a broad question", blurb:"From a broad topic to a working question."},
+  {n:9,  phase:"narrow",  live:true, title:"Annotated bibliography: 20 sources",           blurb:"Twenty sources, different perspectives, and the gap in the research."},
+  {n:10,  phase:"narrow",  live:true, title:"Your research question and the parts of a paper", blurb:"A focused question and how papers in your subject are built. First reflection session follows."},
 
   {n:11, phase:"write",   live:false, title:"Write the introduction",                       blurb:"Context, your research question, and your methodology."},
   {n:12, phase:"write",   live:false, title:"Ethics check",                                 blurb:"Before you collect any data."},

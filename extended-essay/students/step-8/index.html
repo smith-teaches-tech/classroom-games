@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Step 8: Narrow your topic and write a broad question — EE for Students</title>
+<meta name="description" content="Narrow your EE topic from broad to focused, then brainstorm and evaluate questions to find a broad working question.">
+<link rel="stylesheet" href="../../shared/ee.css">
+<link rel="stylesheet" href="../../shared/steps.css">
+</head>
+<body data-step="8">
+<div class="shell narrow">
+  <div class="top">
+    <a class="mark" href="../../" title="Extended Essay hub">EE</a>
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Classroom tools</a><span class="sep">/</span><a href="../../">Extended Essay</a><span class="sep">/</span><a href="../">For Students</a><span class="sep">/</span><span>Step 8</span></nav>
+  </div>
+
+  <header class="hero">
+    <p class="stepno" id="stepno"></p>
+    <h1>Narrow your topic and write a broad question</h1>
+    <p class="lede">Turn what you learned from 40 sources into a focused topic, then into a broad question you can test.</p>
+  </header>
+
+  <main class="step-body">
+
+    <h2>Why this step matters</h2>
+    <p class="why">A broad topic leads to a descriptive essay that informs the reader but never argues anything. The IB guide warns that staying "too broad and general almost inevitably leads to descriptive, superficial writing". Narrowing is how you get to analysis.</p>
+    <p>You are not writing your final research question yet — that comes in step 10. Here you narrow the topic and write a <b>broad question</b>: a working question that will guide which 20 sources you keep in step 9.</p>
+
+    <h2>The topic funnel</h2>
+    <p>Narrow one level at a time. Each level should be a part of the level above it.</p>
+    <div class="tablewrap"><table class="info">
+      <thead><tr><th>Level</th><th>Example (Economics)</th><th>Example (Language A)</th></tr></thead>
+      <tbody>
+        <tr><th>Broad topic</th><td>Government intervention in markets</td><td>Dystopian fiction</td></tr>
+        <tr><th>Narrower aspect</th><td>Price controls</td><td>How setting creates fear in dystopian novels</td></tr>
+        <tr><th>A specific case, text, place or time</th><td>Minimum unit pricing of alcohol in Scotland since 2018</td><td>Setting in an Orwell novel</td></tr>
+        <tr><th>Focused topic</th><td>Whether minimum unit pricing reduced alcohol consumption in Scotland</td><td>How Orwell uses setting to show the dangers of a totalitarian society</td></tr>
+      </tbody></table></div>
+    <p class="small muted">Both examples are based on sample essays in the <a href="../../samples/">sample library</a> (Economics Sample B and Language A Sample B).</p>
+
+    <h2>Check your focused topic</h2>
+    <p>The IB guide suggests a preliminary investigation of your focused topic. You have already done most of it in steps 3 to 7. Ask yourself:</p>
+    <ul>
+      <li>What has already been written about this topic?</li>
+      <li>Is it easy to find sources of information?</li>
+      <li>Is there a range of different resources available?</li>
+      <li>Is there a range of views or perspectives on the topic?</li>
+      <li>What interesting questions have started to emerge from my reading?</li>
+    </ul>
+
+    <h2>Brainstorm, then evaluate</h2>
+    <ol class="do">
+      <li>Write at least five open-ended questions about your focused topic. The IB guide recommends starting them with <b>how</b>, <b>why</b> or <b>to what extent</b>.</li>
+      <li>Judge each question against three tests from the guide: is it <b>clear</b>, is it <b>focused</b>, and is it <b>arguable</b> (could reasonable people answer it differently)?</li>
+      <li>Choose the strongest one as your broad question. It is allowed — expected — to change.</li>
+    </ol>
+    <div class="note"><p style="margin:0"><b>Changing direction is normal.</b> The IB guide says a change of topic or question "is completely acceptable and will be supported by your supervisor". Sometimes a slight change of wording is all that is needed.</p></div>
+    <p class="src-note">Source: IB <i>Extended essay guide</i> (first assessment 2027), "Generic guidance" (choosing a topic) and "Researching the extended essay" (four steps to developing a research question; changing direction).</p>
+
+    <div data-tool="step-8"></div>
+
+    <nav class="stepnav" id="stepnav" aria-label="Steps"></nav>
+  </main>
+
+  <footer><a href="../">← All steps</a></footer>
+</div>
+
+<script src="../../data/steps.js"></script>
+<script src="../../shared/step-nav.js"></script>
+<script src="../../shared/thinking-tools.js"></script>
+<script>
+
+EETools.define({
+ "id": "step-8",
+ "stepLabel": "Step 8 · Narrow your topic",
+ "title": "From broad topic to broad question",
+ "sections": [
+  {
+   "heading": "My funnel",
+   "prompts": [
+    {
+     "id": "broad",
+     "type": "text",
+     "label": "Broad topic:",
+     "prefill": function(){ return EETools.read("step-1","chosen")||""; }
+    },
+    {
+     "id": "aspect",
+     "type": "text",
+     "label": "Narrower aspect:"
+    },
+    {
+     "id": "specific",
+     "type": "text",
+     "label": "A specific case, text, place or time:"
+    },
+    {
+     "id": "focused",
+     "type": "long",
+     "label": "My focused topic, in one sentence:",
+     "rows": 2
+    },
+    {
+     "id": "why",
+     "type": "long",
+     "label": "Which of my 40 sources pointed me here, and why?",
+     "rows": 3
+    }
+   ]
+  },
+  {
+   "heading": "Preliminary investigation",
+   "prompts": [
+    {
+     "id": "range",
+     "type": "long",
+     "label": "Is there enough to read on this focused topic, from a range of views? What makes me think so?",
+     "rows": 3
+    }
+   ]
+  },
+  {
+   "heading": "Emerging questions",
+   "prompts": [
+    {
+     "id": "qs",
+     "type": "table",
+     "label": "Brainstorm at least five questions, then test each one.",
+     "hint": "Clear: would a stranger understand it? Focused: is it narrow enough for 4,000 words? Arguable: could reasonable people answer it differently?",
+     "columns": [
+      "Question (how / why / to what extent)",
+      "Clear?",
+      "Focused?",
+      "Arguable?"
+     ],
+     "rows": 5,
+     "max": 10
+    }
+   ]
+  },
+  {
+   "heading": "My broad question",
+   "prompts": [
+    {
+     "id": "bq",
+     "type": "long",
+     "label": "The broad question I will work with for now:",
+     "rows": 2
+    },
+    {
+     "id": "bqwhy",
+     "type": "long",
+     "label": "Why this one is stronger than the others:",
+     "rows": 3
+    }
+   ]
+  },
+  {
+   "heading": "Before you move on",
+   "prompts": [
+    {
+     "id": "done",
+     "type": "checklist",
+     "label": "Tick each one when it is true.",
+     "items": [
+      "I have a focused topic in one sentence.",
+      "I have tested at least five questions for clear, focused and arguable.",
+      "I have chosen a broad question to guide step 9.",
+      "I have copied this thinking tool into my RRS."
+     ]
+    }
+   ]
+  }
+ ]
+});
+</script>
+</body>
+</html>
