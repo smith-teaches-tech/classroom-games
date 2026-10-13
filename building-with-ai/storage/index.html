@@ -383,6 +383,8 @@ details.example .prompt{margin-top:10px}
 <body>
 <div class="wrap">
 
+
+
 <header class="hero">
   <div class="hero-text">
     <span class="eyebrow">Build 2 · Identity · Files day</span>
@@ -393,16 +395,15 @@ details.example .prompt{margin-top:10px}
       <a href="#types">2 · What to let in</a>
       <a href="#who">3 · Who can see</a>
       <a href="#size">4 · How big</a>
-      <a href="#setup">5 · Set it up</a>
-      <a href="#test">6 · Test and break it</a>
+      <a href="setup/">Set it up →</a>
     </nav>
   </div>
   <div class="uploader" aria-label="Mock-up of the upload area you will build">
     <span class="tag">What you're building</span>
     <h3>My files</h3>
     <button type="button" class="addbtn" id="hero-add"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Add file</button>
-    <div class="picker" id="hero-picker" aria-label="Pretend file picker">
-      <span class="mhint">Pick a file (pretend):</span>
+    <div class="picker" id="hero-picker" aria-label="Sample files">
+      <span class="mhint">Pick a sample file:</span>
       <button type="button" data-hero="sunset.jpg|3.2">sunset.jpg · 3.2 MB</button>
       <button type="button" data-hero="voice-memo.m4a|1.1">voice-memo.m4a · 1.1 MB</button>
       <button type="button" data-hero="field-trip.mp4|38">field-trip.mp4 · 38 MB</button>
@@ -414,9 +415,10 @@ details.example .prompt{margin-top:10px}
     <ul class="flist" id="hero-list">
       <li><span>essay-draft.pdf <span class="fmeta">0.8 MB</span></span><button type="button" tabindex="-1">Delete</button></li>
     </ul>
-    <p class="signin-hint">Try it. This one is pretend, but yours will be real.</p>
+    <p class="signin-hint">Click Add file. This is what your app will do: check the file, show the upload progress, then add it to your list.</p>
   </div>
 </header>
+
 
 <!-- 1 WHERE -->
 <section id="where">
@@ -556,225 +558,33 @@ details.example .prompt{margin-top:10px}
   <div class="why col"><b>Video is the problem child.</b> A phone photo is usually 2 to 5 MB and fits easily. A one-minute phone video is around 60 MB and won't fit. If your app shares video, keep clips short, record at a lower quality, or raise the limit (up to 50 MB) and accept that your 1 GB fills up faster. Write your choice in your project file.</div>
 </section>
 
-<!-- 5 SETUP -->
-<section id="setup">
+<section id="build">
   <div class="col" style="display:grid;gap:12px">
-    <span class="eyebrow">Part 5</span>
-    <h2>Set it up</h2>
-    <div class="order" aria-label="Order of steps">
-      <b class="sb">1 Supabase: bucket</b><i>→</i><b>2 Your AI: SQL</b><i>→</i><b class="sb">3 Supabase: run SQL</b><i>→</i><b>4 Your AI: app code</b><i>→</i><b>5 Test</b>
-    </div>
-    <p class="muted" style="font-size:.88rem">The screens below are mock-ups. Your screen may look a little different, but the setting names will be close. Our example bucket is called <b>user-files</b>. Use your own name, and use it exactly the same everywhere.</p>
+    <span class="eyebrow">Next</span>
+    <h2>Now build it</h2>
+    <p>Before you open the setup page, make four decisions and write them in your project file. Every step of the setup depends on them.</p>
+    <ol class="do">
+      <li><b>Which file types</b> your app needs, from the Allow list in Part 2.</li>
+      <li><b>Who can see the files:</b> Only me, People signed in to my app, or Anyone on the internet (Part 3).</li>
+      <li><b>Your size limit:</b> 10 MB, unless your app is about video (Part 4).</li>
+      <li><b>Your bucket's name</b>, short and lowercase, like <code>user-files</code>.</li>
+    </ol>
   </div>
-
-  <!-- step 1 -->
-  <div class="part">
-    <div class="part-text">
-      <div class="part-head"><span class="pnum">1</span><div style="display:grid;gap:4px"><h3>Make the bucket</h3><span class="site sb" style="width:max-content">Supabase</span></div></div>
-      <p class="where">Your project → <b>Storage</b> (left menu) → <b>New bucket</b></p>
-      <ol class="do">
-        <li><b>Name:</b> short, lowercase, dashes. For example <code>user-files</code>. Write it down exactly.</li>
-        <li><b>Public bucket:</b> leave it <b>off</b>, unless your level is "Anyone on the internet".</li>
-        <li><b>Restrict file size:</b> turn it on, type <b>10 MB</b>.</li>
-        <li><b>Allowed MIME types:</b> turn it on and paste the list below. (A MIME type is a file's label, like <code>image/png</code>.) Delete any type your app doesn't need.</li>
-        <li>Click <b>Save</b> or <b>Create</b>.</li>
-      </ol>
-      <div class="prompt-wrap">
-        <div class="prompt-bar"><span class="eyebrow">Allowed MIME types</span><button type="button" class="copy" data-copy="mimes">Copy list</button></div>
-        <div class="prompt mimes" id="mimes">image/jpeg, image/png, image/webp, image/gif, video/*, audio/*, application/pdf, application/vnd.openxmlformats-officedocument.wordprocessingml.document</div>
-      </div>
-      <p class="mhint">Missed a setting? Click the bucket's three-dot menu → <b>Edit bucket</b>.</p>
-    </div>
-    <div class="mock" aria-label="Mock-up: Supabase new bucket form">
-      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">supabase.com/dashboard/project/abcdefghijklmnop/storage/buckets</span><span class="mocktag">Mock-up</span></div>
-      <div class="mbody">
-        <div class="mgrid">
-          <div class="mside"><span class="sec-h">Project</span><span>Table Editor</span><span>SQL Editor</span><span>Authentication</span><span class="on">Storage</span><span>…</span></div>
-          <div style="display:grid;gap:10px;min-width:0">
-            <h4>Create a new bucket</h4>
-            <div class="mfield"><span class="mlabel">Name of bucket</span><span class="minput hl">user-files</span></div>
-            <div class="mrow"><div><b>Public bucket</b><div class="d">Anyone can read files without signing in</div></div><button type="button" class="tog" role="switch" aria-checked="false" aria-label="Public bucket"></button></div>
-            <div class="mrow callout"><div><b>Restrict file size</b> <span class="flag">Turn on</span><div class="d">Largest file allowed in this bucket</div></div><button type="button" class="tog" role="switch" aria-checked="true" aria-label="Restrict file size"></button></div>
-            <div class="mfield"><span class="minput hl">10 MB</span></div>
-            <div class="mrow callout"><div><b>Restrict MIME types</b> <span class="flag">Turn on</span><div class="d">Only allow these file types</div></div><button type="button" class="tog" role="switch" aria-checked="true" aria-label="Restrict MIME types"></button></div>
-            <div class="mfield"><span class="minput hl mimes">image/jpeg, image/png, image/webp, image/gif, video/*, audio/*, application/pdf, application/vnd.openxml…</span></div>
-            <button type="button" class="mbtn go">Save</button>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="linkcards" style="grid-template-columns:1fr">
+    <a class="lcard" href="setup/">
+      <span class="eyebrow">Setup page</span>
+      <h3>Set up files and usernames</h3>
+      <ul><li>A users table, a bucket and its rules, then the Add file button</li><li>Gemini writes the SQL. You check it before it runs.</li></ul>
+      <span class="go">Go to the steps →</span>
+    </a>
   </div>
-
-  <!-- step 2 -->
-  <div class="part">
-    <div class="part-text">
-      <div class="part-head"><span class="pnum">2</span><div style="display:grid;gap:4px"><h3>Ask your AI to write the policies</h3><span class="site ai" style="width:max-content">Your AI</span></div></div>
-      <p>The policies are a few lines of SQL. Your AI writes them, but <b>you</b> give it the rules. Fill in the blanks in this prompt: your bucket name and your sharing level from Part 3.</p>
-      <p><b>Good prompts for SQL name four things:</b></p>
-      <ol class="do">
-        <li><b>The table:</b> <code>storage.objects</code>. That's where Supabase keeps a row for every file.</li>
-        <li><b>The bucket name</b>, spelled exactly.</li>
-        <li><b>The folder rule:</b> every file is saved inside a folder named after the user's ID.</li>
-        <li><b>Each action separately:</b> upload, view, delete. Say who can do each one.</li>
-      </ol>
-      <div class="why"><b>Ask it to explain.</b> The last line of the prompt asks for one plain sentence per policy. If you can't explain a policy, you can't draw it in your diagram, and you shouldn't run it.</div>
-    </div>
-    <div class="prompt-wrap">
-      <div class="prompt-bar"><span class="eyebrow">Prompt · fill in the [brackets]</span><button type="button" class="copy" data-copy="prompt-sql">Copy prompt</button></div>
-      <div class="prompt" id="prompt-sql">Write Supabase SQL policies for the storage.objects table, for my storage bucket named [user-files].
-
-Every file is saved inside a folder named after the user's ID, like this: [user id]/[file name].
-
-Rules:
-1. Upload: signed-in users can upload only into their own folder.
-2. View: [pick one: only the owner can view their own files / any signed-in user can view files in this bucket].
-3. Delete: signed-in users can delete only files in their own folder.
-4. Nobody can update or overwrite files.
-
-Use storage.foldername(name) and auth.uid() to check the folder. Use "to authenticated". Only create policies. Do not drop, delete or disable anything.
-
-After the SQL, explain each policy in one plain sentence.</div>
-    </div>
-  </div>
-
-  <!-- step 3 -->
-  <div class="part">
-    <div class="part-text">
-      <div class="part-head"><span class="pnum">3</span><div style="display:grid;gap:4px"><h3>Check the SQL, then run it</h3><span class="site sb" style="width:max-content">Supabase</span></div></div>
-      <p class="where">Your project → <b>SQL Editor</b> (left menu) → <b>New query</b> → paste → <b>Run</b></p>
-      <p><b>Before you click Run, check the SQL your AI gave you:</b></p>
-      <ul class="checklist">
-        <li><span>Every policy says <code>on storage.objects</code>.</span></li>
-        <li><span>Every policy has <code>bucket_id = 'user-files'</code> with <b>your</b> bucket name, spelled exactly.</span></li>
-        <li><span>Upload and delete say <code>to authenticated</code>.</span></li>
-        <li><span>Upload and delete compare <code>(storage.foldername(name))[1]</code> with <code>auth.uid()</code>.</span></li>
-        <li><span>There's a <b>view</b> (select) policy. Without one, uploads fail too. Supabase needs to read the file's details back after saving it.</span></li>
-        <li class="x"><span>No <code>with check (true)</code> or <code>using (true)</code> on upload or delete. That means "anyone, anywhere".</span></li>
-        <li class="x"><span>No <code>drop</code>, <code>truncate</code>, <code>delete from</code> or <code>disable row level security</code>. If you see one, don't run it. Ask your AI why it's there.</span></li>
-      </ul>
-      <p>After you run it, you should see <b>Success. No rows returned</b>. That's good news for this kind of SQL.</p>
-    </div>
-    <div class="mock" aria-label="Mock-up: Supabase SQL Editor">
-      <div class="chrome"><span class="dots"><i></i><i></i><i></i></span><span class="url">supabase.com/dashboard/project/abcdefghijklmnop/sql/new</span><span class="mocktag">Mock-up</span></div>
-      <div class="mbody">
-        <div class="mgrid">
-          <div class="mside"><span class="sec-h">Project</span><span>Table Editor</span><span class="on">SQL Editor</span><span>Authentication</span><span>Storage</span><span>…</span></div>
-          <div style="display:grid;gap:10px;min-width:0">
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h4>New query</h4><span class="callout" style="display:inline-block"><button type="button" class="mbtn go">Run</button></span></div>
-            <div class="sqlbox">create policy "Upload to own folder"
-on storage.objects for insert
-to authenticated
-with check (
-  bucket_id = 'user-files'
-  and (storage.foldername(name))[1]
-      = (select auth.uid()::text)
-);
--- …view and delete policies…</div>
-            <div class="banner">Success. No rows returned</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <details class="example col">
-    <summary>Stuck? See what good SQL looks like (Only me level)</summary>
-    <p style="margin-top:10px">Compare this with what your AI wrote. For "People signed in to my app", the view policy only checks the bucket: <code>using (bucket_id = 'user-files')</code>.</p>
-    <div class="prompt" id="sql-example">create policy "Upload to own folder"
-on storage.objects for insert to authenticated
-with check (
-  bucket_id = 'user-files'
-  and (storage.foldername(name))[1] = (select auth.uid()::text)
-);
-
-create policy "View own files"
-on storage.objects for select to authenticated
-using (
-  bucket_id = 'user-files'
-  and (storage.foldername(name))[1] = (select auth.uid()::text)
-);
-
-create policy "Delete own files"
-on storage.objects for delete to authenticated
-using (
-  bucket_id = 'user-files'
-  and (storage.foldername(name))[1] = (select auth.uid()::text)
-);</div>
-  </details>
-
-  <!-- step 4 -->
-  <div class="part">
-    <div class="part-text">
-      <div class="part-head"><span class="pnum">4</span><div style="display:grid;gap:4px"><h3>Ask your AI for the Add file button</h3><span class="site ai" style="width:max-content">Your AI</span></div></div>
-      <p>Upload <code>index.html</code>, <code>app.js</code> and <code>config.js</code>, then paste this. Fill in the [brackets] to match your bucket.</p>
-      <div class="why"><b>Why the prompt is so detailed:</b> AI often makes a "progress bar" that's just an animation, not connected to the real upload. Item 4 asks for the real thing. You'll test it in Part 6.</div>
-      <div class="why"><b>Why the app checks too:</b> the bucket already blocks big or wrong files. The app's check is the sign on the door: it gives a friendly message straight away, instead of a confusing error after waiting.</div>
-    </div>
-    <div class="prompt-wrap">
-      <div class="prompt-bar"><span class="eyebrow">Prompt</span><button type="button" class="copy" data-copy="prompt-app">Copy prompt</button></div>
-      <div class="prompt" id="prompt-app">I'm adding file uploads to my app. My files are index.html, app.js and config.js (attached). Sign-in already works with Supabase.
-
-My Supabase storage bucket is named [user-files]. It is [private / public]. Files can be up to 10 MB. Allowed types: JPG, PNG, WEBP, GIF, video, audio, PDF and Word (.docx).
-
-Please add:
-1. An "Add file" button. Use a file input with an accept attribute that only lists my allowed types.
-2. Before uploading, check the file's size and type in the browser. If it's too big or the wrong type, show a clear message and don't upload.
-3. Save each file at [user id]/[timestamp]-[file name], so two files never have the same name.
-4. A progress bar that shows the REAL upload progress as a percentage, using an upload method that reports progress. Not a fake animation. Disable the Add file button while a file is uploading.
-5. A list of my files with name, size and a Delete button.
-6. Show files on the page: photos with an img tag, videos with a video tag, audio with an audio tag, PDF and Word files as a link that opens in a new tab. If my bucket is private, use signed URLs.
-7. Show any error from Supabase on the page in plain words.
-
-Do not put any secret keys in my code. Change nothing else. Tell me exactly which file each change goes in.</div>
-    </div>
-  </div>
-</section>
-
-<!-- 6 TEST -->
-<section id="test">
-  <div class="col" style="display:grid;gap:12px">
-    <span class="eyebrow">Part 6</span>
-    <h2>Test it, then try to break it</h2>
-    <p>Tick each one off on your live GitHub Pages site.</p>
-  </div>
-  <ul class="tests col">
-    <li><label><input type="checkbox" id="s1"><span>Upload a photo. Does it show up in your list, and on the page?</span></label></li>
-    <li><label><input type="checkbox" id="s2"><span>Upload a file over 10 MB. <span class="brk">break it</span><br><span class="muted">Do you get a clear message before any waiting?</span></span></label></li>
-    <li><label><input type="checkbox" id="s3"><span>Try a type you didn't allow, like a .zip or .svg. <span class="brk">break it</span><br><span class="muted">On a Mac, the file picker may grey it out. That's the accept attribute working.</span></span></label></li>
-    <li><label><input type="checkbox" id="s4"><span>Check the progress bar is real. <span class="brk">break it</span><br><span class="muted">In Chrome: right-click → Inspect → Network tab → change "No throttling" to "Slow 4G". Upload a 5 MB file. The bar should crawl, not zoom to 100%.</span></span></label></li>
-    <li><label><input type="checkbox" id="s5"><span>Delete a file. Is it gone from Supabase Storage too, not just from your page?</span></label></li>
-    <li><label><input type="checkbox" id="s6"><span>Sign in as a second account. Can it see the first account's files? <span class="brk">break it</span><br><span class="muted">It should match the sharing level you chose in Part 3, exactly.</span></span></label></li>
-    <li><label><input type="checkbox" id="s7"><span>On your phone, tap Add file. Upload a photo straight from the camera or photo library.</span></label></li>
-    <li><label><input type="checkbox" id="s8"><span>Upload a phone video. Does it fit under 10 MB? Does it play in Chrome on a laptop?</span></label></li>
-  </ul>
-
-  <div class="col" style="display:grid;gap:10px">
-    <h3>Error decoder</h3>
-    <p class="muted" style="font-size:.92rem">These are almost always a setting or a policy, not your app's code.</p>
-  </div>
-  <div class="errs-scroll">
-    <table class="errs">
-      <thead><tr><th>You see</th><th>What's wrong</th><th>Fix</th></tr></thead>
-      <tbody>
-        <tr><td>new row violates row-level security policy</td><td>A policy is missing, or the file isn't going into a folder named after the user's ID. A missing <b>view</b> policy causes this too.</td><td>Step 3 checklist. Check the file path starts with the user's ID.</td></tr>
-        <tr><td>Bucket not found</td><td>The bucket name in your code doesn't match the name in Supabase.</td><td>Compare them letter by letter. Capitals and dashes count.</td></tr>
-        <tr><td>The object exceeded the maximum allowed size</td><td>The file is bigger than your bucket's limit. Working as planned.</td><td>Make sure your app catches this first, with a friendly message.</td></tr>
-        <tr><td>mime type … is not supported</td><td>The file's type isn't on your bucket's allowed list. Working as planned, unless it's a type you meant to allow.</td><td>Step 1: Edit bucket. Check the allowed list.</td></tr>
-        <tr><td>The resource already exists</td><td>A file with that exact name is already in the folder.</td><td>Step 4, item 3: add a timestamp to every file name.</td></tr>
-        <tr><td>Photos upload but show as broken images</td><td>The bucket is private, so plain links don't work.</td><td>Ask your AI to use signed URLs to show files.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="why col"><b>What about phones?</b> Your Add file button already works on phones. It opens the camera and photo library for free. Turning your app into a real phone app (installed on the home screen, built for small screens first) comes in a later unit. For now, just make sure uploading from a phone works.</div>
-
   <div class="col" style="display:grid;gap:10px">
     <h3>For your diagram</h3>
     <p>Draw a file's trip: phone or laptop → your app's check → the bucket's rules → the user's folder. Mark which checks run in the browser and which run on Supabase. Then answer: <b>if someone skips your app completely, what still stops a 200 MB video or a .exe?</b></p>
   </div>
 </section>
 
-<footer><strong>Building with AI</strong> &mdash; Saving Files. Related: <a href="../sign-in/">Adding Sign-In</a> &middot; <a href="../database/">Your Database</a><br>Mock-ups are simplified drawings of the Supabase dashboard, made for teaching. Your screen may look a little different. Limits checked against Supabase's docs in October 2026.</footer>
+<footer><strong>Building with AI</strong> &mdash; Saving Files. Steps: <a href="setup/">Set up files and usernames</a>. Related: <a href="../sign-in/">Adding Sign-In</a> &middot; <a href="../database/">Your Database</a><br>Limits checked against Supabase's docs in October 2026.</footer>
 </div>
 
 <script>
