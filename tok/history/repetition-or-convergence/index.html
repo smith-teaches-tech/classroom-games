@@ -56,10 +56,11 @@ text-transform:uppercase;color:var(--ox);margin-bottom:6px}
 /* ---------- trace board ---------- */
 .trace{position:relative;margin-bottom:14px}
 .trace svg.links{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
-.rowlab{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.18em;
+.rowlab{position:relative;z-index:1;width:fit-content;background:var(--paper);padding-right:8px;font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:.18em;
 text-transform:uppercase;color:var(--ox);margin:4px 0 8px}
 .rowlab span{color:var(--faint);letter-spacing:.1em}
-.row{display:flex;gap:12px;flex-wrap:wrap;position:relative;z-index:1}
+.row{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start;position:relative;z-index:1}
+.row.top{align-items:stretch}
 .row.top{margin-bottom:64px}
 .row .src{flex:1 1 0;min-width:170px}
 .src{background:var(--card);border:1.5px solid var(--line-s);border-radius:3px;
@@ -175,6 +176,32 @@ body.notes .nf{color:var(--ox)}
   .crow.head{display:none}
   .example dl div{grid-template-columns:1fr;gap:4px}
 }
+
+/* knowledge-claim cards */
+.kc{background:var(--card);border:1px solid var(--line);border-radius:3px;padding:14px 18px;margin-bottom:12px}
+.kc-claim{position:relative;padding-left:40px;font-size:20px;line-height:1.4;font-style:italic;color:var(--ox);margin-bottom:10px}
+.kc-claim .num{position:absolute;left:0;top:2px;font-style:normal;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--ox);
+border:1px solid var(--line-s);width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.kc .example{margin-top:6px}
+
+/* touch / tablet */
+button{min-height:44px}
+.src .more{min-height:32px;padding:6px 0}
+.src.later{touch-action:none}
+.src.later.placed{touch-action:auto}
+.yn{flex-wrap:wrap}
+.yn button{min-height:44px;padding:10px 14px;font-size:10px;min-width:72px}
+.yn .ql{display:none}
+.sortrow button{min-height:44px;padding:10px 14px}
+.row.top{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.row.top .src{min-width:0}
+.crow .pill.nocount{background:var(--faint)!important}
+@media(hover:none){.src.later:hover{border-color:var(--line-s)}}
+@media(max-width:900px){
+  .yn .ql{display:block;width:100%;font-family:"JetBrains Mono",monospace;font-size:8.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ox);margin-bottom:2px}
+  .taskbar{flex-direction:column;align-items:flex-start}
+  .row .src{min-width:200px}
+}
 </style>
 </head>
 <body>
@@ -191,7 +218,7 @@ body.notes .nf{color:var(--ox)}
   <div class="kick">TOK · History · Lesson 2</div>
   <h1>Repetition<br>or Convergence?</h1>
   <div class="rule"></div>
-  <p class="lead">Four sources say Richard III had his nephews killed. Five say Julius Caesar crossed the Rubicon.</p>
+  <p class="lead">Four sources say Richard III had his nephews killed. Five tell the story of Julius Caesar taking his army across the Rubicon and starting a civil war.</p>
   <p class="lead"><b>Does saying something more times make it more likely to be true?</b></p>
   <div class="rule"></div>
   <p>When two scientists in different labs, using different equipment, get the same result, their agreement is strong evidence. This is called <b>convergence</b>.</p>
@@ -207,7 +234,7 @@ body.notes .nf{color:var(--ox)}
 <section class="stage" data-s="1">
   <div class="kick">Case 1 · Step 1 of 2 · Trace the stories</div>
   <h2>Caesar at the Rubicon</h2>
-  <p class="q" style="margin-bottom:12px">The claim: “Caesar crossed the Rubicon with his army, and that started the civil war.”</p>
+  <p class="q" style="margin-bottom:12px">The claim: “In 49 BC a civil war began, with Caesar's army on one side and the Senate's on the other.”</p>
   <div class="brief"><div class="h">What happened</div>
   <p>In 49 BC Julius Caesar was governor of Gaul and commanded an army that was loyal to him. The Senate in Rome ordered him to give up his army and come home alone. The Rubicon was a small river at the edge of his province. Crossing it with soldiers meant going to war against his own government. A civil war followed, and the Roman Republic did not survive it.</p></div>
   <div class="taskbar">
@@ -226,10 +253,10 @@ body.notes .nf{color:var(--ox)}
   <div class="kick">Case 1 · Step 2 of 2 · Count the lines</div>
   <h2>How many sources are really left?</h2>
   <div class="taskbar">
-    <div class="t">Plutarch and Appian both got the story from Pollio, so the three of them are now <b>one line</b>. For each line below, answer both questions. A line only counts if both answers are <b>yes</b>.</div>
+    <div class="t">Plutarch and Appian both got the story from Pollio, so the three of them are now <b>one line</b>. For each line, answer both questions. A line only counts if both answers are <b>yes</b>.</div>
   </div>
   <div class="ctab" id="b2"></div>
-  <div class="checkbar"><button class="solid" id="c2" disabled onclick="checkCount('caesar')">Check my answers</button><span class="msg" id="m2">Answer every question first.</span></div>
+  <div class="checkbar"><button class="solid" id="c2" disabled onclick="checkCount('caesar')">Check my answers</button><span class="msg" id="m2">Answer both questions for every line first.</span></div>
   <div id="t2"></div>
   <button id="n2" class="solid" disabled onclick="go(3)">Continue &rarr;</button>
 </section>
@@ -239,13 +266,16 @@ body.notes .nf{color:var(--ox)}
   <div class="kick">Case 1 · Result</div>
   <h2>Caesar's claim passes the test</h2>
   <div class="tally"><div class="n">3</div><div><div class="lab">Separate lines that back the claim</div>
-    <div class="say">and one of them is coins and inscriptions, which can't copy anyone</div></div></div>
-  <p>Look at what did <b>not</b> save this claim. Three ancient writers agreeing looked like three sources. But two of them got their story from Pollio, so the three count once. If the writers were all we had, the claim would be much weaker than it looks.</p>
-  <p>What really holds it up is the evidence that <b>couldn't have read Pollio</b>: coins made at the time, inscriptions, the careers of the men who fought, and a war that definitely happened.</p>
-  <p class="q">Agreement only counts when the sources could have disagreed. Coins and inscriptions can't be paid, persuaded or copied.</p>
+    <div class="say">and one of them is coins, which can't copy anyone</div></div></div>
+  <p>Look at what did <b>not</b> save this claim. Three ancient writers agreeing looked like three sources. But two of them got their story from Pollio, so the three count once.</p>
+  <p>What really holds the claim up is three lines that could have disagreed and didn't: Pollio, who was there; Caesar's own account; and coins made by both sides to pay their armies.</p>
+  <p class="q">Agreement only counts when the sources could have disagreed. Coins can't be paid, persuaded or copied.</p>
+  <div class="rule"></div>
+  <h2 style="font-size:22px">One more question</h2>
+  <p>Caesar never mentions the river. The coins say nothing about it. Only the Pollio line describes Caesar at the Rubicon. <b>So how well supported is the famous river scene?</b></p>
   <div class="rule"></div>
   <button class="solid" onclick="go(4)">On to the Princes in the Tower &rarr;</button>
-  <div class="tnote">Say this before moving on: <i>"You now have a test. Use it on a case where the answer isn't comfortable."</i></div>
+  <div class="tnote">The answer: the civil war rests on three separate lines; the river scene rests on one, and that one is a lost book. Same evidence, two claims of different sizes, two different levels of support. Then say: <i>"You now have a test. Use it on a case where the answer isn't comfortable."</i></div>
 </section>
 
 <!-- 4 PRINCES : TRACE -->
@@ -270,10 +300,10 @@ body.notes .nf{color:var(--ox)}
   <div class="kick">Case 2 · Step 2 of 2 · Count the lines</div>
   <h2>How many sources are really left?</h2>
   <div class="taskbar">
-    <div class="t">Vergil and More both wrote inside the Tudor court, so they are now <b>one line</b>. Answer both questions for each line. Careful: a source can be completely separate and still not say that Richard did it.</div>
+    <div class="t">Vergil and More both wrote inside the Tudor court, so they are now <b>one line</b>. Answer both questions for each line. Careful: a source can get its information for itself and still not say that Richard did it.</div>
   </div>
   <div class="ctab" id="b5"></div>
-  <div class="checkbar"><button class="solid" id="c5" disabled onclick="checkCount('princes')">Check my answers</button><span class="msg" id="m5">Answer every question first.</span></div>
+  <div class="checkbar"><button class="solid" id="c5" disabled onclick="checkCount('princes')">Check my answers</button><span class="msg" id="m5">Answer both questions for every line first.</span></div>
   <div id="t5"></div>
   <button id="n5" class="solid" disabled onclick="go(6)">Continue &rarr;</button>
 </section>
@@ -307,8 +337,61 @@ body.notes .nf{color:var(--ox)}
   <button id="n7" class="solid" disabled onclick="go(8)">Continue &rarr;</button>
 </section>
 
-<!-- 8 WRITE : ONE CLAIM -->
+<!-- 8 TEST THE CLAIMS -->
 <section class="stage" data-s="8">
+  <div class="kick">Test the claims</div>
+  <h2>Four knowledge claims. Where does each one break?</h2>
+  <div class="taskbar"><div class="t">Each claim sounds right and works in one case. For each one: <b>which case breaks it, and which detail?</b> Then write a smaller claim that survives. Only then, check.</div></div>
+  <div class="kc">
+    <div class="kc-claim"><span class="num">1</span>The more sources agree, the more sure a knower can be.</div>
+    <button onclick="this.nextElementSibling.classList.add('open');this.style.display='none'">Show where it breaks</button>
+    <div class="example">
+      <dl>
+        <div><dt>Seems to work</dt><dd>Five sources tell the Caesar story. Four say Richard had the princes killed.</dd></div>
+        <div><dt>Breaks on</dt><dd>Both cases. Plutarch and Appian both got their story from Pollio, so they are one source, twice. Vergil and More both wrote inside the Tudor court, so they are one line, twice too. Counting sources gave the wrong number both times.</dd></div>
+        <div><dt>Smaller claim</dt><dd>Agreement only counts as evidence when the sources could have disagreed.</dd></div>
+      </dl>
+    </div>
+  </div>
+  <div class="kc">
+    <div class="kc-claim"><span class="num">2</span>A source that was there at the time is the best evidence.</div>
+    <button onclick="this.nextElementSibling.classList.add('open');this.style.display='none'">Show where it breaks</button>
+    <div class="example">
+      <dl>
+        <div><dt>Seems to work</dt><dd>Pollio was standing with Caesar when he decided to cross, and the Pollio line backs the claim.</dd></div>
+        <div><dt>Breaks on</dt><dd>Mancini. He was in London in 1483 and worked for no one in England. He says he couldn't find out what happened to the boys. Being there didn't give him the answer.</dd></div>
+        <div><dt>Smaller claim</dt><dd>Being there only helps if the source actually found out what happened and says so.</dd></div>
+      </dl>
+    </div>
+  </div>
+  <div class="kc">
+    <div class="kc-claim"><span class="num">3</span>A source with a reason to lie can't be trusted.</div>
+    <button onclick="this.nextElementSibling.classList.add('open');this.style.display='none'">Show where it breaks</button>
+    <div class="example">
+      <dl>
+        <div><dt>Seems to work</dt><dd>The Tudor line was written for Henry VII, who gained the most from Richard looking guilty.</dd></div>
+        <div><dt>Breaks on</dt><dd>Caesar himself. He had every reason to tell the story his way, and his account still counts as a separate line. He still describes leading his army into Italy and fighting the Senate's side. A reason to lie didn't make him wrong.</dd></div>
+        <div><dt>Smaller claim</dt><dd>A reason to lie doesn't make a source wrong. It means a knower needs a second, separate line to check it against.</dd></div>
+      </dl>
+    </div>
+  </div>
+  <div class="kc">
+    <div class="kc-claim"><span class="num">4</span>Objects are better evidence than writers, because objects can't copy anyone.</div>
+    <button onclick="this.nextElementSibling.classList.add('open');this.style.display='none'">Show where it breaks</button>
+    <div class="example">
+      <dl>
+        <div><dt>Seems to work</dt><dd>The coins are the strongest line in the Caesar case.</dd></div>
+        <div><dt>Breaks on</dt><dd>The bones. They copied no one, but two skeletons can't tell a knower who they were, when they died, or who gave an order. And the coins say nothing at all about the river.</dd></div>
+        <div><dt>Smaller claim</dt><dd>Objects can't be copied or persuaded, but they only answer some questions: that two armies were being paid, not who ordered a killing.</dd></div>
+      </dl>
+    </div>
+  </div>
+  <div style="margin-top:18px"><button class="solid" onclick="go(9)">Next &rarr;</button></div>
+  <div class="tnote">Model Claim 1 together; it is the easiest. Finish on Claim 3: students expect a biased source to be a wrong source, and Caesar breaks that.</div>
+</section>
+
+<!-- 9 WRITE : ONE CLAIM -->
+<section class="stage" data-s="9">
   <div class="kick">Before you leave · write</div>
   <h2>One claim</h2>
   <ol class="ladder">
@@ -325,11 +408,11 @@ body.notes .nf{color:var(--ox)}
       <div><dt>Proved wrong by</dt><dd>Tests showing that the bones are the princes and that the boys died after 1485, when Henry Tudor was king.</dd></div>
     </dl>
   </div>
-  <div style="margin-top:18px"><button class="solid" onclick="go(9)">Next &rarr;</button></div>
+  <div style="margin-top:18px"><button class="solid" onclick="go(10)">Next &rarr;</button></div>
 </section>
 
-<!-- 9 WRITE : KNOWLEDGE CLAIM -->
-<section class="stage" data-s="9">
+<!-- 10 WRITE : KNOWLEDGE CLAIM -->
+<section class="stage" data-s="10">
   <div class="kick">Before you leave · write</div>
   <h2>Now turn it into a knowledge claim</h2>
   <p class="lead">Your claim so far is about Richard or Caesar. A knowledge claim is about what historians can know.</p>
@@ -340,11 +423,11 @@ body.notes .nf{color:var(--ox)}
   <div class="example">
     <p>Agreement only counts when the sources could have disagreed. Vergil and More agree that Richard did it, but both wrote for the Tudor court, so their agreement is one voice twice.</p>
   </div>
-  <div style="margin-top:18px"><button class="solid" onclick="go(10)">Next &rarr;</button></div>
+  <div style="margin-top:18px"><button class="solid" onclick="go(11)">Next &rarr;</button></div>
 </section>
 
-<!-- 10 WRITE : TEST IT -->
-<section class="stage" data-s="10">
+<!-- 11 WRITE : TEST IT -->
+<section class="stage" data-s="11">
   <div class="kick">Before you leave · write</div>
   <h2>Test it</h2>
   <ol class="ladder">
@@ -374,8 +457,8 @@ const CASES={
  caesar:{
   origins:[
    {id:'pollio',nm:'Asinius Pollio',wh:'there at the time · book now lost',nt:'An officer standing with Caesar when he decided to cross. Wrote a history of the civil wars. No copy survives.',deep:"Gaius Asinius Pollio was a soldier, politician and writer. He was one of the officers with Caesar's army in 49 BC and was there when Caesar decided to cross. He later wrote a history of the civil wars. No copy survives. We know it existed because later writers refer to it."},
-   {id:'caesar',nm:'Caesar himself',wh:'there at the time · wants to look good',nt:'His own account of the war. Says almost nothing about crossing the river.',deep:"Caesar's own <i>Commentaries on the Civil War</i>, written during or just after the fighting, and clearly meant to make him look justified. Oddly, he passes over the crossing itself almost without a word."},
-   {id:'physical',nm:'The physical record',wh:'objects · no author',nt:'Coins made at the time, inscriptions, the careers of men who fought, and a war that happened.',deep:"Coins made by both sides during the war. Inscriptions recording the careers of officers who served. Government records that change hands when a government does. And the war itself: armies moved, towns changed sides, people died."}
+   {id:'caesar',nm:'Caesar himself',wh:'there at the time · wants to look good',nt:'His own account of the war. Describes leading his army into Italy, but never mentions the river.',deep:"Caesar's own <i>Commentaries on the Civil War</i>, written during or just after the fighting, and clearly meant to make him look justified. He describes setting out with his soldiers for Ariminum, a town in Italy on the far side of the river, and the war that followed. Oddly, he never mentions crossing the Rubicon at all."},
+   {id:'physical',nm:'The coins',wh:'objects · no author',nt:'Coins made in 49 BC by both sides to pay their armies.',deep:"Armies had to be paid, so both sides made coins in 49 BC. Caesar's coin has his name on it: CAESAR. Some of the Senate side's coins were made by that year's two consuls, the heads of the government. A coin can't tell a story. It just shows who was paying soldiers, and when."}
   ],
   later:[
    {id:'plutarch',nm:'Plutarch',wh:'about 150 years later',nt:'Life of Caesar. Tells the famous dramatic scene at the river.',deep:"A Greek biographer writing around AD 100, about 150 years after the event. His <i>Life of Caesar</i> gives the vivid scene at the riverbank: Caesar hesitating, the omen, the crossing at first light."},
@@ -387,14 +470,14 @@ const CASES={
  princes:{
   origins:[
    {id:'tudor',nm:'The Tudor court',wh:'the new king and his people',nt:'Henry VII took the throne from Richard and had every reason to make him look as bad as possible.',deep:"Henry Tudor defeated and killed Richard at the Battle of Bosworth in 1485 and became Henry VII. His own claim to the throne was weak, so a Richard who had murdered children was very useful to him. Writers working for him, or in his circle, had a clear reason to tell that version."},
-   {id:'mancini',nm:'Dominic Mancini',wh:'in London in 1483',nt:'An Italian visitor. Writes that he could not find out what happened to the boys.',deep:"An Italian who was in London in 1483 and wrote a report for a patron in France soon after he left. He describes the boys being seen less and less, and the fear in the city. He says plainly that he could not discover what became of them."},
+   {id:'mancini',nm:'Dominic Mancini',wh:'in London in 1483',nt:'An Italian visitor who saw events in London for himself. Copied no one, worked for no one in England. Says he could not find out what happened to the boys.',deep:"An Italian who was in London in 1483 and wrote a report for a patron in France soon after he left. He describes the boys being seen less and less, and the fear in the city. He says plainly that he could not discover what became of them."},
    {id:'bones',nm:'The bones',wh:'found in 1674',nt:'Two skeletons found under a staircase in the Tower. Never identified.',deep:"In 1674 workmen taking down a staircase in the Tower found two skeletons. People assumed they were the princes, and they were reburied in Westminster Abbey. They were examined in 1933 with the methods of the time. They have never been reliably dated or identified, and modern testing has not been allowed."},
    {id:'rumour',nm:'What people were saying',wh:'rumour',nt:'Talk in London and beyond that the boys were dead.',deep:''}
   ],
   later:[
    {id:'vergil',nm:'Polydore Vergil',wh:'about 27 years later',nt:'History of England. Paid for by Henry VII.',deep:"An Italian scholar brought to England by Henry VII and paid by him to write a history of the country. He worked on it for years, and his version became the standard one."},
    {id:'more',nm:'Thomas More',wh:'about 30 years later',nt:'History of Richard III. Very detailed.',deep:"Thomas More was about five years old in 1483. As a boy he lived in the household of John Morton, whom Richard had imprisoned and who later became Henry VII's archbishop and chief minister. More's account is vivid and full of detail. He never finished it or published it."},
-   {id:'crowland',nm:'Crowland Chronicle',wh:'about 3 years later',nt:'Written by someone close to the government.',deep:"A continuation of the chronicle kept at Crowland Abbey, written around 1486 by someone who knew the government well. It records that a rumour spread that the princes had been killed. It doesn't say by whom, and it doesn't claim to know."}
+   {id:'crowland',nm:'Crowland Chronicle',wh:'about 3 years later',nt:'Written by someone close to the government, not for the Tudors. Reports what people were saying.',deep:"A continuation of the chronicle kept at Crowland Abbey, written around 1486 by someone who knew the government well. It records that a rumour spread that the princes had been killed. It doesn't say by whom, and it doesn't claim to know."}
   ],
   answer:{vergil:'tudor',more:'tudor',crowland:'rumour'}
  }
@@ -411,13 +494,13 @@ const RIGHT={
 const WRONG={
  'plutarch|appian':'<b>No, and this is the obvious mistake.</b> They tell similar stories, but Appian wrote about fifty years after Plutarch and shows no sign of using him. The similarity comes from someone <i>earlier</i> than both of them. Look at the top row.',
  'appian|plutarch':'<b>No, and this is the obvious mistake.</b> They tell similar stories, but there\'s no sign Appian used Plutarch. The similarity comes from someone <i>earlier</i> than both of them. Look at the top row.',
- 'plutarch|caesar':'<b>No.</b> Caesar\'s own account says almost nothing about the crossing. The dramatic river scene isn\'t in it, so Plutarch didn\'t get it from Caesar.',
- 'appian|caesar':'<b>No.</b> Caesar barely mentions the crossing. Whatever Appian is repeating, it didn\'t come from Caesar\'s own account.',
+ 'plutarch|caesar':'<b>No.</b> Caesar\'s own account never mentions the river. The dramatic river scene isn\'t in it, so Plutarch didn\'t get it from Caesar.',
+ 'appian|caesar':'<b>No.</b> Caesar never mentions the river. Whatever Appian is repeating, it didn\'t come from Caesar\'s own account.',
  'suetonius|caesar':'<b>No.</b> The famous line “the die is cast” is in Suetonius, not in Caesar. Caesar isn\'t his source for it.',
  'suetonius|pollio':'<b>Very close, and worth thinking about.</b> Many historians suspect it. But nobody has shown it, and <b>a link you can\'t show is a link you can\'t assume.</b> Where does that leave Suetonius?',
  'suetonius|plutarch':'<b>No.</b> Nobody has shown that Suetonius used Plutarch. Don\'t invent a link to make the picture tidy.',
  'suetonius|appian':'<b>No.</b> Appian wrote after Suetonius, and nothing shows either one used the other.',
- 'plutarch|physical':'<b>No, and notice why.</b> A coin has no author. An inscription can\'t tell a story about a riverbank. Objects aren\'t anyone\'s source for a dramatic scene, and that will matter in a moment.',
+ 'plutarch|physical':'<b>No, and notice why.</b> A coin has no author, and it can\'t tell a story about a riverbank. Coins aren\'t anyone\'s source for a dramatic scene, and that will matter in a moment.',
  'appian|physical':'<b>No, and notice why.</b> Objects have no author, so nobody copies a story from them. That will matter in a moment.',
  'suetonius|physical':'<b>No.</b> Objects have no author and tell no story. Suetonius got his story from a writer, but which one?',
  'plutarch|cant':'<b>No, this one can be traced.</b> Plutarch drew on an earlier writer who was there. Which source in the top row was there?',
@@ -442,23 +525,23 @@ const WRONG={
 
 const COUNT={
  caesar:{need:3,lines:[
-  {id:'pollio',nm:'The Pollio line',wh:'Pollio → Plutarch, Appian',nt:'Three writers, one source.',sep:true,says:true,
-   fb:'Yes and yes, but count it <b>once</b>. Pollio was there. Plutarch and Appian are Pollio repeated, so all three together are one line.'},
-  {id:'caesar',nm:'Caesar himself',wh:'there at the time · wants to look good',nt:'His own account of his own war.',sep:true,says:true,
-   fb:'Yes and yes. Caesar had every reason to tell it his way, but he didn\'t copy anyone. His own account has him marching his army into Italy to start the war, even though he skips the river itself.'},
-  {id:'suetonius',nm:'Suetonius',wh:'about 170 years later',nt:'Nobody knows where he got his story.',sep:false,says:true,
-   fb:'<b>This is the hard one.</b> Suetonius does say Caesar crossed. But nobody knows where he got his story, and he may have copied Pollio too. <b>If we can\'t show a source is separate, we can\'t count it as separate.</b>'},
-  {id:'physical',nm:'The physical record',wh:'objects · no author',nt:'Coins, inscriptions, careers, a war.',sep:true,says:true,
-   fb:'Yes and yes, and it\'s the <b>strongest line here</b>. A coin can\'t read Pollio, and it can\'t change its story to please anyone.'}
+  {id:'pollio',nm:'The Pollio line',wh:'Pollio → Plutarch, Appian',nt:'Pollio was there. Plutarch and Appian got their story from him.',own:'yes',says:true,
+   fb:'Yes and yes, but count it <b>once</b>. Pollio saw it for himself. Plutarch and Appian are Pollio repeated, so all three together are one line.'},
+  {id:'caesar',nm:'Caesar himself',wh:'there at the time · wants to look good',nt:'His own account: he led his army into Italy, and the war followed. Never mentions the river.',own:'yes',says:true,
+   fb:'Yes and yes. He was there and copied no one, so he got his information for himself. He has every reason to tell it his way, but he still describes leading his army into Italy and fighting the Senate\'s side. He never mentions the river, and <b>for this claim he doesn\'t need to</b>.'},
+  {id:'suetonius',nm:'Suetonius',wh:'about 170 years later',nt:'Tells the story. Nobody knows where he got it.',own:'cant',says:true,
+   fb:'<b>This is the hard one.</b> Suetonius does tell the story. But nobody knows where he got it, and he may have copied Pollio too. <b>If we can\'t tell where a source got its information, we can\'t count it as a separate line.</b>'},
+  {id:'physical',nm:'The coins',wh:'objects · no author',nt:'Both sides made coins in 49 BC to pay their armies. Caesar\'s has his name on it.',own:'yes',says:true,
+   fb:'Yes and yes, and it\'s the <b>strongest line here</b>. A coin can\'t copy Pollio or change its story to please anyone. Two sides paying two armies in 49 BC, one of them Caesar\'s, is a civil war. But notice: the coins say nothing about a river.'}
  ]},
  princes:{need:1,lines:[
-  {id:'tudor',nm:'The Tudor line',wh:'Tudor court → Vergil, More',nt:'Two detailed accusations, one source.',sep:true,says:true,
-   fb:'Yes and yes, but it\'s <b>one line, not two</b>. And it\'s the line written for the man who gained most from Richard looking guilty. Count it, but know what it is.'},
-  {id:'mancini',nm:'Dominic Mancini',wh:'in London in 1483',nt:'Says he couldn\'t find out what happened.',sep:true,says:false,
-   fb:'<b>This is the point of the whole lesson.</b> Mancini is completely separate: he was there, at the time, with no Tudor patron. But he says he couldn\'t find out what happened to the boys. <b>A separate source only helps if it actually says something about the claim.</b>'},
-  {id:'crowland',nm:'Crowland Chronicle',wh:'about 3 years later',nt:'Reports a rumour.',sep:true,says:false,
-   fb:'Crowland is separate, but it only reports that people were <i>saying</i> the boys were dead. That tells you about the rumour, not about who killed them.'},
-  {id:'bones',nm:'The bones',wh:'found in 1674',nt:'Never identified.',sep:true,says:false,
+  {id:'tudor',nm:'The Tudor line',wh:'Tudor court → Vergil, More',nt:'Two detailed accusations, both from inside the Tudor court.',own:'yes',says:true,
+   fb:'Yes and yes, but it\'s <b>one line, not two</b>. It didn\'t copy any other source on this list. But it\'s the line written for the man who gained most from Richard looking guilty. Count it, but know what it is.'},
+  {id:'mancini',nm:'Dominic Mancini',wh:'in London in 1483',nt:'Saw events in London for himself. Copied no one, worked for no one in England. Says he couldn\'t find out what happened to the boys.',own:'yes',says:false,
+   fb:'<b>This is the point of the whole lesson.</b> Mancini got his information for himself: he was in London, he copied no one, and he wasn\'t working for the Tudors. But he says he couldn\'t find out what happened to the boys. <b>A source can be completely independent and still not tell you anything about the claim.</b>'},
+  {id:'crowland',nm:'Crowland Chronicle',wh:'about 3 years later',nt:'Written by an insider, not for the Tudors. Reports that people were saying the boys were dead.',own:'yes',says:false,
+   fb:'Crowland didn\'t copy anyone on this list. But it only reports that people were <i>saying</i> the boys were dead. That tells you about the rumour, not about who killed them.'},
+  {id:'bones',nm:'The bones',wh:'found in 1674',nt:'Two skeletons. Never identified.',own:'yes',says:false,
    fb:'The bones copied no one. But two skeletons can\'t tell you who they were, when they died, or who gave an order.'}
  ]}
 };
@@ -486,7 +569,7 @@ const REACH=[
 
 /* ============ NAV ============ */
 let stage=0;
-const FLAGS=['Intro','Caesar · trace','Caesar · count','Caesar · result','Princes · trace','Princes · count','Princes · decide','The limit','Write · one claim','Write · knowledge claim','Write · test it'];
+const FLAGS=['Intro','Caesar · trace','Caesar · count','Caesar · result','Princes · trace','Princes · count','Princes · decide','The limit','Test the claims','Write · one claim','Write · knowledge claim','Write · test it'];
 function show(){
   document.querySelectorAll('.stage').forEach(s=>s.classList.toggle('on',+s.dataset.s===stage));
   document.getElementById('flag').textContent=FLAGS[stage];
@@ -638,27 +721,28 @@ window.addEventListener('resize',()=>{drawLines('caesar');drawLines('princes')})
 /* ============ COUNT TABLE ============ */
 const CB={caesar:{el:'b2',btn:'c2',msg:'m2',tally:'t2',next:'n2'},princes:{el:'b5',btn:'c5',msg:'m5',tally:'t5',next:'n5'}};
 const ans={caesar:{},princes:{}};
+const CLAIMTXT={caesar:'That a civil war began in 49 BC, with Caesar\'s army on one side and the Senate\'s on the other.',princes:'That Richard had the boys killed.'};
 function buildCount(k){
   const cfg=COUNT[k],root=document.getElementById(CB[k].el);
-  let h='<div class="crow head"><div>Line</div><div>Is it separate?<span>We can show it didn\'t get its story from another source here.</span></div><div>Does it say the claim is true?<span>'+(k==='caesar'?'That Caesar crossed with his army and started the war.':'That Richard had the boys killed.')+'</span></div></div>';
+  let h='<div class="crow head"><div>Line</div><div>1 · Did it get its information for itself?<span>It didn\'t copy another source on this list, and it wasn\'t working for the same people.</span></div><div>2 · Does it say this happened?<span>'+CLAIMTXT[k]+'</span></div></div>';
   cfg.lines.forEach(l=>{
     h+='<div class="crow" data-id="'+l.id+'"><div><div class="nm">'+l.nm+'</div><div class="wh">'+l.wh+'</div><div class="nt">'+l.nt+'</div></div>'+
-      '<div class="yn" data-q="sep"><button data-v="1">Yes</button><button data-v="0">No</button></div>'+
-      '<div class="yn" data-q="says"><button data-v="1">Yes</button><button data-v="0">No</button></div>'+
+      '<div class="yn" data-q="own"><span class="ql">1 · Got it for itself?</span><button data-v="yes">Yes</button><button data-v="no">No</button><button data-v="cant">Can\'t tell</button></div>'+
+      '<div class="yn" data-q="says"><span class="ql">2 · Says this happened?</span><button data-v="yes">Yes</button><button data-v="no">No</button></div>'+
       '<div class="cfb"></div></div>';
   });
   root.innerHTML=h;
   root.querySelectorAll('.yn button').forEach(b=>{
     b.addEventListener('click',()=>{
       const row=b.closest('.crow'),q=b.parentElement.dataset.q,id=row.dataset.id;
-      ans[k][id]=ans[k][id]||{};ans[k][id][q]=b.dataset.v==='1';
+      ans[k][id]=ans[k][id]||{};ans[k][id][q]=b.dataset.v;
       b.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));
       row.classList.remove('checked','right','wrong');
       document.getElementById(CB[k].tally).innerHTML='';
       document.getElementById(CB[k].next).disabled=true;
-      const all=cfg.lines.every(l=>ans[k][l.id]&&ans[k][l.id].sep!==undefined&&ans[k][l.id].says!==undefined);
+      const all=cfg.lines.every(l=>ans[k][l.id]&&ans[k][l.id].own&&ans[k][l.id].says);
       document.getElementById(CB[k].btn).disabled=!all;
-      document.getElementById(CB[k].msg).textContent=all?'Ready when you are.':'Answer every question first.';
+      document.getElementById(CB[k].msg).textContent=all?'Ready when you are.':'Answer both questions for every line first.';
     });
   });
 }
@@ -666,11 +750,11 @@ function checkCount(k){
   const cfg=COUNT[k],root=document.getElementById(CB[k].el);let wrong=0;
   cfg.lines.forEach(l=>{
     const a=ans[k][l.id],row=root.querySelector('.crow[data-id="'+l.id+'"]');
-    const ok=a.sep===l.sep&&a.says===l.says;if(!ok)wrong++;
+    const ok=a.own===l.own&&(a.says==='yes')===l.says;if(!ok)wrong++;
     row.classList.add('checked');row.classList.toggle('right',ok);row.classList.toggle('wrong',!ok);
-    const counts=l.sep&&l.says;
+    const counts=l.own==='yes'&&l.says;
     row.querySelector('.cfb').innerHTML=ok
-      ?'<span class="pill">'+(counts?'counts':'doesn\'t count')+'</span>'+l.fb
+      ?'<span class="pill'+(counts?'':' nocount')+'">'+(counts?'counts':'doesn\'t count')+'</span>'+l.fb
       :'<span class="pill">not yet</span>'+hint(l,a);
   });
   const msg=document.getElementById(CB[k].msg);
@@ -684,8 +768,8 @@ function checkCount(k){
 }
 function hint(l,a){
   const parts=[];
-  if(a.sep!==l.sep)parts.push('Look again at <b>Is it separate?</b>'+(l.id==='suetonius'?' Can we actually show where Suetonius got his story?':''));
-  if(a.says!==l.says)parts.push('Look again at <b>Does it say the claim is true?</b> Read exactly what this source says it knows.');
+  if(a.own!==l.own)parts.push('Look again at <b>question 1</b>. '+(l.own==='cant'?'Do we actually know where this source got its story?':'Read the card: did this source copy anyone on the list, or work for the same people?'));
+  if((a.says==='yes')!==l.says)parts.push('Look again at <b>question 2</b>. Read exactly what this source says it knows, and compare it with the claim.');
   return parts.join(' ');
 }
 

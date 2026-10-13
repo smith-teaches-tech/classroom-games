@@ -393,6 +393,7 @@ details.example .prompt{margin-top:10px}
       <a href="#two">2 · Two places</a>
       <a href="#types">3 · What to let in</a>
       <a href="#who">4 · Who can see</a>
+      <a href="#view">5 · View or download</a>
       <a href="setup/">Set it up →</a>
     </nav>
   </div>
@@ -547,16 +548,39 @@ details.example .prompt{margin-top:10px}
   <p class="col" style="font-size:.93rem">At every level, people can only upload into, and delete from, their <b>own</b> folder.</p>
 </section>
 
+<!-- 5 VIEW -->
+<section id="view">
+  <div class="col" style="display:grid;gap:12px">
+    <span class="eyebrow">Part 5</span>
+    <h2>View or download?</h2>
+    <p>It depends on your app. But you should know what changes when a file is downloaded.</p>
+  </div>
+  <div class="facts">
+    <div class="fact"><span class="eyebrow">View on the page</span><span class="big" style="color:var(--open)">Start here</span><p>Photos, video, audio and PDF show right on your page. The file stays inside the browser, which is built to keep it from doing harm.</p></div>
+    <div class="fact"><span class="eyebrow">Download button</span><span class="big" style="color:var(--brass)">Only if needed</span><p>The file is saved to the computer and opened by the computer's own apps. Add this only when people really need the file itself.</p></div>
+  </div>
+  <div class="tcard no col">
+    <h3>The risks of downloading</h3>
+    <ul class="tlist">
+      <li><b>The browser stops protecting you.</b> A disguised file, like the fake cat in Part 3, can only show up broken on a page. Downloaded, it gets opened by the computer, where it could run.</li>
+      <li><b>You can't take it back.</b> Delete a photo from your app, and every downloaded copy still exists. Think about this for photos of people.</li>
+      <li><b>Word files always download.</b> A browser can't show a .docx on the page. If people share documents with each other, ask for PDF instead.</li>
+    </ul>
+  </div>
+  <p class="bigidea col">Your <em>own</em> files: downloading is fine. <em>Other people's</em> files: view on the page, unless your app really needs a download.</p>
+</section>
+
 <section id="build">
   <div class="col" style="display:grid;gap:12px">
     <span class="eyebrow">Next</span>
     <h2>Now build it</h2>
-    <p>Write these four answers in your project file first:</p>
+    <p>Write these five answers in your project file first:</p>
     <ol class="do">
       <li><b>Which file types</b> your app needs.</li>
       <li><b>Who can see</b> the files.</li>
       <li><b>Your size limit</b> (10 MB, unless your app is about video).</li>
       <li><b>Your bucket's name</b>, like <code>user-files</code>.</li>
+      <li><b>View only, or view and download</b>, and for whose files.</li>
     </ol>
   </div>
   <div class="linkcards" style="grid-template-columns:1fr">

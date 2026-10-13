@@ -387,8 +387,8 @@ details.example .prompt{margin-top:10px}
   <a class="backlink" href="../">← Saving Files</a>
   <span class="eyebrow">Build 2 · Identity · Setup</span>
   <h1>Set Up Files and Usernames</h1>
-  <p class="lede">The step-by-step. If you haven't read <a href="../">Saving Files</a> yet, start there. You need its four decisions before step 1.</p>
-  <div class="why"><b>Your four decisions</b> (from the lesson, written in your project file): which file types · who can see the files · your size limit · your bucket's name.</div>
+  <p class="lede">The step-by-step. If you haven't read <a href="../">Saving Files</a> yet, start there. You need its five decisions before step 1.</p>
+  <div class="why"><b>Your five decisions</b> (from the lesson, written in your project file): which file types · who can see the files · your size limit · view or download · your bucket's name.</div>
 </header>
 
 <section id="list" style="border-top:1px solid var(--line)">
@@ -642,8 +642,9 @@ Please add:
 4. Save each file at [user id]/[timestamp]-[file name], so two files never have the same name.
 5. A progress bar that shows the REAL upload progress as a percentage, using an upload method that reports progress. Not a fake animation. Disable the Add file button while a file is uploading.
 6. A list of my files with name, size and a Delete button.
-7. Show files on the page: photos with an img tag, videos with a video tag, audio with an audio tag, PDF and Word files as a link that opens in a new tab. If my bucket is private, use signed URLs.
-8. Show any error from Supabase on the page in plain words.
+7. Show files on the page: photos with an img tag, videos with a video tag, audio with an audio tag, PDFs in a new tab. If my bucket is private, use signed URLs.
+8. Downloads: [pick one: no download button / a Download button on my own files only / a Download button on all files]. Word files can't be shown on the page, so [pick one: show them as a download link / don't allow Word files].
+9. Show any error from Supabase on the page in plain words.
 
 Do not put any secret keys in my code. Change nothing else. Tell me exactly which file each change goes in.</div>
     </div>
@@ -666,6 +667,7 @@ Do not put any secret keys in my code. Change nothing else. Tell me exactly whic
     <li><label><input type="checkbox" id="s4"><span>Check the progress bar is real. <span class="brk">break it</span><br><span class="muted">In Chrome: right-click → Inspect → Network tab → change "No throttling" to "Slow 4G". Upload a 5 MB file. The bar should crawl, not zoom to 100%.</span></span></label></li>
     <li><label><input type="checkbox" id="s5"><span>Delete a file. Is it gone from Supabase Storage too, not just from your page?</span></label></li>
     <li><label><input type="checkbox" id="s6"><span>Sign in as a second account. Can it see the first account's files? <span class="brk">break it</span><br><span class="muted">It should match your sharing decision, exactly.</span></span></label></li>
+    <li><label><input type="checkbox" id="s6b"><span>Sign in as the second account and look at the first account's files (if your app shares them). <span class="brk">break it</span><br><span class="muted">Is there a Download button only where you decided there would be?</span></span></label></li>
     <li><label><input type="checkbox" id="s7"><span>On your phone, tap Add file. Upload a photo straight from the camera or photo library.</span></label></li>
     <li><label><input type="checkbox" id="s8"><span>Upload a phone video. Does it fit under 10 MB? Does it play in Chrome on a laptop?</span></label></li>
   </ul>
@@ -700,7 +702,7 @@ Do not put any secret keys in my code. Change nothing else. Tell me exactly whic
     <span class="eyebrow">Step 6</span>
     <h2>Update your project file and diagram</h2>
     <ol class="do">
-      <li>In your project file, write down your four decisions: file types, who can see, size limit, bucket name. Add your <code>profiles</code> columns too.</li>
+      <li>In your project file, write down your five decisions: file types, who can see, size limit, view or download, bucket name. Add your <code>profiles</code> columns too.</li>
       <li>Add a change log line: what you built today and what's still broken.</li>
       <li>Add to your diagram: the <code>profiles</code> table, the bucket with one folder per user, and which checks run in the browser and which run on Supabase.</li>
       <li>Push. Then test once more on your live site.</li>
