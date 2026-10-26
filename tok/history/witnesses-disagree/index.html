@@ -25,23 +25,29 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font
 h1,h2,h3{line-height:1.2;margin:0}
 button{font:inherit;cursor:pointer;border-radius:7px;border:1px solid var(--rule);background:var(--panel);color:var(--ink);padding:.5rem .9rem;font-size:.86rem}
 button:hover{filter:brightness(.97)}
+button:disabled{opacity:.4;cursor:not-allowed}
 button.primary{background:var(--accent2);border-color:var(--accent2);color:#fff}
-button.primary:disabled{opacity:.4;cursor:not-allowed}
 button.ghost{background:transparent}
 input[type=text]{font:inherit;font-size:.9rem;padding:.45rem .65rem;border-radius:6px;border:1px solid var(--rule);background:var(--panel);color:var(--ink)}
 textarea{width:100%;font:inherit;font-size:.88rem;line-height:1.5;padding:.55rem .7rem;border-radius:7px;border:1px solid var(--rule);background:var(--panel);color:var(--ink);resize:vertical;min-height:4.6rem}
-header.bar{position:sticky;top:0;z-index:60;background:var(--bg);border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:.9rem;flex-wrap:wrap;padding:.55rem 1.1rem}
+textarea[data-req].empty{border-color:color-mix(in srgb,var(--accent) 45%,var(--rule))}
+header.bar{position:sticky;top:0;z-index:60;background:var(--bg);border-bottom:1px solid var(--rule)}
+.bar .row1{display:flex;align-items:center;gap:.9rem;flex-wrap:wrap;padding:.55rem 1.1rem}
 .bar .tag{font-size:.68rem;letter-spacing:.11em;text-transform:uppercase;color:var(--soft)}
 .bar h1{font-size:.98rem;font-weight:650}.bar .sp{flex:1}
+.kqband{padding:.45rem 1.1rem .55rem;border-top:1px solid var(--rule);background:var(--panel);font-family:var(--serif);font-size:.98rem;line-height:1.35}
+.kqband b{font-family:var(--sans);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-right:.5rem;vertical-align:1px}
 #groupName{width:10rem}#save{font-size:.74rem;color:var(--soft);min-width:5em}
-nav.steps{display:flex;gap:.25rem;flex-wrap:wrap;padding:.55rem 1.1rem;border-bottom:1px solid var(--rule);background:var(--panel)}
+nav.steps{display:flex;gap:.25rem;flex-wrap:wrap;padding:.55rem 1.1rem;border-bottom:1px solid var(--rule)}
 nav.steps button{padding:.28rem .65rem;font-size:.76rem;border-radius:20px;border:1px solid transparent;background:transparent;color:var(--soft)}
 nav.steps button.on{background:var(--ink);color:var(--bg)}
+nav.steps button:disabled{opacity:.35}
 .wrap{max-width:1180px;margin:0 auto;padding:1.5rem 1.1rem 6rem}
 .screen{display:none}.screen.on{display:block}
 .lede{max-width:46rem;color:var(--soft);font-size:1rem;line-height:1.6}.lede strong{color:var(--ink)}
 h2.big{font-size:1.5rem;margin-bottom:.3rem}
-.kq{font-family:var(--serif);font-size:1.12rem;border-left:3px solid var(--accent);padding-left:.9rem;margin:.9rem 0 1.3rem;max-width:45rem}
+.kq{font-family:var(--serif);font-size:1.08rem;border-left:3px solid var(--accent);padding-left:.9rem;margin:.9rem 0 1.3rem;max-width:46rem}
+.kq .lbl{display:block;font-family:var(--sans);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--soft);margin-bottom:.2rem}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:1rem;margin-top:1.3rem}
 .card{border:1px solid var(--rule);border-radius:11px;background:var(--panel);box-shadow:var(--sh);overflow:hidden;display:flex;flex-direction:column}
 .card.relied{border-color:var(--ok);box-shadow:0 0 0 2px color-mix(in srgb,var(--ok) 22%,transparent),var(--sh)}
@@ -53,8 +59,9 @@ h2.big{font-size:1.5rem;margin-bottom:.3rem}
 .card .cite{padding:0 .8rem .6rem;font-size:.69rem;color:var(--soft)}.card .cite a{color:var(--accent2)}
 .card .act{margin-top:auto;display:flex;gap:.4rem;padding:.55rem .8rem;border-top:1px solid var(--rule);align-items:center;flex-wrap:wrap}
 .card .act button{padding:.3rem .58rem;font-size:.75rem}
-.card .act button.sel{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.card .act button.sel{background:var(--ink);color:var(--bg);border-color:var(--ink);opacity:1}
 .card select{font:inherit;font-size:.74rem;padding:.28rem .38rem;border-radius:6px;border:1px solid var(--rule);background:var(--bg);color:var(--ink);max-width:100%}
+.card .lockt{font-size:.7rem;color:var(--soft);margin-left:auto}
 .news{background:var(--paper);color:var(--paperink);font-family:var(--news);padding:.9rem .8rem;position:relative}
 .news .mast{text-align:center;font-weight:700;letter-spacing:.06em;font-size:1rem;text-transform:uppercase;border-bottom:3px double rgba(0,0,0,.55);border-top:1px solid rgba(0,0,0,.4);padding:.2rem 0;margin-bottom:.3rem}
 .news .dl{display:flex;justify-content:space-between;font-size:.59rem;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid rgba(0,0,0,.35);padding-bottom:.2rem;margin-bottom:.5rem}
@@ -67,8 +74,12 @@ h2.big{font-size:1.5rem;margin-bottom:.3rem}
 .fax-note a{color:var(--accent2)}
 .box{border:1px solid var(--rule);border-radius:11px;background:var(--panel);padding:1.05rem 1.15rem;margin-top:1.5rem;box-shadow:var(--sh)}
 .box h3{font-size:1rem;margin-bottom:.5rem}.box p{margin:.3rem 0 .8rem;font-size:.9rem;color:var(--soft)}
+.box p b,.box p strong{color:var(--ink)}
+.prov-def{display:grid;grid-template-columns:max-content 1fr;gap:.35rem .9rem;font-size:.9rem;margin:.6rem 0 .4rem}
+.prov-def b{color:var(--ink)}
+.prov-def span{color:var(--soft)}
 .choices{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.9rem}
-.choices button.sel{background:var(--accent2);border-color:var(--accent2);color:#fff}
+.choices button.sel{background:var(--accent2);border-color:var(--accent2);color:#fff;opacity:1}
 .reveal{display:none;margin-top:1.3rem}.reveal.on{display:block;animation:fade .5s ease}
 @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 .replay{border:1px solid var(--rule);border-radius:10px;overflow:hidden;margin:1rem 0}
@@ -76,14 +87,19 @@ h2.big{font-size:1.5rem;margin-bottom:.3rem}
 .replay .row:last-child{border-bottom:0}
 .replay .row.bad{background:color-mix(in srgb,var(--accent) 9%,transparent)}
 .replay .row.good{background:color-mix(in srgb,var(--ok) 10%,transparent)}
+.replay .row.ask{background:color-mix(in srgb,var(--accent2) 9%,transparent)}
 .replay .mk{font-weight:700;font-size:.76rem;letter-spacing:.04em;padding-top:.1rem;white-space:nowrap}
-.cellchip{display:inline-block;font-size:.6rem;font-weight:750;letter-spacing:.1em;padding:.1rem .38rem;border-radius:3px;color:#fff;margin-right:.4rem;vertical-align:1px}
+.replay .sub{display:block;margin-top:.3rem;color:var(--soft)}
+.cellchip{display:inline-block;font-size:.6rem;font-weight:750;letter-spacing:.1em;padding:.1rem .38rem;border-radius:3px;color:#fff;margin-right:.4rem;vertical-align:1px;font-family:var(--sans)}
 .c-e{background:var(--E)}.c-v{background:var(--V)}.c-c{background:var(--C)}.c-r{background:var(--R)}
+.c-kq{background:var(--ink);color:var(--bg)}
 
-/* ---- THE OVERRULE ---- */
+/* ---- THE FINDING ---- */
 .overrule{margin:1.6rem 0;border-radius:14px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.28);animation:slam .6s cubic-bezier(.2,.9,.3,1.4)}
 @keyframes slam{0%{opacity:0;transform:scale(.9) translateY(20px)}60%{opacity:1;transform:scale(1.02)}100%{transform:scale(1)}}
 .overrule .stamp{background:#7a2f22;color:#fff;text-align:center;padding:.7rem 1rem;font-size:.8rem;letter-spacing:.24em;text-transform:uppercase;font-weight:700}
+.overrule .stamp.upheld{background:#3f6b46}
+.overrule .stamp.neutral{background:#3c3a44}
 .doc{background:#efe9da;color:#231f18;font-family:var(--news);padding:1.6rem 1.4rem;text-align:center}
 .doc .crest{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:#6a5c45}
 .doc .t1{font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;margin:.5rem 0 .1rem}
@@ -94,9 +110,30 @@ h2.big{font-size:1.5rem;margin-bottom:.3rem}
 .doc .us{font-size:1rem;line-height:1.4;margin-top:1.1rem;padding-top:.9rem;border-top:1px solid rgba(0,0,0,.25)}
 .bigline{font-family:var(--serif);font-size:1.3rem;line-height:1.35;margin:1.3rem 0;padding-left:1rem;border-left:4px solid var(--accent)}
 
+/* transcript exhibit */
+.exhibit{background:#efe9da;color:#231f18;font-family:var(--news);border-radius:11px;padding:1.2rem 1.3rem;margin-top:1rem;box-shadow:var(--sh)}
+.exhibit .eh{font-family:var(--sans);font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:#6a5c45;margin-bottom:.7rem}
+.exhibit .ln{margin:.55rem 0;font-size:.98rem;line-height:1.45}
+.exhibit .ln.key{background:#f7e08a;border-radius:6px;padding:.5rem .7rem;margin:.6rem -.3rem}
+.exhibit .keynote{font-family:var(--sans);font-size:.78rem;margin-top:.35rem;color:#4a3d22}
+.exhibit .sp{font-variant:small-caps;letter-spacing:.03em;font-weight:700}
+.exhibit .gap{text-align:center;color:#6a5c45;font-size:.8rem;margin:.6rem 0}
+.exhibit .note{font-family:var(--sans);font-size:.74rem;color:#5d5140;margin-top:.9rem;border-top:1px solid rgba(0,0,0,.2);padding-top:.6rem}
+.exhibit a{color:#1d5570}
+
 /* 1985 diagram */
 .wreckfig{background:var(--panel);border:1px solid var(--rule);border-radius:11px;padding:1rem;margin:1.2rem 0}
 .wreckfig figcaption{font-size:.74rem;color:var(--soft);margin-top:.5rem;text-align:center}
+
+/* group KQ */
+.gkqs{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:.7rem;margin:1rem 0}
+.gkqs button{text-align:left;padding:.8rem .9rem;font-family:var(--serif);font-size:.95rem;line-height:1.35;border-radius:10px}
+.gkqs button.sel{outline:3px solid var(--accent2);outline-offset:-1px}
+.earlier{border-left:3px solid var(--rule);padding:.1rem 0 .1rem .8rem;margin:.6rem 0}
+.earlier .q{font-size:.76rem;color:var(--soft)}
+.earlier .a{font-family:var(--serif);font-size:.92rem;white-space:pre-wrap}
+.earlier .a.none{color:var(--soft);font-style:italic}
+
 table.cmp{width:100%;border-collapse:collapse;font-size:.83rem;margin-top:1rem}
 table.cmp th,table.cmp td{border:1px solid var(--rule);padding:.5rem .6rem;text-align:left;vertical-align:top}
 table.cmp th{background:var(--panel);font-size:.76rem}
@@ -105,96 +142,82 @@ table.cmp th{background:var(--panel);font-size:.76rem}
 .foot{margin-top:1.2rem;display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
 .hint{font-size:.8rem;color:var(--soft)}
 .qnum{display:inline-block;min-width:1.6rem;font-weight:700;color:var(--accent)}
-.printonly{display:none}
-@media(max-width:640px){.news .cols{grid-template-columns:1fr 1fr}.doc .find{font-size:1.25rem}}
-
-/* ---------------- PRINT PACK ---------------- */
-@media print{
-  :root{--bg:#fff;--ink:#000;--soft:#444;--rule:#999;--panel:#fff;--paper:#fff;--paperink:#000;--sh:none}
-  header.bar,nav.steps,.act,.foot,.drop,.reveal,#cmpOut,.choices{display:none!important}
-  body{font-size:10.5pt}
-  .wrap{max-width:none;padding:0}
-  .screen{display:block!important;page-break-before:always}
-  .screen[data-s="0"]{page-break-before:auto}
-  .cards{grid-template-columns:1fr 1fr;gap:.5rem}
-  .card{break-inside:avoid;box-shadow:none;border:1px solid #999}
-  .card .say{font-size:9.5pt}
-  textarea{border:0;border-bottom:1px solid #999;min-height:0;height:3.2em;border-radius:0}
-  .box{box-shadow:none;break-inside:avoid}
-  .printonly{display:block}
-  .news::after{display:none}
-  .news .cols div{filter:none;opacity:.35}
-  a{color:#000;text-decoration:none}
-  .card .cite a::after{content:" ["attr(href)"]";font-size:7pt;color:#555;word-break:break-all}
-}
+@media(max-width:640px){header.bar{position:static}.news .cols{grid-template-columns:1fr 1fr}.doc .find{font-size:1.25rem}.kqband{font-size:.88rem}}
 </style>
 </head>
 <body>
 
 <header class="bar">
-  <div><div class="tag">TOK · History L4</div><h1>When Witnesses Disagree</h1></div>
-  <div class="sp"></div>
-  <input type="text" id="groupName" placeholder="Group name">
-  <span id="save"></span>
-  <button onclick="window.print()">Print pack</button>
-  <button class="ghost" onclick="resetAll()">Reset</button>
+  <div class="row1">
+    <div><div class="tag">TOK · History L4</div><h1>When Witnesses Disagree</h1></div>
+    <div class="sp"></div>
+    <input type="text" id="groupName" placeholder="Group name">
+    <span id="save"></span>
+    <button class="ghost" onclick="resetAll()">Reset</button>
+  </div>
+  <div class="kqband"><b>Knowledge question</b>To what extent does what counts as historical knowledge depend on who is asked, and who does the asking?</div>
 </header>
 <nav class="steps" id="steps"></nav>
 
 <div class="wrap">
 
-<!-- print-only master sheet -->
-<section class="printonly" style="margin-bottom:1.5rem">
-  <h2 class="big">Master sheet — do these in order</h2>
-  <ol style="font-size:10.5pt;line-height:1.6;max-width:44rem">
-    <li><b>Dossier A — the first reports.</b> Four newspapers, 15 April 1912. Decide together: how much does four papers agreeing raise your confidence? Write your answer <em>before</em> your teacher gives you the wire log.</li>
-    <li><b>Dossier B — did she break in two?</b> Mark every card <em>rely on</em> or <em>set aside</em>. Every set-aside needs a reason. Then give your finding and say what it rests on.</li>
-    <li><b>STOP.</b> Your teacher will give you the inquiry's finding. Then answer: who did the inquiry believe, and why? Who did it not believe, and why? What was its rule? What was yours?</li>
-    <li><b>Then:</b> could <em>any</em> historian in 1912 have settled this? What would "certain" have required?</li>
-    <li><b>STOP.</b> Your teacher will give you 1985.</li>
-    <li><b>Dossier C — the shots.</b> Three separate questions. Answer each one separately. They do not all have the same answer.</li>
-    <li><b>Dossier D — panic or order?</b> Mark the cards, then answer the three questions on the sheet.</li>
-    <li><b>Close.</b> The grid, and the last question.</li>
-  </ol>
-</section>
-
 <!-- ============ 0 BRIEF ============ -->
 <section class="screen on" data-s="0">
   <h2 class="big">You are the inquiry</h2>
-  <p class="lede">In 1912 two official inquiries tried to establish what had happened to the <em>Titanic</em>. They had no wreck, no photographs, no recordings. <strong>They had people talking.</strong><br><br>
-  You will do what they did, with the same material, in the same order. For each question you decide <strong>which evidence you rely on and which you set aside</strong> — and every time you set something aside you must say why.<br><br>
+  <p class="lede">In 1912 two official inquiries, one in Washington and one in London, tried to establish what had happened to the <em>Titanic</em>. They had no wreck, no photographs, no recordings. <strong>They had people talking.</strong><br><br>
+  You will do their job, with real testimony. For each question you decide <strong>which evidence you rely on and which you set aside</strong>, and every time you set something aside you must say why.<br><br>
+  One difference matters, and it is part of today's question: <strong>you will hear from witnesses the London inquiry never asked</strong>, and from a few people who spoke after both inquiries had finished. Watch the <em>When</em> line on every card.<br><br>
   <strong>You are not marked on your verdicts. You are marked on your rule.</strong></p>
+
   <div class="box">
-    <h3>One instruction that matters</h3>
-    <p>Every card carries its provenance: who said it, where they were standing, when they said it, who they said it to, whether they were under oath. <b>Read that block before you read the words.</b> It is the historian's habit, and it is the whole skill.</p>
-    <div class="foot"><button class="primary" onclick="go(1)">Begin</button></div>
+    <h3>Provenance: read this before anything else</h3>
+    <p><b>Provenance</b> is where a piece of evidence comes from. Before you read what a witness said, read where it came from. Every card in this lesson gives you five things:</p>
+    <div class="prov-def">
+      <b>Who</b><span>Their name, and their job or place on the ship.</span>
+      <b>Where</b><span>Where they were standing when it happened. What could they actually see from there?</span>
+      <b>When</b><span>When they said it. The next day? A month later? Seventy-eight years later?</span>
+      <b>To whom</b><span>Who they were telling. A court, a reporter who paid for the story, a husband or wife in a private letter?</span>
+      <b>Oath</b><span>Whether they had sworn to tell the truth.</span>
+    </div>
+    <p>Each card also ends with a <b>check it</b> link, so you can read the words in the original record yourself.</p>
+    <p>Now a check. <b>Provenance can tell you…</b></p>
+    <div class="choices" id="provChoice"></div>
+    <div class="reveal" id="provReveal">
+      <div class="replay">
+        <div class="row ask"><div class="mk">↓</div><div><b>Provenance never tells you whether a claim is true, or whether someone is lying.</b> It tells you what a knower was in a position to know, and what you should check next. Keep that in mind every time you set a card aside.</div></div>
+      </div>
+    </div>
+    <div class="foot"><button class="primary" data-next="1" onclick="advance(1)">Begin</button><span class="hint" data-hint></span></div>
   </div>
 </section>
 
 <!-- ============ 1 PRESS ============ -->
 <section class="screen" data-s="1">
   <h2 class="big">Dossier A · The first reports</h2>
-  <div class="kq">It is 15 April 1912. These four papers, in four cities, went to press the same day. How much should four newspapers agreeing raise your confidence?</div>
+  <div class="kq"><span class="lbl">This dossier feeds</span><span class="cellchip c-v">V</span>When sources agree, how much does their agreement add if we don't know where each one came from?</div>
+  <p class="lede">It is 15 April 1912. These four papers, in four cities, went to press the same day.</p>
   <div class="cards" id="pressCards"></div>
   <div class="box">
     <h3>Commit before you turn the page</h3>
+    <p>How much should four newspapers agreeing raise your confidence?</p>
     <div class="choices" id="pressChoice"></div>
-    <div class="foot"><button class="primary" id="pressBtn" disabled onclick="rev('press')">Lock it in</button></div>
+    <div class="foot"><button class="primary" id="pressBtn" disabled onclick="lockAndReveal('press')">Lock it in</button></div>
     <div class="reveal" id="pressReveal">
-      <p class="bigline">Every one of them is wrong. Nobody was saved by the <em>Parisian</em>. She was not towed to Halifax. She was already on the seabed with about 1,500 people.</p>
+      <p class="bigline">Every one of them is wrong. Nobody was saved by the <em>Parisian</em>. The <em>Titanic</em> was not towed to Halifax. She was already on the seabed, and about 1,500 people had died.</p>
+      <p class="hint" id="pressYou"></p>
       <div class="replay">
-        <div class="row"><div class="mk">9:02am</div><div><b>White Star Line</b> — "There is no danger that Titanic will sink. The boat is unsinkable, and nothing but inconvenience will be suffered by the passengers."</div></div>
-        <div class="row"><div class="mk">11:25am</div><div><b>P. A. S. Franklin</b>, White Star vice-president — "We can not state too strongly our belief that the ship is unsinkable and passengers perfectly safe…"</div></div>
-        <div class="row"><div class="mk">3:15pm</div><div><b>Laffan News Bureau</b> — "At 2 o'clock the Titanic, having transferred her passengers to the Parisian and Carpathia, was being towed to Halifax by the Virginian."</div></div>
-        <div class="row bad"><div class="mk">↓</div><div><b>Franklin had no information from the ship.</b> He was asserting, not reporting. The company that owned the <em>Titanic</em> was the principal source for the news about the <em>Titanic</em>.</div></div>
-        <div class="row bad"><div class="mk">↓</div><div>No survivor reached a reporter until <em>Carpathia</em> docked on the evening of <b>18 April</b>. Everything on the 15th and 16th came from one Marconi relay at Cape Race and from White Star. <b>Four mastheads. One source.</b></div></div>
+        <div class="row"><div class="mk">9:02am</div><div><b>White Star Line</b>: "There is no danger that Titanic will sink. The boat is unsinkable, and nothing but inconvenience will be suffered by the passengers."</div></div>
+        <div class="row"><div class="mk">11:25am</div><div><b>P. A. S. Franklin</b>, White Star vice-president: "We can not state too strongly our belief that the ship is unsinkable and passengers perfectly safe…"</div></div>
+        <div class="row"><div class="mk">3:15pm</div><div><b>Laffan News Bureau</b>: "At 2 o'clock the Titanic, having transferred her passengers to the Parisian and Carpathia, was being towed to Halifax by the Virginian."</div></div>
+        <div class="row bad"><div class="mk">↓</div><div><b>Franklin had no information from the ship.</b> He was asserting, not reporting. The company that owned the <em>Titanic</em> was a main source for the news about the <em>Titanic</em>.</div></div>
+        <div class="row bad"><div class="mk">↓</div><div>No survivor reached a reporter until <em>Carpathia</em> docked on the evening of <b>18 April</b>. Until then, every paper drew on a handful of wire services and on White Star itself. <b>Four mastheads, four cities, and not one account from anyone who had seen the sinking.</b></div></div>
       </div>
       <div class="box">
         <h3><span class="cellchip c-v">V</span>Write this down now</h3>
         <p>What would you need to know about two sources before their agreement counts for anything at all?</p>
-        <textarea data-k="press-note"></textarea>
+        <textarea data-k="press-note" data-req></textarea>
       </div>
-      <div class="foot"><button class="primary" onclick="go(2)">Dossier B</button></div>
+      <div class="foot"><button class="primary" data-next="2" onclick="advance(2)">Dossier B</button><span class="hint" data-hint></span></div>
     </div>
   </div>
 </section>
@@ -202,35 +225,38 @@ table.cmp th{background:var(--panel);font-size:.76rem}
 <!-- ============ 2 DISPUTE 1 ============ -->
 <section class="screen" data-s="2">
   <h2 class="big">Dossier B · Did she break in two?</h2>
-  <div class="kq">Some survivors said the ship snapped in half before she sank. Others said that was impossible. You decide.</div>
-  <p class="hint">Mark every card. Set aside → choose a reason. Your reasons are what is being recorded.</p>
+  <div class="kq"><span class="lbl">This dossier feeds</span><span class="cellchip c-v">V</span>When sources agree, how much does their agreement add if we don't know where each one came from?</div>
+  <p class="lede">Some survivors said the ship snapped in half before she sank. Others said she went down whole. <strong>Read the provenance first.</strong> Then mark every card.</p>
+  <p class="hint">Set aside → choose a reason. Your reasons are what is being recorded. Once you deliver your finding, your marks are locked.</p>
   <div class="cards" id="d1Cards"></div>
   <div class="box">
     <h3>Your finding</h3>
     <div class="choices" id="d1Choice"></div>
-    <p>In one sentence — what is your finding resting on?</p>
+    <p>In one or two sentences: what is your finding resting on?</p>
     <textarea data-k="d1-just"></textarea>
-    <div class="foot"><button class="primary" id="d1Btn" disabled onclick="go(3)">Deliver the finding</button><span class="hint" id="d1Left"></span></div>
+    <div class="foot"><button class="primary" id="d1Btn" disabled onclick="deliverD1()">Deliver the finding</button><span class="hint" id="d1Left"></span></div>
   </div>
 </section>
 
-<!-- ============ 3 THE OVERRULE ============ -->
+<!-- ============ 3 THE FINDING ============ -->
 <section class="screen" data-s="3">
   <h2 class="big">The finding of the Court</h2>
-  <p class="lede">You have delivered your finding. <strong>So did they.</strong></p>
+  <div class="kq"><span class="lbl">This page feeds</span><span class="cellchip c-c">C</span>What is the difference between a claim being officially accepted and a claim being justified?</div>
+  <p class="lede" id="findLede">You have delivered your finding. <strong>So did they.</strong></p>
 
   <div class="overrule">
-    <div class="stamp">You have been overruled</div>
+    <div class="stamp" id="findStamp">The Court has decided</div>
     <div class="doc">
       <div class="crest">In the matter of the formal investigation into the loss of the S.S. <em>Titanic</em></div>
       <div class="t1">Report of the Wreck Commissioner</div>
       <div class="t2">The Right Honourable Lord Mersey · London · 30 July 1912</div>
       <hr>
       <div class="find">“The ship did not break in two;<br>and she did eventually attain the perpendicular.”</div>
-      <div class="src">Report, “Description of the Damage to the Ship and its Gradual Final Effect”</div>
+      <div class="src">“Attain the perpendicular” means she ended up standing straight up on end.</div>
+      <div class="src">Report, “Description of the Damage to the Ship and its Gradual Final Effect” · <a href="https://www.titanicinquiry.org/BOTInq/BOTReport/botRepFinEff.php" target="_blank" rel="noopener" style="color:#1d5570">check it</a></div>
       <div class="us">And in Washington, two months earlier:<br>
         <b>“The preponderance of evidence is to the effect that she assumed an almost end-on position and <span style="border-bottom:3px solid #7a2f22">sank intact</span>.”</b>
-        <div class="src">Report of the United States Senate Committee on Commerce, 28 May 1912</div>
+        <div class="src">Report of the United States Senate Committee on Commerce, 28 May 1912 · “Preponderance of evidence” means most of the evidence.</div>
       </div>
     </div>
   </div>
@@ -238,37 +264,52 @@ table.cmp th{background:var(--panel);font-size:.76rem}
   <p class="bigline">That finding stood as the official account of how the <em>Titanic</em> sank <b>for the next seventy-three years.</b></p>
 
   <div class="replay">
-    <div class="row"><div class="mk">↓</div><div>The British report's account of the sinking is, almost line for line, <b>Charles Lightoller's testimony</b>. It cites his answer at Q14075 for the finding. <b>One witness's answer became the official conclusion.</b></div></div>
-    <div class="row"><div class="mk">↓</div><div>In fact <b>fourteen witnesses testified under oath that she broke</b> — seamen, greasers, a lookout, stewards, a first-class woman. You saw some of them. The Court had all of them.</div></div>
-    <div class="row bad"><div class="mk">↓</div><div>The assessors <b>made no effort to investigate the question</b>. Most of those fourteen were never asked about it. Several who volunteered it had the subject changed.</div></div>
+    <div class="row"><div class="mk">London</div><div>To back up this finding, the report points to <b>one question, asked of one witness</b>: Second Officer Charles Lightoller. <b>It gives no other reason.</b> That question, and what came after it, is in the exhibit below.</div></div>
+    <div class="row"><div class="mk">Washington</div><div>Nine witnesses told the Senate committee, under oath, that the ship broke. The committee still called the "preponderance of evidence" <em>intact</em>. <b>It does not say how it weighed them.</b></div></div>
+    <div class="row"><div class="mk">Both</div><div>Between them, the two inquiries heard <b>at least fourteen sworn witnesses</b> say the ship broke: seamen, greasers, a lookout, stewards, two first-class women. London heard five of them.</div></div>
+    <div class="row bad"><div class="mk">Not asked</div><div>Researchers who have gone through the London transcript (Bill Wormstedt and others) found that <b>most witnesses were never asked whether the ship broke</b>, and some who raised it had the subject changed.</div></div>
+  </div>
+
+  <div class="exhibit">
+    <div class="eh">Exhibit · The question the finding rests on · London inquiry, 20 May 1912 · Lightoller under questioning</div>
+    <div class="ln"><div><span class="sp">Solicitor-General:</span> …what did happen to the ship? Can you tell us at all?<br><span class="sp">Lightoller:</span> Are you referring to the reports of the ship breaking in two?</div></div>
+    <div class="ln key"><div><span class="sp">Solicitor-General:</span> Yes?<br><span class="sp">Lightoller:</span> <b>It is utterly untrue. The ship did not and could not have broken in two.</b><div class="keynote">↑ This is the question the report points to. The whole question is one word, “Yes?”, and it is about a subject Lightoller raised himself.</div></div></div>
+    <div class="gap">· · · a little later in the same questioning · · ·</div>
+    <div class="ln"><div><span class="sp">Solicitor-General:</span> Your Lordship knows a lot of Witnesses have said their impression was the afterpart settled on the water.</div></div>
+    <div class="ln"><div><span class="sp">Commissioner:</span> I have heard that over and over again. <em>(To the witness.)</em> That you say is not true?<br><span class="sp">Lightoller:</span> That is not true, My Lord. I was watching her keenly the whole time.</div></div>
+    <div class="ln"><div><span class="sp">Commissioner:</span> <b>I had a difficulty in realising how it could possibly be</b> that the afterpart of the ship righted itself for a moment.</div></div>
+    <div class="ln"><div><span class="sp">Solicitor-General:</span> Your Lordship may remember, perhaps, that the baker, who was on the ship at this moment we are now dealing with, and was climbing aft, said he heard <b>the rending of metal – of metal breaking</b>.</div></div>
+    <div class="ln"><div><span class="sp">Solicitor-General:</span> …Your evidence is that the ship remained stiff?<br><span class="sp">Lightoller:</span> Yes.</div></div>
+    <div class="note"><b>Who is who.</b> The <b>Solicitor-General</b> was one of the Board of Trade's lawyers at the inquiry. The Board of Trade had approved the <em>Titanic</em> as fit to sail. The <b>Commissioner</b>, Lord Mersey, was the judge running the inquiry. <b>Words.</b> "The afterpart" is the stern, the back half of the ship. "Settled on the water" means the stern dropped back down after rising. "Remained stiff" means stayed rigid, in one piece. · Check it: <a href="https://www.titanicinquiry.org/BOTInq/BOTInq12Lightoller02.php" target="_blank" rel="noopener">first part</a> · <a href="https://www.titanicinquiry.org/BOTInq/BOTInq12Lightoller03.php" target="_blank" rel="noopener">second part</a></div>
   </div>
 
   <div class="box">
     <h3><span class="cellchip c-c">C</span>Now the real work. Answer all four.</h3>
-    <p><span class="qnum">1.</span> Who did the Court <b>believe</b>? Name them, and say what it was about them that made them believable.</p>
-    <textarea data-k="ov-1"></textarea>
-    <p><span class="qnum">2.</span> Who did it <b>not</b> believe? What did they have in common?</p>
-    <textarea data-k="ov-2"></textarea>
-    <p><span class="qnum">3.</span> State <b>the Court's rule</b> in one sentence — the principle it must have been using to weigh evidence.</p>
-    <textarea data-k="ov-3"></textarea>
-    <p><span class="qnum">4.</span> Now state <b>your rule</b>, in one sentence. Then say honestly: how different is it?</p>
-    <textarea data-k="ov-4"></textarea>
+    <p><span class="qnum">1.</span> The report's only stated reason is one question, "Yes?", about a subject Lightoller raised himself. Using the exhibit, what can you work out about why the Court accepted Lightoller's answer? What <b>can't</b> you work out?</p>
+    <textarea data-k="ov-1" data-req></textarea>
+    <p><span class="qnum">2.</span> Read the Commissioner's words again: "I had a difficulty in realising how it could possibly be…" What did he already believe before Lightoller answered? How could that shape which witness he found believable?</p>
+    <textarea data-k="ov-2" data-req></textarea>
+    <p><span class="qnum">3.</span> Who asked the questions? Who was never asked? Would asking different people have changed the finding, and how could you tell?</p>
+    <textarea data-k="ov-3" data-req></textarea>
+    <p><span class="qnum">4.</span> <span id="ov4Prompt"></span></p>
+    <textarea data-k="ov-4" data-req></textarea>
   </div>
 
   <div class="box">
     <h3><span class="cellchip c-r">R</span>Before you go on</h3>
-    <p>Could <b>any</b> historian in 1912 — careful, fair, unlimited time — have settled this question for certain? If yes, how? If no, what exactly would "certain" have required?</p>
-    <textarea data-k="ov-5" style="min-height:5.5rem"></textarea>
-    <p class="hint">Do not turn the page until you have written an answer. It stops counting once you know.</p>
+    <p>Two questions, and they are not the same. <b>Could a careful knower in 1912 have had good reasons to think the ship broke? Could they have been certain?</b> If not certain, what would certainty have required?</p>
+    <textarea data-k="ov-5" data-req style="min-height:5.5rem"></textarea>
+    <p class="hint">The next page will not open until every box on this page has an answer. Your answer stops counting once you know what happened.</p>
   </div>
 
-  <div class="foot"><button class="primary" onclick="go(4)">Turn the page</button></div>
+  <div class="foot"><button class="primary" data-next="4" onclick="advance(4)">Turn the page</button><span class="hint" data-hint></span></div>
 </section>
 
 <!-- ============ 4 · 1985 ============ -->
 <section class="screen" data-s="4">
   <h2 class="big">1 September 1985, just after 1:00 a.m.</h2>
-  <p class="lede">Robert Ballard of Woods Hole and Jean-Louis Michel of IFREMER, aboard the research vessel <em>Knorr</em>, are towing a camera sled called <em>Argo</em> two miles down. A boiler appears on the video feed.</p>
+  <div class="kq"><span class="lbl">This page feeds</span><span class="cellchip c-c">C</span>What is the difference between a claim being officially accepted and a claim being justified?<br><span class="cellchip c-r" style="margin-top:.4rem">R</span>Why can some questions about the past be answered later, while others may never be answered?</div>
+  <p class="lede">Robert Ballard of Woods Hole and Jean-Louis Michel of IFREMER, aboard the research vessel <em>Knorr</em>, are towing a camera sled called <em>Argo</em> nearly two and a half miles down. A boiler appears on the video feed.</p>
 
   <figure class="wreckfig">
     <svg viewBox="0 0 720 260" width="100%" role="img" aria-label="Diagram: the Titanic wreck lies on the seabed in two sections about 600 metres apart at a depth of about 3800 metres">
@@ -276,25 +317,21 @@ table.cmp th{background:var(--panel);font-size:.76rem}
         <stop offset="0%" stop-color="#12314a"/><stop offset="100%" stop-color="#050f18"/></linearGradient></defs>
       <rect x="0" y="0" width="720" height="260" fill="url(#sea)" rx="8"/>
       <path d="M0 205 Q 120 196 200 203 T 400 200 T 600 206 T 720 200 L720 260 L0 260Z" fill="#1d2b34"/>
-      <!-- bow -->
       <g transform="translate(120,196)">
         <path d="M0 0 L86 0 L104 -13 L96 -22 L20 -22 L0 -8 Z" fill="#c8d3d8"/>
         <text x="46" y="22" fill="#9fd0ea" font-family="sans-serif" font-size="13" text-anchor="middle">BOW</text>
       </g>
-      <!-- stern -->
       <g transform="translate(470,198)">
         <path d="M0 0 L74 0 L82 -16 L58 -24 L14 -20 L0 -6 Z" fill="#b8c3c8"/>
         <path d="M20 -20 L34 -30 L44 -22 Z" fill="#a8b4ba"/>
         <text x="41" y="22" fill="#9fd0ea" font-family="sans-serif" font-size="13" text-anchor="middle">STERN</text>
       </g>
-      <!-- debris -->
       <g fill="#7f8c93">
         <circle cx="270" cy="200" r="2.5"/><circle cx="300" cy="204" r="1.8"/><circle cx="330" cy="199" r="2.2"/>
         <circle cx="360" cy="203" r="1.6"/><circle cx="390" cy="200" r="2.6"/><circle cx="420" cy="204" r="1.9"/>
         <circle cx="285" cy="207" r="1.5"/><circle cx="345" cy="207" r="1.4"/><circle cx="405" cy="196" r="1.5"/>
       </g>
       <text x="345" y="186" fill="#7f929c" font-family="sans-serif" font-size="11" text-anchor="middle">debris field</text>
-      <!-- measure -->
       <line x1="224" y1="235" x2="470" y2="235" stroke="#9fd0ea" stroke-width="1.2"/>
       <line x1="224" y1="229" x2="224" y2="241" stroke="#9fd0ea" stroke-width="1.2"/>
       <line x1="470" y1="229" x2="470" y2="241" stroke="#9fd0ea" stroke-width="1.2"/>
@@ -306,54 +343,65 @@ table.cmp th{background:var(--panel);font-size:.76rem}
 
   <p class="bigline">The wreck is in <b>two pieces</b>.</p>
 
+  <h3 style="margin-top:1.4rem">Your marks, card by card</h3>
+  <p class="hint">The wreck tells you whether each witness's claim about the break was true. It does <b>not</b> tell you whether your reason was a good one. Read each row with that in mind.</p>
   <div class="replay" id="d1Replay"></div>
 
   <div class="box">
-    <h3><span class="cellchip c-v">V</span>The question this whole lesson exists for</h3>
-    <p><b>Was your rule bad — or were you unlucky?</b> The Court had your reasons available and used them. Rank, position, corroboration, distance in time. Those are not stupid criteria. They are <em>the</em> criteria.</p>
-    <textarea data-k="d1-rule" style="min-height:5.5rem"></textarea>
+    <h3><span class="cellchip c-v">V</span><span id="ruleHead">The question this whole lesson exists for</span></h3>
+    <p id="rulePrompt"></p>
+    <textarea data-k="d1-rule" data-req style="min-height:5.5rem"></textarea>
+  </div>
+
+  <div class="box">
+    <h3><span class="cellchip c-c">C</span>Justified, or accepted?</h3>
+    <p>The sworn testimony from Washington was printed and published in 1912. Anyone could read it. Your group worked from the same kind of testimony in a single lesson. Yet "intact" stayed the official finding until 1985.</p>
+    <p><b>If there were good reasons to think the ship broke in 1912, why did "intact" stay official for seventy-three years?</b></p>
+    <textarea data-k="d1-accept" data-req style="min-height:5rem"></textarea>
   </div>
   <div class="box">
-    <h3><span class="cellchip c-r">R</span>And what actually moved the wall</h3>
-    <p>Compare your answer on the last page to what happened. The question was not settled by a cleverer historian, a better argument, or a re-reading of the transcripts. Name the thing that settled it — and say what that implies about the questions we cannot settle <em>now</em>.</p>
-    <textarea data-k="d1-reach" style="min-height:5.5rem"></textarea>
+    <h3><span class="cellchip c-r">R</span>What actually moved the wall</h3>
+    <p>The wreck did not give anyone a cleverer argument or a better reading of the transcripts. <b>What did it give them that testimony never could?</b> What does that suggest about questions we cannot settle now?</p>
+    <textarea data-k="d1-reach" data-req style="min-height:5rem"></textarea>
   </div>
-  <div class="foot"><button class="primary" onclick="go(5)">Dossier C — the shots</button></div>
+  <div class="foot"><button class="primary" data-next="5" onclick="advance(5)">Dossier C · The shots</button><span class="hint" data-hint></span></div>
 </section>
 
 <!-- ============ 5 DISPUTE 2 ============ -->
 <section class="screen" data-s="5">
   <h2 class="big">Dossier C · The shots</h2>
-  <div class="kq">Same instrument. Same night. But read the three questions before you read the cards — they are not the same question, and they do not have the same answer.</div>
+  <div class="kq"><span class="lbl">This dossier feeds</span><span class="cellchip c-e">E</span>Can the same testimony be strong evidence for one question and useless for another?</div>
+  <p class="lede">Same kind of evidence. Same night. <strong>Read the three questions in the box below before you read the cards.</strong> They are not the same question, and they may not have the same answer.</p>
   <div class="cards" id="d2Cards"></div>
   <div class="box">
     <h3>Three findings, not one</h3>
     <p><span class="qnum">1.</span> <b>Were shots fired at all?</b></p>
     <div class="choices" id="d2aChoice"></div>
-    <p><span class="qnum">2.</span> <b>Were shots fired at people — was anyone hit?</b></p>
+    <p><span class="qnum">2.</span> <b>Were shots fired at people? Was anyone hit?</b></p>
     <div class="choices" id="d2bChoice"></div>
     <p><span class="qnum">3.</span> <b>Did an officer shoot himself?</b></p>
     <div class="choices" id="d2cChoice"></div>
-    <textarea data-k="d2-just" placeholder="Why are your three answers different — or why are they the same?"></textarea>
-    <div class="foot"><button class="primary" id="d2Btn" disabled onclick="rev('d2')">Deliver the findings</button><span class="hint" id="d2Left"></span></div>
+    <p>Why are your three answers different, or why are they the same?</p>
+    <textarea data-k="d2-just"></textarea>
+    <div class="foot"><button class="primary" id="d2Btn" disabled onclick="lockAndReveal('d2')">Deliver the findings</button><span class="hint" id="d2Left"></span></div>
     <div class="reveal" id="d2Reveal">
       <div class="replay">
-        <div class="row good"><div class="mk">Q1 · YES</div><div><b>Shots were certainly fired.</b> Not because witnesses say so — because <b>the man who fired them said so, under oath</b>. Lowe: "I fired horizontally… I think I fired three times." Scarrott, in the same boat, confirms shots, and disagrees about how many and in what direction. <b>This question is settled.</b></div></div>
-        <div class="row"><div class="mk">Q2 · ?</div><div><b>Cannot be determined.</b> Watch Daly's account move. Aboard <em>Carpathia</em>: "I saw two dagos shot." Three weeks later in print: "I saw the officer shoot two men dead." Under oath in 1915: he <b>heard</b> two shots and <b>was told</b> the men had been shot. Same man, same night, three tellings.</div></div>
-        <div class="row"><div class="mk">Q3 · ?</div><div><b>Cannot be determined.</b> Rheims wrote to his wife on 19 April describing an officer shooting a passenger and then himself. Under oath in November 1913 he said only: "I heard two pistol shots… about 40 minutes before she sank." The suicide is in the private letter and nowhere in the sworn record. A modern survey of every account: <b>"There is no concrete evidence to confirm that any officer committed suicide on the <em>Titanic</em>."</b></div></div>
-        <div class="row bad"><div class="mk">↓</div><div>Neither inquiry adjudicated Q2 or Q3. No physical trace of a pistol shot on an open deck could survive a sinking, and <b>the wreck cannot help</b>. There is no <em>Argo</em> for this one.</div></div>
+        <div class="row good"><div class="mk">1 · YES</div><div><b>Shots were certainly fired.</b> Not because people nearby say so, but because <b>the man who fired them admitted it under oath</b>. Lowe: "I fired horizontally… I think I fired three times." Scarrott, in the same boat, confirms shots, and disagrees about how many and in what direction. <b>This question is settled.</b><span class="sub">Notice: in Dossier B, one reason for setting a card aside was "Had a reason to say this." Lowe had a reason to <em>leave this out</em>, and didn't. A reason can make a witness less believable, or more.</span></div></div>
+        <div class="row"><div class="mk">2 · ?</div><div><b>Cannot be determined.</b> Watch Daly's account move, and watch who he is telling. Aboard <em>Carpathia</em>, to a doctor: "I saw two dagos shot." Three weeks later, in a newspaper: "I saw the officer shoot two men dead." Under oath in 1915: he <b>heard</b> two shots and <b>was told</b> the men had been shot. Same man, same night, three tellings.</div></div>
+        <div class="row"><div class="mk">3 · ?</div><div><b>Cannot be determined.</b> Rheims wrote to his wife on 19 April describing an officer shooting a passenger and then himself. Under oath in November 1913 he said only: "I heard two pistol shots… about 40 minutes before she sank." The suicide is in the private letter and nowhere in the sworn record. A modern survey of every account: <b>"There is no concrete evidence to confirm that any officer committed suicide on the <em>Titanic</em>."</b></div></div>
+        <div class="row bad"><div class="mk">↓</div><div>Neither inquiry settled questions 2 and 3. A pistol shot on an open deck leaves no trace that could survive a sinking, so <b>the wreck cannot help</b>. There is no <em>Argo</em> for this one.</div></div>
       </div>
       <div class="box">
         <h3><span class="cellchip c-e">E</span>Why you were asked three questions</h3>
-        <p>One body of evidence. Three questions. Three different levels of certainty. What does that tell you about people who say "we can't really know what happened on the <em>Titanic</em>"?</p>
-        <textarea data-k="d2-spec"></textarea>
+        <p>One body of evidence. Three questions. Three different levels of certainty. What does that tell you about someone who says "we can't really know what happened on the <em>Titanic</em>"?</p>
+        <textarea data-k="d2-spec" data-req></textarea>
       </div>
       <div class="box">
         <h3><span class="cellchip c-r">R</span>Two kinds of wall</h3>
-        <p>The break-up was unanswerable in 1912 and answerable in 1985. Questions 2 and 3 were unanswerable in 1912 and are <em>still</em> unanswerable. The difference is not that they are harder. What is it?</p>
-        <textarea data-k="d2-walls"></textarea>
+        <p>The break-up could not be settled in 1912 and was settled in 1985. Questions 2 and 3 could not be settled in 1912 and <em>still</em> cannot. The difference is not that they are harder. What is it?</p>
+        <textarea data-k="d2-walls" data-req></textarea>
       </div>
-      <div class="foot"><button class="primary" onclick="go(6)">Dossier D</button></div>
+      <div class="foot"><button class="primary" data-next="6" onclick="advance(6)">Dossier D · Panic</button><span class="hint" data-hint></span></div>
     </div>
   </div>
 </section>
@@ -361,73 +409,98 @@ table.cmp th{background:var(--panel);font-size:.76rem}
 <!-- ============ 6 DISPUTE 3 ============ -->
 <section class="screen" data-s="6">
   <h2 class="big">Dossier D · Panic, or order?</h2>
-  <div class="kq">Last one. Same instrument.</div>
+  <div class="kq"><span class="lbl">This dossier feeds</span><span class="cellchip c-e">E</span>Can the same testimony be strong evidence for one question and useless for another?</div>
+  <p class="lede">Last one. Same kind of evidence. Read the <em>Where</em> line on every card carefully.</p>
   <div class="cards" id="d3Cards"></div>
   <div class="box">
     <h3>Your finding</h3>
     <div class="choices" id="d3Choice"></div>
-    <textarea data-k="d3-just" placeholder="What is your finding resting on?"></textarea>
-    <div class="foot"><button class="primary" id="d3Btn" disabled onclick="rev('d3')">Deliver the finding</button><span class="hint" id="d3Left"></span></div>
+    <p>What is your finding resting on?</p>
+    <textarea data-k="d3-just"></textarea>
+    <div class="foot"><button class="primary" id="d3Btn" disabled onclick="lockAndReveal('d3')">Deliver the finding</button><span class="hint" id="d3Left"></span></div>
     <div class="reveal" id="d3Reveal">
       <p class="bigline">There <b>was</b> panic. And there <b>was</b> order. Both are well evidenced, and almost none of these witnesses is contradicting any other one.</p>
       <div class="replay">
-        <div class="row"><div class="mk">↓</div><div>Gracie was on the boat deck early. Beesley was in lifeboat 13 and away from the ship before things deteriorated. Buckley was behind a gate on E deck. <b>Different places, different times, on a ship that took two hours forty minutes to sink.</b></div></div>
-        <div class="row good"><div class="mk">↓</div><div>And <b>Dodge — first class</b> — settles it from inside the "order" camp: "Although there was no panic when the ship first struck, <b>there was afterward</b>." The neat class story cracks, and so does the neat contradiction.</div></div>
-        <div class="row bad"><div class="mk">The error</div><div>Beesley wrote "no signs of alarm were exhibited by any one." <b>That is true of lifeboat 13 at 12:40 a.m. and false as a description of the night.</b> The witnesses did not contradict each other. <b>The summary did.</b> A claim about one place and one moment got quietly promoted into a claim about everything.</div></div>
-        <div class="row"><div class="mk">↓</div><div>You have seen this exact move twice already today. The Court: fourteen accounts become "the preponderance of evidence." And in our last lesson: eight defendants become "the lower classes." <b>Same error, three times.</b></div></div>
-        <div class="row bad"><div class="mk">1912</div><div>Lord Mersey found "there appears to have been no truth in these suggestions… They were not unfairly treated." That rests partly on <b>counsel for the third-class families conceding no evidence had been produced</b> — on a failure to produce evidence, not on evidence of fair treatment.</div></div>
+        <div class="row"><div class="mk">↓</div><div>Gracie was on the boat deck early, loading boats. Beesley left in lifeboat 13, at least forty minutes before the end. Buckley was below decks, behind a gate. <b>Different places, different times, on a ship that took two hours and forty minutes to sink.</b></div></div>
+        <div class="row good"><div class="mk">↓</div><div>And <b>Dodge</b> travelled first class, like most of the "no panic" witnesses. He says: "Although there was no panic when the ship first struck, <b>there was afterward</b>." The neat class story cracks, and so does the neat contradiction.</div></div>
+        <div class="row bad"><div class="mk">The error</div><div>Beesley wrote "no signs of alarm were exhibited by any one." <b>That may be true of what he saw before lifeboat 13 was lowered. As a description of the whole night, it is false.</b> The witnesses did not contradict each other. <b>The summary did.</b> A claim about one place and one moment got quietly turned into a claim about everything.</div></div>
+        <div class="row"><div class="mk">↓</div><div>You have seen this move before. Earlier in this unit, in the Spenser St. John reading, eight defendants became "the lower classes." Here, the view from one part of the ship became "any one." <b>Same error, twice.</b></div></div>
+        <div class="row bad"><div class="mk">London</div><div>Lord Mersey found that third-class passengers "were not unfairly treated." <b>The London inquiry called three passengers to give evidence, and all three travelled first class.</b> No third-class passenger was asked anything. The lawyer for the families of third-class passengers who died then said that "no evidence has been given" that anyone held them back.</div></div>
       </div>
       <div class="box">
         <h3><span class="cellchip c-e">E</span>Three questions</h3>
         <p><span class="qnum">1.</span> Read Abelseth again. "This gate was shut," and then "no gates or doors locked… <b>not that I could see</b>." Is he contradicting himself? What are those four words doing?</p>
-        <textarea data-k="d3-a"></textarea>
+        <textarea data-k="d3-a" data-req></textarea>
         <p><span class="qnum">2.</span> Rewrite "Was there panic on the <em>Titanic</em>?" as a question this evidence <b>can</b> answer.</p>
-        <textarea data-k="d3-b"></textarea>
-        <p><span class="qnum">3.</span> This dispute was straightforward once you fixed the question. The break-up needed a submersible. <b>Why the difference?</b></p>
-        <textarea data-k="d3-c"></textarea>
+        <textarea data-k="d3-b" data-req></textarea>
+        <p><span class="qnum">3.</span> London asked no third-class passenger anything, and then found they "were not unfairly treated." What does "no evidence has been given" actually show?</p>
+        <textarea data-k="d3-c" data-req></textarea>
       </div>
-      <div class="foot"><button class="primary" onclick="go(7)">Close</button></div>
+      <div class="foot"><button class="primary" data-next="7" onclick="advance(7)">Back to the question</button><span class="hint" data-hint></span></div>
     </div>
   </div>
 </section>
 
-<!-- ============ 7 CLOSE ============ -->
+<!-- ============ 7 WHOLE CLASS ============ -->
 <section class="screen" data-s="7">
-  <h2 class="big">What you actually did</h2>
-  <div class="kq">If the past cannot be observed or repeated, what gives historical knowledge its authority — and what can it never reach?</div>
-  <div class="cards" style="grid-template-columns:repeat(auto-fill,minmax(270px,1fr))">
-    <div class="card"><div class="who"><div class="nm"><span class="cellchip c-e">E</span>Evidence</div></div>
-      <div class="say">Testimony was <em>excellent</em> evidence for "was there panic where I stood" and <em>useless</em> for "did the hull fail." Same witnesses, same honesty, different question. What does that do to the word "reliable"?</div>
-      <div class="act"><textarea data-k="g-e"></textarea></div></div>
-    <div class="card"><div class="who"><div class="nm"><span class="cellchip c-v">V</span>Validation</div></div>
-      <div class="say">Four newspapers agreeing was worth nothing. Fourteen sworn witnesses agreeing was worth a great deal — and was ignored. What separates the two cases?</div>
-      <div class="act"><textarea data-k="g-v"></textarea></div></div>
-    <div class="card"><div class="who"><div class="nm"><span class="cellchip c-c">C</span>Community</div></div>
-      <div class="say">Lightoller was believed because of his rank. Most of the fourteen were never asked. <b>Who decides who counts — and by what procedure?</b></div>
-      <div class="act"><textarea data-k="g-c"></textarea></div></div>
-    <div class="card"><div class="who"><div class="nm"><span class="cellchip c-r">R</span>Reach</div></div>
-      <div class="say">The break-up was <b>not yet</b> in 1912 and <b>known</b> in 1985. The shots are <b>never</b>. What moved the first wall, and why can nothing move the second?</div>
-      <div class="act"><textarea data-k="g-r"></textarea></div></div>
+  <h2 class="big">Back to the question, together</h2>
+  <div class="kq" style="font-size:1.3rem">To what extent does what counts as historical knowledge depend on who is asked, and who does the asking?</div>
+  <p class="lede">Look back over the four dossiers. <strong>In each one, who was asked, and who was doing the asking?</strong></p>
+  <div class="replay">
+    <div class="row"><div class="mk">A</div><div>On 15 April the only voices available were the company that owned the ship and the wire services. <b>Nobody who had seen the sinking had been asked yet.</b></div></div>
+    <div class="row"><div class="mk">B</div><div>London's finding cites one answer, given to one of the Board of Trade's own lawyers. <b>Most witnesses were never asked whether the ship broke.</b></div></div>
+    <div class="row"><div class="mk">C</div><div>Daly told a doctor, then a newspaper, then a court. Rheims told his wife, then a lawyer under oath. <b>Their stories changed with the listener.</b></div></div>
+    <div class="row"><div class="mk">D</div><div>London asked no third-class passenger anything, <b>then found they were not unfairly treated.</b></div></div>
+    <div class="row ask"><div class="mk">But</div><div>In 1985 it stopped mattering who had been asked: the wreck was in two pieces whoever you asked. And in Dossier D, once the question was fixed, the testimony settled it. <b>"It depends who you ask" is not the end of the story.</b></div></div>
   </div>
 
   <div class="box">
-    <h3>While it is happening, nobody knows</h3>
-    <p>On 15 April 1912 the loudest voice in the record belonged to <b>the company that owned the ship</b>. White Star was not reporting; it was asserting — and it went on asserting after it knew. Everything printed that day was wrong.</p>
-    <p style="color:var(--ink)">In a war, both sides have reasons to lie about the dead — to demoralise the enemy and to steady their own people. Casualty figures are released as weapons. Historians spend decades afterwards unpicking them.</p>
-    <p><b>So:</b> if interested parties dominate the record <em>while an event is happening</em>, what has to happen before anyone can know what occurred? And why is <b>"why did they say it"</b> often easier to answer than <b>"what happened"</b>?</p>
-    <textarea data-k="warfinal" style="min-height:6.5rem"></textarea>
+    <h3>As a class</h3>
+    <p><span class="qnum">1.</span> Answer the knowledge question. Use two examples from today, from <b>different</b> dossiers.</p>
+    <textarea data-k="wc-1" data-req style="min-height:5.5rem"></textarea>
+    <p><span class="qnum">2.</span> Where does it stop being true? When does <b>who was asked</b> stop deciding what counts as knowledge?</p>
+    <textarea data-k="wc-2" data-req></textarea>
+    <p><span class="qnum">3.</span> The inquiries were not trying to write history. The London inquiry was overseen by the Board of Trade, the body that had approved the ship. <b>What were the inquiries for, and how might that have shaped who they asked?</b></p>
+    <textarea data-k="wc-3" data-req></textarea>
   </div>
 
   <div class="box">
-    <h3>The last one</h3>
-    <p>The 1912 inquiries got it wrong. Were they <b>bad historians</b>? Answer carefully — then say what your answer implies about the history you are being taught right now.</p>
-    <textarea data-k="final" style="min-height:5.5rem"></textarea>
+    <h3>If there is time: while it is happening, nobody knows</h3>
+    <p>On 15 April 1912 the loudest voice in the record belonged to <b>the company that owned the ship</b>. In a war, both sides have reasons to shape what is said about the dead, and casualty figures are released as weapons. Historians spend decades afterwards unpicking them.</p>
+    <p>If interested parties dominate the record <em>while an event is happening</em>, what has to happen before anyone can know what occurred? And why is <b>"why did they say it"</b> often easier to answer than <b>"what happened"</b>?</p>
+    <textarea data-k="warfinal"></textarea>
+  </div>
+  <div class="foot"><button class="primary" data-next="8" onclick="advance(8)">Your group's question</button><span class="hint" data-hint></span></div>
+</section>
+
+<!-- ============ 8 GROUP KQ ============ -->
+<section class="screen" data-s="8">
+  <h2 class="big">Your group's knowledge question</h2>
+  <p class="lede">Choose <strong>one</strong> of these four. You will share your answer with the class: read it out, then defend your example. Your teacher may ask groups to spread across all four.</p>
+  <div class="gkqs" id="gkqChoice"></div>
+
+  <div id="gkqPanel" style="display:none">
+    <div class="kq" id="gkqText" style="font-size:1.22rem"></div>
+    <div class="box">
+      <h3>What you already wrote that bears on this</h3>
+      <p>These are your group's own answers from earlier in the lesson. Use them; don't start from nothing.</p>
+      <div id="gkqEarlier"></div>
+    </div>
+    <div class="box">
+      <h3>Your answer</h3>
+      <p><span class="qnum">1.</span> As knowers who have just done this, what is your answer to the question? Two or three sentences.</p>
+      <textarea data-k="g-1" data-req></textarea>
+      <p><span class="qnum">2.</span> What is your best example from today, and exactly what does it show?</p>
+      <textarea data-k="g-2" data-req></textarea>
+      <p><span class="qnum">3.</span> Where does your answer stop working? Give the strongest case against it.</p>
+      <textarea data-k="g-3" data-req></textarea>
+    </div>
   </div>
 
   <div class="box">
     <h3>Your group's sheet</h3>
-    <p>Download it, swap with another group, load theirs below. The interesting thing is never the verdicts — it is whether you used the same rule.</p>
-    <div class="foot"><button class="primary" onclick="exportSheet()">Download our sheet</button><button onclick="window.print()">Print pack</button></div>
+    <p>Download it, swap with another group, and load theirs below. The interesting thing is never the verdicts. It is whether you used the same rule.</p>
+    <div class="foot"><button class="primary" onclick="exportSheet()">Download our sheet</button></div>
   </div>
   <div class="box">
     <h3>Compare</h3>
@@ -439,57 +512,66 @@ table.cmp th{background:var(--panel);font-size:.76rem}
 </div>
 
 <script>
-const REASONS=[["pos","Wasn't positioned to see it"],["late","Spoke too long after the event"],
-["interest","Had a reason to say this"],["oath","Not under oath"],["few","Outnumbered by other accounts"],
-["rank","Outranked by a better-placed witness"],["young","Too young / memory unreliable"],["vague","Too vague to be useful"]];
+const REASONS=[["pos","Wasn't positioned to see it"],["more","Claims more than they could have seen"],
+["late","Spoke too long after the event"],["interest","Had a reason to say this"],["oath","Not under oath"],
+["few","Outnumbered by other accounts"],["rank","Outranked by a better-placed witness"],
+["young","Too young / memory unreliable"],["vague","Too vague to be useful"]];
 
 const PRESS=[
- {mast:"Evening Bulletin",place:"Honolulu, Hawaii",date:"Monday, 15 April 1912",hl:"All Titanic Passengers Saved",sub:"Liner in collision with iceberg — every soul reported taken off",lccn:"sn82016413"},
+ {mast:"Evening Bulletin",place:"Honolulu, Hawaii",date:"Monday, 15 April 1912",hl:"All Titanic Passengers Saved",sub:"",lccn:"sn82016413"},
  {mast:"The Washington Times",place:"Washington, D.C.",date:"Monday, 15 April 1912",hl:"Liner Titanic Kept Afloat by Water-tight Compartments",sub:"Being towed into Halifax, N.S.",lccn:"sn84026749"},
- {mast:"The Evening Standard",place:"Ogden City, Utah",date:"Monday, 15 April 1912",hl:"Passengers From the Titanic Rescued",sub:"Transferred at sea — no loss of life reported",lccn:"sn85058397"},
+ {mast:"The Evening Standard",place:"Ogden City, Utah",date:"Monday, 15 April 1912",hl:"Passengers From the Titanic Rescued",sub:"",lccn:"sn85058397"},
  {mast:"The Day Book",place:"Chicago, Illinois",date:"Monday, 15 April 1912",hl:"Liner Titanic Wrecked by Iceberg",sub:"Passengers transferred to other vessels in mid ocean",lccn:"sn83045487"}];
 
-/* interleaved deliberately: intact / broke / intact / broke ... */
+/* interleaved deliberately: intact / broke / silent / broke ... so headcount isn't the first thing the eye does */
 const D1=[
- {id:'light',name:"Charles Lightoller",role:"Second Officer — the most senior surviving officer of any rank",
+ {id:'light',name:"Charles Lightoller",role:"Second Officer, the most senior officer to survive",
   pos:"On the roof of the officers' quarters, then in the water",when:"British Inquiry, 20 May 1912",to:"Under oath, to the Wreck Commissioner",oath:"Yes",
   say:"Are you referring to the reports of the ship breaking in two? … <b>It is utterly untrue. The ship did not and could not have broken in two.</b>",
   extra:"Pressed again, on whether the stern settled back: “That is not true, My Lord. I was watching her keenly the whole time.”",
-  cite:"British Inquiry Q14075, Q14094",url:"https://www.titanicinquiry.org/BOTInq/BOTInq12Lightoller02.php",truth:'wrong'},
+  cite:"British Inquiry, Day 12, 20 May 1912",url:"https://www.titanicinquiry.org/BOTInq/BOTInq12Lightoller02.php",
+  wreck:"Said the ship did not and could not break. <b>The wreck shows it did.</b>"},
  {id:'osman',name:"Frank Osman",role:"Able Seaman",
   pos:"In lifeboat 2, pulling astern",when:"US Senate Inquiry, April 1912",to:"Under oath, to the Senate committee",oath:"Yes",
   say:"After she got to a certain angle she exploded, <b>broke in halves</b>, and it seemed to me as if all the engines and everything that was in the after part slid out into the forward part, and the after part came up right again, and as soon as it came up right down it went again.",
-  cite:"US Senate Inquiry, Day 7, Q8454",url:"https://www.titanicinquiry.org/USInq2/AmInq07Osman01.php",truth:'right'},
+  cite:"US Senate Inquiry, Day 7",url:"https://www.titanicinquiry.org/USInq2/AmInq07Osman01.php",
+  wreck:"Said the ship broke in halves. <b>The wreck confirms a break.</b>"},
  {id:'bride',name:"Harold Bride",role:"Junior wireless operator, age 22",
-  pos:"Wireless room to the last, then washed off the deck",when:"Newspaper interview, 19 April 1912 — the day after landing",to:"To the New York Times (he was paid for the story)",oath:"No",
+  pos:"Wireless room to the last, then washed off the deck",when:"Newspaper interview, 19 April 1912, the day after landing",to:"To the New York Times (he was paid for the story)",oath:"No",
   say:"The ship was <b>gradually turning on her nose — just like a duck does that goes down for a dive.</b> I had only one thing on my mind — to get away from the suction.",
-  extra:"He describes the ship going down bow-first as one piece. He never mentions a break.",
-  cite:"New York Times, 19 April 1912",url:"https://www.titanicandco.com/titanic/haroldbridestitanicstory.html",truth:'wrong'},
+  extra:"He describes her going down bow first. He does not mention a break, either way.",
+  cite:"New York Times, 19 April 1912",url:"https://www.titanicandco.com/titanic/haroldbridestitanicstory.html",
+  wreck:"Never says whether the ship broke. <b>The wreck neither confirms nor contradicts him.</b>"},
  {id:'crowe',name:"George Frederick Crowe",role:"Steward",
   pos:"In lifeboat 14",when:"US Senate Inquiry, April 1912",to:"Under oath, to the Senate committee",oath:"Yes",
   say:"She almost stood up perpendicular, and her lights went dim, and presently <b>she broke clean in two, probably two-thirds of the length of the ship</b>.",
-  cite:"US Senate Inquiry, Day 7, p.620",url:"https://www.titanicinquiry.org/USInq/AmInq07Crowe01.php",truth:'right'},
- {id:'gracie',name:"Colonel Archibald Gracie",role:"First-class passenger; US Army colonel; wrote the standard survivor's book",
-  pos:"On deck to the end; went down with the ship and surfaced on an overturned collapsible",when:"Book published 1913",to:"To the reading public",oath:"No",
+  cite:"US Senate Inquiry, Day 7",url:"https://www.titanicinquiry.org/USInq/AmInq07Crowe01.php",
+  wreck:"Said the ship broke clean in two. <b>The wreck confirms a break.</b>"},
+ {id:'gracie',name:"Colonel Archibald Gracie",role:"First-class passenger; US Army colonel; wrote one of the best-known survivor books",
+  pos:"On deck to the end; went down with the ship and surfaced near an overturned collapsible boat",when:"Book published 1913, after both inquiries had reported",to:"To the reading public",oath:"No",
   say:"From my personal viewpoint I also know that the <em>Titanic's</em> decks were <b>intact</b> at the time she sank.",
-  extra:"In the same book he records that Jack Thayer and R. N. Williams were “positive that they saw the ship split in two” — and then explains why they must be mistaken.",
-  cite:"Gracie, <em>The Truth About the Titanic</em>, 1913",url:"https://www.gutenberg.org/cache/epub/67584/pg67584.txt",truth:'wrong'},
+  extra:"In the same book he records that Jack Thayer and R. N. Williams were “positive that they saw the ship split in two,” and then explains why they must be mistaken.",
+  cite:"Gracie, <em>The Truth About the Titanic</em>, 1913",url:"https://www.gutenberg.org/cache/epub/67584/pg67584.txt",
+  wreck:"Said the ship's decks were intact when it sank. <b>The wreck shows it broke.</b>"},
  {id:'white',name:"Mrs J. Stuart White",role:"First-class passenger, age 55",
   pos:"In lifeboat 8",when:"US Senate Inquiry, April 1912",to:"Under oath, to the Senate committee",oath:"Yes",
   say:"In my opinion the ship when it went down was <b>broken in two</b>.",
   extra:"She also testified to “four distinct explosions… They were tremendous.”",
-  cite:"US Senate Inquiry, Day 12, p.1008",url:"https://www.titanicinquiry.org/USInq/AmInq12White01.php",truth:'right'},
+  cite:"US Senate Inquiry, Day 12",url:"https://www.titanicinquiry.org/USInq/AmInq12White01.php",
+  wreck:"Said the ship was broken in two. <b>The wreck confirms a break.</b>"},
  {id:'symons',name:"George Symons",role:"Lookout",
   pos:"In lifeboat 1",when:"British Inquiry, 1912",to:"Under oath, to the Wreck Commissioner",oath:"Yes",
   say:"The <em>Titanic</em> seemed to me to <b>split in two</b>, the head disappearing completely, and the poop coming up.",
-  cite:"British Inquiry Q11722",url:"https://www.titanicinquiry.org/BOTInq/BOTInq04Symons01.php",truth:'right'},
- {id:'hart',name:"Eva Hart",role:"Second-class passenger — seven years old on the night",
-  pos:"In a lifeboat with her mother",when:"Recorded interview, 1990 — 78 years later",to:"To an interviewer",oath:"No",
+  cite:"British Inquiry, 1912",url:"https://www.titanicinquiry.org/BOTInq/BOTInq04Symons01.php",
+  wreck:"Said the ship seemed to split in two. <b>The wreck confirms a break.</b>"},
+ {id:'hart',name:"Eva Hart",role:"Second-class passenger, seven years old on the night",
+  pos:"In a lifeboat with her mother",when:"Recorded interview, 1990: 78 years later, and 5 years after the wreck was found",to:"To an interviewer",oath:"No",
   say:"And I saw that ship <b>break in half</b> and the fore part went down, nose first, and the other, the stern of that ship stood up in the water for quite a long time, or what seemed to be a long time to me, and then keeled over.",
-  cite:"Interview with Ray Johnson, 1990",url:"https://titanicarchive.org/collections/interviews/eva-miriam-hart/eva-hart-survivor",truth:'right'}];
+  cite:"Interview with Ray Johnson, 1990",url:"https://titanicarchive.org/collections/interviews/eva-miriam-hart/eva-hart-survivor",
+  wreck:"Said the ship broke in half. <b>The wreck confirms a break.</b> But this account was recorded in 1990, five years after the wreck was found and the break was world news."}];
 
 const D2=[
- {id:'lowe',name:"Fifth Officer Harold Lowe",role:"Ship's officer — the man who fired",
+ {id:'lowe',name:"Fifth Officer Harold Lowe",role:"Ship's officer, the man who fired",
   pos:"Lowering lifeboat 14",when:"US Senate Inquiry, April 1912",to:"Under oath, to the Senate committee",oath:"Yes",
   say:"I shot between the boat and the ship's side, so these people would hear and see the discharge. … I did not fire up. <b>I fired horizontally.</b> … I think <b>I fired three times</b>.",
   extra:"He adds that he fired “without intention of hurting anybody and also with the knowledge that I did not hurt anybody… I am absolutely positive.”",
@@ -497,38 +579,38 @@ const D2=[
  {id:'daly',name:"Eugene Daly",role:"Third-class passenger, Irish emigrant, age 29",
   pos:"Worked up from the lower decks to the boat deck",when:"Letter printed 4 May 1912",to:"To a newspaper",oath:"No",
   say:"I saw the officer shoot two men dead because they tried to get in the boat. … Afterwards there was another shot, and I saw the officer himself lying on the deck. <b>They told me he shot himself, but I did not see him.</b>",
-  extra:"Days after the sinking, aboard <em>Carpathia</em>, he said only: “I saw two dagos shot.” Under oath in 1915 he said he <em>heard</em> two shots and <em>was told</em> the men had been shot.",
+  extra:"Days after the sinking, aboard <em>Carpathia</em>, he told a doctor only: “I saw two dagos shot.” Under oath in 1915 he said he <em>heard</em> two shots and <em>was told</em> the men had been shot.",
   cite:"Daily Telegraph 4 May 1912; Blackmarr notes; 1915 hearings",url:"https://www.encyclopedia-titanica.org/gunshots-on-titanic.html"},
- {id:'scarrott',name:"Joseph Scarrott",role:"Able Seaman — in the same boat as Lowe",
+ {id:'scarrott',name:"Joseph Scarrott",role:"Able Seaman, in the same boat as Lowe",
   pos:"Lifeboat 14, alongside Lowe",when:"British Inquiry, 1912",to:"Under oath, to the Wreck Commissioner",oath:"Yes",
   say:"He pulled out his revolver and he fired <b>two</b> shots between the ship and the boat's side… When he fired the two shots he fired them <b>into the water</b>.",
-  extra:"Scarrott is also the man who drove men back with the boat's tiller — a detail often wrongly given to Lowe.",
-  cite:"British Inquiry, Day 2, Q383–393",url:"https://www.titanicinquiry.org/BOTInq/BOTInq02Scarrott01.php"},
+  extra:"Scarrott is also the man who drove men back with the boat's tiller, a detail often wrongly given to Lowe.",
+  cite:"British Inquiry, Day 2",url:"https://www.titanicinquiry.org/BOTInq/BOTInq02Scarrott01.php"},
  {id:'gracie2',name:"Colonel Archibald Gracie",role:"First-class passenger",
-  pos:"On the boat deck — but not present at the incident",when:"US Senate Inquiry, April 1912",to:"Under oath, to the Senate committee",oath:"Yes",
+  pos:"On the boat deck, but not present at the incident",when:"US Senate Inquiry, April 1912",to:"Under oath, to the Senate committee",oath:"Yes",
   say:"That is what Mr. Lightoller himself told me. I did not hear the pistol. That is what I was told by Lightoller himself. <b>That is all hearsay, Senator.</b>",
   cite:"US Senate Inquiry, Day 11",url:"https://www.titanicinquiry.org/USInq/AmInq11Gracie01.php"},
  {id:'rheims',name:"George Rheims",role:"First-class passenger, French businessman",
-  pos:"On deck to the end; left on a collapsible",when:"Two accounts: a private letter of 19 April 1912, and a sworn deposition of 14 November 1913",to:"First his wife. Later, under oath.",oath:"Both",
+  pos:"On deck to the end; left on a collapsible boat",when:"Two accounts: a private letter of 19 April 1912, and a sworn statement of 14 November 1913",to:"First his wife. Later, under oath.",oath:"Second account only",
   say:"<b>To his wife, 19 April 1912:</b> “I saw an officer with a revolver fire a shot and kill a man who was trying to climb into it… He gave a military salute and then fired a bullet into his head.”",
-  extra:"<b>Under oath, eighteen months later:</b> “I heard two pistol shots… about 40 minutes before she sank.” The shooting and the suicide appear nowhere in the deposition. He was not asked, and did not volunteer it.",
+  extra:"<b>Under oath, eighteen months later:</b> “I heard two pistol shots… about 40 minutes before she sank.” The shooting and the suicide appear nowhere in the sworn statement.",
   cite:"Letter 19 Apr 1912; Limitation of Liability deposition 14 Nov 1913",url:"https://www.titanicinquiry.org/lol/depositions/rheims01.php"}];
 
 const D3=[
- {id:'dodge',name:"Dr Washington Dodge",role:"First-class passenger — physician and banker",
+ {id:'dodge',name:"Dr Washington Dodge",role:"First-class passenger, physician and banker",
   pos:"On deck, later in a lifeboat",when:"Newspaper interview, 19 April 1912",to:"To a reporter",oath:"No",
   say:"<b>Although there was no panic when the ship first struck, there was afterward.</b> … There was a panic about that time, and many women were jumping into the water.",
   cite:"New York Tribune, 19 April 1912",url:"https://titanicarchive.org/collections/newspapers/dr-washington-dodge/dr-washington-dodges-new-york-tribune-account"},
  {id:'gracie3',name:"Colonel Archibald Gracie",role:"First-class passenger",
-  pos:"Boat deck, port side, loading boats — <b>early</b> in the sinking",when:"Book, 1913",to:"To the public",oath:"No",
+  pos:"Boat deck, port side, loading boats <b>early</b> in the sinking",when:"Book, 1913",to:"To the public",oath:"No",
   say:"The women… showed no signs of fear or panic whatsoever under conditions more appalling than were ever recorded before.",
   cite:"Gracie, <em>The Truth About the Titanic</em>, 1913",url:"https://www.gutenberg.org/cache/epub/67584/pg67584.txt"},
  {id:'buckley',name:"Daniel Buckley",role:"Third-class passenger, age 21, Irish emigrant",
-  pos:"Below decks, E deck — behind a gate",when:"US Senate Inquiry, 1912",to:"Under oath, to the Senate committee",oath:"Yes",
+  pos:"Below decks, behind a gate",when:"US Senate Inquiry, 1912",to:"Under oath, to the Senate committee",oath:"Yes",
   say:"They tried to keep us down at first on our steerage deck. They did not want us to go up to the first class place at all. … <b>It was not locked at the time we made the attempt to get up there, but the sailor, or whoever he was, locked it.</b>",
   cite:"US Senate Inquiry, Day 13",url:"https://www.titanicinquiry.org/USInq/AmInq13Buckley01.php"},
  {id:'beesley',name:"Lawrence Beesley",role:"Second-class passenger, science teacher",
-  pos:"Boat deck, then lifeboat 13 — <b>away from the ship early</b>",when:"Book, 1912",to:"To the public",oath:"No",
+  pos:"Boat deck, then lifeboat 13, lowered at least 40 minutes before the end (estimates range from 1:15 to 1:40 a.m.; the ship sank at 2:20)",when:"Book, 1912",to:"To the public",oath:"No",
   say:"It is not the slightest exaggeration to say that <b>no signs of alarm were exhibited by any one</b>: there was no indication of panic or hysteria; no cries of fear…",
   cite:"Beesley, <em>The Loss of the S.S. Titanic</em>, 1912",url:"https://www.gutenberg.org/cache/epub/6675/pg6675.txt"},
  {id:'abelseth',name:"Olaus Abelseth",role:"Third-class passenger, Norwegian emigrant, age 25",
@@ -541,24 +623,59 @@ const D3=[
   say:"There was no commotion, no panic, and no one seemed to be particularly frightened; <b>in fact, most of the people seemed interested in the unusual occurrence</b>, many having crossed 50 and 60 times.",
   cite:"US Senate Inquiry, Day 18",url:"https://www.titanicinquiry.org/USInq/AmInq18Smith01.php"}];
 
+/* the four group KQs: the old takeaways, rewritten as questions */
+const GKQ=[
+ {id:'E',cell:'c-e',q:"Can the same testimony be strong evidence for one question and useless for another?",
+  from:['d2-spec','d3-a','d3-b']},
+ {id:'V',cell:'c-v',q:"When sources agree, how much does their agreement add if we don't know where each one came from?",
+  from:['press-note','d1-just','ov-4']},
+ {id:'C',cell:'c-c',q:"What is the difference between a claim being officially accepted and a claim being justified?",
+  from:['ov-1','ov-2','d1-rule','d1-accept']},
+ {id:'R',cell:'c-r',q:"Why can some questions about the past be answered later, while others may never be answered?",
+  from:['ov-5','d1-reach','d2-walls']}];
+
+const NOTE_LABEL={
+ 'press-note':"Dossier A: what you'd need to know before agreement counts",
+ 'd1-just':"Dossier B: what your break-up finding rested on",
+ 'ov-1':"The finding: what you can and can't work out from the one question the report cites",
+ 'ov-2':"The finding: what the Commissioner already believed",
+ 'ov-4':"The finding: your rule compared with the Court's",
+ 'ov-5':"Before 1985: good reasons vs. certainty in 1912",
+ 'd1-rule':"1985: your rule, good or lucky, bad or unlucky",
+ 'd1-accept':"1985: why 'intact' stayed official",
+ 'd1-reach':"1985: what the wreck gave that testimony couldn't",
+ 'd2-spec':"Dossier C: why three questions",
+ 'd2-walls':"Dossier C: two kinds of wall",
+ 'd3-a':"Dossier D: Abelseth's four words",
+ 'd3-b':"Dossier D: rewriting the panic question"};
+
 const FILLER="The regular meeting of the board was held at the usual hour and the report of the treasurer was received and placed upon the file. A communication was read from the committee appointed at the last session respecting the proposed improvement of the thoroughfare and the same was referred back for further consideration. The chairman stated that the matter of the appropriation would come before the body at its next sitting. Several members spoke briefly upon the question and the discussion was adjourned. ";
 
-const KEY='tok-l4-titanic-v2';
-let S={group:'',marks:{},verdicts:{},notes:{},open:{}};
-try{S=Object.assign(S,JSON.parse(localStorage.getItem(KEY)||'{}'));}catch(e){}
+const KEY='tok-l4-titanic-v3';
+let S={group:'',marks:{},verdicts:{},notes:{},open:{},locked:{},max:0,gkq:''};
+try{const saved=JSON.parse(localStorage.getItem(KEY)||'{}');if(saved&&typeof saved==='object')S=Object.assign(S,saved);}catch(e){}
+['marks','verdicts','notes','open','locked'].forEach(k=>{if(!S[k]||typeof S[k]!=='object')S[k]={};});
+if(typeof S.max!=='number')S.max=0;
+
 function persist(){const el=document.getElementById('save');el.textContent='saving…';
   try{localStorage.setItem(KEY,JSON.stringify(S));el.textContent='saved';}catch(e){el.textContent='not saved';}}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function filled(k){return !!(S.notes[k]&&S.notes[k].trim().length>=3);}
+
+/* which dossier a verdict key belongs to, for locking */
+const VKEY_DOSSIER={press:'press',d1:'d1',d2a:'d2',d2b:'d2',d2c:'d2',d3:'d3',prov:'prov'};
 
 function pressCard(p){return `<div class="card"><div class="news">
   <div class="mast">${p.mast}</div>
   <div class="dl"><span>${p.place}</span><span>${p.date}</span></div>
-  <div class="hl">${p.hl}</div><div class="sub">${p.sub}</div>
+  <div class="hl">${p.hl}</div>${p.sub?`<div class="sub">${p.sub}</div>`:''}
   <div class="cols" aria-hidden="true"><div>${FILLER}</div><div>${FILLER}</div><div>${FILLER}</div></div></div>
-  <div class="fax-note"><b>Real paper, real date, real headline.</b> Typography reset for legibility — this is not a scan. Surrounding columns are meaningless filler, blurred.
+  <div class="fax-note"><b>Real paper, real date, real headline.</b> Typography reset for legibility; this is not a scan. Surrounding columns are meaningless filler, blurred.
   <a href="https://www.loc.gov/resource/${p.lccn}/1912-04-15/ed-1/" target="_blank" rel="noopener">Original at the Library of Congress →</a></div></div>`;}
 
 function card(c,dk){
   const m=S.marks[dk]&&S.marks[dk][c.id];
+  const lk=!!S.locked[dk];
   const st=!m?'':(m.v==='rely'?'relied':'aside');
   const opts=REASONS.map(r=>`<option value="${r[0]}" ${m&&m.r===r[0]?'selected':''}>${r[1]}</option>`).join('');
   return `<div class="card ${st}" id="card-${dk}-${c.id}">
@@ -567,9 +684,10 @@ function card(c,dk){
     <div class="say">${c.say}${c.extra?`<div style="margin-top:.6rem;font-size:.86rem;color:var(--soft)">${c.extra}</div>`:''}</div>
     <div class="cite">${c.cite} · <a href="${c.url}" target="_blank" rel="noopener">check it</a></div>
     <div class="act">
-      <button class="${m&&m.v==='rely'?'sel':''}" onclick="mark('${dk}','${c.id}','rely')">Rely on</button>
-      <button class="${m&&m.v==='aside'?'sel':''}" onclick="mark('${dk}','${c.id}','aside')">Set aside</button>
-      <select onchange="setReason('${dk}','${c.id}',this.value)" ${m&&m.v==='aside'?'':'style="display:none"'}><option value="">why? …</option>${opts}</select>
+      <button class="${m&&m.v==='rely'?'sel':''}" ${lk?'disabled':''} onclick="mark('${dk}','${c.id}','rely')">Rely on</button>
+      <button class="${m&&m.v==='aside'?'sel':''}" ${lk?'disabled':''} onclick="mark('${dk}','${c.id}','aside')">Set aside</button>
+      <select ${lk?'disabled':''} onchange="setReason('${dk}','${c.id}',this.value)" ${m&&m.v==='aside'?'':'style="display:none"'}><option value="">why? …</option>${opts}</select>
+      ${lk?'<span class="lockt">locked</span>':''}
     </div></div>`;}
 
 function renderCards(){
@@ -577,80 +695,186 @@ function renderCards(){
   document.getElementById('d1Cards').innerHTML=D1.map(c=>card(c,'d1')).join('');
   document.getElementById('d2Cards').innerHTML=D2.map(c=>card(c,'d2')).join('');
   document.getElementById('d3Cards').innerHTML=D3.map(c=>card(c,'d3')).join('');}
-function mark(dk,id,v){S.marks[dk]=S.marks[dk]||{};const cur=S.marks[dk][id];
+function mark(dk,id,v){if(S.locked[dk])return;S.marks[dk]=S.marks[dk]||{};const cur=S.marks[dk][id];
   if(cur&&cur.v===v){delete S.marks[dk][id];}else{S.marks[dk][id]={v:v,r:(cur&&cur.r)||''};}
   persist();renderCards();gate();}
-function setReason(dk,id,r){if(S.marks[dk]&&S.marks[dk][id]){S.marks[dk][id].r=r;persist();gate();}}
+function setReason(dk,id,r){if(S.locked[dk])return;if(S.marks[dk]&&S.marks[dk][id]){S.marks[dk][id].r=r;persist();gate();}}
 
 const CHOICES={
+ prov:[["true","whether a claim is true"],["honest","whether a witness is honest"],["weight","how much weight a claim can carry, and what to check next"]],
  press:[["high","Much more confident"],["some","Somewhat more confident"],["none","No more confident than one paper"]],
  d1:[["broke","She broke in two"],["intact","She sank intact"],["cant","Cannot be determined"]],
  d2a:[["yes","Yes"],["no","No"],["cant","Cannot be determined"]],
  d2b:[["yes","Yes"],["no","No"],["cant","Cannot be determined"]],
  d2c:[["yes","Yes"],["no","No"],["cant","Cannot be determined"]],
- d3:[["panic","There was panic"],["order","There was order"],["both","Both — depending on where and when"],["cant","Cannot be determined"]]};
+ d3:[["panic","There was panic"],["order","There was order"],["both","Both, depending on where and when"],["cant","Cannot be determined"]]};
 function renderChoices(){for(const k in CHOICES){const el=document.getElementById(k+'Choice');if(!el)continue;
-  el.innerHTML=CHOICES[k].map(c=>`<button class="${S.verdicts[k]===c[0]?'sel':''}" onclick="setVerdict('${k}','${c[0]}')">${c[1]}</button>`).join('');}}
-function setVerdict(k,v){S.verdicts[k]=v;persist();renderChoices();gate();}
+  const lk=!!S.locked[VKEY_DOSSIER[k]];
+  el.innerHTML=CHOICES[k].map(c=>`<button class="${S.verdicts[k]===c[0]?'sel':''}" ${lk?'disabled':''} onclick="setVerdict('${k}','${c[0]}')">${c[1]}</button>`).join('');}
+  renderGkqChoice();}
+function setVerdict(k,v){if(S.locked[VKEY_DOSSIER[k]])return;S.verdicts[k]=v;
+  if(k==='prov'){S.open.prov=1;document.getElementById('provReveal').classList.add('on');}
+  persist();renderChoices();gate();}
+
 function counts(dk,list){const m=S.marks[dk]||{};let done=0,bad=0;
   list.forEach(c=>{const x=m[c.id];if(!x)return;if(x.v==='aside'&&!x.r){bad++;return;}done++;});
   return{done:done,total:list.length,bad:bad};}
+/* gate the "deliver" buttons: every card marked, every set-aside has a reason, every verdict chosen, justification written */
 function gate(){
-  [['d1',D1,['d1']],['d2',D2,['d2a','d2b','d2c']],['d3',D3,['d3']]].forEach(([dk,list,vks])=>{
+  [['d1',D1,['d1'],'d1-just'],['d2',D2,['d2a','d2b','d2c'],'d2-just'],['d3',D3,['d3'],'d3-just']].forEach(([dk,list,vks,jk])=>{
     const c=counts(dk,list),btn=document.getElementById(dk+'Btn'),left=document.getElementById(dk+'Left');
-    const vOk=vks.every(k=>!!S.verdicts[k]);
-    const ok=c.done===c.total&&c.bad===0&&vOk;
+    const vOk=vks.every(k=>!!S.verdicts[k]),jOk=filled(jk);
+    const ok=c.done===c.total&&c.bad===0&&vOk&&jOk;
+    if(S.locked[dk]){if(btn)btn.disabled=true;if(left)left.textContent='Delivered.';return;}
     if(btn)btn.disabled=!ok;
     if(left){const missing=c.total-c.done+c.bad;
-      left.textContent=missing?`${missing} card${missing===1?'':'s'} still need marking or a reason`:(vOk?'':'Answer every question');}});
-  const pb=document.getElementById('pressBtn');if(pb)pb.disabled=!S.verdicts.press;}
-function bindNotes(){document.querySelectorAll('textarea[data-k]').forEach(t=>{const k=t.getAttribute('data-k');
-  if(S.notes[k])t.value=S.notes[k];t.addEventListener('input',()=>{S.notes[k]=t.value;persist();});});}
-function rev(k){document.getElementById(k+'Reveal').classList.add('on');S.open[k]=1;persist();}
+      left.textContent=missing?`${missing} card${missing===1?'':'s'} still need marking or a reason`:(!vOk?'Choose every finding':(!jOk?'Say what your finding rests on':''));}});
+  const pb=document.getElementById('pressBtn');if(pb)pb.disabled=!S.verdicts.press||!!S.locked.press;
+  refreshNext();}
 
+/* the "next" buttons: every required box in the section must be answered */
+function sectionOk(sec){
+  let ok=true;
+  sec.querySelectorAll('textarea[data-req]').forEach(t=>{const k=t.getAttribute('data-k');
+    const f=filled(k);t.classList.toggle('empty',!f);if(!f)ok=false;});
+  const s=+sec.dataset.s;
+  if(s===0&&!S.verdicts.prov)ok=false;
+  return ok;}
+function refreshNext(){
+  document.querySelectorAll('button[data-next]').forEach(b=>{
+    const sec=b.closest('section');const ok=sectionOk(sec);b.disabled=!ok;
+    const h=b.parentElement.querySelector('[data-hint]');
+    if(h)h.textContent=ok?'':(+sec.dataset.s===0?'Answer the provenance check first':'Answer every box on this page to go on');});}
+
+function bindNotes(){document.querySelectorAll('textarea[data-k]').forEach(t=>{const k=t.getAttribute('data-k');
+  if(S.notes[k])t.value=S.notes[k];
+  t.addEventListener('input',()=>{S.notes[k]=t.value;persist();gate();});});}
+
+function lockAndReveal(k){
+  if(k==='press'){if(!S.verdicts.press)return;}
+  if(k==='d2'||k==='d3'){const b=document.getElementById(k+'Btn');if(!b||b.disabled)return;}
+  S.locked[k]=1;S.open[k]=1;persist();
+  document.getElementById(k+'Reveal').classList.add('on');
+  if(k==='press')buildPressYou();
+  renderCards();renderChoices();gate();}
+
+function deliverD1(){const b=document.getElementById('d1Btn');if(!b||b.disabled)return;
+  S.locked.d1=1;persist();renderCards();renderChoices();gate();
+  S.max=Math.max(S.max,3);persist();buildSteps();go(3);}
+
+function buildPressYou(){const v=S.verdicts.press,el=document.getElementById('pressYou');if(!el)return;
+  el.innerHTML=v==='none'?'<b>You said "no more confident than one paper."</b> The wire log below shows why that was the better call.'
+    :v==='some'?'<b>You said "somewhat more confident."</b> Read the wire log below, then decide whether even "somewhat" was too much.'
+    :v==='high'?'<b>You said "much more confident."</b> Read the wire log below, then decide whether that was justified.':'';}
+
+/* ---------- the finding: branched by the group's own verdict ---------- */
+function buildFinding(){
+  const v=S.verdicts.d1,st=document.getElementById('findStamp'),lede=document.getElementById('findLede'),p4=document.getElementById('ov4Prompt');
+  st.classList.remove('upheld','neutral');
+  if(v==='broke'){st.textContent='You have been overruled';
+    lede.innerHTML='You found that the ship broke in two. <strong>The Court found the opposite.</strong>';
+    p4.innerHTML='You and the Court reached <b>opposite</b> findings. Is that because you weighed the same evidence differently, or because you had different evidence in front of you? Can you even tell?';}
+  else if(v==='intact'){st.textContent='Your finding is upheld';st.classList.add('upheld');
+    lede.innerHTML='You found that the ship sank intact. <strong>So did the Court.</strong>';
+    p4.innerHTML='You reached the Court\'s finding. Look at the reasons you gave on your cards. <b>Does the Court give any of them?</b> Can you tell whether you got there the same way?';}
+  else if(v==='cant'){st.textContent='The Court decided anyway';st.classList.add('neutral');
+    lede.innerHTML='You found that it <em>cannot be determined</em>. <strong>The Court did not stop there.</strong>';
+    p4.innerHTML='You declined to decide. The Court decided. <b>What did the Court have to assume, or leave out, to reach a definite finding?</b>';}
+  else{st.textContent='The Court has decided';st.classList.add('neutral');
+    lede.innerHTML='You have delivered your finding. <strong>So did they.</strong>';
+    p4.innerHTML='Compare your finding and your reasons with the Court\'s. Where you can\'t compare them, say why.';}}
+
+/* ---------- 1985: per-card replay that never grades the reason by the verdict ---------- */
 function buildReplay(){
-  const m=S.marks.d1||{},rows=[];
+  const m=S.marks.d1||{},rows=[],v=S.verdicts.d1;
   D1.forEach(c=>{const x=m[c.id];if(!x)return;
     const rn=(REASONS.find(r=>r[0]===x.r)||[,''])[1];
-    const last=c.name.split(' ').slice(-1)[0];
-    if(x.v==='aside'&&c.truth==='right')rows.push(`<div class="row bad"><div class="mk">SET ASIDE</div><div><b>${c.name}</b> — <em>${rn}</em>.<br><b>${last} was right.</b></div></div>`);
-    else if(x.v==='rely'&&c.truth==='wrong')rows.push(`<div class="row bad"><div class="mk">RELIED ON</div><div><b>${c.name}</b>.<br><b>He was wrong.</b></div></div>`);
-    else if(x.v==='rely'&&c.truth==='right')rows.push(`<div class="row good"><div class="mk">RELIED ON</div><div><b>${c.name}</b> — and was right.</div></div>`);
-    else rows.push(`<div class="row good"><div class="mk">SET ASIDE</div><div><b>${c.name}</b> — <em>${rn}</em>. He was indeed wrong.</div></div>`);});
-  rows.push(`<div class="row"><div class="mk">↓</div><div>The Court set aside the same witnesses, for reasons on the same list. <b>It was not stupid. It was wrong.</b></div></div>`);
-  document.getElementById('d1Replay').innerHTML=rows.join('');}
+    const lbl=x.v==='rely'?'RELIED ON':'SET ASIDE';
+    const yours=x.v==='aside'?`<span class="sub">Your reason: <em>${rn||'none given'}</em></span>`:'';
+    let extra='';
+    if(c.id==='light'&&x.v==='aside'&&x.r==='interest')
+      extra=`<span class="sub"><b>The wreck shows his claim was false. It does not show he lied, and nothing on his card shows that either.</b> He may have been honestly wrong. What on his card <em>does</em> give you a reason to doubt him? Look at the words "could not".</span>`;
+    else if(c.id==='light'&&x.v==='aside'&&x.r==='more')
+      extra=`<span class="sub">"Could not have broken" is not something anyone can see. It is a belief about what the ship was capable of. Your reason is on his card.</span>`;
+    else if(c.id==='light'&&x.v==='rely')
+      extra=`<span class="sub">The Court relied on him too. Was relying on the most senior surviving officer a bad rule, or a reasonable rule that failed here?</span>`;
+    if(c.id==='hart'&&x.v==='rely')
+      extra=`<span class="sub">You relied on an account recorded <b>after</b> the answer was public knowledge. Does it matter, if she turned out to be right?</span>`;
+    if(c.id==='hart'&&x.v==='aside'&&x.r==='late')
+      extra=`<span class="sub">Hart was right about the break, and your reason still stands: this account was recorded after the wreck was found. Being right and being good evidence are not the same thing.</span>`;
+    if(c.id==='bride')
+      extra=`<span class="sub">Did you treat his silence about a break as a claim that the ship stayed whole? Silence is not a claim.</span>`;
+    rows.push(`<div class="row"><div class="mk">${lbl}</div><div><b>${c.name}</b>. ${c.wreck}${yours}${extra}</div></div>`);});
+  if(v==='broke')rows.push(`<div class="row ask"><div class="mk">Your finding</div><div><b>The ship broke in two.</b> The wreck agrees with you. The question now is whether your reasons <em>deserved</em> to be right.</div></div>`);
+  else if(v==='intact')rows.push(`<div class="row ask"><div class="mk">Your finding</div><div><b>The ship sank intact</b>, the Court's finding. The wreck shows it was false.</div></div>`);
+  else if(v==='cant')rows.push(`<div class="row ask"><div class="mk">Your finding</div><div><b>Cannot be determined.</b> In 1912 nobody could look. In 1985 someone did.</div></div>`);
+  document.getElementById('d1Replay').innerHTML=rows.join('');
+  const head=document.getElementById('ruleHead'),p=document.getElementById('rulePrompt');
+  if(v==='broke'){head.textContent='Was your rule good, or were you lucky?';
+    p.innerHTML='The wreck shows your <b>finding</b> was true. Does it show your <b>reasons</b> were good? Pick one card you set aside and say whether 1985 tells you anything at all about the reason you gave.';}
+  else if(v==='intact'){head.textContent='Was your rule bad, or were you unlucky?';
+    p.innerHTML='The reasons on your list (position, rank, oath, how long after the event) are the kind any careful inquiry uses. <b>Which of your reasons let you down here?</b> Would you drop it next time, or would it still be the right rule?';}
+  else if(v==='cant'){head.textContent='Too cautious, or exactly right for 1912?';
+    p.innerHTML='In 1912 nobody could see the wreck. <b>Was "cannot be determined" the best answer a knower could give then?</b> Is it still the best answer now? What changed?';}
+  else{head.textContent='Your rule';p.innerHTML='Was your rule a good one? How do you know?';}}
 
-const LABELS=["Brief","A · First reports","B · Break-up","The finding","1985","C · Shots","D · Panic","Close"];
-function buildSteps(){document.getElementById('steps').innerHTML=LABELS.map((l,i)=>`<button onclick="go(${i})">${l}</button>`).join('');}
-function go(i){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',+s.dataset.s===i));
-  document.querySelectorAll('#steps button').forEach((b,j)=>b.classList.toggle('on',j===i));
-  if(i===4)buildReplay();window.scrollTo({top:0,behavior:'smooth'});}
+/* ---------- group KQ ---------- */
+function renderGkqChoice(){const el=document.getElementById('gkqChoice');if(!el)return;
+  el.innerHTML=GKQ.map(g=>`<button class="${S.gkq===g.id?'sel':''}" onclick="setGkq('${g.id}')"><span class="cellchip ${g.cell}">${g.id}</span>${g.q}</button>`).join('');}
+function setGkq(id){S.gkq=id;persist();renderGkqChoice();buildGkq();refreshNext();}
+function buildGkq(){const g=GKQ.find(x=>x.id===S.gkq),panel=document.getElementById('gkqPanel');
+  if(!g){panel.style.display='none';return;}
+  panel.style.display='block';
+  document.getElementById('gkqText').innerHTML=`<span class="cellchip ${g.cell}">${g.id}</span>${g.q}`;
+  document.getElementById('gkqEarlier').innerHTML=g.from.map(k=>{const a=(S.notes[k]||'').trim();
+    return `<div class="earlier"><div class="q">${NOTE_LABEL[k]||k}</div><div class="a ${a?'':'none'}">${a?esc(a):'(nothing written)'}</div></div>`;}).join('');}
 
-function sheet(){return{v:2,group:document.getElementById('groupName').value||'(unnamed group)',verdicts:S.verdicts,marks:S.marks,notes:S.notes};}
+/* ---------- navigation: screens unlock in order; no skipping ahead to a reveal ---------- */
+const LABELS=["Brief","A · First reports","B · Break-up","The finding","1985","C · Shots","D · Panic","Whole class","Group KQ"];
+function buildSteps(){document.getElementById('steps').innerHTML=LABELS.map((l,i)=>`<button ${i>S.max?'disabled':''} onclick="go(${i})">${l}</button>`).join('');
+  document.querySelectorAll('#steps button').forEach((b,j)=>b.classList.toggle('on',j===S.cur));}
+function go(i){if(i>S.max)return;S.cur=i;persist();
+  document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',+s.dataset.s===i));
+  if(i===3)buildFinding();
+  if(i===4)buildReplay();
+  if(i===8){renderGkqChoice();buildGkq();}
+  buildSteps();refreshNext();window.scrollTo({top:0,behavior:'smooth'});}
+function advance(i){const cur=document.querySelector(`section[data-s="${i-1}"]`);
+  if(cur&&!sectionOk(cur)){refreshNext();return;}
+  S.max=Math.max(S.max,i);persist();buildSteps();go(i);}
+
+/* ---------- export / compare ---------- */
+function sheet(){return{v:3,group:document.getElementById('groupName').value||'(unnamed group)',verdicts:S.verdicts,marks:S.marks,notes:S.notes,gkq:S.gkq};}
 function exportSheet(){const d=sheet();const b=new Blob([JSON.stringify(d,null,1)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(b);
   a.download='titanic-'+d.group.replace(/[^a-z0-9]+/gi,'-').toLowerCase()+'.json';
   document.body.appendChild(a);a.click();a.remove();}
 function reasonTally(marks,dk){const t={},m=(marks&&marks[dk])||{};
-  for(const id in m){if(m[id].v==='aside'&&m[id].r)t[m[id].r]=(t[m[id].r]||0)+1;}
-  return Object.entries(t).sort((a,b)=>b[1]-a[1]).map(([r,n])=>((REASONS.find(x=>x[0]===r)||[,r])[1])+(n>1?' ×'+n:'')).join('<br>')||'—';}
+  for(const id in m){if(m[id]&&m[id].v==='aside'&&m[id].r)t[m[id].r]=(t[m[id].r]||0)+1;}
+  return Object.entries(t).sort((a,b)=>b[1]-a[1]).map(([r,n])=>esc((REASONS.find(x=>x[0]===r)||[,r])[1])+(n>1?' ×'+n:'')).join('<br>')||'—';}
 function lbl(k,v){const f=(CHOICES[k]||[]).find(c=>c[0]===v);return f?f[1]:'—';}
 let loaded=[];
 function renderCompare(){if(!loaded.length){document.getElementById('cmpOut').innerHTML='';return;}
-  const h=['<table class="cmp"><tr><th>Group</th><th>Break-up</th><th>Shots fired?</th><th>Anyone hit?</th><th>Panic?</th><th>Reasons used to set evidence aside (B)</th></tr>'];
+  const h=['<table class="cmp"><tr><th>Group</th><th>Break-up</th><th>Shots fired?</th><th>Anyone hit?</th><th>Panic?</th><th>Reasons used to set evidence aside (B)</th><th>Group KQ</th></tr>'];
   loaded.forEach(d=>{const v=d.verdicts||{};
-    h.push(`<tr><td><b>${d.group||'?'}</b></td><td>${lbl('d1',v.d1)}</td><td>${lbl('d2a',v.d2a)}</td><td>${lbl('d2b',v.d2b)}</td><td>${lbl('d3',v.d3)}</td><td>${reasonTally(d.marks,'d1')}</td></tr>`);});
+    h.push(`<tr><td><b>${esc(d.group||'?')}</b></td><td>${lbl('d1',v.d1)}</td><td>${lbl('d2a',v.d2a)}</td><td>${lbl('d2b',v.d2b)}</td><td>${lbl('d3',v.d3)}</td><td>${reasonTally(d.marks,'d1')}</td><td>${esc(d.gkq||'—')}</td></tr>`);});
   h.push('</table>');
   const vs=new Set(loaded.map(d=>(d.verdicts||{}).d1));
-  h.push(`<p class="hint" style="margin-top:.9rem">${vs.size>1?'<b>You reached different findings.</b> Look along the last column: did you disagree about the evidence, or about the rule?':'<b>You all reached the same finding.</b> Now check the last column — did you get there the same way? If not, what does that tell you about the finding?'}</p>`);
+  h.push(`<p class="hint" style="margin-top:.9rem">${vs.size>1?'<b>You reached different findings.</b> Look along the reasons column: did you disagree about the evidence, or about the rule?':'<b>You all reached the same finding.</b> Now check the reasons column: did you get there the same way? If not, what does that tell you about the finding?'}</p>`);
+  const ks=new Set(loaded.map(d=>d.gkq).filter(Boolean));
+  if(loaded.length>1&&ks.size<4)h.push(`<p class="hint">Group KQs covered so far: ${[...ks].sort().join(', ')||'none'}.</p>`);
   document.getElementById('cmpOut').innerHTML=h.join('');}
 function readFiles(fl){[...fl].forEach(f=>{const r=new FileReader();
-  r.onload=()=>{try{const d=JSON.parse(r.result);if(d&&d.verdicts){loaded.push(d);renderCompare();}}catch(e){alert('Could not read '+f.name);}};
+  r.onload=()=>{try{const d=JSON.parse(r.result);if(d&&d.verdicts){loaded.push(d);renderCompare();}}catch(e){document.getElementById('cmpOut').insertAdjacentHTML('beforeend',`<p class="hint">Could not read ${esc(f.name)}.</p>`);}};
   r.readAsText(f);});}
 function resetAll(){if(!confirm('Clear everything for this group?'))return;
   try{localStorage.removeItem(KEY);}catch(e){}location.reload();}
 
-buildSteps();renderCards();renderChoices();bindNotes();gate();buildReplay();
+/* ---------- start ---------- */
+renderCards();renderChoices();bindNotes();
+for(const k in S.open){const el=document.getElementById(k+'Reveal');if(el)el.classList.add('on');}
+buildPressYou();buildFinding();buildReplay();
+gate();
 const gn=document.getElementById('groupName');gn.value=S.group||'';
 gn.addEventListener('input',()=>{S.group=gn.value;persist();});
 const drop=document.getElementById('drop');
@@ -658,7 +882,8 @@ const drop=document.getElementById('drop');
 ['dragleave','drop'].forEach(e=>drop.addEventListener(e,ev=>{ev.preventDefault();drop.classList.remove('hot')}));
 drop.addEventListener('drop',ev=>readFiles(ev.dataTransfer.files));
 document.getElementById('fileIn').addEventListener('change',ev=>readFiles(ev.target.files));
-for(const k in S.open){const el=document.getElementById(k+'Reveal');if(el)el.classList.add('on');}
+S.cur=Math.min(typeof S.cur==='number'?S.cur:0,S.max);
+buildSteps();go(S.cur);
 </script>
 </body>
 </html>
