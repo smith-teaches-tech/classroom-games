@@ -71,8 +71,8 @@
     head.appendChild(el("h2",null,esc(def.title)));
     if(def.intro) head.appendChild(el("p",{class:"tt-intro"},def.intro));
     head.appendChild(el("p",{class:"tt-privacy"}, canSave
-      ? "Private to you. Your answers save automatically in this browser on this device only — nobody else sees them and nothing is submitted. Use <b>Copy for Google Docs</b> to keep them in your RRS."
-      : "Your browser is not letting this page save answers (private browsing can do this). You can still type — just copy everything into your RRS Google Doc before you leave."));
+      ? "Private to you. Your answers save automatically, but only in this browser on this device. Nobody else sees them, and nothing is submitted. Use <b>Copy for Google Docs</b> to keep your answers in your RRS."
+      : "Your browser won't let this page save your answers (private browsing can cause this). You can still type. Copy everything into your RRS Google Doc before you leave the page."));
     mount.appendChild(head);
 
     var form = el("div",{class:"tt-body"});
@@ -119,8 +119,8 @@
         var tgt = typeof p.target==="function" ? p.target() : p.target;
         var msg = "<b>"+sum+"</b>"+(tgt?" of "+tgt:"");
         var note = "";
-        if(tgt && sum>=tgt) note = " — target reached.";
-        if(p.warnShare && sum>0 && maxPart/sum > p.warnShare) note += " One category holds more than "+Math.round(p.warnShare*100)+"% of your sources — spread out a little.";
+        if(tgt && sum>=tgt) note = ". Target reached.";
+        if(p.warnShare && sum>0 && maxPart/sum > p.warnShare) note += " One category has more than "+Math.round(p.warnShare*100)+"% of your sources. Try to spread your sources across more categories.";
         t[0].querySelector(".tt-totalval").innerHTML = msg + '<span class="tt-totalnote">'+note+'</span>';
       });
     }
@@ -140,14 +140,14 @@
         status.classList.toggle("ok", ok);
         status.textContent = ok
           ? "Copied. Open your RRS Google Doc and paste (Ctrl+V, or ⌘V on a Mac)."
-          : "Copy didn't work in this browser — select the answers on the page and copy them by hand.";
+          : "Copy didn't work in this browser. Select your answers on the page and copy them by hand.";
       });
     });
 
     var armed = false, armTimer;
     clearBtn.addEventListener("click", function(){
       if(!armed){
-        armed = true; clearBtn.textContent = "Click again to clear everything"; clearBtn.classList.add("armed");
+        armed = true; clearBtn.textContent = "Click again to delete all your answers"; clearBtn.classList.add("armed");
         armTimer = setTimeout(function(){ armed=false; clearBtn.textContent="Clear my answers"; clearBtn.classList.remove("armed"); }, 4000);
         return;
       }

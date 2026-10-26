@@ -23,23 +23,23 @@ ORDER = [
 ]
 BLURB = {
  "language-a": "Close analysis of a literary or language text, supported by literary criticism.",
- "language-b": "The language, culture or literature of the language you are learning, using texts originally in that language.",
+ "language-b": "The language, culture or literature of the language you're learning, studied through texts first written in that language.",
  "business-management": "A real organisation or business issue, analysed with business management tools and theory.",
  "economics": "An economic theory tested against real evidence, often in one place and time period.",
- "global-politics": "A political issue or case, analysed through key political concepts and academic sources.",
- "biology": "A biology experiment (or comparable published data) with controlled variables and a standardised method.",
- "chemistry": "A chemistry investigation (or comparable published data) with controlled variables and a standardised method.",
- "physics": "A physics investigation (or comparable published data) with controlled variables and a standardised method.",
+ "global-politics": "A political issue or case, analysed through the main political concepts and academic sources.",
+ "biology": "A biology experiment (or similar published data) with controlled variables and a standardised method.",
+ "chemistry": "A chemistry investigation (or similar published data) with controlled variables and a standardised method.",
+ "physics": "A physics investigation (or similar published data) with controlled variables and a standardised method.",
  "mathematics": "Mathematics beyond the syllabus, or mathematics used to model or analyse data. A literature review is required.",
  "visual-arts": "Analysis of a small body of artworks in their context, supported by art history and criticism. Images are required.",
 }
 SAMPLE_NAME = {"interdisciplinary": "Interdisciplinary"}  # data/samples.js subject name when it differs from the hub's subject name
 
-SCIENCE_NOTE = ("<b>At ASD:</b> science EEs are expected to be built on primary (experimental) data. "
-                "The IB allows secondary-data science essays, but workshop guidance is that they rarely reach the top bands.")
+SCIENCE_NOTE = ("<b>At ASD:</b> your science EE should use primary (experimental) data. "
+                "The IB allows science essays based on secondary data, but EE workshop guidance says secondary-data essays rarely reach the top mark bands.")
 PRIMARY_NOTE = {
- "lang": "Your primary text (the novel, play, poems, films or songs you analyse) counts towards the collect number. Annotate secondary sources.",
- "va": "The 3 or 4 artworks your essay analyses count towards the collect number. Annotate secondary sources.",
+ "lang": "Your primary text (the novel, play, poems, films or songs you analyse) counts towards your Collect target. Annotate your secondary sources.",
+ "va": "The 3 or 4 artworks your essay analyses count towards your Collect target. Annotate your secondary sources.",
 }
 
 e = html.escape
@@ -54,7 +54,7 @@ PAGE = """<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{title} — EE Subject Guides</title>
+<title>{title} | EE Subject Guides</title>
 <meta name="description" content="{desc}">
 <link rel="stylesheet" href="{up}shared/ee.css">
 <link rel="stylesheet" href="{up}shared/steps.css">
@@ -102,7 +102,7 @@ def crumbs(up, last, mid=None):
 def samples_block(sample_subject, slug):
     return """
     <h2>Sample essays in {s}</h2>
-    <p>IB example essays with examiner marks. Letter grades are estimates until the IB publishes official 2027 boundaries.</p>
+    <p>IB sample essays with the examiner's marks. The letter grades are estimates until the IB publishes the official 2027 grade boundaries.</p>
     <ul class="samples-list" id="samples"></ul>
     <p><a class="btn" href="../../samples/?subject={q}">Open all {s} samples</a></p>""".format(s=e(sample_subject), q=e(sample_subject).replace(" ", "%20"))
 
@@ -114,7 +114,7 @@ SAMPLES_JS = """<script src="../../data/samples.js"></script>
   function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
   var list = (window.EE_SAMPLES||[]).filter(function(s){ return s.subject===subj; });
   list.sort(function(a,b){ return (b.total==null?-1:b.total/b.outOf) - (a.total==null?-1:a.total/a.outOf); });
-  if(!list.length){ ul.outerHTML = '<p class="muted">No IB sample essays in this subject yet. Use the sample essays in a related subject, and the examples above.</p>'; return; }
+  if(!list.length){ ul.outerHTML = '<p class="muted">There are no IB sample essays in this subject yet. Use the sample essays in a related subject, and the examples above.</p>'; return; }
   ul.innerHTML = list.map(function(s){
     var g = letter(s.total, s.outOf), mark = s.total==null ? "mark in the examiner comments" : s.total+"/"+s.outOf+(s.outOf===34?" (previous rubric)":"");
     return '<li><span class="gr">'+g+'</span><span class="small muted">'+esc(mark)+'</span><br>'+esc(s.rq)+'</li>';
@@ -125,10 +125,10 @@ SAMPLES_JS = """<script src="../../data/samples.js"></script>
 def tool_def(slug, subject, think):
     prompts = [{"id": "topic", "type": "text", "label": "My idea or broad topic right now:", "prefill": "__PREFILL_TOPIC__"}]
     prompts += [{"id": "q%d" % (i + 1), "type": "long", "label": q, "rows": 3} for i, q in enumerate(think)]
-    prompts.append({"id": "verdict", "type": "choice", "label": "After answering these questions, %s is:" % subject,
+    prompts.append({"id": "verdict", "type": "choice", "label": "Now that I've answered these questions, I think %s is:" % subject,
                     "options": ["A strong fit for my idea", "Possible, but I need to check with a teacher", "Probably not the right subject for this idea"]})
     d = {"id": "hub-" + slug, "stepLabel": "Subject guide · " + subject, "title": "Is %s right for my idea?" % subject,
-         "intro": "Private to you. Use these questions to test your idea against what the guide expects in %s, then copy your answers into your RRS." % subject,
+         "intro": "Your answers are private to you. Use these questions to test your idea against what the guide expects in %s. Then copy your answers into your RRS (researcher's reflection space: your own EE notebook)." % subject,
          "sections": [{"heading": "Test my idea", "prompts": prompts}]}
     s = json.dumps(d, ensure_ascii=False, indent=1)
     return s.replace('"__PREFILL_TOPIC__"', bs.PREFILLS["__PREFILL_TOPIC__"])
@@ -226,7 +226,7 @@ EETools.define(%s);
                        body="\n".join(b), back_href="../", back_text="← All subject guides", scripts=scripts)
 
 def index_page(hubs):
-    b = ['    <div class="note"><p style="margin:0">Your subject choice and one backup subject are due on the date in the EE calendar. Read the guide for your first choice <b>and</b> your backup, then use the thinking tool at the bottom of each page to test your idea.</p></div>',
+    b = ['    <div class="note"><p style="margin:0">Your subject choice and one backup subject are due on the date in the EE calendar. Read the subject guide for your first choice <b>and</b> for your backup. Then use the thinking tool at the bottom of each subject guide to test your idea.</p></div>',
          '    <p class="small muted" id="mine-note" hidden>Your subject from step 1 is highlighted.</p>']
     for gname, slugs in ORDER:
         tiles = []
@@ -250,7 +250,7 @@ def index_page(hubs):
 </script>"""
     return PAGE.format(title="Subject guides", desc="What an Extended Essay needs in each ASD subject, from the IB guide.", up="../", bodyattr="",
                        crumbs=crumbs("../", "Subject guides"), eyebrow="For Students", h1="Subject guides",
-                       lede="What the IB expects from an Extended Essay in each subject you can choose at ASD. Read these before you choose your subject.",
+                       lede="What the IB expects from an Extended Essay in each subject you can choose at ASD. Read these subject guides before you choose your subject.",
                        body="\n".join(b), back_href="../", back_text="← Extended Essay hub", scripts=script)
 
 def build():

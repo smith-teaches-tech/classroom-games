@@ -5,69 +5,69 @@
     "group": "Sciences",
     "pages": "63–68",
     "distinctive": [
-      "A biology EE lets you investigate a focused research question by collecting primary data, secondary data, or both. You gather your evidence using scientific methodology, and your findings must lead to a valid conclusion based on that evidence. The guide names three features that separate a science essay from pseudoscience: developing hypotheses, producing replicable data and using peer-reviewed publications.",
-      "A good biology EE uses accepted biological methodology, shows that you understand the underlying concepts and uses correct terminology. If your essay is based on primary data, your experiment must use controlled, independent variables and a standardised methodology so that valid conclusions can be drawn. The guide gives one example of a good biology EE: an essay exploring the anti-proliferative effect of anthocyanin.",
-      "You do not need a university lab. The guide states that EEs based on simple experimental data are just as valid as research done in university labs or hospitals. Your conclusions must be supported by your data, but your hypothesis does not have to be confirmed: the guide treats \"negative\" results as just as valid as \"positive\" results."
+      "In a biology EE, you investigate a focused research question. You can use primary data (from your own experiment), secondary data (from published work), or both. You collect your evidence with scientific methods, and your conclusion must follow from that evidence. The guide lists three features that separate a science essay from pseudoscience: you develop hypotheses, you produce data that someone else could replicate, and you use peer-reviewed publications.",
+      "A good biology EE uses accepted biological methods. It shows that you understand the concepts behind your topic, and it uses the correct terms. If your essay uses primary data, your experiment must have controlled, independent variables and a standardised method, so that your conclusions are valid. The guide's example of a good biology EE looks at the anti-proliferative effect of anthocyanin (its effect on stopping cells from multiplying).",
+      "You don't need a university lab. The guide says an EE based on simple experiments is just as valid as research done in a university lab or a hospital. Your data must support your conclusions, but your hypothesis doesn't have to be proved right. The guide counts \"negative\" results as just as valid as \"positive\" results."
     ],
     "sources": {
-      "primary": "Primary data in biology comes from your own experiment, which must use controlled, independent variables and a standardised methodology.",
-      "secondary": "Secondary data comes from published scientific articles or databases. The studies you use must follow similar standardised approaches and controls, and preferably similar methodologies, so that you can compare their data."
+      "primary": "In biology, primary data comes from your own experiment. Your experiment must have controlled, independent variables and a standardised method.",
+      "secondary": "Secondary data comes from published scientific articles or databases. The studies you use must have similar standardised approaches and controls (and ideally similar methods), so that you can compare their data."
     },
     "methods": [
-      "Experimental research: you design an experiment with a controlled, independent variable and a standardised methodology, then measure the dependent variable under standardised conditions.",
-      "A pilot experiment: the guide recommends one when your independent variable may need fine-tuning, for example nitrate concentrations that could kill the plants you are growing.",
-      "Research based on secondary data: you select studies or databases using predetermined criteria, state those criteria explicitly in your essay, and carry out the analysis yourself.",
-      "Analysis that follows standard processes: qualitative and quantitative approaches, statistical methods where appropriate, and possibly mathematical transformation of your data."
+      "Experimental research: you design an experiment with a controlled, independent variable and a standardised method. Then you measure the dependent variable under standardised conditions.",
+      "A pilot experiment (a small trial run): the guide recommends one when your independent variable may need adjusting. For example, some nitrate concentrations could kill the plants you're growing.",
+      "Research with secondary data: you choose studies or databases using criteria you set in advance. You state those criteria clearly in your essay, and you do the analysis yourself.",
+      "Standard ways of analysing data: qualitative and quantitative approaches, statistics where they fit, and possibly a mathematical transformation of your data."
     ],
     "choosing_topic": [
-      "Be realistic about the facilities available to you at school.",
-      "Keep a strong focus on biology. Your topic must belong clearly to the subject you submit your EE in.",
-      "Avoid topics that are beyond the scope and timeline of an EE, or that need lengthy research with sophisticated equipment not usually found in school labs.",
-      "Choose a topic that interests you. Preferably, you already know some of the theory and understand the concepts. Conceptual understanding matters even more if your EE is based on secondary data.",
-      "Do not overcomplicate your topic. Keep your investigation manageable within the time you have."
+      "Be realistic about the facilities you have at school.",
+      "Keep a strong focus on biology. Your topic must clearly belong to the subject you submit your EE in.",
+      "Avoid topics that are too big for the scope and timeline of an EE, or that need long research with advanced equipment most school labs don't have.",
+      "Choose a topic that interests you. Ideally, you already know some of the theory and understand the concepts. Understanding the concepts matters even more if your EE uses secondary data.",
+      "Don't make your topic too complicated. Keep your investigation small enough to finish in the time you have."
     ],
     "examples": [
       {
         "topic": "KNO3 concentrations and growth rate",
         "rq": "What is the effect of increasing KNO3 concentrations (0.1 mM, 0.2 mM, 0.3 mM, 0.4 mM, 0.5 mM) on the growth rate of onion roots (Allium cepa)?",
-        "why": "An experimental essay. The guide warns that you may need to fine-tune the independent variable, because some KNO3 concentrations may kill the plants. The guide recommends running a pilot experiment and comparing your concentrations with those used in published scientific work.",
+        "why": "An experimental essay. The guide warns that you may need to adjust the independent variable, because some KNO3 concentrations may kill the plants. The guide recommends a pilot experiment, and comparing your concentrations with the ones used in published research.",
         "page": 64
       },
       {
         "topic": "Parity as a measurable variable in the development of breast cancer",
         "rq": "To what extent is parity a measurable variable in the development of breast cancer?",
-        "why": "A secondary-data essay. Studies from different countries on breast cancer rates and risk factors are found through PubMed, DOAJ, JSTOR, Google Scholar and Science Direct, then selected using predetermined criteria that the essay explains. You analyse the data so that valid comparisons can be made, and you make clear how you interpreted and manipulated the data.",
+        "why": "A secondary-data essay. You find studies from different countries on breast cancer rates and risk factors, using PubMed, DOAJ, JSTOR, Google Scholar and Science Direct. You choose the studies with criteria you set in advance, and your essay explains those criteria. You analyse the data so that you can make valid comparisons, and you show clearly how you interpreted and processed the data.",
         "page": 64
       }
     ],
     "structure": [
-      "Begin with background research on the theories and concepts behind your topic, linked clearly to your research question.",
-      "Define and justify the variables in your research question, and use SI units throughout.",
-      "Describe your methodology in enough detail that someone else could replicate your investigation.",
-      "Present your results in a standardised format with clear headings, units and numbering. Science essays often contain more data than other subjects, so label every table, diagram and graph, process all your data, and include example calculations with uncertainties on your measurements.",
-      "Finish with a conclusion that synthesises your results rather than repeating them, and an evaluation of strengths and weaknesses that covers your sources and suggests improvements."
+      "Start with background research on the theories and concepts behind your topic. Link your background research clearly to your research question.",
+      "Define your variables and explain why you chose them. Use SI units throughout.",
+      "Describe your method in enough detail that someone else could repeat your investigation.",
+      "Present your results in a standard format with clear headings, units and numbering. Science essays often have more data than essays in other subjects. Label every table, diagram and graph, process all your data, and include example calculations with the uncertainties on your measurements.",
+      "End with a conclusion that brings your results together without repeating them. Then evaluate the strengths and weaknesses of your investigation, including your sources, and suggest improvements."
     ],
     "pitfalls": [
-      "Including material that does not serve your research question. The guide's example: if your topic is the kinetics of photosynthesis, a discussion of the morphology of plant leaves is not relevant.",
+      "Including material that doesn't help answer your research question. The guide's example: if your topic is the kinetics of photosynthesis (how fast photosynthesis happens), a discussion of the shape and structure of plant leaves is not relevant.",
       "Reporting results without the theory behind them. The guide's example: an essay on the turnover rate of an enzyme must discuss enzyme kinetics.",
-      "Borrowing someone else's analysis. With secondary data you may copy graphs or tables from your sources, but you must perform the statistical analysis yourself.",
-      "Repeating your results in the conclusion. The guide asks for a supported, well-explained synthesis of your results instead.",
-      "Leaving gaps unexplained. If your research question is not fully answered, state the unresolved issues, account for them and suggest improvements.",
-      "Underestimating published literature. Scientific papers sometimes assume knowledge above the level expected of a DP student, so make sure you understand the concepts before you rely on a paper."
+      "Using someone else's analysis. With secondary data, you may copy graphs or tables from your sources, but you must do the statistical analysis yourself.",
+      "Repeating your results in the conclusion. The guide asks you to bring your results together in a well-explained conclusion that your evidence supports.",
+      "Leaving gaps unexplained. If your research question isn't fully answered, say which issues are still open, explain why, and suggest improvements.",
+      "Underestimating how hard published papers can be. Scientific papers sometimes expect more knowledge than a DP student has, so make sure you understand the concepts before you rely on a paper."
     ],
     "rules": [
-      "Do not choose a topic where collecting enough data to answer your research question would be unethical or impractical.",
+      "Don't choose a topic where collecting enough data to answer your research question would be unethical or impractical.",
       "Use the International System of Units (SI).",
-      "If you carry out research at a university or another external organisation, the methods must be your own, not just methods the organisation has already established.",
-      "If your essay uses secondary data, the analysis of that data must be your own."
+      "If you do research at a university or another outside organisation, the methods must be your own. You can't simply use methods the organisation already has in place.",
+      "If your essay uses secondary data, you must do the analysis of that data yourself."
     ],
     "think": [
-      "Could you run your experiment with the equipment in your school lab, or would your idea need sophisticated equipment that school labs do not usually have?",
-      "Which one independent variable would you change, and how would you keep the other variables controlled?",
+      "Could you run your experiment with your school lab's equipment, or would you need advanced equipment that school labs don't usually have?",
+      "Which one independent variable would you change? How would you control the other variables?",
       "Would collecting enough data to answer your research question be unethical or impractical?",
-      "Which biological theory or concept would you need to explain to make sense of your results, and do you already understand that theory?",
-      "If you used secondary data, could you find studies with similar standardised approaches and controls, so that you can compare their findings?",
-      "Does your research question stay focused on biology, or does your research question drift into chemistry or another subject?"
+      "Which biology theory or concept would explain your results? Do you already understand that theory?",
+      "If you use secondary data, can you find studies with similar standardised approaches and controls, so that you can compare them?",
+      "Does your research question stay focused on biology, or does the question drift into chemistry or another subject?"
     ],
     "refs": {
       "distinctive": "63–64, 67",
@@ -87,69 +87,69 @@
     "group": "Sciences",
     "pages": "63–68",
     "distinctive": [
-      "A chemistry EE lets you investigate a focused research question by collecting primary data, secondary data, or both. You gather your evidence using scientific methodology, and your findings must lead to a valid conclusion based on that evidence. The guide names three features that separate a science essay from pseudoscience: developing hypotheses, producing replicable data and using peer-reviewed publications.",
-      "A good chemistry EE uses accepted chemistry methodology, shows that you understand the underlying concepts and uses correct terminology. If your essay is based on primary data, your experiment must use controlled, independent variables and a standardised methodology so that valid conclusions can be drawn. The guide's chemistry examples show both routes: a practical comparison of two catalysts, and data-based research on pKa values.",
-      "You do not need a university lab. The guide states that EEs based on simple experimental data are just as valid as research done in university labs or hospitals. Your conclusions must be supported by your data, but your hypothesis does not have to be confirmed: the guide treats \"negative\" results as just as valid as \"positive\" results."
+      "In a chemistry EE, you investigate a focused research question. You can use primary data (from your own practical work), secondary data (from published work), or both. You collect your evidence with scientific methods, and your conclusion must follow from that evidence. The guide lists three features that separate a science essay from pseudoscience: you develop hypotheses, you produce data that someone else could replicate, and you use peer-reviewed publications.",
+      "A good chemistry EE uses accepted chemistry methods. It shows that you understand the concepts behind your topic, and it uses the correct terms. If your essay uses primary data, your experiment must have controlled, independent variables and a standardised method, so that your conclusions are valid. The guide's chemistry examples show both routes: a practical comparison of two catalysts, and data-based research on pKa values.",
+      "You don't need a university lab. The guide says an EE based on simple experiments is just as valid as research done in a university lab or a hospital. Your data must support your conclusions, but your hypothesis doesn't have to be proved right. The guide counts \"negative\" results as just as valid as \"positive\" results."
     ],
     "sources": {
-      "primary": "Primary data in chemistry comes from your own practical work, which must use controlled, independent variables and a standardised methodology.",
-      "secondary": "Secondary data comes from published scientific articles or databases. The sources you use must follow similar standardised approaches and controls, and preferably similar methodologies, so that you can compare their data."
+      "primary": "In chemistry, primary data comes from your own practical work. Your practical work must have controlled, independent variables and a standardised method.",
+      "secondary": "Secondary data comes from published scientific articles or databases. The sources you use must have similar standardised approaches and controls (and ideally similar methods), so that you can compare their data."
     },
     "methods": [
-      "Practical research: you select your variables carefully, use a standardised methodology and measure the dependent variable under standardised conditions.",
-      "Data-based research: you take values for your dependent and independent variables from several published sources, state your selection criteria explicitly in your essay, and carry out the analysis yourself.",
-      "Background research before either route: for example, catalytic pathways and mechanisms for a catalysis essay, or acid-base theory and the inductive effect for a pKa essay.",
-      "Analysis that follows standard processes: qualitative and quantitative approaches, statistical methods where appropriate, and possibly mathematical transformation of your data. The guide's chemistry examples present results as graphs interpreted using theory."
+      "Practical research: you choose your variables carefully, use a standardised method, and measure the dependent variable under standardised conditions.",
+      "Data-based research: you take values for your dependent and independent variables from several published sources. You state your selection criteria clearly in your essay, and you do the analysis yourself.",
+      "Background research comes first on either route. For example, a catalysis essay needs catalytic pathways and mechanisms, and a pKa essay needs acid-base theory and the inductive effect.",
+      "Standard ways of analysing data: qualitative and quantitative approaches, statistics where they fit, and possibly a mathematical transformation of your data. The guide's chemistry examples present results as graphs and explain the graphs using theory."
     ],
     "choosing_topic": [
-      "Be realistic about the facilities available to you at school.",
-      "Keep a strong focus on chemistry. Your topic must belong clearly to the subject you submit your EE in.",
-      "Avoid topics that are beyond the scope and timeline of an EE, or that need lengthy research with sophisticated equipment not usually found in school labs.",
-      "Choose a topic that interests you. Preferably, you already know some of the theory and understand the concepts. Conceptual understanding matters even more if your EE is based on secondary data.",
-      "Do not overcomplicate your topic. Keep your investigation manageable within the time you have."
+      "Be realistic about the facilities you have at school.",
+      "Keep a strong focus on chemistry. Your topic must clearly belong to the subject you submit your EE in.",
+      "Avoid topics that are too big for the scope and timeline of an EE, or that need long research with advanced equipment most school labs don't have.",
+      "Choose a topic that interests you. Ideally, you already know some of the theory and understand the concepts. Understanding the concepts matters even more if your EE uses secondary data.",
+      "Don't make your topic too complicated. Keep your investigation small enough to finish in the time you have."
     ],
     "examples": [
       {
         "topic": "The effect of manganese oxide versus copper (II) oxide in the catalysation of hydrogen peroxide",
         "rq": "What is the effect of manganese oxide versus copper (II) oxide in the catalysation of hydrogen peroxide at 21˚C?",
-        "why": "A practical essay. You start with background information on the decomposition of hydrogen peroxide and on different catalytic pathways and mechanisms. You then carry out practical research with carefully selected variables, and produce comparative graphs of your results that you interpret using theory.",
+        "why": "A practical essay. You start with background on how hydrogen peroxide decomposes and on different catalytic pathways and mechanisms. Then you do practical research with carefully chosen variables. You produce graphs that compare your results, and you explain the graphs using theory.",
         "page": 65
       },
       {
         "topic": "The electronegativity of the distinctive atom in inorganic monooxoacids",
         "rq": "How does the electronegativity of the distinctive atom in inorganic mono-oxoacids affect its pKa values?",
-        "why": "The guide describes this essay as typical data-based research. Your background information should cover acid-base theory, the definition of pKa and the inductive effect. You use several sources to find values for the dependent and independent variables, then show the results in a graph that you analyse using the main theoretical issues.",
+        "why": "The guide calls this essay typical data-based research. Your background should cover acid-base theory, what pKa means and the inductive effect. You use several sources to find values for the dependent and independent variables. Then you show the results in a graph and analyse the graph using the main theory.",
         "page": 65
       }
     ],
     "structure": [
-      "Begin with background research on the theories and concepts behind your topic, linked clearly to your research question.",
-      "Define and justify the variables in your research question, and use SI units throughout.",
-      "Describe your methodology in enough detail that someone else could replicate your investigation.",
-      "Present your results in a standardised format with clear headings, units and numbering. Science essays often contain more data than other subjects, so label every table, diagram and graph, process all your data, and include example calculations with uncertainties on your measurements.",
-      "Finish with a conclusion that synthesises your results rather than repeating them, and an evaluation of strengths and weaknesses that covers your sources and suggests improvements."
+      "Start with background research on the theories and concepts behind your topic. Link your background research clearly to your research question.",
+      "Define your variables and explain why you chose them. Use SI units throughout.",
+      "Describe your method in enough detail that someone else could repeat your investigation.",
+      "Present your results in a standard format with clear headings, units and numbering. Science essays often have more data than essays in other subjects. Label every table, diagram and graph, process all your data, and include example calculations with the uncertainties on your measurements.",
+      "End with a conclusion that brings your results together without repeating them. Then evaluate the strengths and weaknesses of your investigation, including your sources, and suggest improvements."
     ],
     "pitfalls": [
-      "Including material that does not serve your research question. The guide expects every element of a science essay to be linked to your line of argument.",
-      "Reporting results without the theory behind them. You must explore and discuss the underlying processes and theories, and the guide says doing so is especially critical in essays based on secondary data.",
-      "Borrowing someone else's analysis. With secondary data you may copy graphs or tables from your sources, but you must perform the statistical analysis yourself.",
-      "Repeating your results in the conclusion. The guide asks for a supported, well-explained synthesis of your results instead.",
-      "Leaving gaps unexplained. If your research question is not fully answered, state the unresolved issues, account for them and suggest improvements.",
-      "Underestimating published literature. Scientific papers sometimes assume knowledge above the level expected of a DP student, so make sure you understand the concepts before you rely on a paper."
+      "Including material that doesn't help answer your research question. The guide expects every part of a science essay to link to your line of argument.",
+      "Reporting results without the theory behind them. You must explore and discuss the processes and theories behind your results. The guide says the theory matters even more in essays based on secondary data.",
+      "Using someone else's analysis. With secondary data, you may copy graphs or tables from your sources, but you must do the statistical analysis yourself.",
+      "Repeating your results in the conclusion. The guide asks you to bring your results together in a well-explained conclusion that your evidence supports.",
+      "Leaving gaps unexplained. If your research question isn't fully answered, say which issues are still open, explain why, and suggest improvements.",
+      "Underestimating how hard published papers can be. Scientific papers sometimes expect more knowledge than a DP student has, so make sure you understand the concepts before you rely on a paper."
     ],
     "rules": [
-      "Do not choose a topic where collecting enough data to answer your research question would be unethical or impractical.",
+      "Don't choose a topic where collecting enough data to answer your research question would be unethical or impractical.",
       "Use the International System of Units (SI).",
-      "If you carry out research at a university or another external organisation, the methods must be your own, not just methods the organisation has already established.",
-      "If your essay uses secondary data, the analysis of that data must be your own."
+      "If you do research at a university or another outside organisation, the methods must be your own. You can't simply use methods the organisation already has in place.",
+      "If your essay uses secondary data, you must do the analysis of that data yourself."
     ],
     "think": [
-      "Could you carry out your practical work with the equipment and chemicals in your school lab, or would your idea need sophisticated equipment that school labs do not usually have?",
-      "Which one independent variable would you change, and how would you keep the other variables, such as temperature, controlled?",
+      "Could you do your practical work with the equipment and chemicals in your school lab, or would you need advanced equipment that school labs don't usually have?",
+      "Which one independent variable would you change? How would you control the other variables, such as temperature?",
       "Would collecting enough data to answer your research question be unethical or impractical?",
-      "Which chemical theory, such as a reaction mechanism or acid-base theory, would you need to explain your results, and do you already understand that theory?",
-      "If you chose data-based research, could you find several published sources that give values for both your dependent and independent variables?",
-      "Does your research question stay focused on chemistry, or does your research question drift into biology, physics or another subject?"
+      "Which chemistry theory (for example, a reaction mechanism or acid-base theory) would you need to explain your results? Do you already understand that theory?",
+      "If you choose data-based research, can you find several published sources that give values for both your dependent and independent variables?",
+      "Does your research question stay focused on chemistry, or does the question drift into biology, physics or another subject?"
     ],
     "refs": {
       "distinctive": "63–65, 67",
@@ -169,69 +169,69 @@
     "group": "Sciences",
     "pages": "63–68",
     "distinctive": [
-      "A physics EE lets you investigate a focused research question by collecting primary data, secondary data, or both. You gather your evidence using scientific methodology, and your findings must lead to a valid conclusion based on that evidence. The guide names three features that separate a science essay from pseudoscience: developing hypotheses, producing replicable data and using peer-reviewed publications.",
-      "A good physics EE uses accepted physics methodology, shows that you understand the underlying concepts and uses correct terminology. If your essay is based on primary data, your experiment must use controlled, independent variables and a standardised methodology so that valid conclusions can be drawn. The guide's physics examples show both routes: measuring the flow of water from an opening, and estimating the mass of Saturn from published data.",
-      "You do not need a university lab. The guide states that EEs based on simple experimental data are just as valid as research done in university labs or hospitals. Your conclusions must be supported by your data, but your hypothesis does not have to be confirmed: the guide treats \"negative\" results as just as valid as \"positive\" results."
+      "In a physics EE, you investigate a focused research question. You can use primary data (from your own experiment), secondary data (from published work), or both. You collect your evidence with scientific methods, and your conclusion must follow from that evidence. The guide lists three features that separate a science essay from pseudoscience: you develop hypotheses, you produce data that someone else could replicate, and you use peer-reviewed publications.",
+      "A good physics EE uses accepted physics methods. It shows that you understand the concepts behind your topic, and it uses the correct terms. If your essay uses primary data, your experiment must have controlled, independent variables and a standardised method, so that your conclusions are valid. The guide's physics examples show both routes: measuring how water flows out of an opening, and estimating the mass of Saturn from published data.",
+      "You don't need a university lab. The guide says an EE based on simple experiments is just as valid as research done in a university lab or a hospital. Your data must support your conclusions, but your hypothesis doesn't have to be proved right. The guide counts \"negative\" results as just as valid as \"positive\" results."
     ],
     "sources": {
-      "primary": "Primary data in physics comes from your own experiment, which must use controlled, independent variables and a standardised methodology.",
-      "secondary": "Secondary data comes from published scientific articles or databases. The sources you use must follow similar standardised approaches and controls, and preferably similar methodologies, so that you can compare their data."
+      "primary": "In physics, primary data comes from your own experiment. Your experiment must have controlled, independent variables and a standardised method.",
+      "secondary": "Secondary data comes from published scientific articles or databases. The sources you use must have similar standardised approaches and controls (and ideally similar methods), so that you can compare their data."
     },
     "methods": [
-      "Experimental research: you build a set-up that measures your dependent variable under standardised conditions while you control the other variables. In the guide's water-flow example, the set-up must allow constant measurement of two speeds during the flow time.",
-      "Research based on secondary data: you work out what information your research question requires and how that information can be obtained, state your selection criteria explicitly in your essay, and carry out the analysis yourself.",
-      "Applying fundamental principles to the problem: the guide's water-flow example treats the event holistically using the principles of fluid dynamics.",
-      "Analysis that follows standard processes: qualitative and quantitative approaches, statistical methods where appropriate, and possibly mathematical transformation of your data."
+      "Experimental research: you build a set-up that measures your dependent variable under standardised conditions while you control the other variables. In the guide's water-flow example, the set-up must measure two speeds the whole time the water is flowing.",
+      "Research with secondary data: you work out what information your research question needs and how to get that information. You state your selection criteria clearly in your essay, and you do the analysis yourself.",
+      "Applying fundamental principles to the problem: the guide's water-flow example looks at the whole event using the principles of fluid dynamics.",
+      "Standard ways of analysing data: qualitative and quantitative approaches, statistics where they fit, and possibly a mathematical transformation of your data."
     ],
     "choosing_topic": [
-      "Be realistic about the facilities available to you at school.",
-      "Keep a strong focus on physics. Your topic must belong clearly to the subject you submit your EE in.",
-      "Avoid topics that are beyond the scope and timeline of an EE, or that need lengthy research with sophisticated equipment not usually found in school labs.",
-      "Choose a topic that interests you. Preferably, you already know some of the theory and understand the concepts. Conceptual understanding matters even more if your EE is based on secondary data.",
-      "Do not overcomplicate your topic. Keep your investigation manageable within the time you have."
+      "Be realistic about the facilities you have at school.",
+      "Keep a strong focus on physics. Your topic must clearly belong to the subject you submit your EE in.",
+      "Avoid topics that are too big for the scope and timeline of an EE, or that need long research with advanced equipment most school labs don't have.",
+      "Choose a topic that interests you. Ideally, you already know some of the theory and understand the concepts. Understanding the concepts matters even more if your EE uses secondary data.",
+      "Don't make your topic too complicated. Keep your investigation small enough to finish in the time you have."
     ],
     "examples": [
       {
         "topic": "The relationship between exit velocity and the speed of the top surface of water",
         "rq": "Neglecting friction, how does the exit velocity, V, relate to the speed of the top surface of the water, v, at distance, h, above the opening?",
-        "why": "An essay based on primary data. The guide presents the investigation as a chance to look at the event holistically by applying fundamental principles of fluid dynamics. Your set-up must allow constant measurement of the two speeds during the flow time.",
+        "why": "An essay based on primary data. The guide presents the water-flow investigation as a chance to look at the whole event by applying the fundamental principles of fluid dynamics. Your set-up must measure both speeds the whole time the water is flowing.",
         "page": 66
       },
       {
         "topic": "Estimating the mass of Saturn",
         "rq": "From data related to Saturn’s satellites and rings, what is the best estimate of Saturn’s mass?",
-        "why": "An essay based on secondary data. You would need to consider a number of Saturn's satellites, both near and far. You would also investigate the nature of the rings, what information is required and how that information can be obtained.",
+        "why": "An essay based on secondary data. You would need to look at several of Saturn's satellites, both near and far. You would also investigate the nature of Saturn's rings, what information you need and how to get that information.",
         "page": 66
       }
     ],
     "structure": [
-      "Begin with background research on the theories and concepts behind your topic, linked clearly to your research question.",
-      "Define and justify the variables in your research question, and use SI units throughout.",
-      "Describe your methodology in enough detail that someone else could replicate your investigation.",
-      "Present your results in a standardised format with clear headings, units and numbering. Science essays often contain more data than other subjects, so label every table, diagram and graph, process all your data, and include example calculations with uncertainties on your measurements.",
-      "Finish with a conclusion that synthesises your results rather than repeating them, and an evaluation of strengths and weaknesses that covers your sources and suggests improvements."
+      "Start with background research on the theories and concepts behind your topic. Link your background research clearly to your research question.",
+      "Define your variables and explain why you chose them. Use SI units throughout.",
+      "Describe your method in enough detail that someone else could repeat your investigation.",
+      "Present your results in a standard format with clear headings, units and numbering. Science essays often have more data than essays in other subjects. Label every table, diagram and graph, process all your data, and include example calculations with the uncertainties on your measurements.",
+      "End with a conclusion that brings your results together without repeating them. Then evaluate the strengths and weaknesses of your investigation, including your sources, and suggest improvements."
     ],
     "pitfalls": [
-      "Including material that does not serve your research question. The guide expects every element of a science essay to be linked to your line of argument.",
-      "Reporting results without the theory behind them. You must explore and discuss the underlying processes and theories, and the guide says doing so is especially critical in essays based on secondary data.",
-      "Borrowing someone else's analysis. With secondary data you may copy graphs or tables from your sources, but you must perform the statistical analysis yourself.",
-      "Repeating your results in the conclusion. The guide asks for a supported, well-explained synthesis of your results instead.",
-      "Leaving gaps unexplained. If your research question is not fully answered, state the unresolved issues, account for them and suggest improvements.",
-      "Underestimating published literature. Scientific papers sometimes assume knowledge above the level expected of a DP student, so make sure you understand the concepts before you rely on a paper."
+      "Including material that doesn't help answer your research question. The guide expects every part of a science essay to link to your line of argument.",
+      "Reporting results without the theory behind them. You must explore and discuss the processes and theories behind your results. The guide says the theory matters even more in essays based on secondary data.",
+      "Using someone else's analysis. With secondary data, you may copy graphs or tables from your sources, but you must do the statistical analysis yourself.",
+      "Repeating your results in the conclusion. The guide asks you to bring your results together in a well-explained conclusion that your evidence supports.",
+      "Leaving gaps unexplained. If your research question isn't fully answered, say which issues are still open, explain why, and suggest improvements.",
+      "Underestimating how hard published papers can be. Scientific papers sometimes expect more knowledge than a DP student has, so make sure you understand the concepts before you rely on a paper."
     ],
     "rules": [
-      "Do not choose a topic where collecting enough data to answer your research question would be unethical or impractical.",
+      "Don't choose a topic where collecting enough data to answer your research question would be unethical or impractical.",
       "Use the International System of Units (SI).",
-      "If you carry out research at a university or another external organisation, the methods must be your own, not just methods the organisation has already established.",
-      "If your essay uses secondary data, the analysis of that data must be your own."
+      "If you do research at a university or another outside organisation, the methods must be your own. You can't simply use methods the organisation already has in place.",
+      "If your essay uses secondary data, you must do the analysis of that data yourself."
     ],
     "think": [
-      "Could you build your experimental set-up with the equipment in your school lab, or would your idea need sophisticated equipment that school labs do not usually have?",
-      "Could your set-up measure your dependent variable repeatedly and under standardised conditions?",
-      "Which physical principles would you need to apply to explain your results, and do you already understand those principles?",
-      "If you used secondary data, do you know what information your research question requires and where that information can be obtained?",
+      "Could you build your experimental set-up with the equipment in your school lab, or would you need advanced equipment that school labs don't usually have?",
+      "Could your set-up measure your dependent variable again and again, under standardised conditions?",
+      "Which physics principles would you need to explain your results? Do you already understand those principles?",
+      "If you use secondary data, do you know what information your research question needs and where to find that information?",
       "How would you calculate and report the uncertainties on your measurements?",
-      "Does your research question stay focused on physics, or does your research question drift into mathematics, engineering or another subject?"
+      "Does your research question stay focused on physics, or does the question drift into mathematics, engineering or another subject?"
     ],
     "refs": {
       "distinctive": "63–64, 66–67",

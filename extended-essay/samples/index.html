@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Sample Essays — Extended Essay Hub</title>
+<title>Sample Essays | Extended Essay Hub</title>
 <meta name="description" content="IB example extended essays by subject, with letter grades, examiner marks and reflection forms.">
 <link rel="stylesheet" href="../shared/ee.css">
 <style>
@@ -56,13 +56,13 @@
   <header class="hero">
     <p class="eyebrow">For Students &amp; Teachers</p>
     <h1>Sample essays</h1>
-    <p class="lede">Real IB example essays, sorted by subject. Each one shows the grade it earned, the examiner's marks for each criterion, and — where we have it — the student's Reflection and Progress Form (RPF).</p>
+    <p class="lede">Real IB example essays, sorted by subject. Each essay shows its grade and the examiner's marks for each criterion. Some essays also come with the student's Reflection and Progress Form (RPF).</p>
   </header>
 
   <main>
     <div class="note">
-      <p style="margin:0 0 6px"><b>About the grades.</b> The IB gives every essay a mark out of 30, and the letter grade (A–E) comes from where that mark falls. The IB has not published official 2027 grade boundaries yet, so every letter on this page is an estimate. Read the examiner's comments — they explain the grade far better than the letter does.</p>
-      <p style="margin:0" class="small">Estimated boundaries (out of 30): A 24–30 · B 19–23 · C 14–18 · D 7–13 · E 0–6. A few older essays were marked out of 34 on the previous rubric (A 27–34 · B 21–26 · C 14–20 · D 7–13 · E 0–6); the criteria have changed since, but what makes a strong essay has not.</p>
+      <p style="margin:0 0 6px"><b>About the grades.</b> The IB gives every essay a mark out of 30. The letter grade (A–E) depends on where that mark falls. The IB hasn't published official 2027 grade boundaries yet, so every letter grade on this page is an estimate. Read the examiner's comments. The comments explain the grade far better than the letter does.</p>
+      <p style="margin:0" class="small">Estimated grade boundaries (the mark range for each letter, out of 30): A 24–30 · B 19–23 · C 14–18 · D 7–13 · E 0–6. A few older essays were marked out of 34 on the previous rubric (A 27–34 · B 21–26 · C 14–20 · D 7–13 · E 0–6). The criteria have changed since then. What makes a strong essay hasn't changed.</p>
     </div>
 
     <div class="filters" role="search">
@@ -102,14 +102,14 @@
       var names = {essay:"Read the essay", marks:"Examiner marks & comments", rpf:"Reflection form (RPF)"};
       ["essay","marks","rpf"].forEach(function(k){ if(s.files.indexOf(k)>-1) o.links.push([names[k], "files/"+s.id+"-"+k+".pdf"]); });
       o.title = s.label;
-      o.note = "IB example essay · first assessment 2027";
+      o.note = "IB example essay · new criteria, first assessed in 2027";
     } else if(s.src==="ibo"){
       var n = ("0"+s.n).slice(-2);
       o.links = [["Read the essay", IBO_BASE+"EE_"+s.code+"_example"+n+"_en.pdf"],
                  ["Examiner marks & comments", IBO_BASE+"EE_"+s.code+"_example"+n+"_assessed_en.pdf"],
                  ["Reflection form (RPF)", IBO_BASE+"EE_"+s.code+"_RPF"+n+"_en.pdf"]];
       o.title = "IB example "+s.n;
-      o.note = "Hosted by the IB · marked on the 2027 criteria"+(s.total==null?" — open the examiner comments for the mark":"");
+      o.note = "Hosted by the IB · marked on the 2027 criteria"+(s.total==null?". Open the examiner comments to see the mark.":"");
     } else {
       o.links = [["Read the essay", OLD_PDF+"EE_"+s.code+"_example"+s.letterCode+"_en.pdf"],
                  ["Examiner marks & comments", OLD_PAGE+s.chapter+"&sample-index="+s.idx],
@@ -178,7 +178,7 @@
       var label = s==="Interdisciplinary" ? "Interdisciplinary pathway" : s;
       html += '<section class="subject"><h2>'+esc(label)+' <small>'+items.length+' essay'+(items.length>1?'s':'')+'</small></h2><div class="cards">'+items.map(card).join("")+'</div></section>';
     });
-    document.getElementById("list").innerHTML = html || '<p class="empty">No essays match those filters yet.</p>';
+    document.getElementById("list").innerHTML = html || '<p class="empty">No essays match your filters yet.</p>';
     document.getElementById("count").textContent = shown+" essay"+(shown===1?"":"s");
   }
 

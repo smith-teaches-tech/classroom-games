@@ -14,7 +14,7 @@ TEMPLATE = """<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{page_title} — EE for Students</title>
+<title>{page_title} | EE for Students</title>
 <meta name="description" content="{desc}">
 <link rel="stylesheet" href="../../shared/ee.css">
 <link rel="stylesheet" href="../../shared/steps.css">
@@ -75,7 +75,7 @@ SOURCE_GROUPS = [
  # (data-group, subjects, collect, annotate, what counts)
  ("big",  "Biology, Chemistry, Physics, Business Management, Economics, Global Politics, interdisciplinary essays", 25, 12, "Scholarly articles, books, reports and data."),
  ("va",   "Visual Arts", 20, 10, "Includes the 3 or 4 artworks your essay analyses (your primary sources)."),
- ("lang", "Language A, Language B", 15, 8, "Includes your primary text or texts — the novel, play, poems, films or songs you analyse."),
+ ("lang", "Language A, Language B", 15, 8, "Includes your primary text or texts: the novel, play, poems, films or songs you analyse."),
  ("math", "Mathematics", 10, 6, "Textbooks, papers and reliable mathematical references."),
 ]
 # Which source group the student is in, from their step 1 answers ("" = not chosen yet).
@@ -110,52 +110,52 @@ STEPS = []
 # ───────────────────────── STEP 0 ─────────────────────────
 STEPS.append(dict(
  n=0, crumb="Start here", title="Start here",
- desc="What the IB Extended Essay is, how the steps on this site work, and how to set up your RRS.",
+ desc="What the IB Extended Essay is, how the steps on this site work, and how to set up your RRS (your EE notebook).",
  lede="What the extended essay is, how this site works, and the one document you need before you begin.",
  body="""
     <h2>What the extended essay is</h2>
-    <p class="why">The extended essay (EE) is a piece of independent research on a question you choose. You investigate it, then write up your findings as a formal academic essay.</p>
+    <p class="why">The extended essay (EE) is an independent research project on a question you choose. You investigate your question, then write up what you find as a formal academic essay.</p>
     <div class="kv">
-      <div class="panel"><h3>4,000 words maximum</h3><p>Examiners stop reading at 4,000 words, so anything after that point is not marked.</p></div>
-      <div class="panel"><h3>One subject or two</h3><p>A subject-focused essay uses one DP subject. An interdisciplinary essay combines two DP subjects through one of five frameworks.</p></div>
-      <div class="panel"><h3>Three reflection sessions</h3><p>You meet your supervisor three times: a first session, an interim session, and a final session called the viva voce.</p></div>
-      <div class="panel"><h3>A 500-word reflective statement</h3><p>Written after the viva voce on the Reflection and Progress Form (RPF), and marked under Criterion E.</p></div>
+      <div class="panel"><h3>4,000 words maximum</h3><p>Examiners stop reading at 4,000 words. Anything after that point isn't marked.</p></div>
+      <div class="panel"><h3>One subject or two</h3><p>A subject-focused essay uses one DP (Diploma Programme) subject. An interdisciplinary essay combines two DP subjects through one of five frameworks.</p></div>
+      <div class="panel"><h3>Three reflection sessions</h3><p>You meet your supervisor three times: a first session, an interim (middle) session, and a final session called the viva voce.</p></div>
+      <div class="panel"><h3>A 500-word reflective statement</h3><p>You write it after the viva voce, on the Reflection and Progress Form (RPF). It's marked under Criterion E.</p></div>
     </div>
-    <p>IB examiners mark the essay out of 30 across five criteria (A Framework for the essay, B Knowledge and understanding, C Analysis and line of argument, D Discussion and evaluation, E Reflection). The mark becomes a grade from A to E. Your EE grade and your TOK grade together earn up to three points towards your diploma, and a grade E in the EE is a failing condition.</p>
+    <p>IB examiners mark the essay out of 30 across five criteria (A Framework for the essay, B Knowledge and understanding, C Analysis and line of argument, D Discussion and evaluation, E Reflection). The mark becomes a grade from A to E. Your EE grade and your TOK grade together can earn up to three points towards your diploma. A grade E in the EE is a failing condition: you won't be awarded the diploma.</p>
 
     <h2>How the core fits together</h2>
     <div class="kv">
-      <div class="panel"><h3>CAS</h3><p>Shows you what you care about — often the best source of an EE topic.</p></div>
-      <div class="panel"><h3>TOK</h3><p>Gives you the questioning: what counts as evidence in a subject, and which methods it trusts.</p></div>
-      <div class="panel"><h3>Your subjects</h3><p>Give you the knowledge, concepts and terminology.</p></div>
+      <div class="panel"><h3>CAS</h3><p>Shows you what you care about. What you care about is often the best place to find an EE topic.</p></div>
+      <div class="panel"><h3>TOK</h3><p>Teaches you to ask questions: what counts as evidence in a subject, and which methods the subject trusts.</p></div>
+      <div class="panel"><h3>Your subjects</h3><p>Give you the knowledge, concepts and terms.</p></div>
       <div class="panel"><h3>The EE</h3><p>Is where you put all three together, on your own question.</p></div>
     </div>
 
     <h2>How this site works</h2>
     <p>There are 19 steps in four stages: Explore, Narrow, Research and write, and After submission. Do them in order. Each step page has:</p>
     <ul>
-      <li><b>Why this step matters</b> and <b>what to do</b>, in a short guide.</li>
-      <li><b>A thinking tool</b> — questions that help you brainstorm. Nothing is submitted or graded. Your answers save in your browser, and a button copies them into your RRS Google Doc.</li>
-      <li><b>Before you move on</b> — a short checklist at the end of the thinking tool.</li>
+      <li><b>A short guide:</b> why the step matters and what to do.</li>
+      <li><b>A thinking tool:</b> questions that help you brainstorm. Nothing is submitted or graded. Your answers save in your browser, and a button copies them into your RRS Google Doc.</li>
+      <li><b>Before you move on:</b> a short checklist at the end of the thinking tool.</li>
     </ul>
-    <p>Your extended essay is your own independent work. The thinking tools only ask questions; they never write anything for you.</p>
+    <p>Your extended essay is your own independent work. The thinking tools only ask questions. They never write anything for you.</p>
 
     <h2>Set up your RRS before anything else</h2>
-    <p>The IB strongly recommends that every EE student keeps a <b>researcher's reflection space (RRS)</b>: a place to record what you read, what you think, the questions that come up, and the decisions you make. You will use your RRS to prepare for each reflection session, and it is the best source for your reflective statement at the end.</p>
+    <p>The IB strongly recommends that every EE student keeps a <b>researcher's reflection space (RRS)</b>. Your RRS is your own EE notebook. In it you record what you read, what you think, the questions that come up and the decisions you make. You'll use your RRS to prepare for each reflection session. It's also the best source for your reflective statement at the end.</p>
     <ol class="do">
-      <li>Create a Google Doc called <b>EE RRS — your name</b>.</li>
-      <li>Add a heading for today's date, then copy the thinking tool below into the Google Doc with the <b>Copy for Google Docs</b> button.</li>
-      <li>Do the same at every step. Add your own notes in between — reactions to sources, new questions, things you changed your mind about.</li>
+      <li>Create a Google Doc called <b>EE RRS: your name</b>.</li>
+      <li>Add a heading with today's date. Then use the <b>Copy for Google Docs</b> button to copy the thinking tool below into your RRS.</li>
+      <li>Do the same at every step. Add your own notes in between: reactions to sources, new questions, and things you changed your mind about.</li>
     </ol>
     <p class="src-note">Source: IB <i>Extended essay guide</i> (first assessment 2027), "Reflection and the extended essay" and "Assessment".</p>
 """,
  tool=dict(id="step-0", stepLabel="Start here", title="Who are you as a researcher?",
-  intro="Answer quickly and honestly. You are looking for patterns in what already interests you — the topic often hides in here.",
+  intro="Answer quickly and honestly. You're looking for patterns in what already interests you. Your EE topic is often hiding in your answers.",
   sections=[
    {"heading":"You as a thinker","prompts":[
-     {"id":"questions","type":"long","label":"What questions do you keep coming back to — in class, online, or with friends?","rows":3},
+     {"id":"questions","type":"long","label":"What questions do you keep coming back to, in class, online or with friends?","rows":3},
      {"id":"argue","type":"long","label":"What have you argued about this year? What side were you on, and why?","rows":3},
-     {"id":"flow","type":"text","label":"In which class does time disappear for you?"}]},
+     {"id":"flow","type":"text","label":"In which class do you lose track of time?"}]},
    {"heading":"You as a doer","prompts":[
      {"id":"cas","type":"long","label":"Which CAS experiences mattered most to you? What did they make you curious about?","rows":3},
      {"id":"hobby","type":"long","label":"What do you make, fix, play, collect, follow or practise outside school?","rows":3}]},
@@ -172,71 +172,71 @@ STEPS.append(dict(
 # ───────────────────────── STEP 1 ─────────────────────────
 STEPS.append(dict(
  n=1, crumb="Step 1", title="Choose a subject and a broad topic",
- desc="Choose a broad EE topic, pick the subject-focused or interdisciplinary pathway, and check your subject fits.",
- lede="Start with something you genuinely care about, then decide which subject — or which two subjects — will study it.",
+ desc="Choose a broad EE topic, pick the subject-focused or interdisciplinary pathway, and check that your subject fits.",
+ lede="Start with something you care about. Then decide which subject (or which two subjects) you'll use to study it.",
  body="""
     <h2>Why this step matters</h2>
-    <p class="why">You will live with this topic for more than a year. The IB guide calls choosing a topic "arguably the most important stage" of the extended essay, because it drives everything that follows.</p>
-    <p>At this stage you only need a <b>broad topic</b> — an area such as "sport and national identity" or "water use in desert cities". You will narrow it into a research question later, in steps 8 to 10.</p>
+    <p class="why">You'll work on this topic for more than a year. The IB guide calls choosing a topic "arguably the most important stage" of the extended essay. Your topic shapes everything that follows.</p>
+    <p>For now you only need a <b>broad topic</b>: an area such as "sport and national identity" or "water use in desert cities". You'll narrow your broad topic into a research question later, in steps 8 to 10.</p>
 
     <h2>One topic, several subjects</h2>
-    <p>The same broad topic can become very different essays depending on the subject that studies it. The IB guide uses sport as an example:</p>
+    <p>The same broad topic can become very different essays, depending on which subject you use to study it. The IB guide uses sport as an example:</p>
     <div class="tablewrap"><table class="info">
       <thead><tr><th>Subject</th><th>How that subject might approach sport</th></tr></thead>
       <tbody>
-        <tr><th>Global Politics</th><td>Explore global discourses around women in sport and how these influence political decisions about gender rights.</td></tr>
+        <tr><th>Global Politics</th><td>Explore global discourses (the ways people talk and write) about women in sport, and how these discourses influence political decisions about gender rights.</td></tr>
         <tr><th>Business Management</th><td>Analyse a case study of a brand sponsoring a football club.</td></tr>
       </tbody></table></div>
-    <p>What makes an essay belong to a subject is not the content but the <b>concepts, methods and theories</b> of that subject that you use to investigate it.</p>
+    <p>An essay belongs to a subject when you use that subject's <b>concepts, methods and theories</b> to investigate the topic.</p>
 
     <h2>Choose your pathway</h2>
     <div class="kv">
-      <div class="panel"><h3>Subject-focused pathway</h3><p>One DP subject. The IB strongly recommends a subject you are already studying in the DP, so you can build on concepts and methods you know.</p></div>
-      <div class="panel"><h3>Interdisciplinary pathway</h3><p>Two DP subjects combined, positioned within one of the five interdisciplinary frameworks. The IB strongly recommends that you study at least one of the two subjects.</p></div>
+      <div class="panel"><h3>Subject-focused pathway</h3><p>One DP subject. The IB strongly recommends a subject you already study in the DP, so you can build on concepts and methods you know.</p></div>
+      <div class="panel"><h3>Interdisciplinary pathway</h3><p>Two DP subjects combined, placed within one of the five interdisciplinary frameworks (broad themes set by the IB). The IB strongly recommends that you study at least one of the two subjects.</p></div>
     </div>
     <p><b>The five interdisciplinary frameworks</b>, with some of the IB's suggested topic areas:</p>
     <ul>
-      <li><b>Power, equality, justice</b> — health, education, racism, gender, poverty, fairness, conflict.</li>
-      <li><b>Culture, identity, expression</b> — belief systems, the politics of identity, sporting competitions, art and science, music, protests, cultural heritage, gaming.</li>
-      <li><b>Movement, time, space</b> — migration, refugees, virtual communities, astronomy, urbanism, social media, globalization, museums.</li>
-      <li><b>Evidence, measurement, innovation</b> — art and science, literature and science, mathematics in science, gaming, social media.</li>
-      <li><b>Sustainability, development, change</b> — environmental, social and economic sustainability; economic and social development; food; health; poverty.</li>
+      <li><b>Power, equality, justice:</b> health, education, racism, gender, poverty, fairness, conflict.</li>
+      <li><b>Culture, identity, expression:</b> belief systems, the politics of identity, sporting competitions, art and science, music, protests, cultural heritage, gaming.</li>
+      <li><b>Movement, time, space:</b> migration, refugees, virtual communities, astronomy, urbanism, social media, globalization, museums.</li>
+      <li><b>Evidence, measurement, innovation:</b> art and science, literature and science, mathematics in science, gaming, social media.</li>
+      <li><b>Sustainability, development, change:</b> environmental, social and economic sustainability; economic and social development; food; health; poverty.</li>
     </ul>
-    <p>Your topic only needs to fit one framework broadly, and it does not need to touch every word in the framework's name. The two subjects do not need an even 50/50 balance — the balance depends on your research question.</p>
-    <div class="note warn"><p style="margin:0"><b>Rule:</b> Environmental Systems and Societies (ESS) and Literature and Performance are "cross-disciplinary" subjects. You can write a subject-focused essay in either one, but you cannot use either one in the interdisciplinary pathway.</p></div>
+    <p>Your topic only needs to fit one framework broadly. It doesn't need to cover every word in the framework's name. The two subjects don't need an even 50/50 balance. The balance depends on your research question.</p>
+    <div class="note warn"><p style="margin:0"><b>Rule:</b> Environmental Systems and Societies (ESS) and Literature and Performance are "cross-disciplinary" subjects. You can write a subject-focused essay in either subject. You can't use either one in the interdisciplinary pathway.</p></div>
 
     <h2>Rules to know for your subject</h2>
-    <p>Before you hand in your subject choice, read the <a href="../../subjects/">subject guide</a> for your first choice <b>and</b> your backup subject. Each guide sets out what the IB expects in that subject, with example research questions and a thinking tool to test your idea.</p>
+    <p>Before you hand in your subject choice, read the <a href="../../subjects/">subject guide</a> for your first-choice subject <b>and</b> your backup subject. Each subject guide explains what the IB expects in that subject. It also has example research questions and a thinking tool to test your idea.</p>
     <ul>
-      <li><b>Language A:</b> the essay must be based on one or more clearly defined texts, and at least one text must have been originally written in the language of the essay. You cannot base it on a text studied as part of your language and literature course. Avoid biographical, historical or sociological topics — the focus must be literary or language analysis.</li>
-      <li><b>Language B:</b> you cannot write it in a language you study as Language A. Every text you analyse must have been originally written or spoken in the target language — translations are not accepted.</li>
-      <li><b>Visual Arts:</b> the essay must stay on artistic meaning and analysis; do not drift into psychology, history or sociology, or treat artworks as documentary evidence.</li>
-      <li><b>Mathematics:</b> the essay can be theoretical (mathematics beyond the syllabus) or practical (using mathematics to investigate an issue or data). A review of the literature is always required.</li>
-      <li><b>Every subject:</b> your EE must not duplicate any other work you submit for the diploma, such as an internal assessment (IA).</li>
+      <li><b>Language A:</b> the essay must be based on one or more clearly defined texts. At least one text must have been originally written in the language of your essay. You can't base the essay on a text you studied in your language and literature course. Avoid biographical, historical or sociological topics: the focus must be literary or language analysis.</li>
+      <li><b>Language B:</b> you can't write a Language B essay in a language you study as Language A. Every text you analyse must have been originally written or spoken in the target language (the language you're learning). Translations are not accepted.</li>
+      <li><b>Visual Arts:</b> the essay must stay focused on artistic meaning and analysis. Don't drift into psychology, history or sociology, and don't treat artworks as documentary evidence (records of what happened).</li>
+      <li><b>Mathematics:</b> the essay can be theoretical (mathematics beyond the syllabus) or practical (using mathematics to investigate an issue or data). A review of the literature (what has already been written on your topic) is always required.</li>
+      <li><b>Every subject:</b> your EE must not repeat any other work you submit for the diploma, such as an internal assessment (IA).</li>
     </ul>
 
     <h2>Check: is this really your subject?</h2>
-    <p>Before you go further, make sure the topic belongs to the subject you are choosing. Ask yourself which concepts, theories and methods from that subject you would use. If you cannot name any, the topic may belong to a different subject. Changing subject later costs you time and may involve a fee, so talk to the EE coordinator if you are unsure.</p>
+    <p>Before you go further, make sure your topic belongs to the subject you're choosing. Ask yourself which concepts, theories and methods from that subject you would use. If you can't name any, your topic may belong to a different subject. Changing subject later costs you time and may involve a fee. Talk to the EE coordinator if you're unsure.</p>
     <p class="src-note">Source: IB <i>Extended essay guide</i> (first assessment 2027), "Overview of extended essay pathways", "Generic guidance" and "Subject-specific guidance".</p>
 """,
  tool=dict(id="step-1", stepLabel="Step 1 · Choose a subject and a broad topic", title="Take your idea for a walk",
-  intro="Brainstorm widely first, then choose. Use your answers from Start here if you completed it.",
+  intro="Brainstorm widely first, then choose. If you completed Start here, use your answers from that page.",
   sections=[
    {"heading":"Three possible broad topics","prompts":[
-     {"id":"topics","type":"table","label":"List three broad topics you could research.","columns":["Broad topic","Why I care about it","Which subject(s) could study it","What would that subject ask about it?"],"rows":3,"max":6}]},
+     {"id":"topics","type":"table","label":"List three broad topics you could research.","columns":["Broad topic","Why I care about it","Which subject(s) could study it","What would that subject ask about the topic?"],"rows":3,"max":6}]},
    {"heading":"Your choice","prompts":[
-     {"id":"chosen","type":"text","label":"The broad topic I am going to explore first:"},
+     {"id":"chosen","type":"text","label":"The broad topic I'll explore first:"},
      {"id":"q1","type":"long","label":"What aspect or issue within this broad topic really interests me?","rows":3},
      {"id":"pathway","type":"choice","label":"Which pathway fits this topic best right now?","options":["Subject-focused (one subject)","Interdisciplinary (two subjects)","Not sure yet"]},
      {"id":"subject","type":"choice","label":"Which subject?","options":ASD_SUBJECTS+["Another subject"],"showIf":{"id":"pathway","equals":"Subject-focused (one subject)"}},
-     {"id":"whysf","type":"long","label":"Why is a subject-focused approach appropriate for my topic?","rows":3,"showIf":{"id":"pathway","equals":"Subject-focused (one subject)"}},
+     {"id":"whysf","type":"long","label":"Why does a subject-focused approach suit my topic?","rows":3,"showIf":{"id":"pathway","equals":"Subject-focused (one subject)"}},
      {"id":"sub1","type":"text","label":"First subject:","showIf":{"id":"pathway","equals":"Interdisciplinary (two subjects)"}},
      {"id":"sub2","type":"text","label":"Second subject:","showIf":{"id":"pathway","equals":"Interdisciplinary (two subjects)"}},
      {"id":"framework","type":"choice","label":"Which framework best suits my topic?","options":["Power, equality, justice","Culture, identity, expression","Movement, time, space","Evidence, measurement, innovation","Sustainability, development, change"],"showIf":{"id":"pathway","equals":"Interdisciplinary (two subjects)"}},
-     {"id":"whyid","type":"long","label":"Why does my topic need both subjects? What would each one add that the other cannot?","rows":3,"showIf":{"id":"pathway","equals":"Interdisciplinary (two subjects)"}},
-     {"id":"stretch","type":"long","label":"How can I challenge myself and expand my thinking beyond what we have covered in class?","rows":3}]},
+     {"id":"whyid","type":"long","label":"Why does my topic need both subjects? What would each one add that the other can't?","rows":3,"showIf":{"id":"pathway","equals":"Interdisciplinary (two subjects)"}},
+     {"id":"stretch","type":"long","label":"How can I challenge myself and go beyond what we've covered in class?","rows":3}]},
    {"heading":"Is this really my subject?","prompts":[
-     {"id":"concepts","type":"long","label":"Name two or three concepts, theories or methods from my subject that I could use on this topic.","hint":"If you cannot name any yet, look through your subject notes or textbook, or ask your subject teacher.","rows":3},
+     {"id":"concepts","type":"long","label":"Name two or three concepts, theories or methods from my subject that I could use on this topic.","hint":"If you can't name any yet, look through your subject notes or textbook, or ask your subject teacher.","rows":3},
      {"id":"worry","type":"long","label":"What worries me about this topic? (Too broad? Not enough sources? Too close to my IA?)","rows":2}]},
    checklist(["I have one broad topic to explore.",
               "I have chosen a pathway and a subject (or two subjects and a framework), or I know what I need to find out to decide.",
@@ -248,11 +248,11 @@ STEPS.append(dict(
 STEPS.append(dict(
  n=2, crumb="Step 2", title="Choose your citation style: APA or MLA",
  desc="Choose APA or MLA for your extended essay before you collect any sources, and set up PowerNotes.",
- lede="Decide how you will cite sources now — before you collect a single one — so you never have to redo your records.",
+ lede="Decide now how you'll cite sources, before you collect a single one. Then you'll never have to redo your records.",
  body="""
     <h2>Why this step matters</h2>
-    <p class="why">From step 3 onward you will collect between 10 and 25 sources, depending on your subject (step 7 gives the number for your subject). If you record each one in your chosen style as you find it, your works cited list at step 17 is almost finished already. If you switch styles halfway, you redo every entry.</p>
-    <p>The IB does not require one particular style. It requires you to acknowledge every source using a standard style of referencing, consistently, throughout the essay. At ASD you will use <b>APA</b> or <b>MLA</b>.</p>
+    <p class="why">From step 3 onward you'll collect between 10 and 25 sources, depending on your subject (step 7 gives the number for your subject). If you record each source in your chosen style as you find it, your works cited list at step 17 will be almost finished. If you switch styles halfway, you'll have to redo every entry.</p>
+    <p>The IB doesn't require one particular style. It does require you to acknowledge (give credit to) every source using a standard referencing style, and to use that style consistently throughout the essay. At ASD you'll use APA or MLA.</p>
 
     <h2>Which style for which subject?</h2>
     <div class="tablewrap"><table class="info">
@@ -261,17 +261,17 @@ STEPS.append(dict(
         <tr><th>MLA</th><td>Language A, Language B, Visual Arts</td><td>(Orwell 112)</td></tr>
         <tr><th>APA</th><td>Biology, Chemistry, Physics, Business Management, Economics, Global Politics, Mathematics</td><td>(Smith &amp; Lee, 2021, p. 4)</td></tr>
       </tbody></table></div>
-    <p>These are the usual choices, not rules. Confirm the style with your supervisor, then use it for the whole essay. For an interdisciplinary essay, choose the style that suits the subject doing most of the work, and agree it with your supervisor.</p>
-    <p>Use the current edition of your style. At the time of writing that is the MLA Handbook, 9th edition, and the APA Publication Manual, 7th edition. The Purdue Online Writing Lab has clear guides to both: <a href="https://owl.purdue.edu/owl/research_and_citation/mla_style/mla_formatting_and_style_guide/mla_general_format.html" target="_blank" rel="noopener">MLA guide</a> · <a href="https://owl.purdue.edu/owl/research_and_citation/apa_style/apa_formatting_and_style_guide/general_format.html" target="_blank" rel="noopener">APA guide</a>.</p>
+    <p>The table shows the usual choice for each subject. Confirm your style with your supervisor, then use it for the whole essay. For an interdisciplinary essay, choose the style that suits the subject doing most of the work, and agree on it with your supervisor.</p>
+    <p>Use the current edition of your style. At the time of writing, that's the MLA Handbook (9th edition) and the APA Publication Manual (7th edition). The Purdue Online Writing Lab (Purdue OWL) has clear guides to both: <a href="https://owl.purdue.edu/owl/research_and_citation/mla_style/mla_formatting_and_style_guide/mla_general_format.html" target="_blank" rel="noopener">MLA guide</a> · <a href="https://owl.purdue.edu/owl/research_and_citation/apa_style/apa_formatting_and_style_guide/general_format.html" target="_blank" rel="noopener">APA guide</a>.</p>
 
     <h2>Works cited, reference list and bibliography</h2>
     <ul>
-      <li>A <b>reference list</b> (APA) or <b>works cited</b> list (MLA) includes only the sources you cite in the body of your essay.</li>
-      <li>A <b>bibliography</b> lists every source you consulted during your research, including the ones you did not cite.</li>
+      <li>A <b>reference list</b> (APA) includes only the sources you cite in the body of your essay. In MLA, the same list is called <b>works cited</b>.</li>
+      <li>A <b>bibliography</b> lists every source you read or used during your research, including the ones you didn't cite.</li>
     </ul>
 
     <h2>What to record for every source</h2>
-    <p>Whatever style you choose, capture these details the moment you find a source — they are much harder to find again later:</p>
+    <p>Whatever style you choose, write down these details as soon as you find a source. They're much harder to find again later:</p>
     <ul>
       <li>Author(s) or organisation</li>
       <li>Title of the work (and the journal, book or website it appears in)</li>
@@ -285,7 +285,7 @@ STEPS.append(dict(
     <ol class="do">
       <li>Log in to PowerNotes and create a project for your extended essay.</li>
       <li>Set the project's citation style to the style you have chosen, if your account offers that setting.</li>
-      <li>Every time you save a source from step 3 onward, check the citation PowerNotes creates. Automatic citations often miss authors, dates or page numbers — fix them straight away.</li>
+      <li>Every time you save a source from step 3 onward, check the citation PowerNotes creates. Automatic citations often miss authors, dates or page numbers. Fix any mistakes straight away.</li>
     </ol>
     <p class="src-note">Source: IB <i>Extended essay guide</i> (first assessment 2027), "Writing your extended essay" (reference list and bibliography; citation and referencing) and "The ethical researcher".</p>
 """,
@@ -295,7 +295,7 @@ STEPS.append(dict(
      {"id":"subjectnow","type":"text","label":"My subject (from step 1):","prefill":"__PREFILL_SUBJECT__"},
      {"id":"style","type":"choice","label":"The citation style I will use:","options":["APA","MLA"]},
      {"id":"why","type":"long","label":"Why this style suits my subject:","rows":2},
-     {"id":"confirmed","type":"choice","label":"Has my supervisor confirmed this style?","options":["Yes","Not yet — I will ask at our next meeting"]}]},
+     {"id":"confirmed","type":"choice","label":"Has my supervisor confirmed this style?","options":["Yes","Not yet: I'll ask at our next meeting"]}]},
    {"heading":"Practise","prompts":[
      {"id":"practice","type":"long","label":"Find any one source on your topic and write its full citation in your chosen style.","hint":"Check it against the Purdue OWL guide for your style before you move on.","rows":3},
      {"id":"intext","type":"text","label":"Now write the in-text citation you would use for that source:"}]},
@@ -309,36 +309,36 @@ STEPS.append(dict(
 # ───────────────────────── STEP 3 ─────────────────────────
 STEPS.append(dict(
  n=3, crumb="Step 3", title="Open sources: get the background",
- desc="Use encyclopedias, reputable news and organisation websites to learn the background and key terms of your EE topic.",
- lede="Before you read research papers, learn the landscape: the key terms, people, events and debates in your topic.",
+ desc="Use encyclopedias, reliable news and organisation websites to learn the background and key terms of your EE topic.",
+ lede="Before you read research papers, learn the basics of your topic: the main terms, people, events and debates.",
  body="""
     <h2>Why this step matters</h2>
-    <p class="why">Scholarly articles assume you already know the basics. Open sources — free, general, easy to read — give you those basics quickly, so the harder reading in steps 4 to 6 makes sense.</p>
-    <p>Open sources are for <b>orientation</b>. You will rarely cite them heavily in your final essay, but they point you towards the sources you will cite.</p>
+    <p class="why">Scholarly (academic) articles assume you already know the basics. Open sources are free, general and easy to read. They give you the basics quickly, so the harder reading in steps 4 to 6 makes sense.</p>
+    <p>Open sources are for <b>orientation</b>: finding your way around your topic. You'll rarely cite open sources much in your final essay. They point you towards the sources you will cite.</p>
 
     <h2>Where to look</h2>
     <ul>
       <li><b>Encyclopedias:</b> Encyclopaedia Britannica, subject encyclopedias, the Stanford Encyclopedia of Philosophy for ideas and theories.</li>
-      <li><b>Wikipedia:</b> good for an overview — and its reference list at the bottom of each article is a map to better sources. Follow the references; do not cite Wikipedia itself.</li>
+      <li><b>Wikipedia:</b> good for an overview. The reference list at the bottom of each Wikipedia article leads you to better sources. Follow those references, but don't cite Wikipedia itself.</li>
       <li><b>Reputable news:</b> BBC, Reuters, The Guardian, The Economist, Al Jazeera English, and newspapers from the country your topic is about.</li>
       <li><b>Organisations:</b> United Nations agencies, the World Health Organization, the World Bank, government statistics offices, museums, professional bodies.</li>
       <li><b>Open-access material:</b> free articles found through Google Scholar, and the free ERIC database for education topics.</li>
     </ul>
 
     <h2>Judge every source</h2>
-    <p>The IB guide points out that you would judge "a post on Reddit, a sensationalist newspaper article, a blog post by an apparent expert and an article in a reputable academic journal" very differently. For each open source, ask:</p>
+    <p>The IB guide points out that you'd judge "a post on Reddit, a sensationalist newspaper article, a blog post by an apparent expert and an article in a reputable academic journal" very differently. For each open source, ask:</p>
     <ul>
       <li><b>Who</b> wrote it, and what makes them qualified?</li>
       <li><b>When</b> was it published? Is it still current?</li>
-      <li><b>Why</b> was it written — to inform, persuade, or sell?</li>
+      <li><b>Why</b> was it written: to inform, persuade or sell?</li>
       <li><b>What evidence</b> does it give? Can you trace that evidence to its source?</li>
     </ul>
 
     <h2>What to do</h2>
     <ol class="do">
-      <li>Read 8 to 12 open sources on your broad topic. Save each one in PowerNotes with its full citation in your chosen style, and put it in a category called <b>Open / background</b>.</li>
-      <li>Build a glossary of the key terms in your topic, in your own words.</li>
-      <li>Note the names — people, organisations, places, events — that keep appearing.</li>
+      <li>Read 8 to 12 open sources on your broad topic. Save each one in PowerNotes with its full citation in your chosen style. Put it in a category called <b>Open / background</b>.</li>
+      <li>Make a glossary (a list of terms and their meanings) of the key terms in your topic, in your own words.</li>
+      <li>Note the names that keep appearing: people, organisations, places and events.</li>
       <li>Write down the questions that start to form as you read.</li>
     </ol>
     <p class="src-note">Source: IB <i>Extended essay guide</i> (first assessment 2027), "Researching the extended essay" (preliminary investigation) and "Writing your extended essay" (citation and referencing).</p>
@@ -356,7 +356,7 @@ STEPS.append(dict(
    {"heading":"Questions forming","prompts":[
      {"id":"questions","type":"long","label":"Questions I now have about my topic. Start them with how, why or to what extent.","rows":4}]},
    checklist(["I have saved 8 to 12 open sources in PowerNotes, in the Open / background category.",
-              "Each one has a full citation in my chosen style.",
+              "Each source has a full citation in my chosen style.",
               "I have a glossary of key terms.",
               "I have copied this thinking tool into my RRS."])
   ])
@@ -366,32 +366,32 @@ STEPS.append(dict(
 STEPS.append(dict(
  n=4, crumb="Step 4", title="Current sources: what is being said now",
  desc="Find recent research, reports and data on your EE topic and map the current debate.",
- lede="Find out what researchers, journalists and organisations are saying about your topic right now — and where they disagree.",
+ lede="Find out what researchers, journalists and organisations are saying about your topic right now, and where they disagree.",
  body="""
     <h2>Why this step matters</h2>
-    <p class="why">Your essay joins a conversation that is already happening. Before you can add anything, you need to know who is speaking now, what they agree on, and where they disagree.</p>
-    <p>"Current" usually means roughly the last five years — but this depends on the subject. A fast-moving science topic may need sources from the last two years; a literary topic may still be shaped by criticism from twenty years ago.</p>
+    <p class="why">Your essay joins a conversation that is already happening. Before you can add anything to that conversation, you need to know who is speaking now, what they agree on, and where they disagree.</p>
+    <p>"Current" usually means about the last five years, but this depends on the subject. A fast-moving science topic may need sources from the last two years. A literary topic may still be shaped by criticism from twenty years ago.</p>
 
     <h2>Where to look</h2>
     <ul>
-      <li><b>Google Scholar:</b> search your key terms from step 3, then use <b>Since</b> in the left-hand menu to limit results to recent years. Click <b>Cited by</b> under a useful article to find newer work that builds on it.</li>
+      <li><b>Google Scholar:</b> search your key terms from step 3. Then use <b>Since</b> in the left-hand menu to show only recent years. Click <b>Cited by</b> under a useful article to find newer work that builds on that article.</li>
       <li><b>School library databases:</b> ask the librarian which databases ASD students can use, and how to log in from home.</li>
       <li><b>Reports and data:</b> recent reports from organisations such as the World Bank, OECD, United Nations agencies and government departments, and their data portals.</li>
-      <li><b>Quality journalism:</b> recent long-form reporting and analysis, which often names the researchers involved — then look up their work.</li>
+      <li><b>Quality journalism:</b> recent long articles and analysis. These articles often name the researchers involved, so look up those researchers' work.</li>
     </ul>
 
     <h2>Reading a research article quickly</h2>
     <ol class="do">
-      <li>Read the abstract. Does it actually relate to your topic?</li>
-      <li>Read the introduction's last paragraph — it usually states the aim — and then the conclusion.</li>
+      <li>Read the abstract (the short summary at the start). Does the article actually relate to your topic?</li>
+      <li>Read the last paragraph of the introduction, which usually states the aim. Then read the conclusion.</li>
       <li>Only then read the method and results, if the article is worth it.</li>
-      <li>Look at the reference list for sources you have not yet found.</li>
+      <li>Look at the reference list for sources you haven't found yet.</li>
     </ol>
 
     <h2>What to do</h2>
     <ol class="do">
       <li>Find about 10 current sources. Save each in PowerNotes with its citation, in a category called <b>Current</b>.</li>
-      <li>For each, note the position it takes, or the finding it reports.</li>
+      <li>For each source, note the position it takes or the finding it reports.</li>
       <li>Map the debate: who agrees with whom, and where do they disagree?</li>
     </ol>
     <p class="src-note">Source: IB <i>Extended essay guide</i> (first assessment 2027), "Researching the extended essay" (preliminary investigation: "What has already been written about this topic? Is there a range of views or perspectives?").</p>
@@ -403,7 +403,7 @@ STEPS.append(dict(
    {"heading":"The debate","prompts":[
      {"id":"agree","type":"long","label":"What do most current sources agree on?","rows":3},
      {"id":"disagree","type":"long","label":"Where do they disagree? Name the sources on each side.","rows":3},
-     {"id":"new","type":"long","label":"What is new — something that has only been studied or reported recently?","rows":3}]},
+     {"id":"new","type":"long","label":"What's new? Look for something that has only been studied or reported recently.","rows":3}]},
    {"heading":"Questions forming","prompts":[
      {"id":"questions","type":"long","label":"Which questions are still unanswered, or argued about, in the current sources?","rows":3}]},
    checklist(["I have saved about 10 current sources in PowerNotes, in the Current category.",
@@ -417,10 +417,10 @@ STEPS.append(dict(
 STEPS.append(dict(
  n=5, crumb="Step 5", title="Historical sources: how we got here",
  desc="Trace the history of thinking on your EE topic: foundational works, earlier debates and what changed.",
- lede="Trace how thinking on your topic developed — the foundational work, the old debates, and what changed people's minds.",
+ lede="Trace how thinking on your topic developed: the foundational (early and important) work, the old debates, and what changed people's minds.",
  body="""
     <h2>Why this step matters</h2>
-    <p class="why">Current research builds on older work. If you know the history of your topic, you can see why today's researchers ask the questions they ask — and you can spot assumptions that nobody has tested for a while.</p>
+    <p class="why">Current research builds on older work. If you know the history of your topic, you can see why today's researchers ask the questions they ask. You can also spot assumptions that nobody has tested for a while.</p>
 
     <h2>What "historical" means in your subject</h2>
     <ul>
@@ -433,8 +433,8 @@ STEPS.append(dict(
     <h2>How to find foundational work</h2>
     <ul>
       <li>Notice which older sources are cited again and again in the current sources from step 4. Those are usually the foundational works.</li>
-      <li>On Google Scholar, a very high <b>Cited by</b> number on an older article often means it shaped the field.</li>
-      <li>Look for review articles or textbook chapters that summarise how thinking on a topic has developed.</li>
+      <li>On Google Scholar, a very high <b>Cited by</b> number on an older article often means the article shaped the field.</li>
+      <li>Look for review articles or textbook chapters that summarise how thinking on your topic has developed.</li>
     </ul>
 
     <h2>What to do</h2>
@@ -451,7 +451,7 @@ STEPS.append(dict(
      {"id":"timeline","type":"table","label":"Key moments in the history of my topic","columns":["Year","Work, idea or event","Why it mattered"],"rows":5,"max":15}]},
    {"heading":"Then and now","prompts":[
      {"id":"then","type":"long","label":"What did people believe about my topic 50 years ago (or when the text or artwork was made)?","rows":3},
-     {"id":"changed","type":"long","label":"What changed their minds — new evidence, new methods, new events, new perspectives?","rows":3},
+     {"id":"changed","type":"long","label":"What changed their minds? New evidence, new methods, new events or new perspectives?","rows":3},
      {"id":"cited","type":"long","label":"Which older authors or works keep being cited by current sources?","rows":2},
      {"id":"challenge","type":"long","label":"One older idea that current sources now challenge:","rows":2}]},
    checklist(["I have saved about 10 historical sources in PowerNotes, in the Historical category.",
@@ -462,15 +462,15 @@ STEPS.append(dict(
 
 # ───────────────────────── STEP 6 ─────────────────────────
 METHODS_ROWS = [
- ("Language A","Close textual analysis of your primary text(s): language, structure, literary devices and their effects.","The novels, poems, plays, films (screenplay) or other texts you analyse.","Literary criticism, studies of the author or genre, journal articles, literary theory. A review of existing criticism is required."),
- ("Language B","Analysis of texts originally written or spoken in the target language — as literature, as language use, or as cultural artefacts.","Texts or cultural artefacts originally in the target language.","Academic writing about the texts, the language or the culture. A good range of secondary sources is essential."),
- ("Visual Arts","Formal analysis of artworks combined with contextual analysis (historical, social, cultural). Mostly qualitative.","Artworks, artists' statements, letters, diaries, interviews.","Art history and criticism, exhibition catalogues, scholarly articles."),
- ("Biology, Chemistry, Physics","An experiment with controlled variables and a standardized method; or analysis of secondary data that used similar standardized approaches and controls.","Data you collect in the lab or field.","Peer-reviewed publications and databases. ASD expects science EEs to be built on primary (experimental) data — the IB allows secondary-data science essays, but workshop guidance is that they rarely reach the top bands."),
+ ("Language A","Close analysis of your primary text(s): language, structure, literary devices and their effects.","The novels, poems, plays, films (screenplay) or other texts you analyse.","Literary criticism, studies of the author or genre, journal articles, literary theory. A review of existing criticism is required."),
+ ("Language B","Analysis of texts originally written or spoken in the target language. You can study them as literature, as examples of language use, or as cultural artefacts.","Texts or cultural artefacts originally in the target language.","Academic writing about the texts, the language or the culture. A good range of secondary sources is essential."),
+ ("Visual Arts","Formal analysis of artworks combined with contextual analysis (historical, social, cultural). Mostly qualitative (based on words and interpretation rather than numbers).","Artworks, artists' statements, letters, diaries, interviews.","Art history and criticism, exhibition catalogues, scholarly articles."),
+ ("Biology, Chemistry, Physics","An experiment with controlled variables and a standardized method. Or analysis of secondary data that used similar standardized methods and controls.","Data you collect in the lab or field.","Peer-reviewed publications and databases. ASD expects science EEs to be built on primary (experimental) data. The IB allows science essays based on secondary data, but workshop guidance says these essays rarely reach the top bands."),
  ("Business Management","A case study of a real organisation, analysed with business tools and concepts.","Interviews and surveys (for example with managers, staff or customers), company documents.","Academic articles, company reports, industry analysis, quality journalism."),
- ("Economics","Applying economic theory to a real situation and testing it against evidence.","Surveys, interviews, prices or data you collect yourself.","Data banks and statistics, economic research, news reporting."),
- ("Global Politics","A literature review of key political concepts, then analysis of one or more cases.","Speeches, policies, treaties, official documents; your own data where appropriate.","Academic writing on the concepts and cases. Primary data may supplement this."),
- ("Mathematics","Theoretical: exploring mathematics beyond the syllabus. Practical: using mathematics to model or analyse an issue or a data set.","Data you collect or obtain (for practical essays).","Mathematical texts and articles. A review of the literature is mandatory."),
- ("Interdisciplinary","Methods drawn from both of your subjects, chosen so they can be integrated.","Whatever counts as primary in each of your two subjects.","Secondary research in both subjects."),
+ ("Economics","Applying economic theory to a real situation and testing the theory against evidence.","Surveys, interviews, prices or data you collect yourself.","Data banks and statistics, economic research, news reporting."),
+ ("Global Politics","A literature review (a summary of what has been written) on the main political concepts, then analysis of one or more cases.","Speeches, policies, treaties, official documents; your own data where appropriate.","Academic writing on the concepts and cases. Primary data can add to this academic writing."),
+ ("Mathematics","Theoretical: exploring mathematics beyond the syllabus. Practical: using mathematics to model or analyse an issue or a data set.","Data you collect or obtain (for practical essays).","Mathematical texts and articles. A review of the literature is required."),
+ ("Interdisciplinary","Methods from both of your subjects, chosen so you can combine them.","Whatever counts as primary in each of your two subjects.","Secondary research in both subjects."),
 ]
 rows_html = "\n".join(
   '        <tr data-subject="%s"><th>%s</th><td>%s</td><td>%s</td><td>%s</td></tr>' % (html.escape(s), html.escape(s), html.escape(a), html.escape(b), html.escape(c))
@@ -482,8 +482,8 @@ STEPS.append(dict(
  lede="Every subject has its own ways of answering questions. Learn the methods your subject trusts before you write your question.",
  body="""
     <h2>Why this step matters</h2>
-    <p class="why">Criterion A asks whether your research methods provide an effective framework for your essay. The question you write in step 10 has to be one that your subject's methods can actually answer.</p>
-    <p>Every extended essay must include secondary research — a review of the literature. Most subjects also expect primary research. What counts as primary and secondary is different in each subject.</p>
+    <p class="why">Criterion A asks whether your research methods give your essay an effective framework. The research question you write in step 10 has to be one that your subject's methods can actually answer.</p>
+    <p>Every extended essay must include secondary research: a review of the literature (what other people have already written about your topic). Most subjects also expect primary research (evidence you collect or analyse first-hand). What counts as primary and secondary is different in each subject.</p>
 
     <h2>Methods by subject</h2>
     <p id="mine-note" class="small muted" hidden></p>
@@ -492,18 +492,18 @@ STEPS.append(dict(
       <tbody>
 """ + rows_html + """
       </tbody></table></div>
-    <p>Not offered at ASD but worth knowing: Psychology extended essays must be based on secondary sources only — collecting primary data is not permitted.</p>
-    <p>For more on your subject, including the guide's own example research questions and the mistakes to avoid, read your <a href="../../subjects/">subject guide</a>.</p>
+    <p>Psychology isn't offered at ASD, but it's worth knowing that Psychology extended essays must use secondary sources only. Collecting primary data isn't allowed.</p>
+    <p>For more on your subject, read your <a href="../../subjects/">subject guide</a>. It includes example research questions from the IB guide and the mistakes to avoid.</p>
 
     <h2>See methods in action</h2>
-    <p>The best way to understand methods in your subject is to see how real essays used them. Open two sample essays in your subject and read the introduction (where the method is explained) and the examiner's comments on Criterion A.</p>
+    <p>The best way to understand methods in your subject is to see how real essays used those methods. Open two sample essays in your subject. Read the introduction (where the student explains the method) and the examiner's comments on Criterion A.</p>
     <p><a class="btn" id="samples-link" href="../../samples/">Open sample essays</a></p>
 
     <h2>What to do</h2>
     <ol class="do">
       <li>Read the row for your subject in the table above.</li>
       <li>Read two sample essays in your subject: how did each student answer their question, and what did the examiner say about the method?</li>
-      <li>Find about 10 sources about methods — articles in your topic that show a method you could use, or guides to a method. Save them in PowerNotes in a category called <b>Methods</b>.</li>
+      <li>Find about 10 sources about methods. These can be articles on your topic that show a method you could use, or guides to a method. Save them in PowerNotes in a category called <b>Methods</b>.</li>
     </ol>
     <p class="src-note">Source: IB <i>Extended essay guide</i> (first assessment 2027), "Generic guidance" (primary and secondary sources) and "Subject-specific guidance" for each subject.</p>
 """,
@@ -535,7 +535,7 @@ STEPS.append(dict(
      {"id":"samples","type":"table","label":"Two sample essays in my subject","columns":["Sample (subject and letter)","How the student answered the question (method)","What the examiner said about it"],"rows":2,"max":4}]},
    {"heading":"Methods for my topic","prompts":[
      {"id":"methods","type":"long","label":"Two or three methods I could use on my topic, and what each would show me:","rows":4},
-     {"id":"practical","type":"long","label":"What would each method need — equipment, access to people, texts, data, time? Is it realistic at school?","rows":3}]},
+     {"id":"practical","type":"long","label":"What would each method need? Think about equipment, access to people, texts, data and time. Is each method realistic at school?","rows":3}]},
    checklist(["I have read the methods row for my subject.",
               "I have read two sample essays in my subject.",
               "I have saved about 10 methods sources in PowerNotes, in the Methods category.",
@@ -546,42 +546,42 @@ STEPS.append(dict(
 # ───────────────────────── STEP 7 ─────────────────────────
 STEPS.append(dict(
  n=7, crumb="Step 7", title="Collect your sources in PowerNotes",
- desc="Collect and categorise the sources for your EE in PowerNotes, reach the target for your subject, then look for the patterns that will shape your question.",
+ desc="Collect and sort your EE sources in PowerNotes, reach the target for your subject, then look for the patterns that will shape your question.",
  lede="Bring your reading together: enough sources for your subject, organised so you can see what your topic is really about.",
  body="""
     <h2>Why this step matters</h2>
-    <p class="why">A wide collection shows you the shape of your topic: the themes that keep returning, the arguments that matter, and the gaps. You will probably collect more sources than you cite — that is normal. In step 9 you will choose the most useful ones and annotate them.</p>
+    <p class="why">A wide collection of sources shows you the shape of your topic: the themes that keep coming back, the arguments that matter, and the gaps. You'll probably collect more sources than you cite. That's normal. In step 9 you'll choose the most useful sources and annotate them (write a short note that sums up and judges each one).</p>
 
     <h2>How many sources?</h2>
-    <p>The IB does not set a number. Different subjects need very different amounts of reading, so the targets below depend on your subject. They come from an analysis of strong EEs in each subject group: the bibliographies of the IB's sample essays that earned a B or higher.</p>
+    <p>The IB doesn't set a number of sources. Different subjects need very different amounts of reading, so the targets below depend on your subject. The targets come from an analysis of strong EEs in each subject group: the bibliographies of the IB's sample essays that earned a B or higher.</p>
 """ + targets_table() + """
     <ul>
-      <li><b>Language A and Language B:</b> your novel, play, poems, films or songs are your <b>primary sources</b>. Reading them closely, more than once, is the biggest part of your research — which is why your number of other sources is lower. Record your primary texts in PowerNotes too; they count towards your total.</li>
+      <li><b>Language A and Language B:</b> your novel, play, poems, films or songs are your primary sources. Reading your primary texts closely, more than once, is the biggest part of your research. That's why you need fewer other sources. Record your primary texts in PowerNotes too. They count towards your total.</li>
       <li><b>Visual Arts:</b> the artworks you analyse are your primary sources, and they count towards your total.</li>
-      <li><b>More is not better.</b> In the sample essays, the number of sources did not predict the mark. A Physics essay with 30 sources scored 11 out of 30; a Language B essay with about 15 scored 23. What matters is how well you use each source.</li>
+      <li><b>More is not better.</b> In the sample essays, the number of sources did not predict the mark. A Physics essay with 30 sources scored 11 out of 30. A Language B essay with about 15 sources scored 23. What matters is how well you use each source.</li>
     </ul>
 """+"""
 
     <h2>Organise PowerNotes</h2>
-    <p>You already have four categories from steps 3 to 6. Keep them, and add theme categories as patterns appear. Language A, Language B and Visual Arts students: add a fifth category, <b>Primary texts</b> or <b>Artworks</b>, for the works you will analyse.</p>
+    <p>You already have four categories from steps 3 to 6. Keep them, and add a new category for each theme as patterns appear. Language A, Language B and Visual Arts students: add a fifth category for the works you'll analyse, called "Primary texts" or "Artworks".</p>
     <div class="kv">
-      <div class="panel"><h3>Open / background</h3><p>From step 3. Orientation and key terms.</p></div>
+      <div class="panel"><h3>Open / background</h3><p>From step 3. Background and key terms.</p></div>
       <div class="panel"><h3>Current</h3><p>From step 4. Recent research and debate.</p></div>
       <div class="panel"><h3>Historical</h3><p>From step 5. Foundational work.</p></div>
       <div class="panel"><h3>Methods</h3><p>From step 6. How your question could be answered.</p></div>
     </div>
-    <p>For every source, check that PowerNotes has a full citation in your chosen style, and add a one-line note on why the source matters.</p>
+    <p>For every source, check that PowerNotes has a full citation in your chosen style. Add a one-line note on why the source matters.</p>
 
     <h2>Check your collection</h2>
     <ul>
       <li><b>Spread:</b> no single category should hold more than about half your sources.</li>
-      <li><b>Quality:</b> a good share of your sources should be scholarly — peer-reviewed articles, academic books, or data from reputable organisations.</li>
+      <li><b>Quality:</b> a good share of your sources should be scholarly: peer-reviewed articles (checked by other experts before publication), academic books, or data from reputable organisations.</li>
       <li><b>Perspectives:</b> do your sources disagree with each other anywhere? If every source says the same thing, look for the other side.</li>
       <li><b>Records:</b> every source has a complete citation in your chosen style.</li>
     </ul>
 
     <h2>Then step back</h2>
-    <p>Read your one-line notes from top to bottom. Which themes keep coming up? Which sources do you keep going back to? Where do you feel most curious? Those answers point to the narrower topic you will choose in step 8.</p>
+    <p>Read your one-line notes from top to bottom. Which themes keep coming up? Which sources do you keep going back to? Where do you feel most curious? Your answers point to the narrower topic you'll choose in step 8.</p>
     <p class="src-note">Source: IB <i>Extended essay guide</i> (first assessment 2027), "Researching the extended essay" (preliminary investigation and changing direction).</p>
 """,
  script=GROUP_SCRIPT,
@@ -597,7 +597,7 @@ STEPS.append(dict(
    {"heading":"Patterns","prompts":[
      {"id":"themes","type":"long","label":"Themes that keep coming up across my sources:","rows":3},
      {"id":"top5","type":"table","label":"The five sources I keep going back to","columns":["Source (author, year)","Why I keep going back to it"],"rows":5,"max":5},
-     {"id":"missing","type":"long","label":"What is missing from my collection — a perspective, a type of source, a time period, a place?","rows":3}]},
+     {"id":"missing","type":"long","label":"What's missing from my collection? A perspective, a type of source, a time period, a place?","rows":3}]},
    {"heading":"What my topic is really about","prompts":[
      {"id":"topicnow","type":"text","label":"My broad topic at step 1 was:","prefill":"__PREFILL_TOPIC__"},
      {"id":"really","type":"long","label":"In one or two sentences: what is my topic really about now?","rows":3}]},
@@ -611,12 +611,12 @@ STEPS.append(dict(
 # ───────────────────────── STEP 8 ─────────────────────────
 STEPS.append(dict(
  n=8, crumb="Step 8", title="Narrow your topic and write a broad question",
- desc="Narrow your EE topic from broad to focused, then brainstorm and evaluate questions to find a broad working question.",
+ desc="Narrow your EE topic from broad to focused, then brainstorm and test questions to find a broad working question.",
  lede="Turn what you learned from your sources into a focused topic, then into a broad question you can test.",
  body="""
     <h2>Why this step matters</h2>
-    <p class="why">A broad topic leads to a descriptive essay that informs the reader but never argues anything. The IB guide warns that staying "too broad and general almost inevitably leads to descriptive, superficial writing". Narrowing is how you get to analysis.</p>
-    <p>You are not writing your final research question yet — that comes in step 10. Here you narrow the topic and write a <b>broad question</b>: a working question that will guide which sources you annotate in step 9.</p>
+    <p class="why">A broad topic leads to a descriptive essay. A descriptive essay informs the reader but never argues anything. The IB guide warns that staying "too broad and general almost inevitably leads to descriptive, superficial writing". Narrowing your topic is how you get to analysis.</p>
+    <p>You aren't writing your final research question yet. That comes in step 10. In this step you narrow your topic and write a <b>broad question</b>: a working question that guides which sources you annotate in step 9.</p>
 
     <h2>The topic funnel</h2>
     <p>Narrow one level at a time. Each level should be a part of the level above it.</p>
@@ -631,7 +631,7 @@ STEPS.append(dict(
     <p class="small muted">Both examples are based on sample essays in the <a href="../../samples/">sample library</a> (Economics Sample B and Language A Sample B).</p>
 
     <h2>Check your focused topic</h2>
-    <p>The IB guide suggests a preliminary investigation of your focused topic. You have already done most of it in steps 3 to 7. Ask yourself:</p>
+    <p>The IB guide suggests a preliminary investigation (a first look at what's available) of your focused topic. You've already done most of this investigation in steps 3 to 7. Ask yourself:</p>
     <ul>
       <li>What has already been written about this topic?</li>
       <li>Is it easy to find sources of information?</li>
@@ -642,11 +642,11 @@ STEPS.append(dict(
 
     <h2>Brainstorm, then evaluate</h2>
     <ol class="do">
-      <li>Write at least five open-ended questions about your focused topic. The IB guide recommends starting them with <b>how</b>, <b>why</b> or <b>to what extent</b>.</li>
-      <li>Judge each question against three tests from the guide: is it <b>clear</b>, is it <b>focused</b>, and is it <b>arguable</b> (could reasonable people answer it differently)?</li>
-      <li>Choose the strongest one as your broad question. It is allowed — expected — to change.</li>
+      <li>Write at least five open-ended questions (questions with more than one possible answer) about your focused topic. The IB guide recommends starting them with "how", "why" or "to what extent".</li>
+      <li>Check each question against three tests from the IB guide. Is it <b>clear</b>? Is it <b>focused</b>? Is it <b>arguable</b> (could reasonable people answer it differently)?</li>
+      <li>Choose the strongest question as your broad question. Your broad question is allowed to change, and it probably will.</li>
     </ol>
-    <div class="note"><p style="margin:0"><b>Changing direction is normal.</b> The IB guide says a change of topic or question "is completely acceptable and will be supported by your supervisor". Sometimes a slight change of wording is all that is needed.</p></div>
+    <div class="note"><p style="margin:0"><b>Changing direction is normal.</b> The IB guide says a change of topic or question "is completely acceptable and will be supported by your supervisor". Sometimes you only need to change a few words.</p></div>
     <p class="src-note">Source: IB <i>Extended essay guide</i> (first assessment 2027), "Generic guidance" (choosing a topic) and "Researching the extended essay" (four steps to developing a research question; changing direction).</p>
 """,
  tool=dict(id="step-8", stepLabel="Step 8 · Narrow your topic", title="From broad topic to broad question",
@@ -656,14 +656,14 @@ STEPS.append(dict(
      {"id":"aspect","type":"text","label":"Narrower aspect:"},
      {"id":"specific","type":"text","label":"A specific case, text, place or time:"},
      {"id":"focused","type":"long","label":"My focused topic, in one sentence:","rows":2},
-     {"id":"why","type":"long","label":"Which of my sources pointed me here, and why?","rows":3}]},
+     {"id":"why","type":"long","label":"Which of my sources led me to this focused topic, and why?","rows":3}]},
    {"heading":"Preliminary investigation","prompts":[
      {"id":"range","type":"long","label":"Is there enough to read on this focused topic, from a range of views? What makes me think so?","rows":3}]},
    {"heading":"Emerging questions","prompts":[
      {"id":"qs","type":"table","label":"Brainstorm at least five questions, then test each one.","hint":"Clear: would a stranger understand it? Focused: is it narrow enough for 4,000 words? Arguable: could reasonable people answer it differently?","columns":["Question (how / why / to what extent)","Clear?","Focused?","Arguable?"],"rows":5,"max":10}]},
    {"heading":"My broad question","prompts":[
      {"id":"bq","type":"long","label":"The broad question I will work with for now:","rows":2},
-     {"id":"bqwhy","type":"long","label":"Why this one is stronger than the others:","rows":3}]},
+     {"id":"bqwhy","type":"long","label":"Why this question is stronger than the others:","rows":3}]},
    checklist(["I have a focused topic in one sentence.",
               "I have tested at least five questions for clear, focused and arguable.",
               "I have chosen a broad question to guide step 9.",
@@ -674,45 +674,47 @@ STEPS.append(dict(
 # ───────────────────────── STEP 9 ─────────────────────────
 STEPS.append(dict(
  n=9, crumb="Step 9", title="Annotated bibliography",
- desc="Choose your key sources, annotate them in APA or MLA, cover different perspectives, and find the gap in the research.",
- lede="Choose the sources that matter most for your broad question, annotate each one, and find what is missing — the gap your essay can fill.",
+ desc="Choose your most useful sources, annotate them in APA or MLA, cover different perspectives, and find the gap in the research.",
+ lede="Choose the sources that matter most for your broad question, annotate each one, and find what's missing: the gap your essay can fill.",
  body="""
     <h2>Why this step matters</h2>
-    <p class="why">An annotated bibliography forces you to understand each source well enough to explain it in your own words and judge it. Laying your key sources side by side also shows you where the research runs out — and that is where your own question belongs.</p>
-    <p>The IB's support material is clear about this: your research question "should be sufficiently original that you are making a genuine contribution to knowledge in that field", and gaps in what secondary research can tell you are "often a cue that primary research is needed".</p>
+    <p class="why">An annotated bibliography is a list of sources with a short paragraph about each one. Writing one makes you understand each source well enough to explain and judge it in your own words. Putting your best sources side by side also shows you where the research runs out. That's where your own question belongs.</p>
+    <p>The IB's support material says your research question "should be sufficiently original that you are making a genuine contribution to knowledge in that field". It also says gaps in what secondary research can tell you are "often a cue that primary research is needed".</p>
 
     <h2>Choose the sources to annotate</h2>
-    <p>The number to annotate depends on your subject (the same analysis of strong EEs as in step 7):</p>
+    <p>The number of sources to annotate depends on your subject. These targets come from the same analysis of strong EEs as in step 7:</p>
 """ + targets_table() + """
-    <p>Language A, Language B and Visual Arts students: annotate <b>secondary</b> sources — criticism, context, theory, interviews. Your primary texts or artworks are what you analyse in the essay itself.</p>
-    <p>Go back to PowerNotes and choose the sources that best help with your broad question from step 8. Choose for:</p>
+    <p>Language A, Language B and Visual Arts students: annotate <b>secondary</b> sources: criticism, context, theory, interviews. Your primary texts or artworks are what you analyse in the essay itself.</p>
+    <p>Go back to PowerNotes. Choose the sources that help most with your broad question from step 8. Look for:</p>
     <ul>
-      <li><b>Relevance</b> — the source speaks directly to your broad question, not just your broad topic.</li>
-      <li><b>Quality</b> — mostly scholarly sources: peer-reviewed articles, academic books, reputable data.</li>
-      <li><b>Different perspectives</b> — sources that disagree; sources from different places, time periods, schools of thought or methods.</li>
-      <li><b>Method</b> — at least a few sources that show a method you might use (from step 6).</li>
+      <li><b>Relevance:</b> the source speaks directly to your broad question, not just your broad topic.</li>
+      <li><b>Quality:</b> mostly scholarly sources: peer-reviewed articles, academic books, reputable data.</li>
+      <li><b>Different perspectives:</b> sources that disagree, and sources from different places, time periods, schools of thought or methods.</li>
+      <li><b>Method:</b> at least a few sources that show a method you might use (from step 6).</li>
     </ul>
-    <p>Move them into a new PowerNotes category called <b>Annotated</b>. Keep the rest — you may need them later.</p>
+    <p>Move the sources you choose into a new PowerNotes category called <b>Annotated</b>. Keep the rest. You may need them later.</p>
 
     <h2>What an annotation contains</h2>
-    <p>Each entry starts with the full citation in your chosen style (APA or MLA), followed by a paragraph of roughly 100 to 150 words, in your own words, that covers:</p>
+    <p>Each entry starts with the full citation in your chosen style (APA or MLA). Then write a paragraph of about 100 to 150 words, in your own words, that covers:</p>
     <ol class="do">
-      <li><b>Summary</b> — what the source argues or finds, and how (its method or evidence).</li>
-      <li><b>Evaluation</b> — how reliable it is: who wrote it, for whom, with what evidence, and any limitations.</li>
-      <li><b>Connection</b> — how it relates to your broad question and to your other sources: does it agree, disagree, or add something new?</li>
+      <li><b>Summary:</b> what the source argues or finds, and how (its method or evidence).</li>
+      <li><b>Evaluation:</b> how reliable the source is. Who wrote it, for whom, with what evidence, and what are its limitations?</li>
+      <li><b>Connection:</b> how the source relates to your broad question and to your other sources. Does it agree, disagree, or add something new?</li>
     </ol>
     <p>The Purdue OWL has examples of annotated bibliographies in both styles: <a href="https://owl.purdue.edu/owl/general_writing/common_writing_assignments/annotated_bibliographies/annotated_bibliography_samples.html" target="_blank" rel="noopener">annotated bibliography samples</a>.</p>
 
     <h2>Find the gap</h2>
-    <p>Put your annotated sources into a matrix: one row per source, with columns for its <b>position</b>, its <b>method</b> and its <b>main finding</b>. Then read down each column and ask what is missing. A gap might be:</p>
+    <p>Put your annotated sources into a matrix (a table): one row per source, with columns for its position, its method and its main finding. Then read down each column and ask what's missing. A gap might be:</p>
     <ul>
-      <li>a <b>place</b> nobody has studied — including your own city or region. "Local" simply means a specific place; local data can still say something that matters internationally;</li>
-      <li>a <b>group</b> of people, a <b>time period</b>, or a <b>text or artwork</b> that has not been examined in this way;</li>
-      <li>a <b>method</b> that has not been applied to this question;</li>
+      <li>a <b>place</b> nobody has studied, including your own city or region. "Local" simply means a specific place. Local data can still say something that matters internationally;</li>
+      <li>a <b>group</b> of people who haven't been studied in this way;</li>
+      <li>a <b>time period</b> that hasn't been examined in this way;</li>
+      <li>a <b>text or artwork</b> that hasn't been examined in this way;</li>
+      <li>a <b>method</b> that hasn't been applied to this question;</li>
       <li>a <b>disagreement</b> between sources that nobody has tested directly;</li>
       <li>a <b>combination</b> of two things that have only been studied separately.</li>
     </ul>
-    <p>Your gap does not need to be dramatic. A focused, well-chosen gap that you can actually investigate in 4,000 words is exactly right.</p>
+    <p>Your gap doesn't need to be dramatic. A focused, well-chosen gap that you can actually investigate in 4,000 words is exactly right.</p>
     <p class="src-note">Sources: IB <i>Extended essay support material</i> (2025), "Researching your extended essay" (secondary and primary research); IB <i>Extended essay guide</i> (first assessment 2027), "Writing your extended essay" (citation and referencing).</p>
 """,
  script=GROUP_SCRIPT,
@@ -722,13 +724,13 @@ STEPS.append(dict(
    {"heading":"My broad question","prompts":[
      {"id":"bq","type":"long","label":"My broad question (from step 8):","rows":2,"prefill":"__PREFILL_BQ__"}]},
    {"heading":"The matrix","prompts":[
-     {"id":"matrix","type":"table","label":"Sort your annotated sources","hint":"Short notes are enough here — the full annotation goes in your annotated bibliography.","columns":["Source (author, year)","Position it takes","Method or evidence","Main finding"],"rows":6,"max":20}]},
+     {"id":"matrix","type":"table","label":"Sort your annotated sources","hint":"Short notes are enough here. The full annotation goes in your annotated bibliography.","columns":["Source (author, year)","Position it takes","Method or evidence","Main finding"],"rows":6,"max":20}]},
    {"heading":"Perspectives","prompts":[
-     {"id":"sides","type":"long","label":"What are the main positions on my broad question? Which sources hold each one?","rows":3},
-     {"id":"fewest","type":"long","label":"Which position, place, method or time period has the fewest sources? Is that a gap or a dead end?","rows":3}]},
+     {"id":"sides","type":"long","label":"What are the main positions on my broad question? Which sources take each position?","rows":3},
+     {"id":"fewest","type":"long","label":"Which position, place, method or time period has the fewest sources? Is it a gap I could fill, or a dead end?","rows":3}]},
    {"heading":"The gap","prompts":[
      {"id":"gaptype","type":"multi","label":"What kind of gap have I found?","options":["A place","A group of people","A time period","A text or artwork","A method","An untested disagreement","A combination studied only separately","Not sure yet"]},
-     {"id":"gap","type":"long","label":"In one or two sentences: what is missing from the research, and how could my essay help fill it?","rows":3},
+     {"id":"gap","type":"long","label":"In one or two sentences: what's missing from the research, and how could my essay help fill that gap?","rows":3},
      {"id":"primary","type":"long","label":"Will filling this gap need primary research? If so, what kind?","rows":2}]},
    checklist(["I have annotated at least the number of sources for my subject (see the table above) and moved them to an Annotated category in PowerNotes.",
               "Each source has a full citation in my chosen style and an annotation (summary, evaluation, connection).",
@@ -740,10 +742,10 @@ STEPS.append(dict(
 
 # ───────────────────────── STEP 10 ─────────────────────────
 STEP10_PAIRS = [
- ("Design Technology","Sample A — criterion A: 2/6","Can compostable materials be a sustainable solution to how the fields of mass manufactured EPS food packaging contributed to the world’s environmental causes?","“clear but only partially focused in relation to the scope of the essay”",
-  "Sample C — criterion A: 5/6","With reference to structural integrity and environmental consideration, what would be the most suitable cement alternatives for the construction of stabilized rammed earth structures?","“fully relevant to the topic, easy to understand and thoroughly focused within a clearly defined scope”"),
- ("Physics and ESS","Physics Sample D — criterion A: 2/6","How do different types of Stirling engines contribute to energy generated and efficiency?","“relevant to the topic but only partially focused”; overall, “A descriptive work without a clear focus”",
-  "ESS Sample C — criterion A: 6/6","How far is the enhanced infiltration of UVA radiation (315-400nm) due to ozone depletion less detrimental than UVB (280-315nm) for the germination and growth of Gerbera (Gerbera L.) and Chamomile (Matricaria chamomilla) flowering plants?","“relevant and focused”; the method “includes justifications for the selection of variables”"),
+ ("Design Technology","Sample A (criterion A: 2/6)","Can compostable materials be a sustainable solution to how the fields of mass manufactured EPS food packaging contributed to the world’s environmental causes?","“clear but only partially focused in relation to the scope of the essay”",
+  "Sample C (criterion A: 5/6)","With reference to structural integrity and environmental consideration, what would be the most suitable cement alternatives for the construction of stabilized rammed earth structures?","“fully relevant to the topic, easy to understand and thoroughly focused within a clearly defined scope”"),
+ ("Physics and ESS","Physics Sample D (criterion A: 2/6)","How do different types of Stirling engines contribute to energy generated and efficiency?","“relevant to the topic but only partially focused”; overall, “A descriptive work without a clear focus”",
+  "ESS Sample C (criterion A: 6/6)","How far is the enhanced infiltration of UVA radiation (315-400nm) due to ozone depletion less detrimental than UVB (280-315nm) for the germination and growth of Gerbera (Gerbera L.) and Chamomile (Matricaria chamomilla) flowering plants?","“relevant and focused”; the method “includes justifications for the selection of variables”"),
 ]
 pairs_html = "\n".join("""      <div class="tablewrap"><table class="info">
         <thead><tr><th colspan="2">%s</th></tr></thead>
@@ -755,20 +757,20 @@ pairs_html = "\n".join("""      <div class="tablewrap"><table class="info">
 STEPS.append(dict(
  n=10, crumb="Step 10", title="Your research question and the parts of a paper",
  desc="Write a focused EE research question, learn from examiner comments on real questions, learn the structure of a paper in your subject, and prepare for the first reflection session.",
- lede="Sharpen your broad question into a research question, learn how essays in your subject are built, and get ready for your first reflection session.",
+ lede="Turn your broad question into a research question. Learn how essays in your subject are built, and get ready for your first reflection session.",
  body="""
     <h2>Why this step matters</h2>
-    <p class="why">Your research question is the centre of Criterion A, and every other criterion depends on it. The IB guide says it should keep you "within the scope of the 4,000 words" and help you "avoid producing an unfocused, mostly descriptive piece of writing".</p>
+    <p class="why">Your research question is the centre of Criterion A, and every other criterion depends on your research question too. The IB guide says your research question should keep you "within the scope of the 4,000 words" and help you "avoid producing an unfocused, mostly descriptive piece of writing".</p>
 
     <h2>What the IB asks of a research question</h2>
-    <p>It must be framed as a <b>question</b> — not a hypothesis or a statement of intent. It should:</p>
+    <p>Your research question must be written as a <b>question</b>. A hypothesis (a prediction) or a statement of what you plan to do won't count. Your research question should:</p>
     <ul>
       <li>be clearly stated and focused;</li>
-      <li>be open to amendment if your research takes you in a different direction, or if there are not enough resources;</li>
-      <li>invite a critical examination of the topic using the knowledge, concepts, theories, perspectives or methods of your subject(s);</li>
-      <li>encourage analysis, evaluation and synthesis, rather than description, unsupported generalizations and value judgements.</li>
+      <li>be open to change if your research takes you in a different direction, or if there aren't enough resources;</li>
+      <li>lead you to examine the topic critically, using the knowledge, concepts, theories, perspectives or methods of your subject(s);</li>
+      <li>encourage analysis, evaluation and synthesis (bringing ideas together), rather than description, unsupported generalizations and value judgements.</li>
     </ul>
-    <p>Subject reminders: in the sciences, the variables in your question must be defined, justified and measurable. In an interdisciplinary essay, the question must reflect both subjects and the reason for combining them.</p>
+    <p>Subject reminders: in the sciences, the variables in your research question must be defined, justified and measurable. In an interdisciplinary essay, your research question must reflect both subjects and the reason for combining them.</p>
 
     <h2>What examiners said about real questions</h2>
     <p>These research questions come from the sample essays, word for word, with the examiner's comment on each.</p>
@@ -776,9 +778,9 @@ STEPS.append(dict(
     <p>Two more examiner comments worth knowing:</p>
     <ul>
       <li>Chemistry Sample A (criterion A: 5/6): the question was "clear and focused but stated as a yes/no answer type question". A yes/no question limits your argument.</li>
-      <li>IB Economics example 1 (criterion A: 3/6): a "to what extent" question did not work because "it is not possible to measure the extent" of what it asked about. Only use "to what extent" when the extent can actually be judged.</li>
+      <li>IB Economics example 1 (criterion A: 3/6): a "to what extent" question didn't work because "it is not possible to measure the extent" of what it asked about. Only use "to what extent" when the extent can actually be judged.</li>
     </ul>
-    <p>Once you have a question, use exactly the same wording on your title page, in your introduction and in your conclusion.</p>
+    <p>Once you have your research question, use exactly the same wording on your title page, in your introduction and in your conclusion.</p>
 
     <h2>The parts of a paper</h2>
     <p>Every extended essay must include these parts:</p>
@@ -790,22 +792,22 @@ STEPS.append(dict(
       <li>Conclusion</li>
       <li>Reference list or bibliography</li>
     </ol>
-    <p>On top of these, each subject has its own structural conventions:</p>
+    <p>Each subject also has its own structural conventions (the usual way essays in that subject are organised):</p>
     <div class="tablewrap"><table class="info" id="conventions">
       <thead><tr><th>Subject</th><th>Structural conventions</th></tr></thead>
       <tbody>
-        <tr data-subject="Language A"><th>Language A</th><td>An introduction that explains the topic and focus and names the texts; body paragraphs that build an argument with textual support from primary and secondary sources; a conclusion that answers the question in light of your close readings. Sections and headings are allowed, but must not fragment the essay.</td></tr>
-        <tr data-subject="Language B"><th>Language B</th><td>Images are generally not useful in the body unless you are analysing an advertisement or artwork. If you analyse poetry or song lyrics, quote significant extracts in the body; the full text can go in an appendix, but examiners do not have to read appendices.</td></tr>
-        <tr data-subject="Visual Arts"><th>Visual Arts</th><td>Select a limited number of works so you can analyse them in depth within the word limit. Review the existing literature on your topic to shape your research question. Label and reference any images you include.</td></tr>
-        <tr data-subject="Sciences"><th>Biology, Chemistry, Physics</th><td>A methodology detailed enough to be replicated; SI units; results in a standardized format with labelled headings, units and numbering; processed data with uncertainties; conclusions supported by the data; an evaluation linked to the question and method.</td></tr>
-        <tr data-subject="I&amp;S"><th>Business Management, Economics, Global Politics</th><td>Clearly labelled diagrams, maps, images and graphs, acknowledged if they are someone else's work and referred to in the text; headings to organize the essay where appropriate.</td></tr>
-        <tr data-subject="Mathematics"><th>Mathematics</th><td>State the question clearly and stay focused on it. Write mathematics with an equation editor — a new line for each step of algebra, no * for multiplication or ^ for powers.</td></tr>
+        <tr data-subject="Language A"><th>Language A</th><td>An introduction that explains the topic and focus, and names the texts. Body paragraphs that build an argument, supported by evidence from primary and secondary sources. A conclusion that answers the question using your close readings. Sections and headings are allowed, but they must not break the essay into disconnected pieces.</td></tr>
+        <tr data-subject="Language B"><th>Language B</th><td>Images usually aren't useful in the body unless you're analysing an advertisement or artwork. If you analyse poetry or song lyrics, quote the important extracts in the body. The full text can go in an appendix, but examiners don't have to read appendices.</td></tr>
+        <tr data-subject="Visual Arts"><th>Visual Arts</th><td>Choose a small number of works so you can analyse them in depth within the word limit. Review the existing literature on your topic to shape your research question. Label and reference any images you include.</td></tr>
+        <tr data-subject="Sciences"><th>Biology, Chemistry, Physics</th><td>A method detailed enough for someone else to repeat it. SI units. Results in a standardized format with labelled headings, units and numbering. Processed data with uncertainties. Conclusions supported by the data. An evaluation linked to the question and method.</td></tr>
+        <tr data-subject="I&amp;S"><th>Business Management, Economics, Global Politics</th><td>Clearly labelled diagrams, maps, images and graphs. Acknowledge any that are someone else's work, and refer to each one in your text. Use headings to organise the essay where they help.</td></tr>
+        <tr data-subject="Mathematics"><th>Mathematics</th><td>State the question clearly and stay focused on it. Write mathematics with an equation editor. Use a new line for each step of algebra, and don't use * for multiplication or ^ for powers.</td></tr>
       </tbody></table></div>
-    <p>Anything important to your argument must be in the body of the essay — examiners are not required to read appendices, footnotes or endnotes.</p>
+    <p>Anything important to your argument must be in the body of the essay. Examiners don't have to read appendices, footnotes or endnotes.</p>
     <p><a class="btn" href="../../samples/">See how sample essays in your subject are structured</a></p>
 
     <h2>Your first reflection session</h2>
-    <p>After this step you have your <b>first reflection session</b> with your supervisor — the first of the three sessions recorded on your RPF. It focuses on your initial ideas and how you plan to carry out your research. Bring your RRS. The thinking tool below includes questions your supervisor may ask, taken from the IB's own list.</p>
+    <p>After this step you'll have your <b>first reflection session</b> with your supervisor. It's the first of the three sessions recorded on your RPF (Reflection and Progress Form). The session focuses on your first ideas and how you plan to do your research. Bring your RRS (your EE notebook). The thinking tool below includes questions your supervisor may ask, taken from the IB's own list.</p>
     <p class="src-note">Sources: IB <i>Extended essay guide</i> (first assessment 2027), "Researching the extended essay" (developing a research question), "Writing your extended essay" (overall structure) and "Subject-specific guidance"; IB <i>Extended essay support material</i> (2025), "Questions to guide reflection sessions"; examiner comments on the sample essays.</p>
 """,
  script="""/* highlight the subject chosen in step 1 */
@@ -825,9 +827,9 @@ STEPS.append(dict(
      {"id":"rq","type":"long","label":"My research question:","rows":2},
      {"id":"checks","type":"checklist","label":"Does it pass?","items":[
        "It is a question, not a statement or a hypothesis.",
-       "It is clear — a stranger would understand it.",
+       "It's clear: a stranger would understand it.",
        "It is focused enough to answer in 4,000 words.",
-       "It is arguable — it cannot be answered with yes, no, or a fact.",
+       "It's arguable: it can't be answered with yes, no or a fact.",
        "It uses the concepts or methods of my subject(s).",
        "If it says “to what extent”, the extent can actually be judged.",
        "It leads to analysis, not description.",
@@ -835,11 +837,11 @@ STEPS.append(dict(
      {"id":"method","type":"long","label":"How will I answer it? (Name the method and the sources or data.)","rows":3}]},
    {"heading":"The parts of my paper","prompts":[
      {"id":"structure","type":"long","label":"The sections my essay will probably need, in order (use your subject's conventions):","rows":4}]},
-   {"heading":"Prepare for my first reflection session","note":"Questions supervisors may ask, from the IB's list of initial reflection questions.","prompts":[
-     {"id":"motivated","type":"long","label":"What has motivated me to research this topic?","rows":2},
+   {"heading":"Prepare for my first reflection session","note":"Questions your supervisor may ask, from the IB's list of questions for the first reflection session.","prompts":[
+     {"id":"motivated","type":"long","label":"What made me want to research this topic?","rows":2},
      {"id":"requirements","type":"long","label":"What are the extended essay requirements for my subject, and does my topic fit them?","rows":2},
-     {"id":"enough","type":"long","label":"Will I be able to collect sufficient resources to answer my research question effectively?","rows":2},
-     {"id":"obstacles","type":"long","label":"What challenges or obstacles have I met, and what can I do about them?","rows":2},
+     {"id":"enough","type":"long","label":"Will I be able to find enough resources to answer my research question well?","rows":2},
+     {"id":"obstacles","type":"long","label":"What problems have I met so far, and what can I do about them?","rows":2},
      {"id":"next","type":"long","label":"What are my next steps?","rows":2},
      {"id":"askme","type":"long","label":"Questions I want to ask my supervisor:","rows":2}]},
    checklist(["My research question passes every test above, or I know what to fix.",
