@@ -69,6 +69,39 @@ PREFILLS = {
     "__PREFILL_GAP__": 'function(){ return EETools.read("step-9","gap")||""; }',
 }
 
+# Source targets by subject group (decided 25 Oct 2026). Based on the bibliographies of the IB sample
+# essays that earned a B or higher in each subject group. Shown in steps 7 and 9; the step 7 counter uses __TARGET_COLLECT__.
+SOURCE_GROUPS = [
+ # (data-group, subjects, collect, annotate, what counts)
+ ("big",  "Biology, Chemistry, Physics, Business Management, Economics, Global Politics, interdisciplinary essays", 25, 12, "Scholarly articles, books, reports and data."),
+ ("va",   "Visual Arts", 20, 10, "Includes the 3 or 4 artworks your essay analyses (your primary sources)."),
+ ("lang", "Language A, Language B", 15, 8, "Includes your primary text or texts — the novel, play, poems, films or songs you analyse."),
+ ("math", "Mathematics", 10, 6, "Textbooks, papers and reliable mathematical references."),
+]
+# Which source group the student is in, from their step 1 answers ("" = not chosen yet).
+GROUP_FN = ('function(){ var p=EETools.read("step-1","pathway")||""; if(p==="Interdisciplinary (two subjects)") return "big"; '
+            'if(p!=="Subject-focused (one subject)") return ""; var s=EETools.read("step-1","subject")||""; if(!s) return ""; '
+            'if(s==="Language A"||s==="Language B") return "lang"; if(s==="Visual Arts") return "va"; if(s==="Mathematics") return "math"; return "big"; }')
+# Step 7 counter target for the student's group (0 = no target shown until a subject is chosen in step 1).
+PREFILLS["__TARGET_COLLECT__"] = 'function(){ var t=%s; return t[(%s)()]||0; }' % (json.dumps({g:c for g,_,c,_,_ in SOURCE_GROUPS}), GROUP_FN)
+# Highlights the student's row in the targets table (steps 7 and 9).
+GROUP_SCRIPT = """/* highlight the source target for the subject chosen in step 1 */
+(function(){
+  var g = (%s)();
+  if(!g) return;
+  document.querySelectorAll('table.targets tr[data-group="'+g+'"]').forEach(function(r){ r.classList.add("mine"); });
+  document.querySelectorAll(".targets-note").forEach(function(x){ x.hidden=false; });
+})();""" % GROUP_FN
+
+def targets_table():
+    rows = "\n".join('        <tr data-group="%s"><th>%s</th><td>%d</td><td>%d</td><td>%s</td></tr>' % (g, html.escape(s), c, a, html.escape(w)) for g,s,c,a,w in SOURCE_GROUPS)
+    return """    <div class="tablewrap"><table class="info targets">
+      <thead><tr><th>Subject</th><th>Collect (step 7)</th><th>Annotate (step 9)</th><th>What counts</th></tr></thead>
+      <tbody>
+%s
+      </tbody></table></div>
+    <p class="small muted targets-note" hidden>Your subject from step 1 is highlighted.</p>""" % rows
+
 def checklist(items):
     return {"heading": "Before you move on", "prompts": [{"id": "done", "type": "checklist", "label": "Tick each one when it is true.", "items": items}]}
 
@@ -99,7 +132,7 @@ STEPS.append(dict(
     </div>
 
     <h2>How this site works</h2>
-    <p>There are 18 steps in four stages: Explore, Narrow, Research and write, and After submission. Do them in order. Each step page has:</p>
+    <p>There are 19 steps in four stages: Explore, Narrow, Research and write, and After submission. Do them in order. Each step page has:</p>
     <ul>
       <li><b>Why this step matters</b> and <b>what to do</b>, in a short guide.</li>
       <li><b>A thinking tool</b> — questions that help you brainstorm. Nothing is submitted or graded. Your answers save in your browser, and a button copies them into your RRS Google Doc.</li>
@@ -173,6 +206,7 @@ STEPS.append(dict(
     <div class="note warn"><p style="margin:0"><b>Rule:</b> Environmental Systems and Societies (ESS) and Literature and Performance are "cross-disciplinary" subjects. You can write a subject-focused essay in either one, but you cannot use either one in the interdisciplinary pathway.</p></div>
 
     <h2>Rules to know for your subject</h2>
+    <p>Before you hand in your subject choice, read the <a href="../../subjects/">subject guide</a> for your first choice <b>and</b> your backup subject. Each guide sets out what the IB expects in that subject, with example research questions and a thinking tool to test your idea.</p>
     <ul>
       <li><b>Language A:</b> the essay must be based on one or more clearly defined texts, and at least one text must have been originally written in the language of the essay. You cannot base it on a text studied as part of your language and literature course. Avoid biographical, historical or sociological topics — the focus must be literary or language analysis.</li>
       <li><b>Language B:</b> you cannot write it in a language you study as Language A. Every text you analyse must have been originally written or spoken in the target language — translations are not accepted.</li>
@@ -217,7 +251,7 @@ STEPS.append(dict(
  lede="Decide how you will cite sources now — before you collect a single one — so you never have to redo your records.",
  body="""
     <h2>Why this step matters</h2>
-    <p class="why">From step 3 onward you will collect around 40 sources. If you record each one in your chosen style as you find it, your works cited list at step 16 is almost finished already. If you switch styles halfway, you redo every entry.</p>
+    <p class="why">From step 3 onward you will collect between 10 and 25 sources, depending on your subject (step 7 gives the number for your subject). If you record each one in your chosen style as you find it, your works cited list at step 17 is almost finished already. If you switch styles halfway, you redo every entry.</p>
     <p>The IB does not require one particular style. It requires you to acknowledge every source using a standard style of referencing, consistently, throughout the essay. At ASD you will use <b>APA</b> or <b>MLA</b>.</p>
 
     <h2>Which style for which subject?</h2>
@@ -459,6 +493,7 @@ STEPS.append(dict(
 """ + rows_html + """
       </tbody></table></div>
     <p>Not offered at ASD but worth knowing: Psychology extended essays must be based on secondary sources only — collecting primary data is not permitted.</p>
+    <p>For more on your subject, including the guide's own example research questions and the mistakes to avoid, read your <a href="../../subjects/">subject guide</a>.</p>
 
     <h2>See methods in action</h2>
     <p>The best way to understand methods in your subject is to see how real essays used them. Open two sample essays in your subject and read the introduction (where the method is explained) and the examiner's comments on Criterion A.</p>
@@ -510,15 +545,25 @@ STEPS.append(dict(
 
 # ───────────────────────── STEP 7 ─────────────────────────
 STEPS.append(dict(
- n=7, crumb="Step 7", title="Collect 40 sources in PowerNotes",
- desc="Collect and categorise 40 sources for your EE in PowerNotes, then look for the patterns that will shape your question.",
- lede="Bring your reading together: 40 sources, organised so you can see what your topic is really about.",
+ n=7, crumb="Step 7", title="Collect your sources in PowerNotes",
+ desc="Collect and categorise the sources for your EE in PowerNotes, reach the target for your subject, then look for the patterns that will shape your question.",
+ lede="Bring your reading together: enough sources for your subject, organised so you can see what your topic is really about.",
  body="""
     <h2>Why this step matters</h2>
-    <p class="why">Forty sources is more than you will cite — and that is the point. A wide collection shows you the shape of your topic: the themes that keep returning, the arguments that matter, and the gaps. In step 9 you will narrow these 40 to the 20 best.</p>
+    <p class="why">A wide collection shows you the shape of your topic: the themes that keep returning, the arguments that matter, and the gaps. You will probably collect more sources than you cite — that is normal. In step 9 you will choose the most useful ones and annotate them.</p>
+
+    <h2>How many sources?</h2>
+    <p>The IB does not set a number. Different subjects need very different amounts of reading, so the targets below depend on your subject. They come from an analysis of strong EEs in each subject group: the bibliographies of the IB's sample essays that earned a B or higher.</p>
+""" + targets_table() + """
+    <ul>
+      <li><b>Language A and Language B:</b> your novel, play, poems, films or songs are your <b>primary sources</b>. Reading them closely, more than once, is the biggest part of your research — which is why your number of other sources is lower. Record your primary texts in PowerNotes too; they count towards your total.</li>
+      <li><b>Visual Arts:</b> the artworks you analyse are your primary sources, and they count towards your total.</li>
+      <li><b>More is not better.</b> In the sample essays, the number of sources did not predict the mark. A Physics essay with 30 sources scored 11 out of 30; a Language B essay with about 15 scored 23. What matters is how well you use each source.</li>
+    </ul>
+"""+"""
 
     <h2>Organise PowerNotes</h2>
-    <p>You already have four categories from steps 3 to 6. Keep them, and add theme categories as patterns appear.</p>
+    <p>You already have four categories from steps 3 to 6. Keep them, and add theme categories as patterns appear. Language A, Language B and Visual Arts students: add a fifth category, <b>Primary texts</b> or <b>Artworks</b>, for the works you will analyse.</p>
     <div class="kv">
       <div class="panel"><h3>Open / background</h3><p>From step 3. Orientation and key terms.</p></div>
       <div class="panel"><h3>Current</h3><p>From step 4. Recent research and debate.</p></div>
@@ -539,14 +584,16 @@ STEPS.append(dict(
     <p>Read your one-line notes from top to bottom. Which themes keep coming up? Which sources do you keep going back to? Where do you feel most curious? Those answers point to the narrower topic you will choose in step 8.</p>
     <p class="src-note">Source: IB <i>Extended essay guide</i> (first assessment 2027), "Researching the extended essay" (preliminary investigation and changing direction).</p>
 """,
- tool=dict(id="step-7", stepLabel="Step 7 · Collect 40 sources", title="What my 40 sources are telling me",
+ script=GROUP_SCRIPT,
+ tool=dict(id="step-7", stepLabel="Step 7 · Collect your sources", title="What my sources are telling me",
   sections=[
    {"heading":"Count","note":"Enter how many sources you have in each PowerNotes category.","prompts":[
      {"id":"n_open","type":"number","label":"Open / background","min":0,"max":99},
      {"id":"n_current","type":"number","label":"Current","min":0,"max":99},
      {"id":"n_hist","type":"number","label":"Historical","min":0,"max":99},
      {"id":"n_methods","type":"number","label":"Methods","min":0,"max":99},
-     {"id":"total","type":"total","label":"Total sources:","of":["n_open","n_current","n_hist","n_methods"],"target":40,"warnShare":0.5}]},
+     {"id":"n_primary","type":"number","label":"Primary texts or artworks (Language A, Language B, Visual Arts)","min":0,"max":99},
+     {"id":"total","type":"total","label":"Total sources:","of":["n_open","n_current","n_hist","n_methods","n_primary"],"target":"__TARGET_COLLECT__","warnShare":0.5}]},
    {"heading":"Patterns","prompts":[
      {"id":"themes","type":"long","label":"Themes that keep coming up across my sources:","rows":3},
      {"id":"top5","type":"table","label":"The five sources I keep going back to","columns":["Source (author, year)","Why I keep going back to it"],"rows":5,"max":5},
@@ -554,7 +601,7 @@ STEPS.append(dict(
    {"heading":"What my topic is really about","prompts":[
      {"id":"topicnow","type":"text","label":"My broad topic at step 1 was:","prefill":"__PREFILL_TOPIC__"},
      {"id":"really","type":"long","label":"In one or two sentences: what is my topic really about now?","rows":3}]},
-   checklist(["I have 40 sources in PowerNotes.",
+   checklist(["I have reached the source target for my subject in PowerNotes (see the table above).",
               "Every source has a full citation in my chosen style and a one-line note.",
               "No single category holds more than about half my sources.",
               "I have copied this thinking tool into my RRS."])
@@ -565,11 +612,11 @@ STEPS.append(dict(
 STEPS.append(dict(
  n=8, crumb="Step 8", title="Narrow your topic and write a broad question",
  desc="Narrow your EE topic from broad to focused, then brainstorm and evaluate questions to find a broad working question.",
- lede="Turn what you learned from 40 sources into a focused topic, then into a broad question you can test.",
+ lede="Turn what you learned from your sources into a focused topic, then into a broad question you can test.",
  body="""
     <h2>Why this step matters</h2>
     <p class="why">A broad topic leads to a descriptive essay that informs the reader but never argues anything. The IB guide warns that staying "too broad and general almost inevitably leads to descriptive, superficial writing". Narrowing is how you get to analysis.</p>
-    <p>You are not writing your final research question yet — that comes in step 10. Here you narrow the topic and write a <b>broad question</b>: a working question that will guide which 20 sources you keep in step 9.</p>
+    <p>You are not writing your final research question yet — that comes in step 10. Here you narrow the topic and write a <b>broad question</b>: a working question that will guide which sources you annotate in step 9.</p>
 
     <h2>The topic funnel</h2>
     <p>Narrow one level at a time. Each level should be a part of the level above it.</p>
@@ -609,7 +656,7 @@ STEPS.append(dict(
      {"id":"aspect","type":"text","label":"Narrower aspect:"},
      {"id":"specific","type":"text","label":"A specific case, text, place or time:"},
      {"id":"focused","type":"long","label":"My focused topic, in one sentence:","rows":2},
-     {"id":"why","type":"long","label":"Which of my 40 sources pointed me here, and why?","rows":3}]},
+     {"id":"why","type":"long","label":"Which of my sources pointed me here, and why?","rows":3}]},
    {"heading":"Preliminary investigation","prompts":[
      {"id":"range","type":"long","label":"Is there enough to read on this focused topic, from a range of views? What makes me think so?","rows":3}]},
    {"heading":"Emerging questions","prompts":[
@@ -626,23 +673,26 @@ STEPS.append(dict(
 
 # ───────────────────────── STEP 9 ─────────────────────────
 STEPS.append(dict(
- n=9, crumb="Step 9", title="Annotated bibliography: 20 sources",
- desc="Narrow 40 sources to 20, annotate them in APA or MLA, cover different perspectives, and find the gap in the research.",
- lede="Choose the 20 sources that matter most for your broad question, annotate each one, and find what is missing — the gap your essay can fill.",
+ n=9, crumb="Step 9", title="Annotated bibliography",
+ desc="Choose your key sources, annotate them in APA or MLA, cover different perspectives, and find the gap in the research.",
+ lede="Choose the sources that matter most for your broad question, annotate each one, and find what is missing — the gap your essay can fill.",
  body="""
     <h2>Why this step matters</h2>
-    <p class="why">An annotated bibliography forces you to understand each source well enough to explain it in your own words and judge it. Laying 20 sources side by side also shows you where the research runs out — and that is where your own question belongs.</p>
+    <p class="why">An annotated bibliography forces you to understand each source well enough to explain it in your own words and judge it. Laying your key sources side by side also shows you where the research runs out — and that is where your own question belongs.</p>
     <p>The IB's support material is clear about this: your research question "should be sufficiently original that you are making a genuine contribution to knowledge in that field", and gaps in what secondary research can tell you are "often a cue that primary research is needed".</p>
 
-    <h2>From 40 sources to 20</h2>
-    <p>Go back to PowerNotes and keep the 20 sources that best help with your broad question from step 8. Choose for:</p>
+    <h2>Choose the sources to annotate</h2>
+    <p>The number to annotate depends on your subject (the same analysis of strong EEs as in step 7):</p>
+""" + targets_table() + """
+    <p>Language A, Language B and Visual Arts students: annotate <b>secondary</b> sources — criticism, context, theory, interviews. Your primary texts or artworks are what you analyse in the essay itself.</p>
+    <p>Go back to PowerNotes and choose the sources that best help with your broad question from step 8. Choose for:</p>
     <ul>
       <li><b>Relevance</b> — the source speaks directly to your broad question, not just your broad topic.</li>
       <li><b>Quality</b> — mostly scholarly sources: peer-reviewed articles, academic books, reputable data.</li>
       <li><b>Different perspectives</b> — sources that disagree; sources from different places, time periods, schools of thought or methods.</li>
       <li><b>Method</b> — at least a few sources that show a method you might use (from step 6).</li>
     </ul>
-    <p>Move your 20 into a new PowerNotes category called <b>Annotated 20</b>. Keep the other 20 — you may need them later.</p>
+    <p>Move them into a new PowerNotes category called <b>Annotated</b>. Keep the rest — you may need them later.</p>
 
     <h2>What an annotation contains</h2>
     <p>Each entry starts with the full citation in your chosen style (APA or MLA), followed by a paragraph of roughly 100 to 150 words, in your own words, that covers:</p>
@@ -654,7 +704,7 @@ STEPS.append(dict(
     <p>The Purdue OWL has examples of annotated bibliographies in both styles: <a href="https://owl.purdue.edu/owl/general_writing/common_writing_assignments/annotated_bibliographies/annotated_bibliography_samples.html" target="_blank" rel="noopener">annotated bibliography samples</a>.</p>
 
     <h2>Find the gap</h2>
-    <p>Put your 20 sources into a matrix: one row per source, with columns for its <b>position</b>, its <b>method</b> and its <b>main finding</b>. Then read down each column and ask what is missing. A gap might be:</p>
+    <p>Put your annotated sources into a matrix: one row per source, with columns for its <b>position</b>, its <b>method</b> and its <b>main finding</b>. Then read down each column and ask what is missing. A gap might be:</p>
     <ul>
       <li>a <b>place</b> nobody has studied — including your own city or region. "Local" simply means a specific place; local data can still say something that matters internationally;</li>
       <li>a <b>group</b> of people, a <b>time period</b>, or a <b>text or artwork</b> that has not been examined in this way;</li>
@@ -665,13 +715,14 @@ STEPS.append(dict(
     <p>Your gap does not need to be dramatic. A focused, well-chosen gap that you can actually investigate in 4,000 words is exactly right.</p>
     <p class="src-note">Sources: IB <i>Extended essay support material</i> (2025), "Researching your extended essay" (secondary and primary research); IB <i>Extended essay guide</i> (first assessment 2027), "Writing your extended essay" (citation and referencing).</p>
 """,
+ script=GROUP_SCRIPT,
  tool=dict(id="step-9", stepLabel="Step 9 · Annotated bibliography", title="Perspectives and the gap",
-  intro="Write your full annotations in your RRS Google Doc or in PowerNotes. Use this tool to sort your 20 sources and find the gap.",
+  intro="Write your full annotations in your RRS Google Doc or in PowerNotes. Use this tool to sort your annotated sources and find the gap.",
   sections=[
    {"heading":"My broad question","prompts":[
      {"id":"bq","type":"long","label":"My broad question (from step 8):","rows":2,"prefill":"__PREFILL_BQ__"}]},
    {"heading":"The matrix","prompts":[
-     {"id":"matrix","type":"table","label":"Sort your 20 sources","hint":"Short notes are enough here — the full annotation goes in your annotated bibliography.","columns":["Source (author, year)","Position it takes","Method or evidence","Main finding"],"rows":6,"max":20}]},
+     {"id":"matrix","type":"table","label":"Sort your annotated sources","hint":"Short notes are enough here — the full annotation goes in your annotated bibliography.","columns":["Source (author, year)","Position it takes","Method or evidence","Main finding"],"rows":6,"max":20}]},
    {"heading":"Perspectives","prompts":[
      {"id":"sides","type":"long","label":"What are the main positions on my broad question? Which sources hold each one?","rows":3},
      {"id":"fewest","type":"long","label":"Which position, place, method or time period has the fewest sources? Is that a gap or a dead end?","rows":3}]},
@@ -679,9 +730,9 @@ STEPS.append(dict(
      {"id":"gaptype","type":"multi","label":"What kind of gap have I found?","options":["A place","A group of people","A time period","A text or artwork","A method","An untested disagreement","A combination studied only separately","Not sure yet"]},
      {"id":"gap","type":"long","label":"In one or two sentences: what is missing from the research, and how could my essay help fill it?","rows":3},
      {"id":"primary","type":"long","label":"Will filling this gap need primary research? If so, what kind?","rows":2}]},
-   checklist(["I have chosen 20 sources and moved them to an Annotated 20 category in PowerNotes.",
+   checklist(["I have annotated at least the number of sources for my subject (see the table above) and moved them to an Annotated category in PowerNotes.",
               "Each source has a full citation in my chosen style and an annotation (summary, evaluation, connection).",
-              "My 20 sources include different perspectives.",
+              "My annotated sources include different perspectives.",
               "I can state the gap my essay could fill.",
               "I have copied this thinking tool into my RRS."])
   ])

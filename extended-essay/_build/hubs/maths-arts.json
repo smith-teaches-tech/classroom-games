@@ -1,0 +1,192 @@
+[
+ {
+  "slug": "mathematics",
+  "subject": "Mathematics",
+  "group": "Mathematics",
+  "pages": "68–71",
+  "distinctive": [
+   "A mathematics EE usually takes one of two approaches. A theoretical essay explores a problem or area of mathematics outside the syllabus that caught your curiosity in class or in your wider reading. A practical essay uses mathematics to investigate an issue you care about, which could come from your career plans, a CAS project, a hobby or another subject. Many essays mix both approaches.",
+   "If you have a passion, such as a sport, that produces data, you can analyse that data, probably with statistics, to answer your research question. If your issue comes from another subject, the guide suggests you consider the interdisciplinary pathway. Whichever approach you take, a review of the literature (secondary research) is mandatory in a mathematics essay.",
+   "The guide calls knowledge and understanding \"arguably the most important criterion in a mathematics essay\". You are not expected to discover something new. You either explain mathematics that is new to you or apply mathematics you understand well to a new situation. Because algebra takes up space on the page, your final word count will probably fall short of 4,000 words."
+  ],
+  "sources": {
+   "primary": "Mathematics has no primary sources in the usual sense. In a practical essay, your starting point is data you collect yourself. The guide says to use raw data, because data that has already been processed (for example, batting averages in baseball) leaves you little to do.",
+   "secondary": "A review of the literature is mandatory in every mathematics essay. In a theoretical essay, your research mainly means reading around the subject: choose a few of the most relevant resources, because too many sources can be confusing."
+  },
+  "methods": [
+   "Theoretical essays: read around the area of mathematics, then explain the concepts clearly and prove your ideas, as in the guide's examples on RSA encryption and infinite sets.",
+   "Practical essays: collect appropriate data, graph the data first, and only then decide which techniques to use to analyse the data.",
+   "Modelling a real situation, for example building a population or habitat model and using the model to make a prediction.",
+   "Applying an algorithm to a real problem, for example using an algorithm such as Dijkstra's to choose a route.",
+   "Statistical analysis of data from an interest such as sport, for example testing whether home advantage is significant."
+  ],
+  "choosing_topic": [
+   "Start from an interest: a branch of mathematics that made you curious, or an issue from your career plans, a CAS project, a hobby or another subject that mathematics could investigate.",
+   "Narrow your interest to a topic. In a theoretical essay, the topic can show the area of mathematics you will explore. In a practical essay, the topic can show how mathematics will explore your area of interest.",
+   "Once your topic is narrow and focused, write a provisional research question. Expect the wording of your research question to change a little as your research develops.",
+   "Be careful with research questions that compare two approaches. The guide says a comparison of RSA with elliptic curves could not be explained fully within 4,000 words, so a question on RSA alone is better.",
+   "In a practical essay, do not name the mathematics or statistical methods in your research question, because your choice of method may change once you look at your data.",
+   "Do not be overly ambitious. Mathematics beyond the syllabus is not essential: you may be able to answer your research question with the mathematics you have already studied."
+  ],
+  "examples": [
+   {
+    "topic": "Cryptography",
+    "rq": "What is RSA (Rivest–Shamir–Adleman) encryption and how does it help make the internet secure?",
+    "why": "A mainly theoretical essay. You explain how RSA works, showing full understanding of any mathematics beyond the syllabus, and then explain how RSA keeps online transactions secure. The guide prefers this single-method question to a comparison of RSA with elliptic curves.",
+    "page": 69
+   },
+   {
+    "topic": "To infinity and beyond",
+    "rq": "How many infinities are there?",
+    "why": "A mainly theoretical essay. You explore countably infinite sets, explain the concepts clearly and prove your ideas, then move on to the uncountable continuum and discuss how the idea of infinity could be extended further.",
+    "page": 69
+   },
+   {
+    "topic": "Fractal dimension",
+    "rq": "What are fractals and what is fractal dimension? (or: Length of a coastline)",
+    "why": "A mainly theoretical essay. You explain how fractals develop and why fractals matter, perhaps exploring limits problems such as a finite area with an infinite perimeter. From there you could move on to the length of the coastline of a favourite island or to fractal dimension.",
+    "page": 69
+   },
+   {
+    "topic": "The last rhinoceros",
+    "rq": "How long do the rhinos have left?",
+    "why": "A mainly practical essay. You explore both the population size and the habitat of the rhinoceros, try to build a realistic model for population or habitat area, and use the model to predict which reaches zero first. The guide says you would start by graphing the data.",
+    "page": 70
+   },
+   {
+    "topic": "Getting to school by public transport",
+    "rq": "What is the quickest and/or cheapest route from your home to school?",
+    "why": "A mainly practical essay. You study the transport system in your area, compare different ways of getting to school, estimate travel and walking times, and use an algorithm such as Dijkstra's to decide on your preferred route.",
+    "page": 70
+   },
+   {
+    "topic": "Winning the English football Premier League",
+    "rq": "What is “home advantage”, and are Premier League football champions equally successful away from home?",
+    "why": "A mainly practical essay. You use raw Premier League results to examine the distribution of goals scored at home and away, test whether home advantage is significant, and check whether the champions overcome home advantage in away games. The guide says you would start by graphing the data.",
+    "page": 70
+   }
+  ],
+  "structure": [
+   "Introduction: explain your research question and your plan clearly, in your own words, starting from mathematics you know from the syllabus.",
+   "Show and explain every essential step in your own words. Subheadings may help, depending on the mathematics you explore.",
+   "You may quote a complicated theorem without proving it if the proof is too difficult, but you must explain what the theorem is for and give an illustrative example.",
+   "In a practical essay, explain the background, then show your data before your analysis. Put a large amount of data in an appendix.",
+   "Write your mathematics with an equation editor: use a new line for each step of algebra, and never use * for multiplication or ^ for powers."
+  ],
+  "pitfalls": [
+   "Including mathematics you do not fully understand. If you cannot explain the mathematics, leave it out and change your plan.",
+   "Relying too heavily on your sources or copying information directly from your sources.",
+   "Trying to fit in too much, such as two methods, and losing a clear demonstration of your understanding of the mathematics.",
+   "Working with processed data instead of raw data.",
+   "Choosing your analysis techniques before you have looked at your data.",
+   "Extending your analysis beyond your research question, which the guide says is likely to weaken your essay."
+  ],
+  "rules": [
+   "A review of the literature (secondary research) is mandatory in every mathematics essay.",
+   "In a data-based essay, use raw data rather than data that has already been processed."
+  ],
+  "think": [
+   "Can you name the specific area of mathematics, or the specific data set, that your essay would be built on?",
+   "Could you explain the mathematics you want to use step by step, in your own words, starting from what you already know from the syllabus?",
+   "If your idea compares two methods, could you show full understanding of the mathematics behind both within 4,000 words, or should you focus on one method?",
+   "If your essay is practical, can you get raw data rather than figures someone has already processed?",
+   "Does your research question leave the choice of mathematical or statistical method open until you have graphed your data?",
+   "Is your question mainly about mathematics, or would your question fit better in another subject or the interdisciplinary pathway?"
+  ],
+  "refs": {
+   "distinctive": "68–71",
+   "sources": "69–70",
+   "methods": "69–71",
+   "choosing_topic": "68–71",
+   "examples": "69–70",
+   "structure": "70–71",
+   "pitfalls": "69–71",
+   "rules": "69–70",
+   "think": "68–71"
+  }
+ },
+ {
+  "slug": "visual-arts",
+  "subject": "Visual Arts",
+  "group": "Arts",
+  "pages": "71–77",
+  "distinctive": [
+   "An arts EE lets you explore a topic of particular interest to you in visual arts. Your essay must combine analysis of primary sources (in visual arts, your chosen artworks) with disciplined research informed by scholarly methods, and then critically evaluate the results. Secondary sources such as books, critiques, magazine articles, interviews, subject journals and websites must support your argument as evidence.",
+   "Your selection of artworks is your body of work, and your body of work needs enough substance to sustain an in-depth 4,000-word essay. The guide sets no precise number. Look first for complementary works, for example three or four by the same artist. As you analyse the works, you may find three give enough for comparison and contrast, or that a fourth deepens your analysis.",
+   "Arts essays more often use qualitative research methods that aim to understand the art form within a context. Approaches can include the study of aesthetic concepts, historical, social and cultural aspects, and gender-based or post-colonialist readings. The guide also presents your EE as a chance to study art in an international context, exploring both the familiar and the new."
+  ],
+  "sources": {
+   "primary": "In visual arts, your primary sources are the artworks you analyse, and together your chosen artworks form your body of work. If you cannot see an artwork in person, you must rely on high-quality reproductions, videos and images instead.",
+   "secondary": "Secondary sources such as books, critiques, magazine articles, interviews, subject journals and websites must be used as evidential support for your argument. Secondary sources provide context, support the points in your analysis and explain the circumstances behind an artist's decisions; the views of artists, curators, historians and critics can add different perspectives."
+  },
+  "methods": [
+   "Artistic and contextual analysis of your chosen artworks, considering not only what the artworks say but also how the artworks say it.",
+   "Qualitative research that seeks to understand the art form within a context. Your essay must show clear knowledge and understanding of at least one appropriate context.",
+   "Readings through aesthetic concepts, historical, social and cultural aspects, or gender-based and post-colonialist lenses.",
+   "Comparison of two or more artworks. Your comparisons must be valid, come from sensitive and objective analysis, and have a clearly explained, significant purpose.",
+   "For an influence topic: rigorous formal analysis backed by supporting documents that evidence the influence."
+  ],
+  "choosing_topic": [
+   "Keep your topic inside visual arts. The guide warns against topics that are peripheral to the arts subject, even though the arts link to many other disciplines.",
+   "Your research question must be answered through artistic and contextual analysis, and your essay must not drift into areas such as psychology, history or sociology.",
+   "You may discuss a social, political or gender issue arising from an artwork, but focus on the artistic meaning and significance of the artwork rather than using the artwork as documentary evidence of the issue.",
+   "Think carefully before writing about one artist's or style's influence on another. Finding similarities is relatively easy; demonstrating an actual influence is complex and needs formal analysis plus documentary evidence.",
+   "Review the existing literature on your topic to help you build your research question and judge whether your research question is relevant.",
+   "Select a limited number of artworks: enough substance to keep raising points without repeating yourself, but few enough for in-depth analysis within the word limit."
+  ],
+  "examples": [
+   {
+    "topic": "The influence of Japanese prints on Claude Monet’s artistic practice",
+    "rq": "To what extent did aesthetic principles of Japanese prints from the Edo period influence Claude Monet’s material and conceptual artistic practice?",
+    "why": "The guide names this as a good approach to an influence topic. You research the characteristics of Edo-period Japanese prints and of Impressionist paintings, then analyse Monet artworks from sequential periods of his life to trace the conceptual and material development of his work. You look for secondary sources that evidence the influence, give examples to support your claims, evaluate the strengths and limitations of your research, and conclude on the extent of the influence.",
+    "page": 75
+   },
+   {
+    "topic": "The embodiment of the cyclical nature of life and death in work by Joni Brenner",
+    "rq": "To what extent does the Skull Series of compositions by Joni Brenner embody the cyclical nature of life and death?",
+    "why": "You first research the socio-historical context of Apartheid in South Africa and post-Apartheid art, so that you understand Brenner's ideas and subjects. You then analyse the artistic and symbolic aspects of the Skull Series, evaluate how far the artworks embody the cycle of life and death, illustrate your points, evaluate the strengths and limitations of your research, and conclude on the extent of that embodiment.",
+    "page": 76
+   }
+  ],
+  "structure": [
+   "Images are mandatory in a visual arts essay and must appear in the body of the essay. Use images selectively, to support the reader's understanding of your essay.",
+   "Identify and cite every image in the essay itself and in the separate list of sources at the end. Every image must be a reasonable size and high-quality resolution.",
+   "Build your argument from analysed and explained artworks, supported by secondary sources. The guide says a combination of both gives the most convincing argument.",
+   "Illustrate each point with examples from the artworks you examine, and use artistic terminology and concepts fluently and accurately.",
+   "In your discussion, direct the reader to evidence in the artworks and in your secondary research, in a balanced way. Identify the strengths and limitations of your research and how they shaped your interpretation and conclusions."
+  ],
+  "pitfalls": [
+   "Choosing a topic that is peripheral to visual arts, so that your essay becomes psychology, history or sociology.",
+   "Treating an artwork merely as documentary evidence for a social, political or gender issue.",
+   "Claiming that one artist influenced another on the strength of visual similarities alone, without formal analysis and supporting documents.",
+   "Building your argument mainly by quoting or summarising secondary sources, which the guide says is likely to give limited argumentation.",
+   "Selecting too thin a body of work, which leads to overanalysing or repeating points, or too many artworks to analyse in depth within the word limit.",
+   "Making comparisons between artworks without explaining why the comparison matters, or comparisons that are not valid."
+  ],
+  "rules": [
+   "Your essay must answer your research question using artistic and contextual analysis.",
+   "Secondary sources must be used as evidential support for your argument, and you must critically examine both primary and secondary sources.",
+   "Images are mandatory in a visual arts essay and must appear in the body of the essay.",
+   "All images must be properly identified and cited in the essay and in the list of sources, at a reasonable size and high-quality resolution."
+  ],
+  "think": [
+   "Which artworks would make up your body of work, and do those artworks contain enough substance to discuss for 4,000 words without repeating yourself?",
+   "Is your research question about the artistic meaning and significance of the artworks, or about a topic in psychology, history or sociology that happens to involve art?",
+   "If your idea centres on a social, political or gender issue, would you be analysing the artworks as art, or using the artworks only as evidence of the issue?",
+   "If you want to argue that one artist influenced another, what letters, diaries, interviews or media articles could show the influence, beyond visual similarities?",
+   "Which context would you use to read your artworks: aesthetic, historical, social, cultural, gender-based or post-colonialist?",
+   "Can you see the artworks in person, and if not, can you find high-quality reproductions to place in the body of your essay?"
+  ],
+  "refs": {
+   "distinctive": "71–72",
+   "sources": "71–72, 76",
+   "methods": "72, 77",
+   "choosing_topic": "72, 76",
+   "examples": "75–76",
+   "structure": "76–77",
+   "pitfalls": "72, 76–77",
+   "rules": "72, 76–77",
+   "think": "71–72, 76–77"
+  }
+ }
+]

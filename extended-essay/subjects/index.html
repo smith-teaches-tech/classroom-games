@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Subject guides — EE Subject Guides</title>
+<meta name="description" content="What an Extended Essay needs in each ASD subject, from the IB guide.">
+<link rel="stylesheet" href="../shared/ee.css">
+<link rel="stylesheet" href="../shared/steps.css">
+<style>
+.pg{font-size:13.5px;color:var(--muted);font-weight:400}
+.glance{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:0 0 8px}
+.glance .panel{padding:14px 16px}
+.glance .k{font-size:12.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--stud);margin:0 0 4px}
+.glance p{margin:0}
+.samples-list{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.samples-list li{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+.samples-list .gr{display:inline-block;min-width:26px;text-align:center;font-weight:700;border-radius:6px;background:var(--stud-soft);color:var(--stud);margin-right:8px}
+.subjgroup{margin-top:28px}
+.subjgroup h2{font-size:20px;margin-bottom:10px}
+.tile.mine{border-color:var(--stud);box-shadow:0 0 0 2px var(--stud-soft)}
+</style>
+</head>
+<body>
+<div class="shell narrow">
+  <div class="top">
+    <a class="mark" href="../" title="Extended Essay hub">EE</a>
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="../../">Classroom tools</a><span class="sep">/</span><a href="../">Extended Essay</a><span class="sep">/</span><span>Subject guides</span></nav>
+  </div>
+  <header class="hero">
+    <p class="eyebrow">For Students</p>
+    <h1>Subject guides</h1>
+    <p class="lede">What the IB expects from an Extended Essay in each subject you can choose at ASD. Read these before you choose your subject.</p>
+  </header>
+  <main class="step-body">
+    <div class="note"><p style="margin:0">Your subject choice and one backup subject are due on the date in the EE calendar. Read the guide for your first choice <b>and</b> your backup, then use the thinking tool at the bottom of each page to test your idea.</p></div>
+    <p class="small muted" id="mine-note" hidden>Your subject from step 1 is highlighted.</p>
+    <section class="subjgroup"><h2>Studies in language and literature</h2><div class="grid2"><a class="tile live" data-subject="Language A" href="language-a/"><h3>Language A</h3><p>Close analysis of a literary or language text, supported by literary criticism.</p></a></div></section>
+    <section class="subjgroup"><h2>Language acquisition</h2><div class="grid2"><a class="tile live" data-subject="Language B" href="language-b/"><h3>Language B</h3><p>The language, culture or literature of the language you are learning, using texts originally in that language.</p></a></div></section>
+    <section class="subjgroup"><h2>Individuals and societies</h2><div class="grid2"><a class="tile live" data-subject="Business Management" href="business-management/"><h3>Business Management</h3><p>A real organisation or business issue, analysed with business management tools and theory.</p></a><a class="tile live" data-subject="Economics" href="economics/"><h3>Economics</h3><p>An economic theory tested against real evidence, often in one place and time period.</p></a><a class="tile live" data-subject="Global Politics" href="global-politics/"><h3>Global Politics</h3><p>A political issue or case, analysed through key political concepts and academic sources.</p></a></div></section>
+    <section class="subjgroup"><h2>Sciences</h2><div class="grid2"><a class="tile live" data-subject="Biology" href="biology/"><h3>Biology</h3><p>A biology experiment (or comparable published data) with controlled variables and a standardised method.</p></a><a class="tile live" data-subject="Chemistry" href="chemistry/"><h3>Chemistry</h3><p>A chemistry investigation (or comparable published data) with controlled variables and a standardised method.</p></a><a class="tile live" data-subject="Physics" href="physics/"><h3>Physics</h3><p>A physics investigation (or comparable published data) with controlled variables and a standardised method.</p></a></div></section>
+    <section class="subjgroup"><h2>Mathematics</h2><div class="grid2"><a class="tile live" data-subject="Mathematics" href="mathematics/"><h3>Mathematics</h3><p>Mathematics beyond the syllabus, or mathematics used to model or analyse data. A literature review is required.</p></a></div></section>
+    <section class="subjgroup"><h2>The arts</h2><div class="grid2"><a class="tile live" data-subject="Visual Arts" href="visual-arts/"><h3>Visual Arts</h3><p>Analysis of a small body of artworks in their context, supported by art history and criticism. Images are required.</p></a></div></section>
+    <section class="subjgroup"><h2>Two subjects</h2><div class="grid2"><a class="tile live" data-subject="Interdisciplinary" href="interdisciplinary/"><h3>Interdisciplinary EE</h3><p>Two DP subjects and one of the five frameworks, working on one research question.</p></a></div></section>
+    <p class="small muted" style="margin-top:24px">Writing your EE in another subject? Ask the EE coordinator first, then read that subject's section of the IB <i>Extended essay guide</i>. The <a href="../samples/">sample essays</a> include History, Psychology, ESS and Design Technology.</p>
+  </main>
+  <footer><a href="../">← Extended Essay hub</a></footer>
+</div>
+<script src="../shared/thinking-tools.js"></script>
+<script>
+(function(){
+  var p = EETools.read("step-1","pathway")||"", s = p==="Subject-focused (one subject)" ? (EETools.read("step-1","subject")||"") : (p==="Interdisciplinary (two subjects)" ? "Interdisciplinary" : "");
+  var t = s && document.querySelector('.tile[data-subject="'+s+'"]');
+  if(t){ t.classList.add("mine"); document.getElementById("mine-note").hidden=false; }
+})();
+</script>
+</body>
+</html>

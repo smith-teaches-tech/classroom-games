@@ -18,20 +18,21 @@ window.EE_STEPS = [
   {n:4,  phase:"explore", live:true,  title:"Current sources: what is being said now",      blurb:"Recent research and debate on your topic."},
   {n:5,  phase:"explore", live:true,  title:"Historical sources: how we got here",          blurb:"Foundational work and how thinking on your topic has changed."},
   {n:6,  phase:"explore", live:true,  title:"Research methods in your subject",             blurb:"How researchers in your subject answer questions."},
-  {n:7,  phase:"explore", live:true,  title:"Collect 40 sources in PowerNotes",             blurb:"Categorise them and see what your topic is really about."},
+  {n:7,  phase:"explore", live:true,  title:"Collect your sources in PowerNotes",            blurb:"Reach the source target for your subject, categorise, and see what your topic is really about."},
 
   {n:8,  phase:"narrow",  live:true, title:"Narrow your topic and write a broad question", blurb:"From a broad topic to a working question."},
-  {n:9,  phase:"narrow",  live:true, title:"Annotated bibliography: 20 sources",           blurb:"Twenty sources, different perspectives, and the gap in the research."},
+  {n:9,  phase:"narrow",  live:true, title:"Annotated bibliography",                       blurb:"Annotate your key sources, cover different perspectives, and find the gap in the research."},
   {n:10,  phase:"narrow",  live:true, title:"Your research question and the parts of a paper", blurb:"A focused question and how papers in your subject are built. First reflection session follows."},
 
-  {n:11, phase:"write",   live:false, title:"Write the introduction",                       blurb:"Context, your research question, and your methodology."},
-  {n:12, phase:"write",   live:false, title:"Ethics check",                                 blurb:"Before you collect any data."},
-  {n:13, phase:"write",   live:false, title:"Collect your data",                            blurb:"Experiments, surveys, interviews, texts or artworks — recorded properly."},
-  {n:14, phase:"write",   live:false, title:"Analyse and build the body",                   blurb:"Findings, analysis, discussion and evaluation."},
-  {n:15, phase:"write",   live:false, title:"Write the conclusion",                         blurb:"Answer your question. Complete draft to your supervisor, then the interim reflection session."},
-  {n:16, phase:"write",   live:false, title:"Works cited and bibliography",                 blurb:"Every source, in your chosen style."},
-  {n:17, phase:"write",   live:false, title:"Format the essay",                             blurb:"Title page, contents, headings, word count — the final check.",
+  {n:11, phase:"write",   live:false, title:"Ethics check",                                 blurb:"Before you collect any data."},
+  {n:12, phase:"write",   live:false, title:"Outline your essay",                           blurb:"Plan the structure your subject expects. Talk it through with your supervisor."},
+  {n:13, phase:"write",   live:false, title:"Introduction and literature review",           blurb:"Context, your research question, your method, and what has already been written."},
+  {n:14, phase:"write",   live:false, title:"Collect your data",                            blurb:"Experiments, surveys, interviews, texts or artworks — recorded properly. Interim reflection session follows."},
+  {n:15, phase:"write",   live:false, title:"Analysis and the body",                        blurb:"Findings, analysis, discussion and evaluation."},
+  {n:16, phase:"write",   live:false, title:"Write the conclusion",                         blurb:"Answer your question. Your full draft goes to your supervisor for written feedback."},
+  {n:17, phase:"write",   live:false, title:"Works cited and bibliography",                 blurb:"Every source, in your chosen style."},
+  {n:18, phase:"write",   live:false, title:"Format the essay",                             blurb:"Title page, contents, headings, word count — the final check.",
      extras:[["EE Formatting Game","../ee-formatting/"],["Table of Contents Pages","../table-of-contents-pages/"]]},
 
-  {n:18, phase:"after",   live:false, title:"Viva voce and reflective statement",           blurb:"The final reflection session and your 500-word statement."}
+  {n:19, phase:"after",   live:false, title:"Viva voce and reflective statement",           blurb:"The final reflection session and your 500-word statement."}
 ];

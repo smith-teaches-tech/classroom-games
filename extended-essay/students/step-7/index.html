@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Step 7: Collect 40 sources in PowerNotes — EE for Students</title>
-<meta name="description" content="Collect and categorise 40 sources for your EE in PowerNotes, then look for the patterns that will shape your question.">
+<title>Step 7: Collect your sources in PowerNotes — EE for Students</title>
+<meta name="description" content="Collect and categorise the sources for your EE in PowerNotes, reach the target for your subject, then look for the patterns that will shape your question.">
 <link rel="stylesheet" href="../../shared/ee.css">
 <link rel="stylesheet" href="../../shared/steps.css">
 </head>
@@ -17,17 +17,35 @@
 
   <header class="hero">
     <p class="stepno" id="stepno"></p>
-    <h1>Collect 40 sources in PowerNotes</h1>
-    <p class="lede">Bring your reading together: 40 sources, organised so you can see what your topic is really about.</p>
+    <h1>Collect your sources in PowerNotes</h1>
+    <p class="lede">Bring your reading together: enough sources for your subject, organised so you can see what your topic is really about.</p>
   </header>
 
   <main class="step-body">
 
     <h2>Why this step matters</h2>
-    <p class="why">Forty sources is more than you will cite — and that is the point. A wide collection shows you the shape of your topic: the themes that keep returning, the arguments that matter, and the gaps. In step 9 you will narrow these 40 to the 20 best.</p>
+    <p class="why">A wide collection shows you the shape of your topic: the themes that keep returning, the arguments that matter, and the gaps. You will probably collect more sources than you cite — that is normal. In step 9 you will choose the most useful ones and annotate them.</p>
+
+    <h2>How many sources?</h2>
+    <p>The IB does not set a number. Different subjects need very different amounts of reading, so the targets below depend on your subject. They come from an analysis of strong EEs in each subject group: the bibliographies of the IB's sample essays that earned a B or higher.</p>
+    <div class="tablewrap"><table class="info targets">
+      <thead><tr><th>Subject</th><th>Collect (step 7)</th><th>Annotate (step 9)</th><th>What counts</th></tr></thead>
+      <tbody>
+        <tr data-group="big"><th>Biology, Chemistry, Physics, Business Management, Economics, Global Politics, interdisciplinary essays</th><td>25</td><td>12</td><td>Scholarly articles, books, reports and data.</td></tr>
+        <tr data-group="va"><th>Visual Arts</th><td>20</td><td>10</td><td>Includes the 3 or 4 artworks your essay analyses (your primary sources).</td></tr>
+        <tr data-group="lang"><th>Language A, Language B</th><td>15</td><td>8</td><td>Includes your primary text or texts — the novel, play, poems, films or songs you analyse.</td></tr>
+        <tr data-group="math"><th>Mathematics</th><td>10</td><td>6</td><td>Textbooks, papers and reliable mathematical references.</td></tr>
+      </tbody></table></div>
+    <p class="small muted targets-note" hidden>Your subject from step 1 is highlighted.</p>
+    <ul>
+      <li><b>Language A and Language B:</b> your novel, play, poems, films or songs are your <b>primary sources</b>. Reading them closely, more than once, is the biggest part of your research — which is why your number of other sources is lower. Record your primary texts in PowerNotes too; they count towards your total.</li>
+      <li><b>Visual Arts:</b> the artworks you analyse are your primary sources, and they count towards your total.</li>
+      <li><b>More is not better.</b> In the sample essays, the number of sources did not predict the mark. A Physics essay with 30 sources scored 11 out of 30; a Language B essay with about 15 scored 23. What matters is how well you use each source.</li>
+    </ul>
+
 
     <h2>Organise PowerNotes</h2>
-    <p>You already have four categories from steps 3 to 6. Keep them, and add theme categories as patterns appear.</p>
+    <p>You already have four categories from steps 3 to 6. Keep them, and add theme categories as patterns appear. Language A, Language B and Visual Arts students: add a fifth category, <b>Primary texts</b> or <b>Artworks</b>, for the works you will analyse.</p>
     <div class="kv">
       <div class="panel"><h3>Open / background</h3><p>From step 3. Orientation and key terms.</p></div>
       <div class="panel"><h3>Current</h3><p>From step 4. Recent research and debate.</p></div>
@@ -60,11 +78,17 @@
 <script src="../../shared/step-nav.js"></script>
 <script src="../../shared/thinking-tools.js"></script>
 <script>
-
+/* highlight the source target for the subject chosen in step 1 */
+(function(){
+  var g = (function(){ var p=EETools.read("step-1","pathway")||""; if(p==="Interdisciplinary (two subjects)") return "big"; if(p!=="Subject-focused (one subject)") return ""; var s=EETools.read("step-1","subject")||""; if(!s) return ""; if(s==="Language A"||s==="Language B") return "lang"; if(s==="Visual Arts") return "va"; if(s==="Mathematics") return "math"; return "big"; })();
+  if(!g) return;
+  document.querySelectorAll('table.targets tr[data-group="'+g+'"]').forEach(function(r){ r.classList.add("mine"); });
+  document.querySelectorAll(".targets-note").forEach(function(x){ x.hidden=false; });
+})();
 EETools.define({
  "id": "step-7",
- "stepLabel": "Step 7 · Collect 40 sources",
- "title": "What my 40 sources are telling me",
+ "stepLabel": "Step 7 · Collect your sources",
+ "title": "What my sources are telling me",
  "sections": [
   {
    "heading": "Count",
@@ -99,6 +123,13 @@ EETools.define({
      "max": 99
     },
     {
+     "id": "n_primary",
+     "type": "number",
+     "label": "Primary texts or artworks (Language A, Language B, Visual Arts)",
+     "min": 0,
+     "max": 99
+    },
+    {
      "id": "total",
      "type": "total",
      "label": "Total sources:",
@@ -106,9 +137,10 @@ EETools.define({
       "n_open",
       "n_current",
       "n_hist",
-      "n_methods"
+      "n_methods",
+      "n_primary"
      ],
-     "target": 40,
+     "target": function(){ var t={"big": 25, "va": 20, "lang": 15, "math": 10}; return t[(function(){ var p=EETools.read("step-1","pathway")||""; if(p==="Interdisciplinary (two subjects)") return "big"; if(p!=="Subject-focused (one subject)") return ""; var s=EETools.read("step-1","subject")||""; if(!s) return ""; if(s==="Language A"||s==="Language B") return "lang"; if(s==="Visual Arts") return "va"; if(s==="Mathematics") return "math"; return "big"; })()]||0; },
      "warnShare": 0.5
     }
    ]
@@ -166,7 +198,7 @@ EETools.define({
      "type": "checklist",
      "label": "Tick each one when it is true.",
      "items": [
-      "I have 40 sources in PowerNotes.",
+      "I have reached the source target for my subject in PowerNotes (see the table above).",
       "Every source has a full citation in my chosen style and a one-line note.",
       "No single category holds more than about half my sources.",
       "I have copied this thinking tool into my RRS."

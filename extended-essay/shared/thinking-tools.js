@@ -21,7 +21,7 @@
      number    a number            {id, type:"number", label, min, max}
      table     rows × columns      {id, type:"table", label, columns:[…], rows:3, max:12}
      checklist tick list           {id, type:"checklist", label, items:[…]}
-     total     sum of number ids   {id, type:"total", label, of:[ids], target, warnShare}
+     total     sum of number ids   {id, type:"total", label, of:[ids], target, warnShare}  (target: a number, or a function returning one; 0 = no target)
    Any prompt can have showIf:{id, equals} to appear only after a choice.
    ═══════════════════════════════════════════════════════════════ */
 (function(){
@@ -116,9 +116,10 @@
       totals.forEach(function(t){
         var p = t[1], sum = 0, maxPart = 0;
         p.of.forEach(function(k){ var n = parseInt(data[k],10); if(!isNaN(n)){ sum+=n; if(n>maxPart) maxPart=n; } });
-        var msg = "<b>"+sum+"</b>"+(p.target?" of "+p.target:"");
+        var tgt = typeof p.target==="function" ? p.target() : p.target;
+        var msg = "<b>"+sum+"</b>"+(tgt?" of "+tgt:"");
         var note = "";
-        if(p.target && sum>=p.target) note = " — target reached.";
+        if(tgt && sum>=tgt) note = " — target reached.";
         if(p.warnShare && sum>0 && maxPart/sum > p.warnShare) note += " One category holds more than "+Math.round(p.warnShare*100)+"% of your sources — spread out a little.";
         t[0].querySelector(".tt-totalval").innerHTML = msg + '<span class="tt-totalnote">'+note+'</span>';
       });
@@ -269,8 +270,9 @@
         var v = data[p.id];
         if(p.type==="total"){
           var sum=0; p.of.forEach(function(k){ var n=parseInt(data[k],10); if(!isNaN(n)) sum+=n; });
-          html.push("<p><b>"+esc(label)+"</b> "+sum+(p.target?" of "+p.target:"")+"</p>");
-          text.push(label+" "+sum+(p.target?" of "+p.target:""), "");
+          var tgt = typeof p.target==="function" ? p.target() : p.target;
+          html.push("<p><b>"+esc(label)+"</b> "+sum+(tgt?" of "+tgt:"")+"</p>");
+          text.push(label+" "+sum+(tgt?" of "+tgt:""), "");
           return;
         }
         html.push("<p><b>"+esc(label)+"</b></p>");

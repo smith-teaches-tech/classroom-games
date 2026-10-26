@@ -8,7 +8,7 @@
   var phase = phases.filter(function(p){return p.id===me.phase;})[0];
 
   var head = document.getElementById("stepno");
-  if(head) head.innerHTML = '<span class="pill">'+(n===0 ? "Start" : "Step "+n+" of 18")+'</span>'+(phase?phase.name:"");
+  if(head) head.innerHTML = '<span class="pill">'+(n===0 ? "Start" : "Step "+n+" of "+(window.EE_STEPS[window.EE_STEPS.length-1].n))+'</span>'+(phase?phase.name:"");
 
   var nav = document.getElementById("stepnav");
   if(!nav) return;
