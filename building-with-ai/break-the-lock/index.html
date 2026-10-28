@@ -160,14 +160,61 @@ footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);color:v
   <div class="wrap">
     <h1>Break the Lock</h1>
     <p>Building with AI · Admins, moderators and Row Level Security</p>
-    <div class="thesis"><strong>Hiding a button is not a lock.</strong> The RLS rules in Supabase are the lock. Every request is checked by them, whether it comes from your app or from someone typing in the console.</div>
+    <div class="thesis"><strong>The RLS rules in Supabase are the lock.</strong> If a rule lets someone change a row, they can change every cell in that row. That's why moderators and admins get their own tables, and why hiding a button never protects anything.</div>
   </div>
 </header>
 
 <div class="wrap">
 
+<!-- SCENE A: wrong way / right way -->
+<h2><span class="num">1</span>The wrong way: one table for everyone</h2>
+<p class="sub">This looks like the easy way. Every user is in <code>profiles</code>, and a <code>role</code> column says who is a user, a moderator or an admin. Your app also needs this rule, so people can change their username: <b>"Users can update their own row."</b></p>
+
+<div class="card">
+  <div class="stack" id="w-tables"></div>
+  <p style="font-size:.95rem;margin:12px 0 0">The <b style="color:var(--accent)">green row</b> is Sam's own row. The rule lets him change it. RLS can't pick out single columns, so he can change <b>every</b> cell in it, including <code>role</code>.</p>
+  <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+    <button type="button" class="btn danger" id="w-try">Sam changes his own role to admin</button>
+    <button type="button" class="btn ghost" id="w-reset">Reset</button>
+  </div>
+  <div class="result" id="w-result"></div>
+</div>
+
+<h2><span class="num">2</span>The right way: new tables for moderators and admins</h2>
+<p class="sub">Take the role out of <code>profiles</code>. Now Sam's own row only has his username in it, and that's all he can change. Moderators and admins are listed in their own tables, and those tables have their own rules.</p>
+
+<div class="card">
+  <div class="stack" id="r-tables"></div>
+  <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+    <button type="button" class="btn danger" id="r-try">Sam tries to make himself an admin</button>
+    <button type="button" class="btn ghost" id="r-reset">Reset</button>
+  </div>
+  <div class="result" id="r-result"></div>
+  <div class="warn" style="margin-bottom:0"><strong>Same trap, different column.</strong> If you put a <code>hidden</code> column in <code>posts</code>, a moderator who is allowed to hide posts can also rewrite them. That's why hiding a post means adding a row to its own <code>hidden_posts</code> table.</div>
+</div>
+
+<!-- SCENE 0: the map -->
+<h2><span class="num">3</span>Your app is many tables, and rules look at other tables</h2>
+<p class="sub">RLS isn't one lock on one table. Every table has its own rules. A rule on one table can <b>look inside another table</b> to answer its question. "Can Mo delete this post?" is answered by looking in <code>moderators</code>. Click any rule to see the check run.</p>
+
+<div class="card">
+  <div class="controls">
+    <div class="ctl"><label>The person trying</label>
+      <div class="seg" id="m-who">
+        <button type="button" data-v="sam" class="on">Sam (user)</button>
+        <button type="button" data-v="lee">Lee (user)</button>
+        <button type="button" data-v="mo">Mo (moderator)</button>
+        <button type="button" data-v="ava">Ava (admin)</button>
+      </div>
+    </div>
+  </div>
+  <div class="mapwrap"><svg id="map" viewBox="0 0 1000 720" role="img" aria-label="Map of the app's tables, their rules, and which tables each rule looks in"></svg></div>
+  <div class="checkpanel" id="m-panel"></div>
+  <div class="warn" style="margin-bottom:0"><strong>One catch.</strong> A rule can only look in another table if that table lets it read. That's why signed-in users can <em>read</em> <code>moderators</code> and <code>admins</code>, but only admins can add moderators, and nobody can add admins from the app. If your admin checks suddenly fail for everyone, check the read rule on those tables first.</div>
+</div>
+
 <!-- SCENE 1 -->
-<h2><span class="num">1</span>The button is not the lock</h2>
+<h2><span class="num">4</span>The button is not the lock</h2>
 <p class="sub">Ava is the admin, so her app shows an admin panel. Sam's app doesn't. But Sam can open the console and type the same request. Both requests arrive at the same place: the rule on the <code>moderators</code> table.</p>
 
 <div class="card">
@@ -202,56 +249,8 @@ footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);color:v
   </div>
 </div>
 
-<!-- SCENE 0: the map -->
-<h2><span class="num">2</span>Your app is many tables, and rules look at other tables</h2>
-<p class="sub">RLS isn't one lock on one table. Every table has its own rules. A rule on one table can <b>look inside another table</b> to answer its question. "Can Mo delete this post?" is answered by looking in <code>moderators</code>. Click any rule to see the check run.</p>
-
-<div class="card">
-  <div class="controls">
-    <div class="ctl"><label>The person trying</label>
-      <div class="seg" id="m-who">
-        <button type="button" data-v="sam" class="on">Sam (user)</button>
-        <button type="button" data-v="lee">Lee (user)</button>
-        <button type="button" data-v="mo">Mo (moderator)</button>
-        <button type="button" data-v="ava">Ava (admin)</button>
-      </div>
-    </div>
-  </div>
-  <div class="mapwrap"><svg id="map" viewBox="0 0 1000 720" role="img" aria-label="Map of the app's tables, their rules, and which tables each rule looks in"></svg></div>
-  <div class="checkpanel" id="m-panel"></div>
-  <div class="warn" style="margin-bottom:0"><strong>One catch.</strong> A rule can only look in another table if that table lets it read. That's why signed-in users can <em>read</em> <code>moderators</code> and <code>admins</code>, but only admins can add moderators, and nobody can add admins from the app. If your admin checks suddenly fail for everyone, check the read rule on those tables first.</div>
-</div>
-
-<!-- SCENE 2 -->
-<h2><span class="num">3</span>A rule opens the whole row</h2>
-<p class="sub">Your app needs this rule so people can change their username: <b>"Users can update their own row in profiles."</b> RLS can't pick out single columns. If you can update a row, you can change <em>every</em> cell in it. So where you keep someone's role matters. A <b style="color:var(--accent)">green row</b> is a row the signed-in person can change.</p>
-
-<div class="card">
-  <div class="controls">
-    <div class="ctl"><label>You are signed in as</label>
-      <div class="seg" id="s2-you">
-        <button type="button" data-v="sam" class="on">Sam (user)</button>
-        <button type="button" data-v="mo">Mo (moderator)</button>
-      </div>
-    </div>
-    <div class="ctl"><label>Where is the role kept?</label>
-      <div class="seg" id="s2-store">
-        <button type="button" data-v="column" class="on">A role column in profiles</button>
-        <button type="button" data-v="tables">Its own tables</button>
-      </div>
-    </div>
-  </div>
-  <div class="stack" id="s2-tables"></div>
-  <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
-    <button type="button" class="btn danger" id="s2-try">Try: make me an admin</button>
-    <button type="button" class="btn ghost" id="s2-reset">Reset</button>
-  </div>
-  <div class="result" id="s2-result"></div>
-  <div class="warn" style="margin-bottom:0"><strong>Same trap, different column.</strong> If you put a <code>hidden</code> column in <code>posts</code>, a moderator who is allowed to hide posts can also rewrite them. That's why hiding a post means adding a row to its own <code>hidden_posts</code> table.</div>
-</div>
-
 <!-- SCENE 4 -->
-<h2><span class="num">4</span>Test your own app with fake accounts</h2>
+<h2><span class="num">5</span>Test your own app with fake accounts</h2>
 <p class="sub">Now do this for real. You need one account for each kind of person, so you can sign in as each one and try to break your app.</p>
 <div class="card">
   <ol class="steps">
@@ -466,54 +465,42 @@ $('s1-ava').addEventListener('click', () => s1Send('ava'));
 $('s1-sam').addEventListener('click', () => s1Send('sam'));
 $('s1-reset').addEventListener('click', s1Reset);
 
-// ---------------- SCENE 2 ----------------
-const S2_START = {sam:'user', lee:'user', mo:'moderator', ava:'admin'};
-let s2 = {you:'sam', store:'column', roles:Object.assign({}, S2_START), flash:null};
-function s2Render(){
-  const users = ['sam','lee','mo','ava'];
-  let html = '';
-  if(s2.store==='column'){
-    const rows = users.map(u => {
-      const mine = u===s2.you;
-      const changed = s2.roles[u]!==S2_START[u];
-      const cls = changed ? 'bad flash' : (mine ? 'edit' : '');
-      const cell = t => mine && !changed ? {html: esc(t)+PEN} : t;
-      return {cls, cells:[cell(u+'-id'), cell(u), cell(s2.roles[u])]};
-    });
-    html += drawTable('profiles', `<span class="lock yes">${NAME[s2.you]} can update his own row</span>`, ['id','username','role'], rows);
-  } else {
-    const rows = users.map(u => {
-      const mine = u===s2.you;
-      const cell = t => mine ? {html: esc(t)+PEN} : t;
-      return {cls: mine ? 'edit' : '', cells:[cell(u+'-id'), cell(u)]};
-    });
-    html += drawTable('profiles', `<span class="lock yes">${NAME[s2.you]} can update his own row</span>`, ['id','username'], rows);
-    html += drawTable('moderators', `<span class="lock no">Locked for ${NAME[s2.you]}: only admins can add rows</span>`, ['user_id'], [{cells:['mo-id']}]);
-    html += drawTable('admins', `<span class="lock no">Locked for everyone in the app: add admins in the dashboard</span>`, ['user_id'], [{cells:['ava-id']}]);
-  }
-  $('s2-tables').innerHTML = html;
+// ---------------- SCENE A: wrong way / right way ----------------
+const USERS = ['sam','lee','mo','ava'];
+const START = {sam:'user', lee:'user', mo:'moderator', ava:'admin'};
+let w = {roles:Object.assign({}, START)};
+function wRender(){
+  const rows = USERS.map(u => {
+    const hacked = w.roles[u]!==START[u];
+    const mine = u==='sam';
+    const cell = t => mine && !hacked ? {html: esc(t)+PEN} : t;
+    return {cls: hacked ? 'bad flash' : (mine ? 'edit' : ''), cells:[cell(u+'-id'), cell(u), cell(w.roles[u])]};
+  });
+  $('w-tables').innerHTML = drawTable('profiles', '<span class="lock yes">Sam can update his own row</span>', ['id','username','role'], rows);
 }
-function s2Try(){
-  const me = s2.you, r = $('s2-result');
-  if(s2.store==='column'){
-    const code = `await supabase.from('profiles')\n  .update({ role: 'admin' })\n  .eq('id', '${me}-id')`;
-    s2.roles[me] = 'admin';
-    r.className = 'result on no';
-    r.innerHTML = `<b>It worked. ${NAME[me]} is now an admin.</b> The rule said ${NAME[me]} could update his own row. The role was in his row, so he changed it.<div class="term">${esc(code)}</div>`;
-  } else {
-    const code = `await supabase.from('admins')\n  .insert({ user_id: '${me}-id' })`;
-    r.className = 'result on ok';
-    r.innerHTML = `<b>Blocked.</b> ${NAME[me]}'s row in profiles has no role in it any more. To become an admin he would need to add a row to the admins table, and that table is locked.<div class="term">${esc(code)}</div><div class="errline">new row violates row-level security policy for table "admins"</div>`;
-  }
-  s2Render();
-}
-function s2Reset(){ s2.roles = Object.assign({}, S2_START); $('s2-result').className = 'result'; s2Render(); }
-seg('s2-you', v => { s2.you = v; s2Reset(); });
-seg('s2-store', v => { s2.store = v; s2Reset(); });
-$('s2-try').addEventListener('click', s2Try);
-$('s2-reset').addEventListener('click', s2Reset);
+$('w-try').addEventListener('click', () => {
+  w.roles.sam = 'admin'; wRender();
+  const code = "await supabase.from('profiles')\n  .update({ role: 'admin' })\n  .eq('id', 'sam-id')";
+  $('w-result').className = 'result on no';
+  $('w-result').innerHTML = `<b>It worked. Sam is now an admin.</b> The rule said Sam could update his own row. The role was in his row, so he changed it. One line in the console, and he can now delete anyone's posts.<div class="term">${esc(code)}</div>`;
+});
+$('w-reset').addEventListener('click', () => { w.roles = Object.assign({}, START); $('w-result').className = 'result'; wRender(); });
 
-renderMap(); s1Table(); s2Render();
+function rRender(){
+  let html = drawTable('profiles', '<span class="lock yes">Sam can update his own row</span>', ['id','username'],
+    USERS.map(u => u==='sam' ? {cls:'edit', cells:[{html:'sam-id'+PEN},{html:'sam'+PEN}]} : {cells:[u+'-id', u]}));
+  html += drawTable('moderators', '<span class="lock no">Only admins can add rows</span>', ['user_id'], [{cells:['mo-id']}]);
+  html += drawTable('admins', '<span class="lock no">Nobody can add rows from the app</span>', ['user_id'], [{cells:['ava-id']}]);
+  $('r-tables').innerHTML = html;
+}
+$('r-try').addEventListener('click', () => {
+  const code = "await supabase.from('admins')\n  .insert({ user_id: 'sam-id' })";
+  $('r-result').className = 'result on ok';
+  $('r-result').innerHTML = `<b>Blocked.</b> There's no role in Sam's row any more. To become an admin he would have to add a row to the <code>admins</code> table, and that table is locked. Only you, the app owner, can add admins, in the Supabase dashboard.<div class="term">${esc(code)}</div><div class="errline">new row violates row-level security policy for table "admins"</div>`;
+});
+$('r-reset').addEventListener('click', () => { $('r-result').className = 'result'; });
+
+wRender(); rRender(); renderMap(); s1Table();
 })();
 </script>
 
