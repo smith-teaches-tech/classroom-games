@@ -93,6 +93,13 @@
   .chip.kill{border-color:var(--flag);background:rgba(122,59,46,.09);} .chip.kill .tag{color:var(--flag);}
   .boardhint{font-family:"JetBrains Mono",monospace;font-size:.4em;letter-spacing:.08em;color:var(--ink-soft);margin:.2em 0 0;}
 
+  table.fix{width:100%;border-collapse:collapse;font-size:.82em;margin:.2em 0;background:var(--card);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+  table.fix th{font-family:"JetBrains Mono",monospace;font-size:.5em;letter-spacing:.06em;text-align:left;color:var(--accent-warm);padding:.6em .8em;border-bottom:1px solid var(--rule)}
+  table.fix td{padding:.38em .8em;border-bottom:1px solid var(--rule-soft);vertical-align:top;line-height:1.25}
+  table.fix td:first-child{color:var(--flag);width:50%}
+  table.fix td:last-child{color:var(--good);font-weight:600}
+  table.fix tr.odd td{background:rgba(154,106,47,.08);border-bottom:none}
+  table.fix tr.odd td:last-child{color:var(--accent-warm)}
   /* subject cards */
   .card{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:.55em .75em;box-shadow:0 1px 2px var(--shadow);}
   .card .who{font-family:"JetBrains Mono",monospace;font-size:.42em;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-warm);margin-bottom:.25em;}
@@ -201,33 +208,25 @@
 <section class="slide dense">
   <div class="inner">
     <h2>When does an A not mean the student understood?</h2>
-    <div class="board sortable" data-step>
+    <div class="board" data-step>
       <input type="text" data-board="breaks" placeholder="Type an answer from the room and press Enter">
       <div class="chips" id="chips-breaks"></div>
-      <p class="boardhint">Click an answer to sort it. Click again to change it.</p>
     </div>
-    <p data-step>Now sort them. Does each one sink the claim, or does it just tell us when the claim holds?</p>
-    <div class="cols" data-step>
-      <div class="panel good">
-        <h3>Tells us when it holds</h3>
-        <ul class="clean">
-          <li>They memorised the answers, and a new question shows the gap.</li>
-          <li>They understood it on Tuesday and forgot it by June.</li>
-          <li>The quiz only covered part of the unit.</li>
-          <li>They're good at multiple choice, or at matching the rubric's wording.</li>
-          <li>An A from one teacher isn't the same as an A from another.</li>
-        </ul>
-      </div>
-      <div class="panel flag">
-        <h3>Close to sinking it</h3>
-        <ul class="clean">
-          <li>Someone else understood it. A tutor, a parent or AI did the work.</li>
-          <li>"Understand" can mean two things. They can follow the steps but can't explain why the steps work.</li>
-        </ul>
-      </div>
-    </div>
+    <p data-step>Each of these breaks the claim as we wrote it. What would we have to add to the claim to rule each one out?</p>
+    <table class="fix" data-step>
+      <thead><tr><th>When it breaks</th><th>What we'd add to the claim</th></tr></thead>
+      <tbody>
+        <tr><td>They memorised the answers, and a new question shows the gap.</td><td>The task made them apply the idea to something new.</td></tr>
+        <tr><td>They're good at multiple choice, or at matching the rubric's wording.</td><td>The task can't be passed on test-taking skill alone.</td></tr>
+        <tr><td>The quiz only covered part of the unit.</td><td>The task covered the whole unit.</td></tr>
+        <tr><td>They understood it on Tuesday and forgot it by June.</td><td>It was recent, and the claim is about then.</td></tr>
+        <tr><td>A tutor, a parent or AI did the work.</td><td>They did the work on their own.</td></tr>
+        <tr><td>An A from one teacher isn't the same as an A from another.</td><td>Teachers agree on what an A looks like.</td></tr>
+        <tr class="odd"><td>They can follow the steps but can't explain why the steps work.</td><td>Say which kind of understanding we mean. This one is a problem with the word, not the task.</td></tr>
+      </tbody>
+    </table>
   </div>
-  <div class="notes"><b>5:30 to 9:00</b> Take five or six answers and sort them together by clicking them before you show the two columns. The sorting is the part you want them to see. Keep asking where it breaks and stay away from what we should do about it, or it turns into a conversation about grading and AI.</div>
+  <div class="notes"><b>5:30 to 9:00</b> Take five or six answers and type them in. For each one, ask the room what we'd have to add to the claim to rule it out, before you show the table. Most of the fixes will match the list from the last screen, which is worth pointing out: every break turns into a condition. The last row is a different kind of break and worth slowing down on. Keep asking where it breaks and stay away from what we should do about it, or it turns into a conversation about grading and AI.</div>
 </section>
 
 <!-- 6 · THE TRAP -->
@@ -324,7 +323,7 @@
     <ol class="big">
       <li>Write one claim your subject makes about evidence.</li>
       <li>When does it hold?</li>
-      <li>When does it break? Does each break just set a condition, or does it nearly sink the claim?</li>
+      <li>When does it break? What would you add to the claim to rule each break out?</li>
       <li>Rewrite the claim so it includes where it holds.</li>
       <li>Which upcoming unit could you use it in, and what moment in that unit would break your students' first answer?</li>
     </ol>
