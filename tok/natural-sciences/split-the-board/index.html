@@ -108,9 +108,14 @@
         <input id="n1" type="number" inputmode="numeric" aria-label="first number"><span class="comma">,</span>
         <input id="n2" type="number" inputmode="numeric" aria-label="second number"><span class="comma">,</span>
         <input id="n3" type="number" inputmode="numeric" aria-label="third number">
-        <button class="btn" id="testBtn" disabled onclick="runTest()">Test it</button>
       </div>
-      <p class="verdict" id="verdict">Type three whole numbers. Before you test, watch the board: each rule shows what it would say.</p>
+      <div id="predictRow" class="actions hidden">
+        <span style="align-self:center">Before you test: will this triple <b>split the board</b>, with some rules saying YES and some NO?</span>
+        <button class="btn ghost" onclick="predict(true)">Yes, it splits</button>
+        <button class="btn ghost" onclick="predict(false)">No, they all agree</button>
+      </div>
+      <div class="actions"><button class="btn" id="testBtn" disabled onclick="runTest()">Test it</button></div>
+      <p class="verdict" id="verdict">Type three whole numbers.</p>
     </div>
     <div class="actions">
       <button class="btn warm" id="commitBtn" onclick="startCommit()">I know the rule</button>
@@ -129,7 +134,7 @@
     <div class="panel" id="resultPanel"></div>
     <div class="panel">
       <h3>One more thing</h3>
-      <p>Your board had seven rules. But nobody said the real rule had to be one of seven. Here are rules that were <b>never on your board</b>. Each one gives exactly the same answers as the hidden rule on every triple you tested.</p>
+      <p>This game promised you the real rule was one of seven. Real science makes no promise like that. Here are rules that were <b>never on your board</b>. Each one gives exactly the same answers as the hidden rule on every triple you tested.</p>
       <div id="extras"></div>
     </div>
     <div class="panel">
@@ -183,7 +188,8 @@
     document.getElementById("pickHint").classList.add("hidden");
     document.getElementById("commitBtn").textContent="I know the rule";
     document.getElementById("verdict").className="verdict";
-    document.getElementById("verdict").textContent="Type three whole numbers. Before you test, watch the board: each rule shows what it would say.";
+    document.getElementById("verdict").textContent="Type three whole numbers.";
+    predicted=null;
     renderBoard(null);renderLog();updateStatus();checkInput();
     window.scrollTo({top:0,behavior:"smooth"});
   }
@@ -212,30 +218,52 @@
     });
   }
 
+  let predicted=null;
   function checkInput(){
     const tri=readTriple();
-    document.getElementById("testBtn").disabled=!tri||committing;
-    if(committing)return;
+    predicted=null;
+    document.getElementById("testBtn").disabled=true;
+    const pr=document.getElementById("predictRow");
+    if(committing){pr.classList.add("hidden");return;}
     const v=document.getElementById("verdict");
-    if(!tri){renderBoard(null);v.className="verdict";
-      v.textContent=tests.length?"Type your next three numbers.":"Type three whole numbers. Before you test, watch the board: each rule shows what it would say.";return;}
+    renderBoard(null);
+    if(!tri){pr.classList.add("hidden");v.className="verdict";
+      v.textContent=tests.length?"Type your next three numbers.":"Type three whole numbers.";return;}
+    if(alive.size===1){pr.classList.add("hidden");v.className="verdict";
+      v.innerHTML=`Only one rule is still standing. Ready to commit? Or is there a rule that was never on the board?`;
+      document.getElementById("testBtn").disabled=false;return;}
+    pr.classList.remove("hidden");v.className="verdict";
+    v.textContent="Make your prediction. The board will show what each rule says.";
+  }
+
+  function predict(saysSplit){
+    const tri=readTriple();if(!tri)return;
+    predicted=saysSplit;
+    document.getElementById("predictRow").classList.add("hidden");
     renderBoard(tri);
     const live=RULES.filter(r=>alive.has(r.id));
     const yes=live.filter(r=>r.f(...tri)).length,no=live.length-yes;
-    if(live.length===1){v.className="verdict";
-      v.innerHTML=`Only one rule is still standing. Ready to commit? Or is there a rule that was never on the board?`;}
-    else if(yes===0||no===0){v.className="verdict flat";
-      v.innerHTML=`Every rule still standing says <b>${yes?"YES":"NO"}</b>. Whatever the answer, this test can't knock anything out.`;}
+    const splits=yes>0&&no>0;
+    const right=saysSplit===splits;
+    const v=document.getElementById("verdict");
+    const lead=right?"Your prediction was right. ":"Not what you predicted. ";
+    if(!splits){v.className="verdict flat";
+      v.innerHTML=lead+`Every rule still standing says <b>${yes?"YES":"NO"}</b>. Whatever the answer, this test can't knock anything out. Test it anyway, or change your numbers.`;}
     else{v.className="verdict split";
-      v.innerHTML=`This test splits the board: <b>${yes}</b> say YES, <b>${no}</b> say NO. Whatever the answer, you will learn something.`;}
+      v.innerHTML=lead+`This test splits the board: <b>${yes}</b> say YES, <b>${no}</b> say NO. Whatever the answer, you will learn something.`;}
+    document.getElementById("testBtn").disabled=false;
   }
 
   function runTest(){
     const tri=readTriple();if(!tri)return;
     const ans=hidden.f(...tri);
+    const liveNow=RULES.filter(r=>alive.has(r.id));
+    const ys=liveNow.filter(r=>r.f(...tri)).length;
+    const split=ys>0&&ys<liveNow.length;
+    const pred=predicted;
     const out=[];
     RULES.forEach(r=>{if(alive.has(r.id)&&r.f(...tri)!==ans){alive.delete(r.id);out.push(r);}});
-    tests.push({tri,ans,out});
+    tests.push({tri,ans,out,pred,split});predicted=null;
     ["n1","n2","n3"].forEach(id=>document.getElementById(id).value="");
     const v=document.getElementById("verdict");
     v.className="verdict "+(out.length?"split":"flat");
@@ -288,6 +316,9 @@
     }
     const wasted=tests.filter(t=>!t.out.length).length;
     if(n)html+=`<p>${wasted} of your ${n} test${n===1?"":"s"} knocked out nothing.</p>`;
+    const judged=tests.filter(t=>t.pred!==null&&t.pred!==undefined);
+    if(judged.length){const ok=judged.filter(t=>t.pred===t.split).length;
+      html+=`<p>You predicted whether a test would split the board correctly ${ok} out of ${judged.length} time${judged.length===1?"":"s"}.</p>`;}
     document.getElementById("resultPanel").innerHTML=html;
 
     const all=[{tri:SEED,ans:true},...tests];
