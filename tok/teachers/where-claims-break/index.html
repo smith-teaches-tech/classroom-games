@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Where Claims Break — TOK in Your Subject (Staff PD)</title>
+<title>Where Claims Break: TOK in Your Subject (Staff PD)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -99,7 +99,7 @@
   .card .what{font-weight:600;font-size:.95em;line-height:1.2;}
 
   .prompt{font-style:italic;font-weight:600;font-size:1.3em;color:var(--accent);margin:.1em 0 .5em;}
-  .prompt .num{font-style:normal;font-family:"JetBrains Mono",monospace;font-size:.45em;letter-spacing:.14em;color:var(--accent-warm);vertical-align:middle;margin-right:.6em;border:1px solid var(--accent-warm);border-radius:5px;padding:.15em .5em;}
+  .prompt .num{font-style:normal;font-family:"JetBrains Mono",monospace;font-size:.45em;letter-spacing:.04em;color:var(--accent-warm);vertical-align:middle;margin-right:.6em;border:1px solid var(--accent-warm);border-radius:5px;padding:.15em .5em;}
 
   /* timeline */
   .thread{display:grid;grid-template-columns:repeat(3,1fr);gap:.8em;margin:.4em 0;}
@@ -136,183 +136,174 @@
 <!-- 1 · TITLE -->
 <section class="slide">
   <div class="inner">
-    <p class="kicker">IB Staff PD · TOK in your subject · 1 November</p>
+    <p class="kicker">IB staff PD, 1 November</p>
     <h1>Where Claims Break</h1>
-    <p class="lede">Thirty minutes. One claim you make every week. One question you can take back to any unit.</p>
+    <p class="lede">Using the TOK exhibition prompts in your own units.</p>
   </div>
-  <div class="notes"><b>0:00</b> Keep this up as people arrive. Departments sit together from the start; no one moves later.</div>
+  <div class="notes"><b>0:00</b> Leave this up while people come in. Have departments sit together from the start so nobody has to move later.</div>
 </section>
 
 <!-- 2 · WHAT THE IB EXPECTS -->
 <section class="slide">
   <div class="inner">
-    <p class="kicker">Why we're here</p>
-    <h2>This is already part of the job</h2>
+    <h2>What the IB asks of us</h2>
     <div class="panel" data-step>
-      <h3>IB Programme standards and practices (DP)</h3>
+      <h3>Programme standards and practices (DP)</h3>
       <p>The school provides opportunities for teachers to use collaborative planning and reflection to integrate theory of knowledge into each subject.</p>
     </div>
     <div class="panel warm" data-step>
-      <h3>The TOK course's aim for your subjects</h3>
-      <p>Students make connections between disciplines by identifying similarities and differences in the methods of inquiry each one uses.</p>
+      <h3>One of the TOK course aims</h3>
+      <p>Students compare the methods of inquiry used in different subjects and look for what they have in common.</p>
     </div>
-    <p data-step>Your subject guide already has a TOK section. What's usually missing is <b>the moment in a lesson</b> to use it. That's today.</p>
+    <p data-step>Every subject guide has a TOK section already. I think most of us just haven't found a regular place for it in our lessons yet.</p>
   </div>
-  <div class="notes"><b>0:00–2:00</b> Fast. The point: not extra, not new. Students can only compare methods if subject teachers name their methods out loud.</div>
+  <div class="notes"><b>0:00 to 2:00</b> Keep this quick. Students can only compare how subjects find things out if each of us explains how our own subject does it.</div>
 </section>
 
 <!-- 3 · THE CLAIM -->
 <section class="slide">
   <div class="inner">
-    <p class="kicker">A claim we all make</p>
     <div class="claim">A student who gets an A understands the material.</div>
-    <p class="lede">We make this claim every time we enter a grade. Every report card says it for us.</p>
-    <p data-step><b>True or false?</b> Thumbs up or thumbs down. Don't look around first.</p>
+    <p class="lede">We say this every time we put a grade on a report card.</p>
+    <p data-step>Is it true? Thumbs up or thumbs down, before you look at anyone else.</p>
     <div class="thumbs" data-step>
       <div class="thumb up"><button class="hit" data-count="up" aria-label="add thumbs up">👍</button><span class="n" id="n-up">0</span><button class="minus" data-minus="up">−1</button></div>
       <div class="thumb down"><button class="hit" data-count="down" aria-label="add thumbs down">👎</button><span class="n" id="n-down">0</span><button class="minus" data-minus="down">−1</button></div>
     </div>
   </div>
-  <div class="notes"><b>2:00</b> Everyone commits before any discussion. Click the thumbs to count, or type the totals in by clicking several times. Expect a split; the split is the hook.</div>
+  <div class="notes"><b>2:00</b> Everyone votes before anyone talks. Click the thumbs to keep count. The room will probably split, and that's what you want.</div>
 </section>
 
 <!-- 4 · WHEN DOES IT HOLD -->
 <section class="slide">
   <div class="inner">
-    <p class="kicker">Step 1 · Flip the question</p>
     <h2>When is an A good evidence that a student understood?</h2>
-    <p class="lede">Think first. Don't raise your hand yet.</p>
+    <p class="lede">Take a minute before anyone answers.</p>
     <div class="board" data-step>
-      <input type="text" data-board="holds" placeholder="Type an answer from the room and press Enter…">
+      <input type="text" data-board="holds" placeholder="Type an answer from the room and press Enter">
       <div class="chips" id="chips-holds"></div>
     </div>
     <div class="panel good" data-step>
-      <h3>It holds when…</h3>
+      <h3>Some possibilities</h3>
       <ul class="clean">
-        <li>the task asked students to <b>use</b> the idea in a new situation, not repeat it</li>
-        <li>they did the work <b>on their own</b></li>
-        <li>it was <b>recent</b></li>
-        <li>the task covered the <b>whole</b> unit, not one corner of it</li>
-        <li>the standard for an A is <b>shared</b> across teachers</li>
+        <li>The task made them apply the idea to something new.</li>
+        <li>They did the work on their own.</li>
+        <li>It was recent.</li>
+        <li>The task covered the whole unit.</li>
+        <li>Teachers agree on what an A looks like.</li>
       </ul>
     </div>
   </div>
-  <div class="notes"><b>3:00–5:30</b> Wait time, then collect 3–4 answers live. Reveal the list after. If someone says "never definitively," stop on it: no conditions give certainty, only good evidence. That's a TOK point in itself.</div>
+  <div class="notes"><b>3:00 to 5:30</b> Give them real thinking time, then take three or four answers and type them in. Show the list afterwards. If someone says you can never be sure, stop there for a moment. No set of conditions makes it certain; they only make it good evidence.</div>
 </section>
 
 <!-- 5 · WHEN DOES IT BREAK -->
 <section class="slide dense">
   <div class="inner">
-    <p class="kicker">Step 2 · The cut</p>
-    <h2>When does an A <em>not</em> mean the student understood?</h2>
+    <h2>When does an A not mean the student understood?</h2>
     <div class="board sortable" data-step>
-      <input type="text" data-board="breaks" placeholder="Type a break from the room and press Enter…">
+      <input type="text" data-board="breaks" placeholder="Type an answer from the room and press Enter">
       <div class="chips" id="chips-breaks"></div>
-      <p class="boardhint">Click a break to sort it: shows a condition → nearly kills it → unsorted</p>
+      <p class="boardhint">Click an answer to sort it. Click again to change it.</p>
     </div>
-    <p data-step><b>Now sort them.</b> Does this break kill the claim, or does it show us <em>where the claim holds</em>?</p>
+    <p data-step>Now sort them. Does each one sink the claim, or does it just tell us when the claim holds?</p>
     <div class="cols" data-step>
       <div class="panel good">
-        <h3>Shows a condition</h3>
+        <h3>Tells us when it holds</h3>
         <ul class="clean">
-          <li>Memorised the answers. A new question exposes the gap.</li>
-          <li>Understood it on Tuesday. Gone by June.</li>
-          <li>The quiz covered one corner of the unit.</li>
-          <li>Test-wise: good at eliminating options or matching rubric language.</li>
-          <li>An A from one teacher isn't an A from another.</li>
+          <li>They memorised the answers, and a new question shows the gap.</li>
+          <li>They understood it on Tuesday and forgot it by June.</li>
+          <li>The quiz only covered part of the unit.</li>
+          <li>They're good at multiple choice, or at matching the rubric's wording.</li>
+          <li>An A from one teacher isn't the same as an A from another.</li>
         </ul>
       </div>
       <div class="panel flag">
-        <h3>Nearly kills it</h3>
+        <h3>Close to sinking it</h3>
         <ul class="clean">
-          <li><b>Someone else's understanding.</b> A tutor, a parent or AI did the work. Real evidence, wrong person.</li>
-          <li><b>"Understands" means two things.</b> They can run the procedure but can't explain why it works.</li>
+          <li>Someone else understood it. A tutor, a parent or AI did the work.</li>
+          <li>"Understand" can mean two things. They can follow the steps but can't explain why the steps work.</li>
         </ul>
       </div>
     </div>
   </div>
-  <div class="notes"><b>5:30–9:00</b> Collect 5–6 breaks and sort them together by clicking the chips. Sorting is the move to model, so do it before revealing the two columns. Ask only "where does it break?", never "what should we do about it?", or this becomes a grading/AI complaint session.</div>
+  <div class="notes"><b>5:30 to 9:00</b> Take five or six answers and sort them together by clicking them before you show the two columns. The sorting is the part you want them to see. Keep asking where it breaks and stay away from what we should do about it, or it turns into a conversation about grading and AI.</div>
 </section>
 
 <!-- 6 · THE TRAP -->
 <section class="slide">
   <div class="inner">
-    <p class="kicker">Someone will say this</p>
-    <div class="claim" style="border-left-color:var(--accent-warm);font-size:1.35em;">"I've had students who understood it and got a B."</div>
+    <div class="claim" style="border-left-color:var(--accent-warm);font-size:1.35em;">"I've had students who understood it and still got a B."</div>
     <div class="panel warm" data-step>
       <h3>Does that break our claim?</h3>
-      <p>No. It breaks a different claim: <em>every student who understands gets an A.</em></p>
-      <p>Before you can find where a claim breaks, be exact about what it claims.</p>
+      <p>It breaks a different one: that every student who understands gets an A. It's worth checking exactly what a claim says before we try to break it.</p>
     </div>
   </div>
-  <div class="notes">Only show this if it comes up (it usually does). If nobody raises it, skip with the right arrow twice.</div>
+  <div class="notes">Only use this if someone says it, which they usually do. If nobody does, skip past it.</div>
 </section>
 
 <!-- 7 · REFINED CLAIM -->
 <section class="slide">
   <div class="inner">
-    <p class="kicker">Step 3 · Refine the claim</p>
-    <div class="claim"><small>Where we started</small>A student who gets an A understands the material.</div>
-    <div class="claim refined" data-step><small>Where we ended</small>An A on a task that required applying the idea in a new situation, done independently and recently, is good evidence that the student understood it at that point.</div>
+    <div class="claim"><small>What we started with</small>A student who gets an A understands the material.</div>
+    <div class="claim refined" data-step><small>Where we ended up</small>An A on a task that made students apply the idea to something new, done on their own and recently, is good evidence that they understood it at that point.</div>
     <div class="panel" data-step>
-      <h3>What the break tells us about knowing</h3>
-      <p>We never observe understanding directly. We infer it from performance, so the inference is only as good as the task that produced it.</p>
-      <p><b>Every subject has its own version of this gap.</b></p>
+      <h3>So what does this tell us about knowing?</h3>
+      <p>We can't see understanding directly. We infer it from what students do on a task, so the inference is only as good as the task.</p>
+      <p>I'd guess every subject in this room has its own version of that problem.</p>
     </div>
   </div>
-  <div class="notes"><b>9:00–10:30</b> The refined claim isn't weaker; it's more accurate. The claim survived, with its boundary drawn.</div>
+  <div class="notes"><b>9:00 to 10:30</b> The new claim is more accurate, and it's still a claim we can stand behind. We just know where its edges are now.</div>
 </section>
 
 <!-- 8 · THAT WAS TOK -->
 <section class="slide">
   <div class="inner">
-    <p class="kicker">Name the move</p>
-    <h2>That was TOK.</h2>
-    <p class="lede">I asked you three questions.</p>
+    <h2>That was a TOK discussion</h2>
+    <p class="lede">I only asked you three questions.</p>
     <ol class="big">
-      <li data-step>When does the claim <b>hold</b>?</li>
-      <li data-step>When does it <b>break</b>?</li>
-      <li data-step>What does the break tell us about <b>how we know</b>?</li>
+      <li data-step>When does the claim hold?</li>
+      <li data-step>When does it break?</li>
+      <li data-step>What does the break tell us about how we know?</li>
     </ol>
     <div class="panel good" data-step>
-      <p>This is exactly what students must do in the TOK exhibition and essay: test a claim, find where it holds and where it breaks. They need to practise it in <b>your</b> subject, with <b>your</b> evidence.</p>
+      <p>Students have to do this in the exhibition and the essay. They take a claim and work out where it holds and where it doesn't. They'll get much better at it if they practise with evidence from your subjects as well as in my class.</p>
     </div>
   </div>
-  <div class="notes"><b>10:30–12:00</b> No TOK training needed for what you just did. It took ten minutes and no preparation.</div>
+  <div class="notes"><b>10:30 to 12:00</b> Point out that this took about ten minutes and no preparation, and nobody needed any TOK training to do it.</div>
 </section>
 
 <!-- 9 · THE ASK -->
 <section class="slide dense">
   <div class="inner">
-    <p class="kicker">What we're asking</p>
-    <h2>One to three exhibition prompts per unit</h2>
+    <h2>What we're asking you to do</h2>
+    <p class="lede">Choose one to three exhibition prompts for each unit.</p>
     <div class="cols" data-step>
       <div class="panel">
-        <h3>Option A · a thread</h3>
-        <p>One prompt, revisited across the unit.</p>
+        <h3>One prompt as a thread</h3>
+        <p>Pick one prompt and come back to it a few times during the unit.</p>
       </div>
       <div class="panel warm">
-        <h3>Option B · stops along the way</h3>
-        <p>Two or three prompts at different points in the unit.</p>
+        <h3>Two or three prompts</h3>
+        <p>Use each one once, at different points in the unit.</p>
       </div>
     </div>
     <div class="thread" data-step>
-      <div class="card"><div class="who">Start · commit</div><div class="what">Students give a first answer before the unit.</div></div>
-      <div class="card mid"><div class="who">Middle · the break</div><div class="what">Something in the unit breaks that first answer.</div></div>
-      <div class="card end"><div class="who">End · refine</div><div class="what">"What would you say now, and what changed your mind?"</div></div>
+      <div class="card"><div class="who">Start</div><div class="what">Students give a first answer before the unit begins.</div></div>
+      <div class="card mid"><div class="who">Middle</div><div class="what">Something in the unit pushes back on that answer.</div></div>
+      <div class="card end"><div class="who">End</div><div class="what">Ask what they'd say now and what changed their mind.</div></div>
     </div>
-    <p data-step><b>Low prep:</b> a bell-ringer, a quick-write, or five minutes of discussion like the one we just had. Not a new lesson.</p>
+    <p data-step>None of this needs much prep. A bell-ringer, a quick-write or a five-minute discussion like the one we just had is enough.</p>
   </div>
-  <div class="notes"><b>12:00–14:00</b> The middle visit matters most. If nothing in the unit can break the first answer, it's the wrong prompt for that unit.</div>
+  <div class="notes"><b>12:00 to 14:00</b> The middle visit matters most. If nothing in the unit could change a student's first answer, it's probably the wrong prompt for that unit.</div>
 </section>
 
 <!-- 10 · PROMPT TO CLAIM -->
 <section class="slide dense">
   <div class="inner">
-    <p class="kicker">The step that makes it work</p>
-    <h2>You can't break a question. Turn the prompt into a claim.</h2>
-    <p class="prompt"><span class="num">PROMPT 5</span>What counts as good evidence for a claim?</p>
-    <p class="lede" data-step>Ask: <b>what claim does my subject make about evidence?</b></p>
+    <h2>Turning a prompt into a claim</h2>
+    <p class="prompt"><span class="num">Prompt 5</span>What counts as good evidence for a claim?</p>
+    <p class="lede" data-step>The prompts are questions, and it's hard to find where a question breaks. It's easier if you turn the prompt into something your subject claims. For example:</p>
     <div class="cols3" data-step>
       <div class="card"><div class="who">Sciences</div><div class="what">"A result that's been repeated is reliable."</div></div>
       <div class="card"><div class="who">English</div><div class="what">"A quotation proves an interpretation."</div></div>
@@ -322,61 +313,58 @@
       <div class="card"><div class="who">Mathematics</div><div class="what">"If it works for every case we've tried, it's true."</div></div>
     </div>
   </div>
-  <div class="notes">These are examples, not answers. Departments should write their own claim, ideally one their students actually believe.</div>
+  <div class="notes">These are only examples. Departments should write their own, ideally a claim their students already believe.</div>
 </section>
 
 <!-- 11 · YOUR TURN -->
 <section class="slide">
   <div class="inner">
-    <p class="kicker">Department groups · handout, front side</p>
-    <h2>Your turn: prompt 5 in your subject</h2>
+    <h2>Prompt 5 in your subject</h2>
+    <p class="lede">Work with your department, using the front of the handout.</p>
     <ol class="big">
-      <li><b>Claim:</b> one claim your subject makes about evidence.</li>
-      <li><b>Holds:</b> when is it true?</li>
-      <li><b>Breaks:</b> when does it fail? Sort: a condition, or nearly kills it?</li>
-      <li><b>Refine:</b> rewrite the claim with its boundary built in.</li>
-      <li><b>In a unit:</b> which upcoming unit, and what moment would break your students' first answer?</li>
+      <li>Write one claim your subject makes about evidence.</li>
+      <li>When does it hold?</li>
+      <li>When does it break? Does each break just set a condition, or does it nearly sink the claim?</li>
+      <li>Rewrite the claim so it includes where it holds.</li>
+      <li>Which upcoming unit could you use it in, and what moment in that unit would break your students' first answer?</li>
     </ol>
-    <p style="margin-top:.6em"><span class="timer" data-sec="600">10:00</span><span class="timerhint">click or press T to start · double-click to reset</span></p>
+    <p style="margin-top:.6em"><span class="timer" data-sec="600">10:00</span><span class="timerhint">Click or press T to start. Double-click to reset.</span></p>
   </div>
-  <div class="notes"><b>14:00–24:00</b> Circulate. Groups that stall: hand them the example claim from the previous screen. Groups that finish early: try a second prompt from the starred list on the back of the handout.</div>
+  <div class="notes"><b>14:00 to 24:00</b> Walk around. If a group is stuck, give them the example claim for their subject from the last screen. If a group finishes early, they can try one of the starred prompts on the back of the handout.</div>
 </section>
 
 <!-- 12 · SHARE -->
 <section class="slide">
   <div class="inner">
-    <p class="kicker">Share · three departments</p>
-    <h2>Your claim, and where it broke</h2>
-    <p class="prompt"><span class="num">PROMPT 5</span>What counts as good evidence for a claim?</p>
+    <h2>What did you come up with?</h2>
+    <p class="lede">Tell us your claim and where it broke.</p>
     <div class="panel" data-step>
-      <h3>For the room</h3>
-      <p style="font-size:1.2em;font-weight:600;">Same prompt. Why are these breaks so different?</p>
+      <p style="font-size:1.15em;font-weight:600;">Every group had the same prompt. Why are the breaks so different?</p>
     </div>
     <div class="panel warm" data-step>
-      <h3>Different isn't "anything goes"</h3>
-      <p>Every subject has a real standard for evidence. What changes is which questions that standard can settle. Students only see this if each of us names our subject's standard out loud.</p>
+      <h3>One caution</h3>
+      <p>Different standards in different subjects doesn't mean anything goes. Each subject has a real standard for evidence; they just settle different kinds of questions. Students only notice that if we each say out loud what counts as evidence in our subject.</p>
     </div>
   </div>
-  <div class="notes"><b>24:00–29:00</b> One sentence of feedback per department. Land the relativism redirect before closing.</div>
+  <div class="notes"><b>24:00 to 29:00</b> Hear from three departments and give each a sentence of feedback. Make the point about "anything goes" before you finish.</div>
 </section>
 
 <!-- 13 · CLOSE -->
 <section class="slide">
   <div class="inner">
-    <p class="kicker">Before you go</p>
-    <h2>One thread in your next unit</h2>
+    <h2>Before you leave</h2>
     <ol class="big">
-      <li>Pick a prompt from the back of the handout. Starred prompts make good threads.</li>
-      <li>Plan three short visits: start, the break, end.</li>
-      <li>Record it in <b>[where to record]</b> by <b>[date]</b>.</li>
+      <li>Choose a prompt for your next unit from the back of the handout. The starred ones work well as threads.</li>
+      <li>Plan three short visits: at the start, at the point where the unit pushes back, and at the end.</li>
+      <li>Add it to [where to record] by [date].</li>
     </ol>
-    <p class="lede" style="margin-top:.6em">The test for any prompt: <b>can something in this unit break the first answer?</b></p>
+    <p class="lede" style="margin-top:.6em">If nothing in the unit could change a student's first answer, it's probably the wrong prompt.</p>
   </div>
-  <div class="notes"><b>29:00–30:00</b> Edit the bracketed placeholders in the HTML before the session.</div>
+  <div class="notes"><b>29:00 to 30:00</b> Fill in the two bracketed placeholders in the HTML before the session.</div>
 </section>
 
 <div class="bar" id="bar"></div>
-<a class="home" href="../../../">← Classroom tools</a>
+<a class="home" href="../../../">Classroom tools</a>
 <div class="nav">
   <span id="count"></span>
   <button id="prev" aria-label="Back">←</button>
