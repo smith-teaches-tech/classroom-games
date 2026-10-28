@@ -153,6 +153,7 @@ table.cmp th{background:var(--panel);font-size:.76rem}
     <div class="sp"></div>
     <input type="text" id="groupName" placeholder="Group name">
     <span id="save"></span>
+    <button class="ghost" onclick="exportStudy()" title="A readable copy of your answers to study from">My notes</button>
     <button class="ghost" onclick="resetAll()">Reset</button>
   </div>
   <div class="kqband"><b>Knowledge question</b>To what extent does what counts as historical knowledge depend on who is asked, and who does the asking?</div>
@@ -492,8 +493,10 @@ table.cmp th{background:var(--panel);font-size:.76rem}
 
   <div class="box">
     <h3>Your group's sheet</h3>
-    <p>Download it, swap with another group, and load theirs below. The interesting thing is never the verdicts. It is whether you used the same rule.</p>
-    <div class="foot"><button class="primary" onclick="exportSheet()">Download our sheet</button></div>
+    <p><b>To study from:</b> download your notes. Every question with your group's answer, your choices, and how you marked each witness. Opens in any browser and prints.</p>
+    <div class="foot"><button class="primary" onclick="exportStudy()">Download study notes</button></div>
+    <p style="margin-top:1rem"><b>To compare:</b> download the compare file, swap with another group, and load theirs below. The interesting thing is never the verdicts. It is whether you used the same rule.</p>
+    <div class="foot"><button class="ghost" onclick="exportSheet()">Download compare file</button></div>
   </div>
   <div class="box">
     <h3>Compare</h3>
@@ -842,6 +845,42 @@ function sheet(){return{v:3,group:document.getElementById('groupName').value||'(
 function exportSheet(){const d=sheet();const b=new Blob([JSON.stringify(d,null,1)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(b);
   a.download='titanic-'+d.group.replace(/[^a-z0-9]+/gi,'-').toLowerCase()+'.json';
+  document.body.appendChild(a);a.click();a.remove();}
+function exportStudy(){
+  const group=document.getElementById('groupName').value||'(unnamed group)';
+  const txt=el=>(el?el.textContent:'').replace(/\s+/g,' ').trim();
+  const qOf=(t,k)=>{let el=t.previousElementSibling;while(el&&!el.matches('p,.q,h3'))el=el.previousElementSibling;
+    return txt(el)||NOTE_LABEL[k]||k;};
+  const LISTS={d1:D1,d2:D2,d3:D3};
+  let out=[];
+  document.querySelectorAll('section.screen').forEach(sec=>{
+    const n=+sec.dataset.s;const title=txt(sec.querySelector('h2'))||LABELS[n];
+    const parts=[];
+    sec.querySelectorAll('.choices[id$="Choice"]').forEach(c=>{
+      const k=c.id.replace(/Choice$/,'');let el=c.previousElementSibling;while(el&&!el.matches('p,h3'))el=el.previousElementSibling;
+      const prompt=txt(el)||k;const v=S.verdicts[k];
+      parts.push(`<div class="qa"><div class="q">${esc(prompt)}</div><div class="a">${v?esc(lbl(k,v)):'<i>(no choice made)</i>'}</div></div>`);});
+    ['d1','d2','d3'].forEach(dk=>{
+      if(!sec.querySelector('#'+dk+'Cards'))return;const m=S.marks[dk]||{};
+      const rows=LISTS[dk].map(c=>{const x=m[c.id];
+        const st=!x?'<i>not marked</i>':x.v==='rely'?'Relied on':'Set aside'+(x.r?': '+esc((REASONS.find(r=>r[0]===x.r)||[,x.r])[1]):'');
+        return `<li><b>${c.name}</b> (${c.role}): ${st}</li>`;}).join('');
+      parts.push(`<div class="qa"><div class="q">How you marked the witnesses</div><ul>${rows}</ul></div>`);});
+    sec.querySelectorAll('textarea[data-k]').forEach(t=>{
+      const k=t.dataset.k;const a=(S.notes[k]||'').trim();
+      parts.push(`<div class="qa"><div class="q">${esc(qOf(t,k))}</div><div class="a">${a?esc(a).replace(/\n/g,'<br>'):'<i>(left blank)</i>'}</div></div>`);});
+    if(parts.length)out.push(`<h2>${esc(title)}</h2>`+parts.join(''));});
+  const html=`<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Titanic study notes: ${esc(group)}</title>
+<style>body{font-family:Georgia,serif;max-width:760px;margin:2rem auto;padding:0 16px;line-height:1.5;color:#222;background:#fff}
+h1{font-size:1.6rem;margin:0 0 .2rem}h2{font-size:1.2rem;margin:2rem 0 .6rem;border-bottom:1px solid #ccc;padding-bottom:.2rem}
+.meta{color:#666;font-size:.9rem}.kq{border-left:3px solid #1f4e6b;padding:.5rem .8rem;background:#f3f6f8;margin:1rem 0;font-style:italic}
+.qa{margin:0 0 1rem}.q{font-weight:bold;font-size:.95rem}.a{margin:.3rem 0 0 .8rem;padding-left:.6rem;border-left:2px solid #ddd}
+ul{margin:.3rem 0 0 1rem}li{margin:.15rem 0}i{color:#888}</style></head><body>
+<h1>When Witnesses Disagree: study notes</h1><div class="meta">Group: ${esc(group)} · ${new Date().toLocaleDateString()}</div>
+<div class="kq">To what extent does what counts as historical knowledge depend on who is asked, and who does the asking?</div>
+${out.join('')}</body></html>`;
+  const b=new Blob([html],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(b);
+  a.download='titanic-study-notes-'+group.replace(/[^a-z0-9]+/gi,'-').toLowerCase()+'.html';
   document.body.appendChild(a);a.click();a.remove();}
 function reasonTally(marks,dk){const t={},m=(marks&&marks[dk])||{};
   for(const id in m){if(m[id]&&m[id].v==='aside'&&m[id].r)t[m[id].r]=(t[m[id].r]||0)+1;}
