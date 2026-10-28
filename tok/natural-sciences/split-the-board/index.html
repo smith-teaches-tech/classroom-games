@@ -97,10 +97,10 @@
   <p class="kicker">TOK · Natural Sciences · Lesson 2</p>
   <h1>Split the Board</h1>
   <p class="lede">A new hidden rule. This time you can see every suspect.</p>
-  <p class="hint">The triple <span class="seed">3, 6, 9</span> follows the hidden rule. All seven rules on the board fit it, and one of them is the real rule. Your job: find it in as few tests as you can.</p>
+  <p class="hint">The triple <span class="seed">3, 6, 9</span> follows the hidden rule. All twelve rules on the board fit it, and one of them is the real rule. Your job: find it in as few tests as you can.</p>
 
   <div class="board" id="board"></div>
-  <div class="status"><span>Rules still standing: <b id="alive">7</b></span><span>Tests used: <b id="used">0</b></span></div>
+  <div class="status"><span>Rules still standing: <b id="alive">12</b></span><span>Tests used: <b id="used">0</b></span></div>
 
   <div id="playArea">
     <div class="tester">
@@ -119,6 +119,7 @@
     </div>
     <div class="actions">
       <button class="btn warm" id="commitBtn" onclick="startCommit()">I know the rule</button>
+      <button class="btn ghost" onclick="newGame()">New game</button>
     </div>
     <p class="hint hidden" id="pickHint"><b>Click the rule you think it is.</b> You only get one guess.</p>
   </div>
@@ -134,7 +135,7 @@
     <div class="panel" id="resultPanel"></div>
     <div class="panel">
       <h3>One more thing</h3>
-      <p>This game promised you the real rule was one of seven. Real science makes no promise like that. Here are rules that were <b>never on your board</b>. Each one gives exactly the same answers as the hidden rule on every triple you tested.</p>
+      <p>This game promised you the real rule was one of twelve. Real science makes no promise like that. Here are rules that were <b>never on your board</b>. Each one gives exactly the same answers as the hidden rule on every triple you tested.</p>
       <div id="extras"></div>
     </div>
     <div class="panel">
@@ -158,23 +159,28 @@
 <script>
   const SEED=[3,6,9];
   const RULES=[
-    {id:"up3",  t:"Goes up by 3 each time",           f:(a,b,c)=>b-a===3&&c-b===3},
-    {id:"same", t:"Goes up by the same amount each time", f:(a,b,c)=>b-a===c-b&&b>a},
-    {id:"mult3",t:"Every number is a multiple of 3",  f:(a,b,c)=>[a,b,c].every(x=>x%3===0)},
-    {id:"up",   t:"The numbers go up",                f:(a,b,c)=>a<b&&b<c},
-    {id:"diff", t:"All three numbers are different",  f:(a,b,c)=>a!==b&&b!==c&&a!==c},
-    {id:"last", t:"The last number is the biggest",   f:(a,b,c)=>c>a&&c>b},
-    {id:"sum",  t:"The numbers add up to less than 20",f:(a,b,c)=>a+b+c<20}
+    {id:"up3",  t:"Goes up by 3 each time",                  f:(a,b,c)=>b-a===3&&c-b===3},
+    {id:"same", t:"Goes up by the same amount each time",    f:(a,b,c)=>b-a===c-b&&b>a},
+    {id:"up",   t:"The numbers go up",                       f:(a,b,c)=>a<b&&b<c},
+    {id:"first",t:"The first number is the smallest",        f:(a,b,c)=>a<b&&a<c},
+    {id:"last", t:"The last number is the biggest",          f:(a,b,c)=>c>a&&c>b},
+    {id:"mid",  t:"The middle number is between the other two",f:(a,b,c)=>(a<b&&b<c)||(c<b&&b<a)},
+    {id:"mult3",t:"Every number is a multiple of 3",         f:(a,b,c)=>[a,b,c].every(x=>x%3===0)},
+    {id:"summ3",t:"The total can be divided by 3",           f:(a,b,c)=>(a+b+c)%3===0},
+    {id:"sum",  t:"The numbers add up to less than 20",      f:(a,b,c)=>a+b+c<20},
+    {id:"u10",  t:"Every number is under 10",                f:(a,b,c)=>a<10&&b<10&&c<10},
+    {id:"diff", t:"All three numbers are different",         f:(a,b,c)=>a!==b&&b!==c&&a!==c},
+    {id:"ab",   t:"The first two numbers are different",     f:(a,b,c)=>a!==b}
   ];
   const EXTRAS=[
-    {t:"Every number is under 100",                 f:(a,b,c)=>a<100&&b<100&&c<100},
-    {t:"The first number is the smallest",          f:(a,b,c)=>a<b&&a<c},
-    {t:"The middle number is between the other two",f:(a,b,c)=>(a<b&&b<c)||(c<b&&b<a)},
-    {t:"The total can be divided by 3",             f:(a,b,c)=>(a+b+c)%3===0},
-    {t:"The first number is odd",                   f:(a,b,c)=>Math.abs(a)%2===1},
-    {t:"At least one number is odd",                f:(a,b,c)=>[a,b,c].some(x=>Math.abs(x)%2===1)},
-    {t:"No number is bigger than 50",               f:(a,b,c)=>a<=50&&b<=50&&c<=50},
-    {t:"The numbers are not all the same",          f:(a,b,c)=>!(a===b&&b===c)}
+    {t:"Every number is under 100",                    f:(a,b,c)=>a<100&&b<100&&c<100},
+    {t:"No number is bigger than 50",                  f:(a,b,c)=>a<=50&&b<=50&&c<=50},
+    {t:"The numbers are not all the same",             f:(a,b,c)=>!(a===b&&b===c)},
+    {t:"At least one number is odd",                   f:(a,b,c)=>[a,b,c].some(x=>Math.abs(x)%2===1)},
+    {t:"The first number is odd",                      f:(a,b,c)=>Math.abs(a)%2===1},
+    {t:"The middle number is even",                    f:(a,b,c)=>Math.abs(b)%2===0},
+    {t:"The last number can be divided by the first",  f:(a,b,c)=>a!==0&&c%a===0},
+    {t:"The last number is the first two added",       f:(a,b,c)=>c===a+b}
   ];
   let hidden,alive,tests,committing,picked,over;
 
@@ -190,6 +196,7 @@
     document.getElementById("verdict").className="verdict";
     document.getElementById("verdict").textContent="Type three whole numbers.";
     predicted=null;
+    document.getElementById("predictRow").classList.add("hidden");
     renderBoard(null);renderLog();updateStatus();checkInput();
     window.scrollTo({top:0,behavior:"smooth"});
   }
@@ -265,6 +272,7 @@
     RULES.forEach(r=>{if(alive.has(r.id)&&r.f(...tri)!==ans){alive.delete(r.id);out.push(r);}});
     tests.push({tri,ans,out,pred,split});predicted=null;
     ["n1","n2","n3"].forEach(id=>document.getElementById(id).value="");
+    document.getElementById("predictRow").classList.add("hidden");
     const v=document.getElementById("verdict");
     v.className="verdict "+(out.length?"split":"flat");
     v.innerHTML=`<b>${tri.join(", ")}</b>: the answer is <b>${ans?"YES":"NO"}</b>. `+(out.length?`That knocked out ${out.length} rule${out.length>1?"s":""}.`:`No rules knocked out. That test taught you nothing new.`);
