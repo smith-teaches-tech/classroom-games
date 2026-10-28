@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Where Claims Break — TOK in Your Subject (Staff PD)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<!--
+  HOW TO EDIT
+  Each screen is a <section class="slide">. Edit the text directly.
+  Anything with data-step appears one click at a time (in the order it appears in the file).
+  <div class="notes"> holds your speaker notes. Press N to show or hide them.
+  Keys: Right / Space = next step, Left = back, F = fullscreen, N = notes, T = start/pause the timer on that screen.
+-->
+<style>
+  :root{
+    --paper:#f4efe4; --paper-2:#ece4d3; --ink:#23201a; --ink-soft:#4a443a;
+    --rule:#c9bda3; --rule-soft:#dbd0ba; --accent:#1f4e6b; --accent-warm:#9a6a2f;
+    --flag:#7a3b2e; --good:#3f7d4f; --shadow:rgba(40,33,22,.16); --card:#fbf8f0;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;}
+  body{background:var(--paper);
+    background-image:radial-gradient(circle at 18% 12%, rgba(255,255,255,.45), transparent 42%),radial-gradient(circle at 85% 78%, rgba(155,106,47,.07), transparent 55%);
+    color:var(--ink);font-family:"Cormorant Garamond",Georgia,serif;font-size:clamp(20px,2.1vw,32px);line-height:1.38;
+    -webkit-font-smoothing:antialiased;overflow:hidden;}
+  .mono{font-family:"JetBrains Mono",monospace;}
+
+  .slide{position:absolute;inset:0;display:none;flex-direction:column;justify-content:flex-start;
+    padding:5vh 7vw 9vh;overflow-y:auto;}
+  .slide .inner{margin:auto;}
+  .slide.dense{font-size:.8em;}
+  .slide.dense h2{font-size:1.5em;}
+  .slide.on{display:flex;animation:fade .35s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+  .inner{max-width:1180px;width:100%;margin:0 auto;}
+
+  .kicker{font-family:"JetBrains Mono",monospace;font-size:.42em;letter-spacing:.24em;text-transform:uppercase;color:var(--accent-warm);margin:0 0 .7em;}
+  h1{font-weight:700;font-size:2.6em;line-height:1;margin:0 0 .3em;}
+  h2{font-weight:700;font-size:1.65em;line-height:1.08;margin:0 0 .45em;}
+  .lede{color:var(--ink-soft);font-size:1.05em;margin:0 0 .5em;}
+  p{margin:0 0 .55em;}
+  em{font-style:italic;}
+
+  [data-step]{transition:opacity .35s, transform .35s;}
+  [data-step].hide{opacity:0;transform:translateY(8px);pointer-events:none;}
+
+  .claim{font-weight:700;font-size:1.75em;line-height:1.12;border-left:6px solid var(--accent);padding:.15em 0 .2em .6em;margin:.2em 0 .6em;}
+  .claim.refined{font-size:1.25em;border-left-color:var(--good);font-weight:600;}
+  .claim small{display:block;font-family:"JetBrains Mono",monospace;font-size:.32em;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-warm);font-weight:500;margin-bottom:.5em;}
+
+  .panel{border:1px solid var(--accent);border-radius:10px;background:rgba(31,78,107,.05);padding:.7em 1em;margin:.5em 0;}
+  .panel.warm{border-color:var(--accent-warm);background:rgba(154,106,47,.07);}
+  .panel.flag{border-color:var(--flag);background:rgba(122,59,46,.06);}
+  .panel.good{border-color:var(--good);background:rgba(63,125,79,.07);}
+  .panel h3{font-family:"JetBrains Mono",monospace;font-size:.45em;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin:0 0 .5em;}
+  .panel.warm h3{color:var(--accent-warm);} .panel.flag h3{color:var(--flag);} .panel.good h3{color:var(--good);}
+  .panel p:last-child{margin-bottom:0;}
+
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:1em;}
+  .cols3{display:grid;grid-template-columns:repeat(3,1fr);gap:.8em;}
+  ul.clean{list-style:none;padding:0;margin:0;}
+  ul.clean li{padding:.28em 0 .28em 1.1em;position:relative;border-bottom:1px solid var(--rule-soft);}
+  ul.clean li:last-child{border-bottom:none;}
+  ul.clean li::before{content:"";position:absolute;left:0;top:.82em;width:.45em;height:.45em;border-radius:50%;background:var(--accent);}
+  .good ul.clean li::before{background:var(--good);} .flag ul.clean li::before{background:var(--flag);} .warm ul.clean li::before{background:var(--accent-warm);}
+
+  ol.big{padding-left:1.4em;margin:.2em 0;}
+  ol.big li{margin:0 0 .45em;padding-left:.2em;}
+  ol.big li::marker{font-family:"JetBrains Mono",monospace;font-weight:700;color:var(--accent);}
+
+  /* thumbs */
+  .thumbs{display:flex;gap:1.2em;margin:.4em 0 .6em;flex-wrap:wrap;}
+  .thumb{display:flex;align-items:center;gap:.5em;background:var(--card);border:1px solid var(--rule);border-radius:12px;padding:.35em .7em;box-shadow:0 1px 3px var(--shadow);}
+  .thumb button.hit{font-size:1.5em;background:none;border:none;cursor:pointer;line-height:1;padding:.1em .2em;}
+  .thumb .n{font-family:"JetBrains Mono",monospace;font-size:1.3em;font-weight:700;min-width:1.6em;text-align:center;}
+  .thumb.up .n{color:var(--good);} .thumb.down .n{color:var(--flag);}
+  .thumb .minus{font-family:"JetBrains Mono",monospace;font-size:.5em;border:1px solid var(--rule);background:transparent;border-radius:5px;cursor:pointer;color:var(--ink-soft);padding:.2em .5em;}
+
+  /* live board */
+  .board{background:var(--card);border:1px dashed var(--rule);border-radius:10px;padding:.5em .7em;margin:.3em 0 .6em;min-height:2.6em;}
+  .board input{width:100%;font-family:"Cormorant Garamond",Georgia,serif;font-size:.9em;border:none;border-bottom:1px solid var(--rule);background:transparent;color:var(--ink);padding:.15em 0;outline:none;}
+  .board input:focus{border-bottom-color:var(--accent);}
+  .board input::placeholder{color:#a2977f;font-style:italic;}
+  .chips{display:flex;flex-wrap:wrap;gap:.4em;margin-top:.45em;}
+  .chip{font-size:.8em;background:#fff;border:1px solid var(--rule);border-radius:999px;padding:.12em .7em;display:inline-flex;align-items:center;gap:.4em;cursor:default;user-select:none;}
+  .sortable .chip{cursor:pointer;}
+  .chip .x{font-family:"JetBrains Mono",monospace;font-size:.7em;color:var(--ink-soft);cursor:pointer;opacity:.6;}
+  .chip .tag{font-family:"JetBrains Mono",monospace;font-size:.55em;letter-spacing:.1em;text-transform:uppercase;}
+  .chip.cond{border-color:var(--good);background:rgba(63,125,79,.10);} .chip.cond .tag{color:var(--good);}
+  .chip.kill{border-color:var(--flag);background:rgba(122,59,46,.09);} .chip.kill .tag{color:var(--flag);}
+  .boardhint{font-family:"JetBrains Mono",monospace;font-size:.4em;letter-spacing:.08em;color:var(--ink-soft);margin:.2em 0 0;}
+
+  /* subject cards */
+  .card{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:.55em .75em;box-shadow:0 1px 2px var(--shadow);}
+  .card .who{font-family:"JetBrains Mono",monospace;font-size:.42em;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-warm);margin-bottom:.25em;}
+  .card .what{font-weight:600;font-size:.95em;line-height:1.2;}
+
+  .prompt{font-style:italic;font-weight:600;font-size:1.3em;color:var(--accent);margin:.1em 0 .5em;}
+  .prompt .num{font-style:normal;font-family:"JetBrains Mono",monospace;font-size:.45em;letter-spacing:.14em;color:var(--accent-warm);vertical-align:middle;margin-right:.6em;border:1px solid var(--accent-warm);border-radius:5px;padding:.15em .5em;}
+
+  /* timeline */
+  .thread{display:grid;grid-template-columns:repeat(3,1fr);gap:.8em;margin:.4em 0;}
+  .thread .card{border-top:5px solid var(--accent);}
+  .thread .card.mid{border-top-color:var(--flag);}
+  .thread .card.end{border-top-color:var(--good);}
+
+  /* timer */
+  .timer{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:1.3em;font-weight:700;color:var(--accent);border:2px solid var(--accent);border-radius:10px;padding:.1em .6em;cursor:pointer;user-select:none;}
+  .timer.running{background:rgba(31,78,107,.08);}
+  .timer.done{color:var(--flag);border-color:var(--flag);background:rgba(122,59,46,.08);}
+  .timerhint{font-family:"JetBrains Mono",monospace;font-size:.38em;letter-spacing:.08em;color:var(--ink-soft);margin-left:.8em;}
+
+  /* chrome */
+  .bar{position:fixed;left:0;bottom:0;height:4px;background:var(--accent);transition:width .3s;z-index:5;}
+  .nav{position:fixed;right:1.2vw;bottom:1.4vh;display:flex;gap:.4em;align-items:center;z-index:6;font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--ink-soft);}
+  .nav button{font-family:"JetBrains Mono",monospace;font-size:13px;border:1px solid var(--rule);background:var(--card);color:var(--ink);border-radius:6px;padding:6px 11px;cursor:pointer;}
+  .nav button:hover{border-color:var(--accent);}
+  .home{position:fixed;left:1.2vw;bottom:1.4vh;font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink-soft);text-decoration:none;z-index:6;}
+  .notes{display:none;}
+  body.show-notes .slide.on .notes{display:block;position:fixed;left:0;right:0;bottom:0;max-height:30vh;overflow:auto;background:#23201aee;color:#f4efe4;
+    font-family:"JetBrains Mono",monospace;font-size:14px;line-height:1.55;padding:12px 22px 40px;z-index:4;}
+  .notes b{color:#e0b878;}
+
+  @media (max-width:760px){
+    body{overflow:auto;font-size:19px;}
+    .cols,.cols3,.thread{grid-template-columns:1fr;}
+    .slide{padding:4vh 16px 12vh;justify-content:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<!-- 1 · TITLE -->
+<section class="slide">
+  <div class="inner">
+    <p class="kicker">IB Staff PD · TOK in your subject · 1 November</p>
+    <h1>Where Claims Break</h1>
+    <p class="lede">Thirty minutes. One claim you make every week. One question you can take back to any unit.</p>
+  </div>
+  <div class="notes"><b>0:00</b> Keep this up as people arrive. Departments sit together from the start; no one moves later.</div>
+</section>
+
+<!-- 2 · WHAT THE IB EXPECTS -->
+<section class="slide">
+  <div class="inner">
+    <p class="kicker">Why we're here</p>
+    <h2>This is already part of the job</h2>
+    <div class="panel" data-step>
+      <h3>IB Programme standards and practices (DP)</h3>
+      <p>The school provides opportunities for teachers to use collaborative planning and reflection to integrate theory of knowledge into each subject.</p>
+    </div>
+    <div class="panel warm" data-step>
+      <h3>The TOK course's aim for your subjects</h3>
+      <p>Students make connections between disciplines by identifying similarities and differences in the methods of inquiry each one uses.</p>
+    </div>
+    <p data-step>Your subject guide already has a TOK section. What's usually missing is <b>the moment in a lesson</b> to use it. That's today.</p>
+  </div>
+  <div class="notes"><b>0:00–2:00</b> Fast. The point: not extra, not new. Students can only compare methods if subject teachers name their methods out loud.</div>
+</section>
+
+<!-- 3 · THE CLAIM -->
+<section class="slide">
+  <div class="inner">
+    <p class="kicker">A claim we all make</p>
+    <div class="claim">A student who gets an A understands the material.</div>
+    <p class="lede">We make this claim every time we enter a grade. Every report card says it for us.</p>
+    <p data-step><b>True or false?</b> Thumbs up or thumbs down. Don't look around first.</p>
+    <div class="thumbs" data-step>
+      <div class="thumb up"><button class="hit" data-count="up" aria-label="add thumbs up">👍</button><span class="n" id="n-up">0</span><button class="minus" data-minus="up">−1</button></div>
+      <div class="thumb down"><button class="hit" data-count="down" aria-label="add thumbs down">👎</button><span class="n" id="n-down">0</span><button class="minus" data-minus="down">−1</button></div>
+    </div>
+  </div>
+  <div class="notes"><b>2:00</b> Everyone commits before any discussion. Click the thumbs to count, or type the totals in by clicking several times. Expect a split; the split is the hook.</div>
+</section>
+
+<!-- 4 · WHEN DOES IT HOLD -->
+<section class="slide">
+  <div class="inner">
+    <p class="kicker">Step 1 · Flip the question</p>
+    <h2>When is an A good evidence that a student understood?</h2>
+    <p class="lede">Think first. Don't raise your hand yet.</p>
+    <div class="board" data-step>
+      <input type="text" data-board="holds" placeholder="Type an answer from the room and press Enter…">
+      <div class="chips" id="chips-holds"></div>
+    </div>
+    <div class="panel good" data-step>
+      <h3>It holds when…</h3>
+      <ul class="clean">
+        <li>the task asked students to <b>use</b> the idea in a new situation, not repeat it</li>
+        <li>they did the work <b>on their own</b></li>
+        <li>it was <b>recent</b></li>
+        <li>the task covered the <b>whole</b> unit, not one corner of it</li>
+        <li>the standard for an A is <b>shared</b> across teachers</li>
+      </ul>
+    </div>
+  </div>
+  <div class="notes"><b>3:00–5:30</b> Wait time, then collect 3–4 answers live. Reveal the list after. If someone says "never definitively," stop on it: no conditions give certainty, only good evidence. That's a TOK point in itself.</div>
+</section>
+
+<!-- 5 · WHEN DOES IT BREAK -->
+<section class="slide dense">
+  <div class="inner">
+    <p class="kicker">Step 2 · The cut</p>
+    <h2>When does an A <em>not</em> mean the student understood?</h2>
+    <div class="board sortable" data-step>
+      <input type="text" data-board="breaks" placeholder="Type a break from the room and press Enter…">
+      <div class="chips" id="chips-breaks"></div>
+      <p class="boardhint">Click a break to sort it: shows a condition → nearly kills it → unsorted</p>
+    </div>
+    <p data-step><b>Now sort them.</b> Does this break kill the claim, or does it show us <em>where the claim holds</em>?</p>
+    <div class="cols" data-step>
+      <div class="panel good">
+        <h3>Shows a condition</h3>
+        <ul class="clean">
+          <li>Memorised the answers. A new question exposes the gap.</li>
+          <li>Understood it on Tuesday. Gone by June.</li>
+          <li>The quiz covered one corner of the unit.</li>
+          <li>Test-wise: good at eliminating options or matching rubric language.</li>
+          <li>An A from one teacher isn't an A from another.</li>
+        </ul>
+      </div>
+      <div class="panel flag">
+        <h3>Nearly kills it</h3>
+        <ul class="clean">
+          <li><b>Someone else's understanding.</b> A tutor, a parent or AI did the work. Real evidence, wrong person.</li>
+          <li><b>"Understands" means two things.</b> They can run the procedure but can't explain why it works.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="notes"><b>5:30–9:00</b> Collect 5–6 breaks and sort them together by clicking the chips. Sorting is the move to model, so do it before revealing the two columns. Ask only "where does it break?", never "what should we do about it?", or this becomes a grading/AI complaint session.</div>
+</section>
+
+<!-- 6 · THE TRAP -->
+<section class="slide">
+  <div class="inner">
+    <p class="kicker">Someone will say this</p>
+    <div class="claim" style="border-left-color:var(--accent-warm);font-size:1.35em;">"I've had students who understood it and got a B."</div>
+    <div class="panel warm" data-step>
+      <h3>Does that break our claim?</h3>
+      <p>No. It breaks a different claim: <em>every student who understands gets an A.</em></p>
+      <p>Before you can find where a claim breaks, be exact about what it claims.</p>
+    </div>
+  </div>
+  <div class="notes">Only show this if it comes up (it usually does). If nobody raises it, skip with the right arrow twice.</div>
+</section>
+
+<!-- 7 · REFINED CLAIM -->
+<section class="slide">
+  <div class="inner">
+    <p class="kicker">Step 3 · Refine the claim</p>
+    <div class="claim"><small>Where we started</small>A student who gets an A understands the material.</div>
+    <div class="claim refined" data-step><small>Where we ended</small>An A on a task that required applying the idea in a new situation, done independently and recently, is good evidence that the student understood it at that point.</div>
+    <div class="panel" data-step>
+      <h3>What the break tells us about knowing</h3>
+      <p>We never observe understanding directly. We infer it from performance, so the inference is only as good as the task that produced it.</p>
+      <p><b>Every subject has its own version of this gap.</b></p>
+    </div>
+  </div>
+  <div class="notes"><b>9:00–10:30</b> The refined claim isn't weaker; it's more accurate. The claim survived, with its boundary drawn.</div>
+</section>
+
+<!-- 8 · THAT WAS TOK -->
+<section class="slide">
+  <div class="inner">
+    <p class="kicker">Name the move</p>
+    <h2>That was TOK.</h2>
+    <p class="lede">I asked you three questions.</p>
+    <ol class="big">
+      <li data-step>When does the claim <b>hold</b>?</li>
+      <li data-step>When does it <b>break</b>?</li>
+      <li data-step>What does the break tell us about <b>how we know</b>?</li>
+    </ol>
+    <div class="panel good" data-step>
+      <p>This is exactly what students must do in the TOK exhibition and essay: test a claim, find where it holds and where it breaks. They need to practise it in <b>your</b> subject, with <b>your</b> evidence.</p>
+    </div>
+  </div>
+  <div class="notes"><b>10:30–12:00</b> No TOK training needed for what you just did. It took ten minutes and no preparation.</div>
+</section>
+
+<!-- 9 · THE ASK -->
+<section class="slide dense">
+  <div class="inner">
+    <p class="kicker">What we're asking</p>
+    <h2>One to three exhibition prompts per unit</h2>
+    <div class="cols" data-step>
+      <div class="panel">
+        <h3>Option A · a thread</h3>
+        <p>One prompt, revisited across the unit.</p>
+      </div>
+      <div class="panel warm">
+        <h3>Option B · stops along the way</h3>
+        <p>Two or three prompts at different points in the unit.</p>
+      </div>
+    </div>
+    <div class="thread" data-step>
+      <div class="card"><div class="who">Start · commit</div><div class="what">Students give a first answer before the unit.</div></div>
+      <div class="card mid"><div class="who">Middle · the break</div><div class="what">Something in the unit breaks that first answer.</div></div>
+      <div class="card end"><div class="who">End · refine</div><div class="what">"What would you say now, and what changed your mind?"</div></div>
+    </div>
+    <p data-step><b>Low prep:</b> a bell-ringer, a quick-write, or five minutes of discussion like the one we just had. Not a new lesson.</p>
+  </div>
+  <div class="notes"><b>12:00–14:00</b> The middle visit matters most. If nothing in the unit can break the first answer, it's the wrong prompt for that unit.</div>
+</section>
+
+<!-- 10 · PROMPT TO CLAIM -->
+<section class="slide dense">
+  <div class="inner">
+    <p class="kicker">The step that makes it work</p>
+    <h2>You can't break a question. Turn the prompt into a claim.</h2>
+    <p class="prompt"><span class="num">PROMPT 5</span>What counts as good evidence for a claim?</p>
+    <p class="lede" data-step>Ask: <b>what claim does my subject make about evidence?</b></p>
+    <div class="cols3" data-step>
+      <div class="card"><div class="who">Sciences</div><div class="what">"A result that's been repeated is reliable."</div></div>
+      <div class="card"><div class="who">English</div><div class="what">"A quotation proves an interpretation."</div></div>
+      <div class="card"><div class="who">History</div><div class="what">"A primary source tells us what happened."</div></div>
+      <div class="card"><div class="who">Global languages</div><div class="what">"If native speakers say it, it's correct."</div></div>
+      <div class="card"><div class="who">Human sciences</div><div class="what">"A survey of 1,000 people tells us what people think."</div></div>
+      <div class="card"><div class="who">Mathematics</div><div class="what">"If it works for every case we've tried, it's true."</div></div>
+    </div>
+  </div>
+  <div class="notes">These are examples, not answers. Departments should write their own claim, ideally one their students actually believe.</div>
+</section>
+
+<!-- 11 · YOUR TURN -->
+<section class="slide">
+  <div class="inner">
+    <p class="kicker">Department groups · handout, front side</p>
+    <h2>Your turn: prompt 5 in your subject</h2>
+    <ol class="big">
+      <li><b>Claim:</b> one claim your subject makes about evidence.</li>
+      <li><b>Holds:</b> when is it true?</li>
+      <li><b>Breaks:</b> when does it fail? Sort: a condition, or nearly kills it?</li>
+      <li><b>Refine:</b> rewrite the claim with its boundary built in.</li>
+      <li><b>In a unit:</b> which upcoming unit, and what moment would break your students' first answer?</li>
+    </ol>
+    <p style="margin-top:.6em"><span class="timer" data-sec="600">10:00</span><span class="timerhint">click or press T to start · double-click to reset</span></p>
+  </div>
+  <div class="notes"><b>14:00–24:00</b> Circulate. Groups that stall: hand them the example claim from the previous screen. Groups that finish early: try a second prompt from the starred list on the back of the handout.</div>
+</section>
+
+<!-- 12 · SHARE -->
+<section class="slide">
+  <div class="inner">
+    <p class="kicker">Share · three departments</p>
+    <h2>Your claim, and where it broke</h2>
+    <p class="prompt"><span class="num">PROMPT 5</span>What counts as good evidence for a claim?</p>
+    <div class="panel" data-step>
+      <h3>For the room</h3>
+      <p style="font-size:1.2em;font-weight:600;">Same prompt. Why are these breaks so different?</p>
+    </div>
+    <div class="panel warm" data-step>
+      <h3>Different isn't "anything goes"</h3>
+      <p>Every subject has a real standard for evidence. What changes is which questions that standard can settle. Students only see this if each of us names our subject's standard out loud.</p>
+    </div>
+  </div>
+  <div class="notes"><b>24:00–29:00</b> One sentence of feedback per department. Land the relativism redirect before closing.</div>
+</section>
+
+<!-- 13 · CLOSE -->
+<section class="slide">
+  <div class="inner">
+    <p class="kicker">Before you go</p>
+    <h2>One thread in your next unit</h2>
+    <ol class="big">
+      <li>Pick a prompt from the back of the handout. Starred prompts make good threads.</li>
+      <li>Plan three short visits: start, the break, end.</li>
+      <li>Record it in <b>[where to record]</b> by <b>[date]</b>.</li>
+    </ol>
+    <p class="lede" style="margin-top:.6em">The test for any prompt: <b>can something in this unit break the first answer?</b></p>
+  </div>
+  <div class="notes"><b>29:00–30:00</b> Edit the bracketed placeholders in the HTML before the session.</div>
+</section>
+
+<div class="bar" id="bar"></div>
+<a class="home" href="../../../">← Classroom tools</a>
+<div class="nav">
+  <span id="count"></span>
+  <button id="prev" aria-label="Back">←</button>
+  <button id="next" aria-label="Next">→</button>
+  <button id="notesBtn" title="Speaker notes (N)">Notes</button>
+  <button id="fsBtn" title="Fullscreen (F)">⛶</button>
+</div>
+
+<script>
+(function(){
+  const slides=[...document.querySelectorAll('.slide')];
+  let cur=0;
+  const steps=s=>[...s.querySelectorAll('[data-step]')];
+  const shown=s=>steps(s).filter(e=>!e.classList.contains('hide')).length;
+
+  function setSteps(s,n){steps(s).forEach((e,i)=>e.classList.toggle('hide',i>=n));}
+  function show(i,revealAll){
+    cur=Math.max(0,Math.min(slides.length-1,i));
+    slides.forEach((s,j)=>s.classList.toggle('on',j===cur));
+    setSteps(slides[cur],revealAll?99:0);
+    document.getElementById('bar').style.width=((cur+1)/slides.length*100)+'%';
+    document.getElementById('count').textContent=(cur+1)+' / '+slides.length;
+    history.replaceState(null,'','#'+(cur+1));
+  }
+  function next(){const s=slides[cur],st=steps(s),n=shown(s);
+    if(n<st.length){st[n].classList.remove('hide');} else if(cur<slides.length-1){show(cur+1,false);} }
+  function prev(){const s=slides[cur],n=shown(s);
+    if(n>0){steps(s)[n-1].classList.add('hide');} else if(cur>0){show(cur-1,true);} }
+
+  document.getElementById('next').onclick=next;
+  document.getElementById('prev').onclick=prev;
+  document.getElementById('notesBtn').onclick=()=>document.body.classList.toggle('show-notes');
+  document.getElementById('fsBtn').onclick=fs;
+  function fs(){if(!document.fullscreenElement){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();}else{document.exitFullscreen();}}
+
+  document.addEventListener('keydown',e=>{
+    const t=e.target; if(t.tagName==='INPUT'||t.tagName==='TEXTAREA'||t.isContentEditable){if(e.key==='Escape')t.blur();return;}
+    if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();next();}
+    else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();prev();}
+    else if(e.key==='f'||e.key==='F'){fs();}
+    else if(e.key==='n'||e.key==='N'){document.body.classList.toggle('show-notes');}
+    else if(e.key==='t'||e.key==='T'){const tm=slides[cur].querySelector('.timer');if(tm)toggleTimer(tm);}
+  });
+
+  // thumbs
+  const counts={up:0,down:0};
+  const paint=()=>{document.getElementById('n-up').textContent=counts.up;document.getElementById('n-down').textContent=counts.down;};
+  document.querySelectorAll('[data-count]').forEach(b=>b.onclick=()=>{counts[b.dataset.count]++;paint();});
+  document.querySelectorAll('[data-minus]').forEach(b=>b.onclick=()=>{counts[b.dataset.minus]=Math.max(0,counts[b.dataset.minus]-1);paint();});
+
+  // live boards
+  const cycle=['','cond','kill'], labels={'':'','cond':'condition','kill':'nearly kills it'};
+  document.querySelectorAll('[data-board]').forEach(inp=>{
+    const box=document.getElementById('chips-'+inp.dataset.board);
+    const sortable=inp.closest('.board').classList.contains('sortable');
+    inp.addEventListener('keydown',e=>{
+      if(e.key!=='Enter')return; const v=inp.value.trim(); if(!v)return;
+      const c=document.createElement('span'); c.className='chip'; c.dataset.k='';
+      const txt=document.createElement('span'); txt.textContent=v;
+      const tag=document.createElement('span'); tag.className='tag';
+      const x=document.createElement('span'); x.className='x'; x.textContent='×'; x.title='Remove';
+      x.onclick=ev=>{ev.stopPropagation();c.remove();};
+      c.append(txt,tag,x);
+      if(sortable)c.onclick=()=>{const k=cycle[(cycle.indexOf(c.dataset.k)+1)%3];c.dataset.k=k;c.className='chip'+(k?' '+k:'');tag.textContent=labels[k];};
+      box.appendChild(c); inp.value='';
+    });
+  });
+
+  // timers
+  function fmt(s){return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+  function toggleTimer(tm){
+    if(tm._iv){clearInterval(tm._iv);tm._iv=null;tm.classList.remove('running');return;}
+    if(tm._left==null)tm._left=+tm.dataset.sec;
+    if(tm._left<=0)return;
+    tm.classList.add('running');
+    tm._iv=setInterval(()=>{tm._left--;tm.textContent=fmt(tm._left);
+      if(tm._left<=0){clearInterval(tm._iv);tm._iv=null;tm.classList.remove('running');tm.classList.add('done');tm.textContent='Time';}},1000);
+  }
+  document.querySelectorAll('.timer').forEach(tm=>{
+    tm.onclick=()=>toggleTimer(tm);
+    tm.ondblclick=()=>{clearInterval(tm._iv);tm._iv=null;tm._left=+tm.dataset.sec;tm.className='timer';tm.textContent=fmt(tm._left);};
+  });
+
+  const h=parseInt(location.hash.slice(1),10);
+  show(isNaN(h)?0:h-1,false);
+})();
+</script>
+</body>
+</html>
