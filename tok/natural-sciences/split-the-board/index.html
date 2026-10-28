@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Split the Board — TOK Natural Sciences L2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4efe4; --paper-2:#ece4d3; --ink:#23201a; --ink-soft:#4a443a;
+    --rule:#c9bda3; --rule-soft:#dbd0ba; --accent:#1f4e6b; --accent-warm:#9a6a2f;
+    --flag:#7a3b2e; --good:#3f7d4f; --shadow:rgba(40,33,22,.16);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--paper);
+    background-image:radial-gradient(circle at 18% 12%, rgba(255,255,255,.45), transparent 42%),radial-gradient(circle at 85% 78%, rgba(155,106,47,.06), transparent 55%);
+    color:var(--ink);font-family:"Cormorant Garamond",Georgia,serif;font-size:20px;line-height:1.5;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:780px;margin:0 auto;padding:34px 18px 80px;}
+  .kicker{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-warm);margin:0 0 10px;}
+  h1{font-weight:700;font-size:clamp(36px,7vw,54px);line-height:1.02;margin:0 0 14px;}
+  h2{font-weight:600;font-size:26px;margin:0 0 6px;}
+  .lede{color:var(--ink-soft);margin:0 0 6px;}
+  .hint{color:var(--ink-soft);font-size:18px;margin:0 0 14px;}
+  hr.sep{border:none;border-top:1px solid var(--rule);margin:28px 0;}
+  .mono{font-family:"JetBrains Mono",monospace;}
+
+  .seed{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:22px;font-weight:700;color:var(--accent);
+    border:1px solid var(--accent);border-radius:6px;padding:4px 14px;background:rgba(31,78,107,.06);}
+
+  /* board */
+  .board{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin:12px 0 6px;}
+  .rule{background:#fbf8f0;border:1px solid var(--rule);border-radius:7px;padding:10px 12px 9px;box-shadow:0 1px 2px var(--shadow);
+    transition:all .25s;position:relative;min-height:74px;}
+  .rule .rk{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.14em;color:var(--accent-warm);}
+  .rule .rt{font-weight:700;font-size:18.5px;line-height:1.25;margin-top:2px;}
+  .rule .pred{position:absolute;top:8px;right:10px;font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:700;letter-spacing:.06em;}
+  .rule.says-yes{border-color:var(--good);background:rgba(63,125,79,.10);}
+  .rule.says-yes .pred{color:var(--good);}
+  .rule.says-no{border-color:var(--flag);background:rgba(122,59,46,.08);}
+  .rule.says-no .pred{color:var(--flag);}
+  .rule.dead{opacity:.38;background:var(--paper-2);box-shadow:none;}
+  .rule.dead .rt{text-decoration:line-through;text-decoration-color:var(--flag);}
+  .rule.dead .pred{color:var(--ink-soft);}
+  .rule.pickable{cursor:pointer;}
+  .rule.pickable:hover{box-shadow:0 0 0 2px var(--accent);}
+  .rule.picked{box-shadow:0 0 0 3px var(--accent);}
+  .rule.truth{box-shadow:0 0 0 3px var(--good);opacity:1;}
+
+  .status{display:flex;gap:18px;flex-wrap:wrap;font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.06em;color:var(--ink-soft);margin:6px 0 0;}
+  .status b{color:var(--accent);font-size:15px;}
+
+  /* test input */
+  .tester{background:#fbf8f0;border:1px solid var(--rule);border-radius:8px;padding:14px 16px;margin:16px 0 10px;}
+  .inrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+  .inrow input{width:76px;font-family:"JetBrains Mono",monospace;font-size:20px;text-align:center;padding:8px 6px;border:1px solid var(--rule);
+    border-radius:5px;background:#fff;color:var(--ink);}
+  .inrow input:focus{outline:none;border-color:var(--accent);}
+  .comma{font-family:"JetBrains Mono",monospace;font-size:20px;color:var(--ink-soft);}
+  .verdict{margin:12px 0 0;font-size:19px;min-height:28px;}
+  .verdict.flat{color:var(--flag);}
+  .verdict.split{color:var(--good);}
+
+  .btn{font-family:"JetBrains Mono",monospace;font-size:13px;letter-spacing:.06em;padding:11px 18px;border-radius:6px;cursor:pointer;
+    border:1px solid var(--accent);background:var(--accent);color:var(--paper);transition:transform .12s,opacity .12s;}
+  .btn:hover{transform:translateY(-1px);opacity:.92;}
+  .btn:disabled{opacity:.35;cursor:default;transform:none;}
+  .btn.ghost{background:transparent;color:var(--accent);}
+  .btn.warm{background:var(--accent-warm);border-color:var(--accent-warm);}
+
+  /* log */
+  table.log{width:100%;border-collapse:collapse;margin:8px 0 0;font-size:17px;}
+  table.log th{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-warm);
+    text-align:left;border-bottom:1px solid var(--rule);padding:6px 6px;}
+  table.log td{border-bottom:1px solid var(--rule-soft);padding:7px 6px;vertical-align:top;}
+  td.tri{font-family:"JetBrains Mono",monospace;white-space:nowrap;}
+  td.ans.yes{color:var(--good);font-weight:700;font-family:"JetBrains Mono",monospace;}
+  td.ans.no{color:var(--flag);font-weight:700;font-family:"JetBrains Mono",monospace;}
+  td.out.zero{color:var(--flag);}
+
+  .panel{border:1px solid var(--accent);border-radius:8px;background:rgba(31,78,107,.04);padding:14px 18px;margin:16px 0;}
+  .panel h3{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 8px;}
+  .panel p{margin:0 0 10px;font-size:18.5px;}
+  .extra{border:1px dashed var(--accent-warm);border-radius:7px;padding:10px 14px;margin:8px 0;background:rgba(154,106,47,.06);font-size:18.5px;}
+  .extra b{font-weight:700;}
+  ol.qs{padding-left:22px;margin:6px 0 0;}
+  ol.qs li{margin:0 0 8px;}
+  .hidden{display:none;}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;}
+  @media (max-width:520px){body{font-size:18px;} .inrow input{width:64px;font-size:18px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="kicker">TOK · Natural Sciences · Lesson 2</p>
+  <h1>Split the Board</h1>
+  <p class="lede">A new hidden rule. This time you can see every suspect.</p>
+  <p class="hint">The triple <span class="seed">3, 6, 9</span> follows the hidden rule. All seven rules on the board fit it, and one of them is the real rule. Your job: find it in as few tests as you can.</p>
+
+  <div class="board" id="board"></div>
+  <div class="status"><span>Rules still standing: <b id="alive">7</b></span><span>Tests used: <b id="used">0</b></span></div>
+
+  <div id="playArea">
+    <div class="tester">
+      <div class="inrow">
+        <input id="n1" type="number" inputmode="numeric" aria-label="first number"><span class="comma">,</span>
+        <input id="n2" type="number" inputmode="numeric" aria-label="second number"><span class="comma">,</span>
+        <input id="n3" type="number" inputmode="numeric" aria-label="third number">
+        <button class="btn" id="testBtn" disabled onclick="runTest()">Test it</button>
+      </div>
+      <p class="verdict" id="verdict">Type three whole numbers. Before you test, watch the board: each rule shows what it would say.</p>
+    </div>
+    <div class="actions">
+      <button class="btn warm" id="commitBtn" onclick="startCommit()">I know the rule</button>
+    </div>
+    <p class="hint hidden" id="pickHint"><b>Click the rule you think it is.</b> You only get one guess.</p>
+  </div>
+
+  <div id="logWrap" class="hidden">
+    <hr class="sep">
+    <h2>Your tests</h2>
+    <table class="log"><thead><tr><th>Triple</th><th>Answer</th><th>Rules knocked out</th></tr></thead><tbody id="log"></tbody></table>
+  </div>
+
+  <div id="result" class="hidden">
+    <hr class="sep">
+    <div class="panel" id="resultPanel"></div>
+    <div class="panel">
+      <h3>One more thing</h3>
+      <p>Your board had seven rules. But nobody said the real rule had to be one of seven. Here are rules that were <b>never on your board</b>. Each one gives exactly the same answers as the hidden rule on every triple you tested.</p>
+      <div id="extras"></div>
+    </div>
+    <div class="panel">
+      <h3>A bit like 20 Questions</h3>
+      <p>Good 20 Questions players don't ask "Is it a cat?" They ask "Is it alive?", a question that splits what's left roughly in half, so either answer teaches them something. That is what a good test does.</p>
+      <p>But there is one big difference. In 20 Questions, you know the answer is somewhere in the game. In science, the real answer might not be on anyone's board.</p>
+    </div>
+    <div class="panel">
+      <h3>Write in your notebook</h3>
+      <ol class="qs">
+        <li>Look at your tests. Which ones knocked out no rules at all? Why did they teach you nothing?</li>
+        <li>Which test taught you the most? What made it a good test before you even knew the answer?</li>
+        <li>Your last rule survived every test. Does that prove it is the rule? Look at the rules that were never on your board.</li>
+        <li>So what does a YES have to do before it counts as evidence? Finish the thought: a YES only counts as evidence against…</li>
+      </ol>
+    </div>
+    <div class="actions"><button class="btn ghost" onclick="newGame()">Play again with a new hidden rule</button></div>
+  </div>
+</div>
+
+<script>
+  const SEED=[3,6,9];
+  const RULES=[
+    {id:"up3",  t:"Goes up by 3 each time",           f:(a,b,c)=>b-a===3&&c-b===3},
+    {id:"same", t:"Goes up by the same amount each time", f:(a,b,c)=>b-a===c-b&&b>a},
+    {id:"mult3",t:"Every number is a multiple of 3",  f:(a,b,c)=>[a,b,c].every(x=>x%3===0)},
+    {id:"up",   t:"The numbers go up",                f:(a,b,c)=>a<b&&b<c},
+    {id:"diff", t:"All three numbers are different",  f:(a,b,c)=>a!==b&&b!==c&&a!==c},
+    {id:"last", t:"The last number is the biggest",   f:(a,b,c)=>c>a&&c>b},
+    {id:"sum",  t:"The numbers add up to less than 20",f:(a,b,c)=>a+b+c<20}
+  ];
+  const EXTRAS=[
+    {t:"Every number is under 100",                 f:(a,b,c)=>a<100&&b<100&&c<100},
+    {t:"The first number is the smallest",          f:(a,b,c)=>a<b&&a<c},
+    {t:"The middle number is between the other two",f:(a,b,c)=>(a<b&&b<c)||(c<b&&b<a)},
+    {t:"The total can be divided by 3",             f:(a,b,c)=>(a+b+c)%3===0},
+    {t:"The first number is odd",                   f:(a,b,c)=>Math.abs(a)%2===1},
+    {t:"At least one number is odd",                f:(a,b,c)=>[a,b,c].some(x=>Math.abs(x)%2===1)},
+    {t:"No number is bigger than 50",               f:(a,b,c)=>a<=50&&b<=50&&c<=50},
+    {t:"The numbers are not all the same",          f:(a,b,c)=>!(a===b&&b===c)}
+  ];
+  let hidden,alive,tests,committing,picked,over;
+
+  function newGame(){
+    hidden=RULES[Math.floor(Math.random()*RULES.length)];
+    alive=new Set(RULES.map(r=>r.id));tests=[];committing=false;picked=null;over=false;
+    ["n1","n2","n3"].forEach(id=>document.getElementById(id).value="");
+    document.getElementById("playArea").classList.remove("hidden");
+    document.getElementById("result").classList.add("hidden");
+    document.getElementById("logWrap").classList.add("hidden");
+    document.getElementById("pickHint").classList.add("hidden");
+    document.getElementById("commitBtn").textContent="I know the rule";
+    document.getElementById("verdict").className="verdict";
+    document.getElementById("verdict").textContent="Type three whole numbers. Before you test, watch the board: each rule shows what it would say.";
+    renderBoard(null);renderLog();updateStatus();checkInput();
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function readTriple(){
+    const v=["n1","n2","n3"].map(id=>document.getElementById(id).value.trim());
+    if(v.some(x=>x===""||!/^-?\d+$/.test(x)))return null;
+    return v.map(Number);
+  }
+
+  function renderBoard(tri){
+    const box=document.getElementById("board");box.innerHTML="";
+    RULES.forEach((r,i)=>{
+      const d=document.createElement("div");
+      const isAlive=alive.has(r.id);
+      let cls="rule";let pred="";
+      if(!isAlive)cls+=" dead";
+      else if(tri&&!over){const y=r.f(...tri);cls+=y?" says-yes":" says-no";pred=y?"YES":"NO";}
+      if(committing&&isAlive)cls+=" pickable";
+      if(picked===r.id)cls+=" picked";
+      if(over&&r.id===hidden.id)cls+=" truth";
+      d.className=cls;
+      d.innerHTML=`<span class="rk">RULE ${String.fromCharCode(65+i)}</span><div class="rt">${r.t}</div><span class="pred">${pred}</span>`;
+      if(committing&&isAlive)d.onclick=()=>commit(r.id);
+      box.appendChild(d);
+    });
+  }
+
+  function checkInput(){
+    const tri=readTriple();
+    document.getElementById("testBtn").disabled=!tri||committing;
+    if(committing)return;
+    const v=document.getElementById("verdict");
+    if(!tri){renderBoard(null);v.className="verdict";
+      v.textContent=tests.length?"Type your next three numbers.":"Type three whole numbers. Before you test, watch the board: each rule shows what it would say.";return;}
+    renderBoard(tri);
+    const live=RULES.filter(r=>alive.has(r.id));
+    const yes=live.filter(r=>r.f(...tri)).length,no=live.length-yes;
+    if(live.length===1){v.className="verdict";
+      v.innerHTML=`Only one rule is still standing. Ready to commit? Or is there a rule that was never on the board?`;}
+    else if(yes===0||no===0){v.className="verdict flat";
+      v.innerHTML=`Every rule still standing says <b>${yes?"YES":"NO"}</b>. Whatever the answer, this test can't knock anything out.`;}
+    else{v.className="verdict split";
+      v.innerHTML=`This test splits the board: <b>${yes}</b> say YES, <b>${no}</b> say NO. Whatever the answer, you will learn something.`;}
+  }
+
+  function runTest(){
+    const tri=readTriple();if(!tri)return;
+    const ans=hidden.f(...tri);
+    const out=[];
+    RULES.forEach(r=>{if(alive.has(r.id)&&r.f(...tri)!==ans){alive.delete(r.id);out.push(r);}});
+    tests.push({tri,ans,out});
+    ["n1","n2","n3"].forEach(id=>document.getElementById(id).value="");
+    const v=document.getElementById("verdict");
+    v.className="verdict "+(out.length?"split":"flat");
+    v.innerHTML=`<b>${tri.join(", ")}</b>: the answer is <b>${ans?"YES":"NO"}</b>. `+(out.length?`That knocked out ${out.length} rule${out.length>1?"s":""}.`:`No rules knocked out. That test taught you nothing new.`);
+    renderBoard(null);renderLog();updateStatus();
+    document.getElementById("testBtn").disabled=true;
+  }
+
+  function renderLog(){
+    const tb=document.getElementById("log");
+    document.getElementById("logWrap").classList.toggle("hidden",!tests.length);
+    tb.innerHTML=tests.map(t=>`<tr><td class="tri">${t.tri.join(", ")}</td><td class="ans ${t.ans?"yes":"no"}">${t.ans?"YES":"NO"}</td><td class="out ${t.out.length?"":"zero"}">${t.out.length?t.out.map(r=>r.t).join("; "):"none"}</td></tr>`).join("");
+  }
+  function updateStatus(){
+    document.getElementById("alive").textContent=alive.size;
+    document.getElementById("used").textContent=tests.length;
+  }
+
+  function startCommit(){
+    if(committing){committing=false;document.getElementById("pickHint").classList.add("hidden");
+      document.getElementById("commitBtn").textContent="I know the rule";checkInput();return;}
+    committing=true;
+    document.getElementById("pickHint").classList.remove("hidden");
+    document.getElementById("commitBtn").textContent="Not yet, keep testing";
+    document.getElementById("testBtn").disabled=true;
+    renderBoard(null);
+  }
+
+  function findSplit(r1,r2){
+    for(let a=-5;a<=20;a++)for(let b=-5;b<=20;b++)for(let c=-5;c<=20;c++)
+      if(r1.f(a,b,c)!==r2.f(a,b,c))return [a,b,c];
+    return null;
+  }
+
+  function commit(id){
+    picked=id;committing=false;over=true;
+    const pick=RULES.find(r=>r.id===id);
+    renderBoard(null);
+    document.getElementById("playArea").classList.add("hidden");
+    const n=tests.length;
+    let html=`<h3>The hidden rule</h3><p><b>${hidden.t}.</b></p>`;
+    if(id===hidden.id){
+      html+=alive.size===1
+        ?`<p>You found it in ${n} test${n===1?"":"s"}, and you had knocked out every other rule on the board first. That is a guess backed by evidence.</p>`
+        :`<p>You picked it, in ${n} test${n===1?"":"s"}. But ${alive.size-1} other rule${alive.size>2?"s were":" was"} still standing when you chose. Your evidence couldn't tell them apart. Were you right, or lucky?</p>`;
+    }else{
+      const s=findSplit(pick,hidden);
+      html+=`<p>You picked <b>${pick.t.toLowerCase()}</b>. Your rule and the hidden rule gave the same answer on every test you ran, so nothing you tested could tell them apart.</p>`;
+      if(s)html+=`<p>One test that would have split them: <b class="mono">${s.join(", ")}</b>. Your rule says ${pick.f(...s)?"YES":"NO"}. The hidden rule says ${hidden.f(...s)?"YES":"NO"}.</p>`;
+    }
+    const wasted=tests.filter(t=>!t.out.length).length;
+    if(n)html+=`<p>${wasted} of your ${n} test${n===1?"":"s"} knocked out nothing.</p>`;
+    document.getElementById("resultPanel").innerHTML=html;
+
+    const all=[{tri:SEED,ans:true},...tests];
+    const fit=EXTRAS.filter(e=>all.every(t=>e.f(...t.tri)===t.ans));
+    const ex=document.getElementById("extras");
+    ex.innerHTML=fit.length
+      ?fit.slice(0,3).map(e=>`<div class="extra"><b>${e.t}.</b> Gives the same answer as the hidden rule on all ${all.length} triples you saw.</div>`).join("")
+        +`<p class="hint" style="margin-top:10px">None of these was on your board, so none of your tests was aimed at them. Your evidence counts against the rules you thought of. It says nothing about the ones you didn't.</p>`
+      :`<p class="hint">None of our extra rules survives your tests, so you tested well. But could someone invent another rule that fits every answer you got? How would you know?</p>`;
+    document.getElementById("result").classList.remove("hidden");
+    document.getElementById("result").scrollIntoView({behavior:"smooth"});
+  }
+
+  ["n1","n2","n3"].forEach(id=>{
+    const el=document.getElementById(id);
+    el.addEventListener("input",checkInput);
+    el.addEventListener("keydown",e=>{if(e.key==="Enter"&&!document.getElementById("testBtn").disabled)runTest();});
+  });
+  newGame();
+</script>
+</body>
+</html>
