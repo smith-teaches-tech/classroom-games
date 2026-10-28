@@ -122,6 +122,25 @@ button:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
 .callout.on{display:block}
 .callout.good{background:var(--okbg);border-color:var(--okline);color:#cdeed5}
 
+
+/* map */
+.mapwrap{overflow-x:auto;margin:0 -4px}
+#map{width:100%;min-width:680px;height:auto;display:block}
+#map text{font-family:var(--mono)}
+#map .rule{cursor:pointer}
+#map .rule:hover rect{stroke:var(--accent2)}
+#map .rule:focus{outline:none}
+#map .rule:focus-visible rect{stroke:var(--accent2);stroke-width:2}
+.checkpanel{margin-top:14px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.checkpanel h4{margin:0 0 4px;font-size:.78rem;letter-spacing:.8px;text-transform:uppercase;color:var(--dim)}
+.checkpanel .ex{font-size:1rem;font-weight:700;margin:0 0 10px}
+.cstep{display:flex;gap:10px;align-items:flex-start;font-size:.9rem;margin:7px 0}
+.cstep .k{flex:none;min-width:22px;height:22px;border-radius:6px;display:grid;place-items:center;font-size:.72rem;font-weight:800;padding:0 4px}
+.cstep .k.y{background:var(--okbg);color:var(--accent);border:1px solid var(--okline)}
+.cstep .k.n{background:var(--badbg);color:var(--danger);border:1px solid var(--badline)}
+.cstep .k.i{background:var(--panel);color:var(--dim);border:1px solid var(--line)}
+.cstep .look{color:var(--dim);font-size:.82rem}
+
 /* checklist */
 .who{margin:18px 0 6px;font-weight:700}
 label.check{display:flex;gap:12px;align-items:flex-start;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:11px 14px;margin:7px 0;cursor:pointer;font-size:.95rem}
@@ -142,11 +161,6 @@ footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);color:v
     <h1>Break the Lock</h1>
     <p>Building with AI · Admins, moderators and Row Level Security</p>
     <div class="thesis"><strong>Hiding a button is not a lock.</strong> The RLS rules in Supabase are the lock. Every request is checked by them, whether it comes from your app or from someone typing in the console.</div>
-    <div class="legend">
-      <span><i class="sw edit"></i>This person can change this row</span>
-      <span><i class="sw read"></i>This person can only read it</span>
-      <span><i class="sw gone"></i>RLS never sends this row to them</span>
-    </div>
   </div>
 </header>
 
@@ -188,9 +202,29 @@ footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);color:v
   </div>
 </div>
 
+<!-- SCENE 0: the map -->
+<h2><span class="num">2</span>Your app is many tables, and rules look at other tables</h2>
+<p class="sub">RLS isn't one lock on one table. Every table has its own rules. A rule on one table can <b>look inside another table</b> to answer its question. "Can Mo delete this post?" is answered by looking in <code>moderators</code>. Click any rule to see the check run.</p>
+
+<div class="card">
+  <div class="controls">
+    <div class="ctl"><label>The person trying</label>
+      <div class="seg" id="m-who">
+        <button type="button" data-v="sam" class="on">Sam (user)</button>
+        <button type="button" data-v="lee">Lee (user)</button>
+        <button type="button" data-v="mo">Mo (moderator)</button>
+        <button type="button" data-v="ava">Ava (admin)</button>
+      </div>
+    </div>
+  </div>
+  <div class="mapwrap"><svg id="map" viewBox="0 0 1000 720" role="img" aria-label="Map of the app's tables, their rules, and which tables each rule looks in"></svg></div>
+  <div class="checkpanel" id="m-panel"></div>
+  <div class="warn" style="margin-bottom:0"><strong>One catch.</strong> A rule can only look in another table if that table lets it read. That's why signed-in users can <em>read</em> <code>moderators</code> and <code>admins</code>, but only admins can add moderators, and nobody can add admins from the app. If your admin checks suddenly fail for everyone, check the read rule on those tables first.</div>
+</div>
+
 <!-- SCENE 2 -->
-<h2><span class="num">2</span>A rule opens the whole row</h2>
-<p class="sub">Your app needs this rule so people can change their username: <b>"Users can update their own row in profiles."</b> RLS can't pick out single columns. If you can update a row, you can change <em>every</em> cell in it. So where you keep someone's role matters.</p>
+<h2><span class="num">3</span>A rule opens the whole row</h2>
+<p class="sub">Your app needs this rule so people can change their username: <b>"Users can update their own row in profiles."</b> RLS can't pick out single columns. If you can update a row, you can change <em>every</em> cell in it. So where you keep someone's role matters. A <b style="color:var(--accent)">green row</b> is a row the signed-in person can change.</p>
 
 <div class="card">
   <div class="controls">
@@ -213,34 +247,7 @@ footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);color:v
     <button type="button" class="btn ghost" id="s2-reset">Reset</button>
   </div>
   <div class="result" id="s2-result"></div>
-</div>
-
-<!-- SCENE 3 -->
-<h2><span class="num">3</span>Every job is its own rule</h2>
-<p class="sub">Look at the posts through each person's eyes. Each post shows what that person is allowed to do with it. Then try moving "hidden" into a column in <code>posts</code> and look at Mo.</p>
-
-<div class="card">
-  <div class="controls">
-    <div class="ctl"><label>Look through the eyes of</label>
-      <div class="seg" id="s3-you">
-        <button type="button" data-v="sam" class="on">Sam (user)</button>
-        <button type="button" data-v="lee">Lee (user)</button>
-        <button type="button" data-v="mo">Mo (moderator)</button>
-        <button type="button" data-v="ava">Ava (admin)</button>
-      </div>
-    </div>
-    <div class="ctl"><label>Where is "hidden" kept?</label>
-      <div class="seg" id="s3-store">
-        <button type="button" data-v="table" class="on">Its own hidden_posts table</button>
-        <button type="button" data-v="column">A hidden column in posts</button>
-      </div>
-    </div>
-  </div>
-  <div class="pair">
-    <div class="stack" id="s3-tables"></div>
-    <div class="rules" id="s3-rules"></div>
-  </div>
-  <div class="callout" id="s3-callout"></div>
+  <div class="warn" style="margin-bottom:0"><strong>Same trap, different column.</strong> If you put a <code>hidden</code> column in <code>posts</code>, a moderator who is allowed to hide posts can also rewrite them. That's why hiding a post means adding a row to its own <code>hidden_posts</code> table.</div>
 </div>
 
 <!-- SCENE 4 -->
@@ -296,6 +303,118 @@ function drawTable(name, lockHtml, cols, rows, emptyText){
     (rows.length ? `<div class="dt-scroll"><table><tr>${head}</tr>${body}</table></div>` : `<div class="none">${emptyText||'no rows'}</div>`) + '</div>';
 }
 const PEN = '<span class="pen">✎</span>';
+
+
+// ---------------- SCENE 0: the map ----------------
+const MT = {
+  posts:{name:'posts', x:20, y:20, cols:'id · owner · title', rows:['1 · sam-id · Robotics trip','2 · lee-id · Chem notes','3 · lee-id · FREE V-BUCKS'], rules:['posts-select','posts-update','posts-delete']},
+  storage:{name:'storage: user-files', x:20, y:290, cols:'file', rows:['sam-id/robotics.jpg','lee-id/chem-notes.pdf','lee-id/vbucks.png'], rules:['files-delete']},
+  profiles:{name:'profiles', x:20, y:500, cols:'id · username', rows:['sam-id · sam','lee-id · lee','mo-id · mo','ava-id · ava'], rules:['profiles-update']},
+  hidden_posts:{name:'hidden_posts', x:620, y:20, cols:'post_id', rows:['3'], rules:['hidden-insert']},
+  moderators:{name:'moderators', x:620, y:200, cols:'user_id', rows:['mo-id'], rules:['mods-insert']},
+  admins:{name:'admins', x:620, y:380, cols:'user_id', rows:['ava-id'], rules:['admins-insert']}
+};
+const BW = 310, HH = 34, CH = 22, RH = 22, LH = 26, PH = 26;
+function rowsTop(t){ return t.y + HH + CH; }
+function rulesTop(t){ return rowsTop(t) + t.rows.length*RH + LH; }
+function boxH(t){ return HH + CH + t.rows.length*RH + LH + t.rules.length*PH + 10; }
+
+// who: sam | lee | mo | ava
+const ownerOf = {1:'sam', 2:'lee', 3:'lee'};
+const chk = {
+  owner:(who,post) => ({q:`Is ${who}-id the owner of post ${post}?`, t:'posts', row:post-1, ok: ownerOf[post]===who, look:`posts says owner = ${ownerOf[post]}-id`}),
+  folder:(who) => ({q:`Is the folder ${who}-id's own folder?`, t:'storage', row:2, ok: who==='lee', look:'the file is in lee-id/'}),
+  mod:(who) => ({q:`Is ${who}-id in moderators?`, t:'moderators', row: who==='mo'?0:null, ok: who==='mo', look:'moderators has mo-id'}),
+  admin:(who) => ({q:`Is ${who}-id in admins?`, t:'admins', row: who==='ava'?0:null, ok: who==='ava', look:'admins has ava-id'})
+};
+const MRULES = {
+  'posts-select':{tbl:'posts', label:'See: if hidden, only owner + staff', links:['hidden_posts','moderators','admins'], ex:'See post 3',
+    run: who => [{q:'Is post 3 in hidden_posts?', t:'hidden_posts', row:0, info:true, ok:true, look:'yes, so the rule keeps checking'}, chk.owner(who,3), chk.mod(who), chk.admin(who)]},
+  'posts-update':{tbl:'posts', label:'Change: owner only', links:[], ex:"Change the title of post 2",
+    run: who => [chk.owner(who,2)]},
+  'posts-delete':{tbl:'posts', label:'Delete: owner, moderators, admins', links:['moderators','admins'], ex:'Delete post 3',
+    run: who => [chk.owner(who,3), chk.mod(who), chk.admin(who)]},
+  'files-delete':{tbl:'storage', label:'Delete: folder owner + staff', links:['moderators','admins'], ex:'Delete lee-id/vbucks.png',
+    run: who => [chk.folder(who), chk.mod(who), chk.admin(who)]},
+  'profiles-update':{tbl:'profiles', label:'Change: your own row only', links:[], ex:'Change your own username',
+    run: who => [{q:`Is this row's id ${who}-id?`, t:'profiles', row:{sam:0,lee:1,mo:2,ava:3}[who], ok:true, look:'it is your own row'}]},
+  'hidden-insert':{tbl:'hidden_posts', label:'Add: moderators, admins', links:['moderators','admins'], ex:'Hide post 2',
+    run: who => [chk.mod(who), chk.admin(who)]},
+  'mods-insert':{tbl:'moderators', label:'Add: admins only', links:['admins'], ex:'Make Lee a moderator',
+    run: who => [chk.admin(who)]},
+  'admins-insert':{tbl:'admins', label:'Add: no rule (dashboard only)', links:[], ex:'Make Lee an admin',
+    run: who => [{q:'Is there a rule that lets anyone add rows here?', t:'admins', row:null, ok:false, look:'no. With RLS on, no rule means no'}]}
+};
+let m = {who:'sam', rule:'posts-delete'};
+
+function evalRule(){
+  const steps = MRULES[m.rule].run(m.who), out = [];
+  let allowed = false;
+  for(const s of steps){
+    out.push(s);
+    if(s.info) continue;
+    if(s.ok){ allowed = true; break; }
+  }
+  return {steps:out, allowed};
+}
+
+function renderMap(){
+  const res = evalRule();
+  const R = MRULES[m.rule];
+  const checked = {}, found = {};
+  res.steps.forEach(s => { checked[s.t] = true; if(s.row!==null && s.ok) found[s.t+':'+s.row] = true; if(s.row!==null && s.info) found[s.t+':'+s.row] = true; });
+  let svg = `<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--warn)"/></marker></defs>`;
+  // boxes
+  for(const key in MT){
+    const t = MT[key], h = boxH(t);
+    const isSrc = R.tbl===key, isChecked = checked[key] && !isSrc;
+    const stroke = isSrc ? 'var(--accent2)' : (isChecked ? 'var(--warn)' : 'var(--line)');
+    svg += `<rect x="${t.x}" y="${t.y}" width="${BW}" height="${h}" rx="10" fill="var(--code)" stroke="${stroke}" stroke-width="${isSrc||isChecked?2:1}"/>`;
+    svg += `<rect x="${t.x}" y="${t.y}" width="${BW}" height="${HH}" rx="10" fill="#141820"/><rect x="${t.x}" y="${t.y+HH-10}" width="${BW}" height="10" fill="#141820"/>`;
+    svg += `<text x="${t.x+14}" y="${t.y+22}" font-size="15" font-weight="700" fill="var(--accent2)">${t.name}</text>`;
+    svg += `<text x="${t.x+14}" y="${t.y+HH+15}" font-size="11.5" fill="var(--faint)">${t.cols}</text>`;
+    t.rows.forEach((r,i) => {
+      const ry = rowsTop(t) + i*RH, hit = found[key+':'+i];
+      svg += `<rect x="${t.x+8}" y="${ry+1}" width="${BW-16}" height="${RH-3}" rx="4" fill="${hit?'var(--okbg)':'var(--panel2)'}" stroke="${hit?'var(--accent)':'none'}"/>`;
+      svg += `<text x="${t.x+16}" y="${ry+15}" font-size="12.5" fill="${hit?'var(--accent)':'var(--codeink)'}">${r}</text>`;
+    });
+    const lt = rowsTop(t) + t.rows.length*RH;
+    svg += `<text x="${t.x+14}" y="${lt+18}" font-size="10.5" font-weight="700" letter-spacing="1.2" fill="var(--dim)" font-family="var(--sans)">RULES</text>`;
+    t.rules.forEach((rk,i) => {
+      const py = rulesTop(t) + i*PH, sel = rk===m.rule;
+      svg += `<g class="rule" data-r="${rk}" tabindex="0" role="button" aria-label="Rule: ${MRULES[rk].label}"><rect x="${t.x+8}" y="${py+1}" width="${BW-16}" height="${PH-4}" rx="6" fill="${sel?'var(--accent2)':'var(--panel)'}" stroke="var(--line)"/>`;
+      svg += `<text x="${t.x+16}" y="${py+16}" font-size="12.5" font-family="var(--sans)" font-weight="${sel?700:500}" fill="${sel?'#0b0d11':'var(--ink)'}">${MRULES[rk].label}</text></g>`;
+    });
+  }
+  // arrows for the selected rule
+  const src = MT[R.tbl], idx = src.rules.indexOf(m.rule);
+  const sy = rulesTop(src) + idx*PH + PH/2 - 1;
+  R.links.forEach(l => {
+    const t = MT[l], ty = t.y + HH/2;
+    if(src.x < t.x){
+      const x1 = src.x+BW, x2 = t.x-4, mx = (x1+x2)/2;
+      svg += `<path d="M${x1},${sy} C${mx},${sy} ${mx},${ty} ${x2},${ty}" fill="none" stroke="var(--warn)" stroke-width="2.5" marker-end="url(#ah)"/>`;
+    } else {
+      const x1 = src.x+BW, x2 = t.x+BW+4, bulge = x1 + 50;
+      svg += `<path d="M${x1},${sy} C${bulge},${sy} ${bulge},${ty} ${x2},${ty}" fill="none" stroke="var(--warn)" stroke-width="2.5" marker-end="url(#ah)"/>`;
+    }
+  });
+  $('map').innerHTML = svg;
+
+  // panel
+  const name = NAME[m.who];
+  let html = `<h4>${R.links.length ? 'This rule looks in ' + R.links.map(l=>'<code>'+l+'</code>').join(' and ') : 'This rule only looks at its own table'}</h4>`;
+  html += `<p class="ex">${name} tries: ${R.ex}</p>`;
+  res.steps.forEach(s => {
+    const k = s.info ? 'i' : (s.ok ? 'y' : 'n');
+    html += `<div class="cstep"><span class="k ${k}">${s.info?'→':(s.ok?'Yes':'No')}</span><span>${esc(s.q)} <span class="look">Looks in ${s.t}: ${esc(s.look)}.</span></span></div>`;
+  });
+  html += `<div class="verdict ${res.allowed?'ok':'no'}">${res.allowed?'Allowed':'Blocked'}</div>`;
+  $('m-panel').innerHTML = html;
+}
+$('map').addEventListener('click', e => { const g = e.target.closest('.rule'); if(g){ m.rule = g.dataset.r; renderMap(); } });
+$('map').addEventListener('keydown', e => { const g = e.target.closest('.rule'); if(g && (e.key==='Enter'||e.key===' ')){ e.preventDefault(); m.rule = g.dataset.r; renderMap(); const n = $('map').querySelector(`.rule[data-r="${m.rule}"]`); if(n) n.focus(); } });
+seg('m-who', v => { m.who = v; renderMap(); });
 
 // ---------------- SCENE 1 ----------------
 let s1 = {rule:'admins', mods:['mo-id'], fresh:null, bad:null};
@@ -394,65 +513,7 @@ seg('s2-store', v => { s2.store = v; s2Reset(); });
 $('s2-try').addEventListener('click', s2Try);
 $('s2-reset').addEventListener('click', s2Reset);
 
-// ---------------- SCENE 3 ----------------
-const POSTS = [
-  {id:1, owner:'sam', title:'Robotics trip photos', file:'robotics.jpg', hidden:false},
-  {id:2, owner:'lee', title:'Chem study notes', file:'chem-notes.pdf', hidden:false},
-  {id:3, owner:'lee', title:'FREE V-BUCKS click here', file:'vbucks.png', hidden:true}
-];
-const ROLE = {sam:'user', lee:'user', mo:'moderator', ava:'admin'};
-let s3 = {you:'sam', store:'table'};
-function staff(u){ return ROLE[u]==='moderator' || ROLE[u]==='admin'; }
-function canSee(u,p){ return !p.hidden || p.owner===u || staff(u); }
-function canChange(u,p){ return p.owner===u || (s3.store==='column' && staff(u)); }
-function canHide(u,p){ return s3.store==='column' ? canChange(u,p) : staff(u); }
-function canDelete(u,p){ return p.owner===u || staff(u); }
-function canDelFile(u,owner){ return owner===u || staff(u); }
-function chip(label, yes){ return `<span class="chip ${yes?'y':'n'}">${label}</span>`; }
-
-function s3Render(){
-  const u = s3.you, col = s3.store==='column';
-  const cols = ['id','owner','title'].concat(col ? ['hidden'] : []).concat(['what ' + NAME[u] + ' can do']);
-  const rows = POSTS.map(p => {
-    if(!canSee(u,p)) return {cls:'gone', full:`Row ${p.id} · hidden, so RLS never sends it to ${NAME[u]}. ${NAME[u]}'s app can't show what it doesn't have.`};
-    const ch = canChange(u,p);
-    const cell = t => ch ? {html: esc(t)+PEN} : t;
-    const cells = [cell(p.id), cell(p.owner), cell(p.title)];
-    if(col) cells.push(cell(String(p.hidden)));
-    cells.push({cls:'chips', html: chip('Change',ch) + chip('Hide',canHide(u,p)) + chip('Delete',canDelete(u,p))});
-    return {cls: ch ? 'edit' : '', cells};
-  });
-  let html = drawTable('posts', '', cols, rows);
-  if(!col){
-    const hp = canSee(u,POSTS[2]) ? [{cells:['3']}] : [{cls:'gone', full:`Not sent to ${NAME[u]}`}];
-    html += drawTable('hidden_posts', staff(u) ? `<span class="lock yes">${NAME[u]} can add rows (hide posts)</span>` : `<span class="lock no">Locked for ${NAME[u]}</span>`, ['post_id'], hp);
-  }
-  const files = POSTS.map(p => ({cells:[`${p.owner}-id/${p.file}`, {cls:'chips', html: chip('Delete', canDelFile(u,p.owner))}]}));
-  html += drawTable('storage: user-files', '', ['file', 'what ' + NAME[u] + ' can do'], files);
-  $('s3-tables').innerHTML = html;
-
-  const rules = [
-    ['Signed-in users see posts that aren\'t hidden. The owner, moderators and admins also see hidden ones.', false],
-    [col ? 'The owner, moderators and admins can update a post. (Moderators need this to set hidden to true.)' : 'Only the owner can update a post.', col],
-    [col ? 'Hiding is just updating the hidden column, so the update rule decides it.' : 'Moderators and admins can add rows to hidden_posts. That\'s how a post gets hidden.', col],
-    ['The owner, moderators and admins can delete a post.', false],
-    ['The folder owner, moderators and admins can delete a file.', false]
-  ];
-  $('s3-rules').innerHTML = '<h4>The rules</h4><ul>' + rules.map(([t,c]) => `<li class="${c?'changed':''}">${t}</li>`).join('') + '</ul>';
-
-  const co = $('s3-callout');
-  if(col && staff(u)){
-    co.className = 'callout on';
-    co.innerHTML = `<b>Look at ${NAME[u]}'s rows.</b> Every post is green now. To let ${NAME[u]} change one cell (hidden), the rule has to let ${NAME[u]} update the whole row. So ${NAME[u]} can also rewrite the title of anyone's post. Switch back to "Its own hidden_posts table" and watch the green go away.`;
-  } else if(!col && staff(u)){
-    co.className = 'callout on good';
-    co.innerHTML = `${NAME[u]} can hide and delete posts but can't change anyone's words. Hiding means adding a row to hidden_posts, so it doesn't need the update rule at all.`;
-  } else co.className = 'callout';
-}
-seg('s3-you', v => { s3.you = v; s3Render(); });
-seg('s3-store', v => { s3.store = v; s3Render(); });
-
-s1Table(); s2Render(); s3Render();
+renderMap(); s1Table(); s2Render();
 })();
 </script>
 
