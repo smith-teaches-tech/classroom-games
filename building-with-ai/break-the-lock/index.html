@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Break the Lock — Building with AI</title>
+<style>
+/* Layout: one long lesson column; the rules board and the who-can-do-what grid sit side by side on wide screens and stack on phones. */
+:root{
+  --bg:#0f1115; --panel:#171a21; --panel2:#1e222b; --line:#2b303b;
+  --ink:#e8eaf0; --dim:#a3abbb; --accent:#7bd88f; --accent2:#6aa9ff;
+  --warn:#ffb454; --danger:#ff7b72; --code:#0b0d11; --codeink:#d6dae4; --amber:#ffd9a0;
+  --okbg:#122018; --badbg:#251519; --warnbg:#241d12; --hl:#2a3a2c;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--sans);padding-bottom:80px}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.narrow{max-width:760px}
+header{background:linear-gradient(160deg,#1b2431,#12151b);border-bottom:1px solid var(--line);padding-block:44px 34px}
+header h1{margin:0 0 6px;font-size:2rem;line-height:1.2;letter-spacing:-.5px;text-wrap:balance}
+header p{margin:0;color:var(--dim);font-size:1.05rem}
+.thesis{margin-top:20px;padding:14px 18px;border-left:3px solid var(--accent);background:#141922;border-radius:0 8px 8px 0;font-size:1.05rem;max-width:760px}
+h2{font-size:1.35rem;margin:46px 0 6px;letter-spacing:-.3px;display:flex;align-items:center;gap:12px;text-wrap:balance}
+.num{background:var(--accent);color:#0b0d11;width:31px;height:31px;border-radius:8px;display:grid;place-items:center;font-size:15px;font-weight:700;flex:none}
+h3{font-size:1rem;margin:0 0 8px;color:var(--accent2)}
+.sub{color:var(--dim);margin:0 0 16px 43px;font-size:.95rem;max-width:720px}
+p{margin:10px 0}
+code{background:var(--code);padding:2px 6px;border-radius:5px;font-size:.85em;font-family:var(--mono);color:var(--amber)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+.warn{border-left:3px solid var(--warn);background:var(--warnbg);padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0}
+.warn strong{color:var(--warn)}
+.good{border-left:3px solid var(--accent);background:var(--okbg);padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0}
+.good strong{color:var(--accent)}
+
+/* accounts */
+.people{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-top:14px}
+.person{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.person b{display:block;font-size:1.05rem}
+.person span{color:var(--dim);font-size:.85rem}
+.role{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-top:6px;border:1px solid var(--line);color:var(--dim)}
+.role.admin{color:#0b0d11;background:var(--warn);border-color:var(--warn)}
+.role.moderator{color:#0b0d11;background:var(--accent2);border-color:var(--accent2)}
+.role.owner{color:#0b0d11;background:var(--accent);border-color:var(--accent)}
+
+/* board + grid */
+.lab{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:18px;align-items:start;margin-top:14px}
+.lab>.sticky{position:sticky;top:12px}
+@media (max-width:900px){.lab{grid-template-columns:minmax(0,1fr)}.lab>.sticky{position:static}}
+.presets{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.presets span{color:var(--dim);font-size:.85rem;margin-right:4px}
+.btn{background:var(--accent);color:#0b0d11;border:none;border-radius:8px;padding:9px 16px;font-size:.88rem;font-weight:700;cursor:pointer;font-family:inherit}
+.btn:hover{filter:brightness(1.1)}
+.btn.ghost{background:var(--panel2);color:var(--ink);border:1px solid var(--line);font-weight:600}
+.btn.ghost:hover{border-color:var(--accent2)}
+.btn:focus-visible,.seg button:focus-visible,select:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
+.rule{padding:13px 0;border-top:1px solid var(--line)}
+.rule:first-of-type{border-top:none;padding-top:0}
+.rule-head{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:7px}
+.rule-head b{font-size:.95rem}
+.tbl{font-family:var(--mono);font-size:.75rem;color:var(--dim)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{background:var(--panel2);border:1px solid var(--line);color:var(--dim);padding:6px 11px;border-radius:7px;cursor:pointer;font-size:.82rem;font-family:inherit;text-align:left}
+.seg button:hover{color:var(--ink)}
+.seg button.on{background:var(--accent2);border-color:var(--accent2);color:#0b0d11;font-weight:700}
+.seg button:disabled{opacity:.35;cursor:not-allowed}
+.rule.off .seg{opacity:.5}
+.rule-note{font-size:.8rem;color:var(--warn);margin-top:6px}
+.fixed{font-size:.85rem;color:var(--dim)}
+.grouplabel{font-size:.72rem;letter-spacing:1px;text-transform:uppercase;color:var(--dim);margin:18px 0 8px;font-weight:700}
+.grouplabel:first-child{margin-top:0}
+
+.gridwrap{overflow-x:auto}
+table.grid{border-collapse:collapse;width:100%;font-size:.82rem;min-width:540px}
+.grid th,.grid td{padding:7px 4px;border-bottom:1px solid var(--line);text-align:center;vertical-align:middle}
+.grid th{font-size:.78rem;color:var(--dim);font-weight:600;line-height:1.3}
+.grid th b{display:block;color:var(--ink);font-size:.85rem}
+.grid td:first-child,.grid th:first-child{text-align:left;padding-left:0}
+.cell{display:inline-grid;place-items:center;width:30px;height:26px;border-radius:6px;font-weight:800;font-size:.9rem}
+.cell.yes{background:var(--okbg);color:var(--accent);border:1px solid #2c5a37}
+.cell.no{background:transparent;color:#5d6575;border:1px solid var(--line)}
+.cell.flash{animation:flash 1.1s ease-out}
+@keyframes flash{0%{box-shadow:0 0 0 3px var(--warn)}100%{box-shadow:0 0 0 0 transparent}}
+.dashcol{background:#13171e}
+.legend{font-size:.8rem;color:var(--dim);margin-top:10px}
+
+/* break it */
+.signin{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+select{background:var(--code);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:9px 10px;font-size:.9rem;font-family:inherit;max-width:100%}
+.three{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:16px;align-items:start}
+@media (max-width:900px){.three{grid-template-columns:minmax(0,1fr)}}
+.screen{background:#f4f5f7;color:#1c2230;border-radius:12px;padding:14px;border:1px solid var(--line)}
+.screen .bar{display:flex;justify-content:space-between;align-items:center;font-size:.8rem;color:#5a6274;margin-bottom:10px;gap:8px;flex-wrap:wrap}
+.screen .bar b{color:#1c2230;font-size:.95rem}
+.post{background:#fff;border:1px solid #dde1e8;border-radius:9px;padding:10px 12px;margin-bottom:8px}
+.post .t{font-weight:700;font-size:.92rem;overflow-wrap:anywhere}
+.post .m{font-size:.76rem;color:#6b7385;margin:2px 0 6px}
+.post .file{display:inline-block;font-family:var(--mono);font-size:.72rem;background:#eef1f6;border-radius:5px;padding:1px 6px;margin-right:6px}
+.post .hid{display:inline-block;font-size:.7rem;font-weight:700;color:#8a4b00;background:#ffe9c7;border-radius:5px;padding:1px 6px}
+.post .acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.post .acts button,.adminbox button{background:#1c2230;color:#fff;border:none;border-radius:6px;padding:5px 10px;font-size:.76rem;cursor:pointer;font-family:inherit}
+.post .acts button.red{background:#c2413a}
+.adminbox{background:#fff7e6;border:1px solid #f1d6a4;border-radius:9px;padding:10px 12px;margin-top:10px;font-size:.85rem}
+.adminbox select{background:#fff;color:#1c2230;border-color:#dde1e8;padding:5px 8px;font-size:.8rem}
+.empty{font-size:.85rem;color:#6b7385;padding:8px 0}
+.console{background:var(--code);border:1px solid var(--line);border-radius:12px;padding:14px;min-width:0}
+.console .row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.console .row select{flex:1;min-width:0}
+.log{display:grid;gap:10px;max-height:420px;overflow-y:auto}
+.entry{border:1px solid var(--line);border-radius:9px;padding:10px 12px;background:#0f1218;min-width:0}
+.entry .who{font-size:.74rem;color:var(--dim);margin-bottom:4px}
+.entry pre{margin:0;font-family:var(--mono);font-size:.78rem;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--codeink)}
+.entry .res{margin-top:6px;font-family:var(--mono);font-size:.76rem;white-space:pre-wrap;overflow-wrap:anywhere}
+.entry .note{margin-top:6px;font-size:.84rem;line-height:1.45}
+.entry.ok{border-color:#2c5a37}
+.entry.ok .note{color:var(--accent)}
+.entry.loud{border-color:#5c2a2a}
+.entry.loud .res{color:var(--danger)}
+.entry.quiet .res{color:var(--dim)}
+.entry.quiet .note{color:var(--warn)}
+.entry.yikes{border-color:var(--danger);background:var(--badbg)}
+.entry.yikes .note{color:var(--danger);font-weight:600}
+.logempty{color:var(--dim);font-size:.85rem}
+
+.db{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin-top:16px}
+.dbt{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0}
+.dbt h4{margin:0 0 6px;font-family:var(--mono);font-size:.8rem;color:var(--accent2);font-weight:600}
+.dbt table{border-collapse:collapse;width:100%;font-family:var(--mono);font-size:.72rem}
+.dbt th,.dbt td{text-align:left;padding:3px 4px;border-bottom:1px solid var(--line);overflow-wrap:anywhere}
+.dbt th{color:var(--dim);font-weight:500}
+.dbt tr.chg td{background:var(--hl);color:var(--accent)}
+.dbt tr.bad td{background:var(--badbg);color:var(--danger)}
+.dbt .none{color:#5d6575;font-size:.75rem;font-family:var(--mono)}
+
+/* tests */
+.scorebar{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+.score{font-size:2rem;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-1px}
+.score small{font-size:1rem;color:var(--dim);font-weight:600;letter-spacing:0}
+.tests{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:800px){.tests{grid-template-columns:minmax(0,1fr)}}
+.test{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line)}
+.test .mark{flex:none;width:24px;height:24px;border-radius:6px;display:grid;place-items:center;font-weight:800;font-size:.85rem}
+.test.pass .mark{background:var(--okbg);color:var(--accent);border:1px solid #2c5a37}
+.test.fail .mark{background:var(--badbg);color:var(--danger);border:1px solid #5c2a2a}
+.test .tx{font-size:.9rem;min-width:0}
+.test .hint{font-size:.8rem;color:var(--warn);margin-top:3px}
+.test.pass .hint{display:none}
+.win{display:none}
+.win.on{display:block}
+
+ol.steps{padding-left:22px}
+ol.steps li{margin:8px 0}
+footer{margin-top:60px;padding-top:22px;border-top:1px solid var(--line);color:var(--dim);font-size:.85rem}
+@media (prefers-reduced-motion:reduce){.cell.flash{animation:none}}
+</style>
+</head>
+<body>
+
+
+<header>
+  <div class="wrap">
+    <h1>Break the Lock</h1>
+    <p>Building with AI · Admins, moderators and Row Level Security</p>
+    <div class="thesis"><strong>Hiding a button is not a lock.</strong> Anyone can send a request to your database from the browser console. The RLS rules in Supabase are the only thing that decides what happens.</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<div class="narrow">
+<h2><span class="num">1</span>Meet the test accounts</h2>
+<p class="sub">These are fake accounts. You'll make the same kind of accounts in your own app so you can test it properly.</p>
+<div class="people" id="people"></div>
+<div class="warn"><strong>The dashboard is different.</strong> When you use the Supabase dashboard, you're the app owner. RLS doesn't apply to you there. That's why the dashboard is the only safe place to make someone an admin.</div>
+</div>
+
+<h2><span class="num">2</span>Change the rules. Watch who can do what.</h2>
+<p class="sub">Each rule on the left is one RLS policy, or a choice about how your tables are built. The grid on the right updates as soon as you change anything. Yellow flashes show what just changed.</p>
+
+<div class="presets">
+  <span>Load a setup:</span>
+  <button class="btn ghost" type="button" id="pre-weak">Weak setup</button>
+  <button class="btn ghost" type="button" id="pre-strict">Too strict</button>
+</div>
+
+<div class="lab">
+  <div class="card" id="board"></div>
+  <div class="card sticky">
+    <h3>Who can do what right now</h3>
+    <div class="gridwrap"><table class="grid" id="grid"></table></div>
+    <p class="legend"><b style="color:var(--accent)">✓</b> the database allows it &nbsp; <b style="color:#5d6575">✕</b> the database blocks it. "Someone else's" means a post or file owned by a different account.</p>
+  </div>
+</div>
+
+<h2><span class="num">3</span>Try to break it</h2>
+<p class="sub">Sign in as one of the test accounts. The left side shows that person's app. The buttons there are what the app <em>chooses</em> to show. The console on the right can send any request, whatever buttons the app shows.</p>
+
+<div class="signin">
+  <label for="actor"><b>Signed in as</b></label>
+  <select id="actor"></select>
+  <button class="btn ghost" type="button" id="resetdata">Reset the data</button>
+</div>
+
+<div class="three">
+  <div class="screen" id="screen"></div>
+  <div class="console">
+    <h3 style="color:var(--dim);font-size:.8rem;letter-spacing:1px;text-transform:uppercase">Pretend browser console</h3>
+    <div class="row">
+      <label for="req" style="position:absolute;left:-9999px">Request to send</label>
+      <select id="req"></select>
+      <button class="btn" type="button" id="send">Send</button>
+    </div>
+    <div class="log" id="log"><p class="logempty">Pick a request and press Send. Try being Sam and making yourself a moderator.</p></div>
+  </div>
+</div>
+
+<h3 style="margin-top:22px">What's in the database</h3>
+<p style="color:var(--dim);font-size:.9rem;margin:0">Green rows just changed. Red rows show someone got power they shouldn't have.</p>
+<div class="db" id="db"></div>
+
+<h2><span class="num">4</span>Run the tests</h2>
+<p class="sub">These tests are what you'll do by hand in your own app with your fake accounts. Some things should work. Some things should be blocked. A good setup passes both lists.</p>
+
+<div class="card">
+  <div class="scorebar">
+    <div class="score" id="score">0<small> / 13</small></div>
+    <div style="color:var(--dim);font-size:.9rem;max-width:520px">The tests use the starting accounts: Ava is the admin, Mo is the moderator, and Sam and Lee are normal users. <b style="color:var(--ink)">Your challenge:</b> load the weak setup, then change the rules until every test passes.</div>
+  </div>
+  <div class="tests">
+    <div><div class="grouplabel">Should work</div><div id="t-work"></div></div>
+    <div><div class="grouplabel">Should be blocked</div><div id="t-block"></div></div>
+  </div>
+  <div class="good win" id="win"><strong>13 out of 13.</strong> Every role can do its job, and nobody can give themselves more power. Look at the two table choices at the top of the board. You couldn't pass without both of them.</div>
+</div>
+
+<div class="narrow">
+<h2><span class="num">5</span>Now do it to your own app</h2>
+<ol class="steps">
+  <li>Make the test accounts in your own app: one for your admin, one for a moderator and two normal users. If <b>Confirm email</b> is turned off in your Supabase sign-in settings, made-up emails like <code>sam.test@example.com</code> will work.</li>
+  <li>In the Supabase dashboard, put your admin account in the <code>admins</code> table by hand. This is the only way anyone becomes an admin.</li>
+  <li>Sign in as your admin and use your admin panel to make the moderator account a moderator.</li>
+  <li>Sign in as each test account and try every test from Part 4 in your real app. Use the console for the ones the app has no button for. Ask Gemini to write the console line for your app.</li>
+  <li>Write down every result: what you tried, who you were signed in as, and what happened.</li>
+</ol>
+<div class="warn"><strong>A blocked request often looks like nothing happened.</strong> Adding a row gives you a red RLS error. Changing or deleting a row you're not allowed to touch gives no error at all. It just changes zero rows. Always check the table afterward.</div>
+</div>
+
+<footer>Building with AI · Break the Lock · This page is a simulation. It doesn't connect to any real database.</footer>
+</div>
+
+<script>
+(function(){
+const PEOPLE = {
+  visitor:{name:'Visitor', desc:'Not signed in'},
+  sam:{name:'Sam', desc:'Normal user test account'},
+  lee:{name:'Lee', desc:'Normal user test account'},
+  mo:{name:'Mo', desc:'Moderator test account'},
+  ava:{name:'Ava', desc:'Admin test account'},
+  dash:{name:'You (dashboard)', desc:'The app owner, in Supabase'}
+};
+const ORDER = ['visitor','sam','lee','mo','ava','dash'];
+
+const RULES = [
+  {group:'How your tables are built'},
+  {key:'roleStore', title:"Where is each person's role kept?", tbl:'table design', opts:[['column','A role column in profiles'],['tables','Separate moderators and admins tables']], resets:true},
+  {key:'hiddenStore', title:'Where is "hidden" kept?', tbl:'table design', opts:[['column','A hidden column in posts'],['table','A separate hidden_posts table']], resets:true},
+  {group:'Posts'},
+  {key:'see', title:'Who can see posts?', tbl:'posts · select', opts:[['anyone','Anyone, even signed out'],['signed','Signed-in users']]},
+  {key:'hidden', title:'Who can see hidden posts?', tbl:'posts · select', opts:[['all','Everyone who can see posts'],['owner_staff','Post owner, moderators and admins']]},
+  {key:'edit', title:'Who can change a post?', tbl:'posts · update', opts:[['owner','Post owner'],['owner_staff','Owner, moderators and admins'],['signed','Any signed-in user']]},
+  {key:'hide', title:'Who can hide a post?', tbl:'hidden_posts · insert', opts:[['staff','Moderators and admins'],['admin','Admins only'],['signed','Any signed-in user']]},
+  {key:'del', title:'Who can delete a post?', tbl:'posts · delete', opts:[['owner_admin','Owner and admins'],['owner_staff','Owner, moderators and admins'],['signed','Any signed-in user']]},
+  {group:'Files'},
+  {key:'files', title:'Who can delete files?', tbl:'storage · delete', opts:[['owner','Folder owner only'],['owner_staff','Folder owner, moderators and admins'],['signed','Any signed-in user']]},
+  {group:'Roles'},
+  {fixed:true, title:'Users can update their own profile row', tbl:'profiles · update', text:'Always on. People need this rule to change their username.'},
+  {key:'addMod', title:'Who can add a moderator?', tbl:'moderators · insert', opts:[['admin','Admins'],['staff','Moderators and admins'],['signed','Any signed-in user']]},
+  {key:'addAdmin', title:'Who can add an admin?', tbl:'admins · insert', opts:[['nobody','Nobody. Dashboard only'],['admin','Admins'],['signed','Any signed-in user']]}
+];
+
+const PRESETS = {
+  weak:{roleStore:'column', hiddenStore:'column', see:'anyone', hidden:'all', edit:'owner', hide:'staff', del:'owner_staff', files:'owner', addMod:'staff', addAdmin:'nobody'},
+  strict:{roleStore:'tables', hiddenStore:'table', see:'signed', hidden:'owner_staff', edit:'owner', hide:'admin', del:'owner_admin', files:'owner', addMod:'admin', addAdmin:'nobody'},
+  safe:{roleStore:'tables', hiddenStore:'table', see:'signed', hidden:'owner_staff', edit:'owner', hide:'staff', del:'owner_staff', files:'owner_staff', addMod:'admin', addAdmin:'nobody'}
+};
+
+let rules = Object.assign({}, PRESETS.weak);
+let data, changed = {}, prevGrid = {};
+
+function freshData(){
+  return {
+    posts:[
+      {id:1, owner:'sam', title:'Photos from the robotics trip', file:'robotics.jpg'},
+      {id:2, owner:'lee', title:'Chem study notes', file:'chem-notes.pdf'},
+      {id:3, owner:'lee', title:'FREE V-BUCKS click here!!!', file:'vbucks.png'}
+    ],
+    hidden:[],
+    roles:{sam:'user', lee:'user', mo:'moderator', ava:'admin'},
+    files:{sam:['robotics.jpg'], lee:['chem-notes.pdf','vbucks.png']}
+  };
+}
+data = freshData();
+
+// ---------- the permission engine ----------
+function roleOf(id, d){ d = d||data;
+  if(id==='visitor') return 'visitor';
+  if(id==='dash') return 'owner';
+  return d.roles[id]; }
+function isStaff(r){ return r==='moderator' || r==='admin'; }
+
+// action: see | edit | hide | del | delfile | mod | admin
+// target: for posts {owner, hidden}; for files {owner}; for roles {who}
+function can(actor, action, target, d){
+  d = d||data;
+  if(actor==='dash') return true;
+  const r = roleOf(actor, d), signed = actor!=='visitor', staff = isStaff(r);
+  const own = target && target.owner===actor;
+  switch(action){
+    case 'see': {
+      const base = rules.see==='anyone' || signed;
+      if(!target.hidden) return base;
+      return base && (rules.hidden==='all' || own || staff);
+    }
+    case 'edit':
+      if(!signed) return false;
+      return own || rules.edit==='signed' || (rules.edit==='owner_staff' && staff);
+    case 'hide':
+      if(rules.hiddenStore==='column') return can(actor,'edit',target,d);
+      if(!signed) return false;
+      return rules.hide==='signed' || (rules.hide==='staff' && staff) || (rules.hide==='admin' && r==='admin');
+    case 'del':
+      if(!signed) return false;
+      return own || rules.del==='signed' || (rules.del==='owner_staff' && staff) || (rules.del==='owner_admin' && r==='admin');
+    case 'delfile':
+      if(!signed) return false;
+      return own || rules.files==='signed' || (rules.files==='owner_staff' && staff);
+    case 'mod':
+      if(!signed) return false;
+      if(rules.roleStore==='column') return target.who===actor;
+      return rules.addMod==='signed' || (rules.addMod==='staff' && staff) || (rules.addMod==='admin' && r==='admin');
+    case 'admin':
+      if(!signed) return false;
+      if(rules.roleStore==='column') return target.who===actor;
+      return rules.addAdmin==='signed' || (rules.addAdmin==='admin' && r==='admin');
+  }
+  return false;
+}
+
+// ---------- people ----------
+function roleBadge(id){
+  const r = roleOf(id);
+  const label = {visitor:'signed out', owner:'app owner', user:'user', moderator:'moderator', admin:'admin'}[r];
+  return `<span class="role ${r}">${label}</span>`;
+}
+function renderPeople(){
+  document.getElementById('people').innerHTML = ORDER.map(id =>
+    `<div class="person"><b>${PEOPLE[id].name}</b><span>${PEOPLE[id].desc}</span><br>${roleBadge(id)}</div>`).join('');
+}
+
+// ---------- rules board ----------
+function renderBoard(){
+  const b = document.getElementById('board');
+  b.innerHTML = RULES.map(rule => {
+    if(rule.group) return `<div class="grouplabel">${rule.group}</div>`;
+    if(rule.fixed) return `<div class="rule"><div class="rule-head"><b>${rule.title}</b><span class="tbl">${rule.tbl}</span></div><div class="fixed">${rule.text}</div></div>`;
+    let off = false, note = '';
+    if((rule.key==='addMod' || rule.key==='addAdmin') && rules.roleStore==='column'){
+      off = true; note = "There is no moderators or admins table. Roles live in profiles, so the profile rule above decides who can change a role.";
+    }
+    if(rule.key==='hide' && rules.hiddenStore==='column'){
+      off = true; note = 'There is no hidden_posts table. Hiding is now a change to the posts row, so "Who can change a post?" decides it.';
+    }
+    if(rule.key==='hide' && !off) rule.tbl = 'hidden_posts · insert';
+    const btns = rule.opts.map(([v,l]) =>
+      `<button type="button" data-k="${rule.key}" data-v="${v}" class="${rules[rule.key]===v?'on':''}" ${off?'disabled':''} aria-pressed="${rules[rule.key]===v}">${l}</button>`).join('');
+    return `<div class="rule ${off?'off':''}"><div class="rule-head"><b>${rule.title}</b><span class="tbl">${rule.tbl}</span></div><div class="seg">${btns}</div>${note?`<div class="rule-note">${note}</div>`:''}</div>`;
+  }).join('') + `<p class="fixed" style="margin-top:12px">Changing a table design choice resets the data in Part 3.</p>`;
+}
+document.getElementById('board').addEventListener('click', e => {
+  const btn = e.target.closest('button[data-k]'); if(!btn || btn.disabled) return;
+  const k = btn.dataset.k, v = btn.dataset.v;
+  if(rules[k]===v) return;
+  rules[k] = v;
+  const rule = RULES.find(r => r.key===k);
+  if(rule && rule.resets){ data = freshData(); changed = {}; legit = {}; clearLog(); }
+  renderAll();
+});
+
+// ---------- grid ----------
+const GRID_ROWS = [
+  ['See normal posts', id => can(id,'see',{owner:other(id),hidden:false})],
+  ["See someone else's hidden post", id => can(id,'see',{owner:other(id),hidden:true})],
+  ["Change someone else's post", id => can(id,'edit',{owner:other(id)})],
+  ["Hide someone else's post", id => can(id,'hide',{owner:other(id)})],
+  ["Delete someone else's post", id => can(id,'del',{owner:other(id)})],
+  ["Delete a file in someone else's folder", id => can(id,'delfile',{owner:other(id)})],
+  ['Make another user a moderator', id => can(id,'mod',{who:other(id)})],
+  ['Make themselves a moderator', id => can(id,'mod',{who:id})],
+  ['Make another user an admin', id => can(id,'admin',{who:other(id)})],
+  ['Make themselves an admin', id => can(id,'admin',{who:id})]
+];
+function other(id){ return id==='lee' ? 'sam' : 'lee'; }
+function renderGrid(){
+  const head = '<tr><th></th>' + ORDER.map(id => `<th class="${id==='dash'?'dashcol':''}"><b>${id==='dash'?'Dashboard':PEOPLE[id].name}</b>${{visitor:'signed out',owner:'skips RLS',user:'user',moderator:'moderator',admin:'admin'}[roleOf(id)]}</th>`).join('') + '</tr>';
+  const next = {};
+  const rows = GRID_ROWS.map(([label,fn],i) => '<tr><td>'+label+'</td>' + ORDER.map(id => {
+    const v = fn(id), key = i+'-'+id; next[key] = v;
+    const fl = (key in prevGrid && prevGrid[key]!==v) ? ' flash' : '';
+    return `<td class="${id==='dash'?'dashcol':''}"><span class="cell ${v?'yes':'no'}${fl}" aria-label="${v?'allowed':'blocked'}">${v?'✓':'✕'}</span></td>`;
+  }).join('') + '</tr>').join('');
+  document.getElementById('grid').innerHTML = head + rows;
+  prevGrid = next;
+}
+
+// ---------- requests ----------
+function myId(a){ return a==='visitor' ? 'null' : `'${a}-id'`; }
+const REQS = [
+  {k:'read', label:'Read every post', kind:'read'},
+  {k:'edit2', label:"Change the words in Lee's chem notes post", kind:'edit', post:2},
+  {k:'hide3', label:'Hide the V-Bucks post', kind:'hide', post:3},
+  {k:'del3', label:'Delete the V-Bucks post', kind:'del', post:3},
+  {k:'file3', label:"Delete Lee's vbucks.png file", kind:'delfile', owner:'lee', file:'vbucks.png'},
+  {k:'file2', label:"Delete Lee's chem-notes.pdf file", kind:'delfile', owner:'lee', file:'chem-notes.pdf'},
+  {k:'selfmod', label:'Make myself a moderator', kind:'mod', who:'self'},
+  {k:'selfadmin', label:'Make myself an admin', kind:'admin', who:'self'},
+  {k:'sammod', label:'Make Sam a moderator', kind:'mod', who:'sam'},
+  {k:'leeadmin', label:'Make Lee an admin', kind:'admin', who:'lee'}
+];
+function codeFor(actor, q){
+  const who = q.who==='self' ? actor : q.who;
+  switch(q.kind){
+    case 'read': return "await supabase.from('posts').select('*')";
+    case 'edit': return `await supabase.from('posts')\n  .update({ title: 'lol hacked' })\n  .eq('id', ${q.post})`;
+    case 'hide': return rules.hiddenStore==='table'
+      ? `await supabase.from('hidden_posts')\n  .insert({ post_id: ${q.post} })`
+      : `await supabase.from('posts')\n  .update({ hidden: true })\n  .eq('id', ${q.post})`;
+    case 'del': return `await supabase.from('posts')\n  .delete()\n  .eq('id', ${q.post})`;
+    case 'delfile': return `await supabase.storage.from('user-files')\n  .remove(['${q.owner}-id/${q.file}'])`;
+    case 'mod': case 'admin': {
+      if(rules.roleStore==='column') return `await supabase.from('profiles')\n  .update({ role: '${q.kind==='mod'?'moderator':'admin'}' })\n  .eq('id', '${who}-id')`;
+      return `await supabase.from('${q.kind==='mod'?'moderators':'admins'}')\n  .insert({ user_id: '${who}-id' })`;
+    }
+  }
+}
+function isStaffBefore(id){ return ['mo','ava'].includes(id); }
+
+function execute(actor, q){
+  const code = codeFor(actor, q);
+  const name = PEOPLE[actor].name;
+  let cls='ok', res='{ error: null }', note='';
+  const insertStyle = (q.kind==='hide' && rules.hiddenStore==='table') || ((q.kind==='mod'||q.kind==='admin') && rules.roleStore==='tables');
+  const blocked = (tableName) => {
+    if(insertStyle){ cls='loud'; res=`{ error: 'new row violates row-level security\n  policy for table "${tableName}"' }`; note='Blocked. Adding a row breaks a rule, so Supabase sends back an error.'; }
+    else { cls='quiet'; res='{ error: null }'; note='Blocked, but quietly. No error message. Zero rows changed. The person might think it worked.'; }
+  };
+  changed = {};
+  if(q.kind==='read'){
+    const rows = data.posts.filter(p => can(actor,'see',{owner:p.owner, hidden:data.hidden.includes(p.id)}));
+    res = rows.length ? '{ data: [\n' + rows.map(p => `  { id: ${p.id}, title: '${p.title}'${data.hidden.includes(p.id)?', hidden':''} }`).join(',\n') + '\n] }' : '{ data: [] }';
+    const hiddenSeen = rows.some(p => data.hidden.includes(p.id) && p.owner!==actor) && !isStaff(roleOf(actor)) && actor!=='dash';
+    cls = hiddenSeen ? 'yikes' : 'ok';
+    note = rows.length===0 ? 'Zero rows. Rows you aren\'t allowed to see are simply left out.' :
+      hiddenSeen ? `${name} can read a hidden post. Hiding it in the app did nothing to protect it.` :
+      `${rows.length} row${rows.length>1?'s':''} came back. RLS left out anything ${name} isn't allowed to see.`;
+  }
+  else if(q.kind==='edit' || q.kind==='hide' || q.kind==='del'){
+    const p = data.posts.find(x => x.id===q.post);
+    if(!p){ cls='quiet'; note='That post is already gone. Zero rows changed.'; }
+    else if(q.kind==='hide' && data.hidden.includes(p.id)){ cls='quiet'; note='That post is already hidden.'; }
+    else if(can(actor, q.kind, {owner:p.owner})){
+      if(q.kind==='edit'){ p.title='lol hacked'; changed['post'+p.id]=true; }
+      if(q.kind==='hide'){ data.hidden.push(p.id); changed['post'+p.id]=true; changed['hid'+p.id]=true; }
+      if(q.kind==='del'){ data.posts = data.posts.filter(x => x!==p); }
+      const allowedJob = p.owner===actor || actor==='dash' || (q.kind!=='edit' && isStaffBefore(actor));
+      cls = allowedJob ? 'ok' : 'yikes';
+      note = allowedJob ? 'It worked. That fits this person\'s job.' : `It worked, and it shouldn't have. ${name} just ${q.kind==='edit'?'rewrote':q.kind==='hide'?'hid':'deleted'} someone else's post.`;
+      if(q.kind==='del' && p.file && data.files[p.owner].includes(p.file)) note += ` The post is gone, but ${p.file} is still in Storage. Files need their own delete.`;
+    } else blocked(q.kind==='hide'?'hidden_posts':'posts');
+  }
+  else if(q.kind==='delfile'){
+    const list = data.files[q.owner];
+    if(!list.includes(q.file)){ cls='quiet'; res='{ data: [], error: null }'; note='That file is already gone.'; }
+    else if(can(actor,'delfile',{owner:q.owner})){
+      data.files[q.owner] = list.filter(f => f!==q.file);
+      res = `{ data: [ { name: '${q.owner}-id/${q.file}' } ], error: null }`;
+      const ok = q.owner===actor || actor==='dash' || isStaffBefore(actor);
+      cls = ok ? 'ok' : 'yikes';
+      note = ok ? 'File deleted.' : `${name} just deleted a file in someone else's folder.`;
+    } else { cls='quiet'; res='{ data: [], error: null }'; note='Blocked, but quietly. No error. Nothing was removed.'; }
+  }
+  else if(q.kind==='mod' || q.kind==='admin'){
+    const who = q.who==='self' ? actor : q.who;
+    const want = q.kind==='mod' ? 'moderator' : 'admin';
+    if(actor==='visitor'){ blocked(q.kind==='mod'?'moderators':'admins'); if(!insertStyle) note='Blocked. A visitor isn\'t signed in, so there\'s no profile row to change.'; }
+    else if(who==='dash' || who==='visitor'){ cls='quiet'; note='The dashboard owner and visitors don\'t have accounts in the app.'; }
+    else if(data.roles[who]===want){ cls='quiet'; note=`${PEOPLE[who].name} is already ${want==='admin'?'an admin':'a moderator'}.`; }
+    else if(can(actor, q.kind, {who})){
+      if(!(want==='moderator' && data.roles[who]==='admin')) data.roles[who] = want;
+      changed['role'+who] = true;
+      const ok = actor==='dash' || (q.kind==='mod' && actor==='ava');
+      if(ok) legit[who] = true;
+      cls = ok ? 'ok' : 'yikes';
+      note = ok ? `${PEOPLE[who].name} is now ${want==='admin'?'an admin':'a moderator'}.` :
+        `${name} just made ${who===actor?'themselves':PEOPLE[who].name} ${want==='admin'?'an admin':'a moderator'}. Look at the grid: ${PEOPLE[who].name}'s powers changed.`;
+    } else blocked(q.kind==='mod'?'moderators':'admins');
+    if(actor==='dash' && q.kind==='admin') note = `${PEOPLE[who].name} is now an admin. The dashboard skips RLS, so this is the safe way to make an admin.`;
+  }
+  addLog(name, code, res, note, cls);
+  renderAll();
+}
+
+let logEntries = [];
+function addLog(name, code, res, note, cls){
+  logEntries.unshift({name, code, res, note, cls});
+  logEntries = logEntries.slice(0,8);
+}
+function clearLog(){ logEntries = []; }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function renderLog(){
+  const el = document.getElementById('log');
+  if(!logEntries.length){ el.innerHTML = '<p class="logempty">Pick a request and press Send. Try being Sam and making yourself a moderator.</p>'; return; }
+  el.innerHTML = logEntries.map(e => `<div class="entry ${e.cls}"><div class="who">${esc(e.name)} sent:</div><pre>${esc(e.code)}</pre><div class="res">${esc(e.res)}</div><div class="note">${esc(e.note)}</div></div>`).join('');
+}
+
+// ---------- app screen (what the app chooses to show) ----------
+function renderScreen(){
+  const a = actorSel.value, r = roleOf(a), name = PEOPLE[a].name;
+  const el = document.getElementById('screen');
+  if(a==='dash'){
+    el.innerHTML = `<div class="bar"><b>Supabase dashboard</b><span>Table Editor</span></div><p class="empty">You're the owner here. You see every row, and RLS doesn't apply. Use the console to make changes as the owner. This is where you add your first admin.</p>`;
+    return;
+  }
+  const posts = data.posts.filter(p => can(a,'see',{owner:p.owner, hidden:data.hidden.includes(p.id)}));
+  let html = `<div class="bar"><b>${name}'s screen</b><span>${a==='visitor'?'Signed out':'Signed in · '+r}</span></div>`;
+  if(!posts.length) html += `<p class="empty">${a==='visitor'?'Sign in to see posts.':'No posts to show.'}</p>`;
+  html += posts.map(p => {
+    const hid = data.hidden.includes(p.id);
+    const acts = [];
+    if(p.owner===a){ acts.push(`<button type="button" data-q='{"kind":"edit","post":${p.id}}'>Edit</button>`); acts.push(`<button type="button" class="red" data-q='{"kind":"del","post":${p.id}}'>Delete</button>`); }
+    else if(isStaff(r)){
+      if(!hid) acts.push(`<button type="button" data-q='{"kind":"hide","post":${p.id}}'>Hide</button>`);
+      acts.push(`<button type="button" class="red" data-q='{"kind":"del","post":${p.id}}'>Remove post</button>`);
+      if(p.file && data.files[p.owner].includes(p.file)) acts.push(`<button type="button" class="red" data-q='{"kind":"delfile","owner":"${p.owner}","file":"${p.file}"}'>Remove file</button>`);
+    }
+    return `<div class="post"><div class="t">${esc(p.title)}</div><div class="m">by ${PEOPLE[p.owner].name}</div>${p.file && data.files[p.owner].includes(p.file)?`<span class="file">${p.file}</span>`:''}${hid?'<span class="hid">HIDDEN</span>':''}${acts.length?`<div class="acts">${acts.join('')}</div>`:''}</div>`;
+  }).join('');
+  if(r==='admin'){
+    const opts = ['sam','lee','mo'].filter(x => x!==a).map(x => `<option value="${x}">${PEOPLE[x].name}</option>`).join('');
+    html += `<div class="adminbox"><b>Admin panel</b><br>Make a moderator: <label for="ap-who" style="position:absolute;left:-9999px">User</label><select id="ap-who">${opts}</select> <button type="button" id="ap-go">Add</button></div>`;
+  }
+  if(a!=='visitor' && !isStaff(r)) html += `<p class="empty" style="font-size:.78rem">No Hide button and no admin panel on ${name}'s screen. The console doesn't care.</p>`;
+  el.innerHTML = html;
+}
+document.getElementById('screen').addEventListener('click', e => {
+  const b = e.target.closest('button'); if(!b) return;
+  if(b.id==='ap-go'){ execute(actorSel.value, {kind:'mod', who:document.getElementById('ap-who').value}); return; }
+  if(b.dataset.q) execute(actorSel.value, JSON.parse(b.dataset.q));
+});
+
+// ---------- database view ----------
+function renderDB(){
+  const startStaff = {mo:'moderator', ava:'admin'};
+  const badRole = id => data.roles[id] !== (startStaff[id]||'user') && !legit[id];
+  const rowCls = (k, bad) => bad ? 'bad' : (changed[k] ? 'chg' : '');
+  let out = '';
+  const hidCol = rules.hiddenStore==='column';
+  out += `<div class="dbt"><h4>posts</h4><table><tr><th>id</th><th>owner</th><th>title</th>${hidCol?'<th>hidden</th>':''}</tr>` +
+    (data.posts.length ? data.posts.map(p => `<tr class="${rowCls('post'+p.id, p.title==='lol hacked')}"><td>${p.id}</td><td>${p.owner}</td><td>${esc(p.title)}</td>${hidCol?`<td>${data.hidden.includes(p.id)}</td>`:''}</tr>`).join('') : '') +
+    `</table>${data.posts.length?'':'<span class="none">no rows</span>'}</div>`;
+  if(!hidCol){
+    out += `<div class="dbt"><h4>hidden_posts</h4><table><tr><th>post_id</th></tr>` + data.hidden.map(id => `<tr class="${rowCls('hid'+id)}"><td>${id}</td></tr>`).join('') + `</table>${data.hidden.length?'':'<span class="none">no rows</span>'}</div>`;
+  }
+  const users = ['sam','lee','mo','ava'];
+  if(rules.roleStore==='column'){
+    out += `<div class="dbt"><h4>profiles</h4><table><tr><th>id</th><th>username</th><th>role</th></tr>` +
+      users.map(u => `<tr class="${rowCls('role'+u, badRole(u))}"><td>${u}-id</td><td>${u}</td><td>${data.roles[u]}</td></tr>`).join('') + '</table></div>';
+  } else {
+    out += `<div class="dbt"><h4>profiles</h4><table><tr><th>id</th><th>username</th></tr>` + users.map(u => `<tr><td>${u}-id</td><td>${u}</td></tr>`).join('') + '</table></div>';
+    const mods = users.filter(u => data.roles[u]==='moderator'), adm = users.filter(u => data.roles[u]==='admin');
+    out += `<div class="dbt"><h4>moderators</h4><table><tr><th>user_id</th></tr>` + mods.map(u => `<tr class="${rowCls('role'+u, badRole(u))}"><td>${u}-id</td></tr>`).join('') + `</table>${mods.length?'':'<span class="none">no rows</span>'}</div>`;
+    out += `<div class="dbt"><h4>admins</h4><table><tr><th>user_id</th></tr>` + adm.map(u => `<tr class="${rowCls('role'+u, badRole(u))}"><td>${u}-id</td></tr>`).join('') + `</table>${adm.length?'':'<span class="none">no rows</span>'}</div>`;
+  }
+  const fl = [];
+  Object.keys(data.files).forEach(o => data.files[o].forEach(f => fl.push(`${o}-id/${f}`)));
+  out += `<div class="dbt"><h4>storage: user-files</h4><table><tr><th>file</th></tr>` + fl.map(f => `<tr><td>${f}</td></tr>`).join('') + `</table>${fl.length?'':'<span class="none">no files</span>'}</div>`;
+  document.getElementById('db').innerHTML = out;
+}
+let legit = {};
+
+// ---------- tests ----------
+const TESTS = [
+  {w:true, text:'Mo can hide the V-Bucks post.', run:d => can('mo','hide',{owner:'lee'},d),
+    hint:'Moderators need to hide posts. Check who can hide, or where "hidden" is kept.'},
+  {w:true, text:'Mo can delete the V-Bucks post.', run:d => can('mo','del',{owner:'lee'},d),
+    hint:'Moderators need to remove posts. Check who can delete a post.'},
+  {w:true, text:"Mo can delete the V-Bucks post's image file.", run:d => can('mo','delfile',{owner:'lee'},d),
+    hint:"Your posts rules don't cover Storage. Files have their own rules."},
+  {w:true, text:'Ava can make Lee a moderator from the admin panel.', run:d => can('ava','mod',{who:'lee'},d),
+    hint:"If roles live in profiles, Ava can only change her own row, so the admin panel can't work. Check who can add a moderator, too."},
+  {w:false, text:"Sam can't see Lee's hidden post.", run:d => can('sam','see',{owner:'lee',hidden:true},d),
+    hint:'Hiding a post in the app does nothing if the database still sends it. Check who can see hidden posts.'},
+  {w:false, text:"Sam can't change the words in Lee's post.", run:d => can('sam','edit',{owner:'lee'},d),
+    hint:'Check who can change a post.'},
+  {w:false, text:"Mo can't change the words in Lee's post.", run:d => can('mo','edit',{owner:'lee'},d),
+    hint:'Moderators hide or remove posts. They don\'t rewrite people\'s words. RLS works on whole rows, so if "hidden" is a column in posts, any rule that lets Mo hide also lets Mo edit.'},
+  {w:false, text:"Sam can't hide Lee's post.", run:d => can('sam','hide',{owner:'lee'},d),
+    hint:'Check who can hide a post.'},
+  {w:false, text:"Sam can't delete Lee's file.", run:d => can('sam','delfile',{owner:'lee'},d),
+    hint:'Check who can delete files.'},
+  {w:false, text:"Sam can't make himself a moderator.", run:d => can('sam','mod',{who:'sam'},d),
+    hint:'RLS works on whole rows. A rule that lets you update your own profile lets you change every column in it, including role.'},
+  {w:false, text:"Mo can't make Sam a moderator.", run:d => can('mo','mod',{who:'sam'},d),
+    hint:'Only admins should add moderators. Check who can add a moderator.'},
+  {w:false, text:"Mo can't make himself an admin.", run:d => can('mo','admin',{who:'mo'},d),
+    hint:'Where is the role kept? If it\'s a column Mo can edit, Mo can pick any role.'},
+  {w:false, text:"Ava can't make Lee an admin from inside the app.", run:d => can('ava','admin',{who:'lee'},d),
+    hint:'Only you, the app owner, should make admins, in the dashboard.'}
+];
+function renderTests(){
+  const d = freshData();
+  let pass = 0;
+  const html = {work:'', block:''};
+  TESTS.forEach(t => {
+    const allowed = t.run(d);
+    const ok = t.w ? allowed : !allowed;
+    if(ok) pass++;
+    html[t.w?'work':'block'] += `<div class="test ${ok?'pass':'fail'}"><div class="mark" aria-label="${ok?'pass':'fail'}">${ok?'✓':'✕'}</div><div class="tx">${t.text}<div class="hint">${t.hint}</div></div></div>`;
+  });
+  document.getElementById('t-work').innerHTML = html.work;
+  document.getElementById('t-block').innerHTML = html.block;
+  document.getElementById('score').innerHTML = `${pass}<small> / ${TESTS.length}</small>`;
+  document.getElementById('score').style.color = pass===TESTS.length ? 'var(--accent)' : 'var(--ink)';
+  document.getElementById('win').classList.toggle('on', pass===TESTS.length);
+}
+
+// ---------- wiring ----------
+const actorSel = document.getElementById('actor');
+actorSel.innerHTML = ORDER.map(id => `<option value="${id}">${PEOPLE[id].name}</option>`).join('');
+actorSel.value = 'sam';
+actorSel.addEventListener('change', () => { renderScreen(); });
+const reqSel = document.getElementById('req');
+reqSel.innerHTML = REQS.map(q => `<option value="${q.k}">${q.label}</option>`).join('');
+reqSel.value = 'selfmod';
+document.getElementById('send').addEventListener('click', () => {
+  const q = REQS.find(x => x.k===reqSel.value);
+  const a = actorSel.value;
+  execute(a, q);
+});
+document.getElementById('resetdata').addEventListener('click', () => { data = freshData(); changed = {}; legit = {}; clearLog(); renderAll(); });
+document.getElementById('pre-weak').addEventListener('click', () => loadPreset('weak'));
+document.getElementById('pre-strict').addEventListener('click', () => loadPreset('strict'));
+function loadPreset(n){ rules = Object.assign({}, PRESETS[n]); data = freshData(); changed = {}; legit = {}; clearLog(); renderAll(); }
+
+function renderAll(){ renderPeople(); renderBoard(); renderGrid(); renderScreen(); renderLog(); renderDB(); renderTests(); }
+renderAll();
+})();
+</script>
+
+</body>
+</html>
