@@ -445,30 +445,23 @@ table.cmp th{background:var(--panel);font-size:.76rem}
 <section class="screen" data-s="7">
   <h2 class="big">Back to the question, together</h2>
   <div class="kq" style="font-size:1.3rem">To what extent does what counts as historical knowledge depend on who is asked, and who does the asking?</div>
-  <p class="lede">Look back over the four dossiers. <strong>In each one, who was asked, and who was doing the asking?</strong></p>
+  <p class="lede">Now add time. <strong>What could anyone know about the <em>Titanic</em>, and when?</strong></p>
   <div class="replay">
-    <div class="row"><div class="mk">A</div><div>On 15 April the only voices available were the company that owned the ship and the wire services. <b>Nobody who had seen the sinking had been asked yet.</b></div></div>
-    <div class="row"><div class="mk">B</div><div>London's finding cites one answer, given to one of the Board of Trade's own lawyers. <b>Most witnesses were never asked whether the ship broke.</b></div></div>
-    <div class="row"><div class="mk">C</div><div>Daly told a doctor, then a newspaper, then a court. Rheims told his wife, then a lawyer under oath. <b>Their stories changed with the listener.</b></div></div>
-    <div class="row"><div class="mk">D</div><div>London asked no third-class passenger anything, <b>then found they were not unfairly treated.</b></div></div>
-    <div class="row ask"><div class="mk">But</div><div>In 1985 it stopped mattering who had been asked: the wreck was in two pieces whoever you asked. And in Dossier D, once the question was fixed, the testimony settled it. <b>"It depends who you ask" is not the end of the story.</b></div></div>
+    <div class="row"><div class="mk">15 Apr 1912</div><div>Almost no evidence yet. The loudest voice belonged to the company that owned the ship, which had money and reputation at stake. <b>Competing stories, and most of them wrong.</b></div></div>
+    <div class="row"><div class="mk">1912 inquiries</div><div>Hundreds of witnesses, and they disagreed. London's finding rested on one answer, in an inquiry run by the body that had approved the ship. <b>Who was asked, and who was asking, decided what became official.</b></div></div>
+    <div class="row"><div class="mk">1985</div><div>New technology: a camera sled two and a half miles down. The wreck lay in two pieces. <b>Technology moved the wall. A question testimony could not settle was settled, and "she sank intact" became impossible to defend.</b></div></div>
+    <div class="row ask"><div class="mk">Still</div><div>Shots were fired: Lowe admitted it under oath. But at whom, and whether an officer shot himself, no camera on the seabed can show. <b>Technology can move some walls, not all of them.</b> Think back to the princes in the Tower: if DNA testing of the bones is ever allowed, a question open for five hundred years could close. No technology will recover a pistol shot on an open deck in 1912.</div></div>
   </div>
+  <p class="lede" style="margin-top:.8rem">At the start of a disaster, competing accounts are shaped by how little evidence exists and by who has something to gain or lose. Over time evidence gathers: records open, things are found, and some claims become harder and harder to support. <strong>But there is still a limit to what we can know.</strong></p>
 
   <div class="box">
     <h3>As a class</h3>
     <p><span class="qnum">1.</span> Answer the knowledge question. Use two examples from today, from <b>different</b> dossiers.</p>
     <textarea data-k="wc-1" data-req style="min-height:5.5rem"></textarea>
-    <p><span class="qnum">2.</span> Where does it stop being true? When does <b>who was asked</b> stop deciding what counts as knowledge?</p>
-    <textarea data-k="wc-2" data-req></textarea>
-    <p><span class="qnum">3.</span> The inquiries were not trying to write history. The London inquiry was overseen by the Board of Trade, the body that had approved the ship. <b>What were the inquiries for, and how might that have shaped who they asked?</b></p>
-    <textarea data-k="wc-3" data-req></textarea>
-  </div>
-
-  <div class="box">
-    <h3>If there is time: while it is happening, nobody knows</h3>
-    <p>On 15 April 1912 the loudest voice in the record belonged to <b>the company that owned the ship</b>. In a war, both sides have reasons to shape what is said about the dead, and casualty figures are released as weapons. Historians spend decades afterwards unpicking them.</p>
-    <p>If interested parties dominate the record <em>while an event is happening</em>, what has to happen before anyone can know what occurred? And why is <b>"why did they say it"</b> often easier to answer than <b>"what happened"</b>?</p>
-    <textarea data-k="warfinal"></textarea>
+    <p><span class="qnum">2.</span> Look at the timeline. When did <b>who was asked</b> matter most? When did it stop deciding what counts as knowledge?</p>
+    <textarea data-k="wc-2t" data-req></textarea>
+    <p><span class="qnum">3.</span> Pick one question from today: did she break, were shots fired at people, or was there panic? Is it <b>settled</b>, <b>still argued</b>, or <b>out of reach</b>? What would it take to move it: a new document, a new technology, or nothing at all?</p>
+    <textarea data-k="wc-3t" data-req></textarea>
   </div>
   <div class="foot"><button class="primary" data-next="8" onclick="advance(8)">Your group's question</button><span class="hint" data-hint></span></div>
 </section>
@@ -588,7 +581,8 @@ const D2=[
   cite:"British Inquiry, Day 2",url:"https://www.titanicinquiry.org/BOTInq/BOTInq02Scarrott01.php"},
  {id:'gracie2',name:"Colonel Archibald Gracie",role:"First-class passenger",
   pos:"On the boat deck, but not present at the incident",when:"US Senate Inquiry, April 1912",to:"Under oath, to the Senate committee",oath:"Yes",
-  say:"That is what Mr. Lightoller himself told me. I did not hear the pistol. That is what I was told by Lightoller himself. <b>That is all hearsay, Senator.</b>",
+  say:"<em>Senator Smith: “Who fired that pistol?”</em> Lightoller. That is what he told me. … I did not hear the pistol. That is what I was told by Lightoller himself. <b>That is all hearsay, Senator.</b>",
+  extra:"Earlier in the same testimony, Gracie passed on what Lightoller had told him: steerage passengers tried to rush a lifeboat, and “he fired off a pistol to make them get out.” Gracie did not see or hear it, and he says so under oath.",
   cite:"US Senate Inquiry, Day 11",url:"https://www.titanicinquiry.org/USInq/AmInq11Gracie01.php"},
  {id:'rheims',name:"George Rheims",role:"First-class passenger, French businessman",
   pos:"On deck to the end; left on a collapsible boat",when:"Two accounts: a private letter of 19 April 1912, and a sworn statement of 14 November 1913",to:"First his wife. Later, under oath.",oath:"Second account only",
