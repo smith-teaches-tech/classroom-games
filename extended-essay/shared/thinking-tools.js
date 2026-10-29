@@ -6,6 +6,8 @@
    - Answers save automatically in this browser (localStorage), per tool.
    - "Copy for Google Docs" copies the questions and answers as clean
      formatted text, ready to paste into the student's RRS Google Doc.
+     (Some teachers have students write in a paper notebook instead,
+     then add a photo to the RRS in Folio. Step 0 explains both.)
    - Nothing is sent anywhere.
 
    Usage on a page:
@@ -71,8 +73,8 @@
     head.appendChild(el("h2",null,esc(def.title)));
     if(def.intro) head.appendChild(el("p",{class:"tt-intro"},def.intro));
     head.appendChild(el("p",{class:"tt-privacy"}, canSave
-      ? "Private to you. Your answers save automatically, but only in this browser on this device. Nobody else sees them, and nothing is submitted. Use <b>Copy for Google Docs</b> to keep your answers in your RRS."
-      : "Your browser won't let this page save your answers (private browsing can cause this). You can still type. Copy everything into your RRS Google Doc before you leave the page."));
+      ? "Private to you. Your answers save automatically, but only in this browser on this device. Nobody else sees them, and nothing is submitted. Keep your answers in your RRS: write them in your notebook, or use <b>Copy for Google Docs</b>."
+      : "Your browser won't let this page save your answers (private browsing can cause this). You can still type. Before you leave the page, write your answers in your notebook or copy them into your RRS."));
     mount.appendChild(head);
 
     var form = el("div",{class:"tt-body"});

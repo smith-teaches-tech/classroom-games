@@ -135,18 +135,24 @@ STEPS.append(dict(
     <p>There are 19 steps in four stages: Explore, Narrow, Research and write, and After submission. Do them in order. Each step page has:</p>
     <ul>
       <li><b>A short guide:</b> why the step matters and what to do.</li>
-      <li><b>A thinking tool:</b> questions that help you brainstorm. Nothing is submitted or graded. Your answers save in your browser, and a button copies them into your RRS Google Doc.</li>
+      <li><b>A thinking tool:</b> questions that help you brainstorm. Nothing is submitted or graded. You keep your answers in your RRS (see below).</li>
       <li><b>Before you move on:</b> a short checklist at the end of the thinking tool.</li>
     </ul>
     <p>Your extended essay is your own independent work. The thinking tools only ask questions. They never write anything for you.</p>
 
     <h2>Set up your RRS before anything else</h2>
     <p>The IB strongly recommends that every EE student keeps a <b>researcher's reflection space (RRS)</b>. Your RRS is your own EE notebook. In it you record what you read, what you think, the questions that come up and the decisions you make. You'll use your RRS to prepare for each reflection session. It's also the best source for your reflective statement at the end.</p>
+    <p>Your teacher will tell you which kind of RRS to keep:</p>
+    <div class="kv">
+      <div class="panel"><h3>A paper notebook</h3><p>Write your answers to each thinking tool by hand in your EE notebook. Then take a photo of the pages and add the photo to your RRS in Folio.</p></div>
+      <div class="panel"><h3>A Google Doc</h3><p>Make a Google Doc called <b>EE RRS: your name</b>. Use the <b>Copy for Google Docs</b> button to copy each thinking tool into your doc.</p></div>
+    </div>
     <ol class="do">
-      <li>Create a Google Doc called <b>EE RRS: your name</b>.</li>
-      <li>Add a heading with today's date. Then use the <b>Copy for Google Docs</b> button to copy the thinking tool below into your RRS.</li>
+      <li>Start each entry with today's date and the name of the step.</li>
+      <li>Answer the thinking tool below in your RRS. You can type your answers on this page first, or write straight into your notebook.</li>
       <li>Do the same at every step. Add your own notes in between: reactions to sources, new questions, and things you changed your mind about.</li>
     </ol>
+    <p>Your dated entries show how your ideas grew over time. They're also evidence that your essay is your own work.</p>
     <p class="src-note">Source: IB <i>Extended essay guide</i> (first assessment 2027), "Reflection and the extended essay" and "Assessment".</p>
 """,
  tool=dict(id="step-0", stepLabel="Start here", title="Who are you as a researcher?",
@@ -164,8 +170,8 @@ STEPS.append(dict(
      {"id":"subjects","type":"multi","label":"Which of these DP subjects do you study?","options":ASD_SUBJECTS},
      {"id":"pattern","type":"long","label":"Look back over your answers. What pattern do you notice? Write two or three possible areas you could research.","rows":3}]},
    checklist(["I know the EE has a 4,000-word limit and three reflection sessions.",
-              "I have created my RRS Google Doc.",
-              "I have copied this thinking tool into my RRS."])
+              "I know whether my RRS is a notebook or a Google Doc.",
+              "My answers to this thinking tool are in my RRS."])
   ])
 ))
 
@@ -241,7 +247,7 @@ STEPS.append(dict(
    checklist(["I have one broad topic to explore.",
               "I have chosen a pathway and a subject (or two subjects and a framework), or I know what I need to find out to decide.",
               "I have checked the rules for my subject on this page.",
-              "I have copied this thinking tool into my RRS."])
+              "My answers to this thinking tool are in my RRS."])
   ])
 ))
 # ───────────────────────── STEP 2 ─────────────────────────
@@ -302,7 +308,7 @@ STEPS.append(dict(
    checklist(["I have chosen APA or MLA.",
               "I have set up a PowerNotes project for my EE.",
               "I know the difference between a works cited list and a bibliography.",
-              "I have copied this thinking tool into my RRS."])
+              "My answers to this thinking tool are in my RRS."])
   ])
 ))
 
@@ -358,7 +364,7 @@ STEPS.append(dict(
    checklist(["I have saved 8 to 12 open sources in PowerNotes, in the Open / background category.",
               "Each source has a full citation in my chosen style.",
               "I have a glossary of key terms.",
-              "I have copied this thinking tool into my RRS."])
+              "My answers to this thinking tool are in my RRS."])
   ])
 ))
 
@@ -409,7 +415,7 @@ STEPS.append(dict(
    checklist(["I have saved about 10 current sources in PowerNotes, in the Current category.",
               "I have used Google Scholar's Since filter and Cited by links.",
               "I can name at least one disagreement in my topic.",
-              "I have copied this thinking tool into my RRS."])
+              "My answers to this thinking tool are in my RRS."])
   ])
 ))
 
@@ -456,7 +462,7 @@ STEPS.append(dict(
      {"id":"challenge","type":"long","label":"One older idea that current sources now challenge:","rows":2}]},
    checklist(["I have saved about 10 historical sources in PowerNotes, in the Historical category.",
               "I have a timeline of how ideas about my topic developed.",
-              "I have copied this thinking tool into my RRS."])
+              "My answers to this thinking tool are in my RRS."])
   ])
 ))
 
@@ -539,7 +545,7 @@ STEPS.append(dict(
    checklist(["I have read the methods row for my subject.",
               "I have read two sample essays in my subject.",
               "I have saved about 10 methods sources in PowerNotes, in the Methods category.",
-              "I have copied this thinking tool into my RRS."])
+              "My answers to this thinking tool are in my RRS."])
   ])
 ))
 
@@ -604,7 +610,7 @@ STEPS.append(dict(
    checklist(["I have reached the source target for my subject in PowerNotes (see the table above).",
               "Every source has a full citation in my chosen style and a one-line note.",
               "No single category holds more than about half my sources.",
-              "I have copied this thinking tool into my RRS."])
+              "My answers to this thinking tool are in my RRS."])
   ])
 ))
 
@@ -667,7 +673,7 @@ STEPS.append(dict(
    checklist(["I have a focused topic in one sentence.",
               "I have tested at least five questions for clear, focused and arguable.",
               "I have chosen a broad question to guide step 9.",
-              "I have copied this thinking tool into my RRS."])
+              "My answers to this thinking tool are in my RRS."])
   ])
 ))
 
@@ -719,7 +725,7 @@ STEPS.append(dict(
 """,
  script=GROUP_SCRIPT,
  tool=dict(id="step-9", stepLabel="Step 9 · Annotated bibliography", title="Perspectives and the gap",
-  intro="Write your full annotations in your RRS Google Doc or in PowerNotes. Use this tool to sort your annotated sources and find the gap.",
+  intro="Write your full annotations in your RRS or in PowerNotes. Use this tool to sort your annotated sources and find the gap.",
   sections=[
    {"heading":"My broad question","prompts":[
      {"id":"bq","type":"long","label":"My broad question (from step 8):","rows":2,"prefill":"__PREFILL_BQ__"}]},
@@ -736,7 +742,7 @@ STEPS.append(dict(
               "Each source has a full citation in my chosen style and an annotation (summary, evaluation, connection).",
               "My annotated sources include different perspectives.",
               "I can state the gap my essay could fill.",
-              "I have copied this thinking tool into my RRS."])
+              "My answers to this thinking tool are in my RRS."])
   ])
 ))
 
@@ -847,7 +853,7 @@ STEPS.append(dict(
    checklist(["My research question passes every test above, or I know what to fix.",
               "I know the structural conventions for my subject.",
               "I have booked or confirmed my first reflection session with my supervisor.",
-              "I have copied this thinking tool into my RRS and will bring it to the session."])
+              "My answers to this thinking tool are in my RRS, and I'll bring my RRS to the session."])
   ])
 ))
 

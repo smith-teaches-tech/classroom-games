@@ -128,7 +128,7 @@ def tool_def(slug, subject, think):
     prompts.append({"id": "verdict", "type": "choice", "label": "Now that I've answered these questions, I think %s is:" % subject,
                     "options": ["A strong fit for my idea", "Possible, but I need to check with a teacher", "Probably not the right subject for this idea"]})
     d = {"id": "hub-" + slug, "stepLabel": "Subject guide · " + subject, "title": "Is %s right for my idea?" % subject,
-         "intro": "Your answers are private to you. Use these questions to test your idea against what the guide expects in %s. Then copy your answers into your RRS (researcher's reflection space: your own EE notebook)." % subject,
+         "intro": "Your answers are private to you. Use these questions to test your idea against what the guide expects in %s. Then add your answers to your RRS (researcher's reflection space: your own EE notebook)." % subject,
          "sections": [{"heading": "Test my idea", "prompts": prompts}]}
     s = json.dumps(d, ensure_ascii=False, indent=1)
     return s.replace('"__PREFILL_TOPIC__"', bs.PREFILLS["__PREFILL_TOPIC__"])
