@@ -100,6 +100,8 @@
   table.fix td:last-child{color:var(--good);font-weight:600}
   table.fix tr.odd td{background:rgba(154,106,47,.08);border-bottom:none}
   table.fix tr.odd td:last-child{color:var(--accent-warm)}
+  .groups{display:flex;flex-wrap:wrap;gap:.45em}
+  .groups span{background:#fff;border:1px solid var(--rule);border-radius:999px;padding:.15em .8em;font-weight:600;font-size:.95em}
   /* subject cards */
   .card{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:.55em .75em;box-shadow:0 1px 2px var(--shadow);}
   .card .who{font-family:"JetBrains Mono",monospace;font-size:.42em;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-warm);margin-bottom:.25em;}
@@ -146,8 +148,12 @@
     <p class="kicker">IB staff PD, 1 November</p>
     <h1>Where Claims Break</h1>
     <p class="lede">Using the TOK exhibition prompts in your own units.</p>
+    <div class="panel" style="margin-top:1.2em">
+      <h3>Please sit with your subject group</h3>
+      <div class="groups"><span>Sciences</span><span>English and the arts</span><span>Global languages</span><span>Human sciences</span><span>Mathematics</span></div>
+    </div>
   </div>
-  <div class="notes"><b>0:00</b> Leave this up while people come in. Have departments sit together from the start so nobody has to move later.</div>
+  <div class="notes"><b>0:00</b> Leave this up while people come in. Point people to their subject group as they arrive, so nobody has to move later.</div>
 </section>
 
 <!-- 2 · WHAT THE IB EXPECTS -->
@@ -167,7 +173,25 @@
   <div class="notes"><b>0:00 to 2:00</b> Keep this quick. Students can only compare how subjects find things out if each of us explains how our own subject does it.</div>
 </section>
 
-<!-- 3 · THE CLAIM -->
+<!-- 3 · THE KNOWLEDGE QUESTION -->
+<section class="slide dense">
+  <div class="inner">
+    <p class="kicker">A knowledge question (exhibition prompt 5)</p>
+    <h2>What counts as good evidence for a claim?</h2>
+    <p class="lede">TOK asks this about knowledge claims in every area of knowledge, and the answer looks different in each one.</p>
+    <div class="cols3" data-step>
+      <div class="card"><div class="who">Sciences</div><div class="what">"A result that's been repeated is reliable."</div></div>
+      <div class="card"><div class="who">English and the arts</div><div class="what">"Details from the work prove an interpretation."</div></div>
+      <div class="card"><div class="who">Global languages</div><div class="what">"If native speakers say it, it's correct."</div></div>
+      <div class="card"><div class="who">Human sciences</div><div class="what">"A survey of 1,000 people tells us what people think."</div></div>
+      <div class="card"><div class="who">Mathematics</div><div class="what">"If it works for every case we've tried, it's true."</div></div>
+    </div>
+    <p data-step style="margin-top:.8em">We'll start with a claim from the one area we all share: teaching.</p>
+  </div>
+  <div class="notes"><b>2:00</b> Read the question, then show the claims. You don't need to discuss them yet; departments come back to these in the group task. The point is that TOK takes one question like this into every subject.</div>
+</section>
+
+<!-- 4 · THE CLAIM -->
 <section class="slide">
   <div class="inner">
     <div class="claim">A student who gets an A understands the material.</div>
@@ -181,7 +205,7 @@
   <div class="notes"><b>2:00</b> Everyone votes before anyone talks. Click the thumbs to keep count. The room will probably split, and that's what you want.</div>
 </section>
 
-<!-- 4 · WHEN DOES IT HOLD -->
+<!-- 5 · WHEN DOES IT HOLD -->
 <section class="slide">
   <div class="inner">
     <h2>When is an A good evidence that a student understood?</h2>
@@ -204,7 +228,7 @@
   <div class="notes"><b>3:00 to 5:30</b> Give them real thinking time, then take three or four answers and type them in. Show the list afterwards. If someone says you can never be sure, stop there for a moment. No set of conditions makes it certain; they only make it good evidence.</div>
 </section>
 
-<!-- 5 · WHEN DOES IT BREAK -->
+<!-- 6 · WHEN DOES IT BREAK -->
 <section class="slide dense">
   <div class="inner">
     <h2>When does an A not mean the student understood?</h2>
@@ -216,29 +240,17 @@
     <table class="fix" data-step>
       <thead><tr><th>When it breaks</th><th>What we'd add to the claim</th></tr></thead>
       <tbody>
-        <tr><td>They memorised the answers, and a new question shows the gap.</td><td>The task made them apply the idea to something new.</td></tr>
-        <tr><td>They're good at multiple choice, or at matching the rubric's wording.</td><td>The task can't be passed on test-taking skill alone.</td></tr>
-        <tr><td>The quiz only covered part of the unit.</td><td>The task covered the whole unit.</td></tr>
-        <tr><td>They understood it on Tuesday and forgot it by June.</td><td>It was recent, and the claim is about then.</td></tr>
-        <tr><td>A tutor, a parent or AI did the work.</td><td>They did the work on their own.</td></tr>
-        <tr><td>An A from one teacher isn't the same as an A from another.</td><td>Teachers agree on what an A looks like.</td></tr>
-        <tr class="odd"><td>They can follow the steps but can't explain why the steps work.</td><td>Say which kind of understanding we mean. This one is a problem with the word, not the task.</td></tr>
+        <tr><td>They memorised the answers, and a new question shows the gap.</td><td data-step>The task made them apply the idea to something new.</td></tr>
+        <tr><td>They're good at multiple choice, or at matching the rubric's wording.</td><td data-step>The task can't be passed on test-taking skill alone.</td></tr>
+        <tr><td>The quiz only covered part of the unit.</td><td data-step>The task covered the whole unit.</td></tr>
+        <tr><td>They understood it on Tuesday and forgot it by June.</td><td data-step>It was recent, and the claim is about then.</td></tr>
+        <tr><td>A tutor, a parent or AI did the work.</td><td data-step>They did the work on their own.</td></tr>
+        <tr><td>An A from one teacher isn't the same as an A from another.</td><td data-step>Teachers agree on what an A looks like.</td></tr>
+        <tr class="odd"><td>They can follow the steps but can't explain why the steps work.</td><td data-step>Say which kind of understanding we mean. This one is a problem with the word, not the task.</td></tr>
       </tbody>
     </table>
   </div>
-  <div class="notes"><b>5:30 to 9:00</b> Take five or six answers and type them in. For each one, ask the room what we'd have to add to the claim to rule it out, before you show the table. Most of the fixes will match the list from the last screen, which is worth pointing out: every break turns into a condition. The last row is a different kind of break and worth slowing down on. Keep asking where it breaks and stay away from what we should do about it, or it turns into a conversation about grading and AI.</div>
-</section>
-
-<!-- 6 · THE TRAP -->
-<section class="slide">
-  <div class="inner">
-    <div class="claim" style="border-left-color:var(--accent-warm);font-size:1.35em;">"I've had students who understood it and still got a B."</div>
-    <div class="panel warm" data-step>
-      <h3>Does that break our claim?</h3>
-      <p>It breaks a different one: that every student who understands gets an A. It's worth checking exactly what a claim says before we try to break it.</p>
-    </div>
-  </div>
-  <div class="notes">Only use this if someone says it, which they usually do. If nobody does, skip past it.</div>
+  <div class="notes"><b>5:30 to 9:00</b> Take five or six answers and type them in. Then show the table: only the first column appears. Go down it one row at a time. Ask the room what we'd have to add to the claim to rule that break out, take an answer or two, then click to show ours. Most of the fixes match the list from the last screen, which is worth pointing out: every break turns into a condition. The last row is a different kind of break and worth slowing down on. If someone says "I've had students who understood it and still got a B," point out that it's the reverse claim (every student who understands gets an A) and park it. Keep asking where it breaks and stay away from what we should do about it, or it turns into a conversation about grading and AI.</div>
 </section>
 
 <!-- 7 · REFINED CLAIM -->
@@ -247,12 +259,12 @@
     <div class="claim"><small>What we started with</small>A student who gets an A understands the material.</div>
     <div class="claim refined" data-step><small>Where we ended up</small>An A on a task that made students apply the idea to something new, done on their own and recently, is good evidence that they understood it at that point.</div>
     <div class="panel" data-step>
-      <h3>So what does this tell us about knowing?</h3>
-      <p>We can't see understanding directly. We infer it from what students do on a task, so the inference is only as good as the task.</p>
+      <h3>Even if every condition is met</h3>
+      <p>The conditions make the A better evidence, but a grade can only reach what the student did on that task. Understanding is something we infer from it.</p>
       <p>I'd guess every subject in this room has its own version of that problem.</p>
     </div>
   </div>
-  <div class="notes"><b>9:00 to 10:30</b> The new claim is more accurate, and it's still a claim we can stand behind. We just know where its edges are now.</div>
+  <div class="notes"><b>9:00 to 10:30</b> Before you reveal anything, ask: "If every condition in that table were met, would an A mean the student understood?" Let them answer. Most will say not for certain. That's why the new claim says "good evidence" and not "means." Then show the box underneath.</div>
 </section>
 
 <!-- 8 · THAT WAS TOK -->
@@ -302,11 +314,10 @@
   <div class="inner">
     <h2>Turning a prompt into a claim</h2>
     <p class="prompt"><span class="num">Prompt 5</span>What counts as good evidence for a claim?</p>
-    <p class="lede" data-step>The prompts are questions, and it's hard to find where a question breaks. It's easier if you turn the prompt into something your subject claims. For example:</p>
+    <p class="lede" data-step>The prompts are questions, and it's hard to find where a question breaks. It's easier if you turn the prompt into something your subject claims, like the claims we saw at the start.</p>
     <div class="cols3" data-step>
       <div class="card"><div class="who">Sciences</div><div class="what">"A result that's been repeated is reliable."</div></div>
-      <div class="card"><div class="who">English</div><div class="what">"A quotation proves an interpretation."</div></div>
-      <div class="card"><div class="who">History</div><div class="what">"A primary source tells us what happened."</div></div>
+      <div class="card"><div class="who">English and the arts</div><div class="what">"Details from the work prove an interpretation."</div></div>
       <div class="card"><div class="who">Global languages</div><div class="what">"If native speakers say it, it's correct."</div></div>
       <div class="card"><div class="who">Human sciences</div><div class="what">"A survey of 1,000 people tells us what people think."</div></div>
       <div class="card"><div class="who">Mathematics</div><div class="what">"If it works for every case we've tried, it's true."</div></div>
@@ -355,11 +366,10 @@
     <ol class="big">
       <li>Choose a prompt for your next unit from the back of the handout. The starred ones work well as threads.</li>
       <li>Plan three short visits: at the start, at the point where the unit pushes back, and at the end.</li>
-      <li>Add it to [where to record] by [date].</li>
     </ol>
     <p class="lede" style="margin-top:.6em">If nothing in the unit could change a student's first answer, it's probably the wrong prompt.</p>
   </div>
-  <div class="notes"><b>29:00 to 30:00</b> Fill in the two bracketed placeholders in the HTML before the session.</div>
+  <div class="notes"><b>29:00 to 30:00</b> Thank everyone and leave this up as they go.</div>
 </section>
 
 <div class="bar" id="bar"></div>
