@@ -47,6 +47,35 @@
   .stat.zero .note{font-size:14px;font-style:italic;color:var(--zero);margin-top:5px}
   .foot{font-size:18px;line-height:1.5;color:var(--muted);margin:26px 4px 0;max-width:800px}
   .foot b{color:var(--ink);font-weight:600;font-style:italic}
+  .claimbox{background:#2a2620;color:var(--paper);border-radius:10px;padding:16px 20px;margin:4px 0 22px}
+  .claimbox .lbl,.qs .lbl,.part .lbl{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase}
+  .claimbox .lbl{opacity:.7}
+  .claimbox .c{font-size:25px;line-height:1.3;margin:4px 0 10px;font-style:italic}
+  .claimbox p{font-size:17px;line-height:1.45}
+  .pick{display:flex;gap:9px;flex-wrap:wrap;margin-top:10px}
+  .pick button{background:transparent;color:var(--paper);border:1px solid #6f685b}
+  .pick button[aria-pressed="true"]{background:var(--anti);border-color:var(--anti)}
+  .reply{font-size:17px;font-style:italic;color:#f0c9d4;margin-top:10px;min-height:1em}
+  h2.part{font-size:28px;font-weight:600;margin:30px 0 4px}
+  .lead{font-size:19px;line-height:1.5;margin:4px 0 14px;max-width:820px}
+  .qs{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--anti);border-radius:8px;padding:14px 18px;margin-top:18px}
+  .qs .lbl{color:var(--muted);margin-bottom:6px}
+  .qs ul{margin:0 0 0 20px;padding:0}
+  .qs li{font-size:18px;line-height:1.5;margin-bottom:7px}
+  .qs li.rw{font-weight:600}
+  .mode{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin:14px 2px 0}
+  .mode .chip{background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:8px 14px;text-transform:none;letter-spacing:.02em}
+  .mode .chip[aria-pressed="true"]{background:var(--halo);color:#fff;border-color:var(--halo)}
+  .tally{overflow-x:auto;margin-top:14px}
+  .tally table{border-collapse:collapse;width:100%;font-family:"JetBrains Mono",monospace;font-size:12.5px}
+  .tally th,.tally td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:left;white-space:nowrap}
+  .tally th{font-weight:500;color:var(--muted);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase}
+  .tally td.sharp{color:var(--anti);font-weight:500}
+  .small{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--muted);margin-top:6px}
+  .reveal{display:none;background:#f3e7ea;border:1px solid var(--anti);border-radius:8px;padding:14px 18px;margin-top:14px;font-size:18px;line-height:1.5}
+  .reveal.show,.takeaway.show{display:block}
+  .takeaway{display:none;background:#e3edf2;border:1px solid var(--halo);border-radius:8px;padding:14px 18px;margin-top:14px;font-size:18px;line-height:1.5}
+  .takeaway b.k{display:block;font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;color:var(--halo);margin:8px 0 2px}
   @media(max-width:560px){h1{font-size:30px}.stat .n{font-size:36px}.stats{gap:8px}.narr{font-size:18px}}
 </style>
 </head>
@@ -54,7 +83,22 @@
 <div class="wrap">
   <div class="kq">Unit 2 · Natural Sciences · L3 — what the method can't reach</div>
   <h1>The box that can't be opened</h1>
-  <div class="sub">Try to pull a single quark out of a proton.</div>
+  <div class="sub">With the mystery boxes, not opening them was a rule. With a proton, it isn't a rule: nobody can open it.</div>
+
+  <div class="claimbox">
+    <div class="lbl">The claim you are testing</div>
+    <div class="c">"We can never know what is inside a proton."</div>
+    <p>Before you start: do you agree? Write yes, no or partly in your notes, and one reason. Then click your answer.</p>
+    <div class="pick" id="pick">
+      <button data-v="yes" aria-pressed="false">Yes</button>
+      <button data-v="partly" aria-pressed="false">Partly</button>
+      <button data-v="no" aria-pressed="false">No</button>
+    </div>
+    <div class="reply" id="reply"></div>
+  </div>
+
+  <h2 class="part">Part 1: Try to open it</h2>
+  <p class="lead">A proton is made of quarks. Grab the glowing quark and pull it away from the proton, or press <b>Pull</b>. Try as many times as you like.</p>
 
   <div class="stage">
     <svg id="svg" viewBox="0 0 900 460" role="img" aria-label="Interactive diagram: pulling a quark from a proton always creates a new quark-antiquark pair instead of freeing one quark; products accumulate.">
@@ -91,10 +135,60 @@
   <div class="stats">
     <div class="stat"><div class="n" id="sAtt">0</div><div class="l">Attempts to isolate a quark</div></div>
     <div class="stat"><div class="n" id="sPart">0</div><div class="l">New particles you created</div></div>
-    <div class="stat zero"><div class="n" id="sFree">0</div><div class="l">Free quarks isolated</div><div class="note">and it always will be</div></div>
+    <div class="stat zero"><div class="n" id="sFree">0</div><div class="l">Free quarks isolated</div></div>
   </div>
 
-  <p class="foot">However hard you pull, you never get a quark on its own — the energy you put in turns into <b>new particles</b>, and the stage just gets more crowded. This is real: a single free quark has never been observed. Everything we know about the inside of a proton is <b>inferred from how it scatters</b> when smashed — a model built entirely from the outside. The proton is a box whose lid cannot be lifted. So when the method hands us a model, this lesson's question is: <b>is that the mechanism, or one interpretation that happens to fit?</b></p>
+  <div class="qs"><div class="lbl">Field notes: Part 1</div><ul>
+    <li>Did pulling harder help? Where did the energy go?</li>
+    <li>How many free quarks did you get? Could anyone ever look at a quark on its own?</li>
+    <li>So far, does the simulator agree with the claim?</li>
+  </ul></div>
+
+  <h2 class="part">Part 2: Shake the box</h2>
+  <p class="lead">You couldn't open the mystery boxes, so you shook them and listened to what bounced around inside. Physicists do the same thing with a proton: they fire tiny electrons at it and watch how they bounce. First fire at a proton that is smooth and soft all the way through. Then fire at the real one.</p>
+  <div class="stage" style="background:#0e1318;border-color:#28323b">
+    <svg id="ssvg" viewBox="0 0 900 380" role="img" aria-label="Electrons are fired at a proton. A smooth proton only nudges them; the real proton sends some off at sharp angles.">
+      <defs>
+        <radialGradient id="pg" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#c9a24a" stop-opacity="0.95"/>
+          <stop offset="70%" stop-color="#a77b2c" stop-opacity="0.85"/>
+          <stop offset="100%" stop-color="#a77b2c" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="470" cy="190" r="118" fill="url(#pg)"/>
+      <text x="470" y="330" text-anchor="middle" fill="#9fb0bb" font-family="JetBrains Mono,monospace" font-size="12">proton (you can't see inside)</text>
+      <rect x="18" y="160" width="40" height="60" rx="6" fill="#28323b" stroke="#5a6b78"/>
+      <text x="38" y="240" text-anchor="middle" fill="#9fb0bb" font-family="JetBrains Mono,monospace" font-size="11">electrons</text>
+      <g id="trails"></g><g id="dots"></g>
+      <text id="modeLbl" x="880" y="28" text-anchor="end" fill="#9fb0bb" font-family="JetBrains Mono,monospace" font-size="12">smooth proton</text>
+    </svg>
+  </div>
+  <div class="mode">
+    <button class="chip" data-m="smooth" aria-pressed="true">If the proton were smooth inside</button>
+    <button class="chip" data-m="real" aria-pressed="false">The real proton</button>
+    <button id="fire">Fire 20 electrons</button>
+    <button id="sclear" class="ghost">Clear</button>
+  </div>
+  <div class="tally" id="tally"></div>
+  <p class="small">The simulation's numbers are illustrative, not real data.</p>
+  <div class="qs"><div class="lbl">Field notes: Part 2</div><ul>
+    <li>Fire at the smooth proton. What happens to the electrons?</li>
+    <li>Now fire at the real proton. What's different?</li>
+    <li>What would have to be inside a proton to make an electron bounce off at a sharp angle?</li>
+    <li>Did anyone see inside the proton? So how could they know what's in there?</li>
+  </ul></div>
+  <div class="controls"><button class="ghost" id="found">What did physicists find?</button></div>
+  <div class="reveal" id="foundTxt">In 1968, physicists at Stanford did this with electrons from an accelerator about 3 kilometres long. More electrons bounced off at sharp angles than a smooth proton could explain, as if they had hit tiny, hard points inside. Those points were later identified as <b>quarks</b>. Rutherford found the nucleus of the atom the same way in 1911. Since then, physicists have measured features of quarks, such as their electric charge, without ever pulling one out to look at it.</div>
+
+  <h2 class="part">Part 3: Your new claim</h2>
+  <div class="qs"><div class="lbl">Field notes: Part 3</div><ul>
+    <li>Look back at the claim. Is it still true?</li>
+    <li>What can physicists know about what's inside a proton? What can they never do?</li>
+    <li>Think back to the boxes. What did you know about Box 2, and what couldn't you know?</li>
+    <li class="rw">Rewrite the claim so it says exactly what we can know and what we can't.</li>
+  </ul></div>
+  <div class="controls"><button class="ghost" id="newc">I've written my new claim</button></div>
+  <div class="takeaway" id="takeTxt"><b class="k">One way to say it</b>We can never directly observe a lone quark. But by firing electrons at protons, physicists can know features of what's inside: that quarks are there, and what their charge is. The limit is on seeing, not on knowing.<b class="k">Takeaway</b>From the outside, knowers can know the features of something without ever seeing it. (The boxes showed the other half: when two things share every feature, the evidence can't tell you which one is there.)</div>
 </div>
 
 <script>
@@ -245,6 +339,78 @@
   });
 
   update();
+})();
+
+/* ---------- claim ---------- */
+(function(){
+  const R={yes:'Hold that answer. Parts 1 and 2 will push on it.',partly:'Good. Keep track of which part you agree with.',no:'Hold that answer. Can you say how anyone could know, if nobody can open a proton?'};
+  const btns=document.querySelectorAll('#pick button');
+  function pick(v){btns.forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===v?'true':'false'));document.getElementById('reply').textContent=R[v];}
+  btns.forEach(b=>b.addEventListener('click',()=>{pick(b.dataset.v);try{localStorage.setItem('tok-quark-claim',b.dataset.v);}catch(e){}}));
+  try{const v=localStorage.getItem('tok-quark-claim'); if(R[v]) pick(v);}catch(e){}
+  document.getElementById('found').addEventListener('click',e=>{document.getElementById('foundTxt').classList.add('show');e.target.style.display='none';});
+  document.getElementById('newc').addEventListener('click',e=>{document.getElementById('takeTxt').classList.add('show');e.target.style.display='none';});
+})();
+
+/* ---------- scattering ---------- */
+(function(){
+  const NS='http://www.w3.org/2000/svg';
+  const trails=document.getElementById('trails'), dots=document.getElementById('dots'), lbl=document.getElementById('modeLbl');
+  const fire=document.getElementById('fire'), clr=document.getElementById('sclear'), tally=document.getElementById('tally');
+  const P={x:470,y:190,r:108}, W=900, H=380;
+  let mode='smooth', busy=false;
+  const T={smooth:{n:0,soft:0,sharp:0},real:{n:0,soft:0,sharp:0}};
+  function el(t,a){const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);return n;}
+  function draw(){
+    const row=(k,name)=>'<tr><td>'+name+'</td><td>'+T[k].n+'</td><td>'+T[k].soft+'</td><td class="sharp">'+T[k].sharp+'</td></tr>';
+    tally.innerHTML='<table><tr><th>Proton</th><th>Fired</th><th>Nudged a little</th><th>Bounced off at a sharp angle</th></tr>'+row('smooth','Smooth inside')+row('real','The real proton')+'</table>';
+  }
+  document.querySelectorAll('.chip[data-m]').forEach(c=>c.addEventListener('click',()=>{
+    if(busy)return; mode=c.dataset.m;
+    document.querySelectorAll('.chip[data-m]').forEach(x=>x.setAttribute('aria-pressed',x===c?'true':'false'));
+    lbl.textContent=mode==='smooth'?'smooth proton':'the real proton'; trails.innerHTML='';
+  }));
+  // end point where a ray from (x,y) at angle a leaves the picture
+  function exitPt(x,y,a){const dx=Math.cos(a),dy=Math.sin(a);let t=1e9;
+    if(dx>0)t=Math.min(t,(W-x)/dx); if(dx<0)t=Math.min(t,(0-x)/dx); if(dy>0)t=Math.min(t,(H-y)/dy); if(dy<0)t=Math.min(t,(0-y)/dy);
+    return [x+dx*t,y+dy*t];}
+  function plan(i){
+    const y=P.y+(Math.random()*2-1)*(P.r-12), off=(y-P.y)/P.r;
+    let sharp=false;
+    if(mode==='real'){ sharp=(i%6===2)||Math.random()<0.06; }
+    if(!sharp){
+      const a=-off*0.12+(Math.random()-.5)*0.04;           // small nudge toward the centre (electrons are attracted to the proton)
+      const hx=P.x, end=exitPt(hx,y,a);
+      return {pts:[[60,y],[hx,y],end],sharp:false};
+    }
+    const hx=P.x-40+Math.random()*60;
+    const sgn=Math.random()<.5?-1:1, a=sgn*(0.9+Math.random()*1.9);   // about 50 to 160 degrees
+    return {pts:[[60,y],[hx,y],exitPt(hx,y,a)],sharp:true};
+  }
+  function shoot(i,done){
+    const p=plan(i), seg1=Math.hypot(p.pts[1][0]-p.pts[0][0],p.pts[1][1]-p.pts[0][1]), seg2=Math.hypot(p.pts[2][0]-p.pts[1][0],p.pts[2][1]-p.pts[1][1]);
+    const col=p.sharp?'#ff7a8f':'#7fc4e6';
+    const dot=el('circle',{r:'4',fill:col}); dots.appendChild(dot);
+    const t0=performance.now(), dur=1100;
+    (function f(now){
+      const u=Math.min(1,(now-t0)/dur), d=u*(seg1+seg2);
+      let x,y; if(d<=seg1){const k=d/seg1;x=p.pts[0][0]+(p.pts[1][0]-p.pts[0][0])*k;y=p.pts[0][1]+(p.pts[1][1]-p.pts[0][1])*k;}
+      else{const k=(d-seg1)/seg2;x=p.pts[1][0]+(p.pts[2][0]-p.pts[1][0])*k;y=p.pts[1][1]+(p.pts[2][1]-p.pts[1][1])*k;}
+      dot.setAttribute('cx',x);dot.setAttribute('cy',y);
+      if(u<1)requestAnimationFrame(f);
+      else{dot.remove();
+        trails.appendChild(el('polyline',{points:p.pts.map(q=>q.join(',')).join(' '),fill:'none',stroke:col,'stroke-width':p.sharp?'1.8':'1','stroke-opacity':p.sharp?'0.9':'0.45'}));
+        done(p.sharp);}
+    })(t0);
+  }
+  fire.addEventListener('click',()=>{
+    if(busy)return; busy=true; fire.disabled=true; clr.disabled=true;
+    const m=mode; let left=20;
+    for(let i=0;i<20;i++) setTimeout(()=>shoot(i,sharp=>{T[m].n++; sharp?T[m].sharp++:T[m].soft++; draw();
+      if(--left===0){busy=false;fire.disabled=false;clr.disabled=false;}}),i*130);
+  });
+  clr.addEventListener('click',()=>{ if(busy)return; trails.innerHTML=''; T.smooth={n:0,soft:0,sharp:0}; T.real={n:0,soft:0,sharp:0}; draw(); });
+  draw();
 })();
 </script>
 </body>

@@ -97,6 +97,27 @@
   details.tcard .tq{margin-top:8px;font-style:italic;color:var(--accent)}
   .cuts li b{font-weight:600}
   .stage .write{margin-top:12px;font-style:italic;color:var(--accent)}
+  .claimbox{background:#2a2620;color:var(--paper);border-radius:10px;padding:16px 20px;margin:14px 0 6px}
+  .claimbox .lbl{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;opacity:.7}
+  .claimbox .c{font-size:24px;line-height:1.3;margin:4px 0 10px;font-style:italic}
+  .claimbox p{font-size:17px;line-height:1.45}
+  .claimbox .commit button{color:var(--paper);border-color:#6f685b}
+  .claimbox .commitReply{color:#f0c9d4}
+  .obs{margin-top:26px}
+  .obs.locked{display:none}
+  .obs h3.oh{font-size:24px;font-weight:600;margin-bottom:4px}
+  .obs .lead{font-size:18px;line-height:1.5;margin:6px 0 10px;max-width:800px}
+  .qs{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:8px;padding:14px 18px;margin-top:14px}
+  .qs .lbl{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .qs ul{margin:0 0 0 20px;padding:0}
+  .qs li{font-size:18px;line-height:1.5;margin-bottom:7px}
+  .qs li.rw{font-weight:600}
+  .evcard{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px 18px;font-size:18px;line-height:1.55}
+  .evcard .lbl{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .lockmsg{font-size:16px;font-style:italic;color:var(--muted);margin-top:22px}
+  .takeaway{display:none;background:#e3edf2;border:1px solid var(--good);border-radius:8px;padding:14px 18px;margin-top:12px;font-size:18px;line-height:1.5}
+  .takeaway.show{display:block;animation:fade .3s}
+  .takeaway b.k{display:block;font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;color:var(--good);margin:8px 0 2px}
   .context{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0}
   .context p{font-size:18px;line-height:1.5;margin:6px 0}
   .ab{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 4px}
@@ -116,10 +137,10 @@
 <div class="wrap">
   <div class="kq">Unit 2 · Natural Sciences · L3 — what the method can't reach</div>
   <h1>Where the method can't reach</h1>
-  <p class="lede">You pulled a quark and could never free one. Here are three more places science reaches a wall. Pick one, find the wall, make a claim about it, then put your claim to the test.</p>
+  <p class="lede">Science can't see everything. Each case gives you a claim about where science hits a wall. Your job: test the claim, one observation at a time, and find out whether the wall is as big as it looks.</p>
 
   <div class="tabs" role="tablist">
-    <button class="tab" role="tab" aria-selected="true" data-t="ex">How to write it</button>
+    <button class="tab" role="tab" aria-selected="true" data-t="ex">Start here: the proton</button>
     <button class="tab" role="tab" aria-selected="false" data-t="bh">Inside a black hole</button>
     <button class="tab" role="tab" aria-selected="false" data-t="core">The Earth's core</button>
     <button class="tab" role="tab" aria-selected="false" data-t="origin">The origin of life</button>
@@ -127,9 +148,11 @@
 
   <!-- ============ EXEMPLAR ============ -->
   <section id="ex" class="active">
-    <span class="tag">The model paragraph — built on the quark case you already know</span>
-    <h2>How to write it</h2>
+    <span class="tag">Worked example: read this first</span>
+    <h2>Start here: the proton</h2>
     <p class="body"><b>Knowledge question:</b> How do the methods of the natural sciences set the limits of what science can know?</p>
+    <p class="body">You've already tried to pull a quark out of a proton, and you couldn't. Here is a claim about that, and a paragraph that tests it. This is what you'll do with your own case.</p>
+    <div class="claimbox"><div class="lbl">The claim</div><div class="c">"We can never know what is inside a proton."</div></div>
     <div class="card exemplar">
       <span class="claim">Scientific knowledge of what is inside a proton is built without anyone ever seeing inside one.</span>
       Physicists describe the proton as three quarks held together by the strong force, but no knower has ever detected a single quark on its own. Pull two quarks apart and the energy between them turns into a new pair of quarks, so every attempt produces more particles, never a lone one, and a bigger collider would only make more of them. So it is tempting to claim that we can never know what is inside a proton.
@@ -140,22 +163,42 @@
       <div><b>Claim before the test</b>We can never know what is inside a proton, because we can never see a quark.</div>
       <div><b>Claim after the test</b>We can never directly observe a lone quark, but indirect evidence can still justify knowing quarks are there. The limit is on seeing, not on knowing.</div>
     </div>
-    <p class="body" style="margin-top:6px"><b>Why this works</b>: it doesn't stop at the facts, and it doesn't stop at its first claim.</p>
+    <div class="qs"><div class="lbl">Field notes: the proton</div><ul>
+      <li>Find the sentence that seems to support the claim. Why is the claim tempting?</li>
+      <li>Find the pink part. What happened in 1968? Did anyone <i>see</i> what was inside the proton?</li>
+      <li>So is the problem that we can't <i>know</i> what's inside, or that we can't <i>see</i> it? What's the difference?</li>
+      <li>Compare the claim before and after. Which word changed? Is the new claim smaller or bigger?</li>
+    </ul></div>
+    <p class="body" style="margin-top:16px"><b>How the paragraph is built</b></p>
     <ul class="anatomy">
-      <li><b>A claim on top</b> <span style="background:#efe7d7;padding:0 3px">(shaded)</span>, about <i>how the knowledge is built</i>, not a fact about the proton.</li>
-      <li><b>Evidence, kept short</b>: why no one can pull a quark free. Three sentences, no physics lecture.</li>
-      <li><b>The test</b> <span style="background:#f3e7ea;padding:0 3px">(pink)</span>: it starts from a detail that doesn't fit the first claim (the 1968 experiment, Rutherford's nucleus, the electron's tracks). Without it, the paragraph is support, not analysis.</li>
-      <li><b>The rewritten claim</b> <span style="background:#e3edf2;padding:0 3px">(blue)</span>: smaller and more accurate. It names the cut (seeing vs knowing, direct vs indirect) and says what that means for how much <b>certainty</b> a knower should have.</li>
+      <li><b>A claim</b> <span style="background:#efe7d7;padding:0 3px">(shaded)</span> about how the knowledge is built, not a fact about the proton.</li>
+      <li><b>Evidence, kept short:</b> why no one can pull a quark free. A few sentences, no physics lecture.</li>
+      <li><b>The test</b> <span style="background:#f3e7ea;padding:0 3px">(pink)</span>: a detail that doesn't fit the first claim. Without this, the paragraph only agrees with itself.</li>
+      <li><b>The new claim</b> <span style="background:#e3edf2;padding:0 3px">(blue)</span>: smaller and more exact, plus how sure a knower can be.</li>
     </ul>
-    <p class="note">Your case will have a different wall and a different test. Your job is to find both, then write a paragraph with the same shape.</p>
+    <p class="note">Now pick a case. Each one starts with a claim. Test it the same way.</p>
   </section>
 
   <!-- ============ BLACK HOLE ============ -->
   <section id="bh">
     <span class="tag">Case 1 · the hardest one</span>
     <h2>Inside a black hole</h2>
-    <p class="body"><b>The model:</b> a black hole is a region where gravity is so strong that the escape speed exceeds the speed of light. We model it from the outside — its mass, its spin, how stars orbit it, how gas heats and glows as it falls in. The boundary is the <b>event horizon</b>.</p>
-    <p class="body"><b>Your job:</b> get a reading back from <i>inside</i> the horizon. Send a probe. If it fails, upgrade it and try again. Watch the telemetry — and watch what the signal does as the probe falls.</p>
+    <div class="claimbox">
+      <div class="lbl">The claim you are testing</div>
+      <div class="c">"Science can never know anything about what is inside a black hole."</div>
+      <p>Before you start: do you agree? In your notes, write yes, no or partly, and one reason. Then click your answer.</p>
+      <div class="commit" data-case="bh">
+        <button data-v="yes" aria-pressed="false">Yes</button>
+        <button data-v="partly" aria-pressed="false">Partly</button>
+        <button data-v="no" aria-pressed="false">No</button>
+      </div>
+      <div class="commitReply" id="bhReply"></div>
+    </div>
+    <p class="body"><b>What a black hole is:</b> a place where gravity is so strong that nothing, not even light, can get out once it crosses a boundary called the <b>event horizon</b>. Scientists study black holes from the outside: how stars move around them, and how gas glows as it falls in.</p>
+    <div class="obs1">
+    <h3 class="oh" style="font-size:24px;font-weight:600;margin:22px 0 4px">Observation 1: Send the probe</h3>
+    <p class="lead" style="font-size:18px;line-height:1.5;margin:6px 0 12px">Try to get a reading back from <i>inside</i> the event horizon. Launch the probe and watch the signal as it falls. Then turn on the upgrades and try again.</p>
+    </div>
     <div class="sim dark">
       <svg id="bhsvg" viewBox="0 0 760 360" role="img" aria-label="A probe falls toward a black hole; its signal redshifts and is lost at the event horizon.">
         <defs>
@@ -191,40 +234,39 @@
       <div class="count"><div class="n" id="bhOut">0</div><div class="l">Readings from outside</div></div>
       <div class="count zero"><div class="n" id="bhIn">0</div><div class="l">Readings from inside the horizon</div></div>
     </div>
-    <div class="stage">
-      <h3>1 · Find the wall</h3>
-      <ol>
-          <li>In your own words: what does the model say a black hole is, and what can scientists actually observe to build it?</li>
-          <li>You tried to get a signal back from inside, with upgrades. What happened every time, and what did the upgrades change?</li>
-      </ol>
+    <div class="qs"><div class="lbl">Field notes: Observation 1</div><ul>
+      <li>What happens to the signal as the probe gets closer to the black hole?</li>
+      <li>What happens when the probe crosses the dotted line (the event horizon)?</li>
+      <li>Turn on all three upgrades and launch again. Did anything change?</li>
+      <li>So far, does the tool agree with the claim?</li>
+    </ul></div>
+    <p class="lockmsg" id="bhLock">Answer the claim at the top of the page to open Observations 2 and 3.</p>
+    <div class="obs locked" data-case="bh">
+      <h3 class="oh">Observation 2: Look at the outside</h3>
+      <div class="evcard"><div class="lbl">Card 2</div><p>In 2015, detectors on Earth picked up ripples in space from two black holes crashing into each other, more than a billion light-years away. In 2019, scientists took the first photograph of a black hole: a dark shadow inside a ring of glowing gas.</p></div>
+    <div class="qs"><div class="lbl">Field notes</div><ul>
+      <li>Which part of the black hole were scientists seeing in that photograph, the inside or the outside?</li>
+      <li>Look at the word <i>anything</i> in the claim. Is it still true?</li>
+      <li class="rw">Rewrite the claim so it is only about the part we really can't reach.</li>
+    </ul></div>
     </div>
-    <div class="stage">
-      <h3>2 · Make your first claim</h3>
-      <p>In your notes, write one sentence: what kind of limit is this, and why? Then pick the answer closest to your sentence. Don't play it safe. A claim you can test is worth more than one that can't be wrong.</p>
-      <div class="commit" data-case="bh">
-        <button data-v="notyet" aria-pressed="false">Not yet: better tools could get past it</button>
-        <button data-v="never" aria-pressed="false">Never: no tool could ever get past it</button>
-        <button data-v="depends" aria-pressed="false">It depends</button>
-      </div>
-      <div class="commitReply" id="bhReply"></div>
+    <div class="obs locked" data-case="bh">
+      <h3 class="oh">Observation 3: Who can't know?</h3>
+      <div class="evcard"><div class="lbl">Card 3</div><p>According to Einstein's theory of gravity, an astronaut falling into a very large black hole would cross the event horizon without feeling anything special at that moment. For a while, she could look around inside. But nothing she sends, not even light, could ever get back out to anyone else.</p></div>
+    <div class="qs"><div class="lbl">Field notes</div><ul>
+      <li>Does the astronaut know what's inside?</li>
+      <li>Can she tell anyone? Can anyone check what she saw?</li>
+      <li>If one person knows something but can never show anyone else, is it scientific knowledge? Why or why not?</li>
+      <li>For anyone on Earth, is the inside a “not yet” (better technology could get there one day) or a “never”? How is that different from the Earth's core?</li>
+      <li class="rw">Rewrite the claim again. Who exactly can't know what's inside?</li>
+    </ul></div>
     </div>
-    <div class="stage locked" id="bhTest">
-      <h3>3 · Put it to the test</h3>
-      <p>Each card is something the tool didn't show you. Open them one at a time. For each card, write one line: does it fit your claim, or does it make your claim smaller?</p>
-      <div class="tcards">
-        <details class="tcard"><summary>The edge moved</summary><div class="tb"><p>Until 2015, no one had recorded anything from two black holes colliding. That year the LIGO detectors picked up the ripples in space from two black holes merging. In 2019 the Event Horizon Telescope took the first picture of a black hole's shadow, in the galaxy M87.</p><p class="tq">New technology moved something. What did it move, and what didn't it move?</p></div></details>
-        <details class="tcard"><summary>What the “never” rests on</summary><div class="tb"><p>The event horizon is a prediction of Einstein's theory of gravity, general relativity. The theory has passed every test near black holes so far, including the two above. But the same theory says that at the very centre, matter is crushed to infinite density. Most physicists take that as a sign the theory stops working there.</p><p class="tq">Your claim rests on a theory. Which part of that theory has been tested, and which part do physicists themselves doubt?</p></div></details>
-        <details class="tcard"><summary>A knower who goes in</summary><div class="tb"><p>According to general relativity, an astronaut falling into a very large black hole would cross the horizon without feeling anything special at that moment. For a while, they could look around inside. They could never send a message back out.</p><p class="tq">Is the inside out of reach for every knower, or only out of reach for shared knowledge that others can check? Does that difference matter?</p></div></details>
-        <details class="tcard"><summary>Something does come out</summary><div class="tb"><p>In 1974 Stephen Hawking calculated that black holes should slowly give off radiation and, over enormous times, evaporate. No one has detected this radiation from a real black hole yet. Physicists still argue about whether it carries scrambled information about what fell in. For a black hole the mass of the Sun, evaporating would take about 10<sup>67</sup> years, far longer than the universe has existed.</p><p class="tq">If the information does come out, is the inside “never” knowable, or “not for an impossibly long time”? Does that difference matter for knowledge?</p></div></details>
-      </div>
-    </div>
-    <div class="stage locked" id="bhCut">
-      <h3>4 · Find the cut</h3>
-      <p>A cut is the line where your claim stops being true. Ask these four questions about your case. Answer the two that change your claim the most.</p>
-      <ol class="cuts"></ol>
-      <h3 style="margin-top:16px">5 · Rewrite your claim</h3>
-      <p>Write your claim twice in your notes. <b>Before:</b> your first claim. <b>After:</b> the claim that survives the cards. The after-claim should be smaller and more accurate: it says which part, what kind of evidence, according to what, or for whom. If it is the same size as before, go back to the cards.</p>
-      <p class="write">Now write the paragraph (Part D on your sheet), modelled on the proton paragraph: claim, evidence, test, rewritten claim.</p>
+    <div class="obs locked" data-case="bh">
+      <h3 class="oh">Your new claim</h3>
+      <p class="lead">In your notes, write your first claim and your new claim side by side. What changed? Which observation changed it most? Then check your thinking.</p>
+      <button class="act ghost" data-show="bhTake">I've written my new claim</button>
+      <div class="takeaway" id="bhTake"><b class="k">One way to say it</b>Scientists can know a lot about the outside of a black hole, and that part has come within reach since 2015. What science can't know is the inside, because nothing from there can ever reach other knowers to be shared and checked. For anyone outside the black hole, that is a never, not a not yet.<b class="k">Takeaway</b>A claim with <i>never</i> or <i>anything</i> in it is usually too big. Ask: which part? And for scientific knowledge, ask: can it be shared and checked?</div>
+      <p class="write" style="margin-top:14px;font-style:italic;color:var(--accent);font-size:18px">Now write the paragraph on your sheet, built like the proton paragraph.</p>
     </div>
   </section>
 
@@ -232,15 +274,28 @@
   <section id="core">
     <span class="tag">Case 2</span>
     <h2>The Earth's core</h2>
-    <div class="context">
-      <p><b>How anyone sees inside the Earth:</b> no one has ever been there. The deepest borehole reaches about 12 km; the core begins about 2,900 km down. So seismologists use earthquakes. Earthquake waves speed up, slow down and bend as they pass through different materials, so the time a wave takes to reach a sensor carries information about everything it passed through.</p>
-      <p><b>What is well supported:</b> a rocky mantle, a liquid outer core, and a solid inner core at the centre.</p>
-      <p><b>What is still argued:</b> the very centre. Seismologists have proposed two interiors, and both have to match the same earthquake records.</p>
-      <div class="ab">
-        <div><b>Interior A</b>The inner core is one solid ball of iron, the same all the way through.</div>
-        <div><b>Interior B</b>The inner core has a separate innermost core inside it, where the iron crystals line up differently.</div>
+    <div class="claimbox">
+      <div class="lbl">The claim you are testing</div>
+      <div class="c">"From the surface, we can never know what is at the centre of the Earth."</div>
+      <p>Before you start: do you agree? In your notes, write yes, no or partly, and one reason. Then click your answer.</p>
+      <div class="commit" data-case="core">
+        <button data-v="yes" aria-pressed="false">Yes</button>
+        <button data-v="partly" aria-pressed="false">Partly</button>
+        <button data-v="no" aria-pressed="false">No</button>
       </div>
-      <p><b>Your job:</b> find a measurement that tells A from B. Click the surface of either Earth to place a sensor (up to 8). Drag a sensor to move it; double-click (or double-tap) it to remove it. Choose a quake size, set it off, and compare the readings. Then move your sensors and try again.</p>
+      <div class="commitReply" id="coreReply"></div>
+    </div>
+    <div class="context">
+      <p><b>How scientists see inside the Earth:</b> nobody has ever been there. The deepest hole ever drilled is about 12 km deep; the core starts about 2,900 km down. So scientists use earthquakes. Earthquake waves travel right through the planet, and they speed up, slow down and bend depending on what they pass through. So the time a wave takes to reach a sensor tells you something about what's inside.</p>
+      <p><b>What scientists still argue about:</b> the very centre. There are two ideas:</p>
+      <div class="ab">
+        <div><b>Interior A</b>The solid inner core is one ball, the same all the way through.</div>
+        <div><b>Interior B</b>The solid inner core has a smaller, different centre inside it.</div>
+      </div>
+    </div>
+    <div class="obs1">
+    <h3 class="oh" style="font-size:24px;font-weight:600;margin:22px 0 4px">Observation 1: Place sensors, set off quakes</h3>
+    <p class="lead" style="font-size:18px;line-height:1.5;margin:6px 0 12px">Click the surface of either Earth to place a sensor (up to 8). Drag a sensor to move it; double-click it to remove it. Choose a quake size, set it off, and compare the readings from A and B in the table.</p>
     </div>
     <div class="sim" style="background:var(--panel);padding:14px">
       <svg id="coresvg" viewBox="0 0 760 380" role="img" aria-label="Two Earths with different centres. Sensors placed on the surface record the same arrival times on both.">
@@ -263,7 +318,7 @@
       <button class="act" id="cSend">Set off the quake</button>
       <button class="act ghost" id="cClear">Clear sensors</button>
     </div>
-    <p class="note" id="coreNote">Place at least one sensor on either Earth, then set off a quake.</p>
+    <p class="note" id="coreNote">Click the surface of either Earth to place a sensor, then set off a quake.</p>
     <div class="readings" id="cReadings"></div>
     <div class="counts">
       <div class="count"><div class="n" id="cSens">0</div><div class="l">Sensors placed</div></div>
@@ -271,40 +326,37 @@
       <div class="count"><div class="n">2</div><div class="l">Interiors that fit the readings</div></div>
       <div class="count zero"><div class="n">0</div><div class="l">Measurements that tell them apart</div></div>
     </div>
-    <div class="stage">
-      <h3>1 · Find the wall</h3>
-      <ol>
-          <li>In your own words: what do interior A and interior B each say is at the centre of the Earth, and what do scientists actually measure to decide between them?</li>
-          <li>You placed sensors, moved them, and set off quakes big and small. Did any measurement tell interior A from interior B? What did changing the setup change, and what didn't it change?</li>
-      </ol>
+    <div class="qs"><div class="lbl">Field notes: Observation 1</div><ul>
+      <li>Place three sensors anywhere and set off a quake. Compare the readings from A and B. What do you notice?</li>
+      <li>Try a bigger quake. Then move your sensors and try again. Does anything tell A from B?</li>
+      <li>So far, does the tool agree with the claim?</li>
+    </ul></div>
+    <p class="lockmsg" id="coreLock">Answer the claim at the top of the page to open Observations 2 and 3.</p>
+    <div class="obs locked" data-case="core">
+      <h3 class="oh">Observation 2: What earthquakes already found</h3>
+      <div class="evcard"><div class="lbl">Card 2</div><p>Earthquake waves are how scientists found the core in the first place. In 1906, Richard Oldham noticed that waves travelling deep through the Earth arrived late, as if they had passed through something different. One kind of earthquake wave can't travel through liquid, and it never comes out the far side of the core, so scientists worked out that the outer core is liquid. In 1936, Inge Lehmann spotted faint waves arriving where none should be, and worked out that there was a separate inner core inside it.</p></div>
+    <div class="qs"><div class="lbl">Field notes</div><ul>
+      <li>Did anyone have to go to the centre of the Earth to find out the core was there?</li>
+      <li>Look at the claim again. Which parts of the inside of the Earth do we already know?</li>
+      <li class="rw">Rewrite the claim so it is only about the part that is still unknown.</li>
+    </ul></div>
     </div>
-    <div class="stage">
-      <h3>2 · Make your first claim</h3>
-      <p>In your notes, write one sentence: what kind of limit is this, and why? Then pick the answer closest to your sentence. Don't play it safe. A claim you can test is worth more than one that can't be wrong.</p>
-      <div class="commit" data-case="core">
-        <button data-v="notyet" aria-pressed="false">Not yet: better tools could get past it</button>
-        <button data-v="never" aria-pressed="false">Never: no tool could ever get past it</button>
-        <button data-v="depends" aria-pressed="false">It depends</button>
-      </div>
-      <div class="commitReply" id="coreReply"></div>
+    <div class="obs locked" data-case="core">
+      <h3 class="oh">Observation 3: Where are your sensors?</h3>
+      <div class="evcard"><div class="lbl">Card 3</div><p>Waves that pass through the very centre come out on the <i>opposite side</i> of the Earth from the quake. Most earthquakes happen in a few zones, and most sensors are on land, so very few sensors are in the right place to catch those waves. In 2023, scientists in Australia tried a new trick: they used waves that bounced back and forth through the Earth up to five times. They think they found evidence for interior B. Other scientists aren't sure yet.</p></div>
+    <div class="qs"><div class="lbl">Field notes</div><ul>
+      <li>Go back to the tool. Place a sensor on the opposite side of the Earth from the quake (the bottom of the circle) and set off a quake. What does the table say about that sensor?</li>
+      <li>Why can't scientists decide between A and B yet? Is it because deciding is impossible, or because of where the sensors are?</li>
+      <li>Is “we can't tell yet” the same as “we can never know”?</li>
+      <li class="rw">Rewrite the claim again.</li>
+    </ul></div>
     </div>
-    <div class="stage locked" id="coreTest">
-      <h3>3 · Put it to the test</h3>
-      <p>Each card is something the tool didn't show you. Open them one at a time. For each card, write one line: does it fit your claim, or does it make your claim smaller?</p>
-      <div class="tcards">
-        <details class="tcard"><summary>More of the same did settle some things</summary><div class="tb"><p>Earthquake waves alone found the core. In 1906 Richard Oldham noticed that waves passing deep through the Earth arrived late, and argued for a core. Beno Gutenberg placed its edge about 2,900 km down. One kind of wave, the S-wave, cannot travel through liquid, and S-waves never come out the far side of the core, so the outer core is liquid. In 1936 Inge Lehmann found faint waves arriving where none should be, and argued there was a separate inner core.</p><p class="tq">The tool said more detectors never break the tie. Which questions about the core did more earthquake data settle?</p></div></details>
-        <details class="tcard"><summary>What is still argued</summary><div class="tb"><p>Interiors A and B stand for a real argument. Two seismologists proposed a separate innermost core in 2002. In 2023 a team in Australia reported new evidence for it, using waves that bounced back and forth through the whole Earth up to five times. Other seismologists are not yet convinced. Part of the problem is placement: waves that cross the very centre come out on the far side of the planet from the quake, most earthquakes happen in a few belts, and most sensors are on land, so few sensors sit in the right places.</p><p class="tq">Is this a “never” or a “not yet”? What would it take to settle it: more of the same data, sensors in new places, or a new method?</p></div></details>
-        <details class="tcard"><summary>A different kind of evidence</summary><div class="tb"><p>Some evidence reaches the core without earthquake waves. The Earth as a whole is about twice as dense as surface rock, so something very dense must be deep inside. Earth's magnetic field needs a layer of moving liquid metal. Lab machines can squeeze iron to the pressures of the core and measure how it behaves. And in 2018, physicists used neutrinos (tiny particles that pass straight through the planet), caught by the IceCube detector in Antarctica, to measure the Earth's density and mass without a single earthquake wave.</p><p class="tq">Is this more of the same data, or a different kind? Can a different kind of evidence break a tie that earthquake waves can't?</p></div></details>
-        <details class="tcard"><summary>About this tool</summary><div class="tb"><p>In this tool, the two interiors give exactly the same readings everywhere except the far side, and even there the tool can only flag the problem, not settle it. Someone built it that way, to stand for the real argument.</p><p class="tq">Who decided the readings would match: the Earth, or the person who built the tool? What can a simulation like this show you about the real core, and what can't it show you?</p></div></details>
-      </div>
-    </div>
-    <div class="stage locked" id="coreCut">
-      <h3>4 · Find the cut</h3>
-      <p>A cut is the line where your claim stops being true. Ask these four questions about your case. Answer the two that change your claim the most.</p>
-      <ol class="cuts"></ol>
-      <h3 style="margin-top:16px">5 · Rewrite your claim</h3>
-      <p>Write your claim twice in your notes. <b>Before:</b> your first claim. <b>After:</b> the claim that survives the cards. The after-claim should be smaller and more accurate: it says which part, what kind of evidence, according to what, or for whom. If it is the same size as before, go back to the cards.</p>
-      <p class="write">Now write the paragraph (Part D on your sheet), modelled on the proton paragraph: claim, evidence, test, rewritten claim.</p>
+    <div class="obs locked" data-case="core">
+      <h3 class="oh">Your new claim</h3>
+      <p class="lead">In your notes, write your first claim and your new claim side by side. What changed? Which observation changed it most? Then check your thinking.</p>
+      <button class="act ghost" data-show="coreTake">I've written my new claim</button>
+      <div class="takeaway" id="coreTake"><b class="k">One way to say it</b>Earthquake waves have already shown what most of the inside of the Earth is like. Only the very centre is still undecided, and that is a “not yet”: it depends on getting sensors, and methods, that catch the waves passing through the centre.<b class="k">Takeaway</b>“We can't tell yet” is not the same as “we can never know.” When knowers can't decide, ask: is the problem the world, or where and how we're looking?</div>
+      <p class="write" style="margin-top:14px;font-style:italic;color:var(--accent);font-size:18px">Now write the paragraph on your sheet, built like the proton paragraph.</p>
     </div>
   </section>
 
@@ -312,8 +364,22 @@
   <section id="origin">
     <span class="tag">Case 3</span>
     <h2>The origin of life</h2>
-    <p class="body"><b>The model:</b> life began from non-living chemistry on the early Earth, more than 3.5 billion years ago. In the lab, under conditions they think the early Earth had, scientists can make some of the building blocks of life and show how some steps toward life <i>could</i> happen.</p>
-    <p class="body"><b>Your job:</b> pick a scenario for the early Earth and run the model. Try as many as you like. Then ask which one actually happened.</p>
+    <div class="claimbox">
+      <div class="lbl">The claim you are testing</div>
+      <div class="c">"Lab experiments can show us how life began."</div>
+      <p>Before you start: do you agree? In your notes, write yes, no or partly, and one reason. Then click your answer.</p>
+      <div class="commit" data-case="origin">
+        <button data-v="yes" aria-pressed="false">Yes</button>
+        <button data-v="partly" aria-pressed="false">Partly</button>
+        <button data-v="no" aria-pressed="false">No</button>
+      </div>
+      <div class="commitReply" id="originReply"></div>
+    </div>
+    <p class="body"><b>What scientists think:</b> life began from non-living chemicals on the early Earth, more than 3.5 billion years ago. To work out how, scientists recreate early-Earth conditions in the lab. There are several ideas about where it happened, from warm pools to deep-sea vents.</p>
+    <div class="obs1">
+    <h3 class="oh" style="font-size:24px;font-weight:600;margin:22px 0 4px">Observation 1: Run the scenarios</h3>
+    <p class="lead" style="font-size:18px;line-height:1.5;margin:6px 0 12px">Pick a scenario for the early Earth and run it. Try at least three. Read the grey line under each run. Then press “Which one actually happened?”</p>
+    </div>
     <div class="sim" style="background:var(--panel);padding:18px">
       <div style="max-width:380px;margin:0 auto 4px">
         <svg id="osvg" viewBox="0 0 380 196" role="img" aria-label="A flask runs a chosen early-Earth scenario; every scenario ends with the same picture of a self-copying chain.">
@@ -345,40 +411,38 @@
       <div class="count"><div class="n" id="oCount">0</div><div class="l">Scenarios run</div></div>
       <div class="count zero"><div class="n">1</div><div class="l">Times the real event occurred — unobserved</div></div>
     </div>
-    <div class="stage">
-      <h3>1 · Find the wall</h3>
-      <ol>
-          <li>In your own words: what does the model say happened, and what can the lab actually do?</li>
-          <li>You ran different scenarios, then asked which one really happened. What did the ending look like each time, and what does that tell you about what the model can show?</li>
-      </ol>
+    <div class="qs"><div class="lbl">Field notes: Observation 1</div><ul>
+      <li>Pick a scenario and run it. What does the picture show at the end?</li>
+      <li>Run two more scenarios. What do you notice about the ending each time?</li>
+      <li>Read the grey line under each run. Did the lab actually get as far as the picture shows?</li>
+      <li>If every start gives the same ending, can the ending tell you which start really happened?</li>
+    </ul></div>
+    <p class="lockmsg" id="originLock">Answer the claim at the top of the page to open Observations 2 and 3.</p>
+    <div class="obs locked" data-case="origin">
+      <h3 class="oh">Observation 2: How far the lab has got</h3>
+      <div class="evcard"><div class="lbl">Card 2</div><p>Scientists have made some of life's building blocks from simple chemicals in the lab: amino acids in 1952, and some of the building blocks of RNA in 2009. They have joined building blocks into short chains. But no experiment has gone all the way from simple chemicals to something alive.</p></div>
+    <div class="qs"><div class="lbl">Field notes</div><ul>
+      <li>What has the lab shown is possible: the whole journey, or some steps?</li>
+      <li>Is “this could have happened” the same as “this did happen”? Why not?</li>
+      <li class="rw">Rewrite the claim so it says what lab experiments really can show.</li>
+    </ul></div>
     </div>
-    <div class="stage">
-      <h3>2 · Make your first claim</h3>
-      <p>In your notes, write one sentence: what kind of limit is this, and why? Then pick the answer closest to your sentence. Don't play it safe. A claim you can test is worth more than one that can't be wrong.</p>
-      <div class="commit" data-case="origin">
-        <button data-v="notyet" aria-pressed="false">Not yet: better tools could get past it</button>
-        <button data-v="never" aria-pressed="false">Never: no tool could ever get past it</button>
-        <button data-v="depends" aria-pressed="false">It depends</button>
-      </div>
-      <div class="commitReply" id="originReply"></div>
+    <div class="obs locked" data-case="origin">
+      <h3 class="oh">Observation 3: What the rocks left behind</h3>
+      <div class="evcard"><div class="lbl">Card 3</div><p>Nobody recorded how life began, but the early Earth left some clues. Tiny crystals called zircons suggest there was liquid water on Earth about 4.4 billion years ago. Layered rocks built up by microbes are about 3.5 billion years old. And the famous 1952 experiment assumed the early air was full of gases that most scientists now think it didn't have, so that version of the story became less likely.</p></div>
+    <div class="qs"><div class="lbl">Field notes</div><ul>
+      <li>Can anyone replay how life began?</li>
+      <li>Can clues like these still make some stories more likely, and others less likely?</li>
+      <li>Is “we can't know exactly how it happened” the same as “we can't know anything about it”?</li>
+      <li class="rw">Rewrite the claim again.</li>
+    </ul></div>
     </div>
-    <div class="stage locked" id="originTest">
-      <h3>3 · Put it to the test</h3>
-      <p>Each card is something the tool didn't show you. Open them one at a time. For each card, write one line: does it fit your claim, or does it make your claim smaller?</p>
-      <div class="tcards">
-        <details class="tcard"><summary>How far the lab has got</summary><div class="tb"><p>Labs have made some of life's building blocks from simple chemicals: amino acids in 1952, and some of the building blocks of RNA in 2009. They have joined building blocks into short chains. Scientists have also made RNA molecules that can copy parts of other RNA, but they designed and selected those molecules themselves. No experiment has gone all the way from simple chemicals to anything alive.</p><p class="tq">What exactly has the lab shown is possible: the whole path, or some steps? Does your claim say which?</p></div></details>
-        <details class="tcard"><summary>Traces that survived</summary><div class="tb"><p>The event left no recording, but it left some traces. Tiny crystals called zircons suggest there was liquid water on Earth about 4.4 billion years ago. Layered rocks built by microbes (stromatolites) are about 3.5 billion years old. By comparing the genes of living things, biologists reconstruct the last common ancestor of all life; one 2024 study estimated it lived about 4.2 billion years ago, though others put it later.</p><p class="tq">The tool said what happened “is gone.” Is all of it gone? Which questions can these traces answer, and which can't they?</p></div></details>
-        <details class="tcard"><summary>Not every pathway is equally likely</summary><div class="tb"><p>The famous 1952 experiment assumed the early air was full of methane and ammonia. Most scientists now think the early air was mostly carbon dioxide and nitrogen, which makes far fewer building blocks, so that version became less likely. But in 2008, a team re-tested old samples from a volcano-style version of the same experiment and found many more building blocks, so eruptions might have made the right conditions nearby.</p><p class="tq">If nobody can replay the event, can evidence still make one pathway more or less likely? Is “we can't know which one happened” the same as “we can't rank them”?</p></div></details>
-        <details class="tcard"><summary>A second example</summary><div class="tb"><p>As far as we know, life began once, here. Space missions are searching Mars and icy moons such as Europa and Enceladus for signs of life. Finding life that began separately would give scientists a second example to compare.</p><p class="tq">What kind of evidence would a second example be? Would it tell us how life began on Earth, or something else?</p></div></details>
-      </div>
-    </div>
-    <div class="stage locked" id="originCut">
-      <h3>4 · Find the cut</h3>
-      <p>A cut is the line where your claim stops being true. Ask these four questions about your case. Answer the two that change your claim the most.</p>
-      <ol class="cuts"></ol>
-      <h3 style="margin-top:16px">5 · Rewrite your claim</h3>
-      <p>Write your claim twice in your notes. <b>Before:</b> your first claim. <b>After:</b> the claim that survives the cards. The after-claim should be smaller and more accurate: it says which part, what kind of evidence, according to what, or for whom. If it is the same size as before, go back to the cards.</p>
-      <p class="write">Now write the paragraph (Part D on your sheet), modelled on the proton paragraph: claim, evidence, test, rewritten claim.</p>
+    <div class="obs locked" data-case="origin">
+      <h3 class="oh">Your new claim</h3>
+      <p class="lead">In your notes, write your first claim and your new claim side by side. What changed? Which observation changed it most? Then check your thinking.</p>
+      <button class="act ghost" data-show="originTake">I've written my new claim</button>
+      <div class="takeaway" id="originTake"><b class="k">One way to say it</b>Lab experiments can show how life <i>could</i> have begun, not how it <i>did</i>. But clues in old rocks can still make some stories more likely than others, so we can know some things about how life began even if we can't know exactly.<b class="k">Takeaway</b>A model can show what could have happened. It can't show what did happen. But evidence can still make some possibilities more likely than others.</div>
+      <p class="write" style="margin-top:14px;font-style:italic;color:var(--accent);font-size:18px">Now write the paragraph on your sheet, built like the proton paragraph.</p>
     </div>
   </section>
 </div>
@@ -391,18 +455,11 @@ tabs.forEach(t=>t.addEventListener('click',()=>{
   secs.forEach(s=>s.classList.remove('active')); document.getElementById(t.dataset.t).classList.add('active');
 }));
 
-/* ---------- claim, test, cut ---------- */
-const CUTS=[
-  '<b>Which part?</b> Is the whole thing out of reach, or only part of it? Name the part we can know and the part we can\'t.',
-  '<b>What kind of evidence?</b> The tool only let you try more of the same. Is there a different kind of evidence that reaches further?',
-  '<b>\u201cNever\u201d according to what?</b> Does your claim rest on something scientists observed, or on a theory? What would have to change for the wall to move?',
-  '<b>For whom?</b> Is it out of reach for every knower, or only for knowers who need to share their evidence and have others check it?'
-];
-document.querySelectorAll('ol.cuts').forEach(ol=>{ol.innerHTML=CUTS.map(c=>'<li>'+c+'</li>').join('');});
+/* ---------- claim, observations, takeaway ---------- */
 const REPLY={
-  notyet:'Hold that claim. To test it, ask: what tool would it take? Do any of the cards below suggest one, or rule one out?',
-  never:'Hold that claim. To test it, ask: what does your \u201cnever\u201d rest on? Something scientists saw, or a theory? The cards below push on it.',
-  depends:'Good instinct, but \u201cit depends\u201d only becomes a claim when you say on what. Use the cards below to find out what it depends on.'
+  yes:'Hold that answer. Now test it: the observations below will push on it.',
+  partly:'Good. Keep track of which part you agree with. The observations below will help you say exactly which part.',
+  no:'Hold that answer. Now test it: does the tool agree with you? The observations below will help you say why.'
 };
 function store(k,v){try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v);}catch(e){return null;}}
 document.querySelectorAll('.commit').forEach(box=>{
@@ -410,12 +467,15 @@ document.querySelectorAll('.commit').forEach(box=>{
   function pick(v){
     btns.forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===v?'true':'false'));
     document.getElementById(key+'Reply').textContent=REPLY[v];
-    document.getElementById(key+'Test').classList.remove('locked');
-    document.getElementById(key+'Cut').classList.remove('locked');
+    document.querySelectorAll('.obs[data-case="'+key+'"]').forEach(o=>o.classList.remove('locked'));
+    const l=document.getElementById(key+'Lock'); if(l) l.style.display='none';
   }
-  btns.forEach(b=>b.addEventListener('click',()=>{pick(b.dataset.v); store('tok-method-reach-'+key,b.dataset.v);}));
-  const saved=store('tok-method-reach-'+key); if(saved&&REPLY[saved]) pick(saved);
+  btns.forEach(b=>b.addEventListener('click',()=>{pick(b.dataset.v); store('tok-method-reach-v2-'+key,b.dataset.v);}));
+  const saved=store('tok-method-reach-v2-'+key); if(saved&&REPLY[saved]) pick(saved);
 });
+document.querySelectorAll('[data-show]').forEach(b=>b.addEventListener('click',()=>{
+  document.getElementById(b.dataset.show).classList.add('show'); b.style.display='none';
+}));
 
 /* ---------- shared ---------- */
 function tween(dur,step,done){const t0=performance.now();(function f(n){let t=Math.min(1,(n-t0)/dur);step(t);t<1?requestAnimationFrame(f):(done&&done());})(performance.now());}
@@ -436,12 +496,12 @@ function mix(c1,c2,t){const p=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5
   }));
   function line(txt,cls){const d=document.createElement('div'); if(cls)d.className=cls; d.innerHTML=txt; log.appendChild(d); log.scrollTop=log.scrollHeight;}
   const beats=[ // [strengthThreshold, text]
-    [0.80,'Strong signal. Mapping mass, spin, orbital motion. The exterior model builds cleanly.'],
-    [0.60,'Signal arriving stretched — redshift ×2. Still clear.'],
-    [0.45,'Redshift ×4. Signal dimming and slowing.'],
-    [0.30,'Redshift ×10. Each reading takes longer to climb out to us.'],
-    [0.18,'Redshift ×30. Signal very faint.'],
-    [0.07,'Redshift ×100. The signal is nearly frozen at the horizon.']
+    [0.80,'Strong signal. Measuring the black hole from outside: its mass, its spin, how things orbit it.'],
+    [0.60,'Signal arriving stretched: gravity is pulling its waves longer (this is called redshift). Stretched ×2. Still clear.'],
+    [0.45,'Stretched ×4. Signal dimming and slowing.'],
+    [0.30,'Stretched ×10. Each reading takes longer to climb out to us.'],
+    [0.18,'Stretched ×30. Signal very faint.'],
+    [0.07,'Stretched ×100. The signal is nearly frozen at the horizon.']
   ];
   launch.addEventListener('click',()=>{
     if(busy)return; busy=true; launch.disabled=true;
@@ -463,7 +523,7 @@ function mix(c1,c2,t){const p=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5
       } else { beam.setAttribute('opacity','0'); }
     },()=>{
       // crossed horizon
-      line('&#9888; SIGNAL LOST. At the horizon the redshift becomes infinite — light itself cannot climb out. The probe is now inside; nothing it sends will ever reach us.','lost');
+      line('&#9888; SIGNAL LOST. At the horizon the stretching becomes infinite — light itself cannot climb out. The probe is now inside; nothing it sends will ever reach us.','lost');
       if(ups.hull||ups.tx||ups.fast) line('Hull intact, transmitter maxed, speed irrelevant — and it changed <b>nothing</b>. None of these upgrades beats the speed of light, and according to general relativity nothing can.','lost');
       line('Readings returned from inside the horizon: 0.','dim');
       tween(700,t=>{ probe.setAttribute('opacity',(1-t).toFixed(2)); },()=>{ busy=false; launch.disabled=false; });
@@ -664,7 +724,7 @@ function mix(c1,c2,t){const p=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5
   whichBtn.addEventListener('click',()=>{
     if(n===0){reveal.innerHTML='Run a scenario first. See what the model shows before asking what it can\'t.';reveal.classList.add('show');return;}
     const k=tried.size;
-    reveal.innerHTML='You ran <b>'+k+'</b> different scenario'+(k===1?'':'s')+', and '+(k===1?'it':'every one')+' ended with the <b>same picture</b>: a self-copying chain. Like the two Earths with the same readings, different starting points give the same ending, so the ending can\'t tell you which start was real. And the picture is the model\'s, not a recording: look at the grey lines. No lab has gone all the way from simple chemicals to a self-copying system. The real event happened <b>once</b>, more than 3.5 billion years ago. Does that put everything about it out of reach? Make your claim below, then test it.'+(k<2?' <i>(Try another scenario first and watch the ending.)</i>':'');
+    reveal.innerHTML='You ran <b>'+k+'</b> different scenario'+(k===1?'':'s')+', and '+(k===1?'it':'every one')+' ended with the <b>same picture</b>: a self-copying chain. Like the two Earths with the same readings, different starting points give the same ending, so the ending can\'t tell you which start was real. And the picture is the model\'s, not a recording: look at the grey lines. No lab has gone all the way from simple chemicals to a self-copying system. The real event happened <b>once</b>, more than 3.5 billion years ago. So what can lab experiments really show? Write your answer, then open Observation 2.'+(k<2?' <i>(Try another scenario first and watch the ending.)</i>':'');
     reveal.classList.add('show');
   });
 })();
