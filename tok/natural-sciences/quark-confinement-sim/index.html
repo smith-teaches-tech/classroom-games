@@ -207,7 +207,7 @@
   const NS='http://www.w3.org/2000/svg';
 
   const CX=300, CY=230, START_X=348, REST=48, MAXD=420;
-  let dragX=START_X, dragY=CY, phase='idle', attempts=0, particles=0;
+  let dragX=START_X, dragY=CY, phase='idle', attempts=0, particles=0, hold=false;
 
   const slots=[
     {x:120,y:80},{x:235,y:70},{x:355,y:84},{x:545,y:72},{x:665,y:84},{x:780,y:74},
@@ -233,8 +233,8 @@
     fill.style.width=(e*100).toFixed(1)+'%';
     fill.style.background=mix(E1,E2,e);
     if(phase==='idle'){
-      if(e<0.02) narr.innerHTML='Grab the glowing quark and pull it away from the proton.';
-      else if(e<0.5) narr.innerHTML='Pulling\u2026 the gluon field between the quarks is storing energy.';
+      if(e<0.02){ if(!hold) narr.innerHTML='Grab the glowing quark and pull it away from the proton.'; }
+      else if((hold=false)||e<0.5) narr.innerHTML='Pulling\u2026 the gluon field between the quarks is storing energy.';
       else if(e<0.9) narr.innerHTML='The field is not weakening \u2014 the harder you pull, the <b>more</b> energy it holds.';
       else narr.innerHTML='Almost \u2014 the field is about to snap\u2026';
     }
@@ -302,10 +302,11 @@
         tube.setAttribute('opacity','1');
         dragX=START_X; dragY=CY; tr(drag,dragX,dragY);
         phase='idle'; autoBtn.disabled=false;
-        narr.innerHTML='A fresh proton. Pull again \u2014 as hard as you like. Watch the count that never moves.';
+        hold=true;
+        narr.innerHTML='Two new particles flew off \u2014 a baryon and a meson. The quark you pulled is now <b>bound inside one of them</b>. Still not one free quark.<br><span style="font-size:17px;color:var(--muted)">A fresh proton is ready. Pull again whenever you like, as hard as you like, and watch the count that never moves.</span>';
         update();
-      },2000);
-    },1600);
+      },4500);
+    },3500);
   }
 
   function clientToVB(e){
