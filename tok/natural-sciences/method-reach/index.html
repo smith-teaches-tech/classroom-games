@@ -71,6 +71,44 @@
   .stems li{font-size:18px;line-height:1.5;margin-bottom:9px}
   .stems .write{margin-top:14px;font-size:18px;font-style:italic;color:var(--accent)}
   .note{font-size:16px;color:var(--muted);font-style:italic;margin-top:10px}
+  .exemplar .test{background:#f3e7ea;border-radius:3px;padding:0 2px}
+  .exemplar .after{background:#e3edf2;border-radius:3px;padding:0 2px}
+  .beforeafter{display:grid;gap:8px;margin:14px 0 4px}
+  .beforeafter div{font-size:17px;line-height:1.45;background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 14px}
+  .beforeafter b{font-family:"JetBrains Mono",monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:500;color:var(--muted);display:block;margin-bottom:3px}
+  .stage{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin-top:16px}
+  .stage h3{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500;margin-bottom:10px}
+  .stage p,.stage li{font-size:18px;line-height:1.5}
+  .stage ol{margin:0 0 0 20px;padding:0}
+  .stage li{margin-bottom:9px}
+  .stage.locked{display:none}
+  .commit{display:flex;flex-wrap:wrap;gap:9px;margin:12px 0 0}
+  .commit button{font-family:"JetBrains Mono",monospace;font-size:12px;letter-spacing:.03em;background:transparent;color:var(--ink);
+    border:1px solid var(--line);border-radius:6px;padding:10px 14px;cursor:pointer;text-align:left}
+  .commit button[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .commitReply{font-size:17px;font-style:italic;color:var(--accent);margin-top:12px;min-height:1em}
+  .tcards{display:grid;gap:10px;margin-top:12px}
+  details.tcard{background:#fff;border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:7px;padding:0}
+  details.tcard summary{cursor:pointer;padding:11px 14px;font-size:18px;font-weight:600;list-style:none}
+  details.tcard summary::-webkit-details-marker{display:none}
+  details.tcard summary::before{content:"+ ";font-family:"JetBrains Mono",monospace;color:var(--accent)}
+  details.tcard[open] summary::before{content:"\2212 "}
+  details.tcard .tb{padding:0 14px 12px;font-size:17px;line-height:1.5}
+  details.tcard .tq{margin-top:8px;font-style:italic;color:var(--accent)}
+  .cuts li b{font-weight:600}
+  .stage .write{margin-top:12px;font-style:italic;color:var(--accent)}
+  .context{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 18px;margin:14px 0}
+  .context p{font-size:18px;line-height:1.5;margin:6px 0}
+  .ab{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 4px}
+  .ab div{background:#fff;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:16.5px;line-height:1.4}
+  .ab b{display:block;font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;color:var(--muted);margin-bottom:3px}
+  #coresvg{touch-action:none;cursor:crosshair}
+  .readings{overflow-x:auto;margin-top:12px}
+  .readings table{border-collapse:collapse;width:100%;font-family:"JetBrains Mono",monospace;font-size:12px}
+  .readings th,.readings td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;white-space:nowrap}
+  .readings th{font-weight:500;color:var(--muted);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase}
+  .readings .same{color:var(--good)}
+  @media(max-width:560px){.ab{grid-template-columns:1fr}}
   @media(max-width:560px){h1{font-size:29px}h2{font-size:23px}p.body,.exemplar{font-size:17px}.stems li{font-size:16px}}
 </style>
 </head>
@@ -78,7 +116,7 @@
 <div class="wrap">
   <div class="kq">Unit 2 · Natural Sciences · L3 — what the method can't reach</div>
   <h1>Where the method can't reach</h1>
-  <p class="lede">You pulled a quark and could never free one. Here are three more places science reaches a wall. Pick one, find the wall yourself, then write about it.</p>
+  <p class="lede">You pulled a quark and could never free one. Here are three more places science reaches a wall. Pick one, find the wall, make a claim about it, then put your claim to the test.</p>
 
   <div class="tabs" role="tablist">
     <button class="tab" role="tab" aria-selected="true" data-t="ex">How to write it</button>
@@ -93,17 +131,23 @@
     <h2>How to write it</h2>
     <p class="body"><b>Knowledge question:</b> How do the methods of the natural sciences set the limits of what science can know?</p>
     <div class="card exemplar">
-      <span class="claim">Scientific knowledge of the inside of a proton is a model inferred entirely from the outside — and the very force that builds the knowledge is also what seals it shut.</span>
-      Physicists describe the proton as three quarks bound by the strong force, yet no one has ever observed a quark on its own: pull two apart and the energy stored in the field becomes a new quark–antiquark pair, so every attempt yields <i>more</i> particles and never a single free one. Everything we know of the interior is therefore reconstructed indirectly, from how protons scatter when they are smashed together — from the debris, never from a direct look. The limit this reveals is not the ordinary "we haven't built a big enough collider yet" — a more powerful machine would not help, because a lone quark is unobservable <i>in principle</i>, not merely in practice. That is a limit of <b>scope</b>: a boundary built into the method itself, not a gap awaiting better tools. And because the model is read off external behaviour rather than from seeing the constituents directly, the evidence constrains the model without ever singling out the mechanism by direct observation. The implication is not that the quark model is a guess; it is among the most precisely tested knowledge humans possess. What lies past the method's reach is <i>direct certainty about the interior</i> — the lid can never be lifted. The knowledge is genuine, and bounded; and the limit is itself part of what we know — the physics that explains the proton is the same physics that says a lone quark cannot exist. Science doesn't stumble onto this wall; it predicts it.
+      <span class="claim">Scientific knowledge of what is inside a proton is built without anyone ever seeing inside one.</span>
+      Physicists describe the proton as three quarks held together by the strong force, but no knower has ever detected a single quark on its own. Pull two quarks apart and the energy between them turns into a new pair of quarks, so every attempt produces more particles, never a lone one, and a bigger collider would only make more of them. So it is tempting to claim that we can never know what is inside a proton.
+      <span class="test">But in 1968, physicists at Stanford fired electrons at protons and found that some bounced back sharply, as if they had hit tiny, hard points inside. Rutherford discovered the nucleus of the atom the same way in 1911: no one saw it, but the way particles bounced off it showed it was there. Most knowledge in physics is built like this. No one has seen an electron either; physicists see the tracks it leaves.</span>
+      <span class="after">The first claim mixed up seeing and knowing, so it gets smaller: what is out of reach is <i>direct observation</i> of a lone quark, not knowledge of quarks. Indirect <b>evidence</b> can strongly <b>justify</b> a claim, but it is always an inference, so a knower's <b>certainty</b> can only be as strong as the reasoning that links the evidence to the thing.</span>
     </div>
-    <p class="body" style="margin-top:6px"><b>Why this works</b> — don't stop at the facts. Each part earns its place:</p>
+    <div class="beforeafter">
+      <div><b>Claim before the test</b>We can never know what is inside a proton, because we can never see a quark.</div>
+      <div><b>Claim after the test</b>We can never directly observe a lone quark, but indirect evidence can still justify knowing quarks are there. The limit is on seeing, not on knowing.</div>
+    </div>
+    <p class="body" style="margin-top:6px"><b>Why this works</b>: it doesn't stop at the facts, and it doesn't stop at its first claim.</p>
     <ul class="anatomy">
-      <li><b>A claim on top</b>, not a fact — it says something about <i>how the knowledge is built</i>. The physics comes next, as evidence <i>for</i> the claim.</li>
-      <li><b>Evidence, subordinated</b> — confinement and scattering support "built from the outside"; they aren't the point.</li>
-      <li><b>The edge, named in use</b> — it shows the difference between "we haven't yet" and "we never can," then names it.</li>
-      <li><b>Implications</b> — what it means for <i>how to hold the knowledge</i>: genuine, well-tested, <i>and</i> bounded. Not a guess.</li>
+      <li><b>A claim on top</b> <span style="background:#efe7d7;padding:0 3px">(shaded)</span>, about <i>how the knowledge is built</i>, not a fact about the proton.</li>
+      <li><b>Evidence, kept short</b>: why no one can pull a quark free. Three sentences, no physics lecture.</li>
+      <li><b>The test</b> <span style="background:#f3e7ea;padding:0 3px">(pink)</span>: it starts from a detail that doesn't fit the first claim (the 1968 experiment, Rutherford's nucleus, the electron's tracks). Without it, the paragraph is support, not analysis.</li>
+      <li><b>The rewritten claim</b> <span style="background:#e3edf2;padding:0 3px">(blue)</span>: smaller and more accurate. It names the cut (seeing vs knowing, direct vs indirect) and says what that means for how much <b>certainty</b> a knower should have.</li>
     </ul>
-    <p class="note">Your case will have a different wall. Your job is to find it, then write a paragraph with the same shape.</p>
+    <p class="note">Your case will have a different wall and a different test. Your job is to find both, then write a paragraph with the same shape.</p>
   </section>
 
   <!-- ============ BLACK HOLE ============ -->
@@ -147,16 +191,40 @@
       <div class="count"><div class="n" id="bhOut">0</div><div class="l">Readings from outside</div></div>
       <div class="count zero"><div class="n" id="bhIn">0</div><div class="l">Readings from inside the horizon</div></div>
     </div>
-    <div class="stems">
-      <h3>Before you write — think it through</h3>
+    <div class="stage">
+      <h3>1 · Find the wall</h3>
       <ol>
-        <li>In your own words: what does the model say a black hole is, and how is it built?</li>
-        <li>What can we observe to build that model? What can we never observe directly?</li>
-        <li>You tried to get a signal back from inside — even with upgrades. What happened every time, and what did the signal <i>do</i> as the probe fell?</li>
-        <li>Is this a "we haven't managed it <i>yet</i>," or something impossible no matter the technology? You changed the probe — did it change the result? How does that tell you which kind of limit this is?</li>
-        <li>So what does the model give you, and what does it leave permanently out of reach?</li>
+          <li>In your own words: what does the model say a black hole is, and what can scientists actually observe to build it?</li>
+          <li>You tried to get a signal back from inside, with upgrades. What happened every time, and what did the upgrades change?</li>
       </ol>
-      <p class="write">Now write a paragraph answering the knowledge question, modelled on the quark example.</p>
+    </div>
+    <div class="stage">
+      <h3>2 · Make your first claim</h3>
+      <p>In your notes, write one sentence: what kind of limit is this, and why? Then pick the answer closest to your sentence. Don't play it safe. A claim you can test is worth more than one that can't be wrong.</p>
+      <div class="commit" data-case="bh">
+        <button data-v="notyet" aria-pressed="false">Not yet: better tools could get past it</button>
+        <button data-v="never" aria-pressed="false">Never: no tool could ever get past it</button>
+        <button data-v="depends" aria-pressed="false">It depends</button>
+      </div>
+      <div class="commitReply" id="bhReply"></div>
+    </div>
+    <div class="stage locked" id="bhTest">
+      <h3>3 · Put it to the test</h3>
+      <p>Each card is something the tool didn't show you. Open them one at a time. For each card, write one line: does it fit your claim, or does it make your claim smaller?</p>
+      <div class="tcards">
+        <details class="tcard"><summary>The edge moved</summary><div class="tb"><p>Until 2015, no one had recorded anything from two black holes colliding. That year the LIGO detectors picked up the ripples in space from two black holes merging. In 2019 the Event Horizon Telescope took the first picture of a black hole's shadow, in the galaxy M87.</p><p class="tq">New technology moved something. What did it move, and what didn't it move?</p></div></details>
+        <details class="tcard"><summary>What the “never” rests on</summary><div class="tb"><p>The event horizon is a prediction of Einstein's theory of gravity, general relativity. The theory has passed every test near black holes so far, including the two above. But the same theory says that at the very centre, matter is crushed to infinite density. Most physicists take that as a sign the theory stops working there.</p><p class="tq">Your claim rests on a theory. Which part of that theory has been tested, and which part do physicists themselves doubt?</p></div></details>
+        <details class="tcard"><summary>A knower who goes in</summary><div class="tb"><p>According to general relativity, an astronaut falling into a very large black hole would cross the horizon without feeling anything special at that moment. For a while, they could look around inside. They could never send a message back out.</p><p class="tq">Is the inside out of reach for every knower, or only out of reach for shared knowledge that others can check? Does that difference matter?</p></div></details>
+        <details class="tcard"><summary>Something does come out</summary><div class="tb"><p>In 1974 Stephen Hawking calculated that black holes should slowly give off radiation and, over enormous times, evaporate. No one has detected this radiation from a real black hole yet. Physicists still argue about whether it carries scrambled information about what fell in. For a black hole the mass of the Sun, evaporating would take about 10<sup>67</sup> years, far longer than the universe has existed.</p><p class="tq">If the information does come out, is the inside “never” knowable, or “not for an impossibly long time”? Does that difference matter for knowledge?</p></div></details>
+      </div>
+    </div>
+    <div class="stage locked" id="bhCut">
+      <h3>4 · Find the cut</h3>
+      <p>A cut is the line where your claim stops being true. Ask these four questions about your case. Answer the two that change your claim the most.</p>
+      <ol class="cuts"></ol>
+      <h3 style="margin-top:16px">5 · Rewrite your claim</h3>
+      <p>Write your claim twice in your notes. <b>Before:</b> your first claim. <b>After:</b> the claim that survives the cards. The after-claim should be smaller and more accurate: it says which part, what kind of evidence, according to what, or for whom. If it is the same size as before, go back to the cards.</p>
+      <p class="write">Now write the paragraph (Part D on your sheet), modelled on the proton paragraph: claim, evidence, test, rewritten claim.</p>
     </div>
   </section>
 
@@ -164,56 +232,79 @@
   <section id="core">
     <span class="tag">Case 2</span>
     <h2>The Earth's core</h2>
-    <p class="body"><b>The model:</b> a solid iron inner sphere inside a molten outer layer. The broad picture is well supported — but no one has ever been there. The deepest borehole reaches about 12 km; the core begins nearly 2,900 km down. We read the interior only from how earthquake waves arrive at detectors on the far side.</p>
-    <p class="body"><b>Your job:</b> a quake has happened. Below are the wave arrival times we actually measured. Pick an interior that produces them — then try to prove which interior is the real one.</p>
+    <div class="context">
+      <p><b>How anyone sees inside the Earth:</b> no one has ever been there. The deepest borehole reaches about 12 km; the core begins about 2,900 km down. So seismologists use earthquakes. Earthquake waves speed up, slow down and bend as they pass through different materials, so the time a wave takes to reach a sensor carries information about everything it passed through.</p>
+      <p><b>What is well supported:</b> a rocky mantle, a liquid outer core, and a solid inner core at the centre.</p>
+      <p><b>What is still argued:</b> the very centre. Seismologists have proposed two interiors, and both have to match the same earthquake records.</p>
+      <div class="ab">
+        <div><b>Interior A</b>The inner core is one solid ball of iron, the same all the way through.</div>
+        <div><b>Interior B</b>The inner core has a separate innermost core inside it, where the iron crystals line up differently.</div>
+      </div>
+      <p><b>Your job:</b> find a measurement that tells A from B. Click the surface of either Earth to place a sensor (up to 8). Drag a sensor to move it; double-click (or double-tap) it to remove it. Choose a quake size, set it off, and compare the readings. Then move your sensors and try again.</p>
+    </div>
     <div class="sim" style="background:var(--panel);padding:14px">
-      <svg id="coresvg" viewBox="0 0 760 372" role="img" aria-label="Two Earths with different interiors produce identical surface readings.">
-        <!-- EARTH A -->
-        <text x="200" y="22" text-anchor="middle" fill="#2a2620" font-family="Cormorant Garamond,serif" font-size="18" font-weight="600">Interior A</text>
-        <text x="200" y="38" text-anchor="middle" fill="#6f685b" font-family="JetBrains Mono,monospace" font-size="10">small dense core</text>
-        <circle cx="200" cy="150" r="92" fill="#efe7d7" stroke="#d8d0c0"/>
-        <circle cx="200" cy="150" r="34" fill="#e0a226" stroke="#cb8f2c"/>
-        <polygon points="200,52 192,66 208,66" fill="#c33a20"/>
-        <!-- EARTH B -->
-        <text x="560" y="22" text-anchor="middle" fill="#2a2620" font-family="Cormorant Garamond,serif" font-size="18" font-weight="600">Interior B</text>
-        <text x="560" y="38" text-anchor="middle" fill="#6f685b" font-family="JetBrains Mono,monospace" font-size="10">large layered core</text>
-        <circle cx="560" cy="150" r="92" fill="#efe7d7" stroke="#d8d0c0"/>
-        <circle cx="560" cy="150" r="62" fill="none" stroke="#cbb48c" stroke-dasharray="4 4"/>
-        <circle cx="560" cy="150" r="30" fill="#e0a226" stroke="#cb8f2c"/>
-        <polygon points="560,52 552,66 568,66" fill="#c33a20"/>
-        <!-- wave fx (rays, dots, detector flashes) injected by script -->
+      <svg id="coresvg" viewBox="0 0 760 380" role="img" aria-label="Two Earths with different centres. Sensors placed on the surface record the same arrival times on both.">
+        <text x="200" y="20" text-anchor="middle" fill="#2a2620" font-family="Cormorant Garamond,serif" font-size="18" font-weight="600">Interior A</text>
+        <text x="200" y="35" text-anchor="middle" fill="#6f685b" font-family="JetBrains Mono,monospace" font-size="10">inner core: one piece</text>
+        <text x="560" y="20" text-anchor="middle" fill="#2a2620" font-family="Cormorant Garamond,serif" font-size="18" font-weight="600">Interior B</text>
+        <text x="560" y="35" text-anchor="middle" fill="#6f685b" font-family="JetBrains Mono,monospace" font-size="10">inner core with an innermost core</text>
+        <g id="earthA"></g><g id="earthB"></g>
         <g id="fxA"></g><g id="fxB"></g>
-        <!-- seismograms: what the surface actually records -->
-        <text x="380" y="296" text-anchor="middle" fill="#6f685b" font-family="JetBrains Mono,monospace" font-size="10.5">what the surface detectors actually record</text>
-        <line x1="112" y1="330" x2="288" y2="330" stroke="#cbb48c"/>
-        <line x1="472" y1="330" x2="648" y2="330" stroke="#cbb48c"/>
-        <g id="blipA"></g><g id="blipB"></g>
-        <text x="200" y="356" text-anchor="middle" fill="#9a9486" font-family="JetBrains Mono,monospace" font-size="9.5">reading from Earth A</text>
-        <text x="560" y="356" text-anchor="middle" fill="#9a9486" font-family="JetBrains Mono,monospace" font-size="9.5">reading from Earth B</text>
+        <g id="sensA"></g><g id="sensB"></g>
+        <text x="380" y="296" text-anchor="middle" fill="#6f685b" font-family="JetBrains Mono,monospace" font-size="10.5">what the sensors record (arrival time after the quake)</text>
+        <g id="stripA"></g><g id="stripB"></g>
       </svg>
     </div>
     <div class="controls">
-      <button class="act" id="cSend">Send the seismic waves</button>
-      <button class="act ghost" id="cBig">Trigger a bigger quake</button>
-      <button class="act ghost" id="cMove">Move the sensors</button>
-      <button class="act ghost" id="cAddDet">Add a detector</button>
-      <button class="act ghost" id="cReset">Reset</button>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)">quake size:</span>
+      <button class="chip" data-q="1" aria-pressed="false">Small</button>
+      <button class="chip" data-q="2" aria-pressed="true">Medium</button>
+      <button class="chip" data-q="3" aria-pressed="false">Large</button>
+      <button class="act" id="cSend">Set off the quake</button>
+      <button class="act ghost" id="cClear">Clear sensors</button>
     </div>
+    <p class="note" id="coreNote">Place at least one sensor on either Earth, then set off a quake.</p>
+    <div class="readings" id="cReadings"></div>
     <div class="counts">
-      <div class="count"><div class="n" id="cFit">2</div><div class="l">Interiors that fit the readings</div></div>
-      <div class="count zero"><div class="n" id="cSep">0</div><div class="l">Measurements that tell them apart</div></div>
+      <div class="count"><div class="n" id="cSens">0</div><div class="l">Sensors placed</div></div>
+      <div class="count"><div class="n" id="cQuakes">0</div><div class="l">Quakes set off</div></div>
+      <div class="count"><div class="n">2</div><div class="l">Interiors that fit the readings</div></div>
+      <div class="count zero"><div class="n">0</div><div class="l">Measurements that tell them apart</div></div>
     </div>
-    <p class="note" id="coreNote">Two Earths with <b>different</b> insides. Send the waves and watch what each one records at the surface.</p>
-    <div class="stems">
-      <h3>Before you write — think it through</h3>
+    <div class="stage">
+      <h3>1 · Find the wall</h3>
       <ol>
-        <li>In your own words: what does the model say is inside the Earth, and how is it built?</li>
-        <li>What do we actually measure? What can we never do directly?</li>
-        <li>You tried to find a measurement that tells interior A from interior B. What happened — and what did adding detectors or a bigger quake change?</li>
-        <li>Is this "we need more seismometers," or something more data of the same kind can never fix? How can you tell which?</li>
-        <li>So what does the data give you, and what does it leave undecided?</li>
+          <li>In your own words: what do interior A and interior B each say is at the centre of the Earth, and what do scientists actually measure to decide between them?</li>
+          <li>You placed sensors, moved them, and set off quakes big and small. Did any measurement tell interior A from interior B? What did changing the setup change, and what didn't it change?</li>
       </ol>
-      <p class="write">Now write a paragraph answering the knowledge question, modelled on the quark example.</p>
+    </div>
+    <div class="stage">
+      <h3>2 · Make your first claim</h3>
+      <p>In your notes, write one sentence: what kind of limit is this, and why? Then pick the answer closest to your sentence. Don't play it safe. A claim you can test is worth more than one that can't be wrong.</p>
+      <div class="commit" data-case="core">
+        <button data-v="notyet" aria-pressed="false">Not yet: better tools could get past it</button>
+        <button data-v="never" aria-pressed="false">Never: no tool could ever get past it</button>
+        <button data-v="depends" aria-pressed="false">It depends</button>
+      </div>
+      <div class="commitReply" id="coreReply"></div>
+    </div>
+    <div class="stage locked" id="coreTest">
+      <h3>3 · Put it to the test</h3>
+      <p>Each card is something the tool didn't show you. Open them one at a time. For each card, write one line: does it fit your claim, or does it make your claim smaller?</p>
+      <div class="tcards">
+        <details class="tcard"><summary>More of the same did settle some things</summary><div class="tb"><p>Earthquake waves alone found the core. In 1906 Richard Oldham noticed that waves passing deep through the Earth arrived late, and argued for a core. Beno Gutenberg placed its edge about 2,900 km down. One kind of wave, the S-wave, cannot travel through liquid, and S-waves never come out the far side of the core, so the outer core is liquid. In 1936 Inge Lehmann found faint waves arriving where none should be, and argued there was a separate inner core.</p><p class="tq">The tool said more detectors never break the tie. Which questions about the core did more earthquake data settle?</p></div></details>
+        <details class="tcard"><summary>What is still argued</summary><div class="tb"><p>Interiors A and B stand for a real argument. Two seismologists proposed a separate innermost core in 2002. In 2023 a team in Australia reported new evidence for it, using waves that bounced back and forth through the whole Earth up to five times. Other seismologists are not yet convinced. Part of the problem is placement: waves that cross the very centre come out on the far side of the planet from the quake, most earthquakes happen in a few belts, and most sensors are on land, so few sensors sit in the right places.</p><p class="tq">Is this a “never” or a “not yet”? What would it take to settle it: more of the same data, sensors in new places, or a new method?</p></div></details>
+        <details class="tcard"><summary>A different kind of evidence</summary><div class="tb"><p>Some evidence reaches the core without earthquake waves. The Earth as a whole is about twice as dense as surface rock, so something very dense must be deep inside. Earth's magnetic field needs a layer of moving liquid metal. Lab machines can squeeze iron to the pressures of the core and measure how it behaves. And in 2018, physicists used neutrinos (tiny particles that pass straight through the planet), caught by the IceCube detector in Antarctica, to measure the Earth's density and mass without a single earthquake wave.</p><p class="tq">Is this more of the same data, or a different kind? Can a different kind of evidence break a tie that earthquake waves can't?</p></div></details>
+        <details class="tcard"><summary>About this tool</summary><div class="tb"><p>In this tool, the two interiors give exactly the same readings everywhere except the far side, and even there the tool can only flag the problem, not settle it. Someone built it that way, to stand for the real argument.</p><p class="tq">Who decided the readings would match: the Earth, or the person who built the tool? What can a simulation like this show you about the real core, and what can't it show you?</p></div></details>
+      </div>
+    </div>
+    <div class="stage locked" id="coreCut">
+      <h3>4 · Find the cut</h3>
+      <p>A cut is the line where your claim stops being true. Ask these four questions about your case. Answer the two that change your claim the most.</p>
+      <ol class="cuts"></ol>
+      <h3 style="margin-top:16px">5 · Rewrite your claim</h3>
+      <p>Write your claim twice in your notes. <b>Before:</b> your first claim. <b>After:</b> the claim that survives the cards. The after-claim should be smaller and more accurate: it says which part, what kind of evidence, according to what, or for whom. If it is the same size as before, go back to the cards.</p>
+      <p class="write">Now write the paragraph (Part D on your sheet), modelled on the proton paragraph: claim, evidence, test, rewritten claim.</p>
     </div>
   </section>
 
@@ -221,11 +312,11 @@
   <section id="origin">
     <span class="tag">Case 3</span>
     <h2>The origin of life</h2>
-    <p class="body"><b>The model:</b> life began from non-living chemistry on the early Earth, roughly 3.8 billion years ago. In the lab, under early-Earth conditions, scientists can grow the building blocks of life and show how self-replicating systems <i>could</i> form.</p>
-    <p class="body"><b>Your job:</b> run the experiment and find out how life actually began. Run it as many times as you need.</p>
+    <p class="body"><b>The model:</b> life began from non-living chemistry on the early Earth, more than 3.5 billion years ago. In the lab, under conditions they think the early Earth had, scientists can make some of the building blocks of life and show how some steps toward life <i>could</i> happen.</p>
+    <p class="body"><b>Your job:</b> pick a scenario for the early Earth and run the model. Try as many as you like. Then ask which one actually happened.</p>
     <div class="sim" style="background:var(--panel);padding:18px">
       <div style="max-width:380px;margin:0 auto 4px">
-        <svg id="osvg" viewBox="0 0 380 196" role="img" aria-label="A spark-discharge flask runs early-Earth chemistry; molecules assemble into a self-copying chain.">
+        <svg id="osvg" viewBox="0 0 380 196" role="img" aria-label="A flask runs a chosen early-Earth scenario; every scenario ends with the same picture of a self-copying chain.">
           <defs><clipPath id="bk"><path d="M132,48 L132,166 Q132,180 146,180 L214,180 Q228,180 228,166 L228,48 Z"/></clipPath></defs>
           <rect x="138" y="118" width="84" height="62" fill="#d9c39a" opacity="0.85" clip-path="url(#bk)"/>
           <g id="oBub" clip-path="url(#bk)"></g>
@@ -238,27 +329,56 @@
           <text id="oEnv" x="180" y="194" text-anchor="middle" fill="#6f685b" font-family="JetBrains Mono,monospace" font-size="10.5">early-Earth conditions</text>
         </svg>
       </div>
-      <div class="pathways" id="oPaths"><p class="note" style="margin:0">No runs yet. Press "Run the experiment" to begin.</p></div>
+      <div class="pathways" id="oPaths"><p class="note" style="margin:0">No runs yet. Pick a scenario below to begin.</p></div>
       <div class="reveal" id="oReveal"></div>
     </div>
     <div class="controls">
-      <button class="act" id="oRun">Run the experiment</button>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)">run a scenario:</span>
+      <button class="chip" data-sc="0">Warm tidal pools</button>
+      <button class="chip" data-sc="1">Hydrothermal vents</button>
+      <button class="chip" data-sc="2">Clay templates</button>
+      <button class="chip" data-sc="3">Ice channels</button>
+      <button class="chip" data-sc="4">Volcanic ponds</button>
       <button class="act ghost" id="oWhich">Which one actually happened?</button>
     </div>
     <div class="counts">
-      <div class="count"><div class="n" id="oCount">0</div><div class="l">Plausible pathways demonstrated</div></div>
+      <div class="count"><div class="n" id="oCount">0</div><div class="l">Scenarios run</div></div>
       <div class="count zero"><div class="n">1</div><div class="l">Times the real event occurred — unobserved</div></div>
     </div>
-    <div class="stems">
-      <h3>Before you write — think it through</h3>
+    <div class="stage">
+      <h3>1 · Find the wall</h3>
       <ol>
-        <li>In your own words: what does the model say happened, and how is it studied?</li>
-        <li>What can the experiment actually show? What can it never show?</li>
-        <li>You ran it again and again, then asked which pathway really happened. What did each new run give you — and could any number of runs answer the question?</li>
-        <li>Is this "we need a better experiment," or something no experiment can reach? How can you tell which?</li>
-        <li>So what does the lab work give you, and what stays permanently out of reach?</li>
+          <li>In your own words: what does the model say happened, and what can the lab actually do?</li>
+          <li>You ran different scenarios, then asked which one really happened. What did the ending look like each time, and what does that tell you about what the model can show?</li>
       </ol>
-      <p class="write">Now write a paragraph answering the knowledge question, modelled on the quark example.</p>
+    </div>
+    <div class="stage">
+      <h3>2 · Make your first claim</h3>
+      <p>In your notes, write one sentence: what kind of limit is this, and why? Then pick the answer closest to your sentence. Don't play it safe. A claim you can test is worth more than one that can't be wrong.</p>
+      <div class="commit" data-case="origin">
+        <button data-v="notyet" aria-pressed="false">Not yet: better tools could get past it</button>
+        <button data-v="never" aria-pressed="false">Never: no tool could ever get past it</button>
+        <button data-v="depends" aria-pressed="false">It depends</button>
+      </div>
+      <div class="commitReply" id="originReply"></div>
+    </div>
+    <div class="stage locked" id="originTest">
+      <h3>3 · Put it to the test</h3>
+      <p>Each card is something the tool didn't show you. Open them one at a time. For each card, write one line: does it fit your claim, or does it make your claim smaller?</p>
+      <div class="tcards">
+        <details class="tcard"><summary>How far the lab has got</summary><div class="tb"><p>Labs have made some of life's building blocks from simple chemicals: amino acids in 1952, and some of the building blocks of RNA in 2009. They have joined building blocks into short chains. Scientists have also made RNA molecules that can copy parts of other RNA, but they designed and selected those molecules themselves. No experiment has gone all the way from simple chemicals to anything alive.</p><p class="tq">What exactly has the lab shown is possible: the whole path, or some steps? Does your claim say which?</p></div></details>
+        <details class="tcard"><summary>Traces that survived</summary><div class="tb"><p>The event left no recording, but it left some traces. Tiny crystals called zircons suggest there was liquid water on Earth about 4.4 billion years ago. Layered rocks built by microbes (stromatolites) are about 3.5 billion years old. By comparing the genes of living things, biologists reconstruct the last common ancestor of all life; one 2024 study estimated it lived about 4.2 billion years ago, though others put it later.</p><p class="tq">The tool said what happened “is gone.” Is all of it gone? Which questions can these traces answer, and which can't they?</p></div></details>
+        <details class="tcard"><summary>Not every pathway is equally likely</summary><div class="tb"><p>The famous 1952 experiment assumed the early air was full of methane and ammonia. Most scientists now think the early air was mostly carbon dioxide and nitrogen, which makes far fewer building blocks, so that version became less likely. But in 2008, a team re-tested old samples from a volcano-style version of the same experiment and found many more building blocks, so eruptions might have made the right conditions nearby.</p><p class="tq">If nobody can replay the event, can evidence still make one pathway more or less likely? Is “we can't know which one happened” the same as “we can't rank them”?</p></div></details>
+        <details class="tcard"><summary>A second example</summary><div class="tb"><p>As far as we know, life began once, here. Space missions are searching Mars and icy moons such as Europa and Enceladus for signs of life. Finding life that began separately would give scientists a second example to compare.</p><p class="tq">What kind of evidence would a second example be? Would it tell us how life began on Earth, or something else?</p></div></details>
+      </div>
+    </div>
+    <div class="stage locked" id="originCut">
+      <h3>4 · Find the cut</h3>
+      <p>A cut is the line where your claim stops being true. Ask these four questions about your case. Answer the two that change your claim the most.</p>
+      <ol class="cuts"></ol>
+      <h3 style="margin-top:16px">5 · Rewrite your claim</h3>
+      <p>Write your claim twice in your notes. <b>Before:</b> your first claim. <b>After:</b> the claim that survives the cards. The after-claim should be smaller and more accurate: it says which part, what kind of evidence, according to what, or for whom. If it is the same size as before, go back to the cards.</p>
+      <p class="write">Now write the paragraph (Part D on your sheet), modelled on the proton paragraph: claim, evidence, test, rewritten claim.</p>
     </div>
   </section>
 </div>
@@ -270,6 +390,32 @@ tabs.forEach(t=>t.addEventListener('click',()=>{
   tabs.forEach(x=>x.setAttribute('aria-selected','false')); t.setAttribute('aria-selected','true');
   secs.forEach(s=>s.classList.remove('active')); document.getElementById(t.dataset.t).classList.add('active');
 }));
+
+/* ---------- claim, test, cut ---------- */
+const CUTS=[
+  '<b>Which part?</b> Is the whole thing out of reach, or only part of it? Name the part we can know and the part we can\'t.',
+  '<b>What kind of evidence?</b> The tool only let you try more of the same. Is there a different kind of evidence that reaches further?',
+  '<b>\u201cNever\u201d according to what?</b> Does your claim rest on something scientists observed, or on a theory? What would have to change for the wall to move?',
+  '<b>For whom?</b> Is it out of reach for every knower, or only for knowers who need to share their evidence and have others check it?'
+];
+document.querySelectorAll('ol.cuts').forEach(ol=>{ol.innerHTML=CUTS.map(c=>'<li>'+c+'</li>').join('');});
+const REPLY={
+  notyet:'Hold that claim. To test it, ask: what tool would it take? Do any of the cards below suggest one, or rule one out?',
+  never:'Hold that claim. To test it, ask: what does your \u201cnever\u201d rest on? Something scientists saw, or a theory? The cards below push on it.',
+  depends:'Good instinct, but \u201cit depends\u201d only becomes a claim when you say on what. Use the cards below to find out what it depends on.'
+};
+function store(k,v){try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v);}catch(e){return null;}}
+document.querySelectorAll('.commit').forEach(box=>{
+  const key=box.dataset.case, btns=box.querySelectorAll('button');
+  function pick(v){
+    btns.forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===v?'true':'false'));
+    document.getElementById(key+'Reply').textContent=REPLY[v];
+    document.getElementById(key+'Test').classList.remove('locked');
+    document.getElementById(key+'Cut').classList.remove('locked');
+  }
+  btns.forEach(b=>b.addEventListener('click',()=>{pick(b.dataset.v); store('tok-method-reach-'+key,b.dataset.v);}));
+  const saved=store('tok-method-reach-'+key); if(saved&&REPLY[saved]) pick(saved);
+});
 
 /* ---------- shared ---------- */
 function tween(dur,step,done){const t0=performance.now();(function f(n){let t=Math.min(1,(n-t0)/dur);step(t);t<1?requestAnimationFrame(f):(done&&done());})(performance.now());}
@@ -318,7 +464,7 @@ function mix(c1,c2,t){const p=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5
     },()=>{
       // crossed horizon
       line('&#9888; SIGNAL LOST. At the horizon the redshift becomes infinite — light itself cannot climb out. The probe is now inside; nothing it sends will ever reach us.','lost');
-      if(ups.hull||ups.tx||ups.fast) line('Hull intact, transmitter maxed, speed irrelevant — and it changed <b>nothing</b>. This is not a limit of our technology.','lost');
+      if(ups.hull||ups.tx||ups.fast) line('Hull intact, transmitter maxed, speed irrelevant — and it changed <b>nothing</b>. None of these upgrades beats the speed of light, and according to general relativity nothing can.','lost');
       line('Readings returned from inside the horizon: 0.','dim');
       tween(700,t=>{ probe.setAttribute('opacity',(1-t).toFixed(2)); },()=>{ busy=false; launch.disabled=false; });
     });
@@ -328,76 +474,142 @@ function mix(c1,c2,t){const p=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5
 /* ---------- EARTH'S CORE ---------- */
 (function(){
   const NS='http://www.w3.org/2000/svg';
-  const note=document.getElementById('coreNote'), sepEl=document.getElementById('cSep');
-  const send=document.getElementById('cSend'), bigBtn=document.getElementById('cBig'),
-        moveBtn=document.getElementById('cMove'), addBtn=document.getElementById('cAddDet'), reset=document.getElementById('cReset');
-  const R=92, STRIPY=330;
-  const earths={
-    A:{cx:200,cy:150,bend:-40,fx:document.getElementById('fxA'),blip:document.getElementById('blipA'),x0:112,x1:288},
-    B:{cx:560,cy:150,bend:42, fx:document.getElementById('fxB'),blip:document.getElementById('blipB'),x0:472,x1:648}
+  const svg=document.getElementById('coresvg'), note=document.getElementById('coreNote'), table=document.getElementById('cReadings');
+  const send=document.getElementById('cSend'), clear=document.getElementById('cClear');
+  const sensC=document.getElementById('cSens'), quakeC=document.getElementById('cQuakes');
+  const R=100, QA=-90, MAXS=8, STRIPY=350;
+  const E={
+    A:{cx:200,cy:168,bend:-34,earth:document.getElementById('earthA'),fx:document.getElementById('fxA'),sens:document.getElementById('sensA'),strip:document.getElementById('stripA'),x0:60,x1:340},
+    B:{cx:560,cy:168,bend:38, earth:document.getElementById('earthB'),fx:document.getElementById('fxB'),sens:document.getElementById('sensB'),strip:document.getElementById('stripB'),x0:420,x1:700}
   };
-  const BASE=[28,74,106,152];
-  let dets=BASE.slice(), big=false, rot=0, busy=false;
-
-  function det(e,deg){const r=deg*Math.PI/180;return [e.cx+R*Math.cos(r), e.cy+R*Math.sin(r)];}
-  function bez(p,c,q,u){const m=1-u;return [m*m*p[0]+2*m*u*c[0]+u*u*q[0], m*m*p[1]+2*m*u*c[1]+u*u*q[1]];}
   function el(tag,a){const n=document.createElementNS(NS,tag);for(const k in a)n.setAttribute(k,a[k]);return n;}
-  // arrival fraction depends ONLY on detector position (same formula for both Earths) -> identical readouts
-  function frac(deg){ const d=Math.abs(((deg+90)%360)); const chord=Math.abs(Math.sin((deg-(-90))*Math.PI/360)); return 0.42+0.52*chord; }
+  function pt(e,deg,r){const t=deg*Math.PI/180;return [e.cx+(r||R)*Math.cos(t), e.cy+(r||R)*Math.sin(t)];}
+  function bez(p,c,q,u){const m=1-u;return [m*m*p[0]+2*m*u*c[0]+u*u*q[0], m*m*p[1]+2*m*u*c[1]+u*u*q[1]];}
+  function angDist(deg){let d=Math.abs(((deg-QA)%360+360)%360); return d>180?360-d:d;}
+  // simplified travel-time curve, identical for both interiors (minutes)
+  function travel(d){return 20.2*Math.sin(d*Math.PI/360);}
+  const TMAX=21;
 
-  function buildRays(e){
-    e.fx.innerHTML='';
-    const Q=[e.cx,e.cy-R], refs=[];
-    // quake pulse
-    const pulse=el('circle',{cx:Q[0],cy:Q[1],r:'4',fill:'none',stroke:big?'#c33a20':'#cb8f2c','stroke-width':big?'2.5':'1.5',opacity:'0'});
-    e.fx.appendChild(pulse); refs.pulse=pulse;
-    dets.forEach((deg,i)=>{
-      const D=det(e,deg);
-      const mid=[(Q[0]+D[0])/2,(Q[1]+D[1])/2];
-      const dir=[D[0]-Q[0],D[1]-Q[1]], len=Math.hypot(dir[0],dir[1]), perp=[-dir[1]/len,dir[0]/len];
-      const ctrl=[mid[0]+perp[0]*e.bend, mid[1]+perp[1]*e.bend];
-      const path=el('path',{d:'M'+Q[0]+','+Q[1]+' Q'+ctrl[0]+','+ctrl[1]+' '+D[0]+','+D[1],fill:'none',stroke:'#b9ae98',opacity:'0','stroke-width':'1.4','stroke-dasharray':'2 4'});
-      const detDot=el('circle',{cx:D[0],cy:D[1],r:'5',fill:'#9a9486'});
-      const wave=el('circle',{r:big?'5.5':'4',fill:'#2f6f8f',opacity:'0'});
-      e.fx.appendChild(path); e.fx.appendChild(detDot); e.fx.appendChild(wave);
-      refs.push({Q,ctrl,D,path,detDot,wave,done:false,f:frac(deg)});
-    });
-    return refs;
+  // draw the two Earths
+  for(const k of ['A','B']){ const e=E[k];
+    e.earth.appendChild(el('circle',{cx:e.cx,cy:e.cy,r:R,fill:'#efe7d7',stroke:'#cbb48c'}));
+    e.earth.appendChild(el('circle',{cx:e.cx,cy:e.cy,r:55,fill:'#f2ddb0',stroke:'#d8c08c'}));
+    e.earth.appendChild(el('circle',{cx:e.cx,cy:e.cy,r:21,fill:'#e0a226',stroke:'#cb8f2c'}));
+    if(k==='B') e.earth.appendChild(el('circle',{cx:e.cx,cy:e.cy,r:10,fill:'#b8741a',stroke:'#7a4c10','stroke-dasharray':'2 2'}));
+    const q=pt(e,QA); e.earth.appendChild(el('polygon',{points:q[0]+','+(q[1]-2)+' '+(q[0]-8)+','+(q[1]-14)+' '+(q[0]+8)+','+(q[1]-14),fill:'#c33a20'}));
+    // layer labels
+    const lab=(y,t)=>{const n=el('text',{x:e.cx,y:y,'text-anchor':'middle',fill:'#8c8371','font-family':'JetBrains Mono,monospace','font-size':'8.5'});n.textContent=t;e.earth.appendChild(n);};
+    lab(e.cy+82,'mantle'); lab(e.cy-36,'liquid outer core');
+    const call=(x2,y2,anchor,txt,fromR)=>{const a=Math.atan2(y2-e.cy,x2-e.cx);
+      e.earth.appendChild(el('line',{x1:e.cx+fromR*Math.cos(a),y1:e.cy+fromR*Math.sin(a),x2:x2,y2:y2,stroke:'#8c8371','stroke-width':'0.8'}));
+      const n=el('text',{x:x2+(anchor==='end'?-4:4),y:y2+3,'text-anchor':anchor,fill:'#6f685b','font-family':'JetBrains Mono,monospace','font-size':'9'});n.textContent=txt;e.earth.appendChild(n);};
+    call(e.cx-R-14,e.cy+40,'end','inner core',21);
+    if(k==='B') call(e.cx+R+14,e.cy+40,'start','innermost',10);
+    const qt=el('text',{x:q[0]+12,y:q[1]-6,fill:'#c33a20','font-family':'JetBrains Mono,monospace','font-size':'9'}); qt.textContent='quake'; e.earth.appendChild(qt);
+    e.strip.appendChild(el('line',{x1:e.x0,y1:STRIPY,x2:e.x1,y2:STRIPY,stroke:'#cbb48c'}));
+    for(let m=0;m<=20;m+=5){const x=e.x0+m/TMAX*(e.x1-e.x0); e.strip.appendChild(el('line',{x1:x,y1:STRIPY,x2:x,y2:STRIPY+4,stroke:'#cbb48c'}));
+      const t=el('text',{x:x,y:STRIPY+15,'text-anchor':'middle',fill:'#9a9486','font-family':'JetBrains Mono,monospace','font-size':'8.5'});t.textContent=m+' min';e.strip.appendChild(t);}
+    const t=el('text',{x:(e.x0+e.x1)/2,y:STRIPY-28,'text-anchor':'middle',fill:'#9a9486','font-family':'JetBrains Mono,monospace','font-size':'9'});t.textContent='reading from interior '+k;e.strip.appendChild(t);
   }
-  function blip(e,f){
-    const x=e.x0+f*(e.x1-e.x0), h=big?24:16;
-    e.blip.appendChild(el('line',{x1:x,y1:STRIPY-h,x2:x,y2:STRIPY,stroke:'#2f6f8f','stroke-width':big?'2.6':'2'}));
-    e.blip.appendChild(el('circle',{cx:x,cy:STRIPY-h,r:'2.6',fill:'#2f6f8f'}));
-  }
-  function clearAll(){ for(const k in earths){earths[k].fx.innerHTML='';earths[k].blip.innerHTML='';} }
 
-  function run(msg){
-    if(busy)return; busy=true; [send,bigBtn,moveBtn,addBtn].forEach(b=>b.disabled=true);
-    clearAll();
-    const sets={A:buildRays(earths.A),B:buildRays(earths.B)};
-    for(const k in sets){ sets[k].forEach(r=>tween(320,t=>r.path.setAttribute('opacity',(0.7*t).toFixed(2))));
-      tween(520,t=>{ sets[k].pulse.setAttribute('r',(4+t*(big?34:22)).toFixed(1)); sets[k].pulse.setAttribute('opacity',((big?0.9:0.7)*(1-t)).toFixed(2)); }); }
-    note.innerHTML='Watch \u2014 the waves take <b>different routes</b> through the two interiors\u2026';
-    tween(big?2000:2600,t=>{
-      for(const k in sets){ const e=earths[k];
-        sets[k].forEach(r=>{
-          const u=Math.min(1,t/r.f), pos=bez(r.Q,r.ctrl,r.D,u);
+  let sensors=[], size=2, busy=false, quakes=0, last=null, drag=null, moved=false, lastTap={i:-1,t:0};
+
+  function toSvg(ev){const p=svg.createSVGPoint();p.x=ev.clientX;p.y=ev.clientY;return p.matrixTransform(svg.getScreenCTM().inverse());}
+  function hitEarth(p){for(const k of ['A','B']){const e=E[k],dx=p.x-e.cx,dy=p.y-e.cy,d=Math.hypot(dx,dy); if(d>R-22&&d<R+22) return {e,deg:Math.atan2(dy,dx)*180/Math.PI};} return null;}
+  function tooNearQuake(deg){return angDist(deg)<12;}
+  function drawSensors(){
+    for(const k of ['A','B']){ const e=E[k]; e.sens.innerHTML='';
+      sensors.forEach((deg,i)=>{ const c=pt(e,deg,R+1);
+        const g=el('g',{'data-i':i,style:'cursor:grab'});
+        g.appendChild(el('circle',{cx:c[0],cy:c[1],r:9,fill:'#2f6f8f',stroke:'#fff','stroke-width':'1.5'}));
+        const t=el('text',{x:c[0],y:c[1]+3.5,'text-anchor':'middle',fill:'#fff','font-family':'JetBrains Mono,monospace','font-size':'9.5'});t.textContent=i+1;g.appendChild(t);
+        e.sens.appendChild(g);
+      });
+    }
+    sensC.textContent=sensors.length;
+  }
+  svg.addEventListener('pointerdown',ev=>{
+    if(busy)return;
+    const g=ev.target.closest('g[data-i]');
+    if(g){ const i=+g.dataset.i, now=Date.now();
+      if(lastTap.i===i && now-lastTap.t<450){ sensors.splice(i,1); lastTap={i:-1,t:0}; drawSensors(); clearFx(); note.innerHTML='Sensor removed.'; return; }
+      lastTap={i,t:now}; drag=i; moved=false; svg.setPointerCapture(ev.pointerId); return;}
+    const h=hitEarth(toSvg(ev)); if(!h)return;
+    if(sensors.length>=MAXS){note.innerHTML='That\'s 8 sensors, the most this tool allows. Drag one to move it, or double-click to remove it.';return;}
+    if(tooNearQuake(h.deg)){note.innerHTML='Too close to the quake. Place sensors further round the surface.';return;}
+    sensors.push(h.deg); drawSensors(); clearFx();
+    note.innerHTML='Sensor '+sensors.length+' placed. It sits at the same spot on both Earths. Place more, or set off the quake.';
+  });
+  svg.addEventListener('pointermove',ev=>{
+    if(drag===null)return; const h=hitEarth(toSvg(ev)); if(!h||tooNearQuake(h.deg))return;
+    sensors[drag]=h.deg; moved=true; drawSensors();
+  });
+  svg.addEventListener('pointerup',()=>{ if(drag!==null&&moved){clearFx(); note.innerHTML='Sensor '+(drag+1)+' moved. Set off the quake again and compare.';} drag=null; });
+  document.querySelectorAll('.chip[data-q]').forEach(c=>c.addEventListener('click',()=>{
+    if(busy)return; size=+c.dataset.q;
+    document.querySelectorAll('.chip[data-q]').forEach(x=>x.setAttribute('aria-pressed',x===c?'true':'false'));
+  }));
+  function clearFx(){for(const k of ['A','B']){E[k].fx.innerHTML=''; E[k].strip.querySelectorAll('.blip').forEach(n=>n.remove());} table.innerHTML='';}
+  clear.addEventListener('click',()=>{ if(busy)return; sensors=[]; drawSensors(); clearFx(); last=null; note.innerHTML='Sensors cleared. Click either Earth\'s surface to place new ones.'; });
+
+  function fmt(m){const mm=Math.floor(m), ss=Math.round((m-mm)*60); return mm+' min '+String(ss===60?59:ss).padStart(2,'0')+' s';}
+  const SIZE=['','small','medium','large'], STRENGTH=['','faint','clear','strong'];
+
+  send.addEventListener('click',()=>{
+    if(busy)return;
+    if(!sensors.length){note.innerHTML='Place at least one sensor first: click the surface of either Earth.';return;}
+    busy=true; send.disabled=true; clear.disabled=true; clearFx();
+    const sets={};
+    for(const k of ['A','B']){ const e=E[k], Q=pt(e,QA), refs=[];
+      const pulse=el('circle',{cx:Q[0],cy:Q[1],r:'4',fill:'none',stroke:'#c33a20','stroke-width':String(0.8+size*0.7),opacity:'0'});
+      e.fx.appendChild(pulse); refs.pulse=pulse;
+      sensors.forEach((deg,i)=>{
+        const D=pt(e,deg), mid=[(Q[0]+D[0])/2,(Q[1]+D[1])/2], dir=[D[0]-Q[0],D[1]-Q[1]], len=Math.hypot(dir[0],dir[1])||1, perp=[-dir[1]/len,dir[0]/len];
+        const bend=e.bend*(0.4+angDist(deg)/180);
+        const ctrl=[mid[0]+perp[0]*bend, mid[1]+perp[1]*bend];
+        const path=el('path',{d:'M'+Q[0]+','+Q[1]+' Q'+ctrl[0]+','+ctrl[1]+' '+D[0]+','+D[1],fill:'none',stroke:'#b9ae98',opacity:'0','stroke-width':'1.3','stroke-dasharray':'2 4'});
+        const wave=el('circle',{r:String(2.5+size),fill:'#2f6f8f',opacity:'0'});
+        e.fx.appendChild(path); e.fx.appendChild(wave);
+        refs.push({Q,ctrl,D,path,wave,done:false,f:travel(angDist(deg))/TMAX});
+      });
+      sets[k]=refs;
+    }
+    for(const k in sets){ sets[k].forEach(r=>tween(300,t=>r.path.setAttribute('opacity',(0.7*t).toFixed(2))));
+      tween(600,t=>{sets[k].pulse.setAttribute('r',(4+t*(10+size*10)).toFixed(1)); sets[k].pulse.setAttribute('opacity',(0.9*(1-t)).toFixed(2));}); }
+    note.innerHTML='Watch: the waves take <b>different routes</b> through the two centres…';
+    tween(2600,t=>{
+      for(const k in sets){ const e=E[k];
+        sets[k].forEach(r=>{ const u=Math.min(1,t/r.f), pos=bez(r.Q,r.ctrl,r.D,u);
           r.wave.setAttribute('cx',pos[0]);r.wave.setAttribute('cy',pos[1]);r.wave.setAttribute('opacity',u<1?'1':'0');
-          if(u>=1 && !r.done){ r.done=true; r.detDot.setAttribute('fill','#2f6f8f'); r.detDot.setAttribute('r','7'); blip(e,r.f); }
+          if(u>=1&&!r.done){ r.done=true; const x=e.x0+r.f*(e.x1-e.x0), h=6+size*7;
+            const b1=el('line',{x1:x,y1:STRIPY-h,x2:x,y2:STRIPY,stroke:'#2f6f8f','stroke-width':'2'}); b1.classList.add('blip'); e.strip.appendChild(b1);
+            const b2=el('circle',{cx:x,cy:STRIPY-h,r:'2.5',fill:'#2f6f8f'}); b2.classList.add('blip'); e.strip.appendChild(b2); }
         });
       }
-    },()=>{ note.innerHTML=msg; sepEl.textContent='0'; busy=false; [send,bigBtn,moveBtn,addBtn].forEach(b=>b.disabled=false); });
-  }
-
-  send.addEventListener('click',()=>run('The two readouts below are <b>identical</b>. Different inside \u2014 same surface readings. From the readings alone you cannot tell which Earth is real.'));
-  bigBtn.addEventListener('click',()=>{ big=true; run('Bigger quake: taller signals, but the <i>same</i> pattern \u2014 and still identical across both Earths. Louder data is not different data.'); });
-  moveBtn.addEventListener('click',()=>{ rot=(rot+26)%360; dets=BASE.map(d=>(d+rot)%360); run('Sensors moved to new positions \u2014 new readings, but again <b>identical</b> on both Earths. The location of the detectors does not separate them.'); });
-  addBtn.addEventListener('click',()=>{ if(dets.length>=7){run('Even with extra detectors the two readouts stay identical. More of the same data never breaks the tie.');return;} dets.push((dets[dets.length-1]+34)%360); run('Detector added \u2014 it reads the same whichever interior is real. Still <b>0</b> measurements separate them.'); });
-  reset.addEventListener('click',()=>{ if(busy)return; big=false; rot=0; dets=BASE.slice(); clearAll();
-    note.innerHTML='Two Earths with <b>different</b> insides. Send the waves and watch what each one records at the surface.'; });
+    },()=>{
+      quakes++; quakeC.textContent=quakes;
+      let rows='<table><tr><th>Sensor</th><th>Distance from quake</th><th>Interior A</th><th>Interior B</th><th></th></tr>';
+      sensors.forEach((deg,i)=>{const d=angDist(deg), t=fmt(travel(d)), st=STRENGTH[size];
+        const far=d>=150;
+        rows+='<tr><td>'+(i+1)+'</td><td>'+Math.round(d)+'° round the Earth</td><td>'+t+', '+st+'</td><td>'+t+', '+st+'</td>'+(far?'<td style="color:var(--accent)">? crossed the very centre</td>':'<td class="same">✓ same</td>')+'</tr>';});
+      const farN=sensors.filter(d=>angDist(d)>=150).length;
+      table.innerHTML=rows+'</table>';
+      const key=sensors.map(d=>Math.round(d)).join(',');
+      let msg;
+      if(!last) msg='Different centres, and the <b>same readings</b> at every sensor. From these readings alone you can\'t tell which Earth is real.';
+      else if(last.key!==key && last.size!==size) msg='New sensor positions and a '+SIZE[size]+' quake: new readings, and still <b>identical</b> on both Earths.';
+      else if(last.key!==key) msg='New sensor positions, new readings, and still <b>identical</b> on both Earths.';
+      else if(size>last.size) msg='Bigger quake: stronger signals, the same arrival times on both Earths. Louder data is not different data.';
+      else if(size<last.size) msg='Smaller quake: fainter signals, still identical on both Earths.';
+      else msg='Same sensors, same quake, same result. Try changing something.';
+      if(farN) msg+=' <b>'+(farN===1?'One of your sensors is':farN+' of your sensors are')+' on the far side of the Earth.</b> Only waves that come out there have crossed the very centre, so this is the only place A and B could give different readings. In the real Earth the difference is a few seconds at most, and research teams still disagree about what those seconds show.';
+      else if(quakes>=3) msg+=' <i>Look at where your sensors are. Which waves would have to pass through the very centre to tell A from B?</i>';
+      note.innerHTML=msg; last={key,size};
+      busy=false; send.disabled=false; clear.disabled=false;
+    });
+  });
+  drawSensors();
 })();
-
-
 
 /* ---------- ORIGIN OF LIFE ---------- */
 (function(){
@@ -405,13 +617,14 @@ function mix(c1,c2,t){const p=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5
   const wrap=document.getElementById('oPaths'), reveal=document.getElementById('oReveal'), count=document.getElementById('oCount');
   const spark=document.getElementById('oSpark'), molG=document.getElementById('oMol'), linkG=document.getElementById('oLink'),
         bubG=document.getElementById('oBub'), cap=document.getElementById('oCap'), env=document.getElementById('oEnv');
-  const runBtn=document.getElementById('oRun'), whichBtn=document.getElementById('oWhich');
+  const scBtns=document.querySelectorAll('.chip[data-sc]'), whichBtn=document.getElementById('oWhich');
+  const tried=new Set();
   const pathways=[
-    ['warm tidal pools','Run #N — <b>warm tidal pools.</b> Cycles of wetting and drying concentrate molecules until short self-copying chains appear.'],
-    ['hydrothermal vents','Run #N — <b>hydrothermal vents.</b> Mineral surfaces on the deep sea floor catalyse the first self-replicating system.'],
-    ['clay templates','Run #N — <b>clay templates.</b> Layered clay minerals line up molecules and act as a scaffold for replication.'],
-    ['ice channels','Run #N — <b>ice channels.</b> Tiny pockets of liquid trapped in ice concentrate the building blocks until they self-assemble.'],
-    ['volcanic ponds','Run #N — <b>volcanic ponds.</b> Lightning over a shallow mineral pond drives the chemistry toward a replicator.']
+    ['warm tidal pools','Cycles of wetting and drying join building blocks into short chains.'],
+    ['hydrothermal vents','Mineral surfaces and natural energy at deep-sea vents drive simple chemistry that looks like the start of metabolism.'],
+    ['clay templates','Clay minerals line up building blocks and help join them into RNA-like chains.'],
+    ['ice channels','Pockets of liquid in ice concentrate molecules, and a lab-made RNA that copies RNA works there.'],
+    ['volcanic ponds','Lightning and UV light over shallow ponds produce some of the building blocks of RNA.']
   ];
   function el(t,a){const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);return n;}
   const scatter=[[150,138],[206,132],[160,170],[200,166],[178,150]];
@@ -434,22 +647,24 @@ function mix(c1,c2,t){const p=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5
     },620);
     setTimeout(()=>{busy=false; if(done)done();},1700);
   }
-  runBtn.addEventListener('click',()=>{
+  scBtns.forEach(btn=>btn.addEventListener('click',()=>{
     if(busy)return;
-    const idx=n%pathways.length; env.textContent=pathways[idx][0];
+    const idx=+btn.dataset.sc; env.textContent='scenario: '+pathways[idx][0];
     if(n===0) wrap.innerHTML='';
-    runBtn.disabled=true; whichBtn.disabled=true;
+    scBtns.forEach(x=>x.disabled=true); whichBtn.disabled=true;
     animate(()=>{
-      n++; count.textContent=n;
+      n++; count.textContent=n; tried.add(idx); btn.setAttribute('aria-pressed','true');
       const d=document.createElement('div'); d.className='pw';
-      d.innerHTML=pathways[idx][1].replace('#N','#'+n)+' <span style="color:var(--good);font-family:JetBrains Mono,monospace;font-size:12px">&#10003; plausible</span>';
+      d.innerHTML='Run #'+n+' \u2014 <b>'+pathways[idx][0]+'.</b> The model\'s picture: <b>a self-copying chain forms.</b>'
+        +'<div style="font-size:15px;color:var(--muted);margin-top:4px"><span style="font-family:JetBrains Mono,monospace;font-size:11px">What the lab has actually shown:</span> '+pathways[idx][1]+'</div>';
       wrap.appendChild(d); reveal.classList.remove('show');
-      runBtn.disabled=false; whichBtn.disabled=false;
+      scBtns.forEach(x=>x.disabled=false); whichBtn.disabled=false;
     });
-  });
+  }));
   whichBtn.addEventListener('click',()=>{
-    if(n===0){reveal.innerHTML='Run the experiment first — see what it can show before asking what it can\'t.';reveal.classList.add('show');return;}
-    reveal.innerHTML='You have now shown <b>'+n+'</b> ways life <i>could</i> have begun. But the real event happened <b>once</b>, about 3.8 billion years ago, and left no record to read. Running the experiment again only adds another <i>possible</i> story — it can never replay the one that actually occurred. The lab shows what is <i>possible</i>; what <i>happened</i> is gone.';
+    if(n===0){reveal.innerHTML='Run a scenario first. See what the model shows before asking what it can\'t.';reveal.classList.add('show');return;}
+    const k=tried.size;
+    reveal.innerHTML='You ran <b>'+k+'</b> different scenario'+(k===1?'':'s')+', and '+(k===1?'it':'every one')+' ended with the <b>same picture</b>: a self-copying chain. Like the two Earths with the same readings, different starting points give the same ending, so the ending can\'t tell you which start was real. And the picture is the model\'s, not a recording: look at the grey lines. No lab has gone all the way from simple chemicals to a self-copying system. The real event happened <b>once</b>, more than 3.5 billion years ago. Does that put everything about it out of reach? Make your claim below, then test it.'+(k<2?' <i>(Try another scenario first and watch the ending.)</i>':'');
     reveal.classList.add('show');
   });
 })();
