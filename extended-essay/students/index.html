@@ -24,17 +24,15 @@
 .tag{display:inline-block;font-size:12.5px;font-weight:600;border-radius:999px;padding:1px 9px;margin-left:6px;vertical-align:2px}
 .tag.started{background:#e6f4ea;color:var(--ok)}
 .tag.soon{background:#eef1f5;color:var(--muted)}
-.side{margin-top:30px}
+.path li.here{border-color:var(--stud);box-shadow:0 0 0 2px var(--stud-soft)}
+.tag.here{background:var(--stud-soft);color:var(--stud)}
+#continue{margin:0 0 16px}
+#continue a{background:var(--stud);border-color:var(--stud);color:#fff}
 </style>
 </head>
 <body>
-<a class="guide-link" href="../guide/ee-guide-2027.pdf" target="_blank" rel="noopener" title="Open the official IB Extended essay guide (first assessment 2027) in a new tab">EE Guide (PDF)</a>
+<script src="../shared/site-nav.js"></script>
 <div class="shell narrow">
-  <div class="top">
-    <a class="mark" href="../" title="Extended Essay hub">EE</a>
-    <nav class="crumbs" aria-label="Breadcrumb"><a href="../../">Classroom tools</a><span class="sep">/</span><a href="../">Extended Essay</a><span class="sep">/</span><span>For Students</span></nav>
-  </div>
-
   <header class="hero">
     <p class="eyebrow">For Students</p>
     <h1>Your EE, step by step</h1>
@@ -42,19 +40,13 @@
   </header>
 
   <main>
-    <div class="note"><p style="margin:0"><b>New here?</b> Begin with <a href="step-0/">Start here</a>. It explains how the steps work and how to set up your RRS. Your RRS (researcher's reflection space) is your own EE notebook.</p></div>
+    <p id="continue" hidden><a class="btn" id="continue-link" href="#"></a></p>
+    <div class="note" id="new-here"><p style="margin:0"><b>New here?</b> Begin with <a href="step-0/">Start here</a>. It explains how the steps work and how to set up your RRS. Your RRS (researcher's reflection space) is your own EE notebook.</p></div>
 
     <div id="path"></div>
 
-    <div class="side grid2">
-      <a class="tile live" href="../subjects/"><span class="k">Before subject choice</span><h3>Subject guides</h3><p>What the IB expects in each subject, with example research questions.</p></a>
-      <a class="tile live" href="../samples/"><span class="k">Any time</span><h3>Sample essays</h3><p>IB example essays in your subject, with grades and examiner comments.</p></a>
-      <a class="tile live" href="criteria/"><span class="k">Any time</span><h3>Understand the criteria</h3><p>How your EE is marked, criterion by criterion.</p></a>
-      <a class="tile live" href="integrity/"><span class="k">Any time</span><h3>Academic integrity and AI</h3><p>Doing your own work, the help you're allowed, and how to use AI.</p></a>
-    </div>
   </main>
 
-  <footer><a href="../">← Extended Essay hub</a></footer>
 </div>
 
 <script src="../data/steps.js"></script>
@@ -62,6 +54,15 @@
 <script>
 (function(){
   function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+  var last = null; try{ last = localStorage.getItem("ee-last-step"); }catch(e){}
+  var lastStep = EE_STEPS.filter(function(x){ return String(x.n)===last && x.live; })[0];
+  if(lastStep){
+    var cl = document.getElementById("continue-link");
+    cl.href = "step-"+lastStep.n+"/";
+    cl.textContent = "Continue: "+(lastStep.n===0 ? lastStep.title : "Step "+lastStep.n+": "+lastStep.title);
+    document.getElementById("continue").hidden = false;
+    document.getElementById("new-here").hidden = true;
+  }
   var html = "";
   EE_PHASES.forEach(function(ph){
     var steps = EE_STEPS.filter(function(s){return s.phase===ph.id;});
@@ -69,10 +70,11 @@
     steps.forEach(function(s){
       var label = s.n===0 ? "★" : s.n;
       var started = s.live && EETools.hasAnswers("step-"+s.n);
+      var here = s.live && String(s.n)===last;
       var title = s.live ? '<a href="step-'+s.n+'/">'+esc(s.title)+'</a>' : esc(s.title);
-      var tag = !s.live ? '<span class="tag soon">Coming soon</span>' : (started ? '<span class="tag started">Started</span>' : '');
+      var tag = !s.live ? '<span class="tag soon">Coming soon</span>' : ((here ? '<span class="tag here">You were here</span>' : '') + (started ? '<span class="tag started">Started</span>' : ''));
       var extras = (s.extras||[]).map(function(x){return '<a class="btn" href="'+x[1]+'">'+esc(x[0])+'</a>';}).join("");
-      html += '<li class="'+(s.live?'':'soon')+'"><span class="num" aria-hidden="true">'+label+'</span><div><h3>'+(s.n===0?'':'<span class="sr" style="position:absolute;left:-9999px">Step '+s.n+': </span>')+title+tag+'</h3><p>'+esc(s.blurb)+'</p>'+(extras?'<div class="links">'+extras+'</div>':'')+'</div></li>';
+      html += '<li class="'+(s.live?'':'soon')+(here?' here':'')+'"><span class="num" aria-hidden="true">'+label+'</span><div><h3>'+(s.n===0?'':'<span class="sr" style="position:absolute;left:-9999px">Step '+s.n+': </span>')+title+tag+'</h3><p>'+esc(s.blurb)+'</p>'+(extras?'<div class="links">'+extras+'</div>':'')+'</div></li>';
     });
     html += '</ol></section>';
   });

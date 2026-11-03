@@ -20,13 +20,8 @@ TEMPLATE = """<!DOCTYPE html>
 <link rel="stylesheet" href="../../shared/steps.css">
 </head>
 <body data-step="{n}">
-<a class="guide-link" href="../../guide/ee-guide-2027.pdf" target="_blank" rel="noopener" title="Open the official IB Extended essay guide (first assessment 2027) in a new tab">EE Guide (PDF)</a>
+<script src="../../shared/site-nav.js"></script>
 <div class="shell narrow">
-  <div class="top">
-    <a class="mark" href="../../" title="Extended Essay hub">EE</a>
-    <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../">Classroom tools</a><span class="sep">/</span><a href="../../">Extended Essay</a><span class="sep">/</span><a href="../">For Students</a><span class="sep">/</span><span>{crumb}</span></nav>
-  </div>
-
   <header class="hero">
     <p class="stepno" id="stepno"></p>
     <h1>{title}</h1>
@@ -41,7 +36,6 @@ TEMPLATE = """<!DOCTYPE html>
     <nav class="stepnav" id="stepnav" aria-label="Steps"></nav>
   </main>
 
-  <footer><a href="../">← All steps</a></footer>
 </div>
 
 <script src="../../data/steps.js"></script>
@@ -139,6 +133,7 @@ STEPS.append(dict(
       <li><b>A thinking tool:</b> questions that help you brainstorm. Nothing is submitted or graded. You keep your answers in your RRS (see below).</li>
       <li><b>Before you move on:</b> a short checklist at the end of the thinking tool.</li>
     </ul>
+    <p>The bar at the top of every page takes you to the steps, subject guides, sample essays, criteria, academic integrity and the official IB guide. If you leave a step to read a subject guide or a sample essay, use the "Back to Step" link under the bar to return to your step.</p>
     <p>Your extended essay is your own independent work. The thinking tools only ask questions. They never write anything for you.</p>
 
     <h2>Set up your RRS before anything else</h2>

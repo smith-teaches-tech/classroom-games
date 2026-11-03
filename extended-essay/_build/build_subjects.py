@@ -74,12 +74,8 @@ PAGE = """<!DOCTYPE html>
 </style>
 </head>
 <body{bodyattr}>
-<a class="guide-link" href="{up}guide/ee-guide-2027.pdf" target="_blank" rel="noopener" title="Open the official IB Extended essay guide (first assessment 2027) in a new tab">EE Guide (PDF)</a>
+<script src="{up}shared/site-nav.js"></script>
 <div class="shell narrow">
-  <div class="top">
-    <a class="mark" href="{up}" title="Extended Essay hub">EE</a>
-    <nav class="crumbs" aria-label="Breadcrumb">{crumbs}</nav>
-  </div>
   <header class="hero">
     <p class="eyebrow">{eyebrow}</p>
     <h1>{h1}</h1>
@@ -88,7 +84,6 @@ PAGE = """<!DOCTYPE html>
   <main class="step-body">
 {body}
   </main>
-  <footer><a href="{back_href}">{back_text}</a></footer>
 </div>
 {scripts}
 </body>
