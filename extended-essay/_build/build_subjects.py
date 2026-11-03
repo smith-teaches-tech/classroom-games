@@ -16,7 +16,7 @@ GROUP_OF = {"language-a": "lang", "language-b": "lang", "visual-arts": "va", "ma
 ORDER = [
  ("Studies in language and literature", ["language-a"]),
  ("Language acquisition", ["language-b"]),
- ("Individuals and societies", ["business-management", "economics", "global-politics"]),
+ ("Individuals and societies", ["business-management", "economics", "global-politics", "psychology"]),
  ("Sciences", ["biology", "chemistry", "physics"]),
  ("Mathematics", ["mathematics"]),
  ("The arts", ["visual-arts"]),
@@ -27,6 +27,7 @@ BLURB = {
  "business-management": "A real organisation or business issue, analysed with business management tools and theory.",
  "economics": "An economic theory tested against real evidence, often in one place and time period.",
  "global-politics": "A political issue or case, analysed through the main political concepts and academic sources.",
+ "psychology": "A review of peer-reviewed research. Secondary sources only: you can't collect your own data.",
  "biology": "A biology experiment (or similar published data) with controlled variables and a standardised method.",
  "chemistry": "A chemistry investigation (or similar published data) with controlled variables and a standardised method.",
  "physics": "A physics investigation (or similar published data) with controlled variables and a standardised method.",
@@ -73,6 +74,7 @@ PAGE = """<!DOCTYPE html>
 </style>
 </head>
 <body{bodyattr}>
+<a class="guide-link" href="{up}guide/ee-guide-2027.pdf" target="_blank" rel="noopener" title="Open the official IB Extended essay guide (first assessment 2027) in a new tab">EE Guide (PDF)</a>
 <div class="shell narrow">
   <div class="top">
     <a class="mark" href="{up}" title="Extended Essay hub">EE</a>
@@ -239,7 +241,7 @@ def index_page(hubs):
             b.append('    <section class="subjgroup"><h2>%s</h2><div class="grid2">%s</div></section>' % (e(gname), "".join(tiles)))
     if "interdisciplinary" in hubs:
         b.append('    <section class="subjgroup"><h2>Two subjects</h2><div class="grid2"><a class="tile live" data-subject="Interdisciplinary" href="interdisciplinary/"><h3>Interdisciplinary EE</h3><p>Two DP subjects and one of the five frameworks, working on one research question.</p></a></div></section>')
-    b.append('    <p class="small muted" style="margin-top:24px">Writing your EE in another subject? Ask the EE coordinator first, then read that subject\'s section of the IB <i>Extended essay guide</i>. The <a href="../samples/">sample essays</a> include History, Psychology, ESS and Design Technology.</p>')
+    b.append('    <p class="small muted" style="margin-top:24px">Writing your EE in another subject? Ask the EE coordinator first, then read that subject\'s section of the IB <i>Extended essay guide</i>. The <a href="../samples/">sample essays</a> include History, ESS and Design Technology.</p>')
     script = """<script src="../shared/thinking-tools.js"></script>
 <script>
 (function(){

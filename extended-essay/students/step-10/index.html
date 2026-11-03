@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="../../shared/steps.css">
 </head>
 <body data-step="10">
+<a class="guide-link" href="../../guide/ee-guide-2027.pdf" target="_blank" rel="noopener" title="Open the official IB Extended essay guide (first assessment 2027) in a new tab">EE Guide (PDF)</a>
 <div class="shell narrow">
   <div class="top">
     <a class="mark" href="../../" title="Extended Essay hub">EE</a>
@@ -75,7 +76,7 @@
         <tr data-subject="Language B"><th>Language B</th><td>Images usually aren't useful in the body unless you're analysing an advertisement or artwork. If you analyse poetry or song lyrics, quote the important extracts in the body. The full text can go in an appendix, but examiners don't have to read appendices.</td></tr>
         <tr data-subject="Visual Arts"><th>Visual Arts</th><td>Choose a small number of works so you can analyse them in depth within the word limit. Review the existing literature on your topic to shape your research question. Label and reference any images you include.</td></tr>
         <tr data-subject="Sciences"><th>Biology, Chemistry, Physics</th><td>A method detailed enough for someone else to repeat it. SI units. Results in a standardized format with labelled headings, units and numbering. Processed data with uncertainties. Conclusions supported by the data. An evaluation linked to the question and method.</td></tr>
-        <tr data-subject="I&amp;S"><th>Business Management, Economics, Global Politics</th><td>Clearly labelled diagrams, maps, images and graphs. Acknowledge any that are someone else's work, and refer to each one in your text. Use headings to organise the essay where they help.</td></tr>
+        <tr data-subject="I&amp;S"><th>Business Management, Economics, Global Politics, Psychology</th><td>Clearly labelled diagrams, maps, images and graphs. Acknowledge any that are someone else's work, and refer to each one in your text. Use headings to organise the essay where they help.</td></tr>
         <tr data-subject="Mathematics"><th>Mathematics</th><td>State the question clearly and stay focused on it. Write mathematics with an equation editor. Use a new line for each step of algebra, and don't use * for multiplication or ^ for powers.</td></tr>
       </tbody></table></div>
     <p>Anything important to your argument must be in the body of the essay. Examiners don't have to read appendices, footnotes or endnotes.</p>
@@ -100,7 +101,7 @@
 /* highlight the subject chosen in step 1 */
 (function(){
   var path = EETools.read("step-1","pathway") || "", s = path==="Subject-focused (one subject)" ? (EETools.read("step-1","subject")||"") : "";
-  var map = {"Biology":"Sciences","Chemistry":"Sciences","Physics":"Sciences","Business Management":"I&S","Economics":"I&S","Global Politics":"I&S"};
+  var map = {"Biology":"Sciences","Chemistry":"Sciences","Physics":"Sciences","Business Management":"I&S","Economics":"I&S","Global Politics":"I&S","Psychology":"I&S"};
   var row = s && document.querySelector('#conventions tr[data-subject="'+(map[s]||s)+'"]');
   if(row) row.classList.add("mine");
 })();

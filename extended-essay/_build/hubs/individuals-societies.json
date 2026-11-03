@@ -238,5 +238,89 @@
    "rules": "55–56",
    "think": "56, 59, 63"
   }
+ },
+ {
+  "slug": "psychology",
+  "subject": "Psychology",
+  "group": "Individuals and societies",
+  "pages": "55–56, 61–63",
+  "distinctive": [
+   "A Psychology EE is a review of literature: an analysis of peer-reviewed research. Psychology is in the individuals and societies group, so your essay explores a question about human experience and behaviour.",
+   "Most subjects expect primary research. Psychology is different: your essay must be based on secondary sources only, so you can't collect your own data. Your research is finding published studies, judging how strong those studies are, and building an argument from them.",
+   "Your content alone won't make your essay a Psychology essay. Psychology concepts, methods and theories give you insight and help you build a well-constructed argument. Your approach decides your subject, so link every study to psychological theory.",
+   "The aims for the whole individuals and societies group apply to you too. Your essay lets you challenge assumptions about human nature and build your knowledge by reading the subject literature. You'll also select theories or concepts and apply suitable methods to build an argument."
+  ],
+  "sources": {
+   "primary": "None. The guide says the collection of primary data is not permitted in a Psychology EE. That means no experiments, surveys, interviews or observations of your own.",
+   "secondary": "Peer-reviewed research: studies published in academic journals. The student who wrote Sample B (24/30) first looked for enough suitable studies, then narrowed them down to eight that directly addressed the research question."
+  },
+  "methods": [
+   "Review of literature: find peer-reviewed studies on your question, then analyse and compare those studies. Every Psychology EE uses this method.",
+   "Operationalise your main idea: give an abstract idea a measurable set of criteria that can be researched. In the guide's perfectionism example, sporting performance is operationalised, one sport is investigated, and the definition is applied consistently throughout the essay.",
+   "Weigh the evidence on both sides: the perfectionism example gives evidence that supports and evidence that challenges the idea that perfectionism harms performance.",
+   "Compare two explanations or treatments: the guide's stress example compares evaluated published findings for CBT and for mindfulness, and links the studies to psychological theory.",
+   "Other research strategies from the guide's individuals and societies section include comparisons and critical analysis of a theory or concept. Choose a strategy that works with published research alone."
+  ],
+  "choosing_topic": [
+   "Your topic can come from your own life, from a current debate, from a topic in one of your favourite subjects, or from a topic related to a favourite subject but not covered in it.",
+   "Check early that enough peer-reviewed research exists. The student who wrote Sample B started with mental blocks in diving, found a lack of studies on lost move syndrome, and moved to self-efficacy in acrobatic sports, where there was usable research.",
+   "Your topic must be considered in terms of one individuals and societies subject. Your approach decides which subject. The guide's Psychology example on sport looks at perfectionism and performance in team sports.",
+   "Psychology can also be one of the two subjects in an interdisciplinary EE. The guide's ideas pair Psychology with Business Management, language and literature, language acquisition, digital society or Visual Arts (guide pp. 21–22)."
+  ],
+  "examples": [
+   {
+    "topic": "The struggles of a “perfect” athlete",
+    "rq": "Does being a perfectionist have a detrimental effect on performance in team sports?",
+    "why": "Sporting performance is operationalised (given a measurable set of criteria that can be researched), and a single sport is investigated. The definition is applied consistently throughout the essay. Evidence is given to support and to challenge the idea that perfectionism may harm performance.",
+    "page": 61
+   },
+   {
+    "topic": "The effectiveness of cognitive behaviour therapy (CBT) and mindfulness in stress management",
+    "rq": "Is mindfulness or CBT a more effective means of coping with stress?",
+    "why": "Outline the main assumptions of each treatment, but keep that outline short. The research compares evaluated published findings for each treatment and links the studies to psychological theory. A balanced argument could evaluate the evidence behind partial and final conclusions.",
+    "page": 61
+   }
+  ],
+  "structure": [
+   "Make sure your research question and research methods clearly fit Psychology. The guide suggests reading the Psychology subject guide to check that you understand the subject and its methods.",
+   "Define your main idea in your introduction. The examiner credited Sample A because its introduction operationalises “the symptoms of ADHD” as attention and hyperactivity.",
+   "Keep your background short. In the guide's CBT example, outlining each approach should not be a significant part of the essay. Most of your words should compare and evaluate studies.",
+   "Keep your argument within the logic of Psychology: use the subject's terms and follow its usual style and structure.",
+   "Label diagrams, images and graphs clearly, acknowledge any made by others, and refer to each one directly in the body of your essay.",
+   "Use headings to organise your essay where they help."
+  ],
+  "pitfalls": [
+   "Collecting your own data. Primary data is not permitted in a Psychology EE, even if your topic seems to need it.",
+   "Describing studies without analysing them. The examiner on Sample A (18/30) said the essay “has a tendency to be descriptive”.",
+   "Describing too many studies. Sample B earned 24/30, but the examiner said “less research could have been described so that more discussion and evaluation of the question could have been developed within the 4000 word limit.”",
+   "Shallow evaluation. In Sample A, the examiner called some points superficial and said more significant problems with the research were not addressed. In Sample B, the examiner said points about the value of the scales the studies used were mostly missing.",
+   "Weak use of Psychology terms. The examiner found “a lack of psychological terminology” in Sample A, and errors with terms in Sample B (for example, regression analysis does not determine causality).",
+   "A conclusion that only repeats earlier points. The examiners made this criticism of both Sample A and Sample B. Your conclusion must answer your research question.",
+   "A one-sided discussion. A balanced discussion looks at different perspectives on your topic, and your evaluation should weigh up the strengths and limitations of your essay.",
+   "Diagrams or graphs that are unlabelled, unacknowledged, or never referred to in the body of your essay."
+  ],
+  "rules": [
+   "Your essay must be based on secondary sources only. You can't collect primary data.",
+   "Your topic must be considered in terms of Psychology, even if the same topic could be approached through another individuals and societies subject."
+  ],
+  "think": [
+   "Can you find peer-reviewed studies on your idea? Name any you've seen, or say where you'll look first.",
+   "Could you answer your question using published research alone, with no data of your own?",
+   "Which abstract idea in your question needs to be operationalised, and how could you define that idea so it can be researched?",
+   "Which psychological theories or concepts would you link the studies to?",
+   "Which evidence might challenge your idea, as well as support your idea?",
+   "Without Psychology concepts, would your question become a biology or business management question?"
+  ],
+  "refs": {
+   "distinctive": "55–56",
+   "sources": "56",
+   "methods": "56, 61",
+   "choosing_topic": "55–56, 61",
+   "examples": "61",
+   "structure": "56, 61–63",
+   "pitfalls": "56, 61–63",
+   "rules": "55–56",
+   "think": "56, 61, 63"
+  }
  }
 ]

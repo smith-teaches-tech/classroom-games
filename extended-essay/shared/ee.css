@@ -28,6 +28,11 @@ a{color:var(--accent)}
 .shell{max-width:1000px;margin:0 auto;padding:0 20px}
 .narrow{max-width:800px}
 
+/* official guide link: fixed so it stays on screen on every page */
+.guide-link{position:fixed;right:16px;bottom:16px;z-index:40;padding:8px 14px;border-radius:999px;background:var(--accent);color:#fff;font:600 14px/1.3 var(--sans);text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.guide-link:hover{text-decoration:underline}
+@media print{.guide-link{display:none}}
+
 /* top bar */
 .top{display:flex;align-items:center;gap:12px;padding:18px 0 0;flex-wrap:wrap}
 .mark{width:32px;height:32px;flex:none;border-radius:7px;background:var(--accent);color:#fff;
