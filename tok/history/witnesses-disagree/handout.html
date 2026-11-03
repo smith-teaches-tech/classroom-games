@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Can a Knower Claim? — Handout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<!-- Print double-sided (flip on long edge). Front = sections 1-2. Back = sections 3-4 + bring it together. -->
+<style>
+  :root{--ink:#23201a;--ink-soft:#4a443a;--rule:#c9bda3;--rule-soft:#dbd0ba;--accent:#7a2f22;--accent2:#1f4e6b;--accent-warm:#9a6a2f;--good:#3f7d4f;--paper:#f6f1e6;}
+  *{box-sizing:border-box;}
+  @page{size:A4;margin:11mm 13mm;}
+  html,body{margin:0;padding:0;}
+  body{background:#e6dfd0;color:var(--ink);font-family:"Cormorant Garamond",Georgia,serif;font-size:11.5pt;line-height:1.28;-webkit-font-smoothing:antialiased;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .page{width:210mm;min-height:297mm;margin:10mm auto;background:#fff;padding:11mm 13mm;box-shadow:0 2px 12px rgba(0,0,0,.15);position:relative;}
+  .kicker{font-family:"JetBrains Mono",monospace;font-size:7pt;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-warm);margin:0 0 2mm;}
+  h1{font-size:24pt;line-height:1;margin:0 0 1.5mm;font-weight:700;}
+  .head{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1.5px solid var(--ink);padding-bottom:2.5mm;margin-bottom:3.5mm;}
+  .head .who{font-family:"JetBrains Mono",monospace;font-size:7.5pt;color:var(--ink-soft);text-align:right;line-height:1.9;}
+  .head .who span{display:inline-block;border-bottom:1px solid var(--rule);min-width:52mm;}
+  .runhead{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--ink);padding-bottom:1.5mm;margin-bottom:3.5mm;font-family:"JetBrains Mono",monospace;font-size:7pt;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);}
+
+  .kq{border:1.5px solid var(--accent);border-radius:3mm;padding:2.3mm 4mm;margin:0 0 3mm;display:flex;align-items:center;gap:4mm;background:rgba(122,47,34,.05);}
+  .kq .num{font-family:"JetBrains Mono",monospace;font-size:7pt;font-weight:700;letter-spacing:.12em;color:var(--accent-warm);border:1px solid var(--accent-warm);border-radius:1.5mm;padding:1mm 2mm;white-space:nowrap;}
+  .kq .q{font-style:italic;font-weight:700;font-size:13.5pt;line-height:1.15;color:var(--accent);}
+  .how{font-size:11pt;color:var(--ink-soft);margin:0 0 3.5mm;}
+  .how b{color:var(--ink);}
+
+  .sec{margin:0 0 4.5mm;}
+  .sec-h{display:flex;align-items:baseline;gap:3mm;border-bottom:1px solid var(--rule);padding-bottom:1mm;margin-bottom:2mm;}
+  .sec-h .n{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:13pt;color:var(--accent);}
+  .sec-h .t{font-weight:700;font-size:14pt;}
+  .sec-h .tag{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:6.8pt;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);}
+  .talk{display:grid;grid-template-columns:24mm 1fr;gap:0 3mm;margin:0 0 1.6mm;font-size:11pt;line-height:1.25;}
+  .talk b.k{font-family:"JetBrains Mono",monospace;font-size:6.6pt;letter-spacing:.12em;text-transform:uppercase;padding-top:.9mm;line-height:1.3;}
+  .talk.m b.k{color:var(--accent);} .talk.a b.k{color:var(--good);} .talk.c b.k{color:var(--accent2);}
+  .talk .q{font-weight:700;}
+  .claim{border:1px solid var(--accent2);border-radius:2mm;padding:1.6mm 3mm .5mm;margin-top:2mm;background:rgba(31,78,107,.035);}
+  .claim .lab{font-family:"JetBrains Mono",monospace;font-size:6.8pt;letter-spacing:.14em;text-transform:uppercase;color:var(--accent2);display:flex;justify-content:space-between;}
+  .claim .lab i{font-family:"Cormorant Garamond",Georgia,serif;font-size:9.5pt;letter-spacing:0;text-transform:none;color:var(--ink-soft);}
+  .claim .stem{font-style:italic;font-weight:600;font-size:11.5pt;margin-top:1mm;}
+  .line{border-bottom:1px solid var(--rule);height:8mm;}
+
+  .final{border:1.5px solid var(--accent);border-radius:3mm;padding:2.5mm 4mm 1mm;margin-top:1mm;}
+  .final h3{font-family:"JetBrains Mono",monospace;font-size:7pt;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 1.2mm;}
+  .final p{margin:0 0 1mm;font-size:11pt;}
+
+  .foot{position:absolute;left:13mm;right:13mm;bottom:7mm;font-family:"JetBrains Mono",monospace;font-size:6.5pt;color:#9b917c;display:flex;justify-content:space-between;letter-spacing:.06em;}
+  .printbtn{position:fixed;top:12px;right:14px;font-family:"JetBrains Mono",monospace;font-size:12px;padding:8px 14px;border-radius:6px;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;}
+  @media print{
+    body{background:#fff;}
+    .page{margin:0;box-shadow:none;width:auto;min-height:auto;height:274mm;padding:0;page-break-after:always;overflow:hidden;}
+    .page:last-child{page-break-after:auto;}
+    .printbtn{display:none;}
+    .foot{left:0;right:0;bottom:0;}
+  }
+</style>
+</head>
+<body>
+<button class="printbtn" onclick="window.print()">Print</button>
+
+<!-- ============ FRONT ============ -->
+<div class="page">
+  <div class="head">
+    <div>
+      <p class="kicker">TOK · History · When Witnesses Disagree</p>
+      <h1>What Can a Knower Claim?</h1>
+    </div>
+    <div class="who">Name <span></span><br>Group <span></span></div>
+  </div>
+
+  <div class="kq"><span class="num">KNOWLEDGE QUESTION</span><span class="q">To what extent does what counts as historical knowledge depend on who is asked, and who does the asking?</span></div>
+
+  <p class="how">For each part of today's activity, <b>talk</b> through the three questions with your group. Then <b>write one knowledge claim</b>. Your claim should be about knowledge, not about the <i>Titanic</i>: what does this part show about who is asked, and who does the asking?</p>
+
+  <div class="sec">
+    <div class="sec-h"><span class="n">1</span><span class="t">The first reports</span><span class="tag">15 April 1912</span></div>
+    <div class="talk m"><b class="k">Misled?</b><div><span class="q">Why were readers misled?</span> The papers' main source was White Star, the company that owned the ship. What did White Star have to lose if the news was bad? Four papers in four cities ran the same story. Did any of them have a source of its own?</div></div>
+    <div class="talk a"><b class="k">More accurate?</b><div><span class="q">What made the story more accurate?</span> What changed on the evening of 18 April, when <i>Carpathia</i> docked with the survivors?</div></div>
+    <div class="talk c"><b class="k">Can we know?</b><div><span class="q">Can we know, and did anyone on 15 April?</span> What would a reader that day have needed before trusting the story?</div></div>
+    <div class="claim"><div class="lab">Your claim<i>about knowledge, not the Titanic</i></div><div class="stem">The first reports show that…</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><span class="n">2</span><span class="t">Did the ship break in two?</span><span class="tag">The inquiries, 1912 · The wreck, 1985</span></div>
+    <div class="talk m"><b class="k">Misled?</b><div><span class="q">Why were knowers misled?</span> London's finding rested on one answer, from Lightoller, White Star's most senior surviving officer, to a lawyer for the Board of Trade, the body that had approved the ship as fit to sail. What did each of them have at stake? Careful: Symons and Osman also worked for White Star, and they said she broke.</div></div>
+    <div class="talk a"><b class="k">More accurate?</b><div><span class="q">What made it more accurate?</span> Most witnesses in London were never asked whether she broke. Crew and passengers in different lifeboats, many of them strangers to each other, said she did. What would asking all of them have added? Then what happened in 1985?</div></div>
+    <div class="talk c"><b class="k">Can we know?</b><div><span class="q">Can we know, and did anyone in 1912?</span> Could any number of witnesses have made a knower certain?</div></div>
+    <div class="claim"><div class="lab">Your claim<i>about knowledge, not the Titanic</i></div><div class="stem">The British inquiry shows that…</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div></div>
+  </div>
+
+  <div class="foot"><span>TOK · History · When Witnesses Disagree</span><span>Over →</span></div>
+</div>
+
+<!-- ============ BACK ============ -->
+<div class="page">
+  <div class="runhead"><span>What Can a Knower Claim?</span><span>Parts 3 and 4 · then bring it together</span></div>
+
+  <div class="sec">
+    <div class="sec-h"><span class="n">3</span><span class="t">The shots</span><span class="tag">Three questions, not one</span></div>
+    <div class="talk m"><b class="k">Misled?</b><div><span class="q">Why were knowers misled?</span> Daly told a doctor, then a newspaper, then a court. Rheims told his wife, then a lawyer under oath. Which telling went furthest each time, and who was listening?</div></div>
+    <div class="talk a"><b class="k">More accurate?</b><div><span class="q">What made it more accurate?</span> Lowe admitted under oath that he fired. What did he have to lose by saying it? What does that do to how far you trust him?</div></div>
+    <div class="talk c"><b class="k">Can we know?</b><div><span class="q">Can we know, and did anyone ever?</span> Were shots fired at all? Were they fired at people? Did an officer shoot himself? A pistol shot on an open deck leaves nothing the wreck could show. Which of the three can we know, and what could still change the others?</div></div>
+    <div class="claim"><div class="lab">Your claim<i>about knowledge, not the Titanic</i></div><div class="stem">The accounts of the shots show that…</div><div class="line"></div><div class="line"></div><div class="line"></div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><span class="n">4</span><span class="t">Panic, or order?</span><span class="tag">Where and when</span></div>
+    <div class="talk m"><b class="k">Misled?</b><div><span class="q">Why were knowers misled?</span> Beesley wrote that "no signs of alarm were exhibited by any one." Where was he, and when did he leave the ship? London called three passengers to give evidence, all of them first class, and then found that third-class passengers "were not unfairly treated."</div></div>
+    <div class="talk a"><b class="k">More accurate?</b><div><span class="q">What made it more accurate?</span> Asking where and when each witness was. In Washington, Buckley and Abelseth, both third class, testified. Dodge, first class, says the panic came later. How can Dodge and Beesley both be telling the truth?</div></div>
+    <div class="talk c"><b class="k">Can we know?</b><div><span class="q">Can we know?</span> Did anyone see the whole ship? What can a knower say, and how sure can they be?</div></div>
+    <div class="claim"><div class="lab">Your claim<i>about knowledge, not the Titanic</i></div><div class="stem">The panic witnesses show that…</div><div class="line"></div><div class="line"></div><div class="line"></div></div>
+  </div>
+
+  <div class="final">
+    <h3>Bring it together</h3>
+    <p>Read your four claims. <b>Which of them holds for every part, and which holds for only one?</b> Use at least two of your claims to answer the knowledge question, and say where your answer stops working.</p>
+    <div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div>
+  </div>
+
+  <div class="foot"><span>TOK · History · When Witnesses Disagree</span><span>Sources: British and US Titanic inquiries, 1912 · titanicinquiry.org</span></div>
+</div>
+</body>
+</html>
