@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Does the Method Reach the Question? | AP Research</title>
+<meta name="description" content="A projected AP Research lesson: the method must come from the research question.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:ital,wght@0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet">
+<style>
+/* The whole page scales like a slide: 1rem = 10px on a 1920 x 1080 screen.
+   Sizes below are set for that canvas, so they keep their proportions on any projector. */
+html{font-size:min(calc(100vw / 192),calc(100vh / 108))}
+:root{
+  --ink:#14172b; --soft:#454a66; --paper:#f8f9fc; --white:#fff; --line:#cfd3e2; --blank:#e9ebf3;
+  --amber:#f2a400; --amber-wash:#fff3d1;
+  --keep:#11683a; --keep-wash:#def3e6; --alter:#8a4b00; --cut:#b3261e; --cut-wash:#fbe4e1;
+  --maya:#0a6a63; --maya-wash:#d9f2ef; --zain:#3140b5; --zain-wash:#e4e7fb; --hana:#a81f68; --hana-wash:#fce3ef;
+  --disp:"Bricolage Grotesque",system-ui,sans-serif; --sans:"Figtree",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:3.6rem;font-weight:500;line-height:1.28;
+  display:flex;flex-direction:column;overflow:hidden;-webkit-font-smoothing:antialiased}
+#stage{flex:1;position:relative;min-height:0}
+.slide{position:absolute;inset:0;display:none;flex-direction:column;min-height:0}
+.slide.on{display:flex}
+.pad{padding:3.2rem 6rem}
+[data-at],[data-until]{transition:opacity .2s}
+.off{display:none!important}
+h2{font-family:var(--disp);font-weight:800;font-size:6.4rem;line-height:1.05;letter-spacing:-.015em}
+
+/* The RQ band: the one bold thing, pinned to the top of every slide that has an RQ */
+.rq{background:var(--amber);color:var(--ink);padding:1.6rem 6rem 1.8rem;display:grid;grid-template-columns:auto 1fr;column-gap:3rem;align-items:start;flex:none}
+.rq b{font-family:var(--disp);font-weight:800;font-size:6.4rem;line-height:1;letter-spacing:-.02em}
+.rq p{font-weight:700;font-size:4.2rem;line-height:1.16}
+.rq .tag{display:block;font-weight:600;font-size:3.4rem;margin-bottom:.2rem}
+
+/* Slide 1 */
+.hero{background:var(--amber);padding:6rem 6rem 5rem;flex:none}
+.hero h1{font-family:var(--disp);font-weight:800;font-size:14.4rem;line-height:.95;letter-spacing:-.03em}
+.hero p{font-weight:700;font-size:3.6rem;margin-bottom:2rem}
+.intro{display:grid;grid-template-columns:1fr 1fr;gap:6rem;padding:4.4rem 6rem;flex:1;min-height:0}
+.intro h2{font-size:5.2rem;margin-bottom:1.6rem}
+.intro p{font-size:4.6rem;line-height:1.22}
+.intro .now{font-size:4rem;color:var(--soft);margin-top:2.4rem}
+.plan{list-style:none;counter-reset:n}
+.plan li{counter-increment:n;display:grid;grid-template-columns:5.4rem 1fr;font-size:4.2rem;font-weight:600;margin-bottom:1.6rem}
+.plan li::before{content:counter(n);font-family:var(--disp);font-weight:800}
+
+/* Conversation */
+.talk{display:grid;grid-template-columns:1fr 58rem;gap:3.6rem;flex:1;min-height:0;padding:2.4rem 6rem 2.4rem}
+.chat{overflow-y:auto;min-height:0;scrollbar-width:none;padding-right:.4rem}
+.chat::-webkit-scrollbar{display:none}
+.scene{font-style:italic;font-size:4rem;color:var(--soft);margin-bottom:2rem}
+.say{display:grid;grid-template-columns:13rem 1fr;gap:1.4rem;padding:1.4rem 2rem;margin-bottom:1.2rem;border-radius:1.2rem;font-size:4.3rem;line-height:1.2;opacity:.62}
+.say b{font-family:var(--disp);font-weight:800}
+.say.now{opacity:1;box-shadow:inset .9rem 0 0 var(--c)}
+.say b{color:var(--c)}
+.say.m{--c:var(--maya);background:var(--maya-wash)}
+.say.z{--c:var(--zain);background:var(--zain-wash)}
+.say.h{--c:var(--hana);background:var(--hana-wash)}
+.doc{background:var(--white);border:.35rem solid var(--ink);border-radius:.6rem;padding:2.2rem 2.8rem;align-self:start;max-height:100%}
+.doc h3{font-family:var(--disp);font-weight:800;font-size:4.4rem;margin-bottom:1.2rem}
+.doc ul{list-style:none}
+.doc li{font-size:4rem;font-weight:600;padding:.8rem 0;border-top:.2rem solid var(--line)}
+.doc .none{font-style:italic;color:var(--soft);font-weight:500;font-size:4rem}
+
+/* One question at a time */
+.ask{flex:1;display:flex;flex-direction:column;justify-content:center;padding:2rem 6rem 3rem;min-height:0}
+.ask .count{font-size:3.8rem;font-weight:600;color:var(--soft);margin-bottom:1.6rem}
+.ask .q{font-family:var(--disp);font-weight:800;font-size:7.6rem;line-height:1.08;letter-spacing:-.015em;max-width:165rem}
+.ask .a{font-size:5.2rem;line-height:1.25;margin-top:4rem;padding-left:3rem;border-left:1rem solid var(--amber);max-width:160rem}
+
+/* Takeaway */
+.big{font-family:var(--disp);font-weight:800;font-size:10.2rem;line-height:1;letter-spacing:-.025em;padding:5rem 6rem 1rem;white-space:nowrap}
+.sub{font-size:4.6rem;font-weight:600;padding:3rem 6rem 2.4rem}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:4rem;padding:0 6rem 3rem}
+.pair>div{border-top:1rem solid var(--ink);padding-top:1.8rem}
+.pair h3{font-family:var(--disp);font-weight:800;font-size:6rem;line-height:1.05;margin-bottom:1rem}
+.pair p{font-size:4.6rem;line-height:1.2}
+.pair .eg{color:var(--soft);margin-top:1.4rem;font-size:4.2rem}
+
+/* Keep, cut, alter chart */
+.wrapT{flex:1;min-height:0;padding:1rem 6rem 1.4rem}
+table{width:100%;height:100%;border-collapse:collapse;table-layout:fixed}
+th{font-family:var(--disp);font-weight:800;font-size:3.8rem;text-align:left;padding:.4rem 1.6rem .8rem;border-bottom:.5rem solid var(--ink)}
+th:first-child,td:first-child{padding-left:0}
+td{border-bottom:.2rem solid var(--line);padding:.5rem 1.6rem;vertical-align:middle}
+td.idea{font-weight:700;font-size:4rem;line-height:1.1}
+td.cell{cursor:pointer}
+td .fill{display:flex;align-items:center;min-height:7.2rem;border-radius:.8rem;background:var(--blank);padding:.3rem 1.4rem;font-size:4rem;line-height:1.12;outline-offset:.2rem}
+td.cell:hover .fill{outline:.3rem dashed var(--soft)}
+td .fill>span{visibility:hidden;width:100%}
+td.open .fill{background:transparent;padding-left:0}
+td.open .fill>span{visibility:visible}
+td.open.vd .fill{justify-content:center;padding:.3rem 0}
+td.vd span{font-family:var(--disp);font-weight:800;font-size:4.2rem;text-align:center;display:block;border-radius:.8rem;padding:.3rem 0;color:#fff}
+.v-Keep{background:var(--keep)}.v-Cut{background:var(--cut)}.v-Alter{background:var(--alter)}
+[contenteditable]:focus{outline:.3rem solid var(--ink);outline-offset:.4rem;border-radius:.3rem}
+
+/* Method steps */
+.steps{list-style:none;counter-reset:n;padding:1.8rem 6rem .6rem;flex:1;min-height:0;font-size:4rem}
+.steps li{counter-increment:n;display:grid;grid-template-columns:5.8rem 1fr;line-height:1.17;padding:.7rem 1.4rem;margin:0 -1.4rem .3rem;border-radius:.8rem}
+.steps li::before{content:counter(n);font-family:var(--disp);font-weight:800}
+.steps li.bad{background:var(--cut-wash);box-shadow:inset .9rem 0 0 var(--cut)}
+.steps li.good{background:var(--keep-wash);box-shadow:inset .9rem 0 0 var(--keep)}
+.steps b{font-weight:800}
+.prompt{background:var(--ink);color:#fff;padding:3rem 6rem;font-family:var(--disp);font-weight:800;font-size:5.4rem;line-height:1.08;letter-spacing:-.01em;flex:none}
+.prompt small{display:block;font-family:var(--sans);font-weight:600;font-size:3.8rem;letter-spacing:0;margin-top:1rem}
+.answer{padding:1.6rem 6rem 1.8rem;flex:none}
+.answer.no{background:var(--cut-wash)}.answer.yes{background:var(--keep-wash)}
+.answer .verdict{font-family:var(--disp);font-weight:800;font-size:5.2rem;line-height:1.05;margin-bottom:1rem}
+.answer.no .verdict{color:var(--cut)}.answer.yes .verdict{color:var(--keep)}
+.answer .two{display:grid;grid-template-columns:1fr 1fr;gap:4rem}
+.answer p{font-size:3.8rem;line-height:1.17}
+.answer p b{font-weight:800}
+.answer .note{margin-top:1rem;font-weight:700}
+
+/* Line of reasoning */
+.chain{display:grid;grid-template-columns:repeat(5,1fr);gap:3.6rem;padding:3.6rem 6rem 3rem}
+.chain div{position:relative;background:var(--ink);color:#fff;font-family:var(--disp);font-weight:800;font-size:3.9rem;line-height:1.05;border-radius:.8rem;min-height:12rem;display:flex;align-items:center;justify-content:center;text-align:center;padding:1rem}
+.chain div:not(:last-child)::after{content:"";position:absolute;right:-3.2rem;top:50%;margin-top:-1.6rem;border-left:2.8rem solid var(--ink);border-top:1.6rem solid transparent;border-bottom:1.6rem solid transparent}
+.chain .hot{background:var(--amber);color:var(--ink)}
+.scores{display:grid;grid-template-columns:1fr 1fr;gap:4rem;padding:0 6rem}
+.scores h3{font-family:var(--disp);font-weight:800;font-size:5.2rem;margin-bottom:.6rem}
+.scores p{font-size:4.2rem;line-height:1.2}
+.loraq{padding:3.4rem 6rem 2rem}
+.loraq .q{font-family:var(--disp);font-weight:800;font-size:5.4rem;line-height:1.08}
+.loraq .a{font-size:4.4rem;line-height:1.2;margin-top:1.6rem;padding-left:2.4rem;border-left:.9rem solid var(--amber)}
+.src{font-size:2.4rem;color:var(--soft);padding:0 6rem 1rem;margin-top:auto}
+
+/* Your method */
+.make{background:var(--amber);padding:3.6rem 6rem 3.2rem;flex:none}
+.make h2{font-size:9rem;line-height:1}
+.make p{font-size:4.4rem;font-weight:700;margin-top:1.2rem}
+.todo{list-style:none;counter-reset:n;padding:3.2rem 6rem;flex:1;min-height:0}
+.todo li{counter-increment:n;display:grid;grid-template-columns:7rem 1fr;font-size:4.6rem;line-height:1.18;margin-bottom:2.4rem}
+.todo li::before{content:counter(n);font-family:var(--disp);font-weight:800;font-size:5.4rem;line-height:1}
+.todo b{font-weight:800}
+
+.rqw{font-family:var(--sans);font-weight:800;letter-spacing:0}
+
+/* Teacher's controls: quieter than the lesson */
+#bar{flex:none;height:5.8rem;background:#fff;border-top:.2rem solid var(--line);display:flex;align-items:center;gap:1.4rem;padding:0 2.4rem;font-size:2.2rem}
+#bar button{font:inherit;font-weight:700;color:var(--ink);background:none;border:.2rem solid var(--line);border-radius:.8rem;padding:.5rem 1.8rem;cursor:pointer}
+#bar button:hover{border-color:var(--ink)}
+#bar button:focus-visible{outline:.3rem solid var(--ink);outline-offset:.2rem}
+#bar #next{background:var(--ink);color:#fff;border-color:var(--ink);padding:.5rem 4rem}
+#jump{display:flex;gap:.5rem;margin:0 auto}
+#jump button{padding:.3rem 1.1rem;font-weight:600;color:var(--soft)}
+#jump button.here{background:var(--amber);border-color:var(--amber);color:var(--ink);font-weight:800}
+#where{font-weight:600;color:var(--soft);white-space:nowrap}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* Narrow or portrait windows, such as a phone: stack everything and allow scrolling */
+@media (max-aspect-ratio:1/1){
+  html{font-size:calc(100vw / 110)}
+  body{overflow:auto;height:auto}
+  #stage{overflow:auto}
+  .slide{position:relative;inset:auto}
+  .talk,.intro,.pair,.scores,.answer .two,.chain{grid-template-columns:1fr}
+  .hero h1,.big{font-size:9rem}
+  #jump,#where{display:none}
+  .chain div::after{display:none}
+  .chat{max-height:90rem}
+}
+</style>
+</head>
+<body>
+<main id="stage" aria-live="polite"></main>
+<nav id="bar" aria-label="Lesson controls">
+  <button id="back" type="button">Back</button>
+  <span id="where"></span>
+  <div id="jump"></div>
+  <button id="full" type="button">Full screen</button>
+  <button id="next" type="button">Next</button>
+</nav>
+
+<script>
+(function(){
+"use strict";
+
+/* ═══ LESSON CONTENT ═══ */
+const WAIT_RQ = "Does the tempo of background music affect how long high school students think a wait lasted?";
+
+const band = (text,tag) => `<div class="rq"><b>RQ</b><p>${tag?`<span class="tag">${tag}</span>`:""}${text}</p></div>`;
+
+/* The conversation. `add` puts an idea into the group's method section as the line appears. */
+const TALK = [
+  ["m","Maya","OK, the gap's done. Most of the studies on music and waiting used adult shoppers, so here's our question: “Does the tempo of background music affect how long high school students think a wait lasted?” Now we just need a method."],
+  ["z","Zain","Easy. We put people in a room, make them wait, and blindfold them.",["Blindfolds"]],
+  ["h","Hana","Why the blindfold?"],
+  ["z","Zain","So they can't look at a clock. Also, nobody else's project has blindfolds. We'd be the blindfold group."],
+  ["h","Hana","OK, I like that. We take their phones too. And what if we hang a fake clock on the wall that runs at double speed?",["Taking phones","Fake clock at double speed"]],
+  ["m","Maya","They're blindfolded, though."],
+  ["h","Hana","Half of them. Half get the blindfold, half get the fake clock."],
+  ["z","Zain","Yes. And everybody wears a smartwatch, so we get heart rate. Real biometric data.",["Smartwatch heart rate"]],
+  ["m","Maya","What do we do with the heart rate?"],
+  ["z","Zain","Graph it. Graphs look serious."],
+  ["h","Hana","You know what would move a heart rate? A jump scare. Three minutes in, someone pops a balloon behind them.",["Balloon jump scare"]],
+  ["z","Zain","And we turn off the AC. Nothing makes time crawl like no AC in Dhahran.",["AC turned off"]],
+  ["m","Maya","Is that allowed?"],
+  ["h","Hana","It's realistic. Waiting rooms are miserable."],
+  ["m","Maya","OK. What music are we playing?"],
+  ["z","Zain","My gym playlist. Same playlist for everybody, so it's controlled.",["One gym playlist"]],
+  ["h","Hana","Look at us, controlling variables."],
+  ["m","Maya","And at the end, what do we ask them?"],
+  ["z","Zain","Were you scared? How scared? Would you do it again?",["Survey about fear"]],
+  ["h","Hana","This is going to be the best presentation in the class."],
+  ["m","Maya","<i>(scrolling up)</i> Wait. What was our question again?"],
+  ["z","Zain","Something about music?"],
+  ["h","Hana","Does it matter? We have blindfolds."]
+];
+
+const QUESTIONS = [
+  ["Maya asks, “What was our question again?” When did the group stop looking at its RQ?",
+   "Almost right away. Zain's first idea is the blindfold, and each idea after that builds on what sounds cool."],
+  ["The plan splits people into two groups. What's the only difference between the two groups?",
+   "Blindfold or fake clock. The RQ doesn't ask about either one."],
+  ["Zain says one playlist for everybody is “controlled.” What's the problem with the playlist?",
+   "Tempo is the variable the RQ asks about. If tempo never changes, the study can't show whether tempo has an effect."],
+  ["What does the survey at the end measure?",
+   "Fear. Nobody is asked how long the wait lasted, and the wait is what the RQ asks about."],
+  ["Reading only the RQ, what does this study have to include?",
+   "At least two tempos, the same real wait for everyone, no time cues, a time estimate from each person, and high school participants."]
+];
+
+/* Effect and verdict stay blank until the class has answered. */
+const CHART = [
+  ["Blindfolds","Hiding clocks is the only reason given. Leaving clocks out does the same job.","Cut"],
+  ["Taking phones","Removes a time cue that could sway the estimates.","Keep"],
+  ["Fake clock at double speed","A false time cue that could explain any difference.","Cut"],
+  ["Smartwatch heart rate","The RQ doesn't ask about heart rate.","Cut"],
+  ["Balloon jump scare","Adds fear as a rival explanation. Ethics problem.","Cut"],
+  ["AC turned off","Adds discomfort as a rival explanation. Ethics problem.","Cut"],
+  ["One gym playlist","Tempo never changes. Assign a slow and a fast tempo.","Alter"],
+  ["Survey about fear","Never asks how long the wait lasted. Ask that instead.","Alter"]
+];
+
+const SCENARIOS = [
+  {name:"The Font Study", size:4.6,
+   rq:"Does the font of a news article affect how credible high school students judge the article to be?",
+   steps:["Prepare one news article in two fonts: Times New Roman (the usual news font) and Comic Sans.",
+          "Randomly assign 30 high school students to one font or the other.",
+          "Slow readers might skew the results, so the researcher reads each group's version aloud while the students listen with their eyes closed.",
+          "Each student rates the article's credibility from 1 to 10.",
+          "Compare the average rating of the two groups."],
+   marks:[3],
+   verdict:"No. The method breaks at step 3.",
+   why:["Why","Students have their eyes closed, so nobody sees a font. Both groups get the same experience."],
+   fix:["Change","Each student reads the assigned font silently, with the same time limit."],
+   note:"The researcher gave a reason for step 3, but a reason only counts if it traces back to the RQ."},
+  {name:"The Phone on the Desk", size:4.2,
+   rq:"Does having a switched-off phone on the desk reduce how much high school students remember from a reading passage?",
+   steps:["Randomly assign 40 high school students to two groups: phone switched off on the desk, or phone in a bag outside the room (the control group).",
+          "Both groups read the same two-page passage for 10 minutes.",
+          "Each student wears a smartwatch that records heart rate during the reading.",
+          "Afterward, each student rates from 1 to 10 how distracted and how stressed they felt.",
+          "Compare the average ratings and heart rates of the two groups."],
+   marks:[3,4,5],
+   verdict:"No. The method breaks at steps 3, 4 and 5.",
+   why:["Why","The RQ asks how much students remember, and no step measures memory."],
+   fix:["Change","Give a closed-book quiz on the passage, compare the scores, and cut the smartwatch."],
+   note:"The control group is fine. A tidy experiment can still miss its RQ."},
+  {name:"Home", size:4.4,
+   rq:"How do long-term international students at schools in the Gulf describe what “home” means to them?",
+   steps:["Recruit 25 international students who have lived in the Gulf for at least five years.",
+          "Show each student 30 street photos: their passport country, their Gulf city, and places they've never lived.",
+          "After each photo, the student presses H for “home” or N for “not home” as fast as possible.",
+          "Software records each key press and reaction time.",
+          "Compare the average reaction time across the three types of photo."],
+   marks:[3,4,5],
+   verdict:"No. The method breaks at steps 3, 4 and 5.",
+   why:["Why","“Describe” asks for students' own words, and reaction times contain no words."],
+   fix:["Change","Hold interviews and look for themes in the answers. The photos could stay as prompts."],
+   note:"This RQ doesn't ask about an effect, so this study doesn't need a control group. The RQ decides."},
+  {name:"Seeing the Speaker", size:4,
+   rq:"Does seeing a speaker, compared with only hearing the speaker, change how persuasive high school students rate a recorded speech?",
+   steps:["Randomly assign 40 high school students to two groups, which spreads differences in attention and prior opinion across both.",
+          "Before the recording, each student rates their opinion on the topic, to check that the groups start out similar.",
+          "Group A watches a 3-minute video of the speech. Group B wears sleep masks and hears the same audio, so seeing the speaker is the only difference.",
+          "Afterward, every student rates the speech on the same five persuasiveness statements, because the RQ asks about rated persuasiveness.",
+          "Compare the average rating of Group A and Group B."],
+   marks:[1,3,4], good:true,
+   verdict:"Yes. This method reaches the question.",
+   why:["How","Step 1 is the students, step 3 is seeing or only hearing, and step 4 is how persuasive."],
+   fix:["Controls","Group B is the comparison. Both groups get the same speech, audio and statements."],
+   note:"One speech at one school is a limitation, not a misalignment. The sleep masks stay: the RQ needs them."}
+];
+
+/* ═══ SLIDES ═══
+   data-at="n"     shows an element from reveal n onward
+   data-until="n"  hides an element from reveal n onward */
+const SLIDES = [];
+
+SLIDES.push({label:"Lesson", html:`
+  <div class="hero"><p>AP Research</p><h1>Does the method reach the question?</h1></div>
+  <div class="intro">
+    <div><h2>Objective</h2>
+      <p>Test whether a method answers its research question, and change a method that doesn't.</p>
+      <p class="now">You've found a gap in your Skittles project and you're forming your RQ. Your method comes next.</p></div>
+    <div><h2>Today</h2><ol class="plan">
+      <li>Read a group's planning conversation aloud</li>
+      <li>Work out what went wrong</li>
+      <li>Decide what to keep, cut and alter</li>
+      <li>Test four more methods in groups</li>
+      <li>Design your own method</li></ol></div>
+  </div>`});
+
+{
+  let ideas = "";
+  const lines = TALK.map((t,i)=>{
+    (t[3]||[]).forEach(x=>{ideas+=`<li data-at="${i+1}">${x}</li>`;});
+    return `<div class="say ${t[0]}" data-at="${i+1}"><b>${t[1]}</b><span>${t[2]}</span></div>`;
+  }).join("");
+  SLIDES.push({label:"The Waiting Room Study", chat:true, html:`
+    ${band(WAIT_RQ)}
+    <div class="talk">
+      <div class="chat"><p class="scene">Maya, Zain and Hana are writing the method section of their shared doc. Who will read each part?</p>${lines}</div>
+      <aside class="doc"><h3>Their method section</h3><p class="none" data-until="2">Blank</p><ul>${ideas}</ul></aside>
+    </div>`});
+}
+
+SLIDES.push({label:"What went wrong?", html:`
+  ${band(WAIT_RQ)}
+  <div class="ask">${QUESTIONS.map((q,i)=>`
+    <div data-at="${i*2}" data-until="${i*2+2}">
+      <p class="count">What went wrong? Question ${i+1} of ${QUESTIONS.length}</p>
+      <p class="q">${q[0]}</p>
+      <p class="a" data-at="${i*2+1}">${q[1]}</p>
+    </div>`).join("")}</div>`});
+
+SLIDES.push({label:"Takeaway", html:`
+  ${band(WAIT_RQ)}
+  <p class="big">The method must come from the RQ.</p>
+  <p class="sub" data-at="1">And if your RQ asks whether one thing affects another:</p>
+  <div class="pair">
+    <div data-at="1"><h3>Control your variables</h3>
+      <p>Everything except the variable in the RQ stays the same for everyone.</p>
+      <p class="eg">Here: the same room, the same real wait, no clocks.</p></div>
+    <div data-at="2"><h3>Have a control group</h3>
+      <p>A group without the treatment gives you something to compare against.</p>
+      <p class="eg">Here: a group that waits with no music.</p></div>
+  </div>`});
+
+SLIDES.push({label:"Keep, cut or alter", chart:true, html:`
+  ${band(WAIT_RQ)}
+  <div class="wrapT"><table>
+    <colgroup><col style="width:24%"><col style="width:59%"><col style="width:17%"></colgroup>
+    <thead><tr><th scope="col">The group's idea</th><th scope="col">Effect on answering the RQ</th><th scope="col">Keep, cut, alter?</th></tr></thead>
+    <tbody>${CHART.map((r,i)=>`<tr><td class="idea">${r[0]}</td>
+      <td class="cell" data-cell="${i*2}"><div class="fill"><span>${r[1]}</span></div></td>
+      <td class="cell vd" data-cell="${i*2+1}"><div class="fill"><span class="v-${r[2]}">${r[2]}</span></div></td></tr>`).join("")}</tbody>
+  </table></div>`});
+
+SLIDES.push({label:"What's still missing?", html:`
+  ${band(WAIT_RQ)}
+  <div class="ask" data-until="1"><p class="q">The chart fixed the ideas the group had. What did the group never think of?</p></div>
+  <ol class="steps" data-at="1" style="font-size:4.5rem">
+    <li><span>Randomly assign 60 high school students to three groups: slow tempo, fast tempo, and no music. <b>The no-music group is the control group.</b></span></li>
+    <li><span>Every group waits in the same room, for the same 10 minutes, at the same time of day. <b>Control variables.</b></span></li>
+    <li><span>No phones or clocks in the room. <b>Control variables.</b></span></li>
+    <li><span>The slow and fast groups hear instrumental music at the same volume, so tempo is the only difference. <b>Control variables.</b></span></li>
+    <li><span>Afterward, each student writes down how many minutes they think the wait lasted. <b>The measure in the RQ.</b></span></li>
+    <li><span>Compare the average estimate of the three groups.</span></li>
+  </ol>`});
+
+SCENARIOS.forEach((s,i)=>{
+  SLIDES.push({label:"Scenario "+(i+1), html:`
+    ${band(s.rq,`Scenario ${i+1} of ${SCENARIOS.length}: ${s.name}`)}
+    <ol class="steps" style="font-size:${s.size}rem">${s.steps.map((t,n)=>`<li data-mark="${s.marks.includes(n+1)?(s.good?"good":"bad"):""}"><span>${t}</span></li>`).join("")}</ol>
+    <div class="prompt" data-until="1">Does the method reach the question?<small>If not, why, and what needs to change?</small></div>
+    <div class="answer ${s.good?"yes":"no"}" data-at="1">
+      <p class="verdict">${s.verdict}</p>
+      <div class="two"><p><b>${s.why[0]}:</b> ${s.why[1]}</p><p><b>${s.fix[0]}:</b> ${s.fix[1]}</p></div>
+      <p class="note">${s.note}</p>
+    </div>`});
+});
+
+SLIDES.push({label:"Line of reasoning", html:`
+  <div class="chain"><div>Literature review</div><div>Gap</div><div>Research question</div><div class="hot">Method</div><div>Conclusions</div></div>
+  <div class="scores">
+    <div><h3>Score of 3</h3><p>“A reasonably replicable research method, with questionable alignment to the purpose of the inquiry.”</p></div>
+    <div><h3>Score of 4 or 5</h3><p>“Logically defends the alignment of a detailed, replicable research method to the purpose of the inquiry.”</p></div>
+  </div>
+  <div class="loraq" data-at="1">
+    <p class="q">If the Waiting Room group wrote a conclusion, what could it claim? What gap would that fill?</p>
+    <p class="a" data-at="2">Only claims about fear and heart rate. Neither claim touches the gap Maya named, so the break at the method carries through to the conclusions.</p>
+  </div>
+  <p class="src">Rubric wording: AP Research 2026 Academic Paper Scoring Guidelines, College Board</p>`});
+
+SLIDES.push({label:"Design your method", html:`
+  <div class="make"><h2>Now design your method</h2><p>Your Skittles project, in your groups.</p></div>
+  <ol class="todo">
+    <li><span><b>Write your RQ at the top of the page</b> and keep it there.</span></li>
+    <li><span><b>Underline the key terms.</b> What has to change? What do you have to measure?</span></li>
+    <li><span><b>Write each step.</b> Which key term does the step serve, or which rival explanation does the step rule out? Cut any step that does neither, however cool the step is.</span></li>
+    <li><span><b>List your control variables and name your control group.</b></span></li>
+    <li><span><b>Finish this sentence:</b> “Our results show that...” Does your sentence answer your RQ as written? If not, go back to step 3.</span></li>
+  </ol>`});
+
+/* ═══ ENGINE ═══ */
+const $ = id => document.getElementById(id);
+const stage = $("stage"), jump = $("jump");
+let cur = 0;
+
+SLIDES.forEach((s,i)=>{
+  const el = document.createElement("section");
+  el.className = "slide";
+  el.setAttribute("aria-label", s.label);
+  el.innerHTML = s.html;
+  stage.appendChild(el);
+  s.el = el;
+  s.pos = 0;
+  if(s.chart){
+    s.stack = [];
+    s.total = CHART.length*2;
+  }else{
+    s.total = Math.max(0,...[...el.querySelectorAll("[data-at]")].map(n=>+n.dataset.at));
+    el.querySelectorAll("[data-until]").forEach(n=>{ s.total = Math.max(s.total,+n.dataset.until); });
+    /* A scenario's marks and answer arrive together, on the first reveal. */
+    if(el.querySelector("[data-mark]")) s.marked = true;
+  }
+  el.querySelectorAll(".q,.big,th,.rq b").forEach(n=>{ n.innerHTML = n.innerHTML.replace(/\bRQ\b/g,'<span class="rqw">RQ</span>'); });
+  const b = document.createElement("button");
+  b.type = "button"; b.textContent = i+1; b.title = s.label;
+  b.setAttribute("aria-label", "Go to "+s.label);
+  b.addEventListener("click",()=>go(i));
+  jump.appendChild(b);
+});
+
+/* The questions slide runs two reveals per question, and the last answer ends it. */
+SLIDES.filter(s=>s.label==="What went wrong?").forEach(s=>{ s.total = QUESTIONS.length*2-1; });
+
+function paint(s){
+  const el = s.el, pos = s.pos;
+  if(s.chart){
+    el.querySelectorAll("[data-cell]").forEach(td=>{
+      const open = s.stack.includes(+td.dataset.cell);
+      td.classList.toggle("open",open);
+      if(!td.classList.contains("vd")) td.querySelector("span").contentEditable = open ? "true" : "false";
+    });
+    return;
+  }
+  el.querySelectorAll("[data-at],[data-until]").forEach(n=>{
+    const at = n.dataset.at===undefined ? -1 : +n.dataset.at;
+    const until = n.dataset.until===undefined ? Infinity : +n.dataset.until;
+    n.classList.toggle("off", pos<at || pos>=until);
+  });
+  if(s.marked){
+    el.querySelectorAll("[data-mark]").forEach(n=>{
+      n.classList.remove("bad","good");
+      if(pos>=1 && n.dataset.mark) n.classList.add(n.dataset.mark);
+    });
+  }
+  if(s.chat){
+    el.querySelectorAll(".say").forEach(n=>n.classList.toggle("now", +n.dataset.at===pos));
+    const c = el.querySelector(".chat");
+    c.scrollTop = c.scrollHeight;
+  }
+}
+
+function chrome(){
+  const s = SLIDES[cur];
+  [...jump.children].forEach((b,i)=>b.classList.toggle("here",i===cur));
+  $("where").textContent = s.label;
+  $("back").disabled = cur===0 && s.pos===0;
+  const done = s.chart ? s.stack.length>=s.total : s.pos>=s.total;
+  $("next").textContent = !done ? "Reveal next" : (cur<SLIDES.length-1 ? "Next slide" : "End of lesson");
+  $("next").disabled = done && cur===SLIDES.length-1;
+}
+
+function go(i,atEnd){
+  SLIDES.forEach((s,n)=>s.el.classList.toggle("on",n===i));
+  cur = i;
+  const s = SLIDES[i];
+  if(atEnd && !s.chart) s.pos = s.total;
+  paint(s);
+  try{ history.replaceState(null,"","#"+(i+1)); }catch(e){}
+  chrome();
+}
+
+function next(){
+  const s = SLIDES[cur];
+  if(s.chart && s.stack.length<s.total){
+    let k = 0; while(s.stack.includes(k)) k++;
+    s.stack.push(k); paint(s); chrome(); return;
+  }
+  if(!s.chart && s.pos<s.total){ s.pos++; paint(s); chrome(); return; }
+  if(cur<SLIDES.length-1) go(cur+1);
+}
+
+function back(){
+  const s = SLIDES[cur];
+  if(s.chart && s.stack.length){ s.stack.pop(); paint(s); chrome(); return; }
+  if(!s.chart && s.pos>0){ s.pos--; paint(s); chrome(); return; }
+  if(cur>0) go(cur-1,true);
+}
+
+/* Chart: click a blank cell to reveal it. Then type over the Effect text, or click a Verdict to change it. */
+const ORDER = ["Keep","Cut","Alter"];
+stage.addEventListener("click",e=>{
+  const td = e.target.closest("[data-cell]");
+  if(!td) return;
+  const s = SLIDES[cur], k = +td.dataset.cell;
+  if(!s.stack.includes(k)){ s.stack.push(k); paint(s); chrome(); return; }
+  if(td.classList.contains("vd")){
+    const sp = td.querySelector("span");
+    const nextV = ORDER[(ORDER.indexOf(sp.textContent)+1)%ORDER.length];
+    sp.textContent = nextV; sp.className = "v-"+nextV;
+  }
+});
+
+$("next").addEventListener("click",()=>{ next(); });
+$("back").addEventListener("click",()=>{ back(); });
+
+function toggleFull(){
+  if(document.fullscreenElement) document.exitFullscreen();
+  else if(document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(()=>{});
+}
+$("full").addEventListener("click",toggleFull);
+document.addEventListener("fullscreenchange",()=>{ $("full").textContent = document.fullscreenElement ? "Exit full screen" : "Full screen"; });
+
+document.addEventListener("keydown",e=>{
+  const a = document.activeElement;
+  if(a && a.isContentEditable){
+    if(e.key==="Enter"||e.key==="Escape"){ e.preventDefault(); a.blur(); }
+    return;
+  }
+  if(e.metaKey||e.ctrlKey||e.altKey) return;
+  if(["ArrowRight","ArrowDown","PageDown"," ","Enter"].includes(e.key)){ e.preventDefault(); next(); }
+  else if(["ArrowLeft","ArrowUp","PageUp","Backspace"].includes(e.key)){ e.preventDefault(); back(); }
+  else if(e.key==="f"||e.key==="F"){ toggleFull(); }
+});
+
+const start = parseInt(location.hash.slice(1),10);
+go(start>=1 && start<=SLIDES.length ? start-1 : 0);
+})();
+</script>
+</body>
+</html>
