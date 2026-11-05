@@ -420,6 +420,22 @@ table.cmp th{background:var(--panel);font-size:.76rem}
     <textarea data-k="d3-just"></textarea>
     <div class="foot"><button class="primary" id="d3Btn" disabled onclick="lockAndReveal('d3')">Deliver the finding</button><span class="hint" id="d3Left"></span></div>
     <div class="reveal" id="d3Reveal">
+      <div class="overrule">
+        <div class="stamp" id="d3Stamp">The inquiries have decided</div>
+        <div class="doc">
+          <div class="crest">The official finding on panic</div>
+          <div class="t1">Report of the United States Senate Committee on Commerce</div>
+          <div class="t2">Washington · 28 May 1912 · “No distinction between passengers”</div>
+          <hr>
+          <div class="find" style="font-size:1.35rem">“The testimony is definite that, except in isolated instances, there was no panic.”</div>
+          <div class="src">“Except in isolated instances” means apart from a few one-off cases.</div>
+          <div class="us">And in London, two months later. Asked <i>“Was proper discipline maintained on board after the casualty occurred?”</i>, the Court answered:<br><b>“Yes.”</b>
+            <div class="src">Report of the Wreck Commissioner, 30 July 1912, answer to question 17 · <a href="https://www.titanicinquiry.org/BOTInq/BOTReport/botRepFindings.php" target="_blank" rel="noopener" style="color:#1d5570">check it</a></div>
+          </div>
+        </div>
+      </div>
+      <p class="hint" id="d3You"></p>
+      <p class="lede">That stood as the official account. <strong>Now compare it with what the witnesses show.</strong></p>
       <p class="bigline">There <b>was</b> panic. And there <b>was</b> order. Both are well evidenced, and almost none of these witnesses is contradicting any other one.</p>
       <div class="replay">
         <div class="row"><div class="mk">↓</div><div>Gracie was on the boat deck early, loading boats. Beesley left in lifeboat 13, at least forty minutes before the end. Buckley was below decks, behind a gate. <b>Different places, different times, on a ship that took two hours and forty minutes to sink.</b></div></div>
@@ -434,7 +450,7 @@ table.cmp th{background:var(--panel);font-size:.76rem}
         <textarea data-k="d3-a" data-req></textarea>
         <p><span class="qnum">2.</span> Rewrite "Was there panic on the <em>Titanic</em>?" as a question this evidence <b>can</b> answer.</p>
         <textarea data-k="d3-b" data-req></textarea>
-        <p><span class="qnum">3.</span> London asked no third-class passenger anything, and then found they "were not unfairly treated." What does "no evidence has been given" actually show?</p>
+        <p><span class="qnum">3.</span> Washington wrote that, “except in isolated instances, there was no panic.” How is that claim different from what these witnesses show, taken together? Washington called the testimony “definite”: whose testimony would it have needed to hear before it could say that?</p>
         <textarea data-k="d3-c" data-req></textarea>
       </div>
       <div class="foot"><button class="primary" data-next="7" onclick="advance(7)">Back to the question</button><span class="hint" data-hint></span></div>
@@ -644,7 +660,8 @@ const NOTE_LABEL={
  'd2-spec':"Dossier C: why three questions",
  'd2-walls':"Dossier C: two kinds of wall",
  'd3-a':"Dossier D: Abelseth's four words",
- 'd3-b':"Dossier D: rewriting the panic question"};
+ 'd3-b':"Dossier D: rewriting the panic question",
+ 'd3-c':"Dossier D: the official finding compared with the witnesses"};
 
 const FILLER="The regular meeting of the board was held at the usual hour and the report of the treasurer was received and placed upon the file. A communication was read from the committee appointed at the last session respecting the proposed improvement of the thoroughfare and the same was referred back for further consideration. The chairman stated that the matter of the appropriation would come before the body at its next sitting. Several members spoke briefly upon the question and the discussion was adjourned. ";
 
@@ -753,7 +770,16 @@ function lockAndReveal(k){
   S.locked[k]=1;S.open[k]=1;persist();
   document.getElementById(k+'Reveal').classList.add('on');
   if(k==='press')buildPressYou();
+  if(k==='d3')buildD3Stamp();
   renderCards();renderChoices();gate();}
+
+function buildD3Stamp(){const v=S.verdicts.d3,st=document.getElementById('d3Stamp'),you=document.getElementById('d3You');if(!st)return;
+  st.classList.remove('upheld','neutral');
+  if(v==='panic'){st.textContent='You have been overruled';you.innerHTML='You found that <b>there was panic</b>. The inquiries found the opposite.';}
+  else if(v==='order'){st.textContent='Your finding is upheld';st.classList.add('upheld');you.innerHTML='You found that <b>there was order</b>. So did the inquiries.';}
+  else if(v==='both'){st.textContent='The inquiries said something simpler';st.classList.add('neutral');you.innerHTML='You found <b>both, depending on where and when</b>. The inquiries gave one answer for the whole night.';}
+  else if(v==='cant'){st.textContent='The inquiries decided anyway';st.classList.add('neutral');you.innerHTML='You found that it <b>cannot be determined</b>. The inquiries did not stop there.';}
+  else{st.textContent='The inquiries have decided';st.classList.add('neutral');you.innerHTML='';}}
 
 function deliverD1(){const b=document.getElementById('d1Btn');if(!b||b.disabled)return;
   S.locked.d1=1;persist();renderCards();renderChoices();gate();
@@ -906,7 +932,7 @@ function resetAll(){if(!confirm('Clear everything for this group?'))return;
 /* ---------- start ---------- */
 renderCards();renderChoices();bindNotes();
 for(const k in S.open){const el=document.getElementById(k+'Reveal');if(el)el.classList.add('on');}
-buildPressYou();buildFinding();buildReplay();
+buildPressYou();buildFinding();buildReplay();buildD3Stamp();
 gate();
 const gn=document.getElementById('groupName');gn.value=S.group||'';
 gn.addEventListener('input',()=>{S.group=gn.value;persist();});
