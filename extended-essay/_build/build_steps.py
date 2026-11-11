@@ -719,6 +719,7 @@ STEPS.append(dict(
       <li>a <b>combination</b> of two things that have only been studied separately.</li>
     </ul>
     <p>Your gap doesn't need to be dramatic. A focused, well-chosen gap that you can actually investigate in 4,000 words is exactly right.</p>
+    <p class="note"><b>Literature essays</b> (Language A, and Language B essays on literature) don't need a gap. Find your <b>angle</b> instead: what critics haven't said about your text.</p>
     <p class="src-note">Sources: IB <i>Extended essay support material</i> (2025), "Researching your extended essay" (secondary and primary research); IB <i>Extended essay guide</i> (first assessment 2027), "Writing your extended essay" (citation and referencing).</p>
 """,
  script=GROUP_SCRIPT,
@@ -734,12 +735,12 @@ STEPS.append(dict(
      {"id":"fewest","type":"long","label":"Which position, place, method or time period has the fewest sources? Is it a gap I could fill, or a dead end?","rows":3}]},
    {"heading":"The gap","prompts":[
      {"id":"gaptype","type":"multi","label":"What kind of gap have I found?","options":["A place","A group of people","A time period","A text or artwork","A method","An untested disagreement","A combination studied only separately","Not sure yet"]},
-     {"id":"gap","type":"long","label":"In one or two sentences: what's missing from the research, and how could my essay help fill that gap?","rows":3},
+     {"id":"gap","type":"long","label":"In one or two sentences: what's missing from the research, and how could my essay help fill that gap?","hint":"Literature essays: write your angle instead (what critics haven't said about your text).","rows":3},
      {"id":"primary","type":"long","label":"Will filling this gap need primary research? If so, what kind?","hint":"Psychology students: the answer must be no. If your gap needs new data, change your gap.","rows":2}]},
    checklist(["I have annotated at least the number of sources for my subject (see the table above) and moved them to an Annotated category in PowerNotes.",
               "Each source has a full citation in my chosen style and an annotation (summary, evaluation, connection).",
               "My annotated sources include different perspectives.",
-              "I can state the gap my essay could fill.",
+              "I can state the gap my essay could fill (literature essays: my angle).",
               "My answers to this thinking tool are in my RRS."])
   ])
 ))
@@ -825,7 +826,7 @@ STEPS.append(dict(
   sections=[
    {"heading":"From broad question to research question","prompts":[
      {"id":"bq","type":"long","label":"My broad question (from step 8):","rows":2,"prefill":"__PREFILL_BQ__"},
-     {"id":"gap","type":"long","label":"The gap I found (from step 9):","rows":2,"prefill":"__PREFILL_GAP__"},
+     {"id":"gap","type":"long","label":"The gap (or my angle) from step 9:","rows":2,"prefill":"__PREFILL_GAP__"},
      {"id":"drafts","type":"table","label":"Draft research questions","hint":"Write two or three versions. Make each one more focused than the last.","columns":["Draft research question","What I changed, and why"],"rows":3,"max":6}]},
    {"heading":"Test my best draft","prompts":[
      {"id":"rq","type":"long","label":"My research question:","rows":2},
@@ -854,6 +855,230 @@ STEPS.append(dict(
               "My answers to this thinking tool are in my RRS, and I'll bring my RRS to the session."])
   ])
 ))
+
+# ───────────── shared: subject rule panels (steps 11+) ─────────────
+# Each row: (data-subject key, label, text). The student sees only the row for their step 1 subject;
+# "Show all subjects" reveals the rest. Biology, Chemistry and Physics share the "Sciences" row.
+def subj_rules(rows):
+    items = "\n".join('      <div class="erule" data-subject="%s"><b>%s:</b> %s</div>' % (html.escape(k), html.escape(l), html.escape(t)) for k, l, t in rows)
+    return ('    <div class="erules">\n' + items + '\n    </div>\n'
+            '    <p class="small muted" id="erule-note" hidden>Showing your subject from step 1. '
+            '<button type="button" class="linkbtn" id="erule-all">Show all subjects</button></p>')
+SUBJ_SCRIPT = """/* show only the rule for the subject chosen in step 1 */
+(function(){
+  var p = EETools.read("step-1","pathway")||"", s = p==="Interdisciplinary (two subjects)" ? "Interdisciplinary" : (p==="Subject-focused (one subject)" ? (EETools.read("step-1","subject")||"") : "");
+  if(s==="Biology"||s==="Chemistry"||s==="Physics") s = "Sciences";
+  var rules = document.querySelectorAll(".erule"), mine = s && document.querySelector('.erule[data-subject="'+s+'"]');
+  if(!mine) return;
+  rules.forEach(function(r){ if(r!==mine) r.hidden = true; });
+  mine.classList.add("mine");
+  document.getElementById("erule-note").hidden = false;
+  document.getElementById("erule-all").addEventListener("click", function(){
+    rules.forEach(function(r){ r.hidden = false; }); document.getElementById("erule-note").hidden = true;
+  });
+})();"""
+PREFILLS["__PREFILL_RQ__"] = 'function(){ return EETools.read("step-10","rq")||""; }'
+
+# ───────────────────────── STEP 11 ─────────────────────────
+# Subject rules are filtered: the student sees only their step 1 subject (button shows the rest).
+ETHICS_ROWS = [
+ ("Sciences", "Biology, Chemistry, Physics",
+  "Do a risk assessment with your teacher before any lab or field work. Follow the IB's science experiment rules for animals, dissection, human experiments, microbes, and chemicals and waste. Don't choose a question where getting enough data would be unethical. (guide pp. 64, 96)"),
+ ("Business Management", "Business Management",
+  "Interviews and surveys need consent. Keep people's names private. Ask before you use a company's internal documents, and keep confidential information confidential."),
+ ("Global Politics", "Global Politics",
+  "Interviews need consent, and some people may want to stay anonymous. Political topics can be sensitive: talk to your supervisor about how to approach yours."),
+ ("Psychology", "Psychology",
+  "You don't collect data, so you have no participants. If your topic is sensitive (for example, mental health), talk to your supervisor about how to write about it with care."),
+ ("Language A", "Language A",
+  "Most Language A essays involve no participants. If your topic is sensitive, talk to your supervisor."),
+ ("Language B", "Language B",
+  "The guide warns against questionnaires you write yourself: published sources are more reliable. If you do survey people, you need their consent. (guide p. 49)"),
+ ("Visual Arts", "Visual Arts",
+  "If you interview an artist or gallery staff, ask for consent and permission to quote them."),
+ ("Mathematics", "Mathematics",
+  "If you collect data from people, you need their consent, and the data must not show who they are."),
+ ("Interdisciplinary", "Interdisciplinary",
+  "Check the rules for both of your subjects. Ask your supervisor which ones apply."),
+]
+
+STEPS.append(dict(
+ n=11, crumb="Step 11", title="Ethics check",
+ desc="Check that your EE research is safe and fair to people, animals and the environment before you collect any data.",
+ lede="Before you collect any data, check that your research is safe and fair to everyone involved. Then talk it through with your supervisor.",
+ body="""
+    <h2>Why this step matters</h2>
+    <p class="why">If you break the IB's rules on ethical research, you put your diploma at risk. If you check now, you won't have to change your plan later. <span class="pg">(guide p. 95)</span></p>
+
+    <h2>Five things to check</h2>
+    <ul>
+      <li><b>People:</b> if anyone answers questions or takes part, they must agree first (this is called informed consent). Keep their names private. Don't make anyone uncomfortable.</li>
+      <li><b>Animals and living things:</b> follow your teacher's and the IB's rules.</li>
+      <li><b>Safety:</b> chemicals, equipment and fieldwork need a risk assessment.</li>
+      <li><b>The environment:</b> don't damage habitats, and don't waste materials.</li>
+      <li><b>Sensitive topics:</b> if your topic could upset you or others, talk to your supervisor first.</li>
+    </ul>
+
+    <h2>In your subject</h2>
+""" + subj_rules(ETHICS_ROWS) + """
+
+    <h2>What to do</h2>
+    <ol class="do">
+      <li>Answer the questions in the thinking tool below.</li>
+      <li>For every "Yes", write how you'll handle it.</li>
+      <li>Show your answers to your supervisor <b>before</b> you collect any data.</li>
+    </ol>
+    <p class="src-note">Source: IB <i>Extended essay guide</i> (first assessment 2027), "The ethical researcher", pp. 93–96, and subject guidance pp. 49 and 64.</p>
+""",
+ script=SUBJ_SCRIPT,
+ tool=dict(id="step-11", stepLabel="Step 11 · Ethics check", title="My ethics check",
+  sections=[
+   {"heading":"Does my research involve…","prompts":[
+     {"id":"people","type":"choice","label":"People (surveys, interviews, experiments on people)?","options":["Yes","No"]},
+     {"id":"living","type":"choice","label":"Animals or other living things?","options":["Yes","No"]},
+     {"id":"safety","type":"choice","label":"Chemicals, equipment or fieldwork?","options":["Yes","No"]},
+     {"id":"sensitive","type":"choice","label":"A topic that could upset me or others?","options":["Yes","No"]},
+     {"id":"handle","type":"long","label":'For every "Yes": how will I handle it?',"rows":4}]},
+   checklist(["I have shown my ethics check to my supervisor.",
+              "My answers to this thinking tool are in my RRS."])
+  ])
+))
+
+
+# ───────────────────────── STEP 12 ─────────────────────────
+OUTLINE_ROWS = [
+ ("Sciences", "Biology, Chemistry, Physics",
+  "Plan sections for background, method, results, analysis and conclusion. The method must be detailed enough for someone to repeat it. (guide p. 67)"),
+ ("Business Management", "Business Management",
+  "Plan your body sections around the business tools and theories you'll apply to your organisation. Label any diagrams and refer to each one in your text."),
+ ("Global Politics", "Global Politics",
+  "Start with a review of what has been written on your main political concepts. Then plan a section for each case you analyse."),
+ ("Psychology", "Psychology",
+  "Plan sections that weigh studies supporting your argument against studies that challenge it."),
+ ("Language A", "Language A",
+  "Plan body sections that each make one claim about your text, with the quotations you'll use. There is no separate literature review section: plan where critics' views support or challenge your reading. (guide p. 44)"),
+ ("Language B", "Language B",
+  "Plan where your introduction explains how your topic fits Language B and the culture of the language. (guide p. 50) Analysing literature? Plan it like Language A: no separate literature review section."),
+ ("Visual Arts", "Visual Arts",
+  "Plan a section for each artwork or theme. Note which images you need: every image must be labelled and referenced."),
+ ("Mathematics", "Mathematics",
+  "Start from the mathematics you know from the syllabus. Subheadings help. Plan where each essential step will be shown and explained. (guide p. 70)"),
+ ("Interdisciplinary", "Interdisciplinary",
+  "Plan where each subject comes in, and where you show how the two subjects work together to answer your question. (guide p. 33)"),
+]
+
+STEPS.append(dict(
+ n=12, crumb="Step 12", title="Outline your essay",
+ desc="Plan the sections of your EE, the main point of each, and the evidence it uses.",
+ lede="Plan your essay before you write it. An outline lists your sections, the main point of each one, and the evidence each one uses.",
+ body="""
+    <h2>Why this step matters</h2>
+    <p class="why">Your outline is your line of argument on one page. If a section doesn't help answer your research question, you'll see it now, not after 4,000 words. <span class="pg">(guide pp. 40–41)</span></p>
+
+    <h2>What your outline needs</h2>
+    <ul>
+      <li><b>Introduction:</b> your topic, the background, your focus and your research question.</li>
+      <li><b>Body:</b> your sections. Each paragraph makes one main point, backed by evidence.</li>
+      <li><b>Conclusion:</b> your answer to the research question. No new points.</li>
+    </ul>
+    <p class="small muted">Every essay also needs a title page, a contents page and a bibliography. Your subject's conventions are in <a href="../step-10/">step 10</a>. <span class="pg">(guide pp. 39, 87)</span></p>
+
+    <h2>In your subject</h2>
+""" + subj_rules(OUTLINE_ROWS) + """
+
+    <h2>What to do</h2>
+    <ol class="do">
+      <li>Fill in the outline table in the thinking tool below.</li>
+      <li>Check that every body section helps answer your research question.</li>
+      <li>Hand in your outline by the date in the EE calendar. Your supervisor gives you feedback by talking it through with you.</li>
+    </ol>
+    <p class="src-note">Source: IB <i>Extended essay guide</i> (first assessment 2027), "Generic guidance for the extended essay" (structure and line of argument), pp. 39–41; "Writing your extended essay", p. 87; subject guidance pp. 33, 44, 50, 67 and 70.</p>
+""",
+ script=SUBJ_SCRIPT,
+ tool=dict(id="step-12", stepLabel="Step 12 · Outline", title="My outline",
+  sections=[
+   {"heading":"My plan","prompts":[
+     {"id":"rq","type":"long","label":"My research question (from step 10):","rows":2,"prefill":"__PREFILL_RQ__"},
+     {"id":"outline","type":"table","label":"My sections","columns":["Section heading","Main point","Evidence or sources"],"rows":6,"max":12},
+     {"id":"thread","type":"long","label":"In one or two sentences: how do my body sections build towards my answer?","rows":3}]},
+   checklist(["Every body section helps answer my research question.",
+              "My supervisor has heard my outline.",
+              "My answers to this thinking tool are in my RRS."])
+  ])
+))
+
+# ───────────────────────── STEP 13 ─────────────────────────
+INTRO_ROWS = [
+ ("Sciences", "Biology, Chemistry, Physics",
+  "Explain the theory and concepts behind your topic. Define your variables and say why you chose them. Use SI units. (guide p. 67)"),
+ ("Business Management", "Business Management",
+  "Introduce the organisation or issue, and the business tools and theories you'll apply."),
+ ("Global Politics", "Global Politics",
+  "Your literature review covers what has been written on your main political concepts. It comes before your case analysis."),
+ ("Psychology", "Psychology",
+  "Your whole essay is a review of research. In your introduction, define your main idea in a way you can measure (operationalise it)."),
+ ("Language A", "Language A",
+  "Name your texts in the introduction. Critics' views come in throughout your analysis, not in a separate section, and you don't need to show a gap. Your method (literary analysis) can be implied. (guide p. 44)"),
+ ("Language B", "Language B",
+  "Your introduction must explain how your topic fits Language B, and how it builds your understanding of the language and culture. (guide p. 50) Analysing literature? Follow the Language A approach: critics throughout, no gap needed."),
+ ("Visual Arts", "Visual Arts",
+  "Name your artworks and artists. Use what art historians and critics have written to set up your research question."),
+ ("Mathematics", "Mathematics",
+  "Explain your research question and your plan in your own words. A literature review is required. (guide pp. 69–70)"),
+ ("Interdisciplinary", "Interdisciplinary",
+  "Name your two subjects and your framework. Explain why your question needs both subjects. (guide pp. 33, 88)"),
+]
+
+STEPS.append(dict(
+ n=13, crumb="Step 13", title="Introduction and literature review",
+ desc="Write the introduction to your EE and a review of what has already been written on your topic.",
+ lede="Write the first part of your essay: the introduction, then a review of what has already been written about your topic.",
+ body="""
+    <h2>Why this step matters</h2>
+    <p class="why">The introduction tells the examiner what to expect. The literature review shows you know what others have found. In most subjects, it also leads to the gap your essay fills (from step 9). <span class="pg">(guide p. 37)</span></p>
+
+    <h2>What goes in your introduction</h2>
+    <ul>
+      <li>Your topic, and the background the reader needs.</li>
+      <li>Your focus: what you will and won't cover.</li>
+      <li>Your research question, worded exactly as on your title page.</li>
+      <li>The sources and methods you'll use, and a hint of your argument. (In a literature essay, your method is literary analysis, so it can be implied.)</li>
+    </ul>
+    <p class="small muted">Tip from the guide: come back and edit your introduction once the body is finished. <span class="pg">(guide pp. 39, 89)</span></p>
+
+    <h2>Your literature review</h2>
+    <p><b>Most subjects:</b> build it from your step 9 annotations. Group your sources by idea or debate, not one paragraph per source. End with the gap: the question your sources haven't answered, which your essay takes on.</p>
+    <p><b>Literature essays</b> (Language A, and Language B essays on literature): there is no separate literature review. Bring critics' views in throughout your analysis, where they support or challenge your reading. <span class="pg">(guide p. 44)</span></p>
+
+    <h2>In your subject</h2>
+""" + subj_rules(INTRO_ROWS) + """
+
+    <h2>What to do</h2>
+    <ol class="do">
+      <li>Draft your introduction. Tick each part off in the thinking tool.</li>
+      <li>Write your literature review from your step 9 annotations.</li>
+      <li>Hand both in by the date in the EE calendar. Your supervisor talks them through with you at the interim reflection session.</li>
+    </ol>
+    <p class="src-note">Source: IB <i>Extended essay guide</i> (first assessment 2027), "Generic guidance for the extended essay", pp. 37–39; "Writing your extended essay" (figure 16), p. 89; subject guidance pp. 33, 44, 50, 67 and 69–70.</p>
+""",
+ script=SUBJ_SCRIPT,
+ tool=dict(id="step-13", stepLabel="Step 13 · Introduction and literature review", title="My introduction and literature review",
+  sections=[
+   {"heading":"My introduction has…","prompts":[
+     {"id":"intro","type":"checklist","label":"Tick each part once it is in your draft.","items":[
+       "My topic and the background the reader needs.",
+       "My focus: what I will and won't cover.",
+       "My research question, worded exactly as on my title page.",
+       "The sources and methods I'll use.",
+       "A hint of my argument."]}]},
+   {"heading":"My literature review","prompts":[
+     {"id":"ideas","type":"table","label":"The main ideas or debates in my sources (literature essays: the critics I'll use, and where)","columns":["Idea or debate","Sources (author, year)","What they agree or disagree on"],"rows":3,"max":8},
+     {"id":"gap","type":"long","label":"The gap my essay fills (from step 9). Literature essays: write your angle instead.","rows":2,"prefill":"__PREFILL_GAP__"}]},
+   checklist(["My introduction and literature review are drafted (literature essays: my introduction, with critics planned into my analysis).",
+              "My answers to this thinking tool are in my RRS."])
+  ])
+))
+
 
 def build():
     for s in STEPS:

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Step 12: Outline your essay | EE for Students</title>
+<meta name="description" content="Plan the sections of your EE, the main point of each, and the evidence it uses.">
+<link rel="stylesheet" href="../../shared/ee.css">
+<link rel="stylesheet" href="../../shared/steps.css">
+</head>
+<body data-step="12">
+<script src="../../shared/site-nav.js"></script>
+<div class="shell narrow">
+  <header class="hero">
+    <p class="stepno" id="stepno"></p>
+    <h1>Outline your essay</h1>
+    <p class="lede">Plan your essay before you write it. An outline lists your sections, the main point of each one, and the evidence each one uses.</p>
+  </header>
+
+  <main class="step-body">
+
+    <h2>Why this step matters</h2>
+    <p class="why">Your outline is your line of argument on one page. If a section doesn't help answer your research question, you'll see it now, not after 4,000 words. <span class="pg">(guide pp. 40–41)</span></p>
+
+    <h2>What your outline needs</h2>
+    <ul>
+      <li><b>Introduction:</b> your topic, the background, your focus and your research question.</li>
+      <li><b>Body:</b> your sections. Each paragraph makes one main point, backed by evidence.</li>
+      <li><b>Conclusion:</b> your answer to the research question. No new points.</li>
+    </ul>
+    <p class="small muted">Every essay also needs a title page, a contents page and a bibliography. Your subject's conventions are in <a href="../step-10/">step 10</a>. <span class="pg">(guide pp. 39, 87)</span></p>
+
+    <h2>In your subject</h2>
+    <div class="erules">
+      <div class="erule" data-subject="Sciences"><b>Biology, Chemistry, Physics:</b> Plan sections for background, method, results, analysis and conclusion. The method must be detailed enough for someone to repeat it. (guide p. 67)</div>
+      <div class="erule" data-subject="Business Management"><b>Business Management:</b> Plan your body sections around the business tools and theories you&#x27;ll apply to your organisation. Label any diagrams and refer to each one in your text.</div>
+      <div class="erule" data-subject="Global Politics"><b>Global Politics:</b> Start with a review of what has been written on your main political concepts. Then plan a section for each case you analyse.</div>
+      <div class="erule" data-subject="Psychology"><b>Psychology:</b> Plan sections that weigh studies supporting your argument against studies that challenge it.</div>
+      <div class="erule" data-subject="Language A"><b>Language A:</b> Plan body sections that each make one claim about your text, with the quotations you&#x27;ll use. There is no separate literature review section: plan where critics&#x27; views support or challenge your reading. (guide p. 44)</div>
+      <div class="erule" data-subject="Language B"><b>Language B:</b> Plan where your introduction explains how your topic fits Language B and the culture of the language. (guide p. 50) Analysing literature? Plan it like Language A: no separate literature review section.</div>
+      <div class="erule" data-subject="Visual Arts"><b>Visual Arts:</b> Plan a section for each artwork or theme. Note which images you need: every image must be labelled and referenced.</div>
+      <div class="erule" data-subject="Mathematics"><b>Mathematics:</b> Start from the mathematics you know from the syllabus. Subheadings help. Plan where each essential step will be shown and explained. (guide p. 70)</div>
+      <div class="erule" data-subject="Interdisciplinary"><b>Interdisciplinary:</b> Plan where each subject comes in, and where you show how the two subjects work together to answer your question. (guide p. 33)</div>
+    </div>
+    <p class="small muted" id="erule-note" hidden>Showing your subject from step 1. <button type="button" class="linkbtn" id="erule-all">Show all subjects</button></p>
+
+    <h2>What to do</h2>
+    <ol class="do">
+      <li>Fill in the outline table in the thinking tool below.</li>
+      <li>Check that every body section helps answer your research question.</li>
+      <li>Hand in your outline by the date in the EE calendar. Your supervisor gives you feedback by talking it through with you.</li>
+    </ol>
+    <p class="src-note">Source: IB <i>Extended essay guide</i> (first assessment 2027), "Generic guidance for the extended essay" (structure and line of argument), pp. 39–41; "Writing your extended essay", p. 87; subject guidance pp. 33, 44, 50, 67 and 70.</p>
+
+    <div data-tool="step-12"></div>
+
+    <nav class="stepnav" id="stepnav" aria-label="Steps"></nav>
+  </main>
+
+</div>
+
+<script src="../../data/steps.js"></script>
+<script src="../../shared/step-nav.js"></script>
+<script src="../../shared/thinking-tools.js"></script>
+<script>
+/* show only the rule for the subject chosen in step 1 */
+(function(){
+  var p = EETools.read("step-1","pathway")||"", s = p==="Interdisciplinary (two subjects)" ? "Interdisciplinary" : (p==="Subject-focused (one subject)" ? (EETools.read("step-1","subject")||"") : "");
+  if(s==="Biology"||s==="Chemistry"||s==="Physics") s = "Sciences";
+  var rules = document.querySelectorAll(".erule"), mine = s && document.querySelector('.erule[data-subject="'+s+'"]');
+  if(!mine) return;
+  rules.forEach(function(r){ if(r!==mine) r.hidden = true; });
+  mine.classList.add("mine");
+  document.getElementById("erule-note").hidden = false;
+  document.getElementById("erule-all").addEventListener("click", function(){
+    rules.forEach(function(r){ r.hidden = false; }); document.getElementById("erule-note").hidden = true;
+  });
+})();
+EETools.define({
+ "id": "step-12",
+ "stepLabel": "Step 12 · Outline",
+ "title": "My outline",
+ "sections": [
+  {
+   "heading": "My plan",
+   "prompts": [
+    {
+     "id": "rq",
+     "type": "long",
+     "label": "My research question (from step 10):",
+     "rows": 2,
+     "prefill": function(){ return EETools.read("step-10","rq")||""; }
+    },
+    {
+     "id": "outline",
+     "type": "table",
+     "label": "My sections",
+     "columns": [
+      "Section heading",
+      "Main point",
+      "Evidence or sources"
+     ],
+     "rows": 6,
+     "max": 12
+    },
+    {
+     "id": "thread",
+     "type": "long",
+     "label": "In one or two sentences: how do my body sections build towards my answer?",
+     "rows": 3
+    }
+   ]
+  },
+  {
+   "heading": "Before you move on",
+   "prompts": [
+    {
+     "id": "done",
+     "type": "checklist",
+     "label": "Tick each one when it is true.",
+     "items": [
+      "Every body section helps answer my research question.",
+      "My supervisor has heard my outline.",
+      "My answers to this thinking tool are in my RRS."
+     ]
+    }
+   ]
+  }
+ ]
+});
+</script>
+</body>
+</html>

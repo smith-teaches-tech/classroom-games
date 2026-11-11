@@ -24,9 +24,9 @@ window.EE_STEPS = [
   {n:9,  phase:"narrow",  live:true, title:"Annotated bibliography",                       blurb:"Annotate your main sources, include different points of view, and find the gap in the research (something other researchers haven't covered yet)."},
   {n:10,  phase:"narrow",  live:true, title:"Your research question and the parts of a paper", blurb:"Write a focused research question and learn how papers in your subject are built. Your first reflection session (a meeting with your supervisor) comes after this step."},
 
-  {n:11, phase:"write",   live:false, title:"Ethics check",                                 blurb:"Check your research is ethical before you collect any data."},
-  {n:12, phase:"write",   live:false, title:"Outline your essay",                           blurb:"Plan the structure your subject expects. Talk your outline through with your supervisor."},
-  {n:13, phase:"write",   live:false, title:"Introduction and literature review",           blurb:"Context, your research question, your method, and what has already been written."},
+  {n:11, phase:"write",   live:true, title:"Ethics check",                                 blurb:"Check your research is ethical before you collect any data."},
+  {n:12, phase:"write",   live:true, title:"Outline your essay",                           blurb:"Plan the structure your subject expects. Talk your outline through with your supervisor."},
+  {n:13, phase:"write",   live:true, title:"Introduction and literature review",           blurb:"Context, your research question, your method, and what has already been written."},
   {n:14, phase:"write",   live:false, title:"Collect your data",                            blurb:"Experiments, surveys, interviews, texts or artworks. Record your data properly. Your interim (middle) reflection session comes after this step."},
   {n:15, phase:"write",   live:false, title:"Analysis and the body",                        blurb:"Findings, analysis, discussion and evaluation."},
   {n:16, phase:"write",   live:false, title:"Write the conclusion",                         blurb:"Answer your research question. Then give your full draft to your supervisor for written feedback."},

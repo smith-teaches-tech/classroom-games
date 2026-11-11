@@ -88,3 +88,9 @@ table.info tr.mine{background:var(--stud-soft)}
 .checkout{margin-top:26px}
 
 @media print{.tt-bar,.stepnav,.top{display:none!important}.tt{border:0;padding:0}}
+
+/* step 11: subject rules, filtered to the student's subject */
+.erules{display:grid;gap:8px;margin:8px 0 6px}
+.erule{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+.erule.mine{background:var(--stud-soft);border-color:var(--stud)}
+.linkbtn{background:none;border:0;padding:0;color:var(--accent);text-decoration:underline;cursor:pointer;font:inherit}

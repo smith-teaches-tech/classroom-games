@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Step 11: Ethics check | EE for Students</title>
+<meta name="description" content="Check that your EE research is safe and fair to people, animals and the environment before you collect any data.">
+<link rel="stylesheet" href="../../shared/ee.css">
+<link rel="stylesheet" href="../../shared/steps.css">
+</head>
+<body data-step="11">
+<script src="../../shared/site-nav.js"></script>
+<div class="shell narrow">
+  <header class="hero">
+    <p class="stepno" id="stepno"></p>
+    <h1>Ethics check</h1>
+    <p class="lede">Before you collect any data, check that your research is safe and fair to everyone involved. Then talk it through with your supervisor.</p>
+  </header>
+
+  <main class="step-body">
+
+    <h2>Why this step matters</h2>
+    <p class="why">If you break the IB's rules on ethical research, you put your diploma at risk. If you check now, you won't have to change your plan later. <span class="pg">(guide p. 95)</span></p>
+
+    <h2>Five things to check</h2>
+    <ul>
+      <li><b>People:</b> if anyone answers questions or takes part, they must agree first (this is called informed consent). Keep their names private. Don't make anyone uncomfortable.</li>
+      <li><b>Animals and living things:</b> follow your teacher's and the IB's rules.</li>
+      <li><b>Safety:</b> chemicals, equipment and fieldwork need a risk assessment.</li>
+      <li><b>The environment:</b> don't damage habitats, and don't waste materials.</li>
+      <li><b>Sensitive topics:</b> if your topic could upset you or others, talk to your supervisor first.</li>
+    </ul>
+
+    <h2>In your subject</h2>
+    <div class="erules">
+      <div class="erule" data-subject="Sciences"><b>Biology, Chemistry, Physics:</b> Do a risk assessment with your teacher before any lab or field work. Follow the IB&#x27;s science experiment rules for animals, dissection, human experiments, microbes, and chemicals and waste. Don&#x27;t choose a question where getting enough data would be unethical. (guide pp. 64, 96)</div>
+      <div class="erule" data-subject="Business Management"><b>Business Management:</b> Interviews and surveys need consent. Keep people&#x27;s names private. Ask before you use a company&#x27;s internal documents, and keep confidential information confidential.</div>
+      <div class="erule" data-subject="Global Politics"><b>Global Politics:</b> Interviews need consent, and some people may want to stay anonymous. Political topics can be sensitive: talk to your supervisor about how to approach yours.</div>
+      <div class="erule" data-subject="Psychology"><b>Psychology:</b> You don&#x27;t collect data, so you have no participants. If your topic is sensitive (for example, mental health), talk to your supervisor about how to write about it with care.</div>
+      <div class="erule" data-subject="Language A"><b>Language A:</b> Most Language A essays involve no participants. If your topic is sensitive, talk to your supervisor.</div>
+      <div class="erule" data-subject="Language B"><b>Language B:</b> The guide warns against questionnaires you write yourself: published sources are more reliable. If you do survey people, you need their consent. (guide p. 49)</div>
+      <div class="erule" data-subject="Visual Arts"><b>Visual Arts:</b> If you interview an artist or gallery staff, ask for consent and permission to quote them.</div>
+      <div class="erule" data-subject="Mathematics"><b>Mathematics:</b> If you collect data from people, you need their consent, and the data must not show who they are.</div>
+      <div class="erule" data-subject="Interdisciplinary"><b>Interdisciplinary:</b> Check the rules for both of your subjects. Ask your supervisor which ones apply.</div>
+    </div>
+    <p class="small muted" id="erule-note" hidden>Showing your subject from step 1. <button type="button" class="linkbtn" id="erule-all">Show all subjects</button></p>
+
+    <h2>What to do</h2>
+    <ol class="do">
+      <li>Answer the questions in the thinking tool below.</li>
+      <li>For every "Yes", write how you'll handle it.</li>
+      <li>Show your answers to your supervisor <b>before</b> you collect any data.</li>
+    </ol>
+    <p class="src-note">Source: IB <i>Extended essay guide</i> (first assessment 2027), "The ethical researcher", pp. 93–96, and subject guidance pp. 49 and 64.</p>
+
+    <div data-tool="step-11"></div>
+
+    <nav class="stepnav" id="stepnav" aria-label="Steps"></nav>
+  </main>
+
+</div>
+
+<script src="../../data/steps.js"></script>
+<script src="../../shared/step-nav.js"></script>
+<script src="../../shared/thinking-tools.js"></script>
+<script>
+/* show only the rule for the subject chosen in step 1 */
+(function(){
+  var p = EETools.read("step-1","pathway")||"", s = p==="Interdisciplinary (two subjects)" ? "Interdisciplinary" : (p==="Subject-focused (one subject)" ? (EETools.read("step-1","subject")||"") : "");
+  if(s==="Biology"||s==="Chemistry"||s==="Physics") s = "Sciences";
+  var rules = document.querySelectorAll(".erule"), mine = s && document.querySelector('.erule[data-subject="'+s+'"]');
+  if(!mine) return;
+  rules.forEach(function(r){ if(r!==mine) r.hidden = true; });
+  mine.classList.add("mine");
+  document.getElementById("erule-note").hidden = false;
+  document.getElementById("erule-all").addEventListener("click", function(){
+    rules.forEach(function(r){ r.hidden = false; }); document.getElementById("erule-note").hidden = true;
+  });
+})();
+EETools.define({
+ "id": "step-11",
+ "stepLabel": "Step 11 · Ethics check",
+ "title": "My ethics check",
+ "sections": [
+  {
+   "heading": "Does my research involve…",
+   "prompts": [
+    {
+     "id": "people",
+     "type": "choice",
+     "label": "People (surveys, interviews, experiments on people)?",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "id": "living",
+     "type": "choice",
+     "label": "Animals or other living things?",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "id": "safety",
+     "type": "choice",
+     "label": "Chemicals, equipment or fieldwork?",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "id": "sensitive",
+     "type": "choice",
+     "label": "A topic that could upset me or others?",
+     "options": [
+      "Yes",
+      "No"
+     ]
+    },
+    {
+     "id": "handle",
+     "type": "long",
+     "label": "For every \"Yes\": how will I handle it?",
+     "rows": 4
+    }
+   ]
+  },
+  {
+   "heading": "Before you move on",
+   "prompts": [
+    {
+     "id": "done",
+     "type": "checklist",
+     "label": "Tick each one when it is true.",
+     "items": [
+      "I have shown my ethics check to my supervisor.",
+      "My answers to this thinking tool are in my RRS."
+     ]
+    }
+   ]
+  }
+ ]
+});
+</script>
+</body>
+</html>
