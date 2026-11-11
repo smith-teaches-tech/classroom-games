@@ -17,6 +17,9 @@
   ];
   var TEACHER = [
     ["Teacher home", "teachers/", /^teachers\/(index\.html)?$/],
+    ["Your role and dates", "teachers/role/", /^teachers\/role\//],
+    ["Reflection sessions", "teachers/sessions/", /^teachers\/sessions\//],
+    ["Predicted grade", "teachers/predicted-grade/", /^teachers\/predicted-grade\//],
     ["RPF and Criterion E", "teachers/rpf/", /^teachers\/rpf\//],
     ["Sample essays", "samples/?from=teachers", /^samples\//]
   ];

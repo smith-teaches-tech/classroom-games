@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your Role and Key Dates | EE for Teachers</title>
+<meta name="description" content="What an EE supervisor does, the ASD dates, and the feedback rules.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="../../shared/ee.css">
+<link rel="stylesheet" href="../../shared/steps.css">
+<style>
+/* teacher colours (steps.css sets the student colours) */
+.mark{background:var(--accent)}
+.eyebrow{color:var(--accent)}
+.sup h2{margin-top:34px}
+.sup ul{margin:8px 0 12px}
+.sup li{margin:4px 0}
+.cando h3{font-size:17px;margin:0 0 6px}
+.cando ul{margin:0;padding-left:20px}
+table.info td.you{color:var(--text)}
+table.info tbody th{width:120px;white-space:nowrap}
+</style>
+</head>
+<body>
+<script src="../../shared/site-nav.js"></script>
+<div class="shell">
+  <header class="hero">
+    <p class="eyebrow">For Teachers</p>
+    <h1>Your role and key dates</h1>
+    <p class="lede">The essentials for EE supervisors. About a five-minute read.</p>
+  </header>
+
+  <main class="narrow sup">
+    <div class="note"><p style="margin:0"><b>Your job in one line:</b> you guide the process with questions. The student does the research and the writing. You don't need to be an expert in the topic. <span class="pg">(guide p. 103)</span></p></div>
+
+    <h2>What you must do</h2>
+    <ul>
+      <li>Hold <b>three reflection sessions</b> (20 to 30 minutes each) and record them on the RPF. See <a href="../sessions/">The three reflection sessions</a>.</li>
+      <li>Be available for short check-ins between sessions.</li>
+      <li>Help the student shape a focused research question and choose methods.</li>
+      <li>Check ethics and safety before the student collects any data.</li>
+      <li>Read and comment on <b>one</b> full draft. Only one.</li>
+      <li>Read the final essay, hold the viva voce, and confirm the essay is the student's own work.</li>
+      <li>Send a <a href="../predicted-grade/">predicted grade</a>.</li>
+    </ul>
+    <p class="small muted">Time: the IB recommends 3 to 5 hours per student in total, including the three sessions. <span class="pg">(guide pp. 104–105)</span></p>
+
+    <h2>Key dates: <span id="cohort"></span></h2>
+    <div class="tablewrap"><table class="info" id="dates">
+      <thead><tr><th>When</th><th>What happens</th><th>What you do</th></tr></thead>
+      <tbody></tbody>
+    </table></div>
+    <p class="small muted" id="tl-note"></p>
+
+    <h2>Feedback: what you can and can't do</h2>
+    <div class="grid2 cando">
+      <div class="panel">
+        <h3>You can</h3>
+        <ul>
+          <li>Talk through ideas and ask questions.</li>
+          <li>Point to resources, people and the guide.</li>
+          <li>Give oral feedback on the outline and the introduction.</li>
+          <li>Write open comments on the one full draft.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <h3>You can't</h3>
+        <ul>
+          <li>Correct spelling or punctuation.</li>
+          <li>Correct experiments or mathematics.</li>
+          <li>Rewrite any part of the essay.</li>
+          <li>Say where sections should move.</li>
+          <li>Proofread.</li>
+          <li>Correct citations or the bibliography.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="small muted">At ASD, all feedback before the full draft is oral. <span class="pg">(EE support material p. 20)</span></p>
+
+    <h2>Commenting on the full draft</h2>
+    <p>Ask questions that point to the problem. Don't fix it. Then go through your comments with the student in person.</p>
+    <div class="tablewrap"><table class="info">
+      <thead><tr><th>If you see…</th><th>You could write…</th></tr></thead>
+      <tbody>
+        <tr><th>Unclear argument</th><td>"Your essay lacks clarity here. How could you make it clearer?"</td></tr>
+        <tr><th>A calculation error</th><td>"Check this page carefully."</td></tr>
+        <tr><th>A missing section</th><td>"There is something missing here. What is it? Check the essay against the requirements."</td></tr>
+        <tr><th>Key material in the appendix</th><td>"Are you sure this belongs here?"</td></tr>
+        <tr><th>A weak conclusion</th><td>"What is it that you are trying to say here? Have you included all your relevant findings? Have you looked at unanswered questions?"</td></tr>
+        <tr><th>A citation problem</th><td>"You need to check this page for accuracy of referencing."</td></tr>
+      </tbody>
+    </table></div>
+    <p>After the draft, the next version you see is the <b>final essay</b>. It must be a clean copy with no comments. Once you've discussed it with the student, it can't be changed. <span class="pg">(guide p. 108)</span></p>
+
+    <h2>If something doesn't feel right</h2>
+    <ul>
+      <li>If you doubt the work is the student's own, talk to the student first.</li>
+      <li>Useful checks: compare the essay with the student's other writing and with the draft, look up a few of the sources, and ask the student to explain a section.</li>
+      <li>Then tell the EE coordinator. An essay is not uploaded while its authenticity is in doubt. <span class="pg">(guide p. 106)</span></li>
+    </ul>
+
+    <p class="src-note" style="margin-top:30px">Sources: IB <i>Extended essay guide</i> (first assessment 2027), "Support and supervision of the extended essay", pp. 101–108; IB <i>Extended essay support material</i>, "Commenting on a draft extended essay", p. 20. <a href="../../guide/ee-guide-2027.pdf#page=110">Open the guide at the supervisor's responsibilities</a>.</p>
+  </main>
+</div>
+<script src="../../data/timeline.js"></script>
+<script>
+(function(){
+  var T = window.EE_TIMELINE, tb = document.querySelector("#dates tbody");
+  document.getElementById("cohort").textContent = T.cohort;
+  document.getElementById("tl-note").textContent = T.note;
+  T.items.forEach(function(i){
+    var tr = document.createElement("tr");
+    tr.innerHTML = "<th></th><td></td><td class='you'></td>";
+    tr.children[0].textContent = i.when; tr.children[1].textContent = i.what; tr.children[2].textContent = i.you;
+    tb.appendChild(tr);
+  });
+})();
+</script>
+</body>
+</html>

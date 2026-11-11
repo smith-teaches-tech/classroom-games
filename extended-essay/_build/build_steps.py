@@ -7,7 +7,7 @@ import os, json, html
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "students")
 
 ASD_SUBJECTS = ["Language A", "Language B", "Visual Arts", "Biology", "Chemistry", "Physics",
-                "Business Management", "Economics", "Global Politics", "Psychology", "Mathematics"]
+                "Business Management", "Global Politics", "Psychology", "Mathematics"]
 
 TEMPLATE = """<!DOCTYPE html>
 <html lang="en">
@@ -68,7 +68,7 @@ PREFILLS = {
 # essays that earned a B or higher in each subject group. Shown in steps 7 and 9; the step 7 counter uses __TARGET_COLLECT__.
 SOURCE_GROUPS = [
  # (data-group, subjects, collect, annotate, what counts)
- ("big",  "Biology, Chemistry, Physics, Business Management, Economics, Global Politics, Psychology, interdisciplinary essays", 25, 12, "Scholarly articles, books, reports and data."),
+ ("big",  "Biology, Chemistry, Physics, Business Management, Global Politics, Psychology, interdisciplinary essays", 25, 12, "Scholarly articles, books, reports and data."),
  ("va",   "Visual Arts", 20, 10, "Includes the 3 or 4 artworks your essay analyses (your primary sources)."),
  ("lang", "Language A, Language B", 15, 8, "Includes your primary text or texts: the novel, play, poems, films or songs you analyse."),
  ("math", "Mathematics", 10, 6, "Textbooks, papers and reliable mathematical references."),
@@ -262,7 +262,7 @@ STEPS.append(dict(
       <thead><tr><th>Style</th><th>Usually used in</th><th>In-text citation looks like</th></tr></thead>
       <tbody>
         <tr><th>MLA</th><td>Language A, Language B, Visual Arts</td><td>(Orwell 112)</td></tr>
-        <tr><th>APA</th><td>Biology, Chemistry, Physics, Business Management, Economics, Global Politics, Psychology, Mathematics</td><td>(Smith &amp; Lee, 2021, p. 4)</td></tr>
+        <tr><th>APA</th><td>Biology, Chemistry, Physics, Business Management, Global Politics, Psychology, Mathematics</td><td>(Smith &amp; Lee, 2021, p. 4)</td></tr>
       </tbody></table></div>
     <p>The table shows the usual choice for each subject. Confirm your style with your supervisor, then use it for the whole essay. For an interdisciplinary essay, choose the style that suits the subject doing most of the work, and agree on it with your supervisor.</p>
     <p>Use the current edition of your style. At the time of writing, that's the MLA Handbook (9th edition) and the APA Publication Manual (7th edition). The Purdue Online Writing Lab (Purdue OWL) has clear guides to both: <a href="https://owl.purdue.edu/owl/research_and_citation/mla_style/mla_formatting_and_style_guide/mla_general_format.html" target="_blank" rel="noopener">MLA guide</a> · <a href="https://owl.purdue.edu/owl/research_and_citation/apa_style/apa_formatting_and_style_guide/general_format.html" target="_blank" rel="noopener">APA guide</a>.</p>
@@ -428,7 +428,7 @@ STEPS.append(dict(
     <h2>What "historical" means in your subject</h2>
     <ul>
       <li><b>Sciences and Mathematics:</b> the classic experiments, theorems and models your topic rests on, and who first proposed them.</li>
-      <li><b>Economics, Business Management and Global Politics:</b> the theories you will apply (where they came from, and what they were responding to), and earlier events or cases like yours.</li>
+      <li><b>Business Management and Global Politics:</b> the theories you will apply (where they came from, and what they were responding to), and earlier events or cases like yours.</li>
       <li><b>Psychology:</b> the theories behind your topic (who proposed them, and what they were responding to), and the earlier studies that tested those theories.</li>
       <li><b>Language A and Language B:</b> how the text was received when it was published, how critics' readings have changed since, and the context the text was written in.</li>
       <li><b>Visual Arts:</b> the movements, influences and earlier artists behind the work you are studying, and how the work has been interpreted over time.</li>
@@ -471,7 +471,6 @@ METHODS_ROWS = [
  ("Visual Arts","Formal analysis of artworks combined with contextual analysis (historical, social, cultural). Mostly qualitative (based on words and interpretation rather than numbers).","Artworks, artists' statements, letters, diaries, interviews.","Art history and criticism, exhibition catalogues, scholarly articles."),
  ("Biology, Chemistry, Physics","An experiment with controlled variables and a standardized method. Or analysis of secondary data that used similar standardized methods and controls.","Data you collect in the lab or field.","Peer-reviewed publications and databases. ASD expects science EEs to be built on primary (experimental) data. The IB allows science essays based on secondary data, but workshop guidance says these essays rarely reach the top bands."),
  ("Business Management","A case study of a real organisation, analysed with business tools and concepts.","Interviews and surveys (for example with managers, staff or customers), company documents.","Academic articles, company reports, industry analysis, quality journalism."),
- ("Economics","Applying economic theory to a real situation and testing the theory against evidence.","Surveys, interviews, prices or data you collect yourself.","Data banks and statistics, economic research, news reporting."),
  ("Global Politics","A literature review (a summary of what has been written) on the main political concepts, then analysis of one or more cases.","Speeches, policies, treaties, official documents; your own data where appropriate.","Academic writing on the concepts and cases. Primary data can add to this academic writing."),
  ("Psychology","A review of literature: an analysis of peer-reviewed research. You operationalise your main idea (give the idea a measurable set of criteria), then weigh studies that support and challenge your argument.","None. Collecting primary data isn't allowed in a Psychology EE.","Peer-reviewed research: studies published in academic journals, linked to psychological theory."),
  ("Mathematics","Theoretical: exploring mathematics beyond the syllabus. Practical: using mathematics to model or analyse an issue or a data set.","Data you collect or obtain (for practical essays).","Mathematical texts and articles. A review of the literature is required."),
@@ -805,7 +804,7 @@ STEPS.append(dict(
         <tr data-subject="Language B"><th>Language B</th><td>Images usually aren't useful in the body unless you're analysing an advertisement or artwork. If you analyse poetry or song lyrics, quote the important extracts in the body. The full text can go in an appendix, but examiners don't have to read appendices.</td></tr>
         <tr data-subject="Visual Arts"><th>Visual Arts</th><td>Choose a small number of works so you can analyse them in depth within the word limit. Review the existing literature on your topic to shape your research question. Label and reference any images you include.</td></tr>
         <tr data-subject="Sciences"><th>Biology, Chemistry, Physics</th><td>A method detailed enough for someone else to repeat it. SI units. Results in a standardized format with labelled headings, units and numbering. Processed data with uncertainties. Conclusions supported by the data. An evaluation linked to the question and method.</td></tr>
-        <tr data-subject="I&amp;S"><th>Business Management, Economics, Global Politics, Psychology</th><td>Clearly labelled diagrams, maps, images and graphs. Acknowledge any that are someone else's work, and refer to each one in your text. Use headings to organise the essay where they help.</td></tr>
+        <tr data-subject="I&amp;S"><th>Business Management, Global Politics, Psychology</th><td>Clearly labelled diagrams, maps, images and graphs. Acknowledge any that are someone else's work, and refer to each one in your text. Use headings to organise the essay where they help.</td></tr>
         <tr data-subject="Mathematics"><th>Mathematics</th><td>State the question clearly and stay focused on it. Write mathematics with an equation editor. Use a new line for each step of algebra, and don't use * for multiplication or ^ for powers.</td></tr>
       </tbody></table></div>
     <p>Anything important to your argument must be in the body of the essay. Examiners don't have to read appendices, footnotes or endnotes.</p>
@@ -818,7 +817,7 @@ STEPS.append(dict(
  script="""/* highlight the subject chosen in step 1 */
 (function(){
   var path = EETools.read("step-1","pathway") || "", s = path==="Subject-focused (one subject)" ? (EETools.read("step-1","subject")||"") : "";
-  var map = {"Biology":"Sciences","Chemistry":"Sciences","Physics":"Sciences","Business Management":"I&S","Economics":"I&S","Global Politics":"I&S","Psychology":"I&S"};
+  var map = {"Biology":"Sciences","Chemistry":"Sciences","Physics":"Sciences","Business Management":"I&S","Global Politics":"I&S","Psychology":"I&S"};
   var row = s && document.querySelector('#conventions tr[data-subject="'+(map[s]||s)+'"]');
   if(row) row.classList.add("mine");
 })();""",

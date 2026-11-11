@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The History Mystery — Case Builder</title>
+<style>
+:root{
+  --bg:#f6f4ef;--ink:#1c1a17;--soft:#635c52;--rule:#dcd4c6;--panel:#fffdf9;
+  --accent:#7a2f22;--accent2:#1d5570;--ok:#3f6b46;--warn:#9a5b12;
+  --paper:#efe7d4;--paperink:#241f18;
+  --sh:0 1px 2px rgba(0,0,0,.05),0 6px 20px rgba(0,0,0,.06);
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#15141a;--ink:#e7e2d9;--soft:#9d968a;--rule:#35313a;--panel:#1c1b22;
+  --accent:#d9705c;--accent2:#69a9cd;--ok:#7fae86;--warn:#d9a35c;
+  --paper:#26231d;--paperink:#ece4d3;
+  --sh:0 1px 2px rgba(0,0,0,.4),0 6px 20px rgba(0,0,0,.35);}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5}
+h1,h2,h3{line-height:1.2;margin:0}
+button{font:inherit;cursor:pointer;border-radius:7px;border:1px solid var(--rule);background:var(--panel);color:var(--ink);padding:.42rem .8rem;font-size:.84rem}
+button:hover{filter:brightness(.96)}
+button.primary{background:var(--accent2);border-color:var(--accent2);color:#fff}
+button.small{padding:.2rem .55rem;font-size:.74rem}
+button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+input[type=text],select{font:inherit;font-size:.88rem;padding:.4rem .6rem;border-radius:6px;border:1px solid var(--rule);background:var(--panel);color:var(--ink)}
+textarea{width:100%;font:inherit;font-size:.9rem;line-height:1.45;padding:.5rem .65rem;border-radius:7px;border:1px solid var(--rule);background:var(--panel);color:var(--ink);resize:vertical;min-height:3.2rem}
+textarea:focus,input:focus{outline:2px solid color-mix(in srgb,var(--accent2) 50%,transparent);outline-offset:1px}
+
+header.bar{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--rule)}
+.row1{display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;padding:.55rem 1rem}
+.tag{font-size:.66rem;letter-spacing:.11em;text-transform:uppercase;color:var(--soft)}
+.row1 h1{font-size:1rem;font-weight:650}
+.sp{flex:1}
+#saveState{font-size:.72rem;color:var(--soft);min-width:4.5em}
+.kqband{padding:.4rem 1rem .5rem;border-top:1px solid var(--rule);background:var(--panel);font-family:var(--serif);font-size:.95rem;line-height:1.35}
+.kqband b{font-family:var(--sans);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-right:.5rem;vertical-align:1px}
+
+.rule{margin:.9rem 1rem 0;padding:.6rem .85rem;border-left:3px solid var(--accent);background:var(--panel);border-radius:0 8px 8px 0;font-size:.88rem;max-width:72rem}
+.rule strong{color:var(--accent)}
+
+main{display:grid;grid-template-columns:minmax(300px,420px) 1fr;gap:1rem;padding:1rem;align-items:start;max-width:1400px;margin:0 auto}
+@media (max-width:860px){main{grid-template-columns:1fr}.evidence{position:static!important;max-height:none!important}}
+
+.evidence{position:sticky;top:7.4rem;max-height:calc(100vh - 8.2rem);display:flex;flex-direction:column;border:1px solid var(--rule);border-radius:11px;background:var(--panel);box-shadow:var(--sh);overflow:hidden}
+.evhead{padding:.65rem .75rem;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:.45rem}
+.evhead h2{font-size:.95rem}
+.evhead .hint{font-size:.74rem;color:var(--soft)}
+#search{width:100%}
+.chips{display:flex;flex-wrap:wrap;gap:.3rem}
+.chips button{padding:.15rem .5rem;font-size:.72rem;border-radius:20px}
+.evlist{overflow-y:auto;padding:.6rem;display:flex;flex-direction:column;gap:.55rem}
+.clue{background:var(--paper);color:var(--paperink);border-radius:8px;border:1px dashed color-mix(in srgb,var(--paperink) 30%,transparent);padding:.55rem .7rem .6rem;scroll-margin-top:.5rem}
+.clue.flash{outline:3px solid var(--accent2)}
+.clue .top{display:flex;align-items:center;gap:.5rem;margin-bottom:.25rem}
+.clue .num{font-weight:750;font-size:.8rem;letter-spacing:.06em}
+.clue .used{font-size:.66rem;padding:.05rem .4rem;border-radius:20px;background:var(--ok);color:#fff}
+.clue .src{font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;opacity:.75;margin-bottom:.2rem}
+.clue .txt{font-family:var(--serif);font-size:.9rem;line-height:1.45}
+.clue .cite{margin-left:auto}
+.clue mark{background:color-mix(in srgb,var(--accent2) 30%,transparent);color:inherit;border-radius:2px}
+.empty{font-size:.85rem;color:var(--soft);padding:.5rem}
+
+.builder{display:flex;flex-direction:column;gap:1rem;min-width:0}
+.tabs{display:flex;gap:.35rem;flex-wrap:wrap}
+.panel{border:1px solid var(--rule);border-radius:11px;background:var(--panel);box-shadow:var(--sh);padding:.9rem 1rem}
+.panel h3{font-size:1rem;margin-bottom:.15rem}
+.panel .q{font-size:.82rem;color:var(--soft);margin-bottom:.55rem}
+.setup{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
+.setup label{font-size:.8rem;color:var(--soft)}
+.cardsfield{display:flex;align-items:center;gap:.4rem;margin-top:.4rem;flex-wrap:wrap}
+.cardsfield input{width:9rem}
+.cardsfield .lbl{font-size:.74rem;color:var(--soft)}
+.target{box-shadow:0 0 0 2px var(--accent2)}
+.step{border:1px solid var(--rule);border-radius:9px;padding:.6rem .7rem;margin-bottom:.6rem;background:var(--bg)}
+.step .shead{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;margin-bottom:.4rem}
+.step .shead .n{font-weight:700;font-size:.8rem;color:var(--soft);min-width:1.6rem}
+.step .shead input.time{width:8.5rem}
+.kind{display:inline-flex;border:1px solid var(--rule);border-radius:20px;overflow:hidden}
+.kind button{border:0;border-radius:0;padding:.2rem .6rem;font-size:.72rem;background:transparent;color:var(--soft)}
+.kind button.on{background:var(--ink);color:var(--bg)}
+.warn{font-size:.76rem;color:var(--warn);margin-top:.3rem}
+.hurt{display:grid;grid-template-columns:5.5rem 1fr auto;gap:.5rem;align-items:start;margin-bottom:.5rem}
+.hurt input{width:100%}
+
+.coverage .bar{height:8px;background:var(--rule);border-radius:6px;overflow:hidden;margin:.4rem 0 .5rem}
+.coverage .bar span{display:block;height:100%;background:var(--ok)}
+.coverage .unused{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.3rem}
+.coverage .unused button{padding:.12rem .45rem;font-size:.74rem}
+
+.speech ol{padding-left:1.2rem;margin:.3rem 0}
+.speech .part{border-top:1px solid var(--rule);padding:.7rem 0}
+.speech .part:first-of-type{border-top:0}
+.speech .ph{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:.3rem}
+.speech .ph h4{margin:0;font-size:.92rem}
+.speech .ph input{width:9rem;font-size:.8rem;padding:.25rem .5rem}
+.speech .say{font-family:var(--serif);font-size:.98rem}
+.speech .infer{color:var(--accent);font-family:var(--sans);font-size:.72rem;font-weight:650;letter-spacing:.05em;text-transform:uppercase}
+.speech .cards{color:var(--accent2);font-family:var(--sans);font-size:.8rem;font-weight:600}
+.speech .missing{color:var(--soft);font-style:italic;font-size:.85rem}
+.timer{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
+#clock{font-variant-numeric:tabular-nums;font-size:1.8rem;font-weight:700;min-width:4.5rem}
+#clock.low{color:var(--accent)}
+.toast{position:fixed;bottom:1rem;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:.5rem 1rem;border-radius:8px;font-size:.85rem;opacity:0;transition:opacity .2s;pointer-events:none;z-index:99}
+.toast.on{opacity:1}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<header class="bar">
+  <div class="row1">
+    <div>
+      <div class="tag">TOK · History · The History Mystery</div>
+      <h1>Case Builder</h1>
+    </div>
+    <div class="sp"></div>
+    <span id="saveState"></span>
+    <button id="copyText" class="primary">Copy case as text</button>
+    <button id="copyLink">Copy share link</button>
+  </div>
+  <div class="kqband"><b>KQ</b>How do historians construct a narrative from incomplete traces — and what would it take to know they had got it right?</div>
+</header>
+
+<div class="rule">
+  <strong>The rule for every case:</strong> anything you say <em>happened</em>, point to a card. Anything you <em>worked out</em>, say “we infer.” Nobody in this group saw Friday night. All you have is what survived.
+</div>
+
+<main>
+  <!-- EVIDENCE FILE -->
+  <section class="evidence" aria-label="Evidence file">
+    <div class="evhead">
+      <h2>Evidence file · 26 cards</h2>
+      <input id="search" type="text" placeholder="Search the cards (e.g. paint, morphine, Friday)">
+      <div class="chips" id="nameChips"></div>
+      <div class="chips" id="showChips">
+        <button data-show="all" class="on">All</button>
+        <button data-show="used">Used in our case</button>
+        <button data-show="unused">Not used yet</button>
+      </div>
+      <div class="hint">Click into any part of your case, then press <b>Cite</b> on a card to add its number there.</div>
+    </div>
+    <div class="evlist" id="evlist"></div>
+  </section>
+
+  <!-- BUILDER -->
+  <section class="builder">
+    <div class="tabs">
+      <button data-tab="build" class="on">1 · Build the case</button>
+      <button data-tab="speech">2 · Speech &amp; rehearsal</button>
+    </div>
+
+    <div id="tab-build">
+      <div class="panel">
+        <div class="setup">
+          <label for="group">Group</label>
+          <input id="group" type="text" placeholder="Names">
+          <label for="suspect">Our case</label>
+          <select id="suspect">
+            <option value="">Choose…</option>
+            <option>Dr. Logan</option>
+            <option>Mr. Finnigan</option>
+            <option>Camilla</option>
+            <option value="other">Someone else / more than one person</option>
+          </select>
+          <input id="suspectOther" type="text" class="hidden" placeholder="Who?">
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:1rem">
+        <h3>1 · Our claim</h3>
+        <div class="q">One sentence: who killed John Doe, how, and why.</div>
+        <textarea id="claim" data-field="claim"></textarea>
+      </div>
+
+      <div class="panel" style="margin-top:1rem">
+        <h3>2 · What happened, in order</h3>
+        <div class="q">One step per event, in time order. For each step: does a card <b>show</b> it, or do we <b>infer</b> it?</div>
+        <div id="steps"></div>
+        <button id="addStep">+ Add a step</button>
+      </div>
+
+      <div class="panel" style="margin-top:1rem">
+        <h3>3 · Why</h3>
+        <div class="q">The motive. What reason did this person have, and which cards point to it?</div>
+        <textarea id="motive" data-field="motive"></textarea>
+        <div class="cardsfield"><span class="lbl">Cards:</span><input type="text" id="motiveCards" data-cards="motiveCards" placeholder="e.g. 7, 26"></div>
+      </div>
+
+      <div class="panel" style="margin-top:1rem">
+        <h3>4 · Cards that hurt our case</h3>
+        <div class="q">The other groups will use these against you. Name each one and give your answer before they do.</div>
+        <div id="hurts"></div>
+        <button id="addHurt">+ Add a card that hurts us</button>
+      </div>
+
+      <div class="panel" style="margin-top:1rem">
+        <h3>5 · What we can’t explain</h3>
+        <div class="q">Be honest. A case that admits its gaps is easier to trust than one that pretends it has none.</div>
+        <textarea id="gaps" data-field="gaps"></textarea>
+      </div>
+
+      <div class="panel" style="margin-top:1rem">
+        <h3>6 · Closing line</h3>
+        <div class="q">The last sentence the room will hear. Why is your account better supported than the others?</div>
+        <textarea id="closing" data-field="closing"></textarea>
+      </div>
+
+      <div class="panel coverage" style="margin-top:1rem">
+        <h3>How much of the evidence does our case deal with?</h3>
+        <div class="bar"><span id="covBar" style="width:0"></span></div>
+        <div id="covText" class="q"></div>
+        <div class="unused" id="covUnused"></div>
+      </div>
+
+      <div style="margin-top:1rem;display:flex;gap:.5rem;flex-wrap:wrap">
+        <button id="clearAll">Start over</button>
+      </div>
+    </div>
+
+    <div id="tab-speech" class="hidden">
+      <div class="panel">
+        <h3>Rehearsal timer</h3>
+        <div class="q">You have 5 minutes to present. Run it out loud at least once.</div>
+        <div class="timer">
+          <span id="clock">5:00</span>
+          <button id="tStart" class="primary">Start</button>
+          <button id="tReset">Reset</button>
+          <select id="tLen"><option value="300">5 min</option><option value="180">3 min (reply)</option></select>
+        </div>
+      </div>
+      <div class="panel speech" style="margin-top:1rem">
+        <h3>Your speech, in speaking order</h3>
+        <div class="q">Built from your case. Put a name next to each part so everyone in the group speaks.</div>
+        <div id="speechOut"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const CARDS = [
+ {n:1, src:"", t:"John Doe was found murdered early Saturday morning, a dagger sunk into his back."},
+ {n:2, src:"Testimony — Ms. Parsons, Mr. Finnigan’s housekeeper", t:"“Oh, that Dr. Logan, he is such a nice boy. He spent all of Friday afternoon after tea painting the garden gate as a surprise, for Mr. Finnigan was upstairs cleaning out the attic all day. I would have given the Doctor a special treat for dinner, but I was away in Oxford Street picking up Mr. Finnigan’s new gloves. In fact, Mr. Finnigan was still in the attic when I left.”"},
+ {n:3, src:"Headline — Local paper, Wednesday 11 June 2000", t:"Local Physician Under Suspicion For Illegally Prescribing Drugs To “Patients”."},
+ {n:4, src:"", t:"There is a green painted gate between Mr. Doe’s and Mr. Finnigan’s gardens."},
+ {n:5, src:"", t:"Dr. Logan is currently lodging at the Rector’s house, as Mr. Finnigan is experiencing some heart trouble and needs to be watched carefully. He is, however, doing quite well and has taken up jogging around a mile per day."},
+ {n:6, src:"Village Gazette — Saturday 14 June", t:"Last night’s sudden downpour washed out the access bridge to Mr. O’Brien’s barn. This morning he had to wade through chest-deep water to make it to his barn to feed the pigs. He is quoted as saying: “I was up late last night, and about midnight the heavens just opened up! It only lasted until about 1, and I thought, I hope the pigs aren’t too hungry in the morning — it’ll take me a while to get to them!”"},
+ {n:7, src:"Testimony — Mrs. Wigglesbottom, Mr. Doe’s housekeeper", t:"“It is best not to speak poorly of the dead, but I did hear Mr. Doe and that sweet Doctor arguing on Friday afternoon. Something about the money Mr. Doe had loaned Dr. Logan. Apparently they had made some sort of ‘arrangement’ where Dr. Logan didn’t have to pay back the loan… Dr. Logan said he wanted out of their arrangement, but Mr. Doe told him he should think again…” [sobs uncontrollably]"},
+ {n:8, src:"Briefing — Local sheriff", t:"Mr. John Doe was found at his desk, lying forward on top of a mess of papers and correspondence. The rubbish bin alongside John Doe’s desk contained ashes, presumably of paper, but also what looked like burnt leather. The floor was wet, presumably from the rainstorm — apparently Mr. Doe kept his doors open on warm nights."},
+ {n:9, src:"", t:"A receipt for a donation of used clothes to the Salvation Army store, dated Saturday 14 June, for roughly £15, was found on the floor of Mr. Finnigan’s car."},
+ {n:10, src:"", t:"On the handle of the dagger, there was a smudge of green paint."},
+ {n:11, src:"", t:"Camilla Finnigan is currently involved with a young doctor by the name of Richard Logan."},
+ {n:12, src:"", t:"A pair of surgical gloves, with green paint of the same shade as that found on the dagger, was found stuffed into the Rectory’s rubbish bins during the investigation on Saturday."},
+ {n:13, src:"Testimony — Mr. Hutchinson, Mr. Doe’s gardener", t:"“I found this morning that part of the trellis work below Mr. Doe’s balcony was broken. I’d only just repaired it last week.”"},
+ {n:14, src:"Gossip overheard at the Pig and Cabbage", t:"“I’ve ’eard that your Mr. Doe ’ad a bit of the liking for certain ‘controlled substances’, if you will. I don’t know where he gets ’is stuff, but whoever supplies ’im must keep ’im pretty well juiced up! ’E’s always going on about the magical morphine!”"},
+ {n:15, src:"", t:"Mrs. Parsons testified that she found Dr. Logan’s shoes outside his room on Saturday morning, soaked through and through, and caked with mud. She also testified that she saw a light under Dr. Logan’s door last night when she returned from town about 12:30."},
+ {n:16, src:"", t:"Mr. Finnigan’s wife died 5 years ago. She was a lovely woman, having grown up in a small town outside Dublin. She came to England to work in a large company owned by a Raymond Doe, where she quickly rose to become a manager. She died in a tragic horse accident while on holiday in Bristol during the summer of 2011."},
+ {n:17, src:"", t:"When asked about a prescription for sleeping medication found in his room, Dr. Logan admitted to having insomnia."},
+ {n:18, src:"", t:"The Rector’s daughter, Camilla, has submitted a sworn statement saying that she, in fact, murdered Mr. Doe."},
+ {n:19, src:"Testimony — Coroner", t:"“It looks like whoever did it knew a fair bit about human anatomy. It was a clean job. Sure, there is lots of blood from the wound, but the knife is sunk straight into Mr. Doe’s heart. Probably killed him instantly. I believe, however, the deceased had probably already passed out before he was knifed. Probably a bit too much of the… well… let’s just say there wouldn’t have been a struggle.”"},
+ {n:20, src:"", t:"After his father died, John Doe continued the business his father began. When he was murdered, he was thought to be the wealthiest man in the town."},
+ {n:21, src:"", t:"Mr. Finnigan’s heart problems developed 10 years ago. His most dangerous time was about 5 years ago, when he was admitted to hospital for a triple bypass. He was unfortunately unable to accompany her on holiday that year."},
+ {n:22, src:"", t:"An empty syringe was found on the desk next to the body. Forensics determined that it held traces of morphine."},
+ {n:23, src:"Testimony — Mrs. Wigglesbottom, Mr. Doe’s housekeeper", t:"“If I’ve told him once, I’ve told him a thousand times, he ought to have kept the balcony doors closed. But he liked working late, and on the warm nights he would keep the doors open. He only would close them if it was raining. Poor… oh… Mr… Doe!…” [sobs uncontrollably]"},
+ {n:24, src:"", t:"There were no footprints found in the garden below Mr. Doe’s office window. The only footprints found were outside the Rectory. The prints matched the shoes we found belonging to Dr. Logan."},
+ {n:25, src:"Bristol Bugle, 28 June 2011 — found buried in the mud outside Doe’s house", t:"The summer season opened with a grand fête on Saturday. At the Ritz Hotel the grand banquet was attended by the likes of French superstar Jolie, and the surprise guest of the evening was Mr. John Doe, CEO of Doe-boy Enterprises, accompanied by a beautiful mystery lady who never left his arm all evening. The fireworks spectacular was the best this reporter has ever seen."},
+ {n:26, src:"Obituary — Sunday 15 June", t:"Mr. Doe was also known for his charity. He regularly loans young men and women the money for their education — although, being a business man, he does charge a nominal rate of interest."}
+];
+const NAMES = ["Doe","Logan","Finnigan","Camilla","Parsons","Wigglesbottom","Hutchinson","Rector","O’Brien"];
+const KEY = "tok-history-mystery-case-v1";
+
+const blank = () => ({group:"",suspect:"",suspectOther:"",claim:"",steps:[{time:"",text:"",cards:"",kind:"shows"}],motive:"",motiveCards:"",hurts:[{card:"",answer:""}],gaps:"",closing:"",speakers:{}});
+let S = blank();
+let filter = {q:"",name:"",show:"all"};
+let target = null; // {type:'step',i} | {type:'motive'} | {type:'hurt',i}
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function parseCards(str){
+  return [...new Set(String(str||"").split(/[^0-9]+/).filter(Boolean).map(Number).filter(n=>n>=1&&n<=26))];
+}
+function usedSet(){
+  const u = new Set();
+  S.steps.forEach(s=>parseCards(s.cards).forEach(n=>u.add(n)));
+  parseCards(S.motiveCards).forEach(n=>u.add(n));
+  S.hurts.forEach(h=>parseCards(h.card).forEach(n=>u.add(n)));
+  return u;
+}
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove("on"),1800);}
+
+/* ---------- persistence ---------- */
+let saveT;
+function save(){
+  clearTimeout(saveT);
+  saveT=setTimeout(()=>{
+    try{localStorage.setItem(KEY,JSON.stringify(S));$("#saveState").textContent="Saved";}
+    catch(e){$("#saveState").textContent="";}
+  },300);
+}
+function load(){
+  const h = location.hash.match(/case=([^&]+)/);
+  if(h){
+    try{
+      const obj = JSON.parse(decodeURIComponent(escape(atob(h[1].replace(/-/g,"+").replace(/_/g,"/")))));
+      S = Object.assign(blank(),obj);
+      history.replaceState(null,"",location.pathname);
+      toast("Loaded the shared case");
+      save();return;
+    }catch(e){toast("That share link didn’t load");}
+  }
+  try{const raw=localStorage.getItem(KEY);if(raw)S=Object.assign(blank(),JSON.parse(raw));}catch(e){}
+}
+
+/* ---------- evidence file ---------- */
+function renderChips(){
+  $("#nameChips").innerHTML = NAMES.map(n=>`<button data-name="${esc(n)}" class="${filter.name===n?"on":""}">${esc(n)}</button>`).join("");
+}
+function highlight(text){
+  let h = esc(text);
+  const terms = [filter.q,filter.name].filter(Boolean);
+  terms.forEach(t=>{
+    const re = new RegExp("("+t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","gi");
+    h = h.replace(re,"<mark>$1</mark>");
+  });
+  return h;
+}
+function renderEvidence(){
+  const used = usedSet();
+  const q = filter.q.toLowerCase(), nm = filter.name.toLowerCase();
+  const list = CARDS.filter(c=>{
+    const hay=(c.src+" "+c.t).toLowerCase();
+    if(q && !hay.includes(q) && String(c.n)!==q) return false;
+    if(nm && !hay.includes(nm)) return false;
+    if(filter.show==="used" && !used.has(c.n)) return false;
+    if(filter.show==="unused" && used.has(c.n)) return false;
+    return true;
+  });
+  $("#evlist").innerHTML = list.length ? list.map(c=>`
+    <article class="clue" id="card-${c.n}">
+      <div class="top"><span class="num">CARD ${String(c.n).padStart(2,"0")}</span>${used.has(c.n)?'<span class="used">in our case</span>':""}<button class="small cite" data-cite="${c.n}">Cite</button></div>
+      ${c.src?`<div class="src">${highlight(c.src)}</div>`:""}
+      <div class="txt">${highlight(c.t)}</div>
+    </article>`).join("") : `<div class="empty">No cards match.</div>`;
+}
+function jumpTo(n){
+  filter={q:"",name:"",show:"all"};$("#search").value="";
+  document.querySelectorAll("#showChips button").forEach(b=>b.classList.toggle("on",b.dataset.show==="all"));
+  renderChips();renderEvidence();
+  const el=document.getElementById("card-"+n);
+  if(el){el.scrollIntoView({behavior:"smooth",block:"start"});el.classList.add("flash");setTimeout(()=>el.classList.remove("flash"),1400);}
+}
+
+/* ---------- builder ---------- */
+function renderSteps(){
+  $("#steps").innerHTML = S.steps.map((s,i)=>{
+    const cs = parseCards(s.cards);
+    const warn = s.kind==="shows" && s.text.trim() && !cs.length ? `<div class="warn">You say a card shows this. Which card?</div>` : "";
+    return `<div class="step" data-i="${i}">
+      <div class="shead">
+        <span class="n">${i+1}.</span>
+        <input type="text" class="time" data-step="${i}" data-k="time" placeholder="When? (if known)" value="${esc(s.time)}">
+        <span class="kind">
+          <button data-kind="shows" data-step="${i}" class="${s.kind==="shows"?"on":""}">A card shows this</button>
+          <button data-kind="infer" data-step="${i}" class="${s.kind==="infer"?"on":""}">We infer this</button>
+        </span>
+        <span class="sp"></span>
+        <button class="small" data-move="-1" data-step="${i}" title="Move up" ${i===0?"disabled":""}>↑</button>
+        <button class="small" data-move="1" data-step="${i}" title="Move down" ${i===S.steps.length-1?"disabled":""}>↓</button>
+        <button class="small" data-del="${i}" title="Delete step">✕</button>
+      </div>
+      <textarea data-step="${i}" data-k="text" placeholder="What happened?">${esc(s.text)}</textarea>
+      <div class="cardsfield"><span class="lbl">Cards:</span><input type="text" data-step="${i}" data-k="cards" placeholder="e.g. 2, 4" value="${esc(s.cards)}"></div>
+      ${warn}
+    </div>`;
+  }).join("");
+}
+function renderHurts(){
+  $("#hurts").innerHTML = S.hurts.map((h,i)=>`
+    <div class="hurt">
+      <input type="text" data-hurt="${i}" data-k="card" placeholder="Card #" value="${esc(h.card)}">
+      <textarea data-hurt="${i}" data-k="answer" placeholder="Our answer to it">${esc(h.answer)}</textarea>
+      <button class="small" data-delhurt="${i}" title="Delete">✕</button>
+    </div>`).join("");
+}
+function renderCoverage(){
+  const used=usedSet();
+  const pct=Math.round(used.size/26*100);
+  $("#covBar").style.width=pct+"%";
+  $("#covText").innerHTML = `Your case uses <b>${used.size} of 26</b> cards. Every card you leave out is one the other groups can use against you. For each one below, either use it, answer it in part 4, or be ready to say why it doesn’t matter.`;
+  const un = CARDS.filter(c=>!used.has(c.n)).map(c=>c.n);
+  $("#covUnused").innerHTML = un.map(n=>`<button data-jump="${n}">${n}</button>`).join("");
+}
+function renderSetup(){
+  $("#group").value=S.group;
+  const known=["","Dr. Logan","Mr. Finnigan","Camilla"];
+  $("#suspect").value = known.includes(S.suspect)?S.suspect:"other";
+  if(!S.suspect) $("#suspect").value="";
+  $("#suspectOther").classList.toggle("hidden",$("#suspect").value!=="other");
+  $("#suspectOther").value=S.suspectOther;
+  ["claim","motive","gaps","closing"].forEach(f=>$("#"+f).value=S[f]);
+  $("#motiveCards").value=S.motiveCards;
+}
+function suspectName(){return S.suspect==="other"?(S.suspectOther||"someone else"):S.suspect;}
+function renderAll(){renderSetup();renderSteps();renderHurts();renderCoverage();renderEvidence();renderSpeech();markTarget();}
+
+/* ---------- speech ---------- */
+function cardsTag(str){const c=parseCards(str);return c.length?` <span class="cards">[card${c.length>1?"s":""} ${c.join(", ")}]</span>`:"";}
+function spk(key){return `<input type="text" data-speaker="${key}" placeholder="Who says this?" value="${esc(S.speakers[key]||"")}">`;}
+function renderSpeech(){
+  const miss = m=>`<span class="missing">${m}</span>`;
+  const steps = S.steps.filter(s=>s.text.trim());
+  const hurts = S.hurts.filter(h=>h.card.trim()||h.answer.trim());
+  $("#speechOut").innerHTML = `
+    <div class="part"><div class="ph"><h4>1 · Open with your claim</h4>${spk("open")}</div>
+      <div class="say">${S.claim.trim()?esc(S.claim):miss("Write your claim in part 1.")}</div></div>
+    <div class="part"><div class="ph"><h4>2 · Tell the story, in order</h4>${spk("story")}</div>
+      ${steps.length?`<ol class="say">${steps.map(s=>`<li>${s.time.trim()?"<b>"+esc(s.time)+":</b> ":""}${s.kind==="infer"?'<span class="infer">we infer</span> ':""}${esc(s.text)}${cardsTag(s.cards)}</li>`).join("")}</ol>`:miss("Add steps in part 2.")}</div>
+    <div class="part"><div class="ph"><h4>3 · Explain why</h4>${spk("why")}</div>
+      <div class="say">${S.motive.trim()?esc(S.motive)+cardsTag(S.motiveCards):miss("Write the motive in part 3.")}</div></div>
+    <div class="part"><div class="ph"><h4>4 · Answer the cards against you</h4>${spk("hurt")}</div>
+      ${hurts.length?`<ol class="say">${hurts.map(h=>`<li>“Some of you will point to card ${esc(h.card)}.” ${esc(h.answer)||miss("(no answer yet)")}</li>`).join("")}</ol>`:miss("Add the cards that hurt you in part 4.")}</div>
+    <div class="part"><div class="ph"><h4>5 · Admit what you can’t explain</h4>${spk("gaps")}</div>
+      <div class="say">${S.gaps.trim()?esc(S.gaps):miss("Fill in part 5.")}</div></div>
+    <div class="part"><div class="ph"><h4>6 · Close</h4>${spk("close")}</div>
+      <div class="say">${S.closing.trim()?esc(S.closing):miss("Write your closing line in part 6.")}</div></div>`;
+}
+
+/* ---------- plain text export ---------- */
+function asText(){
+  const L=[];
+  L.push("THE HISTORY MYSTERY: OUR CASE");
+  if(S.group.trim()) L.push("Group: "+S.group.trim());
+  L.push("Our case: "+(suspectName()||"(not chosen)"));
+  L.push("");
+  L.push("1. OUR CLAIM");L.push(S.claim.trim()||"(blank)");L.push("");
+  L.push("2. WHAT HAPPENED, IN ORDER");
+  S.steps.filter(s=>s.text.trim()).forEach((s,i)=>{
+    const c=parseCards(s.cards);
+    L.push(`${i+1}. ${s.time.trim()?s.time.trim()+": ":""}${s.kind==="infer"?"[We infer] ":""}${s.text.trim()}${c.length?" (card"+(c.length>1?"s ":" ")+c.join(", ")+")":""}`);
+  });
+  L.push("");
+  L.push("3. WHY");L.push((S.motive.trim()||"(blank)")+(parseCards(S.motiveCards).length?" (cards "+parseCards(S.motiveCards).join(", ")+")":""));L.push("");
+  L.push("4. CARDS THAT HURT OUR CASE");
+  S.hurts.filter(h=>h.card.trim()||h.answer.trim()).forEach(h=>L.push(`Card ${h.card.trim()}: ${h.answer.trim()}`));
+  L.push("");
+  L.push("5. WHAT WE CAN'T EXPLAIN");L.push(S.gaps.trim()||"(blank)");L.push("");
+  L.push("6. CLOSING LINE");L.push(S.closing.trim()||"(blank)");L.push("");
+  const sp=Object.entries(S.speakers).filter(([k,v])=>v.trim());
+  if(sp.length){
+    const names={open:"Claim",story:"Story",why:"Why",hurt:"Cards against us",gaps:"What we can't explain",close:"Close"};
+    L.push("SPEAKERS");sp.forEach(([k,v])=>L.push(names[k]+": "+v.trim()));L.push("");
+  }
+  const used=usedSet();
+  L.push(`Cards used: ${used.size} of 26. Not used: ${CARDS.filter(c=>!used.has(c.n)).map(c=>c.n).join(", ")||"none"}`);
+  return L.join("\n");
+}
+async function copy(str,msg){
+  try{await navigator.clipboard.writeText(str);toast(msg);}
+  catch(e){
+    const ta=document.createElement("textarea");ta.value=str;document.body.appendChild(ta);ta.select();
+    try{document.execCommand("copy");toast(msg);}catch(_){toast("Copy failed. Select and copy manually.");}
+    ta.remove();
+  }
+}
+
+/* ---------- cite target ---------- */
+function markTarget(){
+  document.querySelectorAll(".target").forEach(e=>e.classList.remove("target"));
+  if(!target) return;
+  let el=null;
+  if(target.type==="step") el=document.querySelector(`input[data-step="${target.i}"][data-k="cards"]`);
+  if(target.type==="motive") el=$("#motiveCards");
+  if(target.type==="hurt") el=document.querySelector(`input[data-hurt="${target.i}"][data-k="card"]`);
+  if(el) el.classList.add("target");
+}
+function addCite(n){
+  if(!target){toast("Click into a step, the motive, or a ‘hurts us’ row first");return;}
+  const add=(str)=>{const c=parseCards(str);if(!c.includes(n))c.push(n);return c.join(", ");};
+  if(target.type==="step"&&S.steps[target.i]) S.steps[target.i].cards=add(S.steps[target.i].cards);
+  else if(target.type==="motive") S.motiveCards=add(S.motiveCards);
+  else if(target.type==="hurt"&&S.hurts[target.i]) S.hurts[target.i].card=add(S.hurts[target.i].card);
+  save();renderSetup();renderSteps();renderHurts();renderCoverage();renderEvidence();renderSpeech();markTarget();
+  toast("Card "+n+" added");
+}
+
+/* ---------- events ---------- */
+document.addEventListener("input",e=>{
+  const t=e.target;
+  if(t.dataset.step!==undefined&&t.dataset.k){S.steps[+t.dataset.step][t.dataset.k]=t.value;
+    if(t.dataset.k==="cards"||t.dataset.k==="text"){renderCoverage();renderEvidence();
+      const box=t.closest(".step");const s=S.steps[+t.dataset.step];
+      let w=box.querySelector(".warn");const need=s.kind==="shows"&&s.text.trim()&&!parseCards(s.cards).length;
+      if(need&&!w){w=document.createElement("div");w.className="warn";w.textContent="You say a card shows this. Which card?";box.appendChild(w);}
+      if(!need&&w) w.remove();}
+  }
+  else if(t.dataset.hurt!==undefined){S.hurts[+t.dataset.hurt][t.dataset.k]=t.value;if(t.dataset.k==="card"){renderCoverage();renderEvidence();}}
+  else if(t.dataset.field){S[t.dataset.field]=t.value;}
+  else if(t.id==="motiveCards"){S.motiveCards=t.value;renderCoverage();renderEvidence();}
+  else if(t.id==="group"){S.group=t.value;}
+  else if(t.id==="suspectOther"){S.suspectOther=t.value;}
+  else if(t.dataset.speaker){S.speakers[t.dataset.speaker]=t.value;save();return;}
+  else if(t.id==="search"){filter.q=t.value.trim();renderEvidence();return;}
+  else return;
+  save();renderSpeech();
+});
+document.addEventListener("change",e=>{
+  if(e.target.id==="suspect"){
+    const v=e.target.value;S.suspect=v;$("#suspectOther").classList.toggle("hidden",v!=="other");save();renderSpeech();
+  }
+  if(e.target.id==="tLen"){resetTimer();}
+});
+document.addEventListener("focusin",e=>{
+  const t=e.target;
+  if(t.dataset.step!==undefined) target={type:"step",i:+t.dataset.step};
+  else if(t.id==="motive"||t.id==="motiveCards") target={type:"motive"};
+  else if(t.dataset.hurt!==undefined) target={type:"hurt",i:+t.dataset.hurt};
+  else return;
+  markTarget();
+});
+let clearArmed=false;
+document.addEventListener("click",e=>{
+  const b=e.target.closest("button");if(!b)return;
+  if(b.dataset.cite){addCite(+b.dataset.cite);return;}
+  if(b.dataset.jump){jumpTo(+b.dataset.jump);return;}
+  if(b.dataset.name!==undefined){filter.name=filter.name===b.dataset.name?"":b.dataset.name;renderChips();renderEvidence();return;}
+  if(b.dataset.show){filter.show=b.dataset.show;document.querySelectorAll("#showChips button").forEach(x=>x.classList.toggle("on",x===b));renderEvidence();return;}
+  if(b.dataset.tab){document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("on",x===b));
+    $("#tab-build").classList.toggle("hidden",b.dataset.tab!=="build");$("#tab-speech").classList.toggle("hidden",b.dataset.tab!=="speech");
+    renderSpeech();return;}
+  if(b.dataset.kind){S.steps[+b.dataset.step].kind=b.dataset.kind;save();renderSteps();renderSpeech();markTarget();return;}
+  if(b.dataset.move){const i=+b.dataset.step,j=i+(+b.dataset.move);[S.steps[i],S.steps[j]]=[S.steps[j],S.steps[i]];target=null;save();renderSteps();renderSpeech();return;}
+  if(b.dataset.del!==undefined){S.steps.splice(+b.dataset.del,1);if(!S.steps.length)S.steps.push({time:"",text:"",cards:"",kind:"shows"});target=null;save();renderSteps();renderCoverage();renderEvidence();renderSpeech();return;}
+  if(b.dataset.delhurt!==undefined){S.hurts.splice(+b.dataset.delhurt,1);if(!S.hurts.length)S.hurts.push({card:"",answer:""});target=null;save();renderHurts();renderCoverage();renderEvidence();renderSpeech();return;}
+  if(b.id==="addStep"){S.steps.push({time:"",text:"",cards:"",kind:"shows"});save();renderSteps();
+    const i=S.steps.length-1;target={type:"step",i};markTarget();document.querySelector(`textarea[data-step="${i}"]`).focus();return;}
+  if(b.id==="addHurt"){S.hurts.push({card:"",answer:""});save();renderHurts();
+    const i=S.hurts.length-1;target={type:"hurt",i};markTarget();document.querySelector(`input[data-hurt="${i}"]`).focus();return;}
+  if(b.id==="copyText"){copy(asText(),"Case copied. Paste it into your group’s Google Doc.");return;}
+  if(b.id==="copyLink"){
+    const code=btoa(unescape(encodeURIComponent(JSON.stringify(S)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+    copy(location.origin+location.pathname+"#case="+code,"Link copied. Anyone who opens it gets this case.");return;}
+  if(b.id==="clearAll"){
+    if(!clearArmed){clearArmed=true;b.textContent="Click again to erase everything";setTimeout(()=>{clearArmed=false;b.textContent="Start over";},3000);return;}
+    S=blank();target=null;clearArmed=false;b.textContent="Start over";save();renderAll();return;}
+  if(b.id==="tStart"){toggleTimer();return;}
+  if(b.id==="tReset"){resetTimer();return;}
+});
+
+/* ---------- timer ---------- */
+let tLeft=300,tRun=null;
+function drawClock(){const m=Math.floor(Math.max(tLeft,0)/60),s=Math.max(tLeft,0)%60;$("#clock").textContent=m+":"+String(s).padStart(2,"0");$("#clock").classList.toggle("low",tLeft<=30);}
+function toggleTimer(){
+  if(tRun){clearInterval(tRun);tRun=null;$("#tStart").textContent="Start";return;}
+  if(tLeft<=0) resetTimer();
+  $("#tStart").textContent="Pause";
+  tRun=setInterval(()=>{tLeft--;drawClock();if(tLeft<=0){clearInterval(tRun);tRun=null;$("#tStart").textContent="Start";toast("Time!");}},1000);
+}
+function resetTimer(){clearInterval(tRun);tRun=null;tLeft=+$("#tLen").value;$("#tStart").textContent="Start";drawClock();}
+
+load();renderChips();renderAll();drawClock();
+</script>
+</body>
+</html>
