@@ -61,6 +61,9 @@ main{display:grid;grid-template-columns:minmax(300px,420px) 1fr;gap:1rem;padding
 .clue .src{font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;opacity:.75;margin-bottom:.2rem}
 .clue .txt{font-family:var(--serif);font-size:.9rem;line-height:1.45}
 .clue .cite{margin-left:auto}
+.clue .acts{margin-left:auto;display:flex;gap:.3rem}
+.clue .hasnote{font-size:.66rem;padding:.05rem .4rem;border-radius:20px;background:var(--accent2);color:#fff}
+.clue textarea{margin-top:.45rem;min-height:2.6rem;font-size:.84rem;background:var(--panel)}
 .clue mark{background:color-mix(in srgb,var(--accent2) 30%,transparent);color:inherit;border-radius:2px}
 .empty{font-size:.85rem;color:var(--soft);padding:.5rem}
 
@@ -142,8 +145,9 @@ main{display:grid;grid-template-columns:minmax(300px,420px) 1fr;gap:1rem;padding
         <button data-show="all" class="on">All</button>
         <button data-show="used">Used in our case</button>
         <button data-show="unused">Not used yet</button>
+        <button data-show="noted">Has a note</button>
       </div>
-      <div class="hint">Click into any part of your case, then press <b>Cite</b> on a card to add its number there.</div>
+      <div class="hint">Click into any part of your case, then press <b>Cite</b> on a card to add its number there. Press <b>Note</b> to write on a card: do you trust it? does it clash with another card?</div>
     </div>
     <div class="evlist" id="evlist"></div>
   </section>
@@ -157,6 +161,12 @@ main{display:grid;grid-template-columns:minmax(300px,420px) 1fr;gap:1rem;padding
 
     <div id="tab-build">
       <div class="panel">
+        <h3>Group notes</h3>
+        <div class="q">Rough working: questions, theories, things to check. Notes on a single card go on the card itself.</div>
+        <textarea id="scratch" data-field="scratch" style="min-height:5rem"></textarea>
+      </div>
+
+      <div class="panel" style="margin-top:1rem">
         <div class="setup">
           <label for="group">Group</label>
           <input id="group" type="text" placeholder="Names">
@@ -277,7 +287,8 @@ const CARDS = [
 const NAMES = ["Doe","Logan","Finnigan","Camilla","Parsons","Wigglesbottom","Hutchinson","Rector","O’Brien"];
 const KEY = "tok-history-mystery-case-v1";
 
-const blank = () => ({group:"",suspect:"",suspectOther:"",claim:"",steps:[{time:"",text:"",cards:"",kind:"shows"}],motive:"",motiveCards:"",hurts:[{card:"",answer:""}],gaps:"",closing:"",speakers:{}});
+const blank = () => ({group:"",suspect:"",suspectOther:"",claim:"",steps:[{time:"",text:"",cards:"",kind:"shows"}],motive:"",motiveCards:"",hurts:[{card:"",answer:""}],gaps:"",closing:"",speakers:{},notes:{},scratch:""});
+const openNotes = new Set();
 let S = blank();
 let filter = {q:"",name:"",show:"all"};
 let target = null; // {type:'step',i} | {type:'motive'} | {type:'hurt',i}
@@ -341,14 +352,18 @@ function renderEvidence(){
     if(nm && !hay.includes(nm)) return false;
     if(filter.show==="used" && !used.has(c.n)) return false;
     if(filter.show==="unused" && used.has(c.n)) return false;
+    if(filter.show==="noted" && !(S.notes[c.n]||"").trim()) return false;
     return true;
   });
-  $("#evlist").innerHTML = list.length ? list.map(c=>`
-    <article class="clue" id="card-${c.n}">
-      <div class="top"><span class="num">CARD ${String(c.n).padStart(2,"0")}</span>${used.has(c.n)?'<span class="used">in our case</span>':""}<button class="small cite" data-cite="${c.n}">Cite</button></div>
+  $("#evlist").innerHTML = list.length ? list.map(c=>{
+    const note=S.notes[c.n]||"";const show=openNotes.has(c.n)||note.trim();
+    return `<article class="clue" id="card-${c.n}">
+      <div class="top"><span class="num">CARD ${String(c.n).padStart(2,"0")}</span>${used.has(c.n)?'<span class="used">in our case</span>':""}<span class="hasnote ${note.trim()?"":"hidden"}">note</span>
+        <span class="acts"><button class="small" data-note="${c.n}">Note</button><button class="small" data-cite="${c.n}">Cite</button></span></div>
       ${c.src?`<div class="src">${highlight(c.src)}</div>`:""}
       <div class="txt">${highlight(c.t)}</div>
-    </article>`).join("") : `<div class="empty">No cards match.</div>`;
+      ${show?`<textarea data-cardnote="${c.n}" placeholder="Our note on card ${c.n}">${esc(note)}</textarea>`:""}
+    </article>`;}).join("") : `<div class="empty">No cards match.</div>`;
 }
 function jumpTo(n){
   filter={q:"",name:"",show:"all"};$("#search").value="";
@@ -405,7 +420,7 @@ function renderSetup(){
   if(!S.suspect) $("#suspect").value="";
   $("#suspectOther").classList.toggle("hidden",$("#suspect").value!=="other");
   $("#suspectOther").value=S.suspectOther;
-  ["claim","motive","gaps","closing"].forEach(f=>$("#"+f).value=S[f]);
+  ["claim","motive","gaps","closing","scratch"].forEach(f=>$("#"+f).value=S[f]||"");
   $("#motiveCards").value=S.motiveCards;
 }
 function suspectName(){return S.suspect==="other"?(S.suspectOther||"someone else"):S.suspect;}
@@ -458,6 +473,9 @@ function asText(){
     const names={open:"Claim",story:"Story",why:"Why",hurt:"Cards against us",gaps:"What we can't explain",close:"Close"};
     L.push("SPEAKERS");sp.forEach(([k,v])=>L.push(names[k]+": "+v.trim()));L.push("");
   }
+  const noted=CARDS.filter(c=>(S.notes[c.n]||"").trim());
+  if(noted.length){L.push("OUR NOTES ON THE CARDS");noted.forEach(c=>L.push(`Card ${c.n}: ${S.notes[c.n].trim()}`));L.push("");}
+  if((S.scratch||"").trim()){L.push("GROUP NOTES");L.push(S.scratch.trim());L.push("");}
   const used=usedSet();
   L.push(`Cards used: ${used.size} of 26. Not used: ${CARDS.filter(c=>!used.has(c.n)).map(c=>c.n).join(", ")||"none"}`);
   return L.join("\n");
@@ -538,6 +556,8 @@ document.addEventListener("input",e=>{
   else if(t.id==="group"){S.group=t.value;}
   else if(t.id==="suspectOther"){S.suspectOther=t.value;}
   else if(t.dataset.speaker){S.speakers[t.dataset.speaker]=t.value;save();return;}
+  else if(t.dataset.cardnote){const n=+t.dataset.cardnote;S.notes[n]=t.value;
+    const badge=t.closest(".clue").querySelector(".hasnote");if(badge)badge.classList.toggle("hidden",!t.value.trim());save();return;}
   else if(t.id==="search"){filter.q=t.value.trim();renderEvidence();return;}
   else return;
   save();renderSpeech();
@@ -561,6 +581,9 @@ let clearArmed=false;
 document.addEventListener("click",e=>{
   const b=e.target.closest("button");if(!b)return;
   if(b.dataset.cite){addCite(+b.dataset.cite);return;}
+  if(b.dataset.note){const n=+b.dataset.note;
+    if(openNotes.has(n)&&!(S.notes[n]||"").trim()){openNotes.delete(n);renderEvidence();return;}
+    openNotes.add(n);renderEvidence();const ta=document.querySelector(`textarea[data-cardnote="${n}"]`);if(ta)ta.focus();return;}
   if(b.dataset.jump){jumpTo(+b.dataset.jump);return;}
   if(b.dataset.name!==undefined){filter.name=filter.name===b.dataset.name?"":b.dataset.name;renderChips();renderEvidence();return;}
   if(b.dataset.show){filter.show=b.dataset.show;document.querySelectorAll("#showChips button").forEach(x=>x.classList.toggle("on",x===b));renderEvidence();return;}
