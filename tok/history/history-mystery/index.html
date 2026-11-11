@@ -118,7 +118,10 @@ main{display:grid;grid-template-columns:minmax(300px,420px) 1fr;gap:1rem;padding
     </div>
     <div class="sp"></div>
     <span id="saveState"></span>
-    <button id="copyText" class="primary">Copy case as text</button>
+    <button id="dlCase" class="primary">Download case</button>
+    <button id="openCase">Open saved case</button>
+    <input type="file" id="openFile" accept=".txt,text/plain" class="hidden">
+    <button id="copyText">Copy as text</button>
     <button id="copyLink">Copy share link</button>
   </div>
   <div class="kqband"><b>KQ</b>How do historians construct a narrative from incomplete traces — and what would it take to know they had got it right?</div>
@@ -459,6 +462,37 @@ function asText(){
   L.push(`Cards used: ${used.size} of 26. Not used: ${CARDS.filter(c=>!used.has(c.n)).map(c=>c.n).join(", ")||"none"}`);
   return L.join("\n");
 }
+/* ---------- download / open a saved file ---------- */
+const MARK = "=== CASE BUILDER DATA (do not edit below this line) ===";
+function encodeState(){return btoa(unescape(encodeURIComponent(JSON.stringify(S))));}
+function decodeState(code){return JSON.parse(decodeURIComponent(escape(atob(code.replace(/-/g,"+").replace(/_/g,"/").replace(/\s+/g,"")))));}
+function fileName(){
+  const slug = s=>String(s||"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+  const parts=["history-mystery",slug(suspectName())||"case",slug(S.group)].filter(Boolean);
+  return parts.join("-").slice(0,80)+".txt";
+}
+function downloadCase(){
+  const body = asText()+"\n\n\nTo keep working: open the Case Builder page, press \"Open saved case\", and choose this file.\n\n"+MARK+"\n"+encodeState()+"\n";
+  const blob=new Blob([body],{type:"text/plain;charset=utf-8"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=fileName();
+  document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);
+  toast("Saved "+fileName()+". Upload it to your group’s Drive folder.");
+}
+function openCaseFile(file){
+  const r=new FileReader();
+  r.onload=()=>{
+    const txt=String(r.result);const i=txt.indexOf(MARK);
+    if(i<0){toast("That file wasn’t saved from this page");return;}
+    try{
+      const obj=decodeState(txt.slice(i+MARK.length).trim());
+      S=Object.assign(blank(),obj);target=null;save();renderAll();
+      toast("Opened your saved case");
+    }catch(e){toast("That file couldn’t be opened. Was it edited?");}
+  };
+  r.readAsText(file);
+}
+
 async function copy(str,msg){
   try{await navigator.clipboard.writeText(str);toast(msg);}
   catch(e){
@@ -513,6 +547,7 @@ document.addEventListener("change",e=>{
     const v=e.target.value;S.suspect=v;$("#suspectOther").classList.toggle("hidden",v!=="other");save();renderSpeech();
   }
   if(e.target.id==="tLen"){resetTimer();}
+  if(e.target.id==="openFile"&&e.target.files[0]){openCaseFile(e.target.files[0]);}
 });
 document.addEventListener("focusin",e=>{
   const t=e.target;
@@ -540,6 +575,8 @@ document.addEventListener("click",e=>{
     const i=S.steps.length-1;target={type:"step",i};markTarget();document.querySelector(`textarea[data-step="${i}"]`).focus();return;}
   if(b.id==="addHurt"){S.hurts.push({card:"",answer:""});save();renderHurts();
     const i=S.hurts.length-1;target={type:"hurt",i};markTarget();document.querySelector(`input[data-hurt="${i}"]`).focus();return;}
+  if(b.id==="dlCase"){downloadCase();return;}
+  if(b.id==="openCase"){$("#openFile").value="";$("#openFile").click();return;}
   if(b.id==="copyText"){copy(asText(),"Case copied. Paste it into your group’s Google Doc.");return;}
   if(b.id==="copyLink"){
     const code=btoa(unescape(encodeURIComponent(JSON.stringify(S)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
