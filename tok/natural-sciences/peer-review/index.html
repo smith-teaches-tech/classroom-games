@@ -174,6 +174,22 @@
   .youwrote b{font-style:normal; font-family:'JetBrains Mono'; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--p-ox); display:block; margin-bottom:5px}
   .notice{font-family:'IBM Plex Serif',serif; font-size:15px; line-height:1.55; border:1px solid var(--p-rule); background:#fbf8f1; border-radius:6px; padding:12px 16px; margin:14px 0}
   .notice .nl{font-family:'JetBrains Mono'; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--p-soft); display:block; margin-bottom:4px}
+  .def{background:var(--c-panel); border:1px solid var(--c-line); border-left:4px solid var(--c-teal); border-radius:8px; padding:13px 17px; margin:0 0 16px}
+  .def p{font-size:14.5px; line-height:1.55; margin-bottom:6px} .def p:last-child{margin-bottom:0}
+  .def .dt{font-family:'JetBrains Mono'; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--c-teal-d); margin-bottom:6px}
+  body.archival .def{background:var(--p-panel); border-color:var(--p-rule); border-left-color:var(--p-ox)}
+  body.archival .def .dt{color:var(--p-ox)}
+  .mini{background:var(--c-panel); border:1px solid var(--c-line); border-radius:10px; overflow:hidden; position:relative; margin:6px 0 18px}
+  .mini .mh{padding:11px 16px; border-bottom:2px solid var(--c-teal); background:#f6fafb; font-family:'IBM Plex Serif',serif; font-weight:600; color:var(--c-teal-d); font-size:15px}
+  .mini .mb{padding:14px 16px; font-family:'IBM Plex Serif',serif; font-size:15px; line-height:1.4; font-weight:600; color:var(--c-ink)}
+  .mini .mm{padding:0 16px 14px; font-size:12.5px; color:var(--c-soft)}
+  .stamp{position:absolute; top:52px; right:16px; font-family:'JetBrains Mono'; font-weight:700; font-size:13px; letter-spacing:.16em; color:var(--p-ox); border:2.5px solid var(--p-ox); padding:4px 10px; border-radius:4px; transform:rotate(-6deg); background:rgba(255,255,255,.8)}
+  .tl{border-left:2px solid var(--p-rule); margin:8px 0 18px 8px; padding-left:22px}
+  .tl .ti{position:relative; margin-bottom:16px}
+  .tl .ti::before{content:""; position:absolute; left:-29px; top:6px; width:12px; height:12px; border-radius:50%; background:var(--p-panel); border:2px solid var(--p-ox)}
+  .tl .ti.hit::before{background:var(--p-ox)}
+  .tl .tw{font-family:'JetBrains Mono'; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--p-ox); margin-bottom:3px}
+  .tl .tx{font-size:15.5px; line-height:1.55}
   @media(max-width:560px){h1{font-size:22px} .verdict{font-size:34px} .topbar,.navbar{padding-left:16px;padding-right:16px} .paperdoc{padding:22px} .gate-hint{display:none}}
 </style>
 </head>
@@ -196,14 +212,14 @@
         <div class="chathead"><span class="av">AI</span><span><span class="ti">Health Assistant</span><br><span class="tg">Symptom guidance</span></span></div>
         <div class="chatbody">
           <div class="bub me">My eyelids have gone darker and my eyes feel sore after a lot of screen time. What could this be?</div>
-          <div class="bub ai">One possibility worth knowing about is <b>bixonimania</b> &mdash; a condition involving darkening and irritation of the eyelids, associated with prolonged exposure to blue light from screens. It's relatively uncommon (around 1 in 90,000), but your symptom pattern fits. I'd recommend seeing an <b>ophthalmologist</b> for a proper assessment.</div>
+          <div class="bub ai">One possibility worth knowing about is <b>bixonimania</b> &mdash; a condition involving darkening and irritation of the eyelids, associated with prolonged exposure to blue light from screens. It's relatively uncommon (around 1 in 90,000), but your symptom pattern fits. I'd recommend seeing an <b>ophthalmologist</b> (an eye specialist) for a proper assessment.</div>
         </div>
         <div class="chatfoot">Responses are AI-generated and may contain errors.</div>
       </div>
       <div class="commit" data-key="act">
         <div class="q">It's your eyes. What do you actually do next?</div>
         <div class="opts">
-          <div class="opt" data-v="Booked an ophthalmologist">Book an appointment with an ophthalmologist</div>
+          <div class="opt" data-v="Booked an ophthalmologist">Book an appointment with an eye specialist</div>
           <div class="opt" data-v="Cut screen time and monitor">Cut down screen time and keep an eye on it</div>
           <div class="opt" data-v="Assumed it was minor">Assume it's minor for now</div>
         </div>
@@ -237,13 +253,18 @@
     <section class="step" data-step="2">
       <div class="eyebrow">The literature</div>
       <h1>AI can be wrong. So you checked a real journal.</h1>
-      <p class="soft">You searched a medical database. Bixonimania appears in a paper in a peer-reviewed journal published by Springer Nature, one of the largest academic publishers in the world.</p>
-      <p class="gloss">Peer-reviewed: checked by independent experts in the field before publication.</p>
+      <p class="soft">You searched PubMed, a free search engine for medical research. Bixonimania appears in a paper in a peer-reviewed journal published by Springer Nature, one of the largest academic publishers in the world.</p>
+      <div class="def">
+        <div class="dt">Words you need</div>
+        <p><b>Journal:</b> where scientists publish their research. Each article in it is called a <b>paper</b>.</p>
+        <p><b>Peer review:</b> before a journal publishes a paper, it sends it to other experts in the same field (the &ldquo;peers&rdquo;). They read it and recommend whether it should be published. A paper that passes is &ldquo;peer-reviewed.&rdquo;</p>
+        <p><b>Citation:</b> when a paper backs up a claim by pointing to an earlier paper. The [ref.&nbsp;14] below is a citation: it points to paper number 14 in the list at the end.</p>
+      </div>
       <div class="journal">
         <div class="jhead"><div><div class="jn">Cureus</div><div class="jp">Journal of Medical Science &middot; Springer Nature</div></div><span class="srcbadge">Peer-reviewed</span></div>
         <div class="jbody">
           <div class="jt">Clinical and Dermoscopic Evaluation of Periorbital Melanosis and Its Psychological Impact and Effect on Quality of Life: A Descriptive Study</div>
-          <div class="ja">Department of Dermatology &middot; Descriptive cohort study &middot; Indexed on PubMed</div>
+          <div class="ja">Department of Dermatology (skin medicine) &middot; Descriptive study &middot; Listed on PubMed</div>
           <div class="ab">&ldquo;&hellip;periorbital hyperpigmentation has multiple aetiologies. Recent literature has additionally described <b>bixonimania</b> as an emerging form of periorbital melanosis linked to blue-light exposure [ref. 14]&hellip;&rdquo;</div>
           <div class="jmeta"><span>PEER-REVIEWED</span><span>SPRINGER NATURE</span><span>PUBMED-INDEXED</span></div>
         </div>
@@ -262,7 +283,12 @@
     <section class="step" data-step="3">
       <div class="eyebrow">The primary source &middot; You are the reviewer</div>
       <h1>Follow the citation to its source.</h1>
-      <p class="soft">The journal cited reference 14 &mdash; the original study describing bixonimania. Here it is. Read it the way a peer reviewer would: would you pass this paper?</p>
+      <p class="soft">The journal paper cited reference 14 &mdash; the original study describing bixonimania. Here it is. Read it the way a peer reviewer would: would you pass this paper?</p>
+      <div class="def">
+        <div class="dt">Words you need</div>
+        <p><b>Preprint:</b> a paper a researcher posts online <i>before</i> any peer review. Anyone can post one.</p>
+        <p><b>Periorbital</b> = around the eyes. <b>Hyperpigmentation</b> = skin getting darker. <b>Cohort</b> = the group of people studied.</p>
+      </div>
       <div class="paperdoc pp-doc">
         <div class="pp-server"><span>PREPRINT &middot; SciProfiles</span><span>Posted 6 May 2024 &middot; Not yet peer-reviewed</span></div>
         <div class="pp-title">Bixonimania: Characterisation of a Novel Blue-Light-Associated Periorbital Hyperpigmentation Syndrome</div>
@@ -344,8 +370,25 @@
     <section class="step" data-step="8">
       <div class="eyebrow">What actually happened</div>
       <h1>A journalist asked.</h1>
-      <p>The Cureus paper was published in November 2024. It then sat in the scientific record for about <b>16 months</b>. No peer reviewer caught the fake citation, and no other scientist flagged it.</p>
-      <p>The paper was retracted on <b>30 March 2026</b>, after a journalist from <i>Nature</i> contacted the journal about it.</p>
+      <p>Go back to the journal paper you found &mdash; the one in <i>Cureus</i>. That paper was real. Skin doctors at a hospital in India studied 250 patients with dark circles under their eyes, and wrote it up. In it, they mention bixonimania, and they cite the fake preprint you just reviewed as their source.</p>
+      <div class="mini">
+        <span class="stamp">RETRACTED</span>
+        <div class="mh">Cureus &middot; Springer Nature</div>
+        <div class="mb">Clinical and Dermoscopic Evaluation of Periorbital Melanosis and Its Psychological Impact and Effect on Quality of Life: A Descriptive Study</div>
+        <div class="mm">Published 27 November 2024 &middot; Peer-reviewed</div>
+      </div>
+      <p><b>Here is how the mistake was found:</b></p>
+      <div class="tl">
+        <div class="ti"><div class="tw">27 November 2024</div><div class="tx">The paper passes peer review and is published &mdash; fake citation included.</div></div>
+        <div class="ti"><div class="tw">The next 16 months</div><div class="tx">The paper sits in the scientific record. No reviewer, reader or other scientist flags the citation.</div></div>
+        <div class="ti hit"><div class="tw">March 2026</div><div class="tx">A journalist from <i>Nature</i>, writing a story about the bixonimania experiment, finds that real papers have cited the fake preprints &mdash; including this one. <i>Nature</i> contacts the journal to ask about it.</div></div>
+        <div class="ti hit"><div class="tw">30 March 2026</div><div class="tx">The journal retracts the paper.</div></div>
+      </div>
+      <div class="def">
+        <div class="dt">Words you need</div>
+        <p><b>Retracted:</b> the journal officially takes the paper back. It stays online, but it is marked as no longer trusted.</p>
+        <p><b>Replication:</b> other scientists repeat an experiment to see if they get the same result.</p>
+      </div>
       <div class="notice"><span class="nl">The retraction notice</span>&ldquo;&hellip;three irrelevant references, including one reference to a fictitious disease.&rdquo;</div>
       <div class="youwrote" id="youWrote"></div>
       <div class="discuss">
@@ -366,8 +409,8 @@
       <div class="report" id="reportCard"></div>
       <div class="missed" id="missedCard"></div>
       <div class="kqbox">
-        <div class="kl">For the lesson</div>
-        <div class="kt">A peer-reviewed journal published this. No reviewer caught it; a journalist did, 16 months later. So what does &ldquo;peer-reviewed&rdquo; actually check &mdash; and how does science find its own mistakes?</div>
+        <div class="kl">Knowledge question for this lesson</div>
+        <div class="kt">To what extent can science correct its own mistakes through peer review and replication?</div>
       </div>
       <button class="dlbtn" id="dlBtn">&darr; Download my report</button>
       <span class="saved" id="savedNote"></span>
@@ -506,8 +549,8 @@ document.getElementById('dlBtn').onclick=()=>{
     '16 months after publication, after a Nature journalist asked about it.',
     caught ? 'I flagged the paper as a reviewer \u2014 but had already acted on, repeated, and rated it citable first.'
            : 'I read past nine signals that it was fake, including a line stating the paper was fabricated.','',
-    'THE QUESTION:',
-    'So what does "peer-reviewed" actually check, and how does science find its own mistakes?'
+    'KNOWLEDGE QUESTION:',
+    'To what extent can science correct its own mistakes through peer review and replication?'
   ];
   const blob=new Blob([L.join('\n')],{type:'text/plain'});
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='L4_bixonimania_report.txt'; a.click();

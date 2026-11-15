@@ -139,6 +139,42 @@
   .kuc .kv{font-size:17.5px; line-height:1.5}
   @media(max-width:820px){ .trials{grid-template-columns:repeat(12, 1fr)} }
 
+  .steps4{counter-reset:st; margin-top:10px}
+  .st{display:flex; gap:16px; align-items:flex-start; padding:12px 0; border-bottom:1px dotted var(--rule-l)}
+  .st:last-child{border:0}
+  .st .sn{font-family:'JetBrains Mono',monospace; font-weight:700; font-size:13px; color:var(--panel); background:var(--ox); width:28px; height:28px; border-radius:6px; display:flex; align-items:center; justify-content:center; flex:0 0 auto; margin-top:2px}
+  .st .sv{font-size:19px; line-height:1.5}
+  .defl{font-size:17px; line-height:1.55; color:var(--soft); margin-top:10px}
+
+  .cmp{width:100%; border-collapse:collapse; margin:8px 0 6px; background:var(--panel); border:1px solid var(--rule); border-radius:8px; overflow:hidden}
+  .cmp th{font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ox); text-align:left; padding:12px 16px; border-bottom:1px solid var(--rule)}
+  .cmp td{font-size:17px; line-height:1.45; padding:11px 16px; border-bottom:1px dotted var(--rule-l); vertical-align:top}
+  .cmp td.k{font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--soft); width:150px; padding-top:14px}
+  .cmp tr:last-child td{border-bottom:0}
+  .cpause ol{margin:6px 0 0 22px} .cpause li{font-size:19px; line-height:1.5; margin-bottom:8px}
+  .claimbox{background:var(--panel); border:1px solid var(--ox); border-left:5px solid var(--ox); border-radius:8px; padding:18px 20px; margin-top:22px}
+  .claimbox .cl{font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ox); margin-bottom:8px; font-weight:700}
+  .claimbox .cq{font-size:19px; line-height:1.5; margin-bottom:12px}
+  .claimbox textarea{width:100%; min-height:96px; font-family:'Newsreader',serif; font-size:18px; line-height:1.5; padding:12px 14px; border:1.5px solid var(--rule); border-radius:8px; background:#fffdf8; color:var(--ink); resize:vertical}
+  .claimbox textarea:focus{outline:none; border-color:var(--ox)}
+  .defbox{background:var(--panel); border:1px solid var(--rule); border-left:4px solid var(--ox); border-radius:8px; padding:14px 18px; margin:6px 0 16px; font-size:18px; line-height:1.5}
+  .mine{background:var(--panel); border:1px solid var(--rule); border-radius:8px; padding:14px 18px; margin-top:12px}
+  .mine .ml{font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ox); margin-bottom:6px}
+  .mine .mv{font-size:18px; line-height:1.5; font-style:italic}
+  .dl{margin-top:20px; font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.06em; font-weight:700; cursor:pointer; border:1px solid var(--ox); color:var(--panel); background:var(--ox); padding:11px 20px; border-radius:7px; text-transform:uppercase}
+
+  .knowers{border:1px solid var(--rule); border-radius:10px; background:var(--panel); overflow:hidden; margin:8px 0 4px}
+  .kn{display:grid; grid-template-columns:200px 1fr; gap:16px; padding:13px 18px; border-bottom:1px dotted var(--rule-l); position:relative}
+  .kn:last-child{border-bottom:0}
+  .kn .who{font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--ox); font-weight:700; padding-top:4px}
+  .kn .sees{font-size:17.5px; line-height:1.45}
+  .kn.top{background:rgba(63,125,82,.08)} .kn.top .who{color:var(--good)}
+  .arrow{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--faint); text-align:center; letter-spacing:.1em; padding:2px 0}
+  .infobox{background:var(--panel); border:1px solid var(--rule); border-radius:8px; padding:16px 20px; margin-top:18px}
+  .infobox .il{font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--ox); margin-bottom:8px; font-weight:700}
+  .infobox p{font-size:18px; line-height:1.5; margin-bottom:8px} .infobox p:last-child{margin-bottom:0}
+  @media(max-width:820px){ .kn{grid-template-columns:1fr; gap:4px} }
+
   /* nav */
   .nav{flex:0 0 auto; display:flex; align-items:center; justify-content:space-between; padding:13px 30px; border-top:1px solid var(--rule)}
   .nbtn{font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.06em; font-weight:700; cursor:pointer;
@@ -193,7 +229,19 @@ const ITEMS=[
    <div class="eyebrow">A real case · reconstructed</div>
    <h1>Feeling the Future</h1>
    <div class="sub">In 2011, a paper claiming people could sense events that had not yet happened passed peer review at one of the most prestigious journals in psychology.</div>
-   <div class="lede">You are about to watch that review happen — and keep score of what the reviewers actually check.</div>`},
+   <div class="lede">You are about to watch that review happen — and keep score of what the reviewers actually check.</div>
+   <div class="kq"><div class="kl">Knowledge question</div><div class="kt">To what extent can science correct its own mistakes through peer review and replication?</div></div>`},
+
+ {type:'card', html:`
+   <div class="eyebrow">First, a reminder</div>
+   <h1 style="font-size:44px">What is peer review?</h1>
+   <div class="steps4">
+     <div class="st"><span class="sn">1</span><div class="sv">A scientist writes up an experiment as a <b>paper</b> and sends it to a <b>journal</b> — where scientists publish their research.</div></div>
+     <div class="st"><span class="sn">2</span><div class="sv">The journal’s <b>editor</b> sends the paper to two or three other experts in the same field. These are the <b>reviewers</b>: the “peers.”</div></div>
+     <div class="st"><span class="sn">3</span><div class="sv">The reviewers read it and recommend: accept it, ask for changes, or reject it.</div></div>
+     <div class="st"><span class="sn">4</span><div class="sv">The editor decides. If the paper is published, it now counts as <b>peer-reviewed</b>.</div></div>
+   </div>
+   <div class="note">In real life, reviewers usually work separately and send in written reports. We have staged their review as a conversation so you can watch what they check.</div>`},
 
  {type:'card', html:`
    <div class="eyebrow">The manuscript on the desk</div>
@@ -201,9 +249,9 @@ const ITEMS=[
      <div class="mt">Feeling the Future: Experimental Evidence for Anomalous Retroactive Influences on Cognition and Affect</div>
      <div class="row"><div class="k">Author</div><div class="v">Daryl J. Bem, Cornell University</div></div>
      <div class="row"><div class="k">Submitted to</div><div class="v">Journal of Personality and Social Psychology — a top-tier, peer-reviewed journal in the field</div></div>
-     <div class="row"><div class="k">The claim</div><div class="v">Across nine experiments (~1,000 participants), participants’ responses appeared to be influenced by stimuli shown to them <i>after</i> they had already responded — evidence, Bem argued, for precognition.</div></div>
-     <div class="row"><div class="k">Results</div><div class="v">Eight of the nine experiments reached statistical significance.</div></div>
-     <div class="row"><div class="k">Methods</div><div class="v">Standard, widely used experimental designs and conventional statistics — the same procedures routinely accepted for ordinary studies.</div></div>
+     <div class="row"><div class="k">The claim</div><div class="v">Across nine experiments (about 1,000 people), people’s answers seemed to be affected by things shown to them <i>after</i> they had already answered. Bem called this <b>precognition</b>: sensing the future.</div></div>
+     <div class="row"><div class="k">Results</div><div class="v">Eight of the nine experiments passed the standard statistics test — the test meant to show a result probably isn’t just luck.</div></div>
+     <div class="row"><div class="k">Methods</div><div class="v">The same kinds of experiments and statistics psychologists used all the time for ordinary studies.</div></div>
    </div>
    <div class="note">It would go on to become one of the most disputed papers in modern psychology.</div>`},
 
@@ -215,12 +263,12 @@ const ITEMS=[
      <div class="howc"><div class="hh">✓ How it was done</div><div class="hv">Was the work built and run properly? Design, sample, procedure, statistics.</div></div>
      <div class="howc"><div class="hh">Is it true?</div><div class="hv">Is the conclusion — that people can feel the future — actually correct?</div></div>
    </div>
-   <div class="kq"><div class="kl">The question we’re tracking</div><div class="kt">When a claim is “peer-reviewed,” what has actually been checked — and by whom?</div></div>`},
+   <div class="kq"><div class="kl">The question for this review</div><div class="kt">When a claim is “peer-reviewed,” what has actually been checked — and by whom?</div></div>`},
 
  // dialogue
  {type:'line', cls:'ed', sp:'Editor', tx:'Thank you both. Nine experiments, the claim is that people can be affected by events that haven’t happened yet. Let’s start with the methods. Reviewer 1?'},
 
- {type:'line', sp:'Reviewer 1', tx:'Methodologically, it’s clean. The designs are standard — the same protocols we’d accept for any ordinary priming study.',
+ {type:'line', sp:'Reviewer 1', tx:'The way it was done is clean. The experiments are set up the standard way — the same way we’d accept for any ordinary psychology experiment.',
    tag:{q:'What did Reviewer 1 just check?', a:['How it was done','Whether it’s true'], correct:0,
         cap:'The experimental <b>design</b> — how the study was built. Not whether precognition is real.', bucket:'form', chip:'Study design'}},
 
@@ -234,7 +282,7 @@ const ITEMS=[
 
  {type:'line', cls:'ed', sp:'Editor', tx:'Statistics?'},
 
- {type:'line', sp:'Reviewer 1', tx:'Eight of the nine reach significance. I’d want effect sizes reported and the tests stated as one- or two-tailed — but the analyses themselves are the conventional ones. Nothing outside accepted practice.',
+ {type:'line', sp:'Reviewer 1', tx:'Eight of the nine pass the standard statistics test — the one meant to show a result probably isn’t just luck. I’d want a few numbers reported more clearly, but the maths is the usual kind. Nothing outside accepted practice.',
    tag:{q:'And that?', a:['How it was done','Whether it’s true'], correct:0,
         cap:'Whether the <b>statistics</b> followed the accepted rules.', bucket:'form', chip:'Statistics / reporting'}},
 
@@ -254,7 +302,7 @@ const ITEMS=[
  {type:'line', cls:'r2', sp:'Reviewer 2', tx:'…No. If this were a study about anything else, I’d accept it without a second thought.'},
 
  {type:'line', cls:'ed', sp:'Editor', tx:'Then we treat it like a study about anything else. Recommendation?'},
- {type:'line', sp:'Reviewer 1', tx:'Accept, with minor revisions.'},
+ {type:'line', sp:'Reviewer 1', tx:'Accept, with a few small changes.'},
  {type:'line', cls:'r2', sp:'Reviewer 2', tx:'…Accept. Reluctantly.'},
  {type:'line', cls:'ed', sp:'Editor', tx:'Accepted. It runs next issue.'},
 
@@ -263,27 +311,63 @@ const ITEMS=[
  {type:'card', html:`
    <div class="eyebrow">After publication</div>
    <h1 style="font-size:44px">So who checks whether it’s true?</h1>
-   <div class="lede">Peer review checked how the work was done. Science’s usual answer for whether it is <i>true</i>: other scientists repeat the experiment. If the effect is real, it should show up again. If it isn’t, it won’t.</div>
+   <div class="lede">Peer review checked how the work was done. Science’s usual answer for whether it is <i>true</i>: other scientists repeat the experiment. This is called <b>replication</b>. If the effect is real, it should show up again. If it isn’t, it won’t.</div>
    <div class="lede">Bem welcomed this. He offered his materials and software, free, to anyone who wanted to try.</div>`},
 
  {type:'card', html:`
    <div class="eyebrow">The repeat</div>
    <h1 style="font-size:44px">Three labs tried.</h1>
    <div class="lede">In 2011, Stuart Ritchie, Richard Wiseman and Chris French each repeated Bem’s final experiment at their own university — with Bem’s own computer program, his statistical methods, and the same number of participants as the original.</div>
-   <div class="lede"><b>They found nothing.</b> No sign that people could feel the future.</div>
-   <div class="cpause"><div class="pl">Pause · discuss</div><div class="pt">Their result says Bem’s finding didn’t hold up. Where should it be published?</div></div>`},
+   <div class="lede"><b>They found nothing.</b> No sign that people could feel the future. Within about a year of Bem’s paper, other scientists had checked it, and it did not hold up.</div>
+   <div class="lede">Here, replication did its job. Now compare a paper where nobody repeated anything.</div>`},
+
+ {type:'card', claimKey:'c1', html:`
+   <div class="eyebrow">Two peer-reviewed papers</div>
+   <h1 style="font-size:42px">One got checked. One didn’t.</h1>
+   <table class="cmp">
+     <tr><th></th><th>Bem (2011)</th><th>The Cureus paper (2024)</th></tr>
+     <tr><td class="k">What it claimed</td><td>People can sense the future.</td><td>A “new” eye condition exists, backed by one citation.</td></tr>
+     <tr><td class="k">How it looked</td><td>Impossible-sounding. It made headlines.</td><td>Ordinary. Nobody noticed.</td></tr>
+     <tr><td class="k">Who checked</td><td>Scientists in other labs, by repeating the experiment.</td><td>Nobody in science. A journalist.</td></tr>
+     <tr><td class="k">How long</td><td>About a year.</td><td>About 16 months.</td></tr>
+   </table>
+   <div class="cpause"><div class="pl">Pause · discuss</div><ol>
+     <li>Both papers passed peer review. Why did other scientists rush to check Bem’s paper, while nobody checked the Cureus citation?</li>
+     <li>Which kinds of mistakes are most likely to get caught? Which are most likely to slip through?</li></ol></div>
+   <div class="claimbox"><div class="cl">Write a knowledge claim · 1</div>
+     <div class="cq">What does comparing these two papers show about how science catches its mistakes? Write a claim about knowledge in general — not about Bem or bixonimania.</div>
+     <textarea data-claim="c1" placeholder="Your claim about knowledge…"></textarea></div>`},
 
  {type:'card', html:`
    <div class="eyebrow">The gate</div>
    <h1 style="font-size:44px">The journal said no.</h1>
-   <div class="lede">They sent their paper to the <i>Journal of Personality and Social Psychology</i> — the journal that had published Bem. It was rejected without ever being sent to reviewers. The journal’s policy was not to publish replications, whether they succeeded or failed.</div>
+   <div class="lede">Go back to the three labs that repeated Bem’s experiment and found nothing. Their result still had to get published, or most scientists would never see it.</div>
+   <div class="lede">They sent their paper to the <i>Journal of Personality and Social Psychology</i> — the journal that had published Bem. The editor turned it down without ever sending it to reviewers. The journal’s policy was not to publish replications, whether they succeeded or failed.</div>
    <div class="lede">After more rejections, their result finally appeared in March 2012, in a different journal, <i>PLoS ONE</i>. Later in 2012, the original journal did publish a larger failed replication by another team: seven experiments, more than 3,000 participants.</div>
    <div class="cpause"><div class="pl">Pause · discuss</div><div class="pt">The check was done. What happens to “replication catches the mistakes” when the journal won’t look at the check?</div></div>`},
 
+ {type:'card', html:`
+   <div class="eyebrow">Think it through</div>
+   <h1 style="font-size:44px">Which results get published?</h1>
+   <div class="lede">Bem’s journal had a rule against replications. But the problem can be bigger than one journal’s rule.</div>
+   <div class="cpause"><div class="pl">Pause · discuss</div><ol>
+     <li>Imagine two studies of the same new medicine. One finds it works. One finds it does nothing. Which one is a journal more excited to publish? Which one is the researcher more excited to send in?</li>
+     <li>If that happens again and again, what does the published research start to look like?</li>
+     <li>Who would be able to notice?</li></ol></div>`},
+
+ {type:'card', html:`
+   <div class="eyebrow">This has a name</div>
+   <h1 style="font-size:44px">Publication bias</h1>
+   <div class="defbox">When results showing that something works are more likely to be published than results showing it doesn’t. Researchers, editors, or both can cause it.</div>
+   <div class="lede"><b>Why it matters in medicine.</b> Before a company can sell a new medicine in the US, it tests it in <b>trials</b>: some patients get the medicine, others get a fake pill, and the results are compared. The company sends its trial results to the <b>FDA</b> — the US government agency that decides which medicines can be sold.</div>
+   <div class="lede">Doctors don’t read the FDA’s files. To decide what to prescribe, they read what is published in medical journals.</div>
+   <div class="cpause"><div class="pl">Pause · discuss</div><div class="pt">So a doctor’s picture of a medicine depends on what?</div></div>`},
+
  {type:'card', after:()=>drawTrials('fda'), html:`
-   <div class="eyebrow">The same gate · medicine</div>
+   <div class="eyebrow">Publication bias · a real case</div>
    <h1 style="font-size:40px">74 trials. What could a doctor read?</h1>
-   <div class="lede">Twelve antidepressants were approved in the US between 1987 and 2004. To approve them, the FDA reviewed 74 trials. Each dot is one trial.</div>
+   <div class="lede">One research team checked what publication bias did to <b>antidepressants</b> — medicines for depression, prescribed to millions of people. Between 1987 and 2004, the FDA reviewed 74 trials of twelve antidepressants before approving them.</div>
+   <div class="lede">Each dot is one trial. Flip between the two views.</div>
    <div class="togs">
      <button class="tog" id="tog-fda" onclick="drawTrials('fda')">What the FDA saw</button>
      <button class="tog" id="tog-jr" onclick="drawTrials('journals')">What a doctor reading the journals saw</button>
@@ -292,20 +376,78 @@ const ITEMS=[
    <div class="tkey"><span><i style="background:var(--good)"></i>drug worked</span><span><i style="background:var(--ox)"></i>didn’t clearly work</span><span><i style="border:2px dashed var(--faint)"></i>never published</span></div>
    <div class="tcap" id="tcap"></div>
    <div class="note" style="margin-top:6px">This does not show the drugs don’t work. It shows the journals made them look better than the full set of trials did.</div>
-   <div class="cpause"><div class="pl">Pause · discuss</div><div class="pt">Every published paper here passed peer review. What could a reviewer have caught — and what couldn’t they?</div></div>
+   <div class="infobox"><div class="il">What a peer reviewer sees</div>
+     <p>A reviewer sees one paper at a time: the one the researchers chose to send in, written the way they chose to write it. They can check whether that paper holds together.</p>
+     <p>They never see the trials that were not sent in. And when a journal turns a paper down, that trial may never be published anywhere. Some of the 23 missing trials may have been turned down. Others were never sent in. Either way, they are not in the journals.</p></div>
+   <div class="cpause"><div class="pl">Pause · discuss</div><ol>
+     <li>Suppose a reviewer does the job perfectly and rejects a weak trial. Where does that trial’s result go? Who ever sees it?</li>
+     <li>So when peer review catches something, does that fix what everyone else reads?</li></ol></div>
    <div class="src">Turner et al., New England Journal of Medicine, 2008</div>`},
+
+ {type:'card', html:`
+   <div class="eyebrow">Who gets misled?</div>
+   <h1 style="font-size:42px">Follow the knowledge.</h1>
+   <div class="lede">Knowledge about a medicine passes from one group of knowers to the next. Each group mostly trusts the one before it.</div>
+   <div class="knowers">
+     <div class="kn top"><div class="who">FDA reviewers</div><div class="sees">See all 74 trials.</div></div>
+     <div class="kn"><div class="who">Scientists</div><div class="sees">Read the published papers. Some add up every published trial to find a drug’s overall effect. Doing that with the journals made these drugs look about a third more effective than the FDA’s full set of trials did.</div></div>
+     <div class="kn"><div class="who">Doctors</div><div class="sees">Read the journals, and the scientists’ summaries of them, to decide what to prescribe.</div></div>
+     <div class="kn"><div class="who">Journalists</div><div class="sees">Report on new published studies: “Study shows drug works.”</div></div>
+     <div class="kn"><div class="who">Everyday people</div><div class="sees">Read the news and follow their doctor’s advice.</div></div>
+   </div>
+   <div class="cpause"><div class="pl">Pause · discuss</div><ol>
+     <li>What would each group believe about these drugs? Which groups would be misled?</li>
+     <li>Each group trusts the one before it. If the doctors are misled, could their patients find out?</li>
+     <li>What would it take for someone <i>not</i> to be misled?</li></ol></div>`},
 
  {type:'card', html:`
    <div class="eyebrow">How did anyone find out?</div>
    <h1 style="font-size:44px">Someone had the full list.</h1>
-   <div class="lede">Erick Turner, a psychiatrist who had worked as an FDA reviewer, compared the FDA’s records of all 74 trials with what had appeared in the journals. Without that list, the missing trials would have been invisible. Nobody reading the journals could know they existed.</div>
+   <div class="lede">Erick Turner, a psychiatrist (a doctor who treats mental illness) who had worked as an FDA reviewer, compared the FDA’s records of all 74 trials with what had appeared in the journals. He published what he found in 2008.</div>
+   <div class="lede">That is what it took: someone who could see the trials the journals never showed. Without that list, the missing trials were invisible. Nobody reading the journals could know they existed.</div>`},
+
+ {type:'card', html:`
+   <div class="eyebrow">Known unknowns · unknown unknowns</div>
+   <h1 style="font-size:44px">You don’t know what you don’t know.</h1>
+   <div class="lede">A doctor reading the journals had no gap to notice. The published research looked complete.</div>
    <div class="kucols">
      <div class="kuc"><div class="kh">Known unknown</div><div class="kv">We know something is missing. The FDA list shows 23 trials were never published, so we can count them and go looking.</div></div>
      <div class="kuc"><div class="kh">Unknown unknown</div><div class="kv">We don’t know what we’re missing. Most research has no full list. Results that were never published, and claims nobody has questioned yet, leave no gap to notice.</div></div>
    </div>
-   <div class="lede" style="margin-top:20px">Not yet is not never. Bixonimania sat in the scientific record for 16 months — until someone looked.</div>
-   <div class="kq"><div class="kl">Carry into the worksheet</div><div class="kt">Does science correct itself? Where does that hold — and where does it break?</div></div>`},
+   <div class="lede" style="margin-top:20px">Not yet is not never. Bixonimania sat in the scientific record for 16 months — until someone looked.</div>`},
+
+ {type:'card', claimKey:'c2', html:`
+   <div class="eyebrow">Your turn</div>
+   <h1 style="font-size:42px">What does this show about knowledge?</h1>
+   <div class="lede">Bem’s failed replication was turned away by a journal. Negative drug trials went unpublished, or were written up as if the drug worked. And nobody knew — until someone had the full list.</div>
+   <div class="claimbox"><div class="cl">Write a knowledge claim · 2</div>
+     <div class="cq">What do these cases show about how far peer review and replication can correct science’s mistakes? Write a claim about knowledge in general — not about these drugs or journals.</div>
+     <textarea data-claim="c2" placeholder="Your claim about knowledge…"></textarea></div>`},
+
+ {type:'card', after:()=>fillClaims(), html:`
+   <div class="eyebrow">Carry into the worksheet</div>
+   <div class="kq" style="margin-top:0"><div class="kl">Knowledge question</div><div class="kt">To what extent can science correct its own mistakes through peer review and replication?</div></div>
+   <div class="mine"><div class="ml">Your claim 1 · how science catches its mistakes</div><div class="mv" id="mine1"></div></div>
+   <div class="mine"><div class="ml">Your claim 2 · how far correction can go</div><div class="mv" id="mine2"></div></div>
+   <div class="lede" style="margin-top:18px">You will test and sharpen these claims on the worksheet. Download them so you have them.</div>
+   <button class="dl" onclick="downloadClaims()">↓ Download my claims</button>`},
 ];
+
+const claims={};
+const KQTEXT="To what extent can science correct its own mistakes through peer review and replication?";
+function esc(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+function fillClaims(){
+  document.getElementById('mine1').innerHTML = claims.c1 ? esc(claims.c1.trim()) : '—';
+  document.getElementById('mine2').innerHTML = claims.c2 ? esc(claims.c2.trim()) : '—';
+}
+function downloadClaims(){
+  const L=['TOK — Natural Sciences L4','My knowledge claims','==========================','',
+    'Knowledge question:', KQTEXT,'',
+    'Claim 1 (how science catches its mistakes):', (claims.c1||'—').trim(),'',
+    'Claim 2 (how far peer review and replication can correct mistakes):', (claims.c2||'—').trim()];
+  const blob=new Blob([L.join('\n')],{type:'text/plain'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='L4_my_claims.txt'; a.click();
+}
 
 // Turner et al. 2008: 38 judged positive by FDA (37 published, 1 not);
 // 36 negative/questionable (3 published as negative, 11 published as if positive, 22 not published)
@@ -324,8 +466,8 @@ function drawTrials(mode){
   document.getElementById('tog-fda').classList.toggle('on', mode==='fda');
   document.getElementById('tog-jr').classList.toggle('on', mode!=='fda');
   document.getElementById('tcap').innerHTML = mode==='fda'
-    ? '<b>38 of 74</b> trials showed the drug worked — about half (51%). The other 36 were negative or questionable.'
-    : '<b>48 of 51</b> published papers say the drug worked (94%). That includes 11 trials the FDA judged negative or questionable, written up as if the drug had worked. 23 trials never appeared at all.';
+    ? '<b>38 of 74</b> trials showed the drug worked — about half (51%). The other 36 did not clearly show it worked.'
+    : '<b>48 of 51</b> published papers say the drug worked (94%). That includes 11 trials the FDA judged had not clearly worked, written up as if the drug had worked. 23 trials never appeared at all.';
 }
 
 let idx=0;
@@ -411,6 +553,10 @@ function show(){
     dia.classList.remove('show'); card.classList.add('show');
     cardInner.innerHTML = it.reveal ? revealHTML() : it.html;
     if(it.after) it.after();
+    cardInner.querySelectorAll('textarea[data-claim]').forEach(ta=>{
+      const k=ta.dataset.claim; ta.value=claims[k]||'';
+      ta.oninput=()=>{ claims[k]=ta.value; updateNav(); };
+    });
   } else {
     card.classList.remove('show'); dia.classList.add('show');
     renderTally();
@@ -450,21 +596,27 @@ function tagPending(){
   const it=ITEMS[idx];
   return it && it.type==='line' && it.tag && !answered[idx];
 }
+function claimPending(){
+  const it=ITEMS[idx];
+  return !!(it && it.claimKey && (!claims[it.claimKey] || claims[it.claimKey].trim().length<25));
+}
 function updateNav(){
-  const locked = tagPending() && idx<TOTAL-1;
-  nextB.disabled = locked;
-  hint.textContent = locked ? 'Sort this check to continue' : '';
+  const tagLock = tagPending() && idx<TOTAL-1;
+  const claimLock = claimPending();
+  nextB.disabled = tagLock || claimLock;
+  hint.textContent = tagLock ? 'Sort this check to continue' : (claimLock ? 'Write your claim to continue' : '');
 }
 
 function go(n){
   if(n<0||n>=TOTAL) return;
-  if(n>idx && tagPending()) return;
+  if(n>idx && (tagPending() || claimPending())) return;
   idx=n; show();
 }
 nextB.onclick=()=>go(idx+1);
 prevB.onclick=()=>go(idx-1);
 document.addEventListener('keydown',e=>{
-  if(e.key==='ArrowRight'){ if(!tagPending()) go(idx+1); }
+  if(e.target && e.target.tagName==='TEXTAREA') return;
+  if(e.key==='ArrowRight'){ if(!tagPending() && !claimPending()) go(idx+1); }
   if(e.key==='ArrowLeft') go(idx-1);
 });
 show();
