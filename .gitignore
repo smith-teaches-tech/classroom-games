@@ -12,3 +12,6 @@
 
 # Scratch / staging
 _to_delete/
+
+# Claude chat outputs (never push: may hold student work)
+Claude outputs/

@@ -167,6 +167,13 @@
     border:1px solid var(--p-ox); color:var(--p-panel); background:var(--p-ox); padding:12px 20px; border-radius:8px; font-weight:700}
   .dlbtn:hover{background:var(--p-ox-d)}
   .saved{display:inline-block; margin-left:12px; font-size:12px; color:var(--p-soft); font-style:italic}
+  .discuss{background:var(--p-panel); border:1px dashed var(--p-ox); border-radius:8px; padding:16px 20px; margin-top:18px}
+  .discuss .dl{font-family:'JetBrains Mono'; font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--p-ox); margin-bottom:8px}
+  .discuss ol{margin-left:20px} .discuss li{font-size:15.5px; line-height:1.55; margin-bottom:8px}
+  .youwrote{background:var(--p-panel); border:1px solid var(--p-rule); border-left:4px solid var(--p-ox); border-radius:8px; padding:14px 18px; margin:16px 0 4px; font-style:italic; font-size:15px; line-height:1.55}
+  .youwrote b{font-style:normal; font-family:'JetBrains Mono'; font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--p-ox); display:block; margin-bottom:5px}
+  .notice{font-family:'IBM Plex Serif',serif; font-size:15px; line-height:1.55; border:1px solid var(--p-rule); background:#fbf8f1; border-radius:6px; padding:12px 16px; margin:14px 0}
+  .notice .nl{font-family:'JetBrains Mono'; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--p-soft); display:block; margin-bottom:4px}
   @media(max-width:560px){h1{font-size:22px} .verdict{font-size:34px} .topbar,.navbar{padding-left:16px;padding-right:16px} .paperdoc{padding:22px} .gate-hint{display:none}}
 </style>
 </head>
@@ -174,8 +181,8 @@
 <div class="stage">
   <div class="topbar">
     <div class="brand"><span class="dot"></span>
-      <span><span class="name" id="brandName">ClariMed</span> <span class="sub" id="brandSub">Clinical Reference \u00b7 Dermatology &amp; Ophthalmology</span></span></div>
-    <div class="toklabel">Theory of Knowledge \u00b7 Natural Sciences L4<br><b>Objectivity</b> \u00b7 <b>Justification</b></div>
+      <span><span class="name" id="brandName">ClariMed</span> <span class="sub" id="brandSub">Clinical Reference &middot; Dermatology &amp; Ophthalmology</span></span></div>
+    <div class="toklabel">Theory of Knowledge &middot; Natural Sciences L4<br><b>Objectivity</b> &middot; <b>Justification</b></div>
   </div>
 
   <div class="scroll" id="scroll"><div class="panel">
@@ -233,10 +240,10 @@
       <p class="soft">You searched a medical database. Bixonimania appears in a paper in a peer-reviewed journal published by Springer Nature, one of the largest academic publishers in the world.</p>
       <p class="gloss">Peer-reviewed: checked by independent experts in the field before publication.</p>
       <div class="journal">
-        <div class="jhead"><div><div class="jn">Cureus</div><div class="jp">Journal of Medical Science \u00b7 Springer Nature</div></div><span class="srcbadge">Peer-reviewed</span></div>
+        <div class="jhead"><div><div class="jn">Cureus</div><div class="jp">Journal of Medical Science &middot; Springer Nature</div></div><span class="srcbadge">Peer-reviewed</span></div>
         <div class="jbody">
           <div class="jt">Clinical and Dermoscopic Evaluation of Periorbital Melanosis and Its Psychological Impact and Effect on Quality of Life: A Descriptive Study</div>
-          <div class="ja">Department of Dermatology \u00b7 Descriptive cohort study \u00b7 Indexed on PubMed</div>
+          <div class="ja">Department of Dermatology &middot; Descriptive cohort study &middot; Indexed on PubMed</div>
           <div class="ab">&ldquo;&hellip;periorbital hyperpigmentation has multiple aetiologies. Recent literature has additionally described <b>bixonimania</b> as an emerging form of periorbital melanosis linked to blue-light exposure [ref. 14]&hellip;&rdquo;</div>
           <div class="jmeta"><span>PEER-REVIEWED</span><span>SPRINGER NATURE</span><span>PUBMED-INDEXED</span></div>
         </div>
@@ -253,11 +260,11 @@
 
     <!-- 3 : REVIEW -->
     <section class="step" data-step="3">
-      <div class="eyebrow">The primary source \u00b7 You are the reviewer</div>
+      <div class="eyebrow">The primary source &middot; You are the reviewer</div>
       <h1>Follow the citation to its source.</h1>
       <p class="soft">The journal cited reference 14 &mdash; the original study describing bixonimania. Here it is. Read it the way a peer reviewer would: would you pass this paper?</p>
       <div class="paperdoc pp-doc">
-        <div class="pp-server"><span>PREPRINT \u00b7 SciProfiles</span><span>Posted 6 May 2024 \u00b7 Not yet peer-reviewed</span></div>
+        <div class="pp-server"><span>PREPRINT &middot; SciProfiles</span><span>Posted 6 May 2024 &middot; Not yet peer-reviewed</span></div>
         <div class="pp-title">Bixonimania: Characterisation of a Novel Blue-Light-Associated Periorbital Hyperpigmentation Syndrome</div>
         <div class="pp-authors">Lazljiv Izgubljenovic<sup>1</sup>, et al.</div>
         <div class="pp-aff"><sup>1</sup>Department of Ocular Dermatology, Asteria Horizon University, Nova City, California, USA</div>
@@ -301,8 +308,7 @@
       <p><b>Here is what was real, and what wasn't.</b> The disease was the only invention. Everything around it was real and behaved exactly as it does every day:</p>
       <p class="soft">&bull; <b>Cureus is a real peer-reviewed journal</b>, published by Springer Nature &mdash; the same company that owns <i>Nature</i>.<br>
       &bull; <b>The AI systems are real.</b> ChatGPT, Gemini, Copilot and Perplexity all really did describe bixonimania to users as a genuine condition.<br>
-      &bull; <b>The citation is real.</b> A working research team really did cite the fake preprint in a real published paper.<br>
-      &bull; <b>The retraction is real.</b> It was only caught when a <i>Nature</i> journalist traced the citation by hand. Cureus retracted the paper in March 2026 &mdash; nearly two years later.</p>
+      &bull; <b>The citation is real.</b> A working research team really did cite the fake preprint in a real published paper.</p>
       <div class="pull">The only fake thing was the disease. The machinery that convinced you was real &mdash; and it convinced you.</div>
     </section>
 
@@ -312,7 +318,7 @@
       <h1>This is the same page you reviewed.</h1>
       <p class="soft">Nothing has been changed. The signals that this was fake were on the page the whole time. <b>Tap each highlighted phrase.</b></p>
       <div class="paperdoc pp-doc">
-        <div class="pp-server"><span>PREPRINT \u00b7 <span class="tell" data-t="server">SciProfiles</span></span><span><span class="tell" data-t="notreviewed">Not yet peer-reviewed</span></span></div>
+        <div class="pp-server"><span>PREPRINT &middot; <span class="tell" data-t="server">SciProfiles</span></span><span><span class="tell" data-t="notreviewed">Not yet peer-reviewed</span></span></div>
         <div class="pp-title">Bixoni<span class="tell" data-t="mania">mania</span>: Characterisation of a Novel Blue-Light-Associated Periorbital Hyperpigmentation Syndrome</div>
         <div class="pp-authors"><span class="tell" data-t="author">Lazljiv Izgubljenovic</span><sup>1</sup>, et al.</div>
         <div class="pp-aff"><sup>1</sup>Department of Ocular Dermatology, <span class="tell" data-t="aff">Asteria Horizon University, Nova City, California</span>, USA</div>
@@ -323,16 +329,45 @@
       <p class="soft" style="margin-top:18px">The author told the page it was fake. The chatbots quoted it anyway. So did a peer-reviewed journal. So, a moment ago, did you.</p>
     </section>
 
-    <!-- 7 : REPORT -->
+    <!-- 7 : PREDICT -->
     <section class="step" data-step="7">
-      <div class="eyebrow">Your report \u00b7 bring this to class</div>
+      <div class="eyebrow">Before you find out</div>
+      <h1>So who caught it?</h1>
+      <p class="soft">A peer-reviewed journal published a paper that cited a disease that does not exist. Science is supposed to find its own mistakes.</p>
+      <div class="commit" data-key="predict">
+        <div class="q">How do you think a mistake like this gets caught &mdash; and by whom? Write your best answer before you go on.</div>
+        <textarea class="free" data-free="predict" placeholder="I think it gets caught by&hellip;" style="min-height:90px"></textarea>
+      </div>
+    </section>
+
+    <!-- 8 : CAUGHT -->
+    <section class="step" data-step="8">
+      <div class="eyebrow">What actually happened</div>
+      <h1>A journalist asked.</h1>
+      <p>The Cureus paper was published in November 2024. It then sat in the scientific record for about <b>16 months</b>. No peer reviewer caught the fake citation, and no other scientist flagged it.</p>
+      <p>The paper was retracted on <b>30 March 2026</b>, after a journalist from <i>Nature</i> contacted the journal about it.</p>
+      <div class="notice"><span class="nl">The retraction notice</span>&ldquo;&hellip;three irrelevant references, including one reference to a fictitious disease.&rdquo;</div>
+      <div class="youwrote" id="youWrote"></div>
+      <div class="discuss">
+        <div class="dl">Discuss &middot; don&rsquo;t write yet</div>
+        <ol>
+          <li>The Cureus paper passed peer review. What did the reviewers have in front of them &mdash; and what didn&rsquo;t they have?</li>
+          <li>Could replication have caught this? What would someone have had to repeat?</li>
+          <li>What if no one from <i>Nature</i> had asked?</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 9 : REPORT -->
+    <section class="step" data-step="9">
+      <div class="eyebrow">Your report</div>
       <h1>What just happened to you.</h1>
-      <p class="soft">This is the record of your own choices, before you knew. Read it &mdash; then download it and bring it to the lesson.</p>
+      <p class="soft">This is the record of your own choices, before you knew. Read it, then download it and keep it.</p>
       <div class="report" id="reportCard"></div>
       <div class="missed" id="missedCard"></div>
       <div class="kqbox">
         <div class="kl">For the lesson</div>
-        <div class="kt">A real peer-reviewed journal published this. It took two years to catch. So what does &ldquo;peer-reviewed&rdquo; actually check &mdash; and who checks it?</div>
+        <div class="kt">A peer-reviewed journal published this. No reviewer caught it; a journalist did, 16 months later. So what does &ldquo;peer-reviewed&rdquo; actually check &mdash; and how does science find its own mistakes?</div>
       </div>
       <button class="dlbtn" id="dlBtn">&darr; Download my report</button>
       <span class="saved" id="savedNote"></span>
@@ -351,8 +386,8 @@
 <div id="anno"><span class="x" onclick="document.getElementById('anno').style.display='none'">&times;</span><div id="annoIn"></div></div>
 
 <script>
-const TOTAL=8, PHASE2_START=5;
-const GATE={0:'act',1:'teach',2:'cite',3:'review',4:'conf'};
+const TOTAL=10, PHASE2_START=5;
+const GATE={0:'act',1:'teach',2:'cite',3:'review',4:'conf',7:'predict'};
 let cur=0; const state={};
 const steps=[...document.querySelectorAll('.step')];
 const dots=document.getElementById('dots');
@@ -360,11 +395,16 @@ for(let i=0;i<TOTAL;i++){const d=document.createElement('i'); if(i>=PHASE2_START
 const dotEls=[...dots.children];
 const prevBtn=document.getElementById('prevBtn'), nextBtn=document.getElementById('nextBtn'), gateHint=document.getElementById('gateHint');
 
-function gated(n){ return GATE.hasOwnProperty(n) && !state[GATE[n]]; }
+function gated(n){
+  if(!GATE.hasOwnProperty(n)) return false;
+  const v=state[GATE[n]];
+  if(GATE[n]==='predict') return !v || v.trim().length<15;
+  return !v;
+}
 function checkGate(){
   const locked = gated(cur);
   nextBtn.disabled = locked && cur<TOTAL-1;
-  gateHint.textContent = locked ? 'Make a choice above to continue' : '';
+  gateHint.textContent = locked ? (GATE[cur]==='predict' ? 'Write your answer above to continue' : 'Make a choice above to continue') : '';
 }
 function go(n){
   if(n<0||n>=TOTAL) return;
@@ -377,7 +417,8 @@ function go(n){
   document.body.classList.toggle('archival', n>=PHASE2_START);
   document.getElementById('brandName').textContent = n>=PHASE2_START ? 'Knowledge in the Making' : 'ClariMed';
   document.getElementById('brandSub').textContent = n>=PHASE2_START ? 'TOK \u00b7 Natural Sciences \u00b7 L4' : 'Clinical Reference \u00b7 Dermatology & Ophthalmology';
-  if(n===7) buildReport();
+  if(n===8) buildCaught();
+  if(n===9) buildReport();
   document.getElementById('scroll').scrollTop=0;
   document.getElementById('anno').style.display='none';
   checkGate();
@@ -391,7 +432,7 @@ document.querySelectorAll('.commit').forEach(c=>{
   c.querySelectorAll('.opt').forEach(o=>{ o.onclick=()=>{
     c.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel')); o.classList.add('sel');
     state[key]=o.dataset.v; checkGate(); }; });
-  const f=c.querySelector('[data-free]'); if(f) f.oninput=()=>state[f.dataset.free]=f.value;
+  const f=c.querySelector('[data-free]'); if(f) f.oninput=()=>{ state[f.dataset.free]=f.value; checkGate(); };
 });
 const slider=document.getElementById('confSlider'), confNum=document.getElementById('confNum'), confPrompt=document.getElementById('confPrompt');
 slider.oninput=()=>{ confNum.textContent=slider.value; state.conf=slider.value+'%'; confPrompt.textContent='Locked in: '+slider.value+'%'; checkGate(); };
@@ -418,6 +459,11 @@ document.querySelectorAll('.tell').forEach(t=>{ t.onclick=(e)=>{
   anno.style.left=x+'px'; anno.style.top=Math.max(12,y)+'px'; e.stopPropagation(); }; });
 document.addEventListener('click',e=>{ if(!e.target.closest('.tell')&&!e.target.closest('#anno')) anno.style.display='none'; });
 
+function esc(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+function buildCaught(){
+  document.getElementById('youWrote').innerHTML = state.predict
+    ? '<b>You wrote</b>\u201c'+esc(state.predict.trim())+'\u201d' : '';
+}
 function buildReport(){
   const caught = state.review==='Reject - something is off';
   const rows=[
@@ -426,6 +472,7 @@ function buildReport(){
     ['Move 03 \u00b7 you would cite it', state.cite||'\u2014', 'You judged a fabricated source good enough to put in your own work.'],
     ['Move 04 \u00b7 you ruled on it', state.review||'\u2014', caught ? 'You paused here \u2014 most readers do not. But look at moves 01\u201303.' : 'As the reviewer, you passed a paper that declares itself fake in its own text.'],
     ['Move 05 \u00b7 you bet on yourself', state.conf? state.conf+' chance this was your own diagnosis' : '\u2014', 'After four commitments, this is the odds you gave that you personally had an invented disease.'],
+    ['Move 06 \u00b7 you predicted', state.predict? '\u201c'+esc(state.predict.trim())+'\u201d' : '\u2014', 'How you thought science finds a mistake like this \u2014 before you knew a journalist caught it.'],
   ];
   document.getElementById('reportCard').innerHTML=rows.map((r,i)=>
     `<div class="rr"><span class="rn">${i+1}</span><div class="rc"><div class="rmove">${r[0]}</div><div class="rchoice">${r[1]}</div><div class="rshows">${r[2]}</div></div></div>`).join('');
@@ -441,7 +488,7 @@ document.getElementById('dlBtn').onclick=()=>{
   const caught = state.review==='Reject - something is off';
   const L=[
     'TOK \u2014 Natural Sciences L4',
-    'BIXONIMANIA: my report (completed before the lesson)',
+    'BIXONIMANIA: my report',
     '====================================================','',
     'THE TRAIL I FOLLOWED \u2014 before I knew it was fake:',
     '  01  I acted:        '+(state.act||'\u2014'),
@@ -449,20 +496,22 @@ document.getElementById('dlBtn').onclick=()=>{
     '  03  As a source:    '+(state.cite||'\u2014'),
     '  04  As reviewer:    '+(state.review||'\u2014'),
     '        note: '+(state.reviewNote||'(nothing flagged)'),
-    '  05  Odds I gave that this was my own diagnosis: '+(state.conf||'\u2014'),'',
+    '  05  Odds I gave that this was my own diagnosis: '+(state.conf||'\u2014'),
+    '  06  How I thought science catches a mistake like this:',
+    '        '+(state.predict||'\u2014'),'',
     'THE RESULT: Bixonimania does not exist. It was invented in 2024.',
-    'The journal (Cureus / Springer Nature), the AI systems, the citation,',
-    'and the retraction were all real. Only the disease was planted.',
+    'The journal (Cureus / Springer Nature), the AI systems and the citation',
+    'were all real. Only the disease was planted.',
+    'No reviewer caught it. The paper was retracted on 30 March 2026, about',
+    '16 months after publication, after a Nature journalist asked about it.',
     caught ? 'I flagged the paper as a reviewer \u2014 but had already acted on, repeated, and rated it citable first.'
            : 'I read past nine signals that it was fake, including a line stating the paper was fabricated.','',
-    'BRING TO CLASS \u2014 my one-sentence answer to:',
-    'When a claim is "peer-reviewed," what has actually been checked, and by whom?',
-    '____________________________________________________________________',
-    '____________________________________________________________________'
+    'THE QUESTION:',
+    'So what does "peer-reviewed" actually check, and how does science find its own mistakes?'
   ];
   const blob=new Blob([L.join('\n')],{type:'text/plain'});
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='L4_bixonimania_report.txt'; a.click();
-  document.getElementById('savedNote').textContent='Saved. Bring it to class.';
+  document.getElementById('savedNote').textContent='Saved.';
 };
 
 go(0);

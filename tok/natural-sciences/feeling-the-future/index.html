@@ -114,6 +114,31 @@
   .pull{border-left:3px solid var(--ox); padding:6px 0 6px 20px; margin:6px 0 0; font-family:'Cormorant Garamond',serif;
     font-size:30px; line-height:1.25; font-style:italic; color:var(--ink)}
 
+  /* card discussion box */
+  .cpause{background:var(--panel); border:1px dashed var(--ox); border-radius:8px; padding:16px 20px; margin-top:22px}
+  .cpause .pl{font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--ox); margin-bottom:6px}
+  .cpause .pt{font-family:'Cormorant Garamond',serif; font-size:25px; font-weight:600; line-height:1.22}
+  .src{font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:.04em; color:var(--faint); margin-top:18px; line-height:1.6}
+  /* trials graphic */
+  .togs{display:flex; gap:10px; flex-wrap:wrap; margin:6px 0 16px}
+  .tog{font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:.05em; font-weight:700; cursor:pointer; text-transform:uppercase;
+    border:1.5px solid var(--ox); color:var(--ox); background:transparent; padding:9px 16px; border-radius:7px; transition:.15s}
+  .tog.on{background:var(--ox); color:var(--panel)}
+  .trials{display:grid; grid-template-columns:repeat(19, 1fr); gap:7px; max-width:640px; padding:18px; background:var(--panel); border:1px solid var(--rule); border-radius:10px}
+  .tdot{aspect-ratio:1; border-radius:50%; transition:background .5s, border-color .5s, opacity .5s; border:2px solid transparent}
+  .tdot.pos{background:var(--good)} .tdot.neg{background:var(--ox)}
+  .tdot.gone{background:transparent; border:2px dashed var(--faint); opacity:.7}
+  .tkey{display:flex; gap:18px; flex-wrap:wrap; font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--soft); margin-top:12px}
+  .tkey span{display:flex; align-items:center; gap:7px}
+  .tkey i{width:13px; height:13px; border-radius:50%; display:inline-block}
+  .tcap{font-size:18px; line-height:1.55; margin-top:16px; min-height:84px}
+  .tcap b{font-family:'Cormorant Garamond',serif; font-size:30px; color:var(--ox)}
+  .kucols{display:flex; gap:18px; margin-top:20px; flex-wrap:wrap}
+  .kuc{flex:1 1 260px; border:1px solid var(--rule); border-radius:10px; background:var(--panel); padding:18px 20px}
+  .kuc .kh{font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--ox); font-weight:700; margin-bottom:8px}
+  .kuc .kv{font-size:17.5px; line-height:1.5}
+  @media(max-width:820px){ .trials{grid-template-columns:repeat(12, 1fr)} }
+
   /* nav */
   .nav{flex:0 0 auto; display:flex; align-items:center; justify-content:space-between; padding:13px 30px; border-top:1px solid var(--rule)}
   .nbtn{font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.06em; font-weight:700; cursor:pointer;
@@ -143,7 +168,7 @@
     <div class="card" id="card"><div class="inner" id="cardInner"></div></div>
     <div class="dia" id="dia">
       <div class="convo"><div class="wrap">
-        <div class="scene" id="scene">Three experts have been asked to review a manuscript for a leading psychology journal. They have never met the author. The editor opens the discussion.</div>
+        <div class="scene" id="scene">Two experts have been asked to review a manuscript for a leading psychology journal. They have never met the author. The editor opens the discussion.</div>
         <div id="lines"></div>
       </div></div>
       <div class="board">
@@ -211,7 +236,7 @@ const ITEMS=[
 
  {type:'line', sp:'Reviewer 1', tx:'Eight of the nine reach significance. I’d want effect sizes reported and the tests stated as one- or two-tailed — but the analyses themselves are the conventional ones. Nothing outside accepted practice.',
    tag:{q:'And that?', a:['How it was done','Whether it’s true'], correct:0,
-        cap:'Whether the <b>statistics</b> followed the accepted rules. Hold onto that phrase — “the conventional ones.” It comes back.', bucket:'form', chip:'Statistics / reporting'}},
+        cap:'Whether the <b>statistics</b> followed the accepted rules.', bucket:'form', chip:'Statistics / reporting'}},
 
  {type:'line', cls:'r2', sp:'Reviewer 2', tx:'Can I say the obvious thing? The conclusion is that people can feel the future. That’s impossible. We cannot put that in the journal.',
    tag:{q:'Reviewer 2 wants to reject it because the conclusion can’t be true. Is that a check peer review makes?',
@@ -236,12 +261,72 @@ const ITEMS=[
  {type:'card', reveal:true},
 
  {type:'card', html:`
-   <div class="eyebrow">So whose job is it?</div>
-   <h1 style="font-size:42px">No one in that room did anything wrong.</h1>
-   <div class="lede">The reviewers checked exactly what peer review is built to check — and a false claim passed. Checking whether it was <i>true</i> was never their stage.</div>
-   <div class="lede">So where does that checking happen? That’s the question your worksheet picks up — and the answer is the reason the paper was eventually overturned.</div>
-   <div class="kq"><div class="kl">Carry into the worksheet</div><div class="kt">Peer review checked the form. Who checks the substance — and how long does it take?</div></div>`},
+   <div class="eyebrow">After publication</div>
+   <h1 style="font-size:44px">So who checks whether it’s true?</h1>
+   <div class="lede">Peer review checked how the work was done. Science’s usual answer for whether it is <i>true</i>: other scientists repeat the experiment. If the effect is real, it should show up again. If it isn’t, it won’t.</div>
+   <div class="lede">Bem welcomed this. He offered his materials and software, free, to anyone who wanted to try.</div>`},
+
+ {type:'card', html:`
+   <div class="eyebrow">The repeat</div>
+   <h1 style="font-size:44px">Three labs tried.</h1>
+   <div class="lede">In 2011, Stuart Ritchie, Richard Wiseman and Chris French each repeated Bem’s final experiment at their own university — with Bem’s own computer program, his statistical methods, and the same number of participants as the original.</div>
+   <div class="lede"><b>They found nothing.</b> No sign that people could feel the future.</div>
+   <div class="cpause"><div class="pl">Pause · discuss</div><div class="pt">Their result says Bem’s finding didn’t hold up. Where should it be published?</div></div>`},
+
+ {type:'card', html:`
+   <div class="eyebrow">The gate</div>
+   <h1 style="font-size:44px">The journal said no.</h1>
+   <div class="lede">They sent their paper to the <i>Journal of Personality and Social Psychology</i> — the journal that had published Bem. It was rejected without ever being sent to reviewers. The journal’s policy was not to publish replications, whether they succeeded or failed.</div>
+   <div class="lede">After more rejections, their result finally appeared in March 2012, in a different journal, <i>PLoS ONE</i>. Later in 2012, the original journal did publish a larger failed replication by another team: seven experiments, more than 3,000 participants.</div>
+   <div class="cpause"><div class="pl">Pause · discuss</div><div class="pt">The check was done. What happens to “replication catches the mistakes” when the journal won’t look at the check?</div></div>`},
+
+ {type:'card', after:()=>drawTrials('fda'), html:`
+   <div class="eyebrow">The same gate · medicine</div>
+   <h1 style="font-size:40px">74 trials. What could a doctor read?</h1>
+   <div class="lede">Twelve antidepressants were approved in the US between 1987 and 2004. To approve them, the FDA reviewed 74 trials. Each dot is one trial.</div>
+   <div class="togs">
+     <button class="tog" id="tog-fda" onclick="drawTrials('fda')">What the FDA saw</button>
+     <button class="tog" id="tog-jr" onclick="drawTrials('journals')">What a doctor reading the journals saw</button>
+   </div>
+   <div class="trials" id="trials"></div>
+   <div class="tkey"><span><i style="background:var(--good)"></i>drug worked</span><span><i style="background:var(--ox)"></i>didn’t clearly work</span><span><i style="border:2px dashed var(--faint)"></i>never published</span></div>
+   <div class="tcap" id="tcap"></div>
+   <div class="note" style="margin-top:6px">This does not show the drugs don’t work. It shows the journals made them look better than the full set of trials did.</div>
+   <div class="cpause"><div class="pl">Pause · discuss</div><div class="pt">Every published paper here passed peer review. What could a reviewer have caught — and what couldn’t they?</div></div>
+   <div class="src">Turner et al., New England Journal of Medicine, 2008</div>`},
+
+ {type:'card', html:`
+   <div class="eyebrow">How did anyone find out?</div>
+   <h1 style="font-size:44px">Someone had the full list.</h1>
+   <div class="lede">Erick Turner, a psychiatrist who had worked as an FDA reviewer, compared the FDA’s records of all 74 trials with what had appeared in the journals. Without that list, the missing trials would have been invisible. Nobody reading the journals could know they existed.</div>
+   <div class="kucols">
+     <div class="kuc"><div class="kh">Known unknown</div><div class="kv">We know something is missing. The FDA list shows 23 trials were never published, so we can count them and go looking.</div></div>
+     <div class="kuc"><div class="kh">Unknown unknown</div><div class="kv">We don’t know what we’re missing. Most research has no full list. Results that were never published, and claims nobody has questioned yet, leave no gap to notice.</div></div>
+   </div>
+   <div class="lede" style="margin-top:20px">Not yet is not never. Bixonimania sat in the scientific record for 16 months — until someone looked.</div>
+   <div class="kq"><div class="kl">Carry into the worksheet</div><div class="kt">Does science correct itself? Where does that hold — and where does it break?</div></div>`},
 ];
+
+// Turner et al. 2008: 38 judged positive by FDA (37 published, 1 not);
+// 36 negative/questionable (3 published as negative, 11 published as if positive, 22 not published)
+const TRIALS=[].concat(
+  Array(37).fill('P'), ['Pu'],
+  Array(11).fill('Ns'), Array(3).fill('Np'), Array(22).fill('Nu'));
+function drawTrials(mode){
+  const box=document.getElementById('trials'); if(!box) return;
+  if(!box.children.length){ box.innerHTML=TRIALS.map(()=>'<div class="tdot"></div>').join(''); }
+  [...box.children].forEach((d,i)=>{
+    const t=TRIALS[i]; let c;
+    if(mode==='fda'){ c = (t==='P'||t==='Pu') ? 'pos' : 'neg'; }
+    else { c = (t==='P'||t==='Ns') ? 'pos' : (t==='Np' ? 'neg' : 'gone'); }
+    d.className='tdot '+c;
+  });
+  document.getElementById('tog-fda').classList.toggle('on', mode==='fda');
+  document.getElementById('tog-jr').classList.toggle('on', mode!=='fda');
+  document.getElementById('tcap').innerHTML = mode==='fda'
+    ? '<b>38 of 74</b> trials showed the drug worked — about half (51%). The other 36 were negative or questionable.'
+    : '<b>48 of 51</b> published papers say the drug worked (94%). That includes 11 trials the FDA judged negative or questionable, written up as if the drug had worked. 23 trials never appeared at all.';
+}
 
 let idx=0;
 const TOTAL=ITEMS.length;
@@ -325,6 +410,7 @@ function show(){
   if(it.type==='card'){
     dia.classList.remove('show'); card.classList.add('show');
     cardInner.innerHTML = it.reveal ? revealHTML() : it.html;
+    if(it.after) it.after();
   } else {
     card.classList.remove('show'); dia.classList.add('show');
     renderTally();
@@ -357,7 +443,7 @@ function revealHTML(){
      <div class="rcol truth"><div class="rt">Whether it’s true</div><div class="rnum">${tally.truth}</div>
        <div class="rlist">${tally.ruled?'raised once —<br>ruled out of scope':'never raised'}</div></div>
    </div>
-   <div class="pull">${tally.form} checks on how the work was done. Not one on whether it was true — and no one did anything wrong.</div>`;
+   <div class="pull">${tally.form} checks on how the work was done. Not one on whether it was true.</div>`;
 }
 
 function tagPending(){
