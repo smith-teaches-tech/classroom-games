@@ -190,6 +190,9 @@
   .tl .ti.hit::before{background:var(--p-ox)}
   .tl .tw{font-family:'JetBrains Mono'; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--p-ox); margin-bottom:3px}
   .tl .tx{font-size:15.5px; line-height:1.55}
+  .tick{display:flex; align-items:center; gap:12px; margin-top:14px; padding:12px 16px; border:1.5px solid var(--p-ox); border-radius:8px; background:var(--p-panel); cursor:pointer; font-size:15.5px; font-weight:600}
+  .tick input{width:20px; height:20px; accent-color:var(--p-ox); cursor:pointer}
+  .nb{font-family:'JetBrains Mono'; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--p-ox); font-weight:700; margin:8px 0 2px}
   @media(max-width:560px){h1{font-size:22px} .verdict{font-size:34px} .topbar,.navbar{padding-left:16px;padding-right:16px} .paperdoc{padding:22px} .gate-hint{display:none}}
 </style>
 </head>
@@ -362,7 +365,8 @@
       <p class="soft">A peer-reviewed journal published a paper that cited a disease that does not exist. Science is supposed to find its own mistakes.</p>
       <div class="commit" data-key="predict">
         <div class="q">How do you think a mistake like this gets caught &mdash; and by whom? Write your best answer before you go on.</div>
-        <textarea class="free" data-free="predict" placeholder="I think it gets caught by&hellip;" style="min-height:90px"></textarea>
+        <div class="nb">Write it in your notebook &middot; Worksheet Commit A</div>
+        <label class="tick"><input type="checkbox" id="predictTick"> I&rsquo;ve written my answer in my notebook</label>
       </div>
     </section>
 
@@ -390,7 +394,7 @@
         <p><b>Replication:</b> other scientists repeat an experiment to see if they get the same result.</p>
       </div>
       <div class="notice"><span class="nl">The retraction notice</span>&ldquo;&hellip;three irrelevant references, including one reference to a fictitious disease.&rdquo;</div>
-      <div class="youwrote" id="youWrote"></div>
+      <div class="youwrote"><b>Your prediction</b>Look back at what you wrote in your notebook for Commit A. How close were you?</div>
       <div class="discuss">
         <div class="dl">Discuss &middot; don&rsquo;t write yet</div>
         <ol>
@@ -441,13 +445,12 @@ const prevBtn=document.getElementById('prevBtn'), nextBtn=document.getElementByI
 function gated(n){
   if(!GATE.hasOwnProperty(n)) return false;
   const v=state[GATE[n]];
-  if(GATE[n]==='predict') return !v || v.trim().length<15;
   return !v;
 }
 function checkGate(){
   const locked = gated(cur);
   nextBtn.disabled = locked && cur<TOTAL-1;
-  gateHint.textContent = locked ? (GATE[cur]==='predict' ? 'Write your answer above to continue' : 'Make a choice above to continue') : '';
+  gateHint.textContent = locked ? (GATE[cur]==='predict' ? 'Write your answer in your notebook, then tick the box' : 'Make a choice above to continue') : '';
 }
 function go(n){
   if(n<0||n>=TOTAL) return;
@@ -478,6 +481,7 @@ document.querySelectorAll('.commit').forEach(c=>{
   const f=c.querySelector('[data-free]'); if(f) f.oninput=()=>{ state[f.dataset.free]=f.value; checkGate(); };
 });
 const slider=document.getElementById('confSlider'), confNum=document.getElementById('confNum'), confPrompt=document.getElementById('confPrompt');
+document.getElementById('predictTick').onchange=e=>{ state.predict = e.target.checked ? 'done' : ''; checkGate(); };
 slider.oninput=()=>{ confNum.textContent=slider.value; state.conf=slider.value+'%'; confPrompt.textContent='Locked in: '+slider.value+'%'; checkGate(); };
 
 const TELLS={
@@ -504,8 +508,7 @@ document.addEventListener('click',e=>{ if(!e.target.closest('.tell')&&!e.target.
 
 function esc(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
 function buildCaught(){
-  document.getElementById('youWrote').innerHTML = state.predict
-    ? '<b>You wrote</b>\u201c'+esc(state.predict.trim())+'\u201d' : '';
+
 }
 function buildReport(){
   const caught = state.review==='Reject - something is off';
@@ -515,7 +518,6 @@ function buildReport(){
     ['Move 03 \u00b7 you would cite it', state.cite||'\u2014', 'You judged a fabricated source good enough to put in your own work.'],
     ['Move 04 \u00b7 you ruled on it', state.review||'\u2014', caught ? 'You paused here \u2014 most readers do not. But look at moves 01\u201303.' : 'As the reviewer, you passed a paper that declares itself fake in its own text.'],
     ['Move 05 \u00b7 you bet on yourself', state.conf? state.conf+' chance this was your own diagnosis' : '\u2014', 'After four commitments, this is the odds you gave that you personally had an invented disease.'],
-    ['Move 06 \u00b7 you predicted', state.predict? '\u201c'+esc(state.predict.trim())+'\u201d' : '\u2014', 'How you thought science finds a mistake like this \u2014 before you knew a journalist caught it.'],
   ];
   document.getElementById('reportCard').innerHTML=rows.map((r,i)=>
     `<div class="rr"><span class="rn">${i+1}</span><div class="rc"><div class="rmove">${r[0]}</div><div class="rchoice">${r[1]}</div><div class="rshows">${r[2]}</div></div></div>`).join('');
@@ -540,8 +542,7 @@ document.getElementById('dlBtn').onclick=()=>{
     '  04  As reviewer:    '+(state.review||'\u2014'),
     '        note: '+(state.reviewNote||'(nothing flagged)'),
     '  05  Odds I gave that this was my own diagnosis: '+(state.conf||'\u2014'),
-    '  06  How I thought science catches a mistake like this:',
-    '        '+(state.predict||'\u2014'),'',
+    '',
     'THE RESULT: Bixonimania does not exist. It was invented in 2024.',
     'The journal (Cureus / Springer Nature), the AI systems and the citation',
     'were all real. Only the disease was planted.',

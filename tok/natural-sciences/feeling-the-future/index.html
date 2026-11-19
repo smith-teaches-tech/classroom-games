@@ -175,6 +175,10 @@
   .infobox p{font-size:18px; line-height:1.5; margin-bottom:8px} .infobox p:last-child{margin-bottom:0}
   @media(max-width:820px){ .kn{grid-template-columns:1fr; gap:4px} }
 
+  .tick{display:flex; align-items:center; gap:12px; margin-top:6px; padding:12px 16px; border:1.5px solid var(--ox); border-radius:8px; background:#fffdf8; cursor:pointer; font-size:18px; font-weight:600}
+  .tick input{width:20px; height:20px; accent-color:var(--ox); cursor:pointer}
+  .nbl{font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--ox); font-weight:700; margin:4px 0 8px}
+
   /* nav */
   .nav{flex:0 0 auto; display:flex; align-items:center; justify-content:space-between; padding:13px 30px; border-top:1px solid var(--rule)}
   .nbtn{font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.06em; font-weight:700; cursor:pointer;
@@ -336,7 +340,8 @@ const ITEMS=[
      <li>Which kinds of mistakes are most likely to get caught? Which are most likely to slip through?</li></ol></div>
    <div class="claimbox"><div class="cl">Write a knowledge claim · 1</div>
      <div class="cq">What does comparing these two papers show about how science catches its mistakes? Write a claim about knowledge in general — not about Bem or bixonimania.</div>
-     <textarea data-claim="c1" placeholder="Your claim about knowledge…"></textarea></div>`},
+     <div class="nbl">Write it in your notebook · Worksheet Claim 1</div>
+     <label class="tick"><input type="checkbox" data-claim="c1"> I’ve written my claim in my notebook</label></div>`},
 
  {type:'card', html:`
    <div class="eyebrow">The gate</div>
@@ -422,15 +427,13 @@ const ITEMS=[
    <div class="lede">Bem’s failed replication was turned away by a journal. Negative drug trials went unpublished, or were written up as if the drug worked. And nobody knew — until someone had the full list.</div>
    <div class="claimbox"><div class="cl">Write a knowledge claim · 2</div>
      <div class="cq">What do these cases show about how far peer review and replication can correct science’s mistakes? Write a claim about knowledge in general — not about these drugs or journals.</div>
-     <textarea data-claim="c2" placeholder="Your claim about knowledge…"></textarea></div>`},
+     <div class="nbl">Write it in your notebook · Worksheet Claim 2</div>
+     <label class="tick"><input type="checkbox" data-claim="c2"> I’ve written my claim in my notebook</label></div>`},
 
- {type:'card', after:()=>fillClaims(), html:`
+ {type:'card', html:`
    <div class="eyebrow">Carry into the worksheet</div>
    <div class="kq" style="margin-top:0"><div class="kl">Knowledge question</div><div class="kt">To what extent can science correct its own mistakes through peer review and replication?</div></div>
-   <div class="mine"><div class="ml">Your claim 1 · how science catches its mistakes</div><div class="mv" id="mine1"></div></div>
-   <div class="mine"><div class="ml">Your claim 2 · how far correction can go</div><div class="mv" id="mine2"></div></div>
-   <div class="lede" style="margin-top:18px">You will test and sharpen these claims on the worksheet. Download them so you have them.</div>
-   <button class="dl" onclick="downloadClaims()">↓ Download my claims</button>`},
+   <div class="lede" style="margin-top:18px">Your two claims are in your notebook. Now go to Part 6 of the worksheet: test Claim 2 against every case from today, and write your paragraph.</div>`},
 ];
 
 const claims={};
@@ -553,9 +556,9 @@ function show(){
     dia.classList.remove('show'); card.classList.add('show');
     cardInner.innerHTML = it.reveal ? revealHTML() : it.html;
     if(it.after) it.after();
-    cardInner.querySelectorAll('textarea[data-claim]').forEach(ta=>{
-      const k=ta.dataset.claim; ta.value=claims[k]||'';
-      ta.oninput=()=>{ claims[k]=ta.value; updateNav(); };
+    cardInner.querySelectorAll('input[data-claim]').forEach(cb=>{
+      const k=cb.dataset.claim; cb.checked=!!claims[k];
+      cb.onchange=()=>{ claims[k]=cb.checked; updateNav(); };
     });
   } else {
     card.classList.remove('show'); dia.classList.add('show');
@@ -598,13 +601,13 @@ function tagPending(){
 }
 function claimPending(){
   const it=ITEMS[idx];
-  return !!(it && it.claimKey && (!claims[it.claimKey] || claims[it.claimKey].trim().length<25));
+  return !!(it && it.claimKey && !claims[it.claimKey]);
 }
 function updateNav(){
   const tagLock = tagPending() && idx<TOTAL-1;
   const claimLock = claimPending();
   nextB.disabled = tagLock || claimLock;
-  hint.textContent = tagLock ? 'Sort this check to continue' : (claimLock ? 'Write your claim to continue' : '');
+  hint.textContent = tagLock ? 'Sort this check to continue' : (claimLock ? 'Write your claim in your notebook, then tick the box' : '');
 }
 
 function go(n){
