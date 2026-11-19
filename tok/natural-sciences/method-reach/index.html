@@ -383,11 +383,11 @@
     <p class="body"><b>What scientists think:</b> life began from non-living chemicals on the early Earth, more than 3.5 billion years ago. To work out how, scientists recreate early-Earth conditions in the lab. There are several ideas about where it happened, from warm pools to deep-sea vents.</p>
     <div class="obs1">
     <h3 class="oh" style="font-size:24px;font-weight:600;margin:22px 0 4px">Observation 1: Run the scenarios</h3>
-    <p class="lead" style="font-size:18px;line-height:1.5;margin:6px 0 12px">Pick a scenario for the early Earth and run it. Try at least three. Read the grey line under each run. Then press “Which one actually happened?”</p>
+    <p class="lead" style="font-size:18px;line-height:1.5;margin:6px 0 12px">Pick a scenario for the early Earth and run it. Try at least three. Under each run, compare what the model shows with what labs have actually made. Then press “Which one actually happened?”</p>
     </div>
     <div class="sim" style="background:var(--panel);padding:18px">
       <div style="max-width:380px;margin:0 auto 4px">
-        <svg id="osvg" viewBox="0 0 380 196" role="img" aria-label="A flask runs a chosen early-Earth scenario; every scenario ends with the same picture of a self-copying chain.">
+        <svg id="osvg" viewBox="0 0 380 196" role="img" aria-label="A flask runs a chosen early-Earth scenario; every scenario ends with the same model picture of a self-copying chain, which no lab has actually made.">
           <defs><clipPath id="bk"><path d="M132,48 L132,166 Q132,180 146,180 L214,180 Q228,180 228,166 L228,48 Z"/></clipPath></defs>
           <rect x="138" y="118" width="84" height="62" fill="#d9c39a" opacity="0.85" clip-path="url(#bk)"/>
           <g id="oBub" clip-path="url(#bk)"></g>
@@ -396,7 +396,7 @@
           <line x1="194" y1="40" x2="194" y2="92" stroke="#6f685b" stroke-width="3"/>
           <polyline id="oSpark" points="166,92 174,100 180,92 187,101 194,92" fill="none" stroke="#e0a226" stroke-width="2" opacity="0"/>
           <g id="oLink"></g><g id="oMol"></g>
-          <g id="oCap" opacity="0"><line x1="234" y1="150" x2="252" y2="150" stroke="#2f6f8f" stroke-width="1.5"/><polygon points="252,150 246,146 246,154" fill="#2f6f8f"/><text x="258" y="147" fill="#2f6f8f" font-family="JetBrains Mono,monospace" font-size="10">a self-copying</text><text x="258" y="160" fill="#2f6f8f" font-family="JetBrains Mono,monospace" font-size="10">chain forms</text></g>
+          <g id="oCap" opacity="0"><line x1="234" y1="150" x2="252" y2="150" stroke="#2f6f8f" stroke-width="1.5"/><polygon points="252,150 246,146 246,154" fill="#2f6f8f"/><text x="258" y="147" fill="#2f6f8f" font-family="JetBrains Mono,monospace" font-size="10">model&#8217;s guess:</text><text x="258" y="160" fill="#2f6f8f" font-family="JetBrains Mono,monospace" font-size="10">self-copying chain</text></g>
           <text id="oEnv" x="180" y="194" text-anchor="middle" fill="#6f685b" font-family="JetBrains Mono,monospace" font-size="10.5">early-Earth conditions</text>
         </svg>
       </div>
@@ -419,13 +419,13 @@
     <div class="qs"><div class="lbl">Field notes: Observation 1</div><ul>
       <li>Pick a scenario and run it. What does the picture show at the end?</li>
       <li>Run two more scenarios. What do you notice about the ending each time?</li>
-      <li>Read the grey line under each run. Did the lab actually get as far as the picture shows?</li>
+      <li>Under each run, compare what the model shows with what labs have actually made. Did the labs get as far as the model?</li>
       <li>If every start gives the same ending, can the ending tell you which start really happened?</li>
     </ul></div>
     <p class="lockmsg" id="originLock">Answer the claim at the top of the page to open Observations 2 and 3.</p>
     <div class="obs locked" data-case="origin">
       <h3 class="oh">Observation 2: How far the lab has got</h3>
-      <div class="evcard"><div class="lbl">Card 2</div><p>In 1952, a student named Stanley Miller filled a sealed flask with water and the gases he thought were in the Earth's early air: methane, ammonia and hydrogen. He sent electric sparks through it to copy lightning. After about a week, the water held <b>amino acids</b>, the building blocks of the proteins in every living thing. The flask in this tool is based on his experiment.</p><p style="margin-top:8px">Since then, labs have made some of the building blocks of RNA (in 2009) and joined building blocks into short chains. But no experiment has gone all the way from simple chemicals to something alive.</p></div>
+      <div class="evcard"><div class="lbl">Card 2</div><p>In 1952, a student named Stanley Miller filled a sealed flask with water and the gases he thought were in the Earth's early air: methane, ammonia and hydrogen. He sent electric sparks through it to copy lightning. After about a week, the water held <b>amino acids</b>, the building blocks of the proteins in every living thing. The flask in this tool is based on his experiment.</p><p style="margin-top:8px">Since then, labs have made some of the building blocks of RNA (in 2009) and joined building blocks into short chains. The closest anyone has come to a chain that copies itself is RNA that copies RNA. In 2009, a lab made two RNA molecules that build copies of each other, but scientists designed both molecules and supplied the ready-made pieces. In 2025, another lab made an RNA that copied 30 of its own 180 letters before stopping. No experiment has gone all the way from simple chemicals to a chain that copies itself, let alone to something alive.</p></div>
     <div class="qs"><div class="lbl">Field notes</div><ul>
       <li>What did Stanley Miller's flask make? Did it make anything alive?</li>
       <li>What have lab experiments shown so far? What have they not shown?</li>
@@ -689,7 +689,7 @@ function mix(c1,c2,t){const p=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5
     ['warm tidal pools','Cycles of wetting and drying join building blocks into short chains.'],
     ['hydrothermal vents','Mineral surfaces and natural energy at deep-sea vents drive simple chemistry that looks like the start of metabolism.'],
     ['clay templates','Clay minerals line up building blocks and help join them into RNA-like chains.'],
-    ['ice channels','Pockets of liquid in ice concentrate molecules, and a lab-made RNA that copies RNA works there.'],
+    ['ice channels','Pockets of liquid in ice concentrate molecules, and an RNA that scientists designed to copy other RNA works there.'],
     ['volcanic ponds','Lightning and UV light over shallow ponds produce some of the building blocks of RNA.']
   ];
   function el(t,a){const n=document.createElementNS(NS,t);for(const k in a)n.setAttribute(k,a[k]);return n;}
@@ -721,8 +721,9 @@ function mix(c1,c2,t){const p=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5
     animate(()=>{
       n++; count.textContent=n; tried.add(idx); btn.setAttribute('aria-pressed','true');
       const d=document.createElement('div'); d.className='pw';
-      d.innerHTML='Run #'+n+' \u2014 <b>'+pathways[idx][0]+'.</b> The model\'s picture: <b>a self-copying chain forms.</b>'
-        +'<div style="font-size:15px;color:var(--muted);margin-top:4px"><span style="font-family:JetBrains Mono,monospace;font-size:11px">What the lab has actually shown:</span> '+pathways[idx][1]+'</div>';
+      d.innerHTML='Run #'+n+' \u2014 <b>'+pathways[idx][0]+'.</b>'
+        +'<div style="margin-top:4px"><b>The model shows:</b> a self-copying chain.</div>'
+        +'<div style="margin-top:2px"><b>What labs have actually made:</b> '+pathways[idx][1]+'</div>';
       wrap.appendChild(d); reveal.classList.remove('show');
       scBtns.forEach(x=>x.disabled=false); whichBtn.disabled=false;
     });
@@ -730,7 +731,7 @@ function mix(c1,c2,t){const p=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5
   whichBtn.addEventListener('click',()=>{
     if(n===0){reveal.innerHTML='Run a scenario first. See what the model shows before asking what it can\'t.';reveal.classList.add('show');return;}
     const k=tried.size;
-    reveal.innerHTML='You ran <b>'+k+'</b> different scenario'+(k===1?'':'s')+', and '+(k===1?'it':'every one')+' ended with the <b>same picture</b>: a self-copying chain. Like the two Earths with the same readings, different starting points give the same ending, so the ending can\'t tell you which start was real. And the picture is the model\'s, not a recording: look at the grey lines. No lab has gone all the way from simple chemicals to a self-copying system. The real event happened <b>once</b>, more than 3.5 billion years ago. So what can lab experiments really show? Write your answer, then open Observation 2.'+(k<2?' <i>(Try another scenario first and watch the ending.)</i>':'');
+    reveal.innerHTML='You ran <b>'+k+'</b> different scenario'+(k===1?'':'s')+', and '+(k===1?'it':'every one')+' ended with the <b>same model picture</b>: a self-copying chain. Like the two Earths with the same readings, different starting points give the same ending, so the ending can\'t tell you which start was real. But that picture is the model\'s guess, not a lab result: look at what labs have actually made under each run. No lab has gone all the way from simple chemicals to a chain that copies itself. The real event happened <b>once</b>, more than 3.5 billion years ago. So what can lab experiments really show? Write your answer, then open Observation 2.'+(k<2?' <i>(Try another scenario first and watch the ending.)</i>':'');
     reveal.classList.add('show');
   });
 })();

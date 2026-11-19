@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Whose Story Survived? — Presentation Handout</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<!-- Print double-sided (flip on long edge). Sheet 1: the task + research and build. Sheet 2: rubric + what it sounds like. -->
+<style>
+  :root{--ink:#23201a;--ink-soft:#4a443a;--rule:#c9bda3;--rule-soft:#dbd0ba;--accent:#7a2f22;--accent2:#1f4e6b;--accent-warm:#9a6a2f;--good:#3f7d4f;--paper:#f6f1e6;}
+  *{box-sizing:border-box;}
+  @page{size:A4;margin:11mm 13mm;}
+  html,body{margin:0;padding:0;}
+  body{background:#e6dfd0;color:var(--ink);font-family:"Cormorant Garamond",Georgia,serif;font-size:11.5pt;line-height:1.28;-webkit-font-smoothing:antialiased;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .page{width:210mm;min-height:297mm;margin:10mm auto;background:#fff;padding:11mm 13mm;box-shadow:0 2px 12px rgba(0,0,0,.15);position:relative;}
+  p{margin:0 0 1.6mm;}
+  .kicker{font-family:"JetBrains Mono",monospace;font-size:7pt;letter-spacing:.2em;text-transform:uppercase;color:var(--accent-warm);margin:0 0 2mm;}
+  h1{font-size:24pt;line-height:1;margin:0 0 1.5mm;font-weight:700;}
+  .head{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1.5px solid var(--ink);padding-bottom:2.5mm;margin-bottom:3.5mm;}
+  .head .who{font-family:"JetBrains Mono",monospace;font-size:7.5pt;color:var(--ink-soft);text-align:right;line-height:1.9;}
+  .head .who span{display:inline-block;border-bottom:1px solid var(--rule);min-width:52mm;}
+  .runhead{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--ink);padding-bottom:1.5mm;margin-bottom:3.5mm;font-family:"JetBrains Mono",monospace;font-size:7pt;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);}
+
+  .kq{border:1.5px solid var(--accent);border-radius:3mm;padding:2.3mm 4mm;margin:0 0 3mm;display:flex;align-items:center;gap:4mm;background:rgba(122,47,34,.05);}
+  .kq .num{font-family:"JetBrains Mono",monospace;font-size:7pt;font-weight:700;letter-spacing:.12em;color:var(--accent-warm);border:1px solid var(--accent-warm);border-radius:1.5mm;padding:1mm 2mm;white-space:nowrap;}
+  .kq .q{font-style:italic;font-weight:700;font-size:13.5pt;line-height:1.15;color:var(--accent);}
+  .how{font-size:11pt;color:var(--ink-soft);margin:0 0 3.5mm;}
+  .how b{color:var(--ink);}
+
+  .sec{margin:0 0 4mm;}
+  .sec-h{display:flex;align-items:baseline;gap:3mm;border-bottom:1px solid var(--rule);padding-bottom:1mm;margin-bottom:2mm;}
+  .sec-h .n{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:13pt;color:var(--accent);}
+  .sec-h .t{font-weight:700;font-size:14pt;}
+  .sec-h .tag{margin-left:auto;font-family:"JetBrains Mono",monospace;font-size:6.8pt;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);}
+
+  .ways{display:grid;grid-template-columns:7mm 1fr;gap:.8mm 2mm;font-size:11pt;line-height:1.22;}
+  .ways b{font-family:"JetBrains Mono",monospace;font-size:8pt;color:var(--accent2);padding-top:.6mm;}
+  ol.steps{margin:0;padding-left:5mm;font-size:11pt;line-height:1.25;}
+  ol.steps li{margin-bottom:1.1mm;}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:0 7mm;}
+  .list h4{font-family:"JetBrains Mono",monospace;font-size:6.8pt;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-warm);margin:1.8mm 0 .6mm;}
+  .list h4:first-child{margin-top:0;}
+  .list p{font-size:10.8pt;line-height:1.2;margin:0 0 .5mm;padding-left:6mm;text-indent:-6mm;}
+  .list p span{font-family:"JetBrains Mono",monospace;font-size:7.5pt;color:var(--ink-soft);display:inline-block;width:6mm;text-indent:0;}
+  .nogo{border-left:2.5px solid var(--accent-warm);padding:1mm 0 1mm 3mm;font-size:10.8pt;line-height:1.25;margin-top:2mm;}
+  .nogo b{font-family:"JetBrains Mono",monospace;font-size:6.8pt;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-warm);display:block;margin-bottom:.6mm;}
+
+  .rq{display:grid;grid-template-columns:27mm 1fr;gap:0 3mm;margin:0 0 1.5mm;font-size:10.9pt;line-height:1.23;}
+  .rq b.k{font-family:"JetBrains Mono",monospace;font-size:6.6pt;letter-spacing:.12em;text-transform:uppercase;padding-top:.9mm;line-height:1.3;color:var(--accent2);}
+  .rq.push b.k{color:var(--accent);}
+  .moves{display:grid;grid-template-columns:1fr 1fr;gap:2mm;}
+  .move{border:1px solid var(--rule);border-radius:2mm;padding:1.8mm 3mm;}
+  .move .lab{font-family:"JetBrains Mono",monospace;font-size:6.8pt;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);display:flex;justify-content:space-between;margin-bottom:.8mm;}
+  .move .lab i{font-style:normal;color:var(--ink-soft);}
+  .move p{font-size:10.7pt;line-height:1.22;margin:0 0 .8mm;}
+  .move p.sl{font-size:10pt;color:var(--ink-soft);font-style:italic;margin:0;}
+  .note{font-size:10.6pt;line-height:1.25;color:var(--ink-soft);margin:1.8mm 0 0;}
+  .note b{color:var(--ink);}
+
+  .warn{border:1.5px solid var(--accent);border-radius:3mm;padding:2.3mm 4mm 1.5mm;background:rgba(122,47,34,.05);}
+  .warn h3{font-family:"JetBrains Mono",monospace;font-size:7.2pt;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 1.2mm;}
+  .warn p{font-size:10.8pt;line-height:1.24;margin:0 0 1.2mm;}
+  .warn .bottom{font-style:italic;font-weight:600;color:var(--accent);}
+
+  table.rub{width:100%;border-collapse:collapse;font-size:10.7pt;line-height:1.23;}
+  table.rub td{border-top:1px solid var(--rule);padding:1.8mm 2mm;vertical-align:top;}
+  table.rub td.b{width:22mm;font-family:"JetBrains Mono",monospace;font-size:8.5pt;font-weight:700;color:var(--accent);}
+  table.rub td.b span{display:block;font-weight:400;font-size:7pt;color:var(--ink-soft);margin-top:.6mm;}
+  ul.look{margin:0;padding-left:4.5mm;font-size:10.9pt;line-height:1.25;}
+  ul.look li{margin-bottom:.9mm;}
+  .caps{border:1.5px solid var(--accent);border-radius:2.5mm;padding:2mm 3.5mm;background:rgba(122,47,34,.05);font-size:10.9pt;line-height:1.25;margin:2.5mm 0 3mm;}
+  .caps b.h{font-family:"JetBrains Mono",monospace;font-size:7pt;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:.8mm;}
+
+  .ex{border:1px solid var(--rule);border-radius:2.5mm;padding:2.3mm 4mm 1.6mm;margin:0 0 2.8mm;}
+  .ex.c{background:#fbf8f1;}
+  .ex.a{border:1.5px solid var(--good);}
+  .ex .lab{font-family:"JetBrains Mono",monospace;font-size:7pt;letter-spacing:.14em;text-transform:uppercase;display:flex;justify-content:space-between;margin-bottom:1.2mm;color:var(--ink-soft);}
+  .ex.a .lab{color:var(--good);}
+  .ex .lab .g{font-weight:700;color:var(--accent);}
+  .ex.a .lab .g{color:var(--good);}
+  .ex .say{font-style:italic;font-size:11pt;line-height:1.27;margin:0 0 1.2mm;}
+  .ex .why{font-size:10.5pt;line-height:1.24;color:var(--ink-soft);margin:0;}
+  .ex .why b{color:var(--ink);}
+  .mv{display:grid;grid-template-columns:23mm 1fr;gap:0 3mm;margin-bottom:1.5mm;}
+  .mv b.k{font-family:"JetBrains Mono",monospace;font-size:6.6pt;letter-spacing:.12em;text-transform:uppercase;color:var(--good);padding-top:.9mm;line-height:1.3;}
+  .mv p{font-size:10.9pt;line-height:1.26;margin:0;}
+  .mv p.sl{font-size:9.8pt;font-style:italic;color:var(--ink-soft);margin-top:.5mm;}
+  .notice{font-size:10.6pt;line-height:1.25;}
+  .notice ul{margin:.6mm 0 0;padding-left:4.5mm;}
+  .notice li{margin-bottom:.5mm;}
+
+  .foot{position:absolute;left:13mm;right:13mm;bottom:7mm;font-family:"JetBrains Mono",monospace;font-size:6.5pt;color:#9b917c;display:flex;justify-content:space-between;letter-spacing:.06em;}
+  .printbtn{position:fixed;top:12px;right:14px;font-family:"JetBrains Mono",monospace;font-size:12px;padding:8px 14px;border-radius:6px;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;}
+  @media print{
+    body{background:#fff;}
+    .page{margin:0;box-shadow:none;width:auto;min-height:auto;height:274mm;padding:0;page-break-after:always;overflow:hidden;}
+    .page:last-child{page-break-after:auto;}
+    .printbtn{display:none;}
+    .foot{left:0;right:0;bottom:0;}
+  }
+</style>
+</head>
+<body>
+<button class="printbtn" onclick="window.print()">Print</button>
+
+<!-- ============ PAGE 1 · THE TASK ============ -->
+<div class="page">
+  <div class="head">
+    <div>
+      <p class="kicker">TOK · History · Whose Narrative Survives?</p>
+      <h1>Whose Story Survived?</h1>
+    </div>
+    <div class="who">Name <span></span><br>Story <span></span><br>Presenting on <span></span></div>
+  </div>
+
+  <div class="kq"><span class="num">KNOWLEDGE QUESTION</span><span class="q">When one account of the past becomes the accepted one, is that because it was the best supported, or because of who got to write it down, name it and teach it?</span></div>
+
+  <p class="how"><b>A 3-minute presentation · homework · graded out of 10.</b> Your presentation is a spoken TOK paragraph. It answers the knowledge question, using a story about the past as your example.</p>
+
+  <div class="sec">
+    <div class="sec-h"><span class="n">A–E</span><span class="t">Ways in</span><span class="tag">the smaller questions from class · use one if it helps</span></div>
+    <div class="ways">
+      <b>A</b><span>Can an account of the past be accurate in every detail and still mislead?</span>
+      <b>B</b><span>What decides which evidence about the past a society looks at?</span>
+      <b>C</b><span>Does time bring us closer to the truth about the past?</span>
+      <b>D</b><span>Can power decide what counts as knowledge about the past?</span>
+      <b>E</b><span>How far can an image of the past be trusted as knowledge about it?</span>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><span class="n">1</span><span class="t">What you do</span></div>
+    <ol class="steps">
+      <li><b>Choose a story</b> about the past that you heard when you were younger: at school, at home, from a film, a cartoon, a TV series or a national holiday. Or choose one from the list below. If you choose your own, I must approve it first.</li>
+      <li><b>Research it</b> using the questions on the back. Notes go in your notebook.</li>
+      <li><b>Build a presentation of four moves</b>, up to four slides, one slide for each move (see the back).</li>
+      <li><b>Present it</b> in 3 minutes or less. Speak from notes, not a script.</li>
+      <li><b>Answer one question</b> from the class.</li>
+    </ol>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><span class="n">2</span><span class="t">Choose a story</span><span class="tag">or propose your own</span></div>
+    <div class="two list">
+      <div>
+        <h4>Middle East and Egypt</h4>
+        <p><span>1</span>The pyramids were built by slaves.</p>
+        <p><span>2</span>The Library of Alexandria was burned by the Arab conquerors of Egypt.</p>
+        <p><span>3</span>Saladin, the chivalrous hero of the Crusades.</p>
+        <p><span>4</span>The fall of Jerusalem, 1099 (use the dossier from class).</p>
+        <h4>Turkey</h4>
+        <p><span>5</span>Hürrem Sultan, the scheming queen of the Ottoman palace.</p>
+        <p><span>6</span>The Trojan Horse.</p>
+        <h4>Latin America</h4>
+        <p><span>7</span>Columbus “discovered” America and proved the Earth was round.</p>
+        <p><span>8</span>Who flew first: the Wright brothers or Santos-Dumont?</p>
+      </div>
+      <div>
+        <h4>Indonesia</h4>
+        <p><span>9</span>Kartini and her letters, “Through Darkness to Light”.</p>
+        <p><span>10</span>Borobudur, “discovered” in 1814.</p>
+        <h4>United States</h4>
+        <p><span>11</span>Paul Revere’s midnight ride.</p>
+        <p><span>12</span>Rosa Parks refused to give up her seat because she was tired.</p>
+        <p><span>13</span>Pocahontas saved John Smith.</p>
+        <h4>Around the world</h4>
+        <p><span>14</span>Vikings wore horned helmets.</p>
+        <p><span>15</span>Mansa Musa, the richest person who ever lived.</p>
+        <p><span>16</span>Who invented the telephone: Bell or Meucci?</p>
+      </div>
+    </div>
+    <div class="nogo"><b>You cannot choose</b>Stories from scripture or religious tradition · stories about living political leaders or wars happening now · Thanksgiving (we did it in class).</div>
+  </div>
+
+  <div class="foot"><span>TOK · History · Whose Story Survived?</span><span>1 / 4 · research and build on the back</span></div>
+</div>
+
+<!-- ============ PAGE 2 · RESEARCH AND BUILD ============ -->
+<div class="page">
+  <div class="runhead"><span>Whose Story Survived? · Research and build</span><span>notebook</span></div>
+
+  <div class="sec">
+    <div class="sec-h"><span class="n">3</span><span class="t">Research questions</span><span class="tag">notes in your notebook</span></div>
+    <div class="rq"><b class="k">The story you heard</b><div>Tell it the way you first heard it. Where did you hear it, and how old were you?</div></div>
+    <div class="rq"><b class="k">Where it came from</b><div>When does the popular version first appear, and who wrote, painted, filmed or taught it? How long after the event was that?</div></div>
+    <div class="rq"><b class="k">What it leaves out</b><div>What does the popular version leave out, and who would tell the story differently? How does leaving that out change the <b>perspective</b> a <b>knower</b> gets?</div></div>
+    <div class="rq"><b class="k">The job it did</b><div>Who was the popular version useful to when it spread, and why at that moment? Where does <b>power</b> come in?</div></div>
+    <div class="rq"><b class="k">How you know</b><div>Take the most important fact in your correction. How does your source know it? Follow the <b>evidence</b> back as far as you can.</div></div>
+    <div class="rq"><b class="k">The wall</b><div>What about this event can nobody know? Could new evidence ever reach it, or never? How much <b>certainty</b> is possible?</div></div>
+    <div class="rq push"><b class="k">The push-back</b><div>Find the detail in your story that does not fit your claim. Maybe the popular version is partly true. Maybe the correction also had a job to do. Maybe the people with power did not win. <b>That detail is your test.</b></div></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-h"><span class="n">4</span><span class="t">Build it in four moves</span><span class="tag">up to four slides · one per move</span></div>
+    <div class="moves">
+      <div class="move"><div class="lab"><span>Move 1 · Claim, qualified</span><i>slide 1</i></div><p>Answer the knowledge question and say <b>when</b> your answer is true.</p><p class="sl">Slide: your claim, and an image of the popular version.</p></div>
+      <div class="move"><div class="lab"><span>Move 2 · The case</span><i>slide 2</i></div><p>Your story as evidence: where the popular version came from, what it leaves out, the job it did. Keep the retelling short.</p><p class="sl">Slide: a date, a document, or a before-and-after.</p></div>
+      <div class="move"><div class="lab"><span>Move 3 · The test</span><i>slide 3</i></div><p>The detail that pushes back. Where does your claim stop working? Name the core concept that explains why.</p><p class="sl">Slide: the detail that doesn’t fit.</p></div>
+      <div class="move"><div class="lab"><span>Move 4 · Verdict</span><i>slide 4</i></div><p>How much of your claim still stands? Say where the line falls.</p><p class="sl">Slide: your verdict, with your sources at the bottom.</p></div>
+    </div>
+    <p class="note"><b>No paragraphs on slides:</b> images, short quotes, dates and your claim only. <b>Core concepts:</b> you must use <b>evidence</b> and <b>power</b>, plus at least one of perspective, interpretation or certainty, and the word <b>knower</b>. Concepts must explain something, not decorate a sentence. <b>Sources:</b> at least three; at least one must be a primary source (a document, letter, record or object from the time) or the work of a museum, university or historian. Be ready to say how your source knows your most important fact.</p>
+  </div>
+
+  <div class="warn">
+    <h3>Warning · two ways to get a C</h3>
+    <p><b>The debunk.</b> “Everyone thinks X. Actually it was Y. So the story is wrong.” That is a history fact-check, not TOK. However good the research is, a presentation that stops there cannot score above C.</p>
+    <p><b>The verdict.</b> Arguing which side was right, wrong, good or bad. TOK asks how an account came to be accepted and what counts as evidence for it, not who deserves blame. A presentation built on a verdict cannot score above C.</p>
+    <p class="bottom">The question is never just “was the story true?” It is “what does this story show about how knowledge of the past is made, kept and lost?”</p>
+  </div>
+
+  <div class="foot"><span>TOK · History · Whose Story Survived?</span><span>2 / 4</span></div>
+</div>
+
+<!-- ============ PAGE 3 · RUBRIC ============ -->
+<div class="page">
+  <div class="runhead"><span>Whose Story Survived? · How you will be graded</span><span>out of 10</span></div>
+
+  <div class="kq"><span class="num">THE QUESTION I ASK</span><span class="q">Do you give a clear, coherent and critical answer to the knowledge question, testing a qualified claim against your story?</span></div>
+
+  <div class="sec">
+    <div class="sec-h"><span class="n">5</span><span class="t">What I look for</span></div>
+    <ul class="look">
+      <li><b>Qualified claim.</b> It answers the knowledge question and says when it is true.</li>
+      <li><b>Your story as evidence.</b> Where the popular version came from, what it leaves out, the job it did. Not retold.</li>
+      <li><b>The test.</b> A detail from your story that pushes back, and where your claim stops.</li>
+      <li><b>How you know.</b> Sources traced back; what can be known and what can’t.</li>
+      <li><b>Core concepts.</b> Evidence and power plus one more, explaining how the account was made or kept. “Knower” used.</li>
+      <li><b>Verdict.</b> You say where the line falls.</li>
+    </ul>
+  </div>
+
+  <div class="caps"><b class="h">Caps</b>A <b>debunk</b> cannot score above 5. A <b>verdict</b> on which side was right, wrong, good or bad cannot score above 5.</div>
+
+  <div class="sec">
+    <div class="sec-h"><span class="n">6</span><span class="t">Bands</span><span class="tag">A 8–10 · B 6–7 · C 4–5 · D 2–3 · E 0–1</span></div>
+    <table class="rub">
+      <tr><td class="b">9–10<span>A</span></td><td>Sustained focus on the knowledge question. The claim is qualified, and the story is used as evidence (origin, omission, job). The claim is tested against a specific detail, and you show exactly where it holds and where it stops. Sources are traced, and you say what cannot be known. Concepts do the explaining. The verdict follows from the test.</td></tr>
+      <tr><td class="b">7–8<span>B to A</span></td><td>Focused, with a qualified claim. The story mostly works as evidence. There is a test, but it is lighter, or the verdict partly repeats the claim. Some sourcing is traced. Concepts mostly do work.</td></tr>
+      <tr><td class="b">5–6<span>C to B</span></td><td>The claim answers the knowledge question but is barely qualified or barely tested. The story is partly retold. Concepts are named more than used. A strong debunk lands here, at 5.</td></tr>
+      <tr><td class="b">3–4<span>D to C</span></td><td>Mostly retelling or debunking. The knowledge question is mentioned but not answered. Little sourcing.</td></tr>
+      <tr><td class="b">1–2<span>E to D</span></td><td>The story is retold with no claim about knowledge.</td></tr>
+      <tr><td class="b">0</td><td>Nothing that meets the task.</td></tr>
+    </table>
+  </div>
+
+  <p class="note"><b>Delivery counts only this far:</b> within 3 minutes, clear enough to follow, no more than four slides with no paragraphs on them, sources on your last slide. Your answer to the class question can lift your mark within a band if it stays on the knowledge question. A + or − is added when you are close to the next grade.</p>
+
+  <div class="foot"><span>TOK · History · Whose Story Survived?</span><span>3 / 4 · an example on the back</span></div>
+</div>
+
+<!-- ============ PAGE 4 · WHAT IT SOUNDS LIKE ============ -->
+<div class="page">
+  <div class="runhead"><span>Whose Story Survived? · What it sounds like</span><span>one story, three presentations</span></div>
+
+  <p class="how">All three use the same research we did in class on the First Thanksgiving. <b>Only one is TOK.</b></p>
+
+  <div class="ex c">
+    <div class="lab"><span>Presentation 1 · the debunk</span><span class="g">C</span></div>
+    <p class="say">“Most people believe the Pilgrims invited the Indians to a feast to say thank you. Actually, Winslow’s letter never mentions an invitation, nobody called it ‘Thanksgiving’ until 1841, and the famous painting has log cabins that didn’t exist yet. So the story is a myth.”</p>
+    <p class="why"><b>Why it’s a C:</b> every fact is right and the research is good. But there is no claim about knowledge, nothing is tested, and it stops at “myth”.</p>
+  </div>
+
+  <div class="ex c">
+    <div class="lab"><span>Presentation 2 · the verdict</span><span class="g">C</span></div>
+    <p class="say">“The Thanksgiving story hides that the Pilgrims robbed graves and stole corn. They were thieves, and the holiday is a lie.”</p>
+    <p class="why"><b>Why it’s a C:</b> it judges people instead of asking how an account came to be accepted. It also goes past the evidence: the colonists’ own book says they planned to pay for the corn, and their governor wrote that they later did.</p>
+  </div>
+
+  <div class="ex a">
+    <div class="lab"><span>Presentation 3 · TOK</span><span class="g">on track for an A</span></div>
+    <div class="mv"><b class="k">1 · Claim</b><div><p>An account of the past becomes the accepted one less because it has the best evidence than because of who names it and teaches it, at least when the people teaching it need a shared story about where they came from.</p><p class="sl">Slide 1: the claim, next to Brownscombe’s 1914 painting.</p></div></div>
+    <div class="mv"><b class="k">2 · The case</b><div><p>The “First Thanksgiving” is my example. The only eyewitness record is Edward Winslow’s 1621 letter: a three-day harvest celebration, about ninety Wampanoag men, five deer. It never uses the word “thanksgiving” and never mentions an invitation. The name came in 1841, in an editor’s footnote. In 1865 a magazine editor linked the meal to the new national holiday, and by 1870 schools were teaching it. None of those steps added evidence; each one gave a growing country a shared, gentle origin. And the same 1622 book holds a passage that never made it into the story: the colonists taking corn and goods from graves on Cape Cod. Their governor, Bradford, later wrote that this corn was their seed for the harvest. Leaving it out changes the perspective a knower gets: a story of friendship instead of a story of survival that cost someone else.</p><p class="sl">Slide 2: 1621 Winslow’s letter · 1841 the name · 1865 the editorial · 1870 the textbooks, and the Cape Cod passage beside it.</p></div></div>
+    <div class="mv"><b class="k">3 · The test</b><div><p>But my claim doesn’t fully hold. The accepted story isn’t invented: Winslow’s letter really does support the harvest, the three days and the shared meal. Power didn’t create the evidence; it chose which true passage to keep. And power didn’t get the last word. In 1970 Wamsutta James was stopped from giving a speech built on the colonists’ own book. He gave it anyway, and by 1998 the town of Plymouth had put up a plaque marking the Day of Mourning. The evidence was there all along; what changed was who was allowed to use it.</p><p class="sl">Slide 3: one line from Winslow’s letter · 1970 the refused speech · 1998 the plaque.</p></div></div>
+    <div class="mv"><b class="k">4 · Verdict</b><div><p>So power decides which evidence gets told far more than it decides what the evidence says. Knowers can be fairly certain about the harvest itself, but not about why ninety men came, and no story, official or not, can reach that.</p><p class="sl">Slide 4: the verdict in one line, with sources at the bottom.</p></div></div>
+  </div>
+
+  <div class="notice"><b>What to notice in Presentation 3</b>
+    <ul>
+      <li>The claim answers the knowledge question and says <b>when</b> (“at least when…”).</li>
+      <li>The story is <b>evidence</b> for the claim, not a retelling: where it came from, what was left out, the job it did.</li>
+      <li>The test comes from inside the same story and makes the claim smaller and sharper.</li>
+      <li>The verdict says where the line falls: power controls what is told more than what is true.</li>
+      <li>Concepts used: evidence, power, perspective, certainty, knower.</li>
+    </ul>
+  </div>
+
+  <div class="foot"><span>TOK · History · Whose Story Survived?</span><span>4 / 4</span></div>
+</div>
+
+</body>
+</html>
