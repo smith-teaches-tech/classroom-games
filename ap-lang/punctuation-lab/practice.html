@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Punctuation Lab: Practice — AP Language</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --ink:#1a1a18;--ink-mid:#4a4a44;--ink-light:#8a8a80;
+  --rule:#d4d0c4;--paper:#f7f4ee;--paper-warm:#efe9db;
+  --accent:#8b3a2a;--accent-light:#f5ede9;
+  --ok:#1a5c3a;--ok-bg:#e8f3ed;
+  --bad:#6b2a2a;--bad-bg:#f5e8e8;
+  --warn:#7a5c1a;--warn-bg:#f5f0e2;
+  --mid:#33404f;--mid-bg:#e9edf2;
+  --serif:'Libre Baskerville',Georgia,serif;
+  --sans:'Barlow',system-ui,sans-serif;
+  --cond:'Barlow Condensed',system-ui,sans-serif;
+  --type:'Special Elite','Courier New',monospace;
+}
+html{font-size:16px;-webkit-text-size-adjust:100%;}
+body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.6;min-height:100vh;}
+
+/* ── MASTHEAD + TABS ── */
+.masthead{border-bottom:3px double var(--ink);padding:.9rem 1rem .7rem;text-align:center;background:var(--paper);position:sticky;top:0;z-index:200;}
+.masthead-kicker{font-family:var(--cond);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-light);margin-bottom:.15rem;}
+.masthead-title{font-family:var(--serif);font-size:clamp(16px,2.4vw,23px);font-weight:700;line-height:1.15;letter-spacing:-.02em;}
+.masthead-link{position:absolute;right:1rem;top:50%;transform:translateY(-50%);font-family:var(--cond);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);text-decoration:none;font-weight:700;}
+.masthead-link:hover{text-decoration:underline;}
+@media(max-width:700px){.masthead-link{display:none;}}
+.top-tabs{display:flex;background:var(--paper);border-bottom:1px solid var(--rule);position:sticky;top:62px;z-index:190;overflow-x:auto;}
+.top-tab{flex:1 0 auto;min-width:100px;padding:.6rem .7rem;font-family:var(--cond);font-size:12.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-light);cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all .15s;text-align:center;position:relative;}
+.top-tab:hover{color:var(--ink);background:var(--paper-warm);}
+.top-tab.active{color:var(--ink);border-bottom-color:var(--accent);}
+.tab-hint{font-family:var(--sans);font-size:10.5px;font-weight:400;letter-spacing:0;text-transform:none;display:block;color:var(--ink-light);margin-top:1px;}
+.top-tab.active .tab-hint{color:var(--ink-mid);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;animation:fadeIn .2s ease;}
+@media(max-width:700px){.top-tabs{top:84px;}.top-tab{min-width:86px;font-size:11.5px;padding:.55rem .4rem;}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.wrap{max-width:860px;margin:0 auto;padding:1.8rem 1.25rem 4rem;}
+
+/* ── SHARED TEXT ── */
+.stage-num{font-family:var(--cond);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-light);margin-bottom:.2rem;}
+h2.stage-title{font-family:var(--serif);font-size:clamp(21px,2.6vw,28px);font-weight:700;line-height:1.15;letter-spacing:-.02em;margin-bottom:.6rem;}
+.lede{font-size:15px;color:var(--ink-mid);line-height:1.7;margin-bottom:1.5rem;padding-bottom:1.2rem;border-bottom:1px solid var(--rule);}
+.lede strong{color:var(--ink);font-weight:600;}
+h3.sub{font-family:var(--cond);font-size:12px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;border-bottom:2px solid var(--ink);padding-bottom:.3rem;margin:2.2rem 0 .9rem;}
+p.body{font-size:14.6px;line-height:1.72;margin-bottom:.85rem;}
+p.body.dim{color:var(--ink-mid);font-size:14px;}
+.callout{background:var(--paper-warm);border-left:4px solid var(--accent);padding:.95rem 1.15rem;margin:1.2rem 0;font-size:14px;line-height:1.72;color:var(--ink-mid);}
+.callout strong{color:var(--ink);font-weight:600;}
+.callout p+p{margin-top:.6rem;}
+.qbox{background:#fff;border:1px solid var(--rule);padding:1rem 1.15rem;margin-bottom:.7rem;border-radius:2px;}
+.qbox .qn,.pl-why .qn{font-family:var(--cond);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.35rem;font-weight:700;}
+.qbox p{font-size:15px;font-family:var(--serif);line-height:1.55;}
+.fb{padding:.85rem 1.05rem;border-radius:3px;font-size:14px;line-height:1.7;margin:.9rem 0;}
+.fb.miss{background:var(--bad-bg);border-left:4px solid var(--bad);color:#4a2020;}
+.fb.good{background:var(--ok-bg);border-left:4px solid var(--ok);color:#14472c;}
+.fb.note{background:var(--warn-bg);border-left:4px solid var(--warn);color:#5a4512;}
+.fb .lv{font-family:var(--cond);font-size:11px;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:.3rem;opacity:.75;font-weight:700;}
+.btn{font-family:var(--cond);font-size:13px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:.6rem 1.3rem;border:1.5px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer;border-radius:2px;transition:all .15s;text-decoration:none;display:inline-block;}
+.btn:hover{background:var(--accent);border-color:var(--accent);}
+.btn.ghost{background:none;color:var(--ink);}
+.btn.ghost:hover{background:var(--ink);color:var(--paper);}
+.btn.small{font-size:11.5px;padding:.38rem .8rem;}
+.btn:disabled{opacity:.3;cursor:default;}
+.btn:disabled:hover{background:var(--ink);border-color:var(--ink);}
+.btn.ghost:disabled:hover{background:none;color:var(--ink);}
+.btnrow{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.2rem;}
+.progbar{height:4px;background:var(--rule);border-radius:2px;overflow:hidden;margin-bottom:.8rem;}
+.progbar i{display:block;height:100%;background:var(--ok);transition:width .3s;}
+
+/* ── PUNCTUATION MARK HIGHLIGHT ── */
+.pm{color:var(--accent);font-weight:700;padding:0 1px;}
+
+/* ── PUNCTUATION ENGINE ── */
+.pl-top{display:flex;justify-content:space-between;font-family:var(--cond);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-light);margin-bottom:.5rem;}
+.pl-card{background:#fff;border:1px solid var(--rule);border-top:4px solid var(--ink);padding:1.2rem 1.25rem 1.1rem;border-radius:2px;}
+.pl-sent{font-family:var(--serif);font-size:clamp(16px,2.1vw,19px);line-height:2.25;}
+.pl-w{white-space:nowrap;}
+.pl-fix{font-family:var(--serif);margin-right:.3em;}
+.pl-gap{font-family:var(--serif);font-size:inherit;line-height:1.2;vertical-align:baseline;min-width:1.5em;padding:0 .2em;margin:0 .12em;border:1.5px dashed var(--ink-light);background:var(--paper);color:var(--accent);font-weight:700;border-radius:3px;cursor:pointer;}
+.pl-sent.open .pl-gap{min-width:.55em;padding:0 .08em;border-color:transparent;background:none;margin:0 .02em;}
+.pl-sent.open .pl-gap:hover{border-color:var(--ink-light);background:var(--paper-warm);}
+.pl-sent.open .pl-gap.has{border-color:var(--ink-light);background:var(--paper);min-width:1.2em;}
+.pl-gap.sel,.pl-sent.open .pl-gap.sel{border:2px solid var(--accent);background:var(--accent-light);}
+.pl-gap.r-best{border:2px solid var(--ok)!important;background:var(--ok-bg)!important;color:var(--ok);}
+.pl-gap.r-ok{border:2px solid var(--warn)!important;background:var(--warn-bg)!important;color:var(--warn);}
+.pl-gap.r-no{border:2px solid var(--bad)!important;background:var(--bad-bg)!important;color:var(--bad);}
+.pl-pal{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;margin-top:.9rem;padding-top:.8rem;border-top:1px dashed var(--rule);}
+.pl-pal-lab{font-family:var(--cond);font-size:12px;letter-spacing:.06em;color:var(--ink-mid);margin-right:.35rem;}
+.pl-mk{font-family:var(--serif);font-size:18px;font-weight:700;min-width:2.4rem;height:2.4rem;border:1.5px solid var(--ink);background:#fff;color:var(--ink);border-radius:3px;cursor:pointer;}
+.pl-mk[data-m=""]{font-family:var(--cond);font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:0 .6rem;}
+.pl-mk:hover{background:var(--paper-warm);}
+.pl-mk.on{background:var(--ink);color:var(--paper);}
+.pl-prev{margin-top:.9rem;font-family:var(--serif);font-size:14.5px;color:var(--ink-mid);background:var(--paper);padding:.6rem .8rem;border-radius:2px;}
+.pl-prev span{display:block;font-family:var(--cond);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-light);margin-bottom:.1rem;}
+.pl-why{margin-top:1rem;padding-top:.9rem;border-top:1px dashed var(--rule);}
+.pl-wo{display:block;width:100%;text-align:left;font-family:var(--sans);font-size:14px;line-height:1.5;padding:.6rem .8rem;margin-bottom:.4rem;border:1px solid var(--rule);background:var(--paper);border-radius:2px;cursor:pointer;color:var(--ink);}
+.pl-wo:hover{border-color:var(--ink);}
+.pl-wo.right{border:2px solid var(--ok);background:var(--ok-bg);}
+.pl-wo.wrong{border:2px solid var(--bad);background:var(--bad-bg);}
+.pl-nav{justify-content:space-between;}
+
+
+/* ── PRACTICE ONLY ── */
+.cmb{background:#fff;border:1px solid var(--rule);border-top:4px solid var(--ink);padding:1.1rem 1.2rem;border-radius:2px;}
+.cmb ol{margin:.3rem 0 .9rem 1.3rem;font-family:var(--serif);font-size:15px;line-height:1.75;}
+.cmb textarea,.write textarea{width:100%;min-height:96px;font-family:var(--serif);font-size:15px;line-height:1.7;padding:.65rem .8rem;border:1px solid var(--rule);border-radius:2px;background:var(--paper);resize:vertical;}
+.write textarea{min-height:240px;background:#fff;}
+.chk{margin:.8rem 0 .2rem;}
+.chk label{display:flex;gap:.55rem;align-items:flex-start;font-size:14px;line-height:1.55;margin-bottom:.35rem;cursor:pointer;}
+.chk input{margin-top:.25rem;accent-color:var(--ok);}
+.model{font-family:var(--serif);font-size:15px;line-height:1.75;background:var(--ok-bg);border-left:4px solid var(--ok);padding:.8rem 1rem;margin-top:.9rem;border-radius:2px;}
+.model .lv{font-family:var(--cond);font-size:11px;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:.3rem;color:var(--ok);font-weight:700;}
+.model .use{font-family:var(--sans);font-size:13.5px;color:#14472c;margin-top:.45rem;}
+.toolrow{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;margin:.45rem 0 .2rem;font-size:13px;color:var(--ink-light);}
+.reqs{list-style:none;margin:.4rem 0 1rem;}
+.reqs li{display:flex;gap:.6rem;align-items:flex-start;font-size:14.5px;line-height:1.55;padding:.45rem .7rem;border:1px solid var(--rule);background:#fff;margin-bottom:.35rem;border-radius:2px;}
+.reqs li .st{flex:0 0 22px;font-weight:700;font-size:15px;color:var(--ink-light);}
+.reqs li.met{border-color:#b3d8c5;background:var(--ok-bg);}
+.reqs li.met .st{color:var(--ok);}
+.marks{margin-top:.8rem;}
+.mrow{background:#fff;border:1px solid var(--rule);padding:.7rem .85rem;margin-bottom:.45rem;border-radius:2px;}
+.mrow .mctx{font-family:var(--serif);font-size:14.5px;line-height:1.6;margin-bottom:.45rem;}
+.mrow select{font-family:var(--sans);font-size:13.5px;padding:.35rem .45rem;border:1px solid var(--rule);border-radius:2px;background:var(--paper);max-width:100%;}
+.wc{font-family:var(--cond);font-size:12px;letter-spacing:.1em;text-transform:uppercase;}
+.wc.good{color:var(--ok);}
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead-kicker">AP English Language &amp; Composition &middot; Punctuation Lab</div>
+  <div class="masthead-title">Dashes, Semicolons &amp; Colons: Practice</div>
+  <a class="masthead-link" href="./">&larr; The Rules</a>
+</div>
+
+<div class="top-tabs" id="tabs"></div>
+
+<!-- ══ TAB 0 : PLACE IT ══ -->
+<div class="tab-panel" id="p0"><div class="wrap">
+  <div class="stage-num">Round One</div>
+  <h2 class="stage-title">Place It: The Gaps Are Marked</h2>
+  <p class="lede">Each box marks a spot that needs a decision. Tap a box, choose a mark (or <strong>none</strong>), then press <strong>Check</strong>. Some boxes accept more than one mark, and the feedback tells you what each choice does. After a correct answer, <strong>name the rule</strong>: the test asks you to justify every dash, semicolon and colon.</p>
+  <div id="m0"></div>
+</div></div>
+
+<!-- ══ TAB 1 : FIND THE GAP ══ -->
+<div class="tab-panel" id="p1"><div class="wrap">
+  <div class="stage-num">Round Two</div>
+  <h2 class="stage-title">Find the Gap: No Hints</h2>
+  <p class="lede">This round works like Part 1 of the test: <strong>you decide where the marks go.</strong> Tap the space between any two words to add a mark there. Marks that are already printed are correct and stay put.</p>
+  <div id="m1"></div>
+</div></div>
+
+<!-- ══ TAB 2 : FIX IT ══ -->
+<div class="tab-panel" id="p2"><div class="wrap">
+  <div class="stage-num">Round Three</div>
+  <h2 class="stage-title">Fix It: Repair the Errors</h2>
+  <p class="lede">Every sentence has at least one punctuation error with a colon, semicolon or dash. <strong>Tap a mark to change it</strong>, or choose <strong>none</strong> to delete it. Some marks are already right: changing those will cost you.</p>
+  <div id="m2"></div>
+</div></div>
+
+<!-- ══ TAB 3 : COMBINE ══ -->
+<div class="tab-panel" id="p3"><div class="wrap">
+  <div class="stage-num">Round Four</div>
+  <h2 class="stage-title">Combine: Build One Sentence</h2>
+  <p class="lede">Combine each set into <strong>one sentence</strong> using at least one dash, semicolon or colon. The pieces are already in order; you may add words like <i>and</i>, <i>but</i> or <i>while</i>. Check your sentence against the checklist, then compare it with a model answer. <strong>Your sentence can be different from the model and still be right.</strong></p>
+  <div class="pl-top"><span class="pl-count" id="cCount"></span></div>
+  <div id="cMount"></div>
+  <div class="btnrow pl-nav"><button class="btn ghost" id="cPrev">&larr; Previous set</button><button class="btn" id="cNext">Next set &rarr;</button></div>
+</div></div>
+
+<!-- ══ TAB 4 : WRITE ══ -->
+<div class="tab-panel" id="p4"><div class="wrap write">
+  <div class="stage-num">Your Paragraph</div>
+  <h2 class="stage-title">Write: Your Argument, Your Marks</h2>
+  <p class="lede">Write a <strong>150&ndash;200 word argument paragraph</strong> about a school issue you care about. Then label every dash, semicolon and colon with the rule it follows, exactly as you will on the test.</p>
+
+  <h3 class="sub">Your paragraph must include</h3>
+  <ul class="reqs" id="reqs"></ul>
+
+  <h3 class="sub">Draft</h3>
+  <textarea id="para" placeholder="Start with your claim..."></textarea>
+  <div class="toolrow"><button class="btn ghost small" id="dashBtn">Insert &mdash;</button><span>Typing two hyphens (--) also makes a dash.</span><span class="wc" id="wc"></span></div>
+  <p class="body dim" style="font-size:12.5px">Your draft is saved in this browser only. Copy it into your Google Doc before you leave.</p>
+
+  <h3 class="sub">Label your marks</h3>
+  <p class="body dim">Press <strong>Find my marks</strong> after you finish the draft. For each mark, choose the rule it follows. If no rule fits, revise the sentence.</p>
+  <div class="btnrow" style="margin-top:.2rem"><button class="btn" id="findBtn">Find my marks</button><button class="btn ghost" id="copyBtn">Copy paragraph and labels</button></div>
+  <div class="marks" id="marks"></div>
+  <div id="copyMsg"></div>
+</div></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   PUNCTUATION ENGINE  (shared by the lesson and the practice lab)
+   Sentence format: words separated by single spaces.
+   A gap code goes straight after the word it follows:  choice[cw]
+     ic   two complete sentences          ;  best   — ok
+     icc  same, but a colon also works    ;  best   : — ok
+     tr   before a transition word        ;
+     tc   after a transition word         ,
+     cw   colon → word or phrase          :  best   — ok
+     cl   colon → list                    :  best   — ok
+     ce   colon → full sentence           :  best   — ; ok
+     nc   no colon (verb needs its list)  nothing
+     su   supercomma                      ;
+     wc   comma before a which/who clause ,
+     ls   list, then summing-up sentence  —
+     ox   comma before "and" in a list    ,  best   nothing ok
+     po:TYPE / pc:TYPE   open / close of a pair
+         pd  interruption with commas inside  — best  ( ) ok
+         pn  plain extra information          , best  — ( ) ok
+         pt  transition word interrupting     , only
+   Prefill for Fix It:  code|=MARK   e.g.  code[tr|=,]   (|=none for blank)
+   Plain punctuation typed onto a word (many,) is fixed text.
+═══════════════════════════════════════════════════════════════ */
+var PL=(function(){
+"use strict";
+var MARKS=[",",";",":","—","(",")",""];
+var NAME={",":"comma",";":"semicolon",":":"colon","—":"dash","(":"opening parenthesis",")":"closing parenthesis","":"no mark"};
+var WHY={
+  N1:"A pair of commas, dashes or parentheses sets off extra information; remove it and the sentence still works.",
+  D3:"Dashes surround an interruption that already has commas inside it.",
+  D2:"A list comes first; after the dash, a complete sentence sums the list up.",
+  S1:"A semicolon joins two closely related complete sentences.",
+  S2:"A semicolon comes before a transition word (however, therefore…) that starts a second complete sentence.",
+  T1:"Commas surround a transition word that interrupts a single sentence.",
+  S3:"Semicolons separate list items that already contain commas.",
+  C1:"A colon follows a complete sentence and introduces the answer to the question that sentence raises."
+};
+var CONFUSE={N1:["D3","T1","S1"],D3:["N1","S3","D2"],D2:["C1","D3","S3"],S1:["S2","C1","S3"],
+  S2:["S1","T1","C1"],T1:["S2","N1","S1"],S3:["D3","C1","S1"],C1:["S1","D2","S2"]};
+
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function sep(m){return m===""?" ":m===","?", ":m===";"?"; ":m===":"?": ":m==="—"?"—":m==="("?" (":m===")"?") ":" ";}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+/* ── verdict tables ── */
+var T={
+ ic:{best:";",ok:{"—":"Works, but it shouts: a dash makes the second sentence land like a sudden turn. The semicolon is the standard choice."},
+     no:{",":"Comma splice: a comma alone cannot hold two complete sentences together.","":"Run-on: two complete sentences collide here with nothing between them.",":":"Test 2 fails: the second sentence does not answer a question the first one raises. Use a semicolon."}},
+ icc:{best:";",ok:{":":"Works: the second sentence explains the first, so a colon passes both tests. A semicolon links the two sentences; a colon says “here is why.”","—":"Works, but it shouts: a dash makes the second sentence land like a sudden turn."},
+     no:{",":"Comma splice: a comma alone cannot hold two complete sentences together.","":"Run-on: two complete sentences collide here with nothing between them."}},
+ tr:{best:";",ok:{},no:{",":"Comma splice: “{next}” is a transition word, not a joining word like “and” or “but.” It needs a semicolon before it.","":"Run-on: a second complete sentence starts at “{next}.” Put a semicolon before it.",
+     ":":"A colon is not the mark before a transition word. Use a semicolon.","—":"Use a semicolon before a transition word that starts a second complete sentence."}},
+ tc:{best:",",ok:{},no:{"":"Put a comma after the transition word “{word}.”"}},
+ cw:{best:":",ok:{"—":"Works: a dash gives the answer a dramatic punch. The colon is the more formal choice."},
+     no:{";":"A semicolon needs a complete sentence on both sides, and “{after}” is not a complete sentence.",",":"A comma is too weak to announce the answer. Use a colon.","":"Something has to announce the answer that follows “{word}.”"}},
+ cl:{best:":",ok:{"—":"Works: a dash can introduce a list too, with more drama. The colon is the standard choice."},
+     no:{";":"A semicolon cannot introduce a list. Use a colon.",",":"A comma here makes the list blur into the sentence. Use a colon.","":"The list needs a mark to introduce it."}},
+ ce:{best:":",ok:{"—":"Works: a dash makes the explanation land harder. The colon is the more formal choice.",";":"Grammatical: both sides are complete sentences. But a colon tells the reader that the second part answers the first, which is the stronger choice here."},
+     no:{",":"Comma splice: a comma alone cannot hold two complete sentences together.","":"Run-on: two complete sentences collide here with nothing between them."}},
+ nc:{best:"",ok:{},no:{":":"Test 1 fails: “{before}.” is not a complete sentence. The words before the list need the list to finish the sentence, so no colon.",
+     "*":"No mark goes here: “{before}” needs the words that follow it to finish the sentence."}},
+ su:{best:";",ok:{},no:{",":"These list items already contain commas. With commas between the items too, the reader cannot tell where one item ends and the next begins. Upgrade to a semicolon.",
+     "*":"Each item in this list already contains a comma, so the items need semicolons between them."}},
+ wc:{best:",",ok:{},no:{"*":"The words after “{word}” are extra information about it. A single comma sets them off here."}},
+ ox:{best:",",ok:{"":"Fine without it. Many writers keep the comma before “and” for clarity."},no:{"*":"This is a simple list item: a comma (or nothing) before “and” is all it needs."}},
+ ls:{best:"—",ok:{},no:{":":"Test 1 fails: a list by itself is not a complete sentence, so it cannot come before a colon.",";":"A semicolon needs a complete sentence on both sides, and the list is not one.",
+     ",":"A comma lets the list run straight into the sentence. A dash shows that the sentence sums the list up.","*":"After a list, a dash introduces the sentence that sums the list up."}},
+ keep:{best:null,ok:{},no:{"*":"The {fixed} here was already right. Put it back."}}
+};
+
+function fill(s,c){return s.replace(/\{(\w+)\}/g,function(_,k){return c[k]!==undefined?c[k]:"";});}
+
+function parse(t,mode){
+  var raw=t.split(" "),toks=[],gaps=[];
+  raw.forEach(function(w){var m=w.match(/^(.*)\[([^\]]+)\]$/),spec=null;if(m){w=m[1];spec=m[2];}toks.push({w:w,spec:spec});});
+  var stack=[];
+  for(var i=0;i<toks.length-1;i++){
+    var tk=toks[i],g={i:i,slot:false,kind:null,pre:"",fixed:null,tap:false,init:""};
+    if(tk.spec){
+      var parts=tk.spec.split("|"),k=parts[0];
+      if(parts[1]&&parts[1].charAt(0)==="="){g.pre=parts[1].slice(1);if(g.pre==="none")g.pre="";if(g.pre==="--")g.pre="—";}
+      g.slot=true;
+      if(/^p[oc]:/.test(k)){g.kind="pair";g.ptype=k.split(":")[1];
+        if(k.charAt(1)==="o"){g.role="open";stack.push(g);}else{g.role="close";var o=stack.pop();if(o){o.mate=i;g.mate=o.i;}}}
+      else g.kind=k;
+    }else{
+      var fm=tk.w.match(/([,;:—])$/);
+      if(fm){g.fixed=fm[1];tk.w=tk.w.slice(0,-1);}
+    }
+    gaps.push(g);
+  }
+  gaps.forEach(function(g){
+    var w=toks[g.i].w;
+    if(g.slot){g.tap=true;g.init=mode==="fix"?g.pre:"";}
+    else if(g.fixed){
+      if(mode==="fix"){g.slot=true;g.kind="keep";g.keep=g.fixed;g.tap=true;g.init=g.fixed;}
+    }else if((mode==="find"||mode==="fix")&&!/[.!?)]$/.test(w)){g.tap=true;}
+  });
+  return {toks:toks,gaps:gaps};
+}
+
+function ctx(p,gi,cur){
+  var g=p.gaps[gi],before=[],after=[];
+  for(var i=0;i<=g.i;i++){before.push(p.toks[i].w+(i<g.i?(p.gaps[i].fixed&&!p.gaps[i].slot?sep(p.gaps[i].fixed).trim():""):""));}
+  for(var j=g.i+1;j<p.toks.length;j++)after.push(p.toks[j].w);
+  var a=after.join(" ").replace(/[.!?]$/,"");
+  return {word:p.toks[g.i].w.replace(/[,;:]$/,""),next:p.toks[g.i+1].w.replace(/[,;:.]$/,""),before:before.join(" "),
+          after:a.length>48?a.slice(0,46)+"…":a,fixed:g.keep?NAME[g.keep]:""};
+}
+
+function judgeOne(p,gi,m){
+  var g=p.gaps[gi],c=ctx(p,gi),tb=T[g.kind];
+  if(g.kind==="keep"){return m===g.keep?{v:"best"}:{v:"no",msg:fill(tb.no["*"],c)};}
+  if(m===tb.best)return {v:"best"};
+  if(tb.ok&&tb.ok.hasOwnProperty(m))return {v:"ok",msg:fill(tb.ok[m],c)};
+  if(tb.no&&tb.no.hasOwnProperty(m))return {v:"no",msg:fill(tb.no[m],c)};
+  if(tb.no&&tb.no["*"])return {v:"no",msg:fill(tb.no["*"],c)};
+  if(m==="(")return {v:"no",msg:"Parentheses come in pairs around extra information, and nothing that starts here is extra information."};
+  if(m===")")return {v:"no",msg:"A closing parenthesis needs an opening one before it, around extra information."};
+  return {v:"no",msg:"A "+NAME[m]+" does not fit after “"+c.word+".”"};
+}
+
+function judgePair(p,oi,ci,cur){
+  var a=cur[oi],b=cur[ci],t=p.gaps[oi].ptype;
+  var inner=[];for(var i=p.gaps[oi].i+1;i<=p.gaps[ci].i;i++)inner.push(p.toks[i].w+(i<p.gaps[ci].i&&p.gaps[i].fixed?p.gaps[i].fixed:""));
+  var span="“"+inner.join(" ").replace(/[,;:]$/,"")+"”";
+  var kind=(a===","&&b===",")?"comma":(a==="—"&&b==="—")?"dash":(a==="("&&b===")")?"paren":(a===""&&b==="")?"none":"mix";
+  if(kind==="mix")return {v:"no",msg:"Mismatched pair around "+span+": extra information needs the same mark on both sides (two commas, two dashes, or both parentheses)."};
+  if(kind==="none"){
+    if(t==="pt")return {v:"no",msg:"The transition word "+span+" interrupts the sentence, so it needs a comma on both sides."};
+    return {v:"no",msg:span+" is extra information: remove it and the sentence still works. Mark both ends."};
+  }
+  if(t==="pt")return kind==="comma"?{v:"best"}:{v:"no",msg:"A transition word that interrupts a sentence takes commas on both sides, nothing louder."};
+  if(t==="pd"){
+    if(kind==="dash")return {v:"best"};
+    if(kind==="paren")return {v:"ok",msg:"Works, but whispers. Dashes are the standard choice when the interruption has commas inside it."};
+    return {v:"no",msg:span+" already has commas inside it. With commas around it too, the reader cannot see where it starts and stops. Use dashes."};
+  }
+  if(kind==="comma")return {v:"best",msg:"Commas: talking volume."};
+  if(kind==="dash")return {v:"ok",msg:"Works: dashes make the extra information shout. Commas are the quieter, standard choice."};
+  return {v:"ok",msg:"Works: parentheses make the extra information a whisper. Commas are the standard choice."};
+}
+
+function check(p,cur){
+  var res={},msgs=[],allGood=true,done={};
+  p.gaps.forEach(function(g,gi){
+    if(!g.tap&&!g.slot)return;
+    if(g.kind==="pair"){
+      if(done[gi])return;
+      var oi=g.role==="open"?gi:g.mate,ci=g.role==="open"?g.mate:gi;done[oi]=done[ci]=1;
+      var r=judgePair(p,oi,ci,cur);res[oi]=res[ci]=r.v;
+      if(r.v==="no"){allGood=false;msgs.push({v:"no",m:r.msg});}else if(r.v==="ok"&&r.msg)msgs.push({v:"ok",m:r.msg});
+      return;
+    }
+    if(g.slot){
+      var r2=judgeOne(p,gi,cur[gi]);res[gi]=r2.v;
+      if(r2.v==="no"){allGood=false;msgs.push({v:"no",m:r2.msg});}else if(r2.v==="ok")msgs.push({v:"ok",m:r2.msg});
+      return;
+    }
+    if(cur[gi]!==""){res[gi]="no";allGood=false;msgs.push({v:"no",m:"No mark belongs after “"+p.toks[g.i].w+".”"});}
+  });
+  return {res:res,msgs:msgs,ok:allGood};
+}
+
+function preview(p,cur){
+  var s="";
+  p.toks.forEach(function(tk,i){
+    s+=tk.w;
+    if(i<p.gaps.length){var g=p.gaps[i];s+=sep(g.tap||g.slot?cur[i]:(g.fixed||""));}
+  });
+  return s.replace(/ +/g," ");
+}
+
+/* ── mount a set of items into an element ── */
+function mount(el,items,opts){
+  opts=opts||{};var mode=opts.mode||"marked";
+  var S=items.map(function(it){var p=parse(it.t,mode);return {it:it,p:p,cur:p.gaps.map(function(g){return g.init;}),sel:-1,chk:null,whyOpts:null,whyPick:null,solved:false};});
+  var idx=0;
+  function firstTap(s){for(var i=0;i<s.p.gaps.length;i++)if(s.p.gaps[i].tap)return i;return -1;}
+  S.forEach(function(s){if(mode==="marked")s.sel=firstTap(s);});
+
+  function draw(){
+    var s=S[idx],p=s.p,h="";
+    var solvedN=S.filter(function(x){return x.solved;}).length;
+    h+='<div class="progbar"><i style="width:'+Math.round(100*solvedN/S.length)+'%"></i></div>';
+    h+='<div class="pl-top"><span class="pl-count">Sentence '+(idx+1)+' of '+S.length+'</span><span class="pl-done">'+solvedN+' solved</span></div>';
+    h+='<div class="pl-card"><div class="pl-sent'+(mode!=="marked"?" open":"")+'">';
+    p.toks.forEach(function(tk,i){
+      h+='<span class="pl-w">'+esc(tk.w)+'</span>';
+      if(i<p.gaps.length){
+        var g=p.gaps[i];
+        if(g.tap){
+          var m=s.cur[i],cls="pl-gap"+(m!==""?" has":"")+(i===s.sel?" sel":"");
+          if(s.chk&&s.chk.res[i])cls+=" r-"+s.chk.res[i];
+          h+='<button class="'+cls+'" data-g="'+i+'" aria-label="Gap after '+esc(tk.w)+'">'+(m!==""?esc(m):(mode==="marked"?"□":""))+'</button>';
+        }else{
+          h+='<span class="pl-fix">'+esc((g.fixed||"").trim())+'</span>';
+        }
+      }
+    });
+    h+='</div>';
+    if(s.sel>=0){
+      h+='<div class="pl-pal"><span class="pl-pal-lab">After “'+esc(p.toks[p.gaps[s.sel].i].w)+'”</span>';
+      MARKS.forEach(function(m){h+='<button class="pl-mk'+(s.cur[s.sel]===m?" on":"")+'" data-m="'+esc(m)+'">'+(m===""?"none":esc(m))+'</button>';});
+      h+='</div>';
+    }else{
+      h+='<div class="pl-pal"><span class="pl-pal-lab">'+(mode==="fix"?"Tap any mark (or any space between words) to change it.":"Tap the space between two words to add a mark.")+'</span></div>';
+    }
+    h+='<div class="pl-prev"><span>Your sentence</span>'+esc(preview(p,s.cur))+'</div>';
+    h+='<div class="btnrow"><button class="btn" data-a="check">Check</button><button class="btn ghost" data-a="reset">Start over</button></div>';
+    if(s.chk){
+      if(s.chk.ok){
+        var notes=s.chk.msgs.filter(function(x){return x.v==="ok";});
+        h+='<div class="fb good"><span class="lv">'+(notes.length?"Correct, with a choice to think about":"Correct")+'</span>'+(notes.length?notes.map(function(x){return esc(x.m);}).join("<br><br>"):"Every mark is in the right place.")+'</div>';
+        if(s.it.note)h+='<div class="fb note"><span class="lv">Notice</span>'+s.it.note+'</div>';
+      }else{
+        h+='<div class="fb miss"><span class="lv">Not yet</span>'+s.chk.msgs.filter(function(x){return x.v==="no";}).map(function(x){return esc(x.m);}).join("<br><br>")+'</div>';
+      }
+    }
+    if(s.chk&&s.chk.ok&&s.it.why){
+      if(!s.whyOpts)s.whyOpts=shuffle([s.it.why].concat(CONFUSE[s.it.why]));
+      h+='<div class="pl-why"><div class="qn">Why? Pick the rule that explains '+esc(s.it.whyOf||"the key mark")+'.</div>';
+      s.whyOpts.forEach(function(c){
+        var cls="pl-wo";if(s.whyPick){if(c===s.it.why&&s.whyPick===c)cls+=" right";else if(c===s.whyPick)cls+=" wrong";}
+        h+='<button class="'+cls+'" data-w="'+c+'">'+esc(WHY[c])+'</button>';
+      });
+      if(s.whyPick)h+=s.whyPick===s.it.why?'<div class="fb good"><span class="lv">That’s the rule</span>You can name it, which is exactly what the test asks you to do.</div>':'<div class="fb miss"><span class="lv">Look again</span>That rule doesn’t describe this mark. Try another.</div>';
+      h+='</div>';
+    }
+    h+='</div><div class="btnrow pl-nav"><button class="btn ghost" data-a="prev"'+(idx===0?" disabled":"")+'>&larr; Previous</button><button class="btn" data-a="next"'+(idx===S.length-1?" disabled":"")+'>Next sentence &rarr;</button></div>';
+    if(solvedN===S.length&&opts.onDone)h+=opts.onDone();
+    el.innerHTML=h;
+  }
+  el.addEventListener("click",function(e){
+    var b=e.target.closest("button");if(!b||!el.contains(b))return;var s=S[idx];
+    if(b.hasAttribute("data-g")){s.sel=+b.getAttribute("data-g");draw();return;}
+    if(b.hasAttribute("data-m")){if(s.sel<0)return;s.cur[s.sel]=b.getAttribute("data-m");s.chk=null;s.whyPick=null;
+      if(mode==="marked"){var nx=-1;for(var i=s.sel+1;i<s.p.gaps.length;i++)if(s.p.gaps[i].tap){nx=i;break;}if(nx>=0)s.sel=nx;}
+      draw();return;}
+    if(b.hasAttribute("data-w")){if(s.whyPick===s.it.why)return;s.whyPick=b.getAttribute("data-w");if(s.whyPick===s.it.why)s.solved=true;draw();return;}
+    var a=b.getAttribute("data-a");
+    if(a==="check"){s.chk=check(s.p,s.cur);if(s.chk.ok&&(!s.it.why))s.solved=true;draw();}
+    if(a==="reset"){s.cur=s.p.gaps.map(function(g){return g.init;});s.chk=null;s.whyPick=null;s.sel=mode==="marked"?firstTap(s):-1;draw();}
+    if(a==="prev"&&idx>0){idx--;draw();}
+    if(a==="next"&&idx<S.length-1){idx++;draw();}
+  });
+  draw();
+  return {check:check,parse:parse};
+}
+
+return {mount:mount,parse:parse,check:check,preview:preview,WHY:WHY,_judge:judgeOne};
+})();
+
+
+/* ═══ PRACTICE SENTENCES ═══
+   Place It and Find the Gap: argument sentences from "Advanced Punctuation (2026)" plus new ones.
+   Nothing here comes from "Adv Punc: Test" or "Adv Punc: Makeup Test".
+   Fix It: the "Punc: Think, Pair, Share" sentences (items 7 and 15 left out; see notes in the handover). */
+var PLACE=[
+ {t:"Social media companies face an unavoidable choice[cw] regulation or self-destruction.",why:"C1",whyOf:"the colon"},
+ {t:"The Supreme Court's decision was predictable[tr] however[tc] it was also deeply troubling.",why:"S2",whyOf:"the semicolon"},
+ {t:"The school added more study rooms this year[ic] students still cannot find a quiet place to work.",why:"S1",whyOf:"the semicolon"},
+ {t:"We must consider the long-term consequences of this decision[po:pd] consequences that include environmental damage, economic instability, and social unrest[pc:pd] before we proceed.",why:"D3",whyOf:"the dashes"},
+ {t:"Late buses, crowded halls, ten-minute lunches[ls] each one tells students that their time does not matter.",why:"D2",whyOf:"the dash"},
+ {t:"Artificial intelligence will first transform three industries[cl] healthcare[wc] which relies on diagnosis[su] manufacturing[wc] which depends on precision[su] and education[wc] which requires personalization.",why:"S3",whyOf:"the semicolons"},
+ {t:"The debate over school uniforms[po:pn] which has raged for decades in both public and private institutions[pc:pn] ultimately misses the point[ce] students will find ways to express themselves regardless.",why:"C1",whyOf:"the colon"},
+ {t:"The solution seems obvious[tr] therefore[tc] we should implement it immediately.",why:"S2",whyOf:"the semicolon"},
+ {t:"The policy failed for a reason nobody anticipated[cw] enforcement.",why:"C1",whyOf:"the colon"}
+];
+var FIND=[
+ {t:"The principal[po:pt] however[pc:pt] refused to comment.",why:"T1",whyOf:"the commas"},
+ {t:"Grades measure compliance as much as learning[icc] a student who turns in every worksheet can still understand very little.",why:"S1",whyOf:"the standard choice here, a semicolon"},
+ {t:"The playwright achieves something remarkable in the final act[tr] moreover[tc] she does so without relying on conventional dramatic techniques.",why:"S2",whyOf:"the semicolon"},
+ {t:"Critics of the policy[po:pd] and there are many, both liberal and conservative[pc:pd] ignore a crucial fact[ce] the program actually works.",why:"D3",whyOf:"the dashes"},
+ {t:"The yearbook staff has three editors[cl] Priya, who handles photos[su] Daniel, who writes captions[su] and Mei, who designs the layout.",why:"S3",whyOf:"the semicolons"},
+ {t:"Free time, sleep, friendship[ls] a schedule that crowds out all three has forgotten what school is for.",why:"D2",whyOf:"the dash"},
+ {t:"The senator's argument relies on three faulty assumptions[cl] that voters prioritize this issue, that the bill will pass committee review, and that funding exists in the current budget.",why:"C1",whyOf:"the colon"},
+ {t:"Banning smartphones in schools addresses several concerns[po:pd] academic dishonesty, social media addiction, classroom distraction[pc:pd] but it ignores one critical reality[ce] students need technology skills for their futures.",why:"D3",whyOf:"the dashes"}
+];
+var FIX=[
+ {t:"The three best subjects are[nc|=:] mathematics, science, and history.",why:"C1",whyOf:"what you changed"},
+ {t:"The school implemented a new dress code[tr|=,] however[tc|=,] students protested immediately.",why:"S2",whyOf:"the semicolon"},
+ {t:"The committee includes Sarah Johnson, the student council president[su|=,] Mark Chen, the debate team captain[su|=,] and Lisa Rodriguez, the yearbook editor.",why:"S3",whyOf:"the semicolons"},
+ {t:"My biggest challenges are[nc|=:] managing my time, maintaining good grades, and getting enough sleep.",why:"C1",whyOf:"what you changed"},
+ {t:"The test was difficult[ic|=:] I studied for three hours last night.",why:"S1",whyOf:"the semicolon",note:"The colon failed Test 2: studying for three hours does not explain why the test was difficult. The two sentences are related, so a semicolon links them."},
+ {t:"Students must balance academics, which include six classes and nightly homework[su|=,] athletics, which require daily practice and weekend games[su|=,] and social life, which demands constant attention.",why:"S3",whyOf:"the semicolons"},
+ {t:"Homework takes too much time[tr|=,] therefore[tc|=,] students have no time for extracurriculars.",why:"S2",whyOf:"the semicolon"},
+ {t:"Students should bring[nc|=:] pencils, notebooks, and a calculator to the exam.",why:"C1",whyOf:"what you changed"},
+ {t:"We visited three cities on our trip[cl|=:] Paris, France, which has the Eiffel Tower[su|=,] Rome, Italy, which has the Colosseum[su|=,] and Athens, Greece, which has the Parthenon.",why:"S3",whyOf:"the semicolons"},
+ {t:"The debate covered several topics[po:pd|=,] gun control, climate change, and education reform[pc:pd|=,] with each speaker presenting compelling arguments.",why:"D3",whyOf:"the dashes"},
+ {t:"Social media distracts students during class[tr|=,] moreover[tc|=,] it damages their mental health.",why:"S2",whyOf:"the semicolon"},
+ {t:"College applications require[nc|=--] essays, transcripts, test scores[ox|=--] and letters of recommendation.",why:"C1",whyOf:"what you changed",note:"Removing the dashes is not enough on its own: the list needs a comma (or nothing) before “and.” A colon would not work after “require” either, because “College applications require” fails Test 1."},
+ {t:"The principal announced new policies[cl|=:] stricter attendance rules, longer lunch periods, and mandatory study halls[tr|=,] however[tc|=,] students were not consulted.",why:"S2",whyOf:"the semicolon"},
+ {t:"The library closes at 5 PM[tr|=,] nevertheless[tc|=,] students continue studying in the hallway.",why:"S2",whyOf:"the semicolon"},
+ {t:"My favorite activities include[nc|=:] reading, hiking, and playing guitar.",why:"C1",whyOf:"what you changed"},
+ {t:"Remote learning revealed[nc|=--] inequalities that schools had ignored for years[tr|=,] moreover[tc|=,] it forced administrators to address technology gaps.",why:"S2",whyOf:"the semicolon"},
+ {t:"The cafeteria serves lunch at noon[ic|=:] the food is usually cold.",why:"S1",whyOf:"the semicolon",note:"The colon failed Test 2: cold food does not answer anything that “lunch at noon” raises."}
+];
+
+
+/* ═══ TABS ═══ */
+var TABS=[
+ {n:"Place It",hint:"Gaps marked"},
+ {n:"Find the Gap",hint:"No hints"},
+ {n:"Fix It",hint:"Repair errors"},
+ {n:"Combine",hint:"One sentence"},
+ {n:"Write",hint:"Your paragraph"}
+];
+var cur=0;
+function drawTabs(){
+  var h="";
+  for(var i=0;i<TABS.length;i++)h+='<button class="top-tab'+(i===cur?" active":"")+'" onclick="go('+i+')">'+TABS[i].n+'<span class="tab-hint">'+TABS[i].hint+'</span></button>';
+  document.getElementById("tabs").innerHTML=h;
+}
+function go(i){
+  cur=i;
+  for(var k=0;k<TABS.length;k++)document.getElementById("p"+k).className="tab-panel"+(k===i?" active":"");
+  drawTabs();window.scrollTo(0,0);
+}
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function nextBtn(i,label){return function(){return '<div class="callout" style="margin-top:1.4rem"><p><strong>Round complete.</strong></p><div class="btnrow"><button class="btn" onclick="go('+i+')">'+label+' &rarr;</button></div></div>';};}
+
+/* ═══ ROUNDS 1–3 ═══ */
+PL.mount($("m0"),PLACE,{mode:"marked",onDone:nextBtn(1,"Round Two: Find the Gap")});
+PL.mount($("m1"),FIND,{mode:"find",onDone:nextBtn(2,"Round Three: Fix It")});
+PL.mount($("m2"),FIX,{mode:"fix",onDone:nextBtn(3,"Round Four: Combine")});
+
+/* em dash helper: two hyphens become a dash */
+function dashify(ta){
+  ta.addEventListener("input",function(){
+    if(ta.value.indexOf("--")<0)return;
+    var pos=ta.selectionStart,before=ta.value.slice(0,pos);
+    var n=(before.match(/ ?-- ?/g)||[]).reduce(function(a,m){return a+m.length-1;},0);
+    ta.value=ta.value.replace(/ ?-- ?/g,"—");
+    ta.selectionStart=ta.selectionEnd=Math.max(0,pos-n);
+    ta.dispatchEvent(new Event("change"));
+  });
+}
+function insertDash(ta){
+  var a=ta.selectionStart,b=ta.selectionEnd,v=ta.value;
+  var left=v.slice(0,a).replace(/ $/,""),right=v.slice(b).replace(/^ /,"");
+  ta.value=left+"—"+right;ta.focus();ta.selectionStart=ta.selectionEnd=left.length+1;
+  ta.dispatchEvent(new Event("input"));
+}
+
+/* ═══ COMBINE ═══ (sets and model answers from Adv Punc 2 and its answer key) */
+var CMB=[
+ {f:["The college admissions scandal revealed something.","Many had long suspected this.","Wealth determines access to elite universities.","Merit does not determine access."],
+  m:"The college admissions scandal revealed what many had long suspected: wealth—not merit—determines access to elite universities.",u:"A colon introduces what the scandal revealed (Colon Rule); paired dashes make “not merit” shout (Dash Rule 1)."},
+ {f:["Modern students face constant pressure.","Pressure comes from parents who demand perfection.","Pressure comes from colleges that require impossible credentials.","Pressure comes from peers who never seem to struggle.","This pressure is destroying their mental health."],
+  m:"Modern students face constant pressure—pressure from parents who demand perfection, pressure from colleges that require impossible credentials, pressure from peers who never seem to struggle—and this pressure is destroying their mental health.",u:"Paired dashes set off the three kinds of pressure, which already contain commas (Dash Rule 3)."},
+ {f:["The debate over school uniforms ultimately misses the fundamental point.","The debate has raged for decades in both public and private institutions.","The debate has divided parents and administrators.","The debate has generated countless studies."],
+  m:"The debate over school uniforms—which has raged for decades in both public and private institutions, which has divided parents and administrators, which has generated countless studies—ultimately misses the fundamental point.",u:"Paired dashes set off three which-clauses that contain commas (Dash Rule 3)."},
+ {f:["Remote learning exposed a harsh reality.","Some students lack internet access.","Some students lack quiet workspace.","Some students lack parental support.","Remote learning forced educators to confront inequalities.","Educators had previously ignored these inequalities."],
+  m:"Remote learning exposed a harsh reality—students without internet access, students without quiet workspace, students without parental support—and forced educators to confront inequalities they had previously ignored.",u:"Paired dashes set off the list that interrupts the sentence (Dash Rule 3)."},
+ {f:["The research reveals an uncomfortable truth.","Homework benefits high school students in certain subjects.","These subjects include mathematics, science, and foreign languages.","Elementary students gain nothing from homework.","Elementary students spend the most time on homework."],
+  m:"The research reveals an uncomfortable truth: homework benefits high school students in mathematics, science, and foreign languages, but elementary students—those who spend the most time on it—gain nothing.",u:"A colon introduces the truth (Colon Rule); paired dashes add a pointed detail about elementary students (Dash Rule 1)."},
+ {f:["Athletic programs receive millions in funding.","Academic programs struggle for basic supplies.","The message to students is unmistakable."],
+  m:"Athletic programs receive millions in funding while academic programs struggle for basic supplies—the message to students is unmistakable.",u:"One dash before the final verdict gives it a punch. A semicolon would also work there, more quietly."},
+ {f:["Free speech advocates face a difficult paradox.","Protecting hate speech strengthens democratic values.","Restricting hate speech protects vulnerable communities."],
+  m:"Free speech advocates face a difficult paradox: protecting hate speech strengthens democratic values, but restricting hate speech protects vulnerable communities.",u:"A colon introduces the paradox (Colon Rule). The model in the answer key adds a closing verdict after a dash; that is optional."},
+ {f:["The witnesses offered contradictory testimony.","Some claimed the defendant acted alone.","Others insisted he had accomplices.","None could agree on the timeline of events."],
+  m:"The witnesses offered contradictory testimony: some claimed the defendant acted alone; others insisted he had accomplices; none could agree on the timeline of events.",u:"A colon introduces the testimony (Colon Rule); semicolons separate the three complete sentences that follow (Semicolon Rule 1)."},
+ {f:["Artificial intelligence will reshape the economy.","It will eliminate jobs in transportation.","It will eliminate jobs in manufacturing.","It will eliminate jobs in customer service.","The workers who lose their livelihoods have no safety net waiting for them."],
+  m:"Artificial intelligence will reshape the economy—eliminating jobs in transportation, manufacturing, and customer service—but the workers who lose their livelihoods have no safety net waiting for them.",u:"Paired dashes set off the list of jobs, which has commas inside it (Dash Rule 3)."},
+ {f:["The data tells us something.","Administrators don't want to hear this.","Smaller class sizes matter more than curriculum reform.","Smaller class sizes matter more than technology upgrades.","Smaller class sizes matter more than standardized tests."],
+  m:"The data tells us what administrators don't want to hear: smaller class sizes matter more than any curriculum reform, technology upgrade, or standardized test.",u:"A colon introduces what the data reveals (Colon Rule)."}
+];
+var CHECKS=[
+ "I used at least one dash, semicolon or colon.",
+ "If I used a colon, the words before it are a complete sentence, and the words after it answer that sentence.",
+ "If I used a semicolon, there is a complete sentence on both sides, or it separates list items that contain commas.",
+ "If I used a pair of dashes, the sentence still works when I remove the words between them.",
+ "I kept every idea from the pieces."
+];
+var cIdx=0,cDraft=CMB.map(function(){return "";}),cShow=CMB.map(function(){return false;}),cTicks=CMB.map(function(){return CHECKS.map(function(){return false;});});
+function drawC(){
+  var c=CMB[cIdx],h='<div class="cmb"><div class="qbox" style="border:none;padding:0;margin:0"><div class="qn">Set '+(cIdx+1)+'</div></div><ol>';
+  c.f.forEach(function(x){h+="<li>"+esc(x)+"</li>";});
+  h+='</ol><textarea id="cTa" placeholder="Your combined sentence">'+esc(cDraft[cIdx])+'</textarea>'+
+     '<div class="toolrow"><button class="btn ghost small" id="cDash">Insert &mdash;</button><span>Two hyphens (--) also make a dash.</span></div><div class="chk">';
+  CHECKS.forEach(function(t,k){h+='<label><input type="checkbox" data-ck="'+k+'"'+(cTicks[cIdx][k]?" checked":"")+'>'+t+'</label>';});
+  h+='</div><div class="btnrow"><button class="btn" id="cModel"'+(cDraft[cIdx].trim().length<20?" disabled":"")+'>'+(cShow[cIdx]?"Hide the model":"Show a model answer")+'</button></div>';
+  if(cShow[cIdx])h+='<div class="model"><span class="lv">One possible answer</span>'+esc(c.m).replace(/[—;:]/g,function(m){return '<span class="pm">'+m+'</span>';})+'<div class="use">'+c.u+'</div></div>';
+  h+='</div>';
+  $("cMount").innerHTML=h;
+  $("cCount").textContent="Set "+(cIdx+1)+" of "+CMB.length;
+  $("cPrev").disabled=cIdx===0;$("cNext").disabled=cIdx===CMB.length-1;
+  var ta=$("cTa");dashify(ta);
+  ta.addEventListener("input",function(){cDraft[cIdx]=ta.value;$("cModel").disabled=ta.value.trim().length<20&&!cShow[cIdx];});
+  $("cDash").addEventListener("click",function(){insertDash(ta);});
+  $("cModel").addEventListener("click",function(){cShow[cIdx]=!cShow[cIdx];drawC();});
+}
+$("cMount").addEventListener("change",function(e){var k=e.target.getAttribute("data-ck");if(k!==null)cTicks[cIdx][+k]=e.target.checked;});
+$("cPrev").addEventListener("click",function(){if(cIdx>0){cIdx--;drawC();}});
+$("cNext").addEventListener("click",function(){if(cIdx<CMB.length-1){cIdx++;drawC();}});
+drawC();
+
+/* ═══ WRITE ═══ */
+var KEY="punctuation-lab-paragraph";
+var TRANS="however|therefore|consequently|moreover|nevertheless|instead|furthermore|meanwhile|in fact|indeed|otherwise|thus|hence|as a result|for example|in contrast|similarly|still";
+var REQS=[
+ {id:"dash",t:"One <b>pair of dashes</b> around an interruption (Dash Rule 1 or 3)",auto:true},
+ {id:"semi",t:"One <b>semicolon before a transition word</b> such as however or therefore, with a comma after it (Semicolon Rule 2)",auto:true},
+ {id:"colon",t:"One <b>colon</b> that passes both tests",auto:true},
+ {id:"list",t:"One <b>supercomma list</b> (Semicolon Rule 3) or one <b>list followed by a dash and a summing-up sentence</b> (Dash Rule 2). Tick this yourself.",auto:false},
+ {id:"len",t:"<b>150&ndash;200 words</b>",auto:true}
+];
+var selfTick=false,labels={};
+function sentences(txt){return txt.replace(/\n+/g," ").match(/[^.!?]+[.!?]*["”]?/g)||[];}
+function words(txt){var m=txt.trim().match(/\S+/g);return m?m.length:0;}
+function reqState(txt){
+  var ss=sentences(txt),n=words(txt);
+  return {
+    dash:ss.some(function(s){return (s.match(/—/g)||[]).length>=2;}),
+    semi:new RegExp(";\\s*("+TRANS+"),","i").test(txt),
+    colon:/:/.test(txt),
+    list:selfTick,
+    len:n>=150&&n<=200
+  };
+}
+function drawReqs(){
+  var txt=$("para").value,st=reqState(txt),h="";
+  REQS.forEach(function(r){
+    var met=st[r.id];
+    h+='<li class="'+(met?"met":"")+'"><span class="st">'+(met?"✓":"○")+'</span><span>'+r.t+
+      (r.auto?"":' &nbsp;<input type="checkbox" id="selfTick"'+(selfTick?" checked":"")+' style="accent-color:var(--ok)">')+'</span></li>';
+  });
+  $("reqs").innerHTML=h;
+  var n=words(txt);$("wc").textContent=n+" words";$("wc").className="wc"+(n>=150&&n<=200?" good":"");
+}
+$("reqs").addEventListener("change",function(e){if(e.target.id==="selfTick"){selfTick=e.target.checked;save();drawReqs();}});
+var RULEOPTS=["Choose the rule…","Dash Rule 1: loud interruption (pair of dashes)","Dash Rule 1: one dash at the end","Dash Rule 2: list, then a summing-up sentence","Dash Rule 3: interruption that has commas inside it","Semicolon Rule 1: two related complete sentences","Semicolon Rule 2: before a transition word","Semicolon Rule 3: supercomma list","Colon Rule: complete sentence, then the answer"];
+var found=[];
+function findMarks(){
+  var txt=$("para").value;found=[];
+  sentences(txt).forEach(function(s){
+    s=s.trim();if(!s)return;
+    var dashes=[],i;
+    for(i=0;i<s.length;i++)if(s.charAt(i)==="—")dashes.push(i);
+    if(dashes.length>=2){
+      for(var k=0;k+1<dashes.length;k+=2)found.push({kind:"Pair of dashes",ctx:s,hl:[dashes[k],dashes[k+1]]});
+      if(dashes.length%2===1)found.push({kind:"Dash",ctx:s,hl:[dashes[dashes.length-1]]});
+    }else if(dashes.length===1)found.push({kind:"Dash",ctx:s,hl:[dashes[0]]});
+    for(i=0;i<s.length;i++){var c=s.charAt(i);if(c===";"||c===":")found.push({kind:c===";"?"Semicolon":"Colon",ctx:s,hl:[i]});}
+  });
+  drawMarks();
+}
+function markCtx(m){
+  var s=m.ctx,out="",i;
+  for(i=0;i<s.length;i++){var c=esc(s.charAt(i));out+=m.hl.indexOf(i)>=0?'<span class="pm" style="background:var(--accent-light);padding:0 3px">'+c+'</span>':c;}
+  return out;
+}
+function drawMarks(){
+  if(!found.length){$("marks").innerHTML='<div class="fb note"><span class="lv">No marks found</span>Your draft has no dashes, semicolons or colons yet.</div>';return;}
+  var h="";
+  found.forEach(function(m,k){
+    var key=m.kind+"|"+m.ctx+"|"+m.hl.join(",");
+    h+='<div class="mrow"><div class="qn" style="font-family:var(--cond);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700">'+(k+1)+'. '+m.kind+'</div><div class="mctx">'+markCtx(m)+'</div><select data-mk="'+k+'">';
+    RULEOPTS.forEach(function(o,j){h+='<option value="'+j+'"'+(labels[key]===j?" selected":"")+'>'+o+'</option>';});
+    h+='</select></div>';
+  });
+  $("marks").innerHTML=h;
+}
+$("marks").addEventListener("change",function(e){var k=e.target.getAttribute("data-mk");if(k===null)return;var m=found[+k];labels[m.kind+"|"+m.ctx+"|"+m.hl.join(",")]=+e.target.value;save();});
+function save(){try{localStorage.setItem(KEY,JSON.stringify({t:$("para").value,self:selfTick,labels:labels}));}catch(e){}}
+function load(){try{var r=JSON.parse(localStorage.getItem(KEY)||"null");if(r){$("para").value=r.t||"";selfTick=!!r.self;labels=r.labels||{};}}catch(e){}}
+var pta=$("para");dashify(pta);
+pta.addEventListener("input",function(){save();drawReqs();});
+$("dashBtn").addEventListener("click",function(){insertDash(pta);});
+$("findBtn").addEventListener("click",findMarks);
+$("copyBtn").addEventListener("click",function(){
+  var txt=$("para").value.trim();if(!txt){$("copyMsg").innerHTML='<div class="fb note"><span class="lv">Nothing to copy</span>Write your paragraph first.</div>';return;}
+  if(!found.length)findMarks();
+  var out=txt+"\n\nMy marks:\n";
+  found.forEach(function(m,k){
+    var lab=labels[m.kind+"|"+m.ctx+"|"+m.hl.join(",")];
+    var s=m.ctx,a=Math.max(0,m.hl[0]-30),b=Math.min(s.length,m.hl[m.hl.length-1]+31);
+    out+=(k+1)+". "+m.kind+": “"+(a>0?"…":"")+s.slice(a,b).trim()+(b<s.length?"…":"")+"” — "+(lab?RULEOPTS[lab]:"(rule not chosen)")+"\n";
+  });
+  function done(){$("copyMsg").innerHTML='<div class="fb good"><span class="lv">Copied</span>Paste it into your Google Doc.</div>';}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(out).then(done,function(){fallback(out);});}else fallback(out);
+  function fallback(t){var ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");done();}catch(e){$("copyMsg").innerHTML='<div class="fb miss"><span class="lv">Could not copy</span>Select your paragraph and copy it by hand.</div>';}ta.remove();}
+});
+load();drawReqs();
+
+/* ═══ BOOT ═══ */
+/* keep the tabs directly under the masthead at any width */
+function fixTop(){var m=document.querySelector(".masthead");document.getElementById("tabs").style.top=m.offsetHeight+"px";}
+window.addEventListener("resize",fixTop);fixTop();
+go(0);
+</script>
+</body>
+</html>
