@@ -141,7 +141,7 @@
   table.log th{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);text-align:left;border-bottom:1px solid var(--line);padding:6px;}
   table.log td{border-bottom:1px solid var(--line);padding:7px 6px;vertical-align:top;}
   table.log tr.empty td{color:#a99c80;font-style:italic;}
-  table.log td.ok{font-family:var(--mono);font-size:11px;color:var(--good);font-weight:700;}
+  table.log td.ok{font-family:var(--mono);font-size:12.5px;color:#fff;background:var(--good);font-weight:700;text-align:center;}
 
   .cards4{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0;}
   .scard{border:1px solid var(--line);background:var(--paper);padding:12px 14px;}
@@ -175,6 +175,14 @@
   .done-card{border:1px solid var(--line);background:rgba(176,125,24,.06);padding:16px 18px;margin-top:16px;}
   .done-card .dl{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);}
   .done-card .db{font-size:17px;margin-top:4px;}
+  .confirmed{font-family:var(--mono);font-size:20px;font-weight:700;letter-spacing:.08em;color:#fff;background:var(--good);padding:14px 16px;text-align:center;margin:12px 0 4px;border-radius:2px;}
+  .confirmed small{display:block;font-size:11px;letter-spacing:.12em;font-weight:500;opacity:.9;margin-top:3px;}
+  .lockbox{position:fixed;inset:0;background:rgba(20,26,38,.55);display:flex;align-items:center;justify-content:center;z-index:50;}
+  .lockbox .lb{background:var(--paper);border:2px solid var(--ox);padding:20px 22px;min-width:300px;box-shadow:0 12px 40px rgba(0,0,0,.3);}
+  .lockbox .lb h4{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ox);margin:0 0 10px;}
+  .lockbox input{font-family:var(--mono);font-size:16px;padding:8px 10px;border:1px solid var(--line);width:100%;margin-bottom:10px;}
+  .lockbox .err{font-family:var(--mono);font-size:11px;color:var(--rust);min-height:14px;margin-bottom:6px;}
+  .note-sm{font-family:var(--mono);font-size:11px;color:var(--amber);min-height:14px;}
   .footnote{font-family:var(--mono);font-size:10px;color:var(--ink-soft);text-align:center;margin-top:26px;letter-spacing:.04em;}
   @media(max-width:700px){.two,.three,.cards4,.readout,.split,.stepsbig{grid-template-columns:1fr;} header.pin{position:relative;}}
 </style>
@@ -199,6 +207,23 @@ var $=function(s,el){return (el||document).querySelector(s);};
 var $$=function(s,el){return [].slice.call((el||document).querySelectorAll(s));};
 function show(el){ if(el) el.classList.add("shown"); }
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+
+/* ---------- teacher lock ---------- */
+var LOCKED={"shift": "TAUbF0QKCwwDEk9DCggKCBkVUF9YDQ4bUAIeABcaWk8eDVBfKwcCTQcAC0EQBkcdBRVSCBBVSAkZF0xdAAARTRMNExIXVEUDEkNMXRRXNwwCABYIAwRHHhgIFBUXSRQZERMGQQ0HRxkYBFJdAQRZChERAUEGDBMaFQQcQRABAgICGFIACg1HAhISFxMSCBMEHw9OTgEEWUFQDRsKAUkqCAICBxMdi+f0A0EXGRAbBk0DFhsPA0dbQgBfThFaKEcDFRZSFQwMCB8JQREACovn9ARBBgAPDEcCBgQAQREHEwQcQRsVRAwfHRwAGw8XSVsIHV8TDQhVSAgdX1IVDAxHAhISFxMSCBMEHw8BW0QdDwhQDxcWRAYJCANBEw8ASRMFFUEdDQBJCAMVElxBIQAJHgQEGw9EAQYJUBUdQQIAH009BAACERseTUwDTAAKDVtCEl9SEhAACwFQBhsXAUkpCAcVHQ+G6f4eUAAcEhMMFR5QBx0TRAgXHRwEAU1EHQ8IUCwdDgpJBgMUQTwEFB0SAxVPTk4UV1sdTjIdQRABAk0fAwEEFh8GGRkOHBJEGhMMCU1SAAoNRxkYBFIVDAwIHwlBBgkFHUcICBEeAA0HFE0ECRcMRAoPDB4GFxJKSS4eUBUaABBJBgEHAAsSRB0VGBVeUikLBQNNHw9SFQtJEwURFVICCAgOAF5BKw4Ri+f0HA1SFQEaE00ZFVIAEEkTBRVBFw8AR1tCAF9OTgAAEVNMThYIElc=", "obs": "TAUbF0QKCwwDEk9DCggKCBkVUF9YDQ4bUAIeABcaWk8eDVBfMAECTRMUBkGG6fNNBAkXQRMGFQEUQQQSRB4PDARBBQRECgYDUA4QEgEbEQhQDhRBDR1bQhQIBF9YDQ4bUAIeABcaWk8eA1BfWBlZIxEVBxMBSQMCFRIcg+TwE00TCRMPAwxHDxUCExQXDEcaFUEeDgsCRwwEQRsVSkklGARBTgQJVwgPAwQAFwUdDgIeEk5OAQRZTRQOXEEwAQIUUAUXEQEHA00fD1IVDAxHUQMREw9ECgsMAxJPQwcKRVMEDh0NF1VIHgAAHF9EQQkCUAUXFQEKEwICTVIPC0kVBAARHgRNRUcCHkEaDhNJFAgeEhsVDR8CTQQJF0EQBggBA0ETEwFJTwMfQRMVCwQODlACHg4HAktNHg5SFQ0EAk0UCBQHARsCAxMEW01ECAkJUA4cQRMBBhlQFRoERAIJAgcEAEENGkcBHw4ZCAoORwsfE0hBEwECGRgEAEEQAQIUUBMXAgsOCQQDBFISCwQCGRgIHAZECBRNTBICAApJBAEREgFcRgoET04EBAgADAkOFV1dEhQICVNQAAZBBQULTVgVGgRECggMAxUeCAoMFEReQTMPAEkGTQMIHAYIDEcCEhIXExIIEwQfD1ICBQdHHhkMAg0dSQUIUBYADgoOR0U/MTczJUBJUV8RTF0UVzQCSkEdAxcMFRsRFRsOChpHGRgABkEJCAkUUAgcBQEZAgMUBBwVRB0IAhwSUgoBDBdNFggcBQ0HAE0RExdBEgwVFFAJExMASRMCUA4EBBYdEh8eT1IjER1HGhgABkEHBhIDBBJSABdJBgNQDhASARsRDAQIHQ9ISQYDFEETEkQMEQQUBBwCAUVHCgIOBRJEHg4ZGEEcBBNJEwIfDQFBBQcDTR4EBUECGwYAFRYdEw8aSVFfEUxdSw0OG05dXQUNH1k=", "cause": "TAUbF0QKCwwDEk9DEB4IT05dFggSSQQBERIBXEYEDgMZQR0DF0tZURQIBEEHBQYeA1xQDAhLWS4fFB4FRAoGGAMEUgBECg8MHgYXXUsNDhtOIFIPAR5HAgJBHw4WDEceFQ8BCBAAEQhQFR0OCEkIHRUPAUEFSQAMAEFaLAEbBBgCGJDh/RpHWUOD8tJISSskNy5bT0QoRwMVFlIVDAwIHwlBFxkUBQYEHhJSAAgFRxkYBFIOBhoCHwYABggLBxRBUA4eBUQICQlQDxcWREEiBB4SBgQNB05DUDIdDAEGCQhQExcCCw4JBAMEAUEXBgoIBAkbDwNJBh5QBAQIAAwJDhVBWhUMDEcOHwABFQgACQgDTVIOCgoCTRQTGwcQSQ8MFEETQQkMBAURDxsSCUBJTTkPFgQUDAkJFQ8GQQcBAg4bElICBR0EBVAAUgwNGhMMGwRSSSs5Ij8xSFxdSw0OG05dFggSSQQBERIBXEYEDgMZQQYJRldbCRkXUgIICBQeTUMfDUZXJAIFDRZBFBsCGxUPBkEFSQQFEQ8VBFhGAwQGXzwORB0IAhxBEQAKSRUIEQIaQQ0dR0UECRdBBwwJGQIEUg4CSQZNEg0TAg9JDwIcBFtPRD0PCFAHAAAJDBACAgpSBQsMFAOS4esVRBsCDh8GHAgXDEcEBEETEkQMEQQUBBwCAUlPCxkZFwVECggDBAgcBAodFEReQTcZFAUGBB4IHAZEABNNERYTGERBMRgcAhMPSEkXBQIEHA4IBgAUWU9SLwtJFQQGAB5BEAECAgIYUhULSRQaGRURCUQdCE1YLRdBMgwVHxkEAEEMCANNHg4GCQ0HAE0EDlITARkLDBMEUi8BHhMCHkEFCBABTkNMThYIEldbQhQIBF8=", "cut0": "MUEABBcKEghQFRoAEEkKDBsEAUEFSQkIB0ECEwENDg4ECB0PRB0PDARBEQ4RBQNNFgAbDURBhe3sDR0OD0kPCAIEUgcLG0cMUBEeAAoME4/w/FtBEhpHDFATFxIHHAJNHg4GCQ0HAE0TDgcNAEkCGxUTUgIMDAQGUEmQ4fgBDh5QDgYJARtHAgIGEw8XSQgbFRMCDhMMFQgUQRsVhun6RF5BIQQHBgkJUAIHFV5JEwQdBFxBMhwLDhEPUhYFGkcfFQABDgoIBQEVQRsPRFhfW0BaUgACHQIfUAUXAgUNAh5QDhRBAggOARUFUhIBCBUOGAQBQQ0dRxoREhyD5PATQw==", "cut1": "JxMdDwNJCBgEEhsFAUkOGQNBAQILGQJNWC8XFhAGCU0DFRsNCEkABAYEAUEQAQJNAggVCRBJBgMDFhcTF0kBAgJBEBMNDQAIA0ETDwBJFQITChcVF0BHGwNBBRMLBwBNERVSCBAaRw4fExdBTB0PCFASGRQIBUcPBQwCEkQHAhsVE1IVFggEBhUFUgAKEBMFGQ8VSEpJNAgTDhwFRAoSGUpBE0EJCBdNEwAcQQYMRxgDBBQUCEkQBAQJHRQQSQUIGQ8VQRABAk0EBAATDR0IHwlNUgMRHUcYAwQUFAhJDh4eg/L4EEkTBRVBAQAJDEcMA0EGExEMSQ==", "cut2": "OQ8WBBQMCQkVDwZBCAAJCANBWgUNDwEIAgQcFUQdCAIcEl5BEAwGAANNUgUBCgYJFRJbQRIaRwARDwtBCAAJCANBBgkFHUcMHA1SFRYIBAhQAxMCD0kTAlAOHAREGggYAgIXT0Q6Ag4fDxZBBxwTV1AEEwIMSQsEHgRSAAgaCE0YAAFBEAZHDxVBEwMIDEcZH0EBAB1JCQJeQT4ICgwUTQQJExVECggYHAVSDwEfAh9QBRsSBQ4VCBVBEwUASQkCBAkbDwNH", "cut3": "PgQEBBZJBg4TDgAFDQcATQQOUg4RG0cPFRIGQRABAgICGFIXF0kJCAYEAE1EDxIBHEEBFQsZSU0kCRdBhun7AxUXFxOG6fpNEw4fBBdJAR8fDFIVDAxHGRgEHRMdRUcDHxVSBxYGCk0RD1IOBhoCHwYABggLB0tNEQ8WQRABAk0TBBwVFgxHBANBBQkBGwJNAAkLEg0KDh4EElIEHBkCDgRBBgkBSRMFFQ4AGEQdCE0SExcAD0dHPhUCHQ8ASQQYBFtSFQwMRwERFgFBCw9HAxEVBxMBSREeUA4HE0QdDwgfEwtBCw9HGRgEUg0FHhRDUC8TFREbAk0dAAtBCgYTTRMJEw8DDFxNHxQAQQkIF00fB1IIEEkDAhUSXA==", "check": "Pyo="};
+var unlockedKey=null;
+function dec(b64,key){ try{ var bin=atob(b64), kb=new TextEncoder().encode(key), out=new Uint8Array(bin.length); for(var i=0;i<bin.length;i++){ out[i]=bin.charCodeAt(i)^kb[i%kb.length]; } return new TextDecoder("utf-8",{fatal:true}).decode(out); }catch(e){ return null; } }
+function fillLocked(root){ if(!unlockedKey) return; $$("[data-locked]",root||document).forEach(function(el){ if(el.dataset.filled) return; var v=dec(LOCKED[el.dataset.locked],unlockedKey); if(v!==null){ el.innerHTML=v; el.dataset.filled="1"; } }); }
+function needCode(cb){
+  if(unlockedKey){ fillLocked(); cb(); return; }
+  var box=document.createElement("div"); box.className="lockbox";
+  box.innerHTML='<div class="lb"><h4>\uD83D\uDD12 Teacher answers</h4><input type="password" placeholder="Code" autocomplete="off"><div class="err"></div><div class="row"><button class="btn sm" data-ok>Unlock</button><button class="btn sm ghost" data-cancel>Cancel</button></div></div>';
+  document.body.appendChild(box);
+  var inp=$("input",box); inp.focus();
+  function tryIt(){ var k=inp.value.trim().toLowerCase(); if(dec(LOCKED.check,k)==="OK"){ unlockedKey=k; box.remove(); fillLocked(); cb(); } else { $(".err",box).textContent="That code doesn\u2019t open it."; inp.select(); } }
+  $("[data-ok]",box).onclick=tryIt; inp.onkeydown=function(e){ if(e.key==="Enter") tryIt(); if(e.key==="Escape") box.remove(); };
+  $("[data-cancel]",box).onclick=function(){ box.remove(); };
+}
 
 /* ---------- notebook time ---------- */
 function notebook(min, q, extra){
@@ -488,7 +513,7 @@ var LOG={
 var LABS=["clock","light","waves","shadow"], LABNAMES={clock:"Raise the clock",light:"Bend the light",waves:"Catch the ripple",shadow:"Size the shadow"};
 function logHTML(){
   return '<table class="log"><tr><th>Einstein’s theory predicted</th><th>Predicted</th><th>Tool</th><th>Checked</th><th>Result</th></tr>'+
-  LABS.map(function(k){var r=LOG[k]; return r.done? '<tr><td>'+r.pred+'</td><td>'+r.py+'</td><td>'+r.tool+'</td><td>'+r.cy+'</td><td class="ok">CAME OUT AS PREDICTED</td></tr>'
+  LABS.map(function(k){var r=LOG[k]; return r.done? '<tr><td>'+r.pred+'</td><td>'+r.py+'</td><td>'+r.tool+'</td><td>'+r.cy+'</td><td class="ok">✓ CONFIRMED</td></tr>'
     : '<tr class="empty"><td colspan="5">Lab '+(LABS.indexOf(k)+1)+': '+LABNAMES[k]+' — not checked yet</td></tr>';}).join("")+'</table>';
 }
 function refreshLogs(){ $$("[data-log]").forEach(function(t){ t.innerHTML=logHTML(); }); }
@@ -508,7 +533,7 @@ function labStage(k, num, o){
       '<button class="btn sm" data-ran style="margin-top:8px">I’ve run it — time to record →</button></div>'+
     '<div class="block" data-rec>'+notebook(2,"Step 4 · Record what you saw.","<ul>"+o.record.map(function(r){return "<li>"+r+"</li>";}).join("")+"</ul>")+
       '<div class="prompt">Step 5</div><button class="btn go" data-check>Check against the world</button></div>'+
-    '<div class="block" data-world><div class="world"><div class="wl">What was measured</div>'+o.world+'</div>'+
+    '<div class="block" data-world><div class="confirmed">✓ THE OBSERVATION CONFIRMED THE PREDICTION<small>It could have come out the other way. It didn’t.</small></div><div class="world"><div class="wl">What was measured</div>'+o.world+'</div>'+
       '<div class="box amber"><b class="l">Could it have said no?</b>'+o.couldno+'</div></div>'+
     '<h3 style="font-size:19px;margin:22px 0 4px">Lab log</h3><div data-log></div>'+
     navHTML(num<4?"Next lab":"Next");
@@ -539,7 +564,7 @@ labStage("clock",1,{
   body:'<div class="stagebox"><svg id="clkSvg" viewBox="0 0 720 300"></svg></div>'+
     '<div class="ctrls"><span>Height</span><input type="range" id="clkH" min="0" max="1000" value="0"><span class="val" id="clkHv"></span></div>'+
     '<div class="row"><span class="chk" style="color:var(--ink-soft)">Jump to a real test:</span><button class="opt small" data-h="0.33">Lab bench · 33 cm</button><button class="opt small" data-h="450">Tokyo Skytree · 450 m</button><button class="opt small" data-h="20200000">GPS satellite · 20,200 km</button></div>'+
-    '<div class="row"><label class="chk"><input type="checkbox" id="clkSpeed"> The clock is on a satellite moving at orbit speed (above 200 km)</label></div>'+
+    '<div class="row"><label class="chk"><input type="checkbox" id="clkSpeed"> Put the clock on a satellite, moving at orbit speed</label></div><div class="note-sm" id="clkNote"></div>'+
     '<div class="readout"><div class="ro"><div class="rl">Einstein’s theory predicts</div><div class="rv" id="clkE"></div><div class="rs" id="clkE2"></div></div>'+
     '<div class="ro newton"><div class="rl">Newton’s theory predicts</div><div class="rv">0 — no difference</div><div class="rs">For Newton, gravity is a pull. It doesn’t touch time.</div></div></div>',
   record:["How much faster is the raised clock at 33 cm? At 450 m? At GPS height?","Tick the satellite-speed box at GPS height. What happens to the total?","What does Newton predict? So could this measurement have said no to Einstein?"],
@@ -551,7 +576,7 @@ labStage("clock",1,{
     var svg=$("#clkSvg",p), sl=$("#clkH",p), sp=$("#clkSpeed",p), fixedH=null, angG=0, angR=0, raf=null, last=null;
     function hFrom(v){ return fixedH!==null?fixedH:Math.pow(10,-1+v/1000*8.6); }
     function vFrom(h){ return (Math.log10(h)+1)/8.6*1000; }
-    function rates(h){ var dG=GMe/C2*(1/RE-1/(RE+h)), dV=0; sp.disabled=h<2e5; if(sp.disabled) sp.checked=false; if(sp.checked) dV=-(GMe/(RE+h))/(2*C2); return {dG:dG,dV:dV,tot:dG+dV}; }
+    function rates(h){ var dG=GMe/C2*(1/RE-1/(RE+h)), dV=0; if(sp.checked) dV=-(GMe/(RE+h))/(2*C2); return {dG:dG,dV:dV,tot:dG+dV}; }
     function visRate(frac){ if(frac===0) return 1; var m=Math.min(1,Math.max(0,(Math.log10(Math.abs(frac))+18)/9)); return 1+(frac>0?1:-1)*0.45*m; }
     function face(x,y,r,label,col,ang){
       var t='<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="#f7f2e6" stroke="'+col+'" stroke-width="3"/>';
@@ -578,8 +603,10 @@ labStage("clock",1,{
     function loop(ts){ if(last===null) last=ts; var dt=Math.min(0.05,(ts-last)/1000); last=ts; var R=rates(hFrom(+sl.value));
       angG+=dt*2*Math.PI/6; angR+=dt*2*Math.PI/6*visRate(R.tot); draw(); raf=requestAnimationFrame(loop); }
     function reset(){ angG=0; angR=0; }
-    sl.oninput=function(){ fixedH=null; reset(); draw(); }; sp.onchange=function(){ reset(); draw(); };
-    $$("[data-h]",p).forEach(function(b){ b.onclick=function(){ sl.value=vFrom(+b.dataset.h); fixedH=+b.dataset.h; reset(); draw(); }; });
+    var note=$("#clkNote",p);
+    sl.oninput=function(){ fixedH=null; if(sp.checked && hFrom(+sl.value)<2e5){ sp.checked=false; note.textContent="Satellites orbit above about 200 km, so the satellite speed is switched off down here."; } else note.textContent=""; reset(); draw(); };
+    sp.onchange=function(){ if(sp.checked && hFrom(+sl.value)<2e5){ fixedH=2.02e7; sl.value=vFrom(fixedH); note.textContent="Satellites orbit above about 200 km, so the clock moved up to GPS height (20,200 km)."; } else note.textContent=""; reset(); draw(); };
+    $$("[data-h]",p).forEach(function(b){ b.onclick=function(){ sl.value=vFrom(+b.dataset.h); fixedH=+b.dataset.h; if(fixedH<2e5) sp.checked=false; note.textContent=""; reset(); draw(); }; });
     anims.clock={start:function(){ cancelAnimationFrame(raf); last=null; raf=requestAnimationFrame(loop); }, stop:function(){ cancelAnimationFrame(raf); }};
     draw();
   }
@@ -669,10 +696,10 @@ labStage("shadow",4,{
   falsifier:"If the shadow were a very different size from the one the theory gives for the measured mass, Einstein’s theory is wrong.",
   q:"A heavier black hole: will its shadow look bigger or smaller?",
   opts:["Bigger","Smaller","Same size"],
-  after:"Find out. Then set the mass to the value astronomers measured from M87’s stars.",
+  after:"Find out. Then set the mass to <b>6.5 billion Suns</b>: the value astronomers measured from how fast the stars near M87’s centre move. Use the slider or the button.",
   body:'<div class="stagebox"><canvas id="bhCv" width="560" height="340"></canvas></div>'+
     '<div class="ctrls"><span>Mass (billions of Suns)</span><input type="range" id="bhM" min="10" max="120" value="20"><span class="val" id="bhMv"></span></div>'+
-    '<div class="row"><label class="chk"><input type="checkbox" id="bhPhoto"> Overlay the size measured in the 2019 photo</label></div>'+
+    '<div class="row"><button class="opt small" id="bhSet">Set to M87’s measured mass · 6.5 billion Suns</button><label class="chk"><input type="checkbox" id="bhPhoto"> Overlay the size measured in the 2019 photo</label></div>'+
     '<div class="readout"><div class="ro"><div class="rl">The theory predicts a ring about</div><div class="rv" id="bhP"></div><div class="rs">millionths of an arcsecond across, seen from Earth</div></div>'+
     '<div class="ro"><div class="rl">The mass, measured separately</div><div class="rv">≈ 6.5 billion Suns</div><div class="rs">from how fast stars near the centre of galaxy M87 move</div></div></div>',
   record:["What happens to the shadow as the mass goes up?","Set the mass to 6.5 billion Suns. What size does the theory predict? Now overlay the photo.","The mass came from watching stars; the ring came from radio telescopes. Why does it matter that these are different tools?"],
@@ -689,7 +716,7 @@ labStage("shadow",4,{
       ctx.fillStyle="#000"; ctx.beginPath(); ctx.arc(cx,cy,R*0.62,0,7); ctx.fill();
       if($("#bhPhoto",p).checked){ var Rm=42*2.6/2; ctx.setLineDash([6,5]); ctx.strokeStyle="#7fb0e6"; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(cx,cy,Rm,0,7); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle="#7fb0e6"; ctx.font="11px JetBrains Mono, monospace"; ctx.fillText("2019 PHOTO: RING ≈ 42",cx+Rm+8,cy-Rm+10); }
       ctx.fillStyle="rgba(203,191,159,.85)"; ctx.font="11px JetBrains Mono, monospace"; ctx.fillText("M87 · 55 MILLION LIGHT-YEARS",12,20); }
-    $("#bhM",p).oninput=draw; $("#bhPhoto",p).onchange=draw; draw();
+    $("#bhM",p).oninput=draw; $("#bhPhoto",p).onchange=draw; $("#bhSet",p).onclick=function(){ $("#bhM",p).value=65; draw(); }; draw();
   }
 });
 
@@ -783,17 +810,14 @@ addStage("Where shifts happen", function(el){
   '<div class="hint" id="h3"><b>Today.</b> Stars at the edges of galaxies orbit too fast for the matter we can see. Most physicists say there is unseen matter, dark matter (the Neptune move). A minority say gravity works differently at that size (the Mercury move). Where is the gap now?</div>'+
   '<div class="hint" id="h4"><b>The black hole.</b> The photo and its size are observations. “Nothing gets out” and “everything is crushed to a point” come from the theory, and physicists expect the theory to break at the centre. If a new theory comes, which of these could change?</div>'+
   notebook(5,"When can a paradigm shift happen, and what does a new theory have to do before it can replace the old one?","<div class=\"use\">Use: evidence · explanation · scope. Back it with Mercury and one other case.</div>")+
-  '<button class="btn sm ghost" id="shiftName">Open after you’ve written</button>'+
-  '<div class="block" id="shiftNameBlk"><div class="nameit"><div class="nl">One way to put it</div><div class="nb">'+
-    '<p>Paradigm shifts start in the <em>gaps between theory and observation</em>, like Mercury’s extra swing.</p>'+
-    '<p>A new theory can’t take over until it explains <em>all</em> the observations: the new ones and the old ones. Einstein had to fix Mercury <b>and</b> still give Newton’s answers for apples, the Moon and Neptune.</p>'+
-    '<p>So the observations stay, and the theory that explains them changes. Is that always true? Hold on to that claim. You’ll test it at the end.</p></div></div></div>'+
+  '<button class="btn sm ghost" id="shiftName">🔒 Open after you’ve written (teacher)</button>'+
+  '<div class="block" id="shiftNameBlk" data-locked="shift"></div>'+
   '</div>'+
   navHTML("Make it, break it");
   wireNav(el);
   $$("[data-hint]",el).forEach(function(b){ b.onclick=function(){ show($("#h"+b.dataset.hint,el)); }; });
   $("#kinds",el).onclick=function(){ $("#sort2",el).classList.add("reveal-kinds"); show($("#kindsTalk",el)); this.style.display="none"; };
-  $("#shiftName",el).onclick=function(){ show($("#shiftNameBlk",el)); this.style.display="none"; };
+  $("#shiftName",el).onclick=function(){ var b=this; needCode(function(){ show($("#shiftNameBlk",el)); b.style.display="none"; }); };
 });
 stages[stages.length-1].onShow=function(el){ var s=$("#sort2",el); if(s) s.innerHTML=sortHTML(true); };
 
@@ -801,23 +825,23 @@ stages[stages.length-1].onShow=function(el){ var s=$("#sort2",el); if(s) s.inner
 var SUBS=[
   {q:"When is it reasonable to explain away evidence that doesn’t fit?",
    cases:"Neptune · Vulcan · phrenology’s kindness bump · the land bridges",
-   cut:"A rescue that makes a new prediction that could fail (“look here for a planet”) vs a rescue nothing could ever check (“his other organs overpowered it”). Second cut: time. Vulcan was reasonable in 1860; after decades of failed searches it wasn’t."},
+   cut:""},
   {q:"Is a theory that has been shown to be wrong still knowledge?",
    cases:"Newton · phrenology · Newton’s cannon and Mercury",
-   cut:"Wrong outside its scope (Newton still gives the right answers for bridges and rockets) vs wrong at its core (the skull bumps never tracked anything). Second cut: a map can be useful without being the territory, but useful isn’t the same as true."},
+   cut:""},
   {q:"Why do many sources agreeing sometimes make a claim strong, and sometimes not?",
    cases:"The four labs · bixonimania",
-   cut:"Independent lines (different tools, teams, decades) vs many lines that all trace back to one source. Second cut: each line also has to be able to say no. Lines that could never disagree add nothing."},
+   cut:""},
   {q:"Is the centre of a black hole a “never”?",
    cases:"The shadow lab · observation vs theory · Newton to Einstein",
-   cut:"Never according to our best theory vs never, full stop. The “never” comes from the theory, not from an observation, and the centre is where physicists expect the theory to break. Second cut: the laws of nature vs our theory of the laws. Nature may not change; our map of it does."}];
+   cut:""}];
 addStage("Make it, break it", function(el){
   el.innerHTML=
   '<div class="micro">Part 6 · Claims and cuts</div><h2>Make it. Back it. Break it. Cut it.</h2>'+
   '<div class="lens">Knowledge claims about knowledge</div>'+
   '<div class="stepsbig"><div><b>1 · Make it</b>Answer the question in one sentence. That is your knowledge claim.</div><div><b>2 · Back it</b>Support it with a case from today. Name the case.</div><div><b>3 · Break it</b>Find a case where your claim stops working.</div><div><b>4 · Cut it</b>Rewrite the claim so it holds. Say where it holds and where it stops.</div></div>'+
   '<p class="body"><b>Pairs: choose two of these four questions.</b></p>'+
-  SUBS.map(function(s,i){ return '<div class="kqcard"><div class="kh">'+(i+1)+'. '+s.q+'</div><div class="kc"><b>Cases to try</b>'+s.cases+'</div><button class="btn sm ghost" data-cut="'+i+'">Show a cut (teacher)</button><div class="cut" id="cut'+i+'">'+s.cut+'</div></div>'; }).join("")+
+  SUBS.map(function(s,i){ return '<div class="kqcard"><div class="kh">'+(i+1)+'. '+s.q+'</div><div class="kc"><b>Cases to try</b>'+s.cases+'</div><button class="btn sm ghost" data-cut="'+i+'">🔒 Show a cut (teacher)</button><div class="cut" id="cut'+i+'" data-locked="cut'+i+'"></div></div>'; }).join("")+
   notebook(10,"Your two questions: make it, back it, break it, cut it.","<div class=\"use\">One short paragraph each. The break is the important part.</div>")+
   '<div class="sec"><h3><span class="n">★</span>Everyone: do observations ever change?</h3>'+
   '<p>At the end of Part 5 we said: <b>“The observations stay. Only the theory changes.”</b> Test it.</p>'+
@@ -829,16 +853,11 @@ addStage("Make it, break it", function(el){
     '<div class="mini"><div class="ml">A mistake</div>In 2011 the OPERA experiment measured particles called neutrinos travelling faster than light. Months later the cause was found: a loose fibre-optic cable. What caught the mistake?</div>'+
   '</div>'+
   '<div class="talk"><div class="tl">Break it</div><div class="tb">So what changes: the world, or the observation? Where does your sentence stop working?</div></div>'+
-  '<button class="btn sm ghost" id="obsCut">Show a cut (after you’ve talked)</button>'+
-  '<div class="block" id="obsCutBlk"><div class="nameit"><div class="nl">The cut — the world vs what we can observe of it</div><div class="nb">'+
-    '<p>Nature doesn’t change because we look at it. But <em>observations</em> do. They depend on the <span class="cc">tools</span> (no detector, no ripple), on how sensitive the tools are (no atomic clock, no time difference), and on what the knower is looking for: whether they recognise something as <span class="cc">evidence</span> at all (the coastlines). And a single observation can simply be wrong (OPERA).</p>'+
-    '<p>So: observations that many independent tools keep finding are very hard to overturn. But what counts as an observation, and as evidence, grows with new tools and new frameworks.</p></div></div></div>'+
+  '<button class="btn sm ghost" id="obsCut">🔒 Show a cut (teacher, after you’ve talked)</button>'+
+  '<div class="block" id="obsCutBlk" data-locked="obs"></div>'+
   '<div class="talk"><div class="tl">Bridge to the Knowledge Question</div><div class="tb">So what could <b>cause</b> science to change its mind, and what could <b>prevent</b> it? Name a case for each.</div></div>'+
-  '<button class="btn sm ghost" id="causeCut">Show some answers (teacher)</button>'+
-  '<div class="block" id="causeBlk"><div class="two">'+
-    '<div class="mini obs"><div class="ml">Could cause a change</div>A new or more sensitive tool opens a gap (Mercury’s 43″, LIGO). A new theory explains all the observations, old and new (Einstein). Someone recognises something as evidence (the coastlines, once drift had a mechanism). Independent checks catch a mistake (OPERA).</div>'+
-    '<div class="mini th"><div class="ml">Could prevent a change</div>No tool can reach it (the centre of a black hole). The framework doesn’t recognise it as evidence (fixed continents). Explaining it away (Vulcan, phrenology). No rival theory to switch to (Le Verrier had nothing to replace Newton with).</div>'+
-  '</div></div>'+
+  '<button class="btn sm ghost" id="causeCut">🔒 Show some answers (teacher)</button>'+
+  '<div class="block" id="causeBlk" data-locked="cause"></div>'+
   '</div>'+
   '<div class="sec"><h3><span class="n">★</span>Everyone: the Knowledge Question</h3></div>'+
   notebook(8,"How does science change its mind — and how settled is “settled science”?",
@@ -848,9 +867,9 @@ addStage("Make it, break it", function(el){
   '<div class="done-card"><div class="dl">Next lesson</div><div class="db"><b>To which knowers is science settled?</b> The scientists who can see the lines? You, after today? Someone watching a 50/50 debate on TV? You’ll pick a claim people argue about and check how much independent convergence it really has.</div></div>'+
   navHTML(null);
   wireNav(el);
-  $$("[data-cut]",el).forEach(function(b){ b.onclick=function(){ $("#cut"+b.dataset.cut,el).classList.toggle("shown"); }; });
-  $("#obsCut",el).onclick=function(){ show($("#obsCutBlk",el)); this.style.display="none"; };
-  $("#causeCut",el).onclick=function(){ show($("#causeBlk",el)); this.style.display="none"; };
+  $$("[data-cut]",el).forEach(function(b){ b.onclick=function(){ needCode(function(){ $("#cut"+b.dataset.cut,el).classList.toggle("shown"); }); }; });
+  $("#obsCut",el).onclick=function(){ var b=this; needCode(function(){ show($("#obsCutBlk",el)); b.style.display="none"; }); };
+  $("#causeCut",el).onclick=function(){ var b=this; needCode(function(){ show($("#causeBlk",el)); b.style.display="none"; }); };
 });
 
 /* ======================= boot ======================= */
@@ -862,6 +881,7 @@ function go(i){
   if(i>idx && !canLeave(idx)) return;
   stopAnims(); idx=i;
   stageEls.forEach(function(s,j){ s.classList.toggle("show",j===i); if(j===i&&!s.dataset.built){ stages[j].build(s); s.dataset.built="1"; } });
+  fillLocked(stageEls[i]);
   if(stages[i].onShow) stages[i].onShow(stageEls[i]);
   $$(".dot").forEach(function(d,j){ d.classList.toggle("active",j===i); d.classList.toggle("done",j<i); });
   stepname.textContent=(i+1)+" / "+stages.length+" · "+stages[i].name;
