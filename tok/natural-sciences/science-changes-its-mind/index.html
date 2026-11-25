@@ -11,128 +11,116 @@
   :root{
     --paper:#f4efe2; --paper-2:#efe8d6; --ink:#2a2622; --ink-soft:#5a5145;
     --blue:#1f3f6e; --blue-2:#3a629c; --amber:#b07d18; --amber-2:#caa24a; --rust:#8a3b2a;
-    --line:#cbbf9f; --good:#3f6b3a; --space:#141a26;
+    --line:#cbbf9f; --good:#3f6b3a; --space:#141a26; --ox:#6e2a22;
     --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
     --mono:"JetBrains Mono","Courier New",monospace;
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
-  body{
-    font-family:var(--serif); color:var(--ink); background:var(--paper);
-    background-image:
-      radial-gradient(circle at 18% 12%, rgba(176,125,24,.05), transparent 40%),
-      radial-gradient(circle at 82% 88%, rgba(31,63,110,.05), transparent 42%),
+  body{font-family:var(--serif); color:var(--ink); background:var(--paper);
+    background-image:radial-gradient(circle at 18% 12%, rgba(176,125,24,.05), transparent 40%),radial-gradient(circle at 82% 88%, rgba(31,63,110,.05), transparent 42%),
       repeating-linear-gradient(0deg, transparent, transparent 27px, rgba(120,108,80,.035) 27px, rgba(120,108,80,.035) 28px);
-    line-height:1.45; -webkit-font-smoothing:antialiased; padding:24px 16px 90px;
-  }
-  .wrap{max-width:900px;margin:0 auto;}
+    line-height:1.45; -webkit-font-smoothing:antialiased; padding:24px 16px 90px;}
+  .wrap{max-width:920px;margin:0 auto;}
   header.pin{border:1px solid var(--line); background:linear-gradient(180deg,var(--paper-2),var(--paper));
     padding:16px 20px 14px; box-shadow:0 1px 0 #fff inset, 0 6px 18px rgba(40,34,26,.06); position:sticky; top:0; z-index:5;}
-  header.pin::before{content:"NATURAL SCIENCES · LESSON 5"; font-family:var(--mono); font-size:10px;
-    letter-spacing:.22em; color:var(--amber); display:block; margin-bottom:6px;}
-  header.pin h1{font-size:28px;font-weight:600;margin:0 0 4px;letter-spacing:.01em;line-height:1.05;}
+  header.pin::before{content:"NATURAL SCIENCES · LESSON 5"; font-family:var(--mono); font-size:10px; letter-spacing:.22em; color:var(--amber); display:block; margin-bottom:6px;}
+  header.pin h1{font-size:28px;font-weight:600;margin:0 0 4px;line-height:1.05;}
   .kq{font-style:italic;color:var(--blue);font-size:18px;margin:2px 0 10px;}
   .kq b{font-family:var(--mono);font-style:normal;font-size:10px;letter-spacing:.16em;color:var(--amber);margin-right:6px;}
   .tags{display:flex;gap:8px;flex-wrap:wrap;}
-  .tag{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
-    border:1px solid var(--blue-2);color:var(--blue);border-radius:2px;padding:3px 8px;background:rgba(58,98,156,.06);}
+  .tag{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--blue-2);color:var(--blue);border-radius:2px;padding:3px 8px;background:rgba(58,98,156,.06);}
   .tag.fw{border-color:var(--amber);color:var(--amber);background:rgba(176,125,24,.06);}
+  header.pin.slim{padding:8px 20px 6px;} header.pin.slim::before, header.pin.slim h1, header.pin.slim .tags{display:none;} header.pin.slim .kq{margin:0;font-size:16px;}
 
   .dots{display:flex;gap:7px;align-items:center;justify-content:center;margin:18px 0 6px;flex-wrap:wrap;}
   .dot{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--blue-2);background:transparent;transition:.25s;cursor:pointer;}
   .dot.active{background:var(--amber);border-color:var(--amber);transform:scale(1.25);}
   .dot.done{background:var(--blue-2);}
+  .dot.locked{opacity:.35;cursor:not-allowed;}
   .stepname{text-align:center;font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--ink-soft);text-transform:uppercase;margin-bottom:14px;}
 
-  .stage{display:none;border:1px solid var(--line);background:rgba(255,253,247,.6);
-    padding:26px 26px 28px;box-shadow:0 8px 30px rgba(40,34,26,.07);animation:rise .4s ease;}
+  .stage{display:none;border:1px solid var(--line);background:rgba(255,253,247,.6);padding:26px 28px 28px;box-shadow:0 8px 30px rgba(40,34,26,.07);animation:rise .4s ease;}
   .stage.show{display:block;}
   @keyframes rise{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
-  .stage h2{font-size:26px;font-weight:600;margin:0 0 4px;}
-  .stage h3{font-size:21px;font-weight:600;margin:22px 0 4px;}
+  .stage h2{font-size:27px;font-weight:600;margin:0 0 4px;}
   .lead{color:var(--ink-soft);font-size:17px;margin:0 0 14px;}
   p.body{font-size:17px;margin:8px 0;}
   .micro{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin:0 0 4px;}
   .cc{font-variant:small-caps;color:var(--blue);font-weight:600;letter-spacing:.03em;}
-  .lens{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
-    color:var(--amber);border:1px solid var(--amber);padding:3px 9px;margin:4px 0 14px;background:rgba(176,125,24,.05);}
+  .lens{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);border:1px solid var(--amber);padding:3px 9px;margin:4px 0 14px;background:rgba(176,125,24,.05);}
 
-  /* ranking */
-  .scale{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10.5px;
-    letter-spacing:.08em;color:var(--ink-soft);text-transform:uppercase;margin:0 2px 8px;}
-  .scale b{color:var(--rust);} .scale span:last-child b{color:var(--good);}
-  ol.rank{list-style:none;margin:0;padding:0;}
-  ol.rank li{display:flex;align-items:center;gap:12px;border:1px solid var(--line);background:var(--paper);
-    margin:7px 0;padding:11px 12px;cursor:grab;transition:.15s;border-left:4px solid var(--blue-2);}
-  ol.rank li.drag{opacity:.45;}
-  ol.rank li .num{font-family:var(--mono);font-weight:700;color:var(--blue);min-width:20px;}
-  ol.rank li .claim{flex:1;font-size:17px;}
-  ol.rank li .ctl{display:flex;flex-direction:column;gap:2px;}
-  ol.rank li .ctl button{font-family:var(--mono);border:1px solid var(--line);background:var(--paper-2);
-    color:var(--blue);cursor:pointer;width:26px;height:18px;line-height:1;font-size:11px;border-radius:2px;}
-  ol.rank li .ctl button:hover{background:var(--amber-2);color:#fff;}
-  .compare{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
-  .compare h4{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:0 0 8px;}
-  ol.prev{list-style:none;margin:0;padding:0;}
-  ol.prev li{border:1px solid var(--line);background:var(--paper-2);margin:7px 0;padding:11px 12px;font-size:15.5px;color:var(--ink-soft);}
+  .sec{margin:22px 0 8px;}
+  .sec h3{font-size:21px;font-weight:600;margin:0 0 6px;display:flex;align-items:center;gap:10px;}
+  .sec h3 .n{font-family:var(--mono);font-size:12px;font-weight:700;color:#fff;background:var(--blue);border-radius:50%;width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;flex:none;}
+  .sec p{font-size:17px;margin:6px 0;}
+  .split{display:grid;grid-template-columns:1.1fr 1fr;gap:18px;align-items:start;}
+  .fig{border:1px solid var(--line);background:#fbf8ef;padding:8px;margin:8px 0;}
+  .fig svg,.fig canvas{display:block;width:100%;height:auto;}
+  .fig.dark{background:var(--space);border-color:#2c3446;}
+  .cap{font-size:14.5px;color:var(--ink-soft);font-style:italic;margin:6px 2px 0;}
+  .cap b{font-family:var(--mono);font-style:normal;font-size:10px;letter-spacing:.12em;color:var(--amber);margin-right:4px;}
+  .box{border-left:4px solid var(--blue-2);background:rgba(58,98,156,.06);padding:10px 14px;font-size:16.5px;margin:10px 0;}
+  .box b.l{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-2);display:block;margin-bottom:2px;}
+  .box.amber{border-left-color:var(--amber);background:rgba(176,125,24,.07);} .box.amber b.l{color:var(--amber);}
+  .box.red{border-left-color:var(--rust);background:rgba(138,59,42,.06);} .box.red b.l{color:var(--rust);}
 
-  /* blocks & reveals */
-  .block{margin:14px 0;display:none;}
-  .block.shown{display:block;animation:rise .4s ease;}
+  .sortrow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;border:1px solid var(--line);background:var(--paper);padding:10px 12px;margin:7px 0;border-left:4px solid var(--blue-2);}
+  .sortrow .st{font-size:17px;}
+  .sortrow .kind{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:2px 7px;border:1px solid;margin-left:8px;display:none;}
+  .sortrow .kind.obs{color:var(--good);border-color:var(--good);} .sortrow .kind.th{color:var(--amber);border-color:var(--amber);}
+  .reveal-kinds .sortrow .kind{display:inline-block;}
+
+  .block{margin:14px 0;display:none;} .block.shown{display:block;animation:rise .4s ease;}
   .prompt{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);margin-bottom:6px;}
   .qline{font-size:17px;color:var(--blue);font-style:italic;margin-bottom:8px;}
   .opts{display:flex;gap:9px;flex-wrap:wrap;}
-  .opt{font-family:var(--mono);font-size:12px;letter-spacing:.03em;border:1px solid var(--blue-2);background:var(--paper);
-    color:var(--blue);padding:9px 14px;cursor:pointer;border-radius:2px;transition:.15s;}
+  .opt{font-family:var(--mono);font-size:12px;letter-spacing:.03em;border:1px solid var(--blue-2);background:var(--paper);color:var(--blue);padding:9px 14px;cursor:pointer;border-radius:2px;transition:.15s;}
   .opt:hover{background:var(--blue);color:#fff;}
-  .opt.picked{background:var(--blue);color:#fff;}
-  .opt.dim{opacity:.4;}
+  .opt.picked{background:var(--blue);color:#fff;} .opt.dim{opacity:.4;}
   .opt.small{font-size:11px;padding:6px 10px;}
   .fb{font-size:16px;margin-top:8px;padding:9px 12px;border-left:4px solid var(--blue-2);background:rgba(58,98,156,.06);}
-
   .nameit{border:1px solid var(--blue-2);border-left:5px solid var(--amber);background:rgba(58,98,156,.05);padding:14px 16px;margin:10px 0;}
   .nameit .nl{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);font-weight:700;}
-  .nameit .nb{font-size:16.5px;margin-top:6px;}
-  .nameit .nb p{margin:6px 0;}
-  .nameit .nb em{color:var(--blue);font-style:italic;}
-
+  .nameit .nb{font-size:16.5px;margin-top:6px;} .nameit .nb p{margin:6px 0;} .nameit .nb em{color:var(--blue);}
+  .nameit ol{margin:6px 0;padding-left:22px;font-size:16.5px;}
   .talk{border:1px solid var(--line);background:var(--paper);padding:12px 16px;margin:12px 0;}
   .talk .tl{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue-2);font-weight:700;}
   .talk .tb{font-size:17px;margin-top:3px;}
-  .note{border:2px dashed var(--amber);background:rgba(176,125,24,.07);padding:12px 16px;margin:12px 0;}
-  .note .hl{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);font-weight:700;}
-  .note .hb{font-size:17px;margin-top:3px;}
-  .note ul{margin:6px 0 0 0;padding-left:20px;font-size:16.5px;}
 
-  .pg{border:1px solid var(--line);background:#f7f2e6;padding:14px 18px 12px;position:relative;box-shadow:0 4px 14px rgba(40,34,26,.08);margin:10px 0;}
-  .pg .yr{font-family:var(--mono);font-size:10px;letter-spacing:.2em;color:var(--rust);}
-  .pg .src{font-family:var(--mono);font-size:9.5px;color:var(--ink-soft);margin-bottom:4px;letter-spacing:.06em;}
-  .pg p{font-size:16.5px;margin:6px 0;}
+  .nb-time{border:2px solid var(--ox);background:linear-gradient(180deg,rgba(110,42,34,.09),rgba(110,42,34,.04));margin:20px 0;padding:0;}
+  .nb-time .nbh{display:flex;justify-content:space-between;align-items:center;background:var(--ox);color:#fff;padding:8px 14px;font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;}
+  .nb-time .nbh .tm{display:flex;gap:8px;align-items:center;}
+  .nb-time .nbh button{font-family:var(--mono);font-size:11px;border:1px solid #fff;background:transparent;color:#fff;padding:4px 10px;cursor:pointer;letter-spacing:.08em;}
+  .nb-time .nbh .clock{font-size:15px;min-width:52px;text-align:right;}
+  .nb-time .nbb{padding:12px 16px 14px;font-size:18px;}
+  .nb-time .nbb .q{font-weight:600;}
+  .nb-time .nbb ul{margin:6px 0 0;padding-left:20px;font-size:16.5px;}
+  .nb-time .nbb .use{font-family:var(--mono);font-size:11px;color:var(--ox);margin-top:8px;letter-spacing:.04em;}
+  .nb-time.done .nbh{background:var(--good);}
 
-  .three{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0;}
   .two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0;}
+  .three{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:10px 0;}
   .mini{border:1px solid var(--line);background:var(--paper);padding:11px 13px;font-size:15.5px;}
   .mini .ml{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px;}
-  .mini .mx{font-family:var(--mono);font-size:10.5px;color:var(--rust);margin-top:6px;}
-  .mini.obs{border-left:4px solid var(--good);} .mini.th{border-left:4px solid var(--amber);}
+  .mini .mx{font-size:15px;margin-top:6px;} .mini .mx b{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;color:var(--rust);margin-right:4px;}
   .pos{border:1px solid var(--line);background:var(--paper);padding:12px 14px;margin:8px 0;}
   .pos .ph{font-weight:600;font-size:17px;}
   .pos .ps{font-size:15.5px;margin-top:4px;}
   .pos .ps b{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);font-weight:700;margin-right:4px;}
   .pos.mine{border-color:var(--blue);box-shadow:0 0 0 2px rgba(31,63,110,.15);}
 
-  /* labs */
-  .tabs{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 0;}
-  .tab{font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;border:1px solid var(--line);border-bottom:none;background:var(--paper-2);
-    color:var(--ink-soft);padding:9px 13px;cursor:pointer;border-radius:3px 3px 0 0;}
-  .tab.on{background:#fffdf7;color:var(--blue);border-color:var(--blue-2);font-weight:700;}
-  .tab .tk{color:var(--good);margin-left:5px;display:none;} .tab.logged .tk{display:inline;}
-  .labpanel{display:none;border:1px solid var(--blue-2);background:#fffdf7;padding:18px 18px 16px;}
-  .labpanel.on{display:block;}
-  .pred{border-left:4px solid var(--blue-2);background:rgba(58,98,156,.06);padding:10px 14px;font-size:16.5px;margin:0 0 12px;}
+  .steps{display:flex;gap:0;margin:4px 0 16px;border:1px solid var(--line);}
+  .steps div{flex:1;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;text-align:center;padding:8px 4px;color:#a99c80;background:var(--paper-2);border-right:1px solid var(--line);}
+  .steps div:last-child{border-right:none;}
+  .steps div.now{background:var(--blue);color:#fff;font-weight:700;}
+  .steps div.past{background:rgba(63,107,58,.14);color:var(--good);}
+  .pred{border-left:4px solid var(--blue-2);background:rgba(58,98,156,.06);padding:10px 14px;font-size:16.5px;margin:0 0 10px;}
   .pred b{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue-2);display:block;margin-bottom:2px;}
-  .stagebox{background:var(--space);border:1px solid #2c3446;border-radius:2px;position:relative;margin:10px 0;}
-  .stagebox canvas, .stagebox svg{display:block;width:100%;height:auto;}
+  .falsify{border-left:4px solid var(--rust);background:rgba(138,59,42,.06);padding:10px 14px;font-size:16.5px;margin:0 0 12px;}
+  .falsify b{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--rust);display:block;margin-bottom:2px;}
+  .stagebox{background:var(--space);border:1px solid #2c3446;margin:10px 0;}
+  .stagebox canvas,.stagebox svg{display:block;width:100%;height:auto;}
   .ctrls{display:grid;grid-template-columns:auto 1fr auto;gap:8px 12px;align-items:center;margin:10px 0;font-family:var(--mono);font-size:11.5px;color:var(--ink-soft);}
   .ctrls input[type=range]{width:100%;accent-color:var(--blue);}
   .ctrls .val{color:var(--blue);font-weight:700;min-width:120px;text-align:right;}
@@ -148,40 +136,47 @@
   .world{border:1px solid var(--good);background:rgba(63,107,58,.07);padding:12px 15px;margin:10px 0;}
   .world .wl{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--good);font-weight:700;}
   .world p{font-size:16px;margin:5px 0;}
-
+  .gate{font-family:var(--mono);font-size:11px;color:var(--rust);text-align:right;margin-top:6px;}
   table.log{width:100%;border-collapse:collapse;margin:8px 0;font-size:15px;}
-  table.log th{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);text-align:left;border-bottom:1px solid var(--line);padding:6px 6px;}
+  table.log th{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);text-align:left;border-bottom:1px solid var(--line);padding:6px;}
   table.log td{border-bottom:1px solid var(--line);padding:7px 6px;vertical-align:top;}
   table.log tr.empty td{color:#a99c80;font-style:italic;}
   table.log td.ok{font-family:var(--mono);font-size:11px;color:var(--good);font-weight:700;}
 
-  /* sceptic */
   .cards4{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0;}
   .scard{border:1px solid var(--line);background:var(--paper);padding:12px 14px;}
-  .scard .st{font-weight:600;font-size:17.5px;}
+  .scard .st{font-weight:600;font-size:17px;}
   .scard .sm{font-family:var(--mono);font-size:10.5px;color:var(--ink-soft);margin:3px 0 8px;line-height:1.5;}
-  .scard textarea{width:100%;min-height:56px;font-family:var(--serif);font-size:15.5px;border:1px solid var(--line);background:#fffdf7;padding:6px 8px;resize:vertical;}
-  .xrow{border:1px solid var(--line);background:var(--paper);padding:10px 13px;margin:8px 0;}
-  .xrow .xq{font-size:16px;}
-  .xrow .xq i{color:var(--blue);}
-  .xrow .xc{display:flex;gap:7px;flex-wrap:wrap;margin-top:7px;}
-  .xrow .tally{font-family:var(--mono);font-size:11px;color:var(--rust);margin-top:6px;}
-  .counter{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--rust);text-align:center;padding:10px;border:1px solid var(--rust);background:rgba(138,59,42,.07);margin:10px 0;}
+  .scard textarea{width:100%;min-height:52px;font-family:var(--serif);font-size:15.5px;border:1px solid var(--line);background:#fffdf7;padding:6px 8px;resize:vertical;}
+  .radial{border:1px solid var(--line);background:radial-gradient(circle at 50% 46%,#fbf7ec,#efe8d6);margin:8px 0;}
+  .radial svg{display:block;width:100%;height:auto;}
+  .radial [data-i]{cursor:pointer;} .radial [data-i]:hover{opacity:.7;}
+
+  .kqcard{border:1px solid var(--line);background:var(--paper);padding:12px 15px;margin:10px 0;border-left:4px solid var(--blue);}
+  .kqcard .kh{font-size:18px;font-weight:600;}
+  .kqcard .kc{font-size:15.5px;color:var(--ink-soft);margin-top:4px;}
+  .kqcard .kc b{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-right:4px;}
+  .kqcard .cut{display:none;margin-top:8px;border-top:1px dashed var(--line);padding-top:8px;font-size:15.5px;}
+  .kqcard .cut.shown{display:block;}
+  .kqcard button{margin-top:8px;}
+  .stepsbig{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:10px 0 14px;}
+  .stepsbig div{border:1px solid var(--blue-2);background:rgba(58,98,156,.05);padding:9px 11px;font-size:15.5px;}
+  .stepsbig div b{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);display:block;}
+  .hint{display:none;border-left:3px solid var(--amber);padding:6px 12px;margin:6px 0;font-size:16px;background:rgba(176,125,24,.05);}
+  .hint.shown{display:block;}
 
   .nav{display:flex;justify-content:space-between;align-items:center;margin-top:22px;gap:10px;}
-  .btn{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;
-    padding:11px 22px;border:1px solid var(--blue);background:var(--blue);color:#fff;cursor:pointer;border-radius:2px;transition:.15s;}
+  .btn{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:11px 22px;border:1px solid var(--blue);background:var(--blue);color:#fff;cursor:pointer;border-radius:2px;transition:.15s;}
   .btn:hover{background:var(--blue-2);}
   .btn.ghost{background:transparent;color:var(--blue);} .btn.ghost:hover{background:rgba(31,63,110,.07);}
   .btn.go{background:var(--good);border-color:var(--good);}
   .btn.sm{font-size:11px;padding:8px 14px;}
   .btn:disabled{opacity:.3;cursor:not-allowed;}
-  .done-card{border:1px solid var(--line);background:rgba(176,125,24,.06);padding:16px 18px;margin-top:16px;text-align:center;}
+  .done-card{border:1px solid var(--line);background:rgba(176,125,24,.06);padding:16px 18px;margin-top:16px;}
   .done-card .dl{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);}
   .done-card .db{font-size:17px;margin-top:4px;}
   .footnote{font-family:var(--mono);font-size:10px;color:var(--ink-soft);text-align:center;margin-top:26px;letter-spacing:.04em;}
-  header.pin.slim{padding:8px 20px 6px;} header.pin.slim::before, header.pin.slim h1, header.pin.slim .tags{display:none;} header.pin.slim .kq{margin:0;font-size:16px;}
-  @media(max-width:680px){.compare,.two,.three,.cards4,.readout{grid-template-columns:1fr;} header.pin{position:relative;}}
+  @media(max-width:700px){.two,.three,.cards4,.readout,.split,.stepsbig{grid-template-columns:1fr;} header.pin{position:relative;}}
 </style>
 </head>
 <body>
@@ -194,549 +189,683 @@
   <div class="dots" id="dots"></div>
   <div class="stepname" id="stepname"></div>
   <div id="screens"></div>
-  <div class="footnote">TOK · Natural Sciences · Lesson 5 — record your answers in your notebook as you go</div>
+  <div class="footnote">TOK · Natural Sciences · Lesson 5 — when you see NOTEBOOK TIME, stop and write</div>
 </div>
 
 <script>
 (function(){
 "use strict";
-var $=function(sel,el){return (el||document).querySelector(sel);};
-var $$=function(sel,el){return [].slice.call((el||document).querySelectorAll(sel));};
+var $=function(s,el){return (el||document).querySelector(s);};
+var $$=function(s,el){return [].slice.call((el||document).querySelectorAll(s));};
 function show(el){ if(el) el.classList.add("shown"); }
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
 
-/* ================= ranking ================= */
-var CARDS=[
-  {id:"light", text:"Gravity bends light"},
-  {id:"desc",  text:"All living things share a common ancestry"},
-  {id:"plate", text:"The continents move across the Earth’s surface"},
-  {id:"chol",  text:"Eating cholesterol raises your risk of heart disease"},
-  {id:"string",text:"String theory describes the smallest parts of matter"}
-];
-var round1=null;
-function makeRankList(ol, order){
-  ol.innerHTML="";
-  order.forEach(function(c){
-    var li=document.createElement("li"); li.setAttribute("draggable","true"); li.dataset.id=c.id;
-    li.innerHTML='<span class="num"></span><span class="claim">'+c.text+'</span><span class="ctl"><button data-up>▲</button><button data-down>▼</button></span>';
-    ol.appendChild(li);
-  });
-  renumber(ol);
-  ol.addEventListener("click",function(e){
-    var li=e.target.closest("li"); if(!li) return;
-    if(e.target.hasAttribute("data-up")&&li.previousElementSibling){ol.insertBefore(li,li.previousElementSibling);renumber(ol);}
-    if(e.target.hasAttribute("data-down")&&li.nextElementSibling){ol.insertBefore(li.nextElementSibling,li);renumber(ol);}
-  });
-  var dragged=null;
-  ol.addEventListener("dragstart",function(e){var li=e.target.closest("li");if(!li)return;dragged=li;li.classList.add("drag");});
-  ol.addEventListener("dragend",function(){if(dragged){dragged.classList.remove("drag");dragged=null;}renumber(ol);});
-  ol.addEventListener("dragover",function(e){e.preventDefault();var li=e.target.closest("li");if(!li||li===dragged||!dragged)return;
-    var r=li.getBoundingClientRect();ol.insertBefore(dragged,(e.clientY-r.top)/r.height>0.5?li.nextElementSibling:li);});
+/* ---------- notebook time ---------- */
+function notebook(min, q, extra){
+  return '<div class="nb-time" data-min="'+min+'"><div class="nbh"><span>✎ Notebook time · stop and write</span><span class="tm"><span class="clock">'+min+':00</span><button data-timer>Start '+min+' min</button></span></div>'+
+    '<div class="nbb"><div class="q">'+q+'</div>'+(extra||'')+'</div></div>';
 }
-function renumber(ol){ $$("li",ol).forEach(function(li,i){ $(".num",li).textContent=i+1; }); }
-function readOrder(ol){ return $$("li",ol).map(function(li){ return CARDS.filter(function(c){return c.id===li.dataset.id;})[0]; }); }
-
-/* ================= stages ================= */
-var stages=[]; function addStage(name,build){stages.push({name:name,build:build});}
-var idx=0, stageEls=[];
-function navHTML(nextLabel){ return '<div class="nav"><button class="btn ghost" data-back>← Back</button>'+(nextLabel?'<button class="btn" data-next>'+nextLabel+' →</button>':'<span></span>')+'</div>'; }
-function wireNav(el){ var b=$("[data-back]",el), n=$("[data-next]",el); if(b) b.onclick=function(){go(idx-1);}; if(n) n.onclick=function(){go(idx+1);}; }
-
-/* ---- 1. Commit ---- */
-addStage("Commit", function(el){
-  el.innerHTML=
-  '<div class="micro">Start · Commit first</div>'+
-  '<h2>How settled is it?</h2>'+
-  '<div class="note"><div class="hl">✎ Notebook</div><div class="hb">Answer the Knowledge Question in one sentence, off the top of your head. Don’t cross it out later.</div></div>'+
-  '<div class="talk"><div class="tl">Last class, some of you said</div><div class="tb">“Maybe Einstein was wrong. There will be another paradigm shift.” Hands up: agree or disagree? Don’t argue yet. Hold your answer.</div></div>'+
-  '<p class="lead">Now rank these five claims. Gut instinct, no looking anything up.</p>'+
-  '<div class="scale"><span><b>TOP</b> — most likely to change</span><span><b>BOTTOM</b> — most settled</span></div>'+
-  '<ol class="rank" id="rank1"></ol>'+
-  '<div class="note"><div class="hl">✎ Notebook</div><div class="hb">Write down the claim you put at the bottom. Why does it feel settled to you? What is that feeling based on?</div></div>'+
-  '<div class="nav"><span></span><button class="btn" id="lockBtn">Lock my ranking →</button></div>';
-  var ol=$("#rank1",el); makeRankList(ol,CARDS.slice());
-  $("#lockBtn",el).onclick=function(){ round1=readOrder(ol); go(idx+1); };
+document.addEventListener("click",function(e){
+  var b=e.target.closest("[data-timer]"); if(!b) return;
+  var panel=b.closest(".nb-time"), clock=$(".clock",panel), secs=(+panel.dataset.min)*60;
+  if(panel._iv){ clearInterval(panel._iv); }
+  panel.classList.remove("done"); b.textContent="Restart";
+  function tick(){ var m=Math.floor(secs/60), s=secs%60; clock.textContent=m+":"+(s<10?"0":"")+s;
+    if(secs<=0){ clearInterval(panel._iv); clock.textContent="Pens down"; panel.classList.add("done"); } secs--; }
+  tick(); panel._iv=setInterval(tick,1000);
 });
 
-/* ---- 2. Newton's anomalies ---- */
+/* ---------- opening sort ---------- */
+var SORT=[
+  {id:"apple", t:"A dropped apple falls to the ground.", k:"obs"},
+  {id:"pull",  t:"Gravity is a pull between masses.", k:"th"},
+  {id:"merc",  t:"Mercury’s orbit swings round a little further every century.", k:"obs"},
+  {id:"bend",  t:"Mass bends space and time.", k:"th"},
+  {id:"star",  t:"Starlight passing close to the Sun is bent.", k:"obs"},
+  {id:"bh",    t:"Nothing that falls into a black hole can ever send a signal back out.", k:"th"}
+];
+var SORTANS={};
+function sortHTML(locked){
+  return SORT.map(function(s){
+    var a=SORTANS[s.id];
+    return '<div class="sortrow" data-s="'+s.id+'"><div class="st">'+s.t+'<span class="kind '+s.k+'">'+(s.k==="obs"?"Observation":"Theory")+'</span></div>'+
+      (locked? '<div class="opt small'+(a?' picked':'')+'" style="cursor:default">'+(a==="could"?"Could change":a==="wont"?"Won’t change":"—")+'</div>'
+      : '<div class="opts"><button class="opt small'+(a==="could"?' picked':'')+'" data-a="could">Could change</button><button class="opt small'+(a==="wont"?' picked':'')+'" data-a="wont">Won’t change</button></div>')+'</div>';
+  }).join("");
+}
+
+/* ---------- stage machinery ---------- */
+var stages=[], idx=0, stageEls=[];
+function addStage(name,build,gate){stages.push({name:name,build:build,gate:gate||null});}
+function navHTML(next){ return '<div class="nav"><button class="btn ghost" data-back>← Back</button>'+(next?'<button class="btn" data-next>'+next+' →</button>':'<span></span>')+'</div><div class="gate" data-gatemsg></div>'; }
+function wireNav(el){ var b=$("[data-back]",el), n=$("[data-next]",el); if(b) b.onclick=function(){go(idx-1);}; if(n) n.onclick=function(){go(idx+1);}; }
+function canLeave(i){ var g=stages[i].gate; return !g || g(); }
+function updateGates(){
+  stageEls.forEach(function(el,i){ var n=$("[data-next]",el), m=$("[data-gatemsg]",el); if(!n) return;
+    var ok=canLeave(i); n.disabled=!ok; if(m) m.textContent= ok? "" : "Finish the lab and click “Check against the world” to unlock Next."; });
+  $$(".dot").forEach(function(d,j){ var locked=false; for(var k=0;k<j;k++){ if(!canLeave(k)) locked=true; } d.classList.toggle("locked",locked); });
+}
+var anims={};
+function stopAnims(){ Object.keys(anims).forEach(function(k){ if(anims[k].stop) anims[k].stop(); }); }
+
+/* ======================= STAGE 1 · Commit ======================= */
+addStage("Commit", function(el){
+  el.innerHTML=
+  '<div class="micro">Start · Commit first</div><h2>Could science change its mind?</h2>'+
+  notebook(2,"Answer the Knowledge Question in one sentence, off the top of your head.","<div class=\"use\">Don’t cross it out later. You’ll come back to it.</div>")+
+  '<div class="talk"><div class="tl">Last class, some of you said</div><div class="tb">“Maybe Einstein was wrong. There will be another paradigm shift.” Hands up: agree or disagree? Don’t argue yet.</div></div>'+
+  '<div class="prompt">Your gut</div><div class="qline">For each statement: could science one day change its mind about it?</div>'+
+  '<div id="sort1">'+sortHTML(false)+'</div>'+
+  '<div class="talk"><div class="tl">Talk</div><div class="tb">Which one were you most sure about? What is that certainty based on?</div></div>'+
+  navHTML("Lock my answers");
+  wireNav(el);
+  $("#sort1",el).addEventListener("click",function(e){ var b=e.target.closest("[data-a]"); if(!b) return; var row=b.closest(".sortrow");
+    SORTANS[row.dataset.s]=b.dataset.a; $$(".opt",row).forEach(function(x){x.classList.toggle("picked",x===b);}); });
+});
+
+/* ======================= STAGE 2 · Newton's framework ======================= */
+function figNeptune(){
+  return '<svg viewBox="0 0 520 260"><defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#8a3b2a"/></marker></defs><rect width="520" height="260" fill="#fbf8ef"/>'+
+  '<circle cx="170" cy="130" r="14" fill="#e8b04a"/><text x="170" y="160" text-anchor="middle" font-family="JetBrains Mono" font-size="13" fill="#5a5145">SUN</text>'+
+  '<circle cx="170" cy="130" r="72" fill="none" stroke="#3a629c" stroke-width="1.5"/>'+
+  '<circle cx="170" cy="130" r="118" fill="none" stroke="#8a3b2a" stroke-width="1.5" stroke-dasharray="5 5"/>'+
+  '<circle cx="232" cy="94" r="7" fill="none" stroke="#3a629c" stroke-width="2" stroke-dasharray="2 2"/><text x="244" y="86" font-family="JetBrains Mono" font-size="13" fill="#3a629c">where Newton said Uranus would be</text>'+
+  '<circle cx="240" cy="108" r="7" fill="#3a629c"/><text x="252" y="120" font-family="JetBrains Mono" font-size="13" fill="#1f3f6e">where Uranus actually was</text>'+
+  '<circle cx="270" cy="54" r="8" fill="#fbf8ef" stroke="#8a3b2a" stroke-width="2"/><text x="284" y="50" font-family="JetBrains Mono" font-size="13" fill="#8a3b2a">an unseen planet?</text>'+
+  '<line x1="245" y1="101" x2="263" y2="66" stroke="#8a3b2a" stroke-width="1.6" marker-end="url(#ar)"/>'+
+  '<text x="20" y="242" font-family="JetBrains Mono" font-size="13" fill="#5a5145">solid: Uranus’s orbit · dashed: where the unseen planet must be</text></svg>';
+}
+function figMercury(withVulcan){
+  var s='<svg viewBox="0 0 520 260"><defs><marker id="ar2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#8a3b2a"/></marker></defs><rect width="520" height="260" fill="#fbf8ef"/>';
+  for(var i=0;i<4;i++){ s+='<g transform="rotate('+(i*9)+' 240 130)"><ellipse cx="205" cy="130" rx="120" ry="78" fill="none" stroke="#3a629c" stroke-width="'+(i===3?2:1)+'" opacity="'+(0.25+i*0.22)+'"/></g>'; }
+  s+='<circle cx="240" cy="130" r="13" fill="#e8b04a"/><text x="240" y="158" text-anchor="middle" font-family="JetBrains Mono" font-size="13" fill="#5a5145">SUN</text>';
+  s+='<path d="M380 74 A 160 160 0 0 1 400 150" fill="none" stroke="#8a3b2a" stroke-width="1.6" marker-end="url(#ar2)"/>';
+  s+='<text x="410" y="104" font-family="JetBrains Mono" font-size="13" fill="#8a3b2a">the orbit</text><text x="410" y="117" font-family="JetBrains Mono" font-size="13" fill="#8a3b2a">slowly swings</text><text x="410" y="130" font-family="JetBrains Mono" font-size="13" fill="#8a3b2a">round, a bit</text><text x="410" y="143" font-family="JetBrains Mono" font-size="13" fill="#8a3b2a">too fast</text>';
+  if(withVulcan){ s+='<circle cx="268" cy="108" r="7" fill="#fbf8ef" stroke="#8a3b2a" stroke-width="2" stroke-dasharray="2 2"/><text x="250" y="94" font-family="JetBrains Mono" font-size="14" font-weight="700" fill="#8a3b2a">VULCAN?</text>'; }
+  s+='<text x="20" y="246" font-family="JetBrains Mono" font-size="13" fill="#5a5145">shape and swing greatly exaggerated</text></svg>';
+  return s;
+}
+function figHead(){
+  return '<svg viewBox="0 0 300 260"><rect width="300" height="260" fill="#fbf8ef"/>'+
+  '<path d="M70 210 C52 170 50 110 82 76 C112 44 170 36 208 58 C238 76 252 104 248 134 L262 160 C264 164 260 168 252 168 C256 182 250 192 242 194 C246 206 238 216 224 216 L220 246 L118 246 C118 230 108 220 92 216 C80 214 74 214 70 210 Z" fill="#efe3cc" stroke="#5a5145" stroke-width="2"/>'+
+  '<path d="M86 120 C110 100 150 96 182 108" fill="none" stroke="#9a8f74" stroke-dasharray="3 3"/><path d="M118 62 C120 90 122 110 124 132" fill="none" stroke="#9a8f74" stroke-dasharray="3 3"/><path d="M168 48 C166 76 166 96 168 116" fill="none" stroke="#9a8f74" stroke-dasharray="3 3"/>'+
+  '<text x="76" y="150" font-family="JetBrains Mono" font-size="12" fill="#5a5145">CUNNING</text><text x="126" y="92" font-family="JetBrains Mono" font-size="12" fill="#5a5145">FIRMNESS</text><text x="176" y="134" font-family="JetBrains Mono" font-size="12" fill="#5a5145">LANGUAGE</text>'+
+  '<path d="M186 54 C192 28 224 30 224 60" fill="#e7c98f" stroke="#8a3b2a" stroke-width="2.2"/>'+
+  '<text x="150" y="20" font-family="JetBrains Mono" font-size="13" font-weight="700" fill="#8a3b2a">BIG “KINDNESS” BUMP</text></svg>';
+}
+function figMap(){
+  return '<svg viewBox="0 0 420 260"><rect width="420" height="260" fill="#cfe0ea"/>'+
+  '<path d="M70 40 L120 30 L165 70 L152 118 L122 168 L104 228 L88 240 L80 190 L60 122 L50 72 Z" fill="#d8c79a" stroke="#5a5145" stroke-width="1.5"/>'+
+  '<path d="M250 40 L330 34 L372 80 L362 112 L342 150 L322 212 L302 236 L286 200 L276 142 L250 122 L226 92 L232 60 Z" fill="#d8c79a" stroke="#5a5145" stroke-width="1.5"/>'+
+  '<path d="M150 120 C185 110 215 112 250 118" fill="none" stroke="#8a5a2a" stroke-width="10" stroke-dasharray="10 6" opacity=".7"/>'+
+  '<text x="148" y="100" font-family="JetBrains Mono" font-size="13" fill="#6e2a22" font-weight="700">“LAND BRIDGE” (SUNK?)</text>'+
+  '<g fill="#6e2a22"><ellipse cx="128" cy="160" rx="9" ry="4"/><ellipse cx="300" cy="196" rx="9" ry="4"/></g><g stroke="#6e2a22" stroke-width="2"><line x1="119" y1="160" x2="110" y2="164"/><line x1="291" y1="196" x2="282" y2="200"/></g>'+
+  '<text x="62" y="182" font-family="JetBrains Mono" font-size="12" fill="#6e2a22">MESOSAURUS</text><text x="296" y="216" font-family="JetBrains Mono" font-size="12" fill="#6e2a22">MESOSAURUS</text>'+
+  '<text x="66" y="22" font-family="JetBrains Mono" font-size="13" fill="#5a5145">SOUTH AMERICA</text><text x="270" y="26" font-family="JetBrains Mono" font-size="13" fill="#5a5145">AFRICA</text></svg>';
+}
 addStage("Newton’s framework", function(el){
   el.innerHTML=
-  '<div class="micro">Part 1 · When the evidence doesn’t fit</div>'+
-  '<h2>Two planets that didn’t fit Newton</h2>'+
+  '<div class="micro">Part 1 · When the evidence doesn’t fit</div><h2>Two planets that didn’t fit Newton</h2>'+
   '<div class="lens">Perspective · seeing from inside a framework</div>'+
-  '<div class="pg"><div class="yr">1846 · NEPTUNE</div><div class="src">YOU MET THIS ONE IN LESSON 1</div>'+
-    '<p>For over 150 years, Newton’s law of gravity predicted the planets almost perfectly. Then Uranus drifted off its predicted path.</p>'+
-    '<p>The French astronomer Urbain Le Verrier did not throw Newton out. He asked: what if a planet nobody can see is pulling on Uranus? He calculated where it had to be. On 23 September 1846, Johann Galle pointed a telescope at that spot and found Neptune, about one degree from the prediction.</p>'+
-    '<p>The <span class="cc">method</span>: when the <span class="cc">evidence</span> doesn’t fit, look for something missing inside the theory — and make a prediction that could fail.</p></div>'+
-  '<div class="pg"><div class="yr">1859 · MERCURY</div><div class="src">LE VERRIER, AGAIN</div>'+
-    '<p>Le Verrier then studied Mercury. Its orbit slowly swings around the Sun, and it swings a tiny bit faster than Newton’s law allows. He counted every planet and every known pull. The gap would not go away.</p></div>'+
+  '<div class="sec"><h3><span class="n">1</span>Uranus is off course (1840s)</h3><div class="split"><div>'+
+    '<p>For over 150 years, Newton’s law of gravity predicted the planets almost perfectly.</p><p>Then Uranus drifted off its predicted path.</p>'+
+    '<div class="box"><b class="l">Le Verrier’s move</b>Don’t throw Newton out. Ask: what if a planet nobody can see is pulling on Uranus? Work out where it must be.</div>'+
+    '<div class="box amber"><b class="l">Result · 23 September 1846</b>Johann Galle points a telescope at the spot and finds <b>Neptune</b>, about one degree from the prediction. You met this in Lesson 1.</div>'+
+  '</div><div class="fig">'+figNeptune()+'<div class="cap"><b>FIG 1</b>Something unseen is pulling Uranus.</div></div></div></div>'+
+  '<div class="sec"><h3><span class="n">2</span>Mercury is off course too (1859)</h3><div class="split"><div>'+
+    '<p>Mercury’s orbit slowly swings round the Sun. Newton’s law, counting every planet’s pull, predicts most of the swing.</p><p>But Mercury swings a tiny bit <b>faster</b>. Le Verrier checked everything. The gap would not go away.</p>'+
+  '</div><div class="fig">'+figMercury(false)+'<div class="cap"><b>FIG 2</b>The swing Newton can’t fully explain.</div></div></div></div>'+
   '<div class="prompt">Predict</div><div class="qline">You are Le Verrier in 1859. What do you do?</div>'+
-  '<div class="opts" id="lvOpts">'+
-    '<button class="opt" data-c="law">Decide Newton’s law is wrong</button>'+
-    '<button class="opt" data-c="planet">Predict another hidden planet</button>'+
-    '<button class="opt" data-c="wait">Wait for better measurements</button></div>'+
+  '<div class="opts" id="lvOpts"><button class="opt" data-c="law">Decide Newton’s law is wrong</button><button class="opt" data-c="planet">Predict another hidden planet</button><button class="opt" data-c="wait">Wait for better measurements</button></div>'+
   '<div class="block" id="lvFb"></div>'+
   '<div class="block" id="lvReveal">'+
-    '<div class="pg"><div class="yr">1859–1900s · VULCAN</div>'+
-      '<p>Le Verrier predicted a hidden planet inside Mercury’s orbit and named it Vulcan. In 1860 he announced that a French doctor had seen it cross the face of the Sun. Astronomers hunted for Vulcan for decades, especially during eclipses.</p><p><b>It was never found.</b></p></div>'+
-    '<h3>Seen this before?</h3>'+
+    '<div class="box red"><b class="l">What he did · Vulcan</b>Le Verrier predicted a hidden planet inside Mercury’s orbit and named it <b>Vulcan</b>. In 1860 he announced that a French doctor had seen it cross the Sun. Astronomers hunted for decades, especially during eclipses. <b>Vulcan was never found.</b></div>'+
+    '<div class="sec"><h3><span class="n">3</span>Seen this before?</h3><p>Three cases. In each one, the <span class="cc">evidence</span> didn’t fit the theory.</p>'+
     '<div class="three">'+
-      '<div class="mini"><div class="ml">Phrenology · Lesson 1</div>A cruel man has a big bump for kindness.<div class="mx">→ “His other organs overpowered it.”</div></div>'+
-      '<div class="mini"><div class="ml">Continental drift · K&amp;K</div>The same fossils turn up on both sides of an ocean.<div class="mx">→ “Land bridges once joined them, then sank.”</div></div>'+
-      '<div class="mini"><div class="ml">Newton · 1859</div>Mercury’s orbit doesn’t fit the law.<div class="mx">→ “A hidden planet is pulling on it.”</div></div>'+
-    '</div>'+
-    '<div class="talk"><div class="tl">Talk first</div><div class="tb">In all three, the <span class="cc">evidence</span> didn’t fit, and the knowers explained it away instead of giving up the theory. Mercury had a real gap. Why didn’t Le Verrier just say Newton was wrong? What would he have replaced Newton <i>with</i>?</div></div>'+
-    '<button class="btn sm ghost" id="lvName">Open after you’ve talked</button>'+
+      '<div><div class="fig">'+figHead()+'</div><div class="mini"><div class="ml">Phrenology · Lesson 1</div><div class="mx"><b>DIDN’T FIT</b>A cruel man has a big bump for kindness.</div><div class="mx"><b>RESCUE</b>“His other organs overpowered it.”</div></div></div>'+
+      '<div><div class="fig">'+figMap()+'</div><div class="mini"><div class="ml">Continents · K&amp;K</div><div class="mx"><b>DIDN’T FIT</b>The same fossils on both sides of an ocean.</div><div class="mx"><b>RESCUE</b>“Land bridges once joined them, then sank.”</div></div></div>'+
+      '<div><div class="fig">'+figMercury(true)+'</div><div class="mini"><div class="ml">Newton · 1859</div><div class="mx"><b>DIDN’T FIT</b>Mercury’s orbit swings too fast.</div><div class="mx"><b>RESCUE</b>“A hidden planet is pulling it.”</div></div></div>'+
+    '</div></div>'+
+    '<div class="talk"><div class="tl">Talk first</div><div class="tb">In all three, the knowers explained the evidence away instead of giving up the theory. Mercury had a real gap. Why didn’t Le Verrier just say Newton was wrong? What would he have replaced Newton <i>with</i>?</div></div>'+
+    notebook(4,"Mercury’s orbit didn’t fit Newton. Why did Le Verrier predict Vulcan instead of deciding Newton was wrong?","<div class=\"use\">Use: framework · evidence · explanation. Link it to phrenology or the land bridges.</div>")+
+    '<button class="btn sm ghost" id="lvName">Open after you’ve written</button>'+
   '</div>'+
-  '<div class="block" id="lvNameBlk">'+
-    '<div class="nameit"><div class="nl">Name it — Known unknown · unknown unknown</div><div class="nb">'+
-      '<p>The gap in Mercury’s orbit was a <em>known unknown</em>: everyone could see it and measure it.</p>'+
-      '<p>The answer — a completely new theory of gravity — was an <em>unknown unknown</em>: nobody could picture it yet.</p>'+
-      '<p>Newton’s framework was the only one physicists had, so it shaped which <span class="cc">explanations</span> they could even imagine. From inside that <span class="cc">perspective</span>, a hidden planet was the best explanation on offer, and the same move had just found Neptune.</p></div></div>'+
-    '<div class="note"><div class="hl">✎ Notebook</div><div class="hb">Mercury’s orbit didn’t fit Newton. Why did Le Verrier predict Vulcan instead of deciding Newton was wrong? Use the words <b>framework</b>, <b>evidence</b> and <b>explanation</b>, and link it to phrenology or the land bridges.</div></div>'+
-  '</div>'+
+  '<div class="block" id="lvNameBlk"><div class="nameit"><div class="nl">Name it — known unknown · unknown unknown</div><div class="nb">'+
+    '<p>The gap in Mercury’s orbit was a <em>known unknown</em>: everyone could see it and measure it.</p>'+
+    '<p>The answer, a completely new theory of gravity, was an <em>unknown unknown</em>: nobody could picture it yet.</p>'+
+    '<p>Newton’s framework was the only one physicists had, so it shaped which <span class="cc">explanations</span> they could imagine. From inside that <span class="cc">perspective</span>, a hidden planet was the best explanation on offer, and the same move had just found Neptune.</p></div></div></div>'+
   navHTML("Next");
   wireNav(el);
-  var lines={law:"Very few astronomers in 1859 would have chosen this. Keep that in mind — why not?",
-    planet:"So did Le Verrier. It had just worked for Neptune.",
-    wait:"Astronomers did keep measuring. The gap stayed."};
+  var lines={law:"Very few astronomers in 1859 would have chosen this. Why not?",planet:"So did Le Verrier. It had just worked for Neptune.",wait:"Astronomers did keep measuring. The gap stayed."};
   $$("#lvOpts .opt",el).forEach(function(b){ b.onclick=function(){
     $$("#lvOpts .opt",el).forEach(function(x){x.classList.remove("picked");x.classList.add("dim");}); b.classList.remove("dim"); b.classList.add("picked");
-    var fb=$("#lvFb",el); fb.innerHTML='<div class="fb">'+lines[b.dataset.c]+'</div>'; show(fb); show($("#lvReveal",el)); }; });
+    $("#lvFb",el).innerHTML='<div class="fb">'+lines[b.dataset.c]+'</div>'; show($("#lvFb",el)); show($("#lvReveal",el)); }; });
   $("#lvName",el).onclick=function(){ show($("#lvNameBlk",el)); this.style.display="none"; };
 });
 
-/* ---- 3. Was Newton wrong? ---- */
-addStage("Was Newton wrong?", function(el){
-  var P=[
-    {id:"yes", h:"Yes — Mercury broke his law.",
-     sees:"<span class=\"cc\">Truth</span>: his law gets Mercury wrong, and gravity is not really a pull between masses.",
-     admit:"Then why do engineers still use it every day?"},
-    {id:"scope", h:"Not inside its scope.",
-     sees:"<span class=\"cc\">Scope</span>: at everyday speeds and masses, Newton’s answers are right to more decimal places than anyone needs.",
-     admit:"Even inside that scope, his picture of gravity as a pull is not what is happening."},
-    {id:"tool", h:"“Wrong” is the wrong question — it’s a tool.",
-     sees:"A theory is a map, not the territory. Maps are judged by what they are useful for.",
-     admit:"We did care whether Neptune was really there — not just whether the map was handy."}
-  ];
-  el.innerHTML=
-  '<div class="micro">Part 2 · A new framework</div>'+
-  '<h2>Einstein, 1915 — so was Newton wrong?</h2>'+
-  '<div class="lens">Scope · where a theory works and where it stops</div>'+
-  '<div class="pg"><div class="yr">1915 · GENERAL RELATIVITY</div>'+
-    '<p>Albert Einstein proposed a new picture. Gravity is not a pull between masses. Mass bends space and time, and things move along the bends.</p>'+
-    '<p>He worked out Mercury’s orbit with the new theory. It gave exactly the missing amount. No Vulcan needed. (Le Verrier had died in 1877. He never knew.)</p></div>'+
-  '<div class="two">'+
-    '<div class="mini obs"><div class="ml">What Newton still gets right</div>Neptune. The tides. Bridges, cars and rockets: engineers still design them with Newton’s laws.</div>'+
-    '<div class="mini th"><div class="ml">Where Newton drifts off</div>Very heavy masses, very high speeds, and anything that needs extreme precision — like Mercury, or the GPS in your phone.</div>'+
-  '</div>'+
-  '<div class="prompt">Commit</div><div class="qline">Was Newton wrong? Pick the answer you would defend.</div>'+
-  '<div class="opts" id="nwOpts">'+P.map(function(p){return '<button class="opt" data-p="'+p.id+'">'+p.h+'</button>';}).join("")+'</div>'+
-  '<div class="block" id="nwAll"><p class="lead" style="margin-top:12px">There is more than one good answer. Each one sees something real — and each one has something it has to admit.</p>'+
-    P.map(function(p){return '<div class="pos" data-pos="'+p.id+'"><div class="ph">'+p.h+'</div><div class="ps"><b>Sees</b>'+p.sees+'</div><div class="ps"><b>Has to admit</b>'+p.admit+'</div></div>';}).join("")+
-    '<div class="note"><div class="hl">✎ Notebook</div><div class="hb">Was Newton wrong? Give your answer, your reason, and what your answer has to admit. Use <b>truth</b> or <b>scope</b>.</div></div>'+
-    '<div class="talk"><div class="tl">Carry this forward</div><div class="tb">Einstein explained Mercury — but Mercury was already known. Fitting what you already know is easy. What would be a harder test for a new theory?</div></div>'+
-  '</div>'+
-  navHTML("To the labs");
-  wireNav(el);
-  $$("#nwOpts .opt",el).forEach(function(b){ b.onclick=function(){
-    $$("#nwOpts .opt",el).forEach(function(x){x.classList.remove("picked");}); b.classList.add("picked");
-    $$(".pos",el).forEach(function(x){ x.classList.toggle("mine", x.dataset.pos===b.dataset.p); });
-    show($("#nwAll",el)); }; });
-});
-
-/* ---- 4. Labs ---- */
-var LOG={
-  clock:{pred:"A higher clock runs faster", py:"1907–1915", tool:"Atomic clocks", cy:"2010 · 2020 · every day (GPS)", done:false},
-  light:{pred:"Gravity bends light — twice as much as Newton’s idea gives", py:"1915", tool:"Telescopes", cy:"1919 · radio telescopes since", done:false},
-  waves:{pred:"Colliding masses send ripples through space", py:"1916", tool:"Laser detectors", cy:"2015", done:false},
-  shadow:{pred:"A black hole casts a shadow of a set size", py:"1916 onward", tool:"Radio telescopes across Earth", cy:"2019", done:false}
-};
-var LABORDER=["clock","light","waves","shadow"];
-var LABNAMES={clock:"Raise the clock",light:"Bend the light",waves:"Catch the ripple",shadow:"Size the shadow"};
-function logHTML(){
-  return '<table class="log"><tr><th>Einstein’s theory predicted</th><th>Predicted</th><th>Tool</th><th>Checked</th><th>Result</th></tr>'+
-  LABORDER.map(function(k){var r=LOG[k]; return r.done?
-    '<tr><td>'+r.pred+'</td><td>'+r.py+'</td><td>'+r.tool+'</td><td>'+r.cy+'</td><td class="ok">CAME OUT AS PREDICTED</td></tr>':
-    '<tr class="empty"><td colspan="5">Lab: '+LABNAMES[k]+' — not checked yet</td></tr>';}).join("")+'</table>';
-}
-function refreshLogs(){ $$("[data-log]").forEach(function(t){t.innerHTML=logHTML();}); $$(".tab").forEach(function(t){ if(LOG[t.dataset.lab]&&LOG[t.dataset.lab].done) t.classList.add("logged"); }); }
-
-addStage("Labs: test Einstein", function(el){
-  el.innerHTML=
-  '<div class="micro">Part 3 · Predict, then check</div>'+
-  '<h2>Test Einstein’s theory</h2>'+
-  '<div class="lens">Methods &amp; tools · a prediction the world could say no to</div>'+
-  '<p class="lead">Mercury was already known, so the theory could be built to fit it. The real test is a <b>prediction</b>: the theory says what will happen <i>before</i> anyone has looked, and the world can say no. Einstein’s theory made some very strange predictions. Run each lab, record what you see, then check it against the world.</p>'+
-  '<div class="tabs">'+LABORDER.map(function(k,i){return '<div class="tab'+(i===0?' on':'')+'" data-lab="'+k+'">'+(i+1)+' · '+LABNAMES[k]+'<span class="tk">✓</span></div>';}).join("")+'</div>'+
-  LABORDER.map(function(k,i){return '<div class="labpanel'+(i===0?' on':'')+'" id="lab-'+k+'"></div>';}).join("")+
-  '<h3>Lab log</h3><div data-log></div>'+
-  navHTML("Next");
-  wireNav(el);
-  $$(".tab",el).forEach(function(t){ t.onclick=function(){
-    $$(".tab",el).forEach(function(x){x.classList.toggle("on",x===t);});
-    $$(".labpanel",el).forEach(function(p){p.classList.toggle("on",p.id==="lab-"+t.dataset.lab);});
-    startLab(t.dataset.lab); }; });
-  buildClock($("#lab-clock",el)); buildLight($("#lab-light",el)); buildWaves($("#lab-waves",el)); buildShadow($("#lab-shadow",el));
-  refreshLogs(); startLab("clock");
-});
-var labStarters={};
-function startLab(k){ if(labStarters[k]) labStarters[k](); }
-
-function labShell(k, prediction, predictQ, predictOpts, predictFb, body, record, world){
-  return '<div class="pred"><b>The prediction</b>'+prediction+'</div>'+
-  '<div class="prompt">Before you touch anything</div><div class="qline">'+predictQ+'</div>'+
-  '<div class="opts" data-predict>'+predictOpts.map(function(o,i){return '<button class="opt small" data-i="'+i+'">'+o+'</button>';}).join("")+'</div>'+
-  '<div class="block" data-pfb></div>'+
-  '<div class="block" data-lab-body>'+body+
-    '<div class="note"><div class="hl">✎ Record in your notebook</div><ul>'+record.map(function(r){return '<li>'+r+'</li>';}).join("")+'</ul></div>'+
-    '<button class="btn go sm" data-check>Check against the world</button>'+
-    '<div class="block" data-world><div class="world"><div class="wl">What was measured</div>'+world+'</div></div>'+
-  '</div>';
-}
-function wireShell(panel, k, predictFb){
-  $$("[data-predict] .opt",panel).forEach(function(b){ b.onclick=function(){
-    $$("[data-predict] .opt",panel).forEach(function(x){x.classList.remove("picked");x.classList.add("dim");}); b.classList.remove("dim"); b.classList.add("picked");
-    var f=$("[data-pfb]",panel); f.innerHTML='<div class="fb">'+predictFb+'</div>'; show(f); show($("[data-lab-body]",panel));
-    startLab(k); }; });
-  $("[data-check]",panel).onclick=function(){ show($("[data-world]",panel)); LOG[k].done=true; refreshLogs(); };
-}
-
-/* ---------- LAB 1: clock ---------- */
-var GM=3.986004e14, C2=8.98755179e16, RE=6.371e6, DAY=86400;
-function fmtTime(s){
-  var a=Math.abs(s), sign=s<0?"−":"+";
-  if(a===0) return "0";
-  if(a<1e-9) return sign+(a*1e12).toPrecision(2)+" trillionths of a second";
-  if(a<1e-6) return sign+(a*1e9).toPrecision(2)+" billionths of a second";
-  if(a<1e-3) return sign+(a*1e6).toPrecision(2)+" millionths of a second";
-  if(a<1) return sign+(a*1e3).toPrecision(2)+" thousandths of a second";
-  return sign+a.toPrecision(2)+" seconds";
-}
-function fmtH(h){ if(h<1) return Math.round(h*100)+" cm"; if(h<1000) return Math.round(h)+" m"; return Math.round(h/1000).toLocaleString()+" km"; }
-function buildClock(p){
-  var body=
-  '<div class="stagebox"><svg id="clkSvg" viewBox="0 0 720 300"></svg></div>'+
-  '<div class="ctrls"><span>Height</span><input type="range" id="clkH" min="0" max="1000" value="0"><span class="val" id="clkHv"></span></div>'+
-  '<div class="row"><span class="chk" style="color:var(--ink-soft)">Jump to a real test:</span>'+
-    '<button class="opt small" data-h="0.33">Lab bench · 33 cm</button>'+
-    '<button class="opt small" data-h="450">Tokyo Skytree · 450 m</button>'+
-    '<button class="opt small" data-h="20200000">GPS satellite · 20,200 km</button></div>'+
-  '<div class="row"><label class="chk"><input type="checkbox" id="clkSpeed"> The clock is on a satellite moving at orbit speed (only above 200 km)</label></div>'+
-  '<div class="readout"><div class="ro"><div class="rl">Einstein’s theory predicts</div><div class="rv" id="clkE"></div><div class="rs" id="clkE2"></div></div>'+
-  '<div class="ro newton"><div class="rl">Newton’s theory predicts</div><div class="rv">0 — no difference</div><div class="rs">For Newton, gravity is a pull. It doesn’t touch time.</div></div></div>'+
-  '<p class="body" style="font-size:15.5px;color:var(--ink-soft)">Both clock faces look identical. The difference is far too small for any watch — you need an atomic clock. That is the <span class="cc">tool</span>.</p>';
-  p.innerHTML=labShell("clock",
-    "Time runs slower closer to a heavy mass. So a clock higher above the Earth should run <i>faster</i> than an identical clock on the ground. Einstein worked this out between 1907 and 1915 — long before any clock could check it.",
-    "A clock 1 metre above you: how much faster does Einstein’s theory say it runs in a day?",
-    ["About a second","About a millionth of a second","Too small for any clock to measure"],
-    "About 9 trillionths of a second a day. Too small for your watch — not for an atomic clock. Now raise the clock.",
-    body,
-    ["How much faster is the clock at 33 cm? At 450 m? At GPS height?","Tick the satellite-speed box at GPS height. What happens to the total, and why does that matter?","What does Newton’s theory predict? Could the measurement have said no to Einstein?"],
-    '<p><b>Lab bench, 33 cm (NIST, USA, 2010):</b> two atomic clocks, one raised about 33 cm. The higher clock ran faster by the amount predicted — about 90 billionths of a second over an 80-year life.</p>'+
-    '<p><b>Tokyo Skytree, 450 m (Japan, 2020):</b> a portable clock at the observation deck ran faster than one at the base, by the predicted amount.</p>'+
-    '<p><b>GPS (every day):</b> height makes satellite clocks gain about 45 millionths of a second a day; their speed makes them lose about 7. Net: about 38 millionths a day. Engineers set the clocks to tick slightly slow before launch. Without that correction, your phone’s map would drift by about 10 km a day.</p>');
-  wireShell(p,"clock","About 9 trillionths of a second a day. Too small for your watch — not for an atomic clock. Now raise the clock.");
-  var svg=$("#clkSvg",p), sl=$("#clkH",p), sp=$("#clkSpeed",p);
-  var fixedH=null;
-  function hFrom(v){ return fixedH!==null?fixedH:Math.pow(10, -1 + v/1000*8.6); }
-  function vFrom(h){ return (Math.log10(h)+1)/8.6*1000; }
-  var ang=0, raf=null;
-  function face(x,y,r,label,col){
-    var hx=x+Math.sin(ang)*r*0.78, hy=y-Math.cos(ang)*r*0.78;
-    var mx=x+Math.sin(ang/12)*r*0.55, my=y-Math.cos(ang/12)*r*0.55;
-    var t='<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="#f7f2e6" stroke="'+col+'" stroke-width="3"/>';
-    for(var i=0;i<12;i++){var a=i*Math.PI/6; t+='<line x1="'+(x+Math.sin(a)*r*.82)+'" y1="'+(y-Math.cos(a)*r*.82)+'" x2="'+(x+Math.sin(a)*r*.94)+'" y2="'+(y-Math.cos(a)*r*.94)+'" stroke="#5a5145" stroke-width="1.5"/>';}
-    t+='<line x1="'+x+'" y1="'+y+'" x2="'+mx+'" y2="'+my+'" stroke="#2a2622" stroke-width="3" stroke-linecap="round"/>';
-    t+='<line x1="'+x+'" y1="'+y+'" x2="'+hx+'" y2="'+hy+'" stroke="#8a3b2a" stroke-width="1.6" stroke-linecap="round"/>';
-    t+='<circle cx="'+x+'" cy="'+y+'" r="3" fill="#2a2622"/>';
-    t+='<text x="'+x+'" y="'+(y+r+16)+'" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#cbbf9f">'+label+'</text>';
-    return t;
-  }
-  function draw(){
-    var h=hFrom(+sl.value), t=vFrom(h)/1000;
-    var top=34, bot=238, y=bot-(bot-top)*t;
-    var s='<defs><linearGradient id="sky" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#2b4a73"/><stop offset=".35" stop-color="#1b2840"/><stop offset="1" stop-color="#0f1420"/></linearGradient></defs>';
-    s+='<rect width="720" height="300" fill="url(#sky)"/>';
-    for(var i=0;i<40;i++){ var sx=(i*97)%700+10, sy=(i*53)%150+8; s+='<circle cx="'+sx+'" cy="'+sy+'" r="'+((i%3)*.4+.5)+'" fill="#fff" opacity="'+(0.15+0.5*t)+'"/>'; }
-    s+='<path d="M0 262 Q360 236 720 262 L720 300 L0 300 Z" fill="#3f6b3a"/><path d="M0 262 Q360 236 720 262" stroke="#7fa36b" stroke-width="2" fill="none"/>';
-    // height scale
-    s+='<line x1="70" y1="'+top+'" x2="70" y2="'+bot+'" stroke="#cbbf9f" stroke-width="1"/>';
-    [[0.33,"33 cm"],[450,"450 m"],[1e4,"10 km (jet)"],[2.02e7,"GPS 20,200 km"]].forEach(function(m){ var yy=bot-(bot-top)*(vFrom(m[0])/1000);
-      s+='<line x1="64" y1="'+yy+'" x2="76" y2="'+yy+'" stroke="#cbbf9f"/><text x="80" y="'+(yy+4)+'" font-family="JetBrains Mono,monospace" font-size="10" fill="#cbbf9f">'+m[1]+'</text>'; });
-    s+='<line x1="470" y1="'+(y+30)+'" x2="470" y2="'+(250)+'" stroke="#caa24a" stroke-dasharray="4 4"/>';
-    s+=face(600,214,30,"GROUND CLOCK","#5a5145");
-    s+=face(470,y,28,"RAISED CLOCK","#caa24a");
-    svg.innerHTML=s;
-    var dG=GM/C2*(1/RE-1/(RE+h))*DAY, dV=0;
-    sp.disabled=h<2e5; if(sp.disabled) sp.checked=false;
-    if(sp.checked){ dV=-(GM/(RE+h))/(2*C2)*DAY; }
-    var tot=dG+dV;
-    $("#clkHv",p).textContent=fmtH(h);
-    $("#clkE",p).textContent=fmtTime(tot)+" per day";
-    $("#clkE2",p).innerHTML= sp.checked? "Height: "+fmtTime(dG)+" · speed: "+fmtTime(dV)+"<br>Over 80 years: "+fmtTime(tot*365.25*80) : "Over 80 years: "+fmtTime(tot*365.25*80);
-  }
-  function loop(){ ang+=0.06; draw(); raf=requestAnimationFrame(loop); }
-  sl.oninput=function(){ fixedH=null; draw(); }; sp.onchange=draw;
-  $$("[data-h]",p).forEach(function(b){ b.onclick=function(){ sl.value=vFrom(+b.dataset.h); fixedH=+b.dataset.h; draw(); }; });
-  labStarters.clock=function(){ if(!raf) loop(); };
-  draw();
-}
-
-/* ---------- LAB 2: light ---------- */
-function buildLight(p){
-  var body=
-  '<div class="stagebox"><canvas id="lensCv" width="560" height="320"></canvas></div>'+
-  '<div class="ctrls"><span>Mass of the near galaxy</span><input type="range" id="lensM" min="0" max="100" value="0"><span class="val" id="lensMv"></span>'+
-  '<span>Line-up (far galaxy’s position)</span><input type="range" id="lensB" min="0" max="100" value="70"><span class="val" id="lensBv"></span></div>'+
-  '<div class="row"><label class="chk"><input type="checkbox" id="lensTrue" checked> Show where the far galaxy really is</label>'+
-  '<label class="chk"><input type="checkbox" id="lensNewton"> Use the Newton-style amount of bending (half of Einstein’s)</label></div>'+
-  '<p class="body" style="font-size:15.5px;color:var(--ink-soft)">The orange glow is a heavy galaxy close to us. The blue galaxy is much farther away, behind it. You are looking from Earth.</p>';
-  p.innerHTML=labShell("light",
-    "Mass bends space, so light passing a heavy object should bend — and by a set amount: twice what you get if you treat light as tiny particles pulled by Newton’s gravity. Einstein published the number in 1915.",
-    "Line the far galaxy up exactly behind the heavy one. What will you see from Earth?",
-    ["Nothing — it’s hidden behind","The same galaxy, just dimmer","Something with a different shape"],
-    "Try it. Start with no mass, then turn the mass up, then slide the far galaxy into line.",
-    body,
-    ["With zero mass, where does the far galaxy appear? Now turn the mass up. What happens to its image?","Slide it into a perfect line-up. Describe the shape.","Tick the Newton box. What changes? Why does that make this a test that could say no?"],
-    '<p><b>1919 eclipse:</b> during a total eclipse, stars near the Sun can be photographed. Einstein’s theory predicted starlight grazing the Sun would shift by 1.75 arcseconds; the Newton-style figure was half that. Two British expeditions (Sobral in Brazil, Príncipe off Africa) measured shifts closer to Einstein’s number. Their data were rough — critics said so at the time.</p>'+
-    '<p><b>Since then:</b> radio telescopes have measured the bending of light by the Sun many times, agreeing with Einstein to better than one part in a thousand. Hubble and JWST have photographed far galaxies stretched into arcs and full rings around nearer heavy galaxies — the shapes in this lab.</p>');
-  wireShell(p,"light","Try it. Start with no mass, then turn the mass up, then slide the far galaxy into line.");
-  var cv=$("#lensCv",p), ctx=cv.getContext("2d"), W=cv.width, H=cv.height, S=70, cx=W/2, cy=H/2;
-  var img=ctx.createImageData(W,H);
-  function draw(){
-    var m=+$("#lensM",p).value/100, bx=(+$("#lensB",p).value/100)*2.2, newton=$("#lensNewton",p).checked;
-    var tE2=Math.pow(1.15*m,2)*(newton?0.5:1), sig=0.17, d=img.data;
-    $("#lensMv",p).textContent=m===0?"none":Math.round(m*100)+"%";
-    $("#lensBv",p).textContent=bx<0.04?"perfect line-up":"off-line";
-    for(var py=0;py<H;py++){ for(var px=0;px<W;px++){
-      var x=(px-cx)/S, y=(py-cy)/S, r2=x*x+y*y+1e-6, f=tE2/r2, sx=x-f*x, sy=y-f*y;
-      var dd=(sx-bx)*(sx-bx)+sy*sy, I=Math.exp(-dd/(2*sig*sig));
-      var k=(py*W+px)*4;
-      d[k]=20+I*190; d[k+1]=26+I*215; d[k+2]=38+I*235; d[k+3]=255;
-    }}
-    ctx.putImageData(img,0,0);
-    // stars
-    ctx.fillStyle="rgba(255,255,255,.5)"; for(var i=0;i<30;i++){ ctx.fillRect((i*131)%W,(i*71)%H,1.2,1.2); }
-    // lens galaxy glow
-    if(m>0){ var g=ctx.createRadialGradient(cx,cy,0,cx,cy,18+30*m); g.addColorStop(0,"rgba(255,214,150,.95)"); g.addColorStop(.4,"rgba(230,160,80,.45)"); g.addColorStop(1,"rgba(230,160,80,0)");
-      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,18+30*m,0,7); ctx.fill(); }
-    if($("#lensTrue",p).checked){ ctx.setLineDash([4,4]); ctx.strokeStyle="rgba(202,162,74,.9)"; ctx.lineWidth=1.3; ctx.beginPath(); ctx.arc(cx+bx*S,cy,sig*S*1.8,0,7); ctx.stroke(); ctx.setLineDash([]);
-      ctx.fillStyle="rgba(202,162,74,.95)"; ctx.font="11px JetBrains Mono, monospace"; ctx.fillText("really here",cx+bx*S-34,cy-sig*S*1.8-6); }
-    ctx.fillStyle="rgba(203,191,159,.85)"; ctx.font="11px JetBrains Mono, monospace"; ctx.fillText("VIEW FROM EARTH",12,20);
-  }
-  ["lensM","lensB"].forEach(function(id){ $("#"+id,p).oninput=draw; });
-  ["lensTrue","lensNewton"].forEach(function(id){ $("#"+id,p).onchange=draw; });
-  draw();
-}
-
-/* ---------- LAB 3: waves ---------- */
-function buildWaves(p){
-  var body=
-  '<div class="stagebox"><canvas id="gwCv" width="720" height="360"></canvas></div>'+
-  '<div class="row"><button class="btn sm" id="gwGo">▶ Two black holes merge</button><button class="btn sm ghost" id="gwTruck">A truck drives past Hanford</button><button class="btn sm ghost" id="gwClear">Clear</button></div>'+
-  '<p class="body" style="font-size:15.5px;color:var(--ink-soft)">LIGO has two detectors about 3,000 km apart: one in Hanford, Washington, and one in Livingston, Louisiana. Each uses lasers to measure a change in length far smaller than a proton.</p>';
-  p.innerHTML=labShell("waves",
-    "When huge masses move, they should send ripples through space itself, travelling at the speed of light. Einstein predicted these gravitational waves in 1916 — and thought they would be far too small ever to detect.",
-    "If a real ripple from space passes the Earth, what should the two detectors show?",
-    ["The same signal in both","A signal in only one","Two completely different signals"],
-    "Run it. Then run the truck. Compare.",
-    body,
-    ["Describe the black hole signal. What happens to it just before the merger?","What is different about the truck signal?","Why does having two detectors far apart make the evidence stronger?"],
-    '<p><b>14 September 2015:</b> both LIGO detectors recorded the same rising “chirp”, Livingston about 7 thousandths of a second before Hanford — the right gap for a ripple crossing the USA at light speed. Its shape matched what Einstein’s theory predicts for two black holes, each about 30 times the mass of the Sun, merging about 1.3 billion light-years away. Predicted 1916, detected 2015.</p>'+
-    '<p>Since then, LIGO and its partner detectors have recorded many more mergers.</p>');
-  wireShell(p,"waves","Run it. Then run the truck. Compare.");
-  var cv=$("#gwCv",p), ctx=cv.getContext("2d"), W=cv.width, H=cv.height;
-  var N=600, Tm=0.82, sigL=null, sigH=null, prog=0, running=false, truck=null, raf=null;
-  function chirp(t){ // t in 0..1 window
-    if(t<0) return 0;
-    if(t<Tm){ var tau=Tm-t; var a=0.07/Math.pow(tau+0.004,0.25); return a*Math.cos(2*Math.PI*10.5*Math.pow(tau+0.004,0.625)); }
-    var dt=t-Tm; return 0.28*Math.exp(-dt*60)*Math.cos(2*Math.PI*60*dt);
-  }
-  function noise(){ return (Math.random()-.5)*0.05; }
-  function makeSignals(){
-    sigL=[];sigH=[];
-    for(var i=0;i<N;i++){ var t=i/N; sigL.push(chirp(t)+noise()); sigH.push(chirp(t-0.028)+noise()); }
-  }
-  function drawTrace(arr, y0, label, col, upto){
-    ctx.fillStyle="rgba(203,191,159,.85)"; ctx.font="11px JetBrains Mono, monospace"; ctx.fillText(label,12,y0-46);
-    ctx.strokeStyle="rgba(203,191,159,.25)"; ctx.beginPath(); ctx.moveTo(10,y0); ctx.lineTo(W-10,y0); ctx.stroke();
-    if(!arr) return;
-    ctx.strokeStyle=col; ctx.lineWidth=1.6; ctx.beginPath();
-    for(var i=0;i<upto;i++){ var x=10+(W-20)*i/N, y=y0-arr[i]*90; if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); }
-    ctx.stroke();
-  }
+/* ======================= STAGE 3 · Newton then Einstein ======================= */
+function buildCannon(box){
+  box.innerHTML='<div class="fig dark"><canvas width="560" height="380"></canvas></div>'+
+  '<div class="ctrls"><span>Launch speed</span><input type="range" min="20" max="160" value="60"><span class="val"></span></div>'+
+  '<div class="row"><button class="btn sm" data-fire>Fire</button><button class="btn sm ghost" data-clear>Clear</button><span class="chk" data-out style="font-weight:700;color:var(--blue)"></span></div>';
+  var cv=$("canvas",box), ctx=cv.getContext("2d"), sl=$("input",box), W=cv.width, H=cv.height, cx=280, cy=225, RE=105, r0=RE+22;
+  var GM=1, vc=Math.sqrt(GM/r0), paths=[], cur=null, raf=null;
+  function label(){ var f=+sl.value/100; $(".val",box).textContent=(f<0.98?"slow":f<1.06?"just right":f<1.41?"fast":"very fast")+" ("+Math.round(f*100)+"%)"; }
   function draw(){
     ctx.fillStyle="#141a26"; ctx.fillRect(0,0,W,H);
-    // orbit panel
-    var t=prog/N, ox=W/2, oy=70;
-    if(running||prog>0){
-      if(t<Tm){ var tau=Math.max(Tm-t,0.001), sep=14+52*Math.pow(tau/Tm,0.5), ph=60*Math.pow(Tm,0.625)-60*Math.pow(tau,0.625);
-        for(var r=1;r<6;r++){ ctx.strokeStyle="rgba(202,162,74,"+(0.22-r*0.035)+")"; ctx.beginPath(); ctx.arc(ox,oy,sep+r*22+((prog*2)%22),0,7); ctx.stroke(); }
-        [0,Math.PI].forEach(function(o,j){ ctx.fillStyle="#000"; ctx.strokeStyle="#caa24a"; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(ox+Math.cos(ph+o)*sep*(j?1.15:0.9),oy+Math.sin(ph+o)*sep*0.35*(j?1.15:0.9),j?11:12,0,7); ctx.fill(); ctx.stroke(); });
-      } else { ctx.fillStyle="#000"; ctx.strokeStyle="#caa24a"; ctx.lineWidth=2.5; ctx.beginPath(); ctx.arc(ox,oy,17,0,7); ctx.fill(); ctx.stroke();
-        for(var r2=1;r2<5;r2++){ ctx.strokeStyle="rgba(202,162,74,"+(0.35-r2*0.07)+")"; ctx.beginPath(); ctx.arc(ox,oy,17+r2*14+(prog-Tm*N)*1.5,0,7); ctx.stroke(); } }
-    } else { ctx.fillStyle="rgba(203,191,159,.6)"; ctx.font="12px JetBrains Mono, monospace"; ctx.textAlign="center"; ctx.fillText("press ▶ to merge two black holes",ox,oy+4); ctx.textAlign="left"; }
-    ctx.fillStyle="rgba(203,191,159,.85)"; ctx.font="11px JetBrains Mono, monospace"; ctx.fillText("1.3 BILLION LIGHT-YEARS AWAY",12,20);
-    var upto=Math.min(prog,N);
-    drawTrace(sigL&&!truck?sigL:(truck?truck.L:null), 210, "LIVINGSTON, LOUISIANA", "#7fb0e6", truck?N:upto);
-    drawTrace(sigH&&!truck?sigH:(truck?truck.H:null), 312, "HANFORD, WASHINGTON", "#e6b47f", truck?N:upto);
+    for(var i=0;i<40;i++){ ctx.fillStyle="rgba(255,255,255,.35)"; ctx.fillRect((i*137)%W,(i*61)%H,1.2,1.2); }
+    ctx.fillStyle="#2b5c8a"; ctx.beginPath(); ctx.arc(cx,cy,RE,0,7); ctx.fill();
+    ctx.fillStyle="#3f6b3a"; ctx.beginPath(); ctx.arc(cx,cy,RE,Math.PI*1.1,Math.PI*1.9); ctx.arc(cx,cy,RE-14,Math.PI*1.9,Math.PI*1.1,true); ctx.fill();
+    ctx.fillStyle="#8a7a5a"; ctx.beginPath(); ctx.moveTo(cx-16,cy-RE+4); ctx.lineTo(cx,cy-r0+2); ctx.lineTo(cx+16,cy-RE+4); ctx.fill();
+    ctx.fillStyle="#cbbf9f"; ctx.fillRect(cx-2,cy-r0-4,12,5);
+    paths.concat(cur?[cur]:[]).forEach(function(p){ ctx.strokeStyle=p.col; ctx.lineWidth=2; ctx.beginPath(); p.pts.forEach(function(q,i){ if(i===0) ctx.moveTo(q[0],q[1]); else ctx.lineTo(q[0],q[1]); }); ctx.stroke();
+      var last=p.pts[p.pts.length-1]; if(last){ ctx.fillStyle="#f4efe2"; ctx.beginPath(); ctx.arc(last[0],last[1],3.5,0,7); ctx.fill(); } });
+    ctx.fillStyle="rgba(203,191,159,.85)"; ctx.font="11px JetBrains Mono, monospace"; ctx.fillText("NEWTON’S CANNON (mountain hugely exaggerated)",12,20);
   }
-  function step(){ prog+=3; draw(); if(prog<N){ raf=requestAnimationFrame(step); } else { running=false; } }
-  $("#gwGo",p).onclick=function(){ truck=null; makeSignals(); prog=0; running=true; cancelAnimationFrame(raf); step(); };
-  $("#gwTruck",p).onclick=function(){ cancelAnimationFrame(raf); running=false; prog=0; sigL=null; sigH=null;
-    var L=[],Hh=[], c=0.3+Math.random()*0.4; for(var i=0;i<N;i++){ var t=i/N; L.push(noise()); Hh.push(noise()+0.3*Math.exp(-Math.pow((t-c)/0.05,2))*Math.sin(2*Math.PI*9*t)); }
-    truck={L:L,H:Hh}; draw(); };
-  $("#gwClear",p).onclick=function(){ cancelAnimationFrame(raf); running=false; prog=0; sigL=sigH=null; truck=null; draw(); };
-  labStarters.waves=function(){ draw(); };
+  function fire(){
+    if(cur){ paths.push(cur); } if(paths.length>4) paths.shift();
+    var f=+sl.value/100, x=0, y=r0, vx=vc*f, vy=0, cols=["#e6b47f","#7fb0e6","#a8d08d","#e68f7f","#d7c3f0"];
+    cur={pts:[],col:cols[paths.length%cols.length]};
+    var steps=0, outcome=""; cancelAnimationFrame(raf);
+    (function stepF(){
+      for(var k=0;k<60;k++){ var r=Math.sqrt(x*x+y*y), a=GM/(r*r*r); vx-=a*x*0.6; vy-=a*y*0.6; x+=vx*0.6; y+=vy*0.6; steps++;
+        cur.pts.push([cx+x,cy-y]);
+        if(r<RE){ outcome="Falls back to Earth."; break; }
+        if(r>600){ outcome="Escapes into space."; break; }
+        if(steps>9000){ outcome="Orbits: it keeps falling, and keeps missing."; break; } }
+      draw(); $("[data-out]",box).textContent=outcome;
+      if(!outcome) raf=requestAnimationFrame(stepF);
+    })();
+  }
+  sl.oninput=label; $("[data-fire]",box).onclick=fire; $("[data-clear]",box).onclick=function(){ cancelAnimationFrame(raf); paths=[]; cur=null; $("[data-out]",box).textContent=""; draw(); };
+  label(); draw();
+}
+function buildMercury(box){
+  box.innerHTML='<div class="fig dark"><canvas width="560" height="360"></canvas></div>'+
+  '<div class="row"><button class="btn sm" data-play>▶ Play</button><label class="chk"><input type="checkbox" data-newton checked> Newton’s prediction</label><label class="chk"><input type="checkbox" data-obs checked> What is observed</label></div>';
+  var cv=$("canvas",box), ctx=cv.getContext("2d"), W=cv.width, H=cv.height, cx=260, cy=190, a=150, e=0.55, b=a*Math.sqrt(1-e*e);
+  var t=0, running=false, raf=null, rateN=0.0045, rateO=rateN*1.081, trailN=[], trailO=[];
+  function ell(rot,col,dash){ ctx.save(); ctx.translate(cx,cy); ctx.rotate(rot); ctx.setLineDash(dash||[]); ctx.strokeStyle=col; ctx.lineWidth=1.8; ctx.beginPath(); ctx.ellipse(-a*e,0,a,b,0,0,7); ctx.stroke(); ctx.restore(); ctx.setLineDash([]); }
+  function peri(rot){ return [cx+Math.cos(rot)*(a-a*e), cy+Math.sin(rot)*(a-a*e)]; }
+  function draw(){
+    ctx.fillStyle="#141a26"; ctx.fillRect(0,0,W,H);
+    var rN=-t*rateN, rO=-t*rateO, sN=$("[data-newton]",box).checked, sO=$("[data-obs]",box).checked;
+    if(sN){ trailN.forEach(function(p){ ctx.fillStyle="rgba(230,180,127,.7)"; ctx.fillRect(p[0]-2,p[1]-2,4,4); }); ell(rN,"#e6b47f",[6,5]); }
+    if(sO){ trailO.forEach(function(p){ ctx.fillStyle="rgba(127,176,230,.85)"; ctx.beginPath(); ctx.arc(p[0],p[1],2.2,0,7); ctx.fill(); }); ell(rO,"#7fb0e6"); }
+    var g=ctx.createRadialGradient(cx,cy,0,cx,cy,18); g.addColorStop(0,"#ffe49a"); g.addColorStop(1,"rgba(232,176,74,0)"); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,18,0,7); ctx.fill();
+    var M=t*0.06, E=M; for(var k=0;k<5;k++) E=M+e*Math.sin(E);
+    var px=a*(Math.cos(E)-e), py=b*Math.sin(E), rr=sO?rO:rN, X=cx+px*Math.cos(rr)-py*Math.sin(rr), Y=cy+px*Math.sin(rr)+py*Math.cos(rr);
+    ctx.fillStyle="#cfd6e6"; ctx.beginPath(); ctx.arc(X,Y,5,0,7); ctx.fill();
+    ctx.font="11px JetBrains Mono, monospace";
+    ctx.fillStyle="#e6b47f"; ctx.fillText("- - Newton, with every planet’s pull: 531″ per century",12,20);
+    ctx.fillStyle="#7fb0e6"; ctx.fillText("— observed: 574″ per century",12,36);
+    ctx.fillStyle="#cbbf9f"; ctx.fillText("dots: closest point of each orbit · the gap: 43″ per century (sped up hugely)",12,H-12);
+  }
+  function loop(){ t+=1; if(t%105===0){ trailN.push(peri(-t*rateN)); trailO.push(peri(-t*rateO)); } draw(); raf=requestAnimationFrame(loop); }
+  $("[data-play]",box).onclick=function(){ running=!running; this.textContent=running?"❚❚ Pause":"▶ Play"; if(running) loop(); else cancelAnimationFrame(raf); };
+  $$("input",box).forEach(function(i){ i.onchange=draw; });
+  anims.mercury={stop:function(){ running=false; cancelAnimationFrame(raf); var b2=$("[data-play]",box); if(b2) b2.textContent="▶ Play"; }};
   draw();
 }
-
-/* ---------- LAB 4: shadow ---------- */
-function buildShadow(p){
-  var body=
-  '<div class="stagebox"><canvas id="bhCv" width="560" height="340"></canvas></div>'+
-  '<div class="ctrls"><span>Mass (billions of Suns)</span><input type="range" id="bhM" min="10" max="120" value="20"><span class="val" id="bhMv"></span></div>'+
-  '<div class="row"><label class="chk"><input type="checkbox" id="bhPhoto"> Overlay the size measured in the 2019 photo</label></div>'+
-  '<div class="readout"><div class="ro"><div class="rl">Einstein’s theory predicts a ring about</div><div class="rv" id="bhP"></div><div class="rs">millionths of an arcsecond across (as seen from Earth)</div></div>'+
-  '<div class="ro"><div class="rl">The mass, measured separately</div><div class="rv">≈ 6.5 billion Suns</div><div class="rs">from how fast the stars near the centre of galaxy M87 move</div></div></div>';
-  p.innerHTML=labShell("shadow",
-    "Einstein’s equations allow black holes: so much mass in so small a space that nothing gets out. They also predict how big its shadow should look, from its mass and distance. (Einstein himself doubted black holes could really exist.)",
-    "A heavier black hole: will its shadow look bigger or smaller?",
-    ["Bigger","Smaller","Same size"],
-    "Find out. Then set the mass to the value astronomers measured from M87’s stars.",
-    body,
-    ["What happens to the shadow as the mass goes up?","Set the mass to 6.5 billion Suns. What size does the theory predict? Now overlay the photo.","The mass came from watching stars; the ring came from radio telescopes. Why does it matter that these are two different tools?"],
-    '<p><b>April 2019 — the Event Horizon Telescope:</b> radio telescopes across the planet, linked into one Earth-sized telescope, photographed the black hole at the centre of galaxy M87, 55 million light-years away. Four teams turned the data into images separately, without comparing notes. The ring measured about 42 millionths of an arcsecond — the size Einstein’s theory predicts for the mass measured from the stars.</p>'+
-    '<p>That is about the size of an orange on the Moon, seen from Earth. In 2022 the same team photographed the black hole at the centre of our own galaxy.</p>');
-  wireShell(p,"shadow","Find out. Then set the mass to the value astronomers measured from M87’s stars.");
-  var cv=$("#bhCv",p), ctx=cv.getContext("2d"), W=cv.width, H=cv.height;
+function buildWell(box){
+  box.innerHTML='<div class="fig dark"><canvas width="600" height="360"></canvas></div>'+
+  '<div class="ctrls"><span>Mass of the star</span><input type="range" min="0" max="100" value="70"><span class="val"></span></div>'+
+  '<div class="row"><label class="chk"><input type="checkbox" data-light> Send a beam of starlight past it</label><label class="chk"><input type="checkbox" data-clocks> Show clocks</label></div>';
+  var cv=$("canvas",box), ctx=cv.getContext("2d"), W=cv.width, H=cv.height, sl=$("input[type=range]",box), raf=null, th=0;
+  function depth(x,z,M){ var r2=x*x+z*z; return M*(0.42/Math.sqrt(r2+0.035) - 0.42/Math.sqrt(1.6+0.035)); }
+  function P(x,z,M){ var y=depth(x,z,M); return [W/2 + x*250 + z*40, 150 + z*95 + y*60]; }
   function draw(){
-    var M=+$("#bhM",p).value/10, pred=39.6*M/6.5, px=pred*2.6; // px per microarcsec
-    $("#bhMv",p).textContent=M.toFixed(1); $("#bhP",p).textContent="≈ "+Math.round(pred);
-    ctx.fillStyle="#0b0d12"; ctx.fillRect(0,0,W,H);
-    var cx=W/2, cy=H/2, R=px/2;
-    var g=ctx.createRadialGradient(cx,cy,R*0.55,cx,cy,R*1.45);
-    g.addColorStop(0,"rgba(0,0,0,1)"); g.addColorStop(0.42,"rgba(120,40,10,.9)"); g.addColorStop(0.55,"rgba(255,170,60,1)"); g.addColorStop(0.7,"rgba(200,80,20,.8)"); g.addColorStop(1,"rgba(0,0,0,0)");
-    ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,R*1.5,0,7); ctx.fill();
-    var g2=ctx.createLinearGradient(cx,cy-R,cx,cy+R); g2.addColorStop(0,"rgba(0,0,0,.45)"); g2.addColorStop(1,"rgba(255,200,120,.25)");
-    ctx.fillStyle=g2; ctx.beginPath(); ctx.arc(cx,cy,R*1.5,0,7); ctx.fill();
-    ctx.fillStyle="#000"; ctx.beginPath(); ctx.arc(cx,cy,R*0.62,0,7); ctx.fill();
-    if($("#bhPhoto",p).checked){ var Rm=42*2.6/2; ctx.setLineDash([6,5]); ctx.strokeStyle="#7fb0e6"; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(cx,cy,Rm,0,7); ctx.stroke(); ctx.setLineDash([]);
-      ctx.fillStyle="#7fb0e6"; ctx.font="11px JetBrains Mono, monospace"; ctx.fillText("2019 PHOTO: RING ≈ 42",cx+Rm+8,cy-Rm+10); }
-    ctx.fillStyle="rgba(203,191,159,.85)"; ctx.font="11px JetBrains Mono, monospace"; ctx.fillText("M87 · 55 MILLION LIGHT-YEARS",12,20);
+    var M=+sl.value/100; $(".val",box).textContent=M===0?"no mass":Math.round(M*100)+"%";
+    ctx.fillStyle="#141a26"; ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle="rgba(127,176,230,.45)"; ctx.lineWidth=1;
+    var N=24, i, j, x, z, p, q, xl, zl;
+    for(i=0;i<=N;i++){ z=-1+2*i/N; ctx.beginPath(); for(j=0;j<=60;j++){ x=-1+2*j/60; p=P(x,z,M); if(j===0) ctx.moveTo(p[0],p[1]); else ctx.lineTo(p[0],p[1]); } ctx.stroke(); }
+    for(j=0;j<=N;j++){ x=-1+2*j/N; ctx.beginPath(); for(i=0;i<=60;i++){ z=-1+2*i/60; p=P(x,z,M); if(i===0) ctx.moveTo(p[0],p[1]); else ctx.lineTo(p[0],p[1]); } ctx.stroke(); }
+    var s=P(0,0,M); var g=ctx.createRadialGradient(s[0],s[1]-6,0,s[0],s[1]-6,26); g.addColorStop(0,"#fff2b8"); g.addColorStop(.5,"#e8b04a"); g.addColorStop(1,"rgba(232,176,74,0)"); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(s[0],s[1]-6,26,0,7); ctx.fill();
+    if(M>0.02){ var R=0.55; ctx.strokeStyle="rgba(230,180,127,.6)"; ctx.setLineDash([4,4]); ctx.beginPath(); for(var k=0;k<=80;k++){ var a2=k/80*Math.PI*2; p=P(R*Math.cos(a2),R*Math.sin(a2),M); if(k===0) ctx.moveTo(p[0],p[1]); else ctx.lineTo(p[0],p[1]); } ctx.stroke(); ctx.setLineDash([]);
+      p=P(R*Math.cos(th),R*Math.sin(th),M); ctx.fillStyle="#7fb0e6"; ctx.beginPath(); ctx.arc(p[0],p[1]-4,7,0,7); ctx.fill();
+    } else { var xx=((th*0.15)%2)-1; p=P(xx,0.55,0); ctx.fillStyle="#7fb0e6"; ctx.beginPath(); ctx.arc(p[0],p[1]-4,7,0,7); ctx.fill(); ctx.fillStyle="#cbbf9f"; ctx.font="11px JetBrains Mono, monospace"; ctx.fillText("no dip: the planet goes straight",W/2-110,H-34); }
+    if($("[data-light]",box).checked){ var z0=-0.42; ctx.strokeStyle="#fff7c9"; ctx.lineWidth=2.2; ctx.beginPath();
+      for(q=0;q<=80;q++){ xl=-1+2*q/80; zl=z0 + 0.22*M*(1 + xl/Math.sqrt(xl*xl+z0*z0)); p=P(xl,zl,M); if(q===0) ctx.moveTo(p[0],p[1]-3); else ctx.lineTo(p[0],p[1]-3); } ctx.stroke();
+      ctx.setLineDash([3,4]); ctx.strokeStyle="rgba(255,247,201,.35)"; ctx.beginPath(); for(q=0;q<=40;q++){ xl=-1+2*q/40; p=P(xl,z0,M); if(q===0) ctx.moveTo(p[0],p[1]-3); else ctx.lineTo(p[0],p[1]-3);} ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle="#fff7c9"; ctx.font="10px JetBrains Mono, monospace"; p=P(1,z0+0.44*M,M); ctx.fillText("bent light",p[0]-70,p[1]-10); }
+    if($("[data-clocks]",box).checked){ [[0.18,0.02,"deep in the dip: slower",1-0.6*M],[0.95,-0.7,"far out: faster",1]].forEach(function(c){ p=P(c[0],c[1],M); ctx.strokeStyle="#f4efe2"; ctx.lineWidth=1.6; ctx.beginPath(); ctx.arc(p[0],p[1]-16,10,0,7); ctx.stroke();
+      var ang=th*4*c[3]; ctx.beginPath(); ctx.moveTo(p[0],p[1]-16); ctx.lineTo(p[0]+Math.sin(ang)*9,p[1]-16-Math.cos(ang)*9); ctx.stroke();
+      ctx.fillStyle="#f4efe2"; ctx.font="10px JetBrains Mono, monospace"; ctx.fillText(c[2],p[0]+14,p[1]-12); }); }
+    ctx.fillStyle="rgba(203,191,159,.85)"; ctx.font="11px JetBrains Mono, monospace"; ctx.fillText("EINSTEIN’S PICTURE: MASS BENDS SPACE AND TIME",12,20);
+    ctx.fillText("a 2D sheet standing in for 4D spacetime: a map, not the territory",12,H-12);
   }
-  $("#bhM",p).oninput=draw; $("#bhPhoto",p).onchange=draw; draw();
+  function loop(){ th+=0.018; draw(); raf=requestAnimationFrame(loop); }
+  sl.oninput=draw; $$("input[type=checkbox]",box).forEach(function(i){ i.onchange=draw; });
+  anims.well={start:function(){ cancelAnimationFrame(raf); loop(); }, stop:function(){ cancelAnimationFrame(raf); }};
+  draw();
+}
+addStage("Newton, then Einstein", function(el){
+  var P=[
+    {id:"yes",h:"Yes — Mercury broke his law.",sees:"<span class=\"cc\">Truth</span>: his law gets Mercury wrong, and gravity is not really a pull.",admit:"Then why do engineers still use it every day?"},
+    {id:"scope",h:"Not inside its scope.",sees:"<span class=\"cc\">Scope</span>: at everyday speeds and masses, Newton’s answers are right to more decimal places than anyone needs.",admit:"Even inside that scope, his picture of gravity as a pull is not what is happening."},
+    {id:"tool",h:"“Wrong” is the wrong question — it’s a tool.",sees:"A theory is a map, not the territory. Maps are judged by what they are useful for.",admit:"We did care whether Neptune was really there, not just whether the map was handy."}];
+  el.innerHTML=
+  '<div class="micro">Part 2 · A new framework</div><h2>Newton, then Einstein</h2>'+
+  '<div class="lens">Scope · where a theory works and where it stops</div>'+
+  '<div class="sec"><h3><span class="n">1</span>What Newton gets right</h3><div class="split"><div>'+
+    '<p>Newton imagined a cannon on a very tall mountain. Fire it slowly: the ball falls. Faster: it falls all the way round the Earth without landing. That is an orbit. Faster still: it escapes.</p>'+
+    '<p>The same law explains a falling apple, the Moon, the tides, and where to find Neptune. Engineers still use it to design bridges, cars and rockets.</p>'+
+    '<div class="box"><b class="l">Try it</b>Find a speed that falls, a speed that orbits, and a speed that escapes.</div>'+
+  '</div><div id="cannonBox"></div></div></div>'+
+  '<div class="sec"><h3><span class="n">2</span>Where Newton drifts off</h3><div class="split"><div>'+
+    '<p>Mercury’s orbit slowly turns. Newton’s law, counting every planet’s pull, predicts 531 arcseconds of turning per century. The observed turning is 574.</p>'+
+    '<p>The gap is 43 arcseconds a century. Tiny, but it never goes away.</p>'+
+    '<div class="box"><b class="l">Try it</b>Press play. Watch where the closest point of each orbit ends up.</div>'+
+  '</div><div id="mercBox"></div></div></div>'+
+  '<div class="sec"><h3><span class="n">3</span>Einstein’s new picture (1915)</h3><div class="split"><div>'+
+    '<p>Einstein said gravity isn’t a pull at all. <b>Mass bends space and time</b>, and things move along the bends.</p>'+
+    '<p>Planets curve round the Sun because they follow the dip. Light follows it too. And clocks deeper in the dip run slower.</p>'+
+    '<p>With this picture, he worked out Mercury’s orbit. It gave exactly the missing 43 arcseconds. No Vulcan needed.</p>'+
+    '<div class="box"><b class="l">Try it</b>Change the mass. Send a beam of light past. Show the clocks.</div>'+
+  '</div><div id="wellBox"></div></div></div>'+
+  '<div class="sec"><h3><span class="n">4</span>So was Newton wrong?</h3>'+
+  '<div class="prompt">Commit</div><div class="qline">Pick the answer you would defend.</div>'+
+  '<div class="opts" id="nwOpts">'+P.map(function(p){return '<button class="opt" data-p="'+p.id+'">'+p.h+'</button>';}).join("")+'</div>'+
+  '<div class="block" id="nwAll"><p class="lead" style="margin-top:12px">There is more than one good answer. Each one sees something real, and each one has something it has to admit.</p>'+
+    P.map(function(p){return '<div class="pos" data-pos="'+p.id+'"><div class="ph">'+p.h+'</div><div class="ps"><b>Sees</b>'+p.sees+'</div><div class="ps"><b>Has to admit</b>'+p.admit+'</div></div>';}).join("")+
+    notebook(4,"Was Newton wrong?","<ul><li>Give your answer and your reason.</li><li>Say what your answer has to admit.</li></ul><div class=\"use\">Use: truth or scope.</div>")+
+  '</div></div>'+
+  navHTML("To the labs");
+  wireNav(el);
+  buildCannon($("#cannonBox",el)); buildMercury($("#mercBox",el)); buildWell($("#wellBox",el));
+  $$("#nwOpts .opt",el).forEach(function(b){ b.onclick=function(){ $$("#nwOpts .opt",el).forEach(function(x){x.classList.remove("picked");}); b.classList.add("picked");
+    $$(".pos",el).forEach(function(x){ x.classList.toggle("mine", x.dataset.pos===b.dataset.p); }); show($("#nwAll",el)); }; });
+});
+stages[stages.length-1].onShow=function(){ if(anims.well) anims.well.start(); };
+
+/* ======================= LABS ======================= */
+var LOG={
+  clock:{pred:"A higher clock runs faster", py:"1907–1915", tool:"Atomic clocks", cy:"2010 · 2020 · every day (GPS)", done:false},
+  light:{pred:"Gravity bends light — twice the Newton-style figure", py:"1915", tool:"Telescopes", cy:"1919 · radio telescopes since", done:false},
+  waves:{pred:"Colliding masses send ripples through space", py:"1916", tool:"Laser detectors", cy:"2015", done:false},
+  shadow:{pred:"A black hole casts a shadow of a set size", py:"1916 onward", tool:"Radio telescopes across Earth", cy:"2019", done:false}};
+var LABS=["clock","light","waves","shadow"], LABNAMES={clock:"Raise the clock",light:"Bend the light",waves:"Catch the ripple",shadow:"Size the shadow"};
+function logHTML(){
+  return '<table class="log"><tr><th>Einstein’s theory predicted</th><th>Predicted</th><th>Tool</th><th>Checked</th><th>Result</th></tr>'+
+  LABS.map(function(k){var r=LOG[k]; return r.done? '<tr><td>'+r.pred+'</td><td>'+r.py+'</td><td>'+r.tool+'</td><td>'+r.cy+'</td><td class="ok">CAME OUT AS PREDICTED</td></tr>'
+    : '<tr class="empty"><td colspan="5">Lab '+(LABS.indexOf(k)+1)+': '+LABNAMES[k]+' — not checked yet</td></tr>';}).join("")+'</table>';
+}
+function refreshLogs(){ $$("[data-log]").forEach(function(t){ t.innerHTML=logHTML(); }); }
+var STEPS=["Prediction","Your guess","Run it","Record","Check"];
+function setStep(panel,n){ $$(".steps div",panel).forEach(function(d,i){ d.className= i<n?"past":(i===n?"now":""); }); }
+function labStage(k, num, o){
+  addStage("Lab "+num+": "+LABNAMES[k], function(el){
+    el.innerHTML=
+    '<div class="micro">Part 3 · Lab '+num+' of 4 · Predict, then check</div><h2>Lab '+num+': '+LABNAMES[k]+'</h2>'+
+    '<div class="lens">Methods &amp; tools · '+o.tool+'</div>'+(o.intro||'')+
+    '<div class="steps">'+STEPS.map(function(s,i){return '<div>'+(i+1)+' · '+s+'</div>';}).join("")+'</div>'+
+    '<div class="pred"><b>Step 1 · Einstein’s theory predicts</b>'+o.prediction+'</div>'+
+    '<div class="falsify"><b>Falsifiable · if it isn’t found</b>'+o.falsifier+'</div>'+
+    '<div class="prompt">Step 2 · Your guess</div><div class="qline">'+o.q+'</div>'+
+    '<div class="opts" data-guess>'+o.opts.map(function(x,i){return '<button class="opt small" data-i="'+i+'">'+x+'</button>';}).join("")+'</div>'+
+    '<div class="block" data-run><div class="fb">'+o.after+'</div><div class="prompt" style="margin-top:14px">Step 3 · Run it</div>'+o.body+
+      '<button class="btn sm" data-ran style="margin-top:8px">I’ve run it — time to record →</button></div>'+
+    '<div class="block" data-rec>'+notebook(2,"Step 4 · Record what you saw.","<ul>"+o.record.map(function(r){return "<li>"+r+"</li>";}).join("")+"</ul>")+
+      '<div class="prompt">Step 5</div><button class="btn go" data-check>Check against the world</button></div>'+
+    '<div class="block" data-world><div class="world"><div class="wl">What was measured</div>'+o.world+'</div>'+
+      '<div class="box amber"><b class="l">Could it have said no?</b>'+o.couldno+'</div></div>'+
+    '<h3 style="font-size:19px;margin:22px 0 4px">Lab log</h3><div data-log></div>'+
+    navHTML(num<4?"Next lab":"Next");
+    wireNav(el); setStep(el,1);
+    $$("[data-guess] .opt",el).forEach(function(b){ b.onclick=function(){ $$("[data-guess] .opt",el).forEach(function(x){x.classList.remove("picked");x.classList.add("dim");}); b.classList.remove("dim"); b.classList.add("picked");
+      show($("[data-run]",el)); setStep(el,2); if(o.start) o.start(); }; });
+    $("[data-ran]",el).onclick=function(){ show($("[data-rec]",el)); setStep(el,3); this.style.display="none"; };
+    $("[data-check]",el).onclick=function(){ show($("[data-world]",el)); setStep(el,5); LOG[k].done=true; refreshLogs(); updateGates(); this.disabled=true; };
+    o.build(el); refreshLogs();
+  }, function(){ return LOG[k].done; });
+  if(o.onShow) stages[stages.length-1].onShow=o.onShow;
 }
 
-/* ---- 5. Be the sceptic ---- */
-addStage("Be the sceptic", function(el){
-  var K=LABORDER;
-  el.innerHTML=
-  '<div class="micro">Part 4 · Try to break it</div>'+
-  '<h2>Be the sceptic: explain the labs away</h2>'+
-  '<div class="lens">Perspective · the doubter’s</div>'+
-  '<p class="lead">Some of you said Einstein might be wrong. Here’s your chance. For each result, find an ordinary <span class="cc">explanation</span> that doesn’t need Einstein’s theory: a faulty tool, an earthquake, a mistake, a coincidence. Work in pairs. Be a good sceptic.</p>'+
-  '<div data-log></div>'+
-  '<div class="cards4">'+K.map(function(k){return '<div class="scard"><div class="st">'+LOG[k].pred+'</div><div class="sm">PREDICTED '+LOG[k].py+' · TOOL: '+LOG[k].tool.toUpperCase()+' · CHECKED '+LOG[k].cy+'</div><textarea data-x="'+k+'" placeholder="Our ordinary explanation (no Einstein)…"></textarea></div>';}).join("")+'</div>'+
-  '<button class="btn sm" id="xTest">Test the explanations →</button>'+
-  '<div class="block" id="xBlk">'+
-    '<p class="lead" style="margin-top:12px">Take each explanation. Be honest: does it also explain the <i>other</i> results? Click the ones it explains.</p>'+
-    '<div id="xRows"></div><div class="counter" id="xCount"></div>'+
-    '<div class="talk"><div class="tl">Talk</div><div class="tb">Is there <i>one</i> explanation that covers all four? If someone says “the scientists are faking it”: who would have to be in on it, in how many countries — and how does your phone’s GPS still work?</div></div>'+
-    '<div class="talk"><div class="tl">Talk</div><div class="tb">To keep doubting Einstein, you need a separate explanation for each result. Who does that sound like?</div></div>'+
-    '<button class="btn sm ghost" id="xName">Open after you’ve talked</button>'+
-  '</div>'+
-  '<div class="block" id="xNameBlk"><div class="nameit"><div class="nl">Name it — Independent convergence</div><div class="nb">'+
-    '<p>Four different predictions, checked with four different <span class="cc">tools</span>, by different teams, decades apart. Each one could have come out the other way. Every one came out as predicted.</p>'+
-    '<p>Each of your explanations only explains its own result. To reject the theory, you need four separate mistakes that all happen to point exactly where Einstein said. That is the same move as Vulcan, phrenology and the land bridges — explaining away one result at a time — except now the sceptic is the one doing it.</p>'+
-    '<p><span class="cc">Certainty</span>: this still isn’t 100%. But every independent line that agrees makes doubting the theory more expensive.</p></div></div></div>'+
-  navHTML("Next");
-  wireNav(el); refreshLogs();
-  $("#xTest",el).onclick=function(){
-    var rows=$("#xRows",el); rows.innerHTML="";
-    var any=false;
-    K.forEach(function(k){
-      var txt=$('[data-x="'+k+'"]',el).value.trim(); if(!txt) return; any=true;
-      var div=document.createElement("div"); div.className="xrow"; div.dataset.k=k;
-      div.innerHTML='<div class="xq">For <b>'+LABNAMES[k].toLowerCase()+'</b>: <i>“'+txt.replace(/</g,"&lt;")+'”</i> — does it also explain…</div><div class="xc">'+
-        K.filter(function(o){return o!==k;}).map(function(o){return '<button class="opt small" data-o="'+o+'">'+LABNAMES[o]+'?</button>';}).join("")+'</div><div class="tally"></div>';
-      rows.appendChild(div);
-    });
-    if(!any){ rows.innerHTML='<div class="fb">Write at least one explanation in the boxes above first.</div>'; }
-    $$(".xrow .opt",rows).forEach(function(b){ b.onclick=function(){ b.classList.toggle("picked"); tally(); }; });
-    show($("#xBlk",el)); tally();
-  };
-  function tally(){
-    var covered={}, n=0;
-    $$(".xrow",el).forEach(function(r){ var c=1+$$(".opt.picked",r).length; $(".tally",r).textContent="This explanation covers "+c+" of 4 results.";
-      covered[r.dataset.k]=1; $$(".opt.picked",r).forEach(function(b){covered[b.dataset.o]=1;}); n++; });
-    var unexplained=K.filter(function(k){return !covered[k];}).length;
-    $("#xCount",el).textContent= n? ("Explanations used: "+n+"  ·  results still not explained away: "+unexplained) : "";
+/* ---- Lab 1: clock ---- */
+var GMe=3.986004e14, C2=8.98755179e16, RE=6.371e6, DAY=86400;
+function fmtTime(s){ var a=Math.abs(s), sg=s<0?"−":"+"; if(a===0) return "0";
+  if(a<1e-9) return sg+(a*1e12).toPrecision(2)+" trillionths of a second"; if(a<1e-6) return sg+(a*1e9).toPrecision(2)+" billionths of a second";
+  if(a<1e-3) return sg+(a*1e6).toPrecision(2)+" millionths of a second"; if(a<1) return sg+(a*1e3).toPrecision(2)+" thousandths of a second"; return sg+a.toPrecision(2)+" seconds"; }
+function fmtH(h){ if(h<1) return Math.round(h*100)+" cm"; if(h<1000) return Math.round(h)+" m"; return Math.round(h/1000).toLocaleString()+" km"; }
+labStage("clock",1,{
+  tool:"atomic clocks",
+  intro:'<div class="box red"><b class="l">Remember falsifiability (Lessons 1 and 2)</b>A scientific claim sticks its neck out: some observation could prove it wrong. Mercury can’t really test Einstein, because the theory was built knowing about Mercury. A real test is a <b>prediction nobody has checked yet</b>. If the predicted observation isn’t found, Einstein’s theory is wrong. Four labs: four chances for the theory to fail.</div>',
+  prediction:"Time runs slower closer to a heavy mass. So a clock higher above the Earth should run <strong>faster</strong> than an identical clock on the ground. Einstein worked this out between 1907 and 1915, long before any clock could check it.",
+  falsifier:"If a raised clock ticks at exactly the same rate as one on the ground, Einstein’s theory is wrong. Newton’s theory predicts no difference at all.",
+  q:"A clock 1 metre above you: how much faster does the theory say it runs in a day?",
+  opts:["About a second","About a millionth of a second","Too small for any clock to measure"],
+  after:"About 9 trillionths of a second a day. Far too small for your watch, but not for an atomic clock. That is the tool. Now raise the clock and watch the two second hands.",
+  body:'<div class="stagebox"><svg id="clkSvg" viewBox="0 0 720 300"></svg></div>'+
+    '<div class="ctrls"><span>Height</span><input type="range" id="clkH" min="0" max="1000" value="0"><span class="val" id="clkHv"></span></div>'+
+    '<div class="row"><span class="chk" style="color:var(--ink-soft)">Jump to a real test:</span><button class="opt small" data-h="0.33">Lab bench · 33 cm</button><button class="opt small" data-h="450">Tokyo Skytree · 450 m</button><button class="opt small" data-h="20200000">GPS satellite · 20,200 km</button></div>'+
+    '<div class="row"><label class="chk"><input type="checkbox" id="clkSpeed"> The clock is on a satellite moving at orbit speed (above 200 km)</label></div>'+
+    '<div class="readout"><div class="ro"><div class="rl">Einstein’s theory predicts</div><div class="rv" id="clkE"></div><div class="rs" id="clkE2"></div></div>'+
+    '<div class="ro newton"><div class="rl">Newton’s theory predicts</div><div class="rv">0 — no difference</div><div class="rs">For Newton, gravity is a pull. It doesn’t touch time.</div></div></div>',
+  record:["How much faster is the raised clock at 33 cm? At 450 m? At GPS height?","Tick the satellite-speed box at GPS height. What happens to the total?","What does Newton predict? So could this measurement have said no to Einstein?"],
+  world:'<p><b>Lab bench, 33 cm (NIST, USA, 2010):</b> the higher of two atomic clocks ran faster by the predicted amount, about 90 billionths of a second over an 80-year life.</p><p><b>Tokyo Skytree, 450 m (Japan, 2020):</b> a portable clock on the observation deck ran faster than one at the base, by the predicted amount.</p><p><b>GPS, every day:</b> height makes satellite clocks gain about 45 millionths of a second a day; their speed makes them lose about 7. Net: about 38. Engineers set the clocks to tick slightly slow before launch. Without that, your phone’s map would drift about 10 km a day.</p>',
+  couldno:"Yes. Newton’s theory said the clocks would agree. They didn’t, and the difference was the size Einstein’s theory gave.",
+  start:function(){ if(anims.clock) anims.clock.start(); },
+  onShow:function(el){ if($("[data-run].shown",el) && anims.clock) anims.clock.start(); },
+  build:function(p){
+    var svg=$("#clkSvg",p), sl=$("#clkH",p), sp=$("#clkSpeed",p), fixedH=null, angG=0, angR=0, raf=null, last=null;
+    function hFrom(v){ return fixedH!==null?fixedH:Math.pow(10,-1+v/1000*8.6); }
+    function vFrom(h){ return (Math.log10(h)+1)/8.6*1000; }
+    function rates(h){ var dG=GMe/C2*(1/RE-1/(RE+h)), dV=0; sp.disabled=h<2e5; if(sp.disabled) sp.checked=false; if(sp.checked) dV=-(GMe/(RE+h))/(2*C2); return {dG:dG,dV:dV,tot:dG+dV}; }
+    function visRate(frac){ if(frac===0) return 1; var m=Math.min(1,Math.max(0,(Math.log10(Math.abs(frac))+18)/9)); return 1+(frac>0?1:-1)*0.45*m; }
+    function face(x,y,r,label,col,ang){
+      var t='<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="#f7f2e6" stroke="'+col+'" stroke-width="3"/>';
+      for(var i=0;i<12;i++){var a=i*Math.PI/6; t+='<line x1="'+(x+Math.sin(a)*r*.8)+'" y1="'+(y-Math.cos(a)*r*.8)+'" x2="'+(x+Math.sin(a)*r*.94)+'" y2="'+(y-Math.cos(a)*r*.94)+'" stroke="#5a5145" stroke-width="1.5"/>';}
+      t+='<line x1="'+x+'" y1="'+y+'" x2="'+(x+Math.sin(ang)*r*.82)+'" y2="'+(y-Math.cos(ang)*r*.82)+'" stroke="#8a3b2a" stroke-width="2.2" stroke-linecap="round"/><circle cx="'+x+'" cy="'+y+'" r="3" fill="#2a2622"/>';
+      t+='<text x="'+x+'" y="'+(y+r+15)+'" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10.5" fill="#cbbf9f">'+label+'</text>'; return t; }
+    function draw(){
+      var h=hFrom(+sl.value), tt=vFrom(h)/1000, top=44, bot=232, y=bot-(bot-top)*tt, R=rates(h);
+      var s='<defs><linearGradient id="sky" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#2b4a73"/><stop offset=".35" stop-color="#1b2840"/><stop offset="1" stop-color="#0f1420"/></linearGradient></defs><rect width="720" height="300" fill="url(#sky)"/>';
+      for(var i=0;i<40;i++){ s+='<circle cx="'+((i*97)%700+10)+'" cy="'+((i*53)%150+8)+'" r="'+((i%3)*.4+.5)+'" fill="#fff" opacity="'+(0.15+0.5*tt)+'"/>'; }
+      s+='<path d="M0 262 Q360 236 720 262 L720 300 L0 300 Z" fill="#3f6b3a"/>';
+      s+='<line x1="70" y1="'+top+'" x2="70" y2="'+bot+'" stroke="#cbbf9f"/>';
+      [[0.33,"33 cm"],[450,"450 m"],[1e4,"10 km"],[2.02e7,"GPS"]].forEach(function(m){ var yy=bot-(bot-top)*(vFrom(m[0])/1000); s+='<line x1="64" y1="'+yy+'" x2="76" y2="'+yy+'" stroke="#cbbf9f"/><text x="80" y="'+(yy+4)+'" font-family="JetBrains Mono,monospace" font-size="10" fill="#cbbf9f">'+m[1]+'</text>'; });
+      s+='<line x1="590" y1="'+(y+30)+'" x2="590" y2="250" stroke="#caa24a" stroke-dasharray="4 4"/>';
+      s+=face(670,214,28,"GROUND","#5a5145",angG)+face(590,y,30,"RAISED","#caa24a",angR);
+      var ahead=(angR-angG)/(2*Math.PI)*60;
+      s+='<text x="110" y="22" font-family="JetBrains Mono,monospace" font-size="12" fill="#caa24a">raised clock is '+(ahead>=0?"AHEAD":"BEHIND")+' by '+Math.abs(ahead).toFixed(0)+' s</text>';
+      s+='<text x="110" y="38" font-family="JetBrains Mono,monospace" font-size="9.5" fill="#cbbf9f">NOT TO SCALE: exaggerated so you can see it</text>';
+      svg.innerHTML=s;
+      $("#clkHv",p).textContent=fmtH(h);
+      $("#clkE",p).textContent=fmtTime(R.tot*DAY)+" per day";
+      $("#clkE2",p).innerHTML=(sp.checked?"Height: "+fmtTime(R.dG*DAY)+" · speed: "+fmtTime(R.dV*DAY)+"<br>":"")+"Over 80 years: "+fmtTime(R.tot*DAY*365.25*80);
+    }
+    function loop(ts){ if(last===null) last=ts; var dt=Math.min(0.05,(ts-last)/1000); last=ts; var R=rates(hFrom(+sl.value));
+      angG+=dt*2*Math.PI/6; angR+=dt*2*Math.PI/6*visRate(R.tot); draw(); raf=requestAnimationFrame(loop); }
+    function reset(){ angG=0; angR=0; }
+    sl.oninput=function(){ fixedH=null; reset(); draw(); }; sp.onchange=function(){ reset(); draw(); };
+    $$("[data-h]",p).forEach(function(b){ b.onclick=function(){ sl.value=vFrom(+b.dataset.h); fixedH=+b.dataset.h; reset(); draw(); }; });
+    anims.clock={start:function(){ cancelAnimationFrame(raf); last=null; raf=requestAnimationFrame(loop); }, stop:function(){ cancelAnimationFrame(raf); }};
+    draw();
   }
-  $("#xName",el).onclick=function(){ show($("#xNameBlk",el)); this.style.display="none"; };
 });
 
-/* ---- 6. How settled? ---- */
-addStage("How settled?", function(el){
+/* ---- Lab 2: light ---- */
+labStage("light",2,{
+  tool:"telescopes",
+  prediction:"Mass bends space, so light passing a heavy object should bend by a set amount: <strong>twice</strong> what you get by treating light as tiny particles pulled by Newton’s gravity. A heavy enough galaxy should bend the light of a galaxy behind it into arcs, or a full ring.",
+  falsifier:"If starlight grazing the Sun bends by the Newton-style amount (half), or not at all, Einstein’s theory is wrong.",
+  q:"Line a far galaxy up exactly behind a heavy one. What will you see from Earth?",
+  opts:["Nothing — it’s hidden behind","The same galaxy, just dimmer","Something with a different shape"],
+  after:"Try it. Start with no mass, then turn the mass up, then slide the far galaxy into line.",
+  body:'<div class="stagebox"><canvas id="lensCv" width="560" height="320"></canvas></div>'+
+    '<div class="ctrls"><span>Mass of the near galaxy</span><input type="range" id="lensM" min="0" max="100" value="0"><span class="val" id="lensMv"></span>'+
+    '<span>Line-up</span><input type="range" id="lensB" min="0" max="100" value="70"><span class="val" id="lensBv"></span></div>'+
+    '<div class="row"><label class="chk"><input type="checkbox" id="lensTrue" checked> Show where the far galaxy really is</label><label class="chk"><input type="checkbox" id="lensNewton"> Newton-style bending (half of Einstein’s)</label></div>'+
+    '<p class="body" style="font-size:15.5px;color:var(--ink-soft)">Orange glow: a heavy galaxy fairly close to us. Blue: a galaxy much farther away, behind it. You are looking from Earth.</p>',
+  record:["With zero mass, where does the far galaxy appear? Turn the mass up. What happens to its image?","Slide it into a perfect line-up. Describe the shape.","Tick the Newton box. What changes? Why does that make this a test that could fail?"],
+  world:'<p><b>1919 eclipse:</b> during a total eclipse, stars near the Sun can be photographed. The theory predicted starlight grazing the Sun would shift by 1.75 arcseconds; the Newton-style figure was half that. Two British expeditions (Sobral in Brazil, Príncipe off Africa) measured shifts closer to Einstein’s number. Their data were rough, and critics said so at the time.</p><p><b>Since then:</b> radio telescopes have measured the Sun bending light many times, agreeing with Einstein to better than one part in a thousand. Hubble and JWST have photographed far galaxies stretched into arcs and full rings: the shapes in this lab.</p>',
+  couldno:"Yes. Two theories gave two different numbers. Half the bending, or none, would have sunk Einstein’s theory.",
+  build:function(p){
+    var cv=$("#lensCv",p), ctx=cv.getContext("2d"), W=cv.width, H=cv.height, S=70, cx=W/2, cy=H/2, img=ctx.createImageData(W,H);
+    function draw(){
+      var m=+$("#lensM",p).value/100, bx=(+$("#lensB",p).value/100)*2.2, newton=$("#lensNewton",p).checked, tE2=Math.pow(1.15*m,2)*(newton?0.5:1), sig=0.17, d=img.data;
+      $("#lensMv",p).textContent=m===0?"none":Math.round(m*100)+"%"; $("#lensBv",p).textContent=bx<0.04?"perfect line-up":"off-line";
+      for(var py=0;py<H;py++){ for(var px=0;px<W;px++){ var x=(px-cx)/S, y=(py-cy)/S, r2=x*x+y*y+1e-6, f=tE2/r2, sx=x-f*x, sy=y-f*y, dd=(sx-bx)*(sx-bx)+sy*sy, I=Math.exp(-dd/(2*sig*sig)), k=(py*W+px)*4;
+        d[k]=20+I*190; d[k+1]=26+I*215; d[k+2]=38+I*235; d[k+3]=255; } }
+      ctx.putImageData(img,0,0);
+      ctx.fillStyle="rgba(255,255,255,.5)"; for(var i=0;i<30;i++){ ctx.fillRect((i*131)%W,(i*71)%H,1.2,1.2); }
+      if(m>0){ var g=ctx.createRadialGradient(cx,cy,0,cx,cy,18+30*m); g.addColorStop(0,"rgba(255,214,150,.95)"); g.addColorStop(.4,"rgba(230,160,80,.45)"); g.addColorStop(1,"rgba(230,160,80,0)"); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,18+30*m,0,7); ctx.fill(); }
+      if($("#lensTrue",p).checked){ ctx.setLineDash([4,4]); ctx.strokeStyle="rgba(202,162,74,.9)"; ctx.lineWidth=1.3; ctx.beginPath(); ctx.arc(cx+bx*S,cy,sig*S*1.8,0,7); ctx.stroke(); ctx.setLineDash([]);
+        ctx.fillStyle="rgba(202,162,74,.95)"; ctx.font="11px JetBrains Mono, monospace"; ctx.fillText("really here",cx+bx*S-34,cy+sig*S*1.8+14); }
+      ctx.fillStyle="rgba(203,191,159,.85)"; ctx.font="11px JetBrains Mono, monospace"; ctx.fillText("VIEW FROM EARTH",12,20);
+    }
+    ["lensM","lensB"].forEach(function(id){ $("#"+id,p).oninput=draw; }); ["lensTrue","lensNewton"].forEach(function(id){ $("#"+id,p).onchange=draw; }); draw();
+  }
+});
+
+/* ---- Lab 3: waves ---- */
+labStage("waves",3,{
+  tool:"laser detectors",
+  prediction:"When huge masses move, they should send ripples through space itself, at the speed of light, with a set shape: a rising “chirp” as two black holes spiral together, then a quick ring-down. Einstein predicted these waves in 1916, and thought they would be far too small ever to detect.",
+  falsifier:"If detectors sensitive enough to catch these ripples found nothing, or found signals with the wrong shape, the theory would be in serious trouble.",
+  q:"If a real ripple from space passes the Earth, what should the two detectors show?",
+  opts:["The same signal in both","A signal in only one","Two completely different signals"],
+  after:"Run the merger. Then run the local shaking. Compare the two detectors each time.",
+  body:'<div class="stagebox"><canvas id="gwCv" width="720" height="360"></canvas></div>'+
+    '<div class="row"><button class="btn sm" id="gwGo">▶ Two black holes merge</button><button class="btn sm ghost" id="gwLocal">▶ Local shaking near Hanford</button><button class="btn sm ghost" id="gwClear">Clear</button></div>'+
+    '<p class="body" style="font-size:15.5px;color:var(--ink-soft)">LIGO has two detectors about 3,000 km apart: Hanford, Washington, and Livingston, Louisiana. Each uses lasers to measure a change in length far smaller than a proton. Ordinary things near one detector, like traffic or a small earthquake, can also shake it.</p>',
+  record:["Describe the black-hole signal. What happens just before the merger?","What is different about the local shaking?","Why does having two detectors far apart make the evidence stronger?"],
+  world:'<p><b>14 September 2015:</b> both LIGO detectors recorded the same rising chirp, Livingston about 7 thousandths of a second before Hanford, the right gap for a ripple crossing the USA at light speed. Its shape matched what the theory predicts for two black holes, each about 30 times the mass of the Sun, merging about 1.3 billion light-years away. Predicted 1916, detected 2015.</p><p>Since then, LIGO and partner detectors have recorded many more mergers.</p>',
+  couldno:"Yes. Nothing, or a signal with a different shape, would have counted against the theory. And a signal in only one detector gets thrown out as local shaking.",
+  build:function(p){
+    var cv=$("#gwCv",p), ctx=cv.getContext("2d"), W=cv.width, H=cv.height, N=600, Tm=0.82, sigL=null, sigH=null, prog=0, mode=null, raf=null;
+    function chirp(t){ if(t<0) return 0; if(t<Tm){ var tau=Tm-t; var a=0.07/Math.pow(tau+0.004,0.25); return a*Math.cos(2*Math.PI*10.5*Math.pow(tau+0.004,0.625)); } var dt=t-Tm; return 0.28*Math.exp(-dt*60)*Math.cos(2*Math.PI*60*dt); }
+    function noise(){ return (Math.random()-.5)*0.05; }
+    function local(t,c){ var env=Math.exp(-Math.pow((t-c)/0.13,2)); return env*(0.12*Math.sin(2*Math.PI*11*t)+0.07*Math.sin(2*Math.PI*4*t+1)); }
+    function trace(arr,y0,label,col,upto){ ctx.fillStyle="rgba(203,191,159,.85)"; ctx.font="11px JetBrains Mono, monospace"; ctx.fillText(label,12,y0-46);
+      ctx.strokeStyle="rgba(203,191,159,.25)"; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(10,y0); ctx.lineTo(W-10,y0); ctx.stroke(); if(!arr) return;
+      ctx.strokeStyle=col; ctx.lineWidth=1.6; ctx.beginPath(); for(var i=0;i<upto;i++){ var x=10+(W-20)*i/N, y=y0-arr[i]*90; if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); } ctx.stroke(); }
+    function draw(){
+      ctx.fillStyle="#141a26"; ctx.fillRect(0,0,W,H); var t=prog/N, ox=W/2, oy=70;
+      if(mode==="merge"){
+        if(t<Tm){ var tau=Math.max(Tm-t,0.001), sep=14+52*Math.pow(tau/Tm,0.5), ph=60*Math.pow(Tm,0.625)-60*Math.pow(tau,0.625);
+          for(var r=1;r<6;r++){ ctx.strokeStyle="rgba(202,162,74,"+(0.22-r*0.035)+")"; ctx.beginPath(); ctx.arc(ox,oy,sep+r*22+((prog*2)%22),0,7); ctx.stroke(); }
+          [0,Math.PI].forEach(function(o,j){ ctx.fillStyle="#000"; ctx.strokeStyle="#caa24a"; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(ox+Math.cos(ph+o)*sep*(j?1.15:0.9),oy+Math.sin(ph+o)*sep*0.35*(j?1.15:0.9),j?11:12,0,7); ctx.fill(); ctx.stroke(); });
+        } else { ctx.fillStyle="#000"; ctx.strokeStyle="#caa24a"; ctx.lineWidth=2.5; ctx.beginPath(); ctx.arc(ox,oy,17,0,7); ctx.fill(); ctx.stroke();
+          for(var r2=1;r2<5;r2++){ ctx.strokeStyle="rgba(202,162,74,"+(0.35-r2*0.07)+")"; ctx.beginPath(); ctx.arc(ox,oy,17+r2*14+(prog-Tm*N)*1.5,0,7); ctx.stroke(); } }
+        ctx.fillStyle="rgba(203,191,159,.85)"; ctx.font="11px JetBrains Mono, monospace"; ctx.fillText("1.3 BILLION LIGHT-YEARS AWAY",12,20);
+      } else if(mode==="local"){ ctx.fillStyle="rgba(230,180,127,.85)"; ctx.font="12px JetBrains Mono, monospace"; ctx.textAlign="center"; ctx.fillText("ground shaking near the Hanford detector only",ox,oy+4); ctx.textAlign="left";
+      } else { ctx.fillStyle="rgba(203,191,159,.6)"; ctx.font="12px JetBrains Mono, monospace"; ctx.textAlign="center"; ctx.fillText("press a ▶ button",ox,oy+4); ctx.textAlign="left"; }
+      var upto=Math.min(prog,N); trace(sigL,210,"LIVINGSTON, LOUISIANA","#7fb0e6",upto); trace(sigH,312,"HANFORD, WASHINGTON","#e6b47f",upto);
+    }
+    function step(){ prog+=3; draw(); if(prog<N) raf=requestAnimationFrame(step); }
+    function run(m){ cancelAnimationFrame(raf); mode=m; prog=0; sigL=[]; sigH=[]; var c=0.4+Math.random()*0.2;
+      for(var i=0;i<N;i++){ var t=i/N; if(m==="merge"){ sigL.push(chirp(t)+noise()); sigH.push(chirp(t-0.028)+noise()); } else { sigL.push(noise()); sigH.push(noise()+local(t,c)); } } step(); }
+    $("#gwGo",p).onclick=function(){ run("merge"); }; $("#gwLocal",p).onclick=function(){ run("local"); };
+    $("#gwClear",p).onclick=function(){ cancelAnimationFrame(raf); mode=null; prog=0; sigL=sigH=null; draw(); }; draw();
+  }
+});
+
+/* ---- Lab 4: shadow ---- */
+labStage("shadow",4,{
+  tool:"radio telescopes linked across Earth",
+  prediction:"Einstein’s equations allow black holes: so much mass in so small a space that nothing gets out. They also give the size of the shadow a black hole should cast, from its mass and distance. (Einstein himself doubted black holes could really exist.)",
+  falsifier:"If the shadow were a very different size from the one the theory gives for the measured mass, Einstein’s theory is wrong.",
+  q:"A heavier black hole: will its shadow look bigger or smaller?",
+  opts:["Bigger","Smaller","Same size"],
+  after:"Find out. Then set the mass to the value astronomers measured from M87’s stars.",
+  body:'<div class="stagebox"><canvas id="bhCv" width="560" height="340"></canvas></div>'+
+    '<div class="ctrls"><span>Mass (billions of Suns)</span><input type="range" id="bhM" min="10" max="120" value="20"><span class="val" id="bhMv"></span></div>'+
+    '<div class="row"><label class="chk"><input type="checkbox" id="bhPhoto"> Overlay the size measured in the 2019 photo</label></div>'+
+    '<div class="readout"><div class="ro"><div class="rl">The theory predicts a ring about</div><div class="rv" id="bhP"></div><div class="rs">millionths of an arcsecond across, seen from Earth</div></div>'+
+    '<div class="ro"><div class="rl">The mass, measured separately</div><div class="rv">≈ 6.5 billion Suns</div><div class="rs">from how fast stars near the centre of galaxy M87 move</div></div></div>',
+  record:["What happens to the shadow as the mass goes up?","Set the mass to 6.5 billion Suns. What size does the theory predict? Now overlay the photo.","The mass came from watching stars; the ring came from radio telescopes. Why does it matter that these are different tools?"],
+  world:'<p><b>April 2019, the Event Horizon Telescope:</b> radio telescopes across the planet, linked into one Earth-sized telescope, photographed the black hole at the centre of galaxy M87, 55 million light-years away. Four teams turned the data into images separately, without comparing notes. The ring measured about 42 millionths of an arcsecond, the size the theory gives for the mass measured from the stars. That is about the size of an orange on the Moon, seen from Earth.</p><p>In 2022 the same team photographed the black hole at the centre of our own galaxy.</p>',
+  couldno:"Yes. The mass came from one tool and the ring from another. If the ring had been, say, half the size, the theory would have failed the test.",
+  build:function(p){
+    var cv=$("#bhCv",p), ctx=cv.getContext("2d"), W=cv.width, H=cv.height;
+    function draw(){ var M=+$("#bhM",p).value/10, pred=39.6*M/6.5, R=pred*2.6/2, cx=W/2, cy=H/2;
+      $("#bhMv",p).textContent=M.toFixed(1); $("#bhP",p).textContent="≈ "+Math.round(pred);
+      ctx.fillStyle="#0b0d12"; ctx.fillRect(0,0,W,H);
+      var g=ctx.createRadialGradient(cx,cy,R*0.55,cx,cy,R*1.45); g.addColorStop(0,"rgba(0,0,0,1)"); g.addColorStop(0.42,"rgba(120,40,10,.9)"); g.addColorStop(0.55,"rgba(255,170,60,1)"); g.addColorStop(0.7,"rgba(200,80,20,.8)"); g.addColorStop(1,"rgba(0,0,0,0)");
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,R*1.5,0,7); ctx.fill();
+      var g2=ctx.createLinearGradient(cx,cy-R,cx,cy+R); g2.addColorStop(0,"rgba(0,0,0,.45)"); g2.addColorStop(1,"rgba(255,200,120,.25)"); ctx.fillStyle=g2; ctx.beginPath(); ctx.arc(cx,cy,R*1.5,0,7); ctx.fill();
+      ctx.fillStyle="#000"; ctx.beginPath(); ctx.arc(cx,cy,R*0.62,0,7); ctx.fill();
+      if($("#bhPhoto",p).checked){ var Rm=42*2.6/2; ctx.setLineDash([6,5]); ctx.strokeStyle="#7fb0e6"; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(cx,cy,Rm,0,7); ctx.stroke(); ctx.setLineDash([]); ctx.fillStyle="#7fb0e6"; ctx.font="11px JetBrains Mono, monospace"; ctx.fillText("2019 PHOTO: RING ≈ 42",cx+Rm+8,cy-Rm+10); }
+      ctx.fillStyle="rgba(203,191,159,.85)"; ctx.font="11px JetBrains Mono, monospace"; ctx.fillText("M87 · 55 MILLION LIGHT-YEARS",12,20); }
+    $("#bhM",p).oninput=draw; $("#bhPhoto",p).onchange=draw; draw();
+  }
+});
+
+/* ======================= Independent convergence ======================= */
+var EIN=[
+  {label:"Raised clocks run faster",sub:"ATOMIC CLOCKS · 2010, 2020"},
+  {label:"Light bends by Einstein’s amount",sub:"TELESCOPES · 1919 → TODAY"},
+  {label:"Ripples with the predicted shape",sub:"LASER DETECTORS · 2015"},
+  {label:"Shadow the predicted size",sub:"RADIO TELESCOPES · 2019"}];
+var BIX=[
+  {label:"Fake preprint #1",sub:"POSTED ONLINE · 2024"},
+  {label:"Fake preprint #2",sub:"POSTED ONLINE · 2024"},
+  {label:"AI chatbots describe it as real",sub:"CHATBOT ANSWERS"},
+  {label:"A peer-reviewed paper cites it",sub:"JOURNAL · LATER RETRACTED"}];
+function wrapT(str,n){ var w=str.split(" "),a=[],c=""; w.forEach(function(x){ if((c+" "+x).length>n){a.push(c);c=x;} else c=(c?c+" ":"")+x; }); if(c)a.push(c); return a; }
+function radialSVG(center, nodes, state, src){
+  var cx=360, cy=src?182:195, h="", pos= src? [[-268,-30],[-112,-100],[112,-100],[268,-30]] : [[-215,-105],[215,-105],[-215,105],[215,105]];
+  if(src){ var sy=352, on=!state.sourceGone;
+    nodes.forEach(function(n,i){ var x=cx+pos[i][0], y=cy+pos[i][1]; h+='<path d="M'+cx+' '+(sy-16)+' Q '+(cx+pos[i][0]*1.1)+' '+(sy-30)+' '+x+' '+(y+12)+'" fill="none" stroke="'+(on?"#8a3b2a":"#d6ccb8")+'" stroke-width="1.6" stroke-dasharray="4 4"/>'; });
+    h+='<rect x="'+(cx-185)+'" y="'+(sy-18)+'" width="370" height="30" fill="'+(on?"#f3e0d8":"#e8e1d0")+'" stroke="'+(on?"#8a3b2a":"#c4b8a0")+'"/>';
+    h+='<text x="'+cx+'" y="'+(sy+2)+'" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10.5" fill="'+(on?"#8a3b2a":"#a99")+'"'+(on?'':' text-decoration="line-through"')+'>ONE SOURCE: one researcher invented it, as a test</text>'; }
+  var alive=0;
+  nodes.forEach(function(n,i){ var dead= src? state.sourceGone : !!state.off[i]; if(!dead) alive++;
+    var x=cx+pos[i][0], y=cy+pos[i][1], col=dead?"#c4b8a0":(src?"#b07d18":"#3a629c");
+    h+='<g data-i="'+i+'"><line x1="'+cx+'" y1="'+cy+'" x2="'+x+'" y2="'+y+'" stroke="'+col+'" stroke-width="'+(dead?1.5:3.2)+'"'+(dead?' stroke-dasharray="5 5"':'')+'/>';
+    h+='<circle cx="'+x+'" cy="'+y+'" r="8" fill="'+col+'" stroke="#fff" stroke-width="1.5"/>';
+    var lines=wrapT(n.label,src?18:26), ly= src? y-14-lines.length*13 : (pos[i][1]<0? y-40 : y+22);
+    lines.forEach(function(t,k){ h+='<text x="'+x+'" y="'+(ly+k*13)+'" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="10.5" fill="'+(dead?"#a99":"#2a2622")+'"'+(dead?' text-decoration="line-through"':'')+'>'+esc(t)+'</text>'; });
+    h+='<text x="'+x+'" y="'+(ly+lines.length*13)+'" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="8.5" letter-spacing="1" fill="#9a8f74">'+esc(n.sub)+'</text>';
+    if(!src && dead){ var why=(state.why&&state.why[i])?"“"+state.why[i]+"”":"explained away"; wrapT(why,32).slice(0,2).forEach(function(t,k){ h+='<text x="'+x+'" y="'+(ly+lines.length*13+14+k*13)+'" text-anchor="middle" font-family="Cormorant Garamond,serif" font-style="italic" font-size="13" fill="#8a3b2a">'+esc(t)+'</text>'; }); }
+    h+='</g>'; });
+  var verdict, vcol;
+  if(src){ verdict=state.sourceGone?"COLLAPSES":"LOOKS SUPPORTED"; vcol=state.sourceGone?"#8a3b2a":"#b07d18"; }
+  else { verdict="HELD UP BY "+alive+" OF "+nodes.length; vcol=alive>=2?"#3f6b3a":alive===1?"#b07d18":"#8a3b2a"; }
+  h+='<circle cx="'+cx+'" cy="'+cy+'" r="74" fill="#fbf8ef" stroke="'+vcol+'" stroke-width="3"/>';
+  var cl=wrapT(center,16); cl.forEach(function(t,k){ h+='<text x="'+cx+'" y="'+(cy-8-(cl.length-1)*7+k*14)+'" text-anchor="middle" font-family="Cormorant Garamond,serif" font-size="15" font-weight="600" fill="#2a2622">'+esc(t)+'</text>'; });
+  h+='<text x="'+cx+'" y="'+(cy+32)+'" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="9.5" font-weight="700" fill="'+vcol+'">'+verdict+'</text>';
+  return '<svg viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg">'+h+'</svg>';
+}
+addStage("Independent convergence", function(el){
   el.innerHTML=
-  '<div class="micro">Part 5 · Where the theory runs out</div>'+
-  '<h2>So is it settled?</h2>'+
-  '<div class="lens">Scope · observation vs theory</div>'+
-  '<h3>Back to the black hole</h3>'+
-  '<p class="body">In Lesson 3 we called knowing what is at the centre of a black hole a <b>never</b>. Some of you argued back: maybe the laws of physics will change. Here is what we know about black holes, split into two kinds:</p>'+
-  '<div class="two">'+
-    '<div class="mini obs"><div class="ml">Observed (from outside)</div>The ring and dark centre in the 2019 photo.<br>The shadow is the size the theory predicted.<br>Ripples arrived when black holes merged.</div>'+
-    '<div class="mini th"><div class="ml">What the theory says (no one can observe)</div>Nothing that crosses the edge can ever send a signal back out.<br>At the very centre, everything is crushed into a single point.</div>'+
-  '</div>'+
-  '<div class="prompt">Predict</div><div class="qline">Suppose Einstein’s theory is replaced one day. Which column could change?</div>'+
-  '<div class="opts" id="bhOpts"><button class="opt" data-c="o">The observed column</button><button class="opt" data-c="t">The theory column</button><button class="opt" data-c="b">Both</button><button class="opt" data-c="n">Neither</button></div>'+
-  '<div class="block" id="bhRev">'+
-    '<div class="nameit"><div class="nl">Observation vs theory</div><div class="nb">'+
-      '<p>The observations stay. Any new theory has to produce the same photo and the same ripples — just as Einstein still had to produce Neptune.</p>'+
-      '<p>The theory column comes from the theory, so it could change. And the centre is exactly where physicists expect Einstein’s theory to break down: it predicts infinite density there, and it doesn’t fit with quantum physics. The <span class="cc">scope</span> of the theory may end right where the “never” begins.</p></div></div>'+
-    '<div class="talk"><div class="tl">Talk</div><div class="tb">Some of you said “the laws of physics might change.” Others said they never change. Is that nature changing — or our theory of nature? So is the centre of a black hole a never? Never according to what?</div></div>'+
-  '</div>'+
-  '<h3>Le Verrier’s problem, today</h3>'+
-  '<p class="body">Stars at the edges of galaxies orbit so fast that, counting only the matter we can see, the galaxies should fly apart. Another gap that won’t go away — a known unknown. Physicists are in Le Verrier’s position again, with two <span class="cc">perspectives</span>:</p>'+
-  '<div class="two">'+
-    '<div class="pos"><div class="ph">The Neptune move</div><div class="ps">There is matter we can’t see: <strong>dark matter</strong>. Most physicists hold this. Several separate kinds of evidence point to it. But no one has caught a dark matter particle yet.</div></div>'+
-    '<div class="pos"><div class="ph">The Mercury move</div><div class="ps">Gravity itself works differently at the size of galaxies: <strong>modified gravity</strong>. A minority of physicists hold this.</div></div>'+
-  '</div>'+
-  '<div class="prompt">Vote</div><div class="qline">Which would you bet on — and what would it take to change your mind?</div>'+
-  '<div class="opts" id="dmOpts"><button class="opt">Neptune move: unseen matter</button><button class="opt">Mercury move: gravity changes</button><button class="opt">Can’t tell yet</button></div>'+
-  '<div class="block" id="dmRev"><div class="fb">Nobody knows yet. That is what a known unknown looks like from the inside. And if a new theory is coming, it may be one nobody has imagined: an unknown unknown can’t be named in advance. Whatever replaces Einstein will still have to get your GPS right, just as Einstein still had to get Neptune right.</div>'+
-    '<div class="talk"><div class="tl">Before you re-rank</div><div class="tb">Where in this lesson were knowers right to be most certain, and where should they have been less certain? What made the difference?</div></div></div>'+
-  navHTML("Re-rank");
+  '<div class="micro">Part 4 · Try to break it</div><h2>Be the sceptic</h2>'+
+  '<div class="lens">Perspective · the doubter’s</div>'+
+  '<div class="sec"><h3><span class="n">1</span>Explain the labs away</h3>'+
+  '<p>Some of you said Einstein might be wrong. Here’s your chance. For each result, find an ordinary <span class="cc">explanation</span> that doesn’t need Einstein’s theory: a faulty tool, a mistake, a coincidence. Work in pairs. Be a good sceptic.</p>'+
+  '<div class="cards4">'+EIN.map(function(n,i){return '<div class="scard"><div class="st">'+n.label+'</div><div class="sm">'+n.sub+'</div><textarea data-x="'+i+'" placeholder="Our ordinary explanation (no Einstein)…"></textarea></div>';}).join("")+'</div></div>'+
+  '<div class="sec"><h3><span class="n">2</span>Now knock the lines out</h3>'+
+  '<p>Each line of <span class="cc">evidence</span> holds up the theory. Click a line to explain it away with your explanation. Watch the centre.</p>'+
+  '<div class="radial" id="einR"></div>'+
+  '<div class="talk"><div class="tl">Talk · be honest</div><div class="tb">Does your explanation for the clocks also explain the black hole photo? Does any single explanation knock out more than one line? If someone says “the scientists are all faking it”: who would have to be in on it, in how many countries, and how does your phone’s GPS still work?</div></div></div>'+
+  '<div class="sec"><h3><span class="n">3</span>Compare: bixonimania (Lesson 4)</h3>'+
+  '<p>Bixonimania also had four lines holding it up. Now look underneath them.</p>'+
+  '<div class="radial" id="bixR"></div>'+
+  '<div class="row"><button class="btn sm" id="bixGo">Remove the source</button><button class="btn sm ghost" id="bixBack">Put it back</button></div>'+
+  '<div class="talk"><div class="tl">Talk</div><div class="tb">Both pictures have four lines. Why does one collapse when you pull out one thing, and the other doesn’t?</div></div>'+
+  '<button class="btn sm ghost" id="convName">Open after you’ve talked</button></div>'+
+  '<div class="block" id="convNameBlk"><div class="nameit"><div class="nl">Name it — independent convergence</div><div class="nb">'+
+    '<p>Many lines of evidence make a claim strong only when three things are true:</p>'+
+    '<ol><li><b>Independent:</b> different <span class="cc">tools</span>, different teams, different decades, not all traced back to one source.</li>'+
+    '<li><b>Falsifiable:</b> each line could have come out the other way.</li>'+
+    '<li><b>Agreeing:</b> they all point to the same answer.</li></ol>'+
+    '<p>To reject Einstein’s theory, you need a separate mistake for every line, all happening to point where Einstein said. That is the Vulcan move again, explaining away one result at a time, except now the sceptic is doing it.</p>'+
+    '<p><span class="cc">Certainty</span>: still not 100%. But every independent line that agrees makes doubting the theory more expensive. Bixonimania had four lines and one source: pull the source, and it all goes.</p></div></div>'+
+    notebook(4,"Many lines of evidence point to Einstein’s theory. Many “sources” pointed to bixonimania. Why is one strong and the other not?","<div class=\"use\">Use: independent · falsifiable · certainty. Name one lab.</div>")+'</div>'+
+  navHTML("Next");
   wireNav(el);
-  $$("#bhOpts .opt",el).forEach(function(b){ b.onclick=function(){ $$("#bhOpts .opt",el).forEach(function(x){x.classList.remove("picked");}); b.classList.add("picked"); show($("#bhRev",el)); }; });
-  $$("#dmOpts .opt",el).forEach(function(b){ b.onclick=function(){ $$("#dmOpts .opt",el).forEach(function(x){x.classList.remove("picked");}); b.classList.add("picked"); show($("#dmRev",el)); }; });
+  var stE={off:{},why:{}}, stB={sourceGone:false};
+  function drawE(){ $("#einR",el).innerHTML=radialSVG("Einstein’s general relativity",EIN,stE,false); $$("#einR [data-i]",el).forEach(function(g){ g.onclick=function(){ var i=+g.dataset.i; stE.off[i]=!stE.off[i]; stE.why[i]=($('[data-x="'+i+'"]',el).value||"").trim(); drawE(); }; }); }
+  function drawB(){ $("#bixR",el).innerHTML=radialSVG("Bixonimania is a real eye condition",BIX,stB,true); }
+  drawE(); drawB();
+  $("#bixGo",el).onclick=function(){ stB.sourceGone=true; drawB(); }; $("#bixBack",el).onclick=function(){ stB.sourceGone=false; drawB(); };
+  $("#convName",el).onclick=function(){ show($("#convNameBlk",el)); this.style.display="none"; };
 });
 
-/* ---- 7. Re-rank ---- */
-addStage("Re-rank", function(el){
+/* ======================= Where shifts happen ======================= */
+addStage("Where shifts happen", function(el){
   el.innerHTML=
-  '<div class="micro">Last step · Order it again</div>'+
-  '<h2>Re-rank — now with questions to ask</h2>'+
-  '<p class="lead">For each claim, ask: How many <b>independent predictions</b> has it passed, checked with different tools? Is anything still <b>not fitting</b>? And is it an <b>observation</b>, or what a theory says lies beyond what we can see?</p>'+
-  '<div class="compare"><div><h4>Round 1 — your gut</h4><ol class="prev" id="prev1"></ol></div><div><h4>Round 2 — with the questions</h4><ol class="rank" id="rank2"></ol></div></div>'+
-  '<div class="note"><div class="hl">✎ Notebook</div><div class="hb">Answer the Knowledge Question again, properly this time (4–5 sentences). Our class said Einstein might be wrong. How certain should a knower be about Einstein’s theory, and what could change if it is replaced? Use what happened when you tried to explain the labs away, and the difference between observation and theory. Your answer has to hold two things at once: settled science is <b>not permanent</b>, but it is <b>not just opinion</b> either.</div></div>'+
-  '<div class="done-card"><div class="dl">That’s the activity</div><div class="db">Compare your first answer to the Knowledge Question with this one. What changed?</div></div>'+
+  '<div class="micro">Part 5 · How science changes its mind</div><h2>Where do paradigm shifts happen?</h2>'+
+  '<div class="lens">Scope · observation and theory</div>'+
+  '<div class="sec"><h3><span class="n">1</span>Back to your first answers</h3>'+
+  '<p>Here are the six statements from the start, with your answers.</p>'+
+  '<div id="sort2"></div>'+
+  '<button class="btn sm" id="kinds">Reveal what kind of statement each one is</button>'+
+  '<div class="block" id="kindsTalk"><div class="talk"><div class="tl">Talk</div><div class="tb">Science has <i>already</i> changed its mind about one of these. Which one? Look at the ones you marked “could change.” What kind are they? When Newton was replaced, did any of the observations on this list change?</div></div></div></div>'+
+  '<div class="sec"><h3><span class="n">2</span>The big question</h3>'+
+  '<div class="qline" style="font-size:19px">When can a paradigm shift happen, and what does a new theory have to do before it can replace the old one?</div>'+
+  '<p>Use the hints only if you’re stuck. Open them one at a time.</p>'+
+  '<div class="row"><button class="btn sm ghost" data-hint="1">Hint 1</button><button class="btn sm ghost" data-hint="2">Hint 2</button><button class="btn sm ghost" data-hint="3">Hint 3</button><button class="btn sm ghost" data-hint="4">Hint 4</button></div>'+
+  '<div class="hint" id="h1"><b>Mercury, 1859.</b> What didn’t fit: the theory or the observation? Where exactly was the gap?</div>'+
+  '<div class="hint" id="h2"><b>Einstein, 1915.</b> Did his theory only explain Mercury? What else did it have to get right? (Falling apples. The Moon. Neptune.)</div>'+
+  '<div class="hint" id="h3"><b>Today.</b> Stars at the edges of galaxies orbit too fast for the matter we can see. Most physicists say there is unseen matter, dark matter (the Neptune move). A minority say gravity works differently at that size (the Mercury move). Where is the gap now?</div>'+
+  '<div class="hint" id="h4"><b>The black hole.</b> The photo and its size are observations. “Nothing gets out” and “everything is crushed to a point” come from the theory, and physicists expect the theory to break at the centre. If a new theory comes, which of these could change?</div>'+
+  notebook(5,"When can a paradigm shift happen, and what does a new theory have to do before it can replace the old one?","<div class=\"use\">Use: evidence · explanation · scope. Back it with Mercury and one other case.</div>")+
+  '<button class="btn sm ghost" id="shiftName">Open after you’ve written</button>'+
+  '<div class="block" id="shiftNameBlk"><div class="nameit"><div class="nl">One way to put it</div><div class="nb">'+
+    '<p>Paradigm shifts start in the <em>gaps between theory and observation</em>, like Mercury’s extra swing.</p>'+
+    '<p>A new theory can’t take over until it explains <em>all</em> the observations: the new ones and the old ones. Einstein had to fix Mercury <b>and</b> still give Newton’s answers for apples, the Moon and Neptune.</p>'+
+    '<p>So the observations stay, and the theory that explains them changes. Is that always true? Hold on to that claim. You’ll test it at the end.</p></div></div></div>'+
+  '</div>'+
+  navHTML("Make it, break it");
+  wireNav(el);
+  $$("[data-hint]",el).forEach(function(b){ b.onclick=function(){ show($("#h"+b.dataset.hint,el)); }; });
+  $("#kinds",el).onclick=function(){ $("#sort2",el).classList.add("reveal-kinds"); show($("#kindsTalk",el)); this.style.display="none"; };
+  $("#shiftName",el).onclick=function(){ show($("#shiftNameBlk",el)); this.style.display="none"; };
+});
+stages[stages.length-1].onShow=function(el){ var s=$("#sort2",el); if(s) s.innerHTML=sortHTML(true); };
+
+/* ======================= Make it, break it ======================= */
+var SUBS=[
+  {q:"When is it reasonable to explain away evidence that doesn’t fit?",
+   cases:"Neptune · Vulcan · phrenology’s kindness bump · the land bridges",
+   cut:"A rescue that makes a new prediction that could fail (“look here for a planet”) vs a rescue nothing could ever check (“his other organs overpowered it”). Second cut: time. Vulcan was reasonable in 1860; after decades of failed searches it wasn’t."},
+  {q:"Is a theory that has been shown to be wrong still knowledge?",
+   cases:"Newton · phrenology · Newton’s cannon and Mercury",
+   cut:"Wrong outside its scope (Newton still gives the right answers for bridges and rockets) vs wrong at its core (the skull bumps never tracked anything). Second cut: a map can be useful without being the territory, but useful isn’t the same as true."},
+  {q:"Why do many sources agreeing sometimes make a claim strong, and sometimes not?",
+   cases:"The four labs · bixonimania",
+   cut:"Independent lines (different tools, teams, decades) vs many lines that all trace back to one source. Second cut: each line also has to be able to say no. Lines that could never disagree add nothing."},
+  {q:"Is the centre of a black hole a “never”?",
+   cases:"The shadow lab · observation vs theory · Newton to Einstein",
+   cut:"Never according to our best theory vs never, full stop. The “never” comes from the theory, not from an observation, and the centre is where physicists expect the theory to break. Second cut: the laws of nature vs our theory of the laws. Nature may not change; our map of it does."}];
+addStage("Make it, break it", function(el){
+  el.innerHTML=
+  '<div class="micro">Part 6 · Claims and cuts</div><h2>Make it. Back it. Break it. Cut it.</h2>'+
+  '<div class="lens">Knowledge claims about knowledge</div>'+
+  '<div class="stepsbig"><div><b>1 · Make it</b>Answer the question in one sentence. That is your knowledge claim.</div><div><b>2 · Back it</b>Support it with a case from today. Name the case.</div><div><b>3 · Break it</b>Find a case where your claim stops working.</div><div><b>4 · Cut it</b>Rewrite the claim so it holds. Say where it holds and where it stops.</div></div>'+
+  '<p class="body"><b>Pairs: choose two of these four questions.</b></p>'+
+  SUBS.map(function(s,i){ return '<div class="kqcard"><div class="kh">'+(i+1)+'. '+s.q+'</div><div class="kc"><b>Cases to try</b>'+s.cases+'</div><button class="btn sm ghost" data-cut="'+i+'">Show a cut (teacher)</button><div class="cut" id="cut'+i+'">'+s.cut+'</div></div>'; }).join("")+
+  notebook(10,"Your two questions: make it, back it, break it, cut it.","<div class=\"use\">One short paragraph each. The break is the important part.</div>")+
+  '<div class="sec"><h3><span class="n">★</span>Everyone: do observations ever change?</h3>'+
+  '<p>At the end of Part 5 we said: <b>“The observations stay. Only the theory changes.”</b> Test it.</p>'+
+  '<div class="talk"><div class="tl">Make it</div><div class="tb">Agree or disagree, in one sentence. Then test your sentence against these four cases.</div></div>'+
+  '<div class="two">'+
+    '<div class="mini"><div class="ml">The equipment</div>Ripples from colliding black holes were passing through the Earth long before 2015. Why was there no observation of them until then?</div>'+
+    '<div class="mini"><div class="ml">How sensitive it is</div>A clock 33 cm higher ran faster in Newton’s time too. Instruments sensitive enough to see effects like this didn’t exist until the late 1950s. Was it an observation before then?</div>'+
+    '<div class="mini"><div class="ml">What the knower is looking for</div>The matching coastlines and fossils of Africa and South America were seen for a long time. When did they become <span class="cc">evidence</span>, and what changed: the rocks, or the knowers?</div>'+
+    '<div class="mini"><div class="ml">A mistake</div>In 2011 the OPERA experiment measured particles called neutrinos travelling faster than light. Months later the cause was found: a loose fibre-optic cable. What caught the mistake?</div>'+
+  '</div>'+
+  '<div class="talk"><div class="tl">Break it</div><div class="tb">So what changes: the world, or the observation? Where does your sentence stop working?</div></div>'+
+  '<button class="btn sm ghost" id="obsCut">Show a cut (after you’ve talked)</button>'+
+  '<div class="block" id="obsCutBlk"><div class="nameit"><div class="nl">The cut — the world vs what we can observe of it</div><div class="nb">'+
+    '<p>Nature doesn’t change because we look at it. But <em>observations</em> do. They depend on the <span class="cc">tools</span> (no detector, no ripple), on how sensitive the tools are (no atomic clock, no time difference), and on what the knower is looking for: whether they recognise something as <span class="cc">evidence</span> at all (the coastlines). And a single observation can simply be wrong (OPERA).</p>'+
+    '<p>So: observations that many independent tools keep finding are very hard to overturn. But what counts as an observation, and as evidence, grows with new tools and new frameworks.</p></div></div></div>'+
+  '<div class="talk"><div class="tl">Bridge to the Knowledge Question</div><div class="tb">So what could <b>cause</b> science to change its mind, and what could <b>prevent</b> it? Name a case for each.</div></div>'+
+  '<button class="btn sm ghost" id="causeCut">Show some answers (teacher)</button>'+
+  '<div class="block" id="causeBlk"><div class="two">'+
+    '<div class="mini obs"><div class="ml">Could cause a change</div>A new or more sensitive tool opens a gap (Mercury’s 43″, LIGO). A new theory explains all the observations, old and new (Einstein). Someone recognises something as evidence (the coastlines, once drift had a mechanism). Independent checks catch a mistake (OPERA).</div>'+
+    '<div class="mini th"><div class="ml">Could prevent a change</div>No tool can reach it (the centre of a black hole). The framework doesn’t recognise it as evidence (fixed continents). Explaining it away (Vulcan, phrenology). No rival theory to switch to (Le Verrier had nothing to replace Newton with).</div>'+
+  '</div></div>'+
+  '</div>'+
+  '<div class="sec"><h3><span class="n">★</span>Everyone: the Knowledge Question</h3></div>'+
+  notebook(8,"How does science change its mind — and how settled is “settled science”?",
+    "<ul><li>Give your answer. Back it with cases from today.</li><li>Break it with what you found in your two questions and in the observations question.</li><li>Say what could cause science to change its mind, and what could prevent it.</li><li>Finish by saying how much of your answer is still standing.</li><li>Your answer has to hold two things at once: settled science is <b>not permanent</b>, but it is <b>not just opinion</b> either.</li></ul>"+
+    "<div class=\"use\">Use at least two: evidence · certainty · explanation · truth · perspective · scope. A clear cut, well supported, can earn a B. A second cut, or a “but” that limits the first, can earn an A.</div>")+
+  '<div class="talk"><div class="tl">Look back</div><div class="tb">Compare this answer with your one-sentence answer from the start. What changed?</div></div>'+
+  '<div class="done-card"><div class="dl">Next lesson</div><div class="db"><b>To which knowers is science settled?</b> The scientists who can see the lines? You, after today? Someone watching a 50/50 debate on TV? You’ll pick a claim people argue about and check how much independent convergence it really has.</div></div>'+
   navHTML(null);
   wireNav(el);
-  var prev=$("#prev1",el); (round1||CARDS).forEach(function(c,i){ var li=document.createElement("li"); li.textContent=(i+1)+".  "+c.text; prev.appendChild(li); });
-  makeRankList($("#rank2",el),(round1||CARDS).slice());
+  $$("[data-cut]",el).forEach(function(b){ b.onclick=function(){ $("#cut"+b.dataset.cut,el).classList.toggle("shown"); }; });
+  $("#obsCut",el).onclick=function(){ show($("#obsCutBlk",el)); this.style.display="none"; };
+  $("#causeCut",el).onclick=function(){ show($("#causeBlk",el)); this.style.display="none"; };
 });
 
-/* ================= boot ================= */
+/* ======================= boot ======================= */
 var dotsWrap=$("#dots"), stepname=$("#stepname"), screens=$("#screens");
 stages.forEach(function(def,i){ var sec=document.createElement("section"); sec.className="stage"; screens.appendChild(sec); stageEls.push(sec);
-  var d=document.createElement("div"); d.className="dot"; d.title=def.name; d.onclick=function(){go(i);}; dotsWrap.appendChild(d); });
+  var d=document.createElement("div"); d.className="dot"; d.title=def.name; d.onclick=function(){ for(var k=0;k<i;k++){ if(!canLeave(k)) return; } go(i); }; dotsWrap.appendChild(d); });
 function go(i){
-  if(i<0||i>=stages.length) return; idx=i;
+  if(i<0||i>=stages.length) return;
+  if(i>idx && !canLeave(idx)) return;
+  stopAnims(); idx=i;
   stageEls.forEach(function(s,j){ s.classList.toggle("show",j===i); if(j===i&&!s.dataset.built){ stages[j].build(s); s.dataset.built="1"; } });
+  if(stages[i].onShow) stages[i].onShow(stageEls[i]);
   $$(".dot").forEach(function(d,j){ d.classList.toggle("active",j===i); d.classList.toggle("done",j<i); });
   stepname.textContent=(i+1)+" / "+stages.length+" · "+stages[i].name;
-  refreshLogs();
+  refreshLogs(); updateGates();
   window.scrollTo({top:0,behavior:"smooth"});
 }
 var hdr=$("header.pin"); window.addEventListener("scroll",function(){ var y=window.scrollY; if(y>180) hdr.classList.add("slim"); else if(y<20) hdr.classList.remove("slim"); });
